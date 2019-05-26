@@ -101,7 +101,7 @@ namespace AAEmu.DBViewer
 
         private void BtnItemSearch_Click(object sender, EventArgs e)
         {
-            dgvItemSearch.Rows.Clear();
+            dgvItem.Rows.Clear();
             string searchText = tItemSearch.Text ;
             if (searchText == string.Empty)
                 return;
@@ -146,11 +146,11 @@ namespace AAEmu.DBViewer
                     {
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
-                        dgvItemSearch.Visible = false;
+                        dgvItem.Visible = false;
                         while (reader.Read())
                         {
-                            int line = dgvItemSearch.Rows.Add();
-                            var row = dgvItemSearch.Rows[line];
+                            int line = dgvItem.Rows.Add();
+                            var row = dgvItem.Rows[line];
                             long itemIdx = reader.GetInt64("idx");
                             row.Cells[0].Value = itemIdx.ToString();
                             row.Cells[1].Value = reader.GetString(lng);
@@ -161,7 +161,7 @@ namespace AAEmu.DBViewer
                                 ShowDBItem(itemIdx);
                             }
                         }
-                        dgvItemSearch.Visible = true;
+                        dgvItem.Visible = true;
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
                     }
@@ -217,6 +217,80 @@ namespace AAEmu.DBViewer
             }
         }
 
+        private void ShowDBLootByItem(long idx)
+        {
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM loots WHERE (item_id = @tidx) ORDER BY id ASC";
+                    command.Prepare();
+                    command.Parameters.AddWithValue("@tidx", idx.ToString());
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        dgvLoot.Rows.Clear();
+                        while (reader.Read())
+                        {
+                            if (reader.GetInt64("item_id") == idx)
+                            {
+                                int line = dgvLoot.Rows.Add();
+                                var row = dgvLoot.Rows[line];
+
+                                row.Cells[0].Value = reader.GetInt64("id").ToString();
+                                row.Cells[1].Value = reader.GetInt64("loot_pack_id").ToString();
+                                row.Cells[2].Value = idx.ToString();
+                                row.Cells[3].Value = GetTranslationByID(idx, "items", "name");
+                                row.Cells[4].Value = reader.GetInt64("drop_rate").ToString();
+                                row.Cells[5].Value = reader.GetInt64("min_amount").ToString();
+                                row.Cells[6].Value = reader.GetInt64("max_amount").ToString();
+                                row.Cells[7].Value = reader.GetInt64("grade_id").ToString();
+                                row.Cells[8].Value = reader.GetString("always_drop").ToString();
+                                row.Cells[9].Value = reader.GetInt64("group").ToString();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ShowDBLootByID(long loot_id)
+        {
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM loots WHERE (loot_pack_id = @tpackid) ORDER BY id ASC";
+                    command.Prepare();
+                    command.Parameters.AddWithValue("@tpackid", loot_id.ToString());
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        dgvLoot.Rows.Clear();
+                        while (reader.Read())
+                        {
+                            if (reader.GetInt64("loot_pack_id") == loot_id)
+                            {
+                                int line = dgvLoot.Rows.Add();
+                                var row = dgvLoot.Rows[line];
+
+                                var itemid = reader.GetInt64("item_id");
+                                row.Cells[0].Value = reader.GetInt64("id").ToString();
+                                row.Cells[1].Value = reader.GetInt64("loot_pack_id").ToString();
+                                row.Cells[2].Value = itemid.ToString();
+                                row.Cells[3].Value = GetTranslationByID(itemid, "items", "name");
+                                row.Cells[4].Value = reader.GetInt64("drop_rate").ToString();
+                                row.Cells[5].Value = reader.GetInt64("min_amount").ToString();
+                                row.Cells[6].Value = reader.GetInt64("max_amount").ToString();
+                                row.Cells[7].Value = reader.GetInt64("grade_id").ToString();
+                                row.Cells[8].Value = reader.GetString("always_drop").ToString();
+                                row.Cells[9].Value = reader.GetInt64("group").ToString();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
 
 
         private void TItemSearch_KeyDown(object sender, KeyEventArgs e)
@@ -229,9 +303,9 @@ namespace AAEmu.DBViewer
 
         private void DgvItemSearch_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvItemSearch.SelectedRows.Count <= 0)
+            if (dgvItem.SelectedRows.Count <= 0)
                 return;
-            var row = dgvItemSearch.SelectedRows[0];
+            var row = dgvItem.SelectedRows[0];
             if (row.Cells.Count <= 0)
                 return;
 
@@ -284,6 +358,53 @@ namespace AAEmu.DBViewer
         private void TItemSearch_TextChanged(object sender, EventArgs e)
         {
             btnItemSearch.Enabled = (tItemSearch.Text != string.Empty);
+        }
+
+        private void BtnFindItemInLoot_Click(object sender, EventArgs e)
+        {
+            if (dgvItem.SelectedRows.Count <= 0)
+                return;
+            var row = dgvItem.SelectedRows[0];
+            if (row.Cells.Count <= 0)
+                return;
+
+            var val = row.Cells[0].Value;
+            if (val == null)
+                return;
+
+            ShowDBLootByItem(long.Parse(val.ToString()));
+            tcViewer.SelectedTab = tpLoot;
+        }
+
+        private void TLootSearch_TextChanged(object sender, EventArgs e)
+        {
+            btnLootSearch.Enabled = (tLootSearch.Text != string.Empty);
+        }
+
+        private void DgvLoot_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvLoot.SelectedRows.Count <= 0)
+                return;
+            var row = dgvLoot.SelectedRows[0];
+            if (row.Cells.Count <= 0)
+                return;
+
+            var val = row.Cells[1].Value;
+            if (val == null)
+                return;
+            tLootSearch.Text = val.ToString();
+        }
+
+        private void BtnLootSearch_Click(object sender, EventArgs e)
+        {
+            string searchText = tLootSearch.Text;
+            if (searchText == string.Empty)
+                return;
+            long searchID;
+            if (!long.TryParse(searchText, out searchID))
+                return;
+
+            ShowDBLootByID(searchID);
         }
     }
 }
