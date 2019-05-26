@@ -15,6 +15,15 @@ namespace AAEmu.DBViewer
     public partial class MainForm : Form
     {
 
+        class GameTranslation
+        {
+            public long idx = 0;
+            public string table = string.Empty ;
+            public string field = string.Empty ;
+            public string value = string.Empty ;
+        }
+        Dictionary<long, GameTranslation> CurrentTranslation = new Dictionary<long, GameTranslation>();
+
         public MainForm()
         {
             InitializeComponent();
@@ -22,14 +31,7 @@ namespace AAEmu.DBViewer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            if (!File.Exists(SQLite.SQLiteFileName))
-            {
-                MessageBox.Show("File not found " + SQLite.SQLiteFileName, "Server DB not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Close();
-                return;
-            }
-            cbItemSearchLanguage.SelectedIndex = 0;
-            GetTableNames();
+            LoadDB(false);
             tcViewer.SelectedTab = tpItems;
         }
 
@@ -60,10 +62,49 @@ namespace AAEmu.DBViewer
             }
         }
 
+        private void GetTranslations(string lng)
+        {
+            string sql = "SELECT id, tbl_name, tbl_column_name, idx, "+lng+" FROM localized_texts ORDER BY idx ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    CurrentTranslation.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    //command.Parameters.AddWithValue("@lng", lng);
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            GameTranslation t = new GameTranslation();
+                            t.idx = reader.GetInt64("idx");
+                            t.table = reader.GetString("tbl_name");
+                            t.field = reader.GetString("tbl_column_name");
+                            t.value = reader.GetString(lng);
+                            CurrentTranslation.Add(reader.GetInt64("id"), t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+
+                    }
+                }
+            }
+            Properties.Settings.Default.DefaultGameLanguage = lng ;
+        }
+
         private void BtnItemSearch_Click(object sender, EventArgs e)
         {
             dgvItemSearch.Rows.Clear();
             string searchText = tItemSearch.Text ;
+            if (searchText == string.Empty)
+                return;
             string lng = cbItemSearchLanguage.Text;
             string sql = string.Empty;
             string sqlWhere = string.Empty;
@@ -103,6 +144,9 @@ namespace AAEmu.DBViewer
                     }
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+                        dgvItemSearch.Visible = false;
                         while (reader.Read())
                         {
                             int line = dgvItemSearch.Rows.Add();
@@ -117,39 +161,35 @@ namespace AAEmu.DBViewer
                                 ShowDBItem(itemIdx);
                             }
                         }
+                        dgvItemSearch.Visible = true;
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
                     }
                 }
             }
 
         }
 
-        private string GetTranslationByID(long idx, string table, string field, string lng)
+        private string GetTranslationByID(long idx, string table, string field, string defaultValue = "")
         {
-            using (var connection = SQLite.CreateConnection())
+            foreach(var t in CurrentTranslation)
             {
-                using (var command = connection.CreateCommand())
+                if ((t.Value.idx == idx) && (t.Value.table == table) && (t.Value.field == field))
                 {
-                    command.CommandText = "SELECT idx, " + lng + " FROM localized_texts WHERE (tbl_name = @ttbl) AND (tbl_column_name = @tfld) AND (idx = @tidx) ORDER BY " + lng + " ASC LIMIT 1";
-                    command.Prepare();
-                    command.Parameters.AddWithValue("@tidx", idx.ToString());
-                    command.Parameters.AddWithValue("@ttbl", table);
-                    command.Parameters.AddWithValue("@tfld", field);
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
-                    {
-                        while (reader.Read())
-                        {
-                            if (reader.GetInt64("idx") == idx)
-                                return reader.GetString(lng);
-                        }
-                    }
+                    string s = t.Value.value;
+                    if (s != string.Empty)
+                        return s;
                 }
             }
-            return string.Empty;
+            // If no translation found ...
+            if (defaultValue == "")
+                return "<no_translation_for_" + table + "_" + field + "_" + idx.ToString() + ">";
+            else
+                return defaultValue;
         }
 
         private void ShowDBItem(long idx)
         {
-            var lng = cbItemSearchLanguage.Text;
             using (var connection = SQLite.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
@@ -164,10 +204,11 @@ namespace AAEmu.DBViewer
                             if (reader.GetInt64("id") == idx)
                             {
                                 lItemID.Text = idx.ToString();
-                                lItemName.Text = GetTranslationByID(idx, "items", "name", lng);
+                                lItemName.Text = GetTranslationByID(idx, "items", "name",reader.GetString("name"));
                                 long cat = reader.GetInt64("category_id");
-                                lItemCategory.Text = GetTranslationByID(cat, "item_categories", "name", lng) + " (" + cat.ToString() + ")";
-                                tItemDesc.Text = GetTranslationByID(idx, "items", "description", lng);
+                                lItemCategory.Text = GetTranslationByID(cat, "item_categories", "name") + " (" + cat.ToString() + ")";
+                                tItemDesc.Text = GetTranslationByID(idx, "items", "description", reader.GetString("description")).Replace("\n","\r\n");
+                                lItemLevel.Text = reader.GetInt64("level").ToString();
                                 return;
                             }
                         }
@@ -198,6 +239,51 @@ namespace AAEmu.DBViewer
             if (val == null)
                 return;
             ShowDBItem(long.Parse(val.ToString()));
+        }
+
+        private void CbItemSearchLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbItemSearchLanguage.Text != Properties.Settings.Default.DefaultGameLanguage)
+            {
+                GetTranslations(cbItemSearchLanguage.Text);
+            }
+        }
+
+        private void BtnOpenDB_Click(object sender, EventArgs e)
+        {
+            LoadDB(true);
+        }
+
+        private void LoadDB(bool forceDlg)
+        {
+            string sqlfile = Properties.Settings.Default.DBFileName;
+
+            while ( forceDlg || (!File.Exists(sqlfile)) )
+            {
+                forceDlg = false;
+                if (openDBDlg.ShowDialog() != DialogResult.OK)
+                {
+                    Close();
+                    return;
+                }
+                else
+                {
+                    sqlfile = openDBDlg.FileName;
+                }
+            }
+
+            SQLite.SQLiteFileName = sqlfile;
+            Properties.Settings.Default.DBFileName = sqlfile;
+
+            var i = cbItemSearchLanguage.Items.IndexOf(Properties.Settings.Default.DefaultGameLanguage);
+            cbItemSearchLanguage.SelectedIndex = i;
+            GetTableNames();
+            GetTranslations(Properties.Settings.Default.DefaultGameLanguage);
+        }
+
+        private void TItemSearch_TextChanged(object sender, EventArgs e)
+        {
+            btnItemSearch.Enabled = (tItemSearch.Text != string.Empty);
         }
     }
 }

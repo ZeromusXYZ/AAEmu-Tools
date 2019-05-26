@@ -48,6 +48,10 @@
             this.label5 = new System.Windows.Forms.Label();
             this.lItemCategory = new System.Windows.Forms.Label();
             this.tItemDesc = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lItemLevel = new System.Windows.Forms.Label();
+            this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
+            this.btnOpenDB = new System.Windows.Forms.Button();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             this.tpItems.SuspendLayout();
@@ -62,7 +66,7 @@
             this.lbTableNames.FormattingEnabled = true;
             this.lbTableNames.Location = new System.Drawing.Point(6, 6);
             this.lbTableNames.Name = "lbTableNames";
-            this.lbTableNames.Size = new System.Drawing.Size(270, 290);
+            this.lbTableNames.Size = new System.Drawing.Size(270, 303);
             this.lbTableNames.TabIndex = 1;
             // 
             // tcViewer
@@ -80,6 +84,7 @@
             // 
             // tbTables
             // 
+            this.tbTables.Controls.Add(this.btnOpenDB);
             this.tbTables.Controls.Add(this.lbTableNames);
             this.tbTables.Controls.Add(this.label2);
             this.tbTables.Controls.Add(this.cbItemSearchLanguage);
@@ -121,8 +126,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tItemSearch.Location = new System.Drawing.Point(135, 6);
             this.tItemSearch.Name = "tItemSearch";
-            this.tItemSearch.Size = new System.Drawing.Size(329, 20);
+            this.tItemSearch.Size = new System.Drawing.Size(244, 20);
             this.tItemSearch.TabIndex = 0;
+            this.tItemSearch.TextChanged += new System.EventHandler(this.TItemSearch_TextChanged);
             this.tItemSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TItemSearch_KeyDown);
             // 
             // dgvItemSearch
@@ -143,7 +149,7 @@
             this.dgvItemSearch.ReadOnly = true;
             this.dgvItemSearch.RowHeadersVisible = false;
             this.dgvItemSearch.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvItemSearch.Size = new System.Drawing.Size(538, 275);
+            this.dgvItemSearch.Size = new System.Drawing.Size(453, 275);
             this.dgvItemSearch.TabIndex = 2;
             this.dgvItemSearch.SelectionChanged += new System.EventHandler(this.DgvItemSearch_SelectionChanged);
             // 
@@ -165,7 +171,8 @@
             // btnItemSearch
             // 
             this.btnItemSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnItemSearch.Location = new System.Drawing.Point(470, 4);
+            this.btnItemSearch.Enabled = false;
+            this.btnItemSearch.Location = new System.Drawing.Point(385, 4);
             this.btnItemSearch.Name = "btnItemSearch";
             this.btnItemSearch.Size = new System.Drawing.Size(79, 23);
             this.btnItemSearch.TabIndex = 3;
@@ -202,11 +209,14 @@
             this.cbItemSearchLanguage.Name = "cbItemSearchLanguage";
             this.cbItemSearchLanguage.Size = new System.Drawing.Size(75, 21);
             this.cbItemSearchLanguage.TabIndex = 5;
+            this.cbItemSearchLanguage.SelectedIndexChanged += new System.EventHandler(this.CbItemSearchLanguage_SelectedIndexChanged);
             // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.lItemLevel);
+            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.tItemDesc);
             this.groupBox1.Controls.Add(this.lItemCategory);
             this.groupBox1.Controls.Add(this.label5);
@@ -214,9 +224,9 @@
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.lItemID);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Location = new System.Drawing.Point(555, 9);
+            this.groupBox1.Location = new System.Drawing.Point(470, 9);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(217, 299);
+            this.groupBox1.Size = new System.Drawing.Size(302, 299);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Item Info";
@@ -280,11 +290,47 @@
             this.tItemDesc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tItemDesc.Location = new System.Drawing.Point(9, 91);
+            this.tItemDesc.Location = new System.Drawing.Point(9, 99);
             this.tItemDesc.Multiline = true;
             this.tItemDesc.Name = "tItemDesc";
-            this.tItemDesc.Size = new System.Drawing.Size(202, 202);
+            this.tItemDesc.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.tItemDesc.Size = new System.Drawing.Size(287, 194);
             this.tItemDesc.TabIndex = 6;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 83);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(33, 13);
+            this.label6.TabIndex = 7;
+            this.label6.Text = "Level";
+            // 
+            // lItemLevel
+            // 
+            this.lItemLevel.AutoSize = true;
+            this.lItemLevel.Location = new System.Drawing.Point(58, 83);
+            this.lItemLevel.Name = "lItemLevel";
+            this.lItemLevel.Size = new System.Drawing.Size(31, 13);
+            this.lItemLevel.TabIndex = 8;
+            this.lItemLevel.Text = "none";
+            // 
+            // openDBDlg
+            // 
+            this.openDBDlg.DefaultExt = "sqlite3";
+            this.openDBDlg.FileName = "compact.sqlite3";
+            this.openDBDlg.Filter = "SQLite3 files|*.sqlite3|All files|*.*";
+            this.openDBDlg.Title = "Open Server DB File";
+            // 
+            // btnOpenDB
+            // 
+            this.btnOpenDB.Location = new System.Drawing.Point(282, 6);
+            this.btnOpenDB.Name = "btnOpenDB";
+            this.btnOpenDB.Size = new System.Drawing.Size(122, 23);
+            this.btnOpenDB.TabIndex = 6;
+            this.btnOpenDB.Text = "Open DB";
+            this.btnOpenDB.UseVisualStyleBackColor = true;
+            this.btnOpenDB.Click += new System.EventHandler(this.BtnOpenDB_Click);
             // 
             // MainForm
             // 
@@ -329,6 +375,10 @@
         private System.Windows.Forms.Label lItemID;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox tItemDesc;
+        private System.Windows.Forms.Label lItemLevel;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.OpenFileDialog openDBDlg;
+        private System.Windows.Forms.Button btnOpenDB;
     }
 }
 

@@ -1,7 +1,12 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AAEmu.DBViewer.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DefaultGameLanguage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">en_us</Value>
+    </Setting>
+    <Setting Name="DBFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">data\compact.sqlite3</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>
