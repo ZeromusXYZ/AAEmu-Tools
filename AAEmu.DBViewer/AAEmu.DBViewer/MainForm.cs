@@ -31,7 +31,11 @@ namespace AAEmu.DBViewer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            LoadDB(false);
+            if (!LoadDB(false))
+            {
+                Close();
+                return;
+            }
             tcViewer.SelectedTab = tpItems;
         }
 
@@ -217,6 +221,14 @@ namespace AAEmu.DBViewer
             }
         }
 
+        private string VisualizeDropRate(long droprate)
+        {
+            if (droprate == 1)
+                return "1 (Always?)";
+            double d = droprate / 100000;
+            return d.ToString("0.00") + " %";
+        }
+
         private void ShowDBLootByItem(long idx)
         {
             using (var connection = SQLite.CreateConnection())
@@ -240,7 +252,7 @@ namespace AAEmu.DBViewer
                                 row.Cells[1].Value = reader.GetInt64("loot_pack_id").ToString();
                                 row.Cells[2].Value = idx.ToString();
                                 row.Cells[3].Value = GetTranslationByID(idx, "items", "name");
-                                row.Cells[4].Value = reader.GetInt64("drop_rate").ToString();
+                                row.Cells[4].Value = VisualizeDropRate(reader.GetInt64("drop_rate"));
                                 row.Cells[5].Value = reader.GetInt64("min_amount").ToString();
                                 row.Cells[6].Value = reader.GetInt64("max_amount").ToString();
                                 row.Cells[7].Value = reader.GetInt64("grade_id").ToString();
@@ -265,6 +277,9 @@ namespace AAEmu.DBViewer
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
                         dgvLoot.Rows.Clear();
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+                        dgvLoot.Visible = false;
                         while (reader.Read())
                         {
                             if (reader.GetInt64("loot_pack_id") == loot_id)
@@ -277,7 +292,7 @@ namespace AAEmu.DBViewer
                                 row.Cells[1].Value = reader.GetInt64("loot_pack_id").ToString();
                                 row.Cells[2].Value = itemid.ToString();
                                 row.Cells[3].Value = GetTranslationByID(itemid, "items", "name");
-                                row.Cells[4].Value = reader.GetInt64("drop_rate").ToString();
+                                row.Cells[4].Value = VisualizeDropRate(reader.GetInt64("drop_rate"));
                                 row.Cells[5].Value = reader.GetInt64("min_amount").ToString();
                                 row.Cells[6].Value = reader.GetInt64("max_amount").ToString();
                                 row.Cells[7].Value = reader.GetInt64("grade_id").ToString();
@@ -285,6 +300,9 @@ namespace AAEmu.DBViewer
                                 row.Cells[9].Value = reader.GetInt64("group").ToString();
                             }
                         }
+                        dgvLoot.Visible = true;
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
                     }
                 }
             }
@@ -328,7 +346,7 @@ namespace AAEmu.DBViewer
             LoadDB(true);
         }
 
-        private void LoadDB(bool forceDlg)
+        private bool LoadDB(bool forceDlg)
         {
             string sqlfile = Properties.Settings.Default.DBFileName;
 
@@ -337,8 +355,7 @@ namespace AAEmu.DBViewer
                 forceDlg = false;
                 if (openDBDlg.ShowDialog() != DialogResult.OK)
                 {
-                    Close();
-                    return;
+                    return false;
                 }
                 else
                 {
@@ -353,6 +370,7 @@ namespace AAEmu.DBViewer
             cbItemSearchLanguage.SelectedIndex = i;
             GetTableNames();
             GetTranslations(Properties.Settings.Default.DefaultGameLanguage);
+            return true;
         }
 
         private void TItemSearch_TextChanged(object sender, EventArgs e)
@@ -405,6 +423,14 @@ namespace AAEmu.DBViewer
                 return;
 
             ShowDBLootByID(searchID);
+        }
+
+        private void TLootSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                BtnLootSearch_Click(null, null);
+            }
         }
     }
 }

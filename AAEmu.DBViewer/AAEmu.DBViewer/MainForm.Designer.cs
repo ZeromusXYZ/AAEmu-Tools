@@ -480,7 +480,7 @@
             // 
             this.btnLootSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLootSearch.Enabled = false;
-            this.btnLootSearch.Location = new System.Drawing.Point(263, 9);
+            this.btnLootSearch.Location = new System.Drawing.Point(220, 9);
             this.btnLootSearch.Name = "btnLootSearch";
             this.btnLootSearch.Size = new System.Drawing.Size(79, 23);
             this.btnLootSearch.TabIndex = 6;
@@ -503,9 +503,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tLootSearch.Location = new System.Drawing.Point(121, 11);
             this.tLootSearch.Name = "tLootSearch";
-            this.tLootSearch.Size = new System.Drawing.Size(136, 20);
+            this.tLootSearch.Size = new System.Drawing.Size(93, 20);
             this.tLootSearch.TabIndex = 4;
             this.tLootSearch.TextChanged += new System.EventHandler(this.TLootSearch_TextChanged);
+            this.tLootSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TLootSearch_KeyDown);
             // 
             // MainForm
             // 
