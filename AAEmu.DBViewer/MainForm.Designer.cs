@@ -68,6 +68,9 @@
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
+            this.itemIcon = new System.Windows.Forms.Label();
+            this.btnFindGameClient = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             this.tpItems.SuspendLayout();
@@ -103,6 +106,8 @@
             // 
             // tbTables
             // 
+            this.tbTables.Controls.Add(this.label8);
+            this.tbTables.Controls.Add(this.btnFindGameClient);
             this.tbTables.Controls.Add(this.btnOpenServerDB);
             this.tbTables.Controls.Add(this.lbTableNames);
             this.tbTables.Controls.Add(this.label2);
@@ -119,9 +124,9 @@
             // 
             this.btnOpenServerDB.Location = new System.Drawing.Point(282, 6);
             this.btnOpenServerDB.Name = "btnOpenServerDB";
-            this.btnOpenServerDB.Size = new System.Drawing.Size(122, 23);
+            this.btnOpenServerDB.Size = new System.Drawing.Size(186, 23);
             this.btnOpenServerDB.TabIndex = 6;
-            this.btnOpenServerDB.Text = "Open DB";
+            this.btnOpenServerDB.Text = "Open (server) DB";
             this.btnOpenServerDB.UseVisualStyleBackColor = true;
             this.btnOpenServerDB.Click += new System.EventHandler(this.BtnOpenServerDB_Click);
             // 
@@ -176,6 +181,8 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.groupBox1.Controls.Add(this.itemIcon);
             this.groupBox1.Controls.Add(this.rtItemDesc);
             this.groupBox1.Controls.Add(this.btnFindItemInLoot);
             this.groupBox1.Controls.Add(this.lItemLevel);
@@ -186,6 +193,7 @@
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.lItemID);
             this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
             this.groupBox1.Location = new System.Drawing.Point(470, 9);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(302, 299);
@@ -200,27 +208,29 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtItemDesc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
             this.rtItemDesc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
-            this.rtItemDesc.Location = new System.Drawing.Point(9, 99);
+            this.rtItemDesc.Location = new System.Drawing.Point(9, 81);
             this.rtItemDesc.Name = "rtItemDesc";
-            this.rtItemDesc.Size = new System.Drawing.Size(287, 163);
+            this.rtItemDesc.Size = new System.Drawing.Size(287, 181);
             this.rtItemDesc.TabIndex = 10;
             this.rtItemDesc.Text = "";
             // 
             // btnFindItemInLoot
             // 
             this.btnFindItemInLoot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnFindItemInLoot.BackColor = System.Drawing.SystemColors.Control;
+            this.btnFindItemInLoot.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnFindItemInLoot.Location = new System.Drawing.Point(9, 268);
             this.btnFindItemInLoot.Name = "btnFindItemInLoot";
             this.btnFindItemInLoot.Size = new System.Drawing.Size(92, 23);
             this.btnFindItemInLoot.TabIndex = 9;
             this.btnFindItemInLoot.Text = "Find in Loot";
-            this.btnFindItemInLoot.UseVisualStyleBackColor = true;
+            this.btnFindItemInLoot.UseVisualStyleBackColor = false;
             this.btnFindItemInLoot.Click += new System.EventHandler(this.BtnFindItemInLoot_Click);
             // 
             // lItemLevel
             // 
             this.lItemLevel.AutoSize = true;
-            this.lItemLevel.Location = new System.Drawing.Point(58, 83);
+            this.lItemLevel.Location = new System.Drawing.Point(58, 65);
             this.lItemLevel.Name = "lItemLevel";
             this.lItemLevel.Size = new System.Drawing.Size(31, 13);
             this.lItemLevel.TabIndex = 8;
@@ -229,7 +239,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 83);
+            this.label6.Location = new System.Drawing.Point(6, 65);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(33, 13);
             this.label6.TabIndex = 7;
@@ -238,7 +248,7 @@
             // lItemCategory
             // 
             this.lItemCategory.AutoSize = true;
-            this.lItemCategory.Location = new System.Drawing.Point(58, 61);
+            this.lItemCategory.Location = new System.Drawing.Point(58, 42);
             this.lItemCategory.Name = "lItemCategory";
             this.lItemCategory.Size = new System.Drawing.Size(13, 13);
             this.lItemCategory.TabIndex = 5;
@@ -247,7 +257,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 61);
+            this.label5.Location = new System.Drawing.Point(6, 42);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(49, 13);
             this.label5.TabIndex = 4;
@@ -256,7 +266,7 @@
             // lItemName
             // 
             this.lItemName.AutoSize = true;
-            this.lItemName.Location = new System.Drawing.Point(58, 38);
+            this.lItemName.Location = new System.Drawing.Point(58, 29);
             this.lItemName.Name = "lItemName";
             this.lItemName.Size = new System.Drawing.Size(43, 13);
             this.lItemName.TabIndex = 3;
@@ -265,7 +275,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 38);
+            this.label4.Location = new System.Drawing.Point(6, 29);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(35, 13);
             this.label4.TabIndex = 2;
@@ -511,6 +521,35 @@
             this.openDBDlg.Filter = "SQLite3 files|*.sqlite3|All files|*.*";
             this.openDBDlg.Title = "Open Server DB File";
             // 
+            // itemIcon
+            // 
+            this.itemIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.itemIcon.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.itemIcon.Location = new System.Drawing.Point(232, 14);
+            this.itemIcon.Name = "itemIcon";
+            this.itemIcon.Size = new System.Drawing.Size(64, 64);
+            this.itemIcon.TabIndex = 11;
+            this.itemIcon.Text = "???";
+            this.itemIcon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // btnFindGameClient
+            // 
+            this.btnFindGameClient.Location = new System.Drawing.Point(282, 35);
+            this.btnFindGameClient.Name = "btnFindGameClient";
+            this.btnFindGameClient.Size = new System.Drawing.Size(186, 23);
+            this.btnFindGameClient.TabIndex = 7;
+            this.btnFindGameClient.Text = "Locate Client game_pak";
+            this.btnFindGameClient.UseVisualStyleBackColor = true;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(474, 40);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(134, 13);
+            this.label8.TabIndex = 8;
+            this.label8.Text = "Only used for loading icons";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -577,6 +616,9 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox tLootSearch;
         private System.Windows.Forms.RichTextBox rtItemDesc;
+        private System.Windows.Forms.Label itemIcon;
+        private System.Windows.Forms.Button btnFindGameClient;
+        private System.Windows.Forms.Label label8;
     }
 }
 

@@ -8,12 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using AAPakEditor;
 using AAEmu.Game.Utils.DB;
 
 namespace AAEmu.DBViewer
 {
     public partial class MainForm : Form
     {
+        private string defaultTitle;
+        private AAPak pak = new AAPak("");
 
         class GameTranslation
         {
@@ -45,6 +48,7 @@ namespace AAEmu.DBViewer
             public string SearchString = string.Empty;
         }
         Dictionary<long, GameItem> CurrentItems = new Dictionary<long, GameItem>();
+        Dictionary<long, string> CurrentIcons = new Dictionary<long, string>();
 
         public MainForm()
         {
@@ -53,17 +57,24 @@ namespace AAEmu.DBViewer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            defaultTitle = Text;
             if (!LoadServerDB(false))
             {
                 Close();
                 return;
+            }
+            string game_pakFileName = "C:\\ArcheAge\\Working\\game_pak";
+            if (File.Exists(game_pakFileName))
+            {
+                pak.OpenPak(game_pakFileName, true);
             }
             tcViewer.SelectedTab = tpItems;
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-
+            if (pak != null)
+                pak.ClosePak();
         }
 
         private void LoadTableNames()
@@ -82,6 +93,28 @@ namespace AAEmu.DBViewer
                         while (reader.Read())
                         {
                             lbTableNames.Items.Add(reader.GetString("name"));
+                        }
+                    }
+                }
+            }
+        }
+
+        private void LoadIcons()
+        {
+            string sql = "SELECT * FROM icons ORDER BY id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        CurrentIcons.Clear();
+                        while (reader.Read())
+                        {
+                            CurrentIcons.Add(reader.GetInt64("id"), reader.GetString("filename"));
                         }
                     }
                 }
@@ -258,16 +291,31 @@ namespace AAEmu.DBViewer
         /// <param name="hexColor">a hex string: "FFFFFFFF", "00000000"</param>
         public static Color HexStringToARGBColor(string hexARGB)
         {
-            if (hexARGB.Length != 8)
+            string a ;
+            string r ;
+            string g ;
+            string b ;
+            if (hexARGB.Length == 8)
+            {
+                a = hexARGB.Substring(0, 2);
+                r = hexARGB.Substring(2, 2);
+                g = hexARGB.Substring(4, 2);
+                b = hexARGB.Substring(6, 2);
+            }
+            else
+            if (hexARGB.Length == 6)
+            {
+                a = hexARGB.Substring(0, 2);
+                r = hexARGB.Substring(2, 2);
+                g = hexARGB.Substring(4, 2);
+                b = hexARGB.Substring(6, 2);
+            }
+            else
             {
                 // you can choose whether to throw an exception
                 //throw new ArgumentException("hexColor is not exactly 6 digits.");
                 return Color.Empty;
             }
-            string a = hexARGB.Substring(0, 2);
-            string r = hexARGB.Substring(2, 2);
-            string g = hexARGB.Substring(4, 2);
-            string b = hexARGB.Substring(6, 2);
             Color color = Color.Empty;
             try
             {
@@ -291,7 +339,10 @@ namespace AAEmu.DBViewer
             rt.Text = string.Empty;
             rt.SelectionColor = rt.ForeColor;
             rt.SelectionBackColor = rt.BackColor;
-            string restText = formattedText.Replace("\r\n\r\n","\r").Replace("\n","");
+            string restText = formattedText;
+            restText = restText.Replace("\r\n\r\n", "\r");
+            restText = restText.Replace("\r\n", "\r");
+            restText = restText.Replace("\n", "\r");
             var colStartPos = -1;
             var colResetPos = -1;
             bool invalidPipe = false;
@@ -359,31 +410,56 @@ namespace AAEmu.DBViewer
 
         private void ShowDBItem(long idx)
         {
-            using (var connection = SQLite.CreateConnection())
+            if (CurrentItems.TryGetValue(idx,out var item))
             {
-                using (var command = connection.CreateCommand())
+                lItemID.Text = idx.ToString();
+                lItemName.Text = item.nameLocalized ;
+                lItemCategory.Text = GetTranslationByID(item.catgegory_id, "item_categories", "name") + " (" + item.catgegory_id.ToString() + ")";
+                FormattedTextToRichtEdit(item.descriptionLocalized,rtItemDesc);
+                lItemLevel.Text = item.level.ToString();
+                if (pak.isOpen)
                 {
-                    command.CommandText = "SELECT * FROM items WHERE (id = @tidx) ORDER BY id ASC";
-                    command.Prepare();
-                    command.Parameters.AddWithValue("@tidx", idx.ToString());
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    if (CurrentIcons.TryGetValue(item.icon_id, out var iconname))
                     {
-                        while (reader.Read())
+                        var fn = "game/ui/icon/" + iconname;
+                        var fStream = pak.ExportFileAsStream(fn);
+                        MemoryStream ms = new MemoryStream();
+                        fStream.CopyTo(ms);
+                        ms.Position = 0;
+                        /*
+                        ImageEngineImage img = new ImageEngineImage(ms, 64);
+                        var p = img.MipMaps[0].Pixels;
+                        Bitmap bmp = new Bitmap(64,64,64*4,System.Drawing.Imaging.PixelFormat.Format32bppArgb,);
+                        itemIcon.Image = bmp;
+                        */
+
+                        if (pak.FileExists(fn))
                         {
-                            if (reader.GetInt64("id") == idx)
-                            {
-                                lItemID.Text = idx.ToString();
-                                lItemName.Text = GetTranslationByID(idx, "items", "name",reader.GetString("name"));
-                                long cat = reader.GetInt64("category_id");
-                                lItemCategory.Text = GetTranslationByID(cat, "item_categories", "name") + " (" + cat.ToString() + ")";
-                                var tt = GetTranslationByID(idx, "items", "description", reader.GetString("description")).Replace("\n","\r\n");
-                                FormattedTextToRichtEdit(tt, rtItemDesc);
-                                lItemLevel.Text = reader.GetInt64("level").ToString();
-                                return;
-                            }
+                            itemIcon.Text = "["+iconname+"]" ;
+                        }
+                        else
+                        {
+                            itemIcon.Text = "404 - " + iconname + " ?";
                         }
                     }
+                    else
+                    {
+                        itemIcon.Text = item.icon_id.ToString()+"?";
+                    }
                 }
+                else
+                {
+                    itemIcon.Text = item.icon_id.ToString();
+                }
+            }
+            else
+            {
+                lItemID.Text = idx.ToString();
+                lItemName.Text = "<not found>";
+                lItemCategory.Text = "" ;
+                rtItemDesc.Clear();
+                lItemLevel.Text = "";
+                itemIcon.Text = "???";
             }
         }
 
@@ -503,7 +579,6 @@ namespace AAEmu.DBViewer
         {
             if (cbItemSearchLanguage.Text != Properties.Settings.Default.DefaultGameLanguage)
             {
-                //LoadTranslations(cbItemSearchLanguage.Text);
                 Properties.Settings.Default.DefaultGameLanguage = cbItemSearchLanguage.Text;
                 LoadServerDB(false);
             }
@@ -537,9 +612,12 @@ namespace AAEmu.DBViewer
             var i = cbItemSearchLanguage.Items.IndexOf(Properties.Settings.Default.DefaultGameLanguage);
             cbItemSearchLanguage.SelectedIndex = i;
             LoadTableNames();
+            Text = defaultTitle + " - " + sqlfile + " ("+ Properties.Settings.Default.DefaultGameLanguage + ")";
             // make sure translations are loaded first, other tables depend on it
             LoadTranslations(Properties.Settings.Default.DefaultGameLanguage);
+            LoadIcons();
             LoadItems();
+
             return true;
         }
 
