@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using AAPakEditor;
 using AAEmu.Game.Utils.DB;
+using FreeImageAPI;
 
 namespace AAEmu.DBViewer
 {
@@ -422,24 +423,28 @@ namespace AAEmu.DBViewer
                     if (CurrentIcons.TryGetValue(item.icon_id, out var iconname))
                     {
                         var fn = "game/ui/icon/" + iconname;
-                        var fStream = pak.ExportFileAsStream(fn);
-                        MemoryStream ms = new MemoryStream();
-                        fStream.CopyTo(ms);
-                        ms.Position = 0;
-                        /*
-                        ImageEngineImage img = new ImageEngineImage(ms, 64);
-                        var p = img.MipMaps[0].Pixels;
-                        Bitmap bmp = new Bitmap(64,64,64*4,System.Drawing.Imaging.PixelFormat.Format32bppArgb,);
-                        itemIcon.Image = bmp;
-                        */
 
                         if (pak.FileExists(fn))
                         {
-                            itemIcon.Text = "["+iconname+"]" ;
+                            try
+                            {
+                                var fStream = pak.ExportFileAsStream(fn);
+                                var fif = FREE_IMAGE_FORMAT.FIF_DDS;
+                                FIBITMAP fiBitmap = FreeImage.LoadFromStream(fStream, ref fif);
+                                var bmp = FreeImage.GetBitmap(fiBitmap);
+                                itemIcon.Image = bmp;
+
+                                itemIcon.Text = "";
+                                // itemIcon.Text = "[" + iconname + "]";
+                            }
+                            catch
+                            {
+                                itemIcon.Text = "ERROR - " + iconname ;
+                            }
                         }
                         else
                         {
-                            itemIcon.Text = "404 - " + iconname + " ?";
+                            itemIcon.Text = "NOT FOUND - " + iconname + " ?";
                         }
                     }
                     else
