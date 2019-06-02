@@ -31,14 +31,15 @@
             this.lbTableNames = new System.Windows.Forms.ListBox();
             this.tcViewer = new System.Windows.Forms.TabControl();
             this.tbTables = new System.Windows.Forms.TabPage();
-            this.btnOpenDB = new System.Windows.Forms.Button();
+            this.btnOpenServerDB = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.cbItemSearchLanguage = new System.Windows.Forms.ComboBox();
             this.tpItems = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.rtItemDesc = new System.Windows.Forms.RichTextBox();
+            this.btnFindItemInLoot = new System.Windows.Forms.Button();
             this.lItemLevel = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.tItemDesc = new System.Windows.Forms.TextBox();
             this.lItemCategory = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.lItemName = new System.Windows.Forms.Label();
@@ -51,9 +52,10 @@
             this.Item_Name_EN_US = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.tItemSearch = new System.Windows.Forms.TextBox();
-            this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.tpLoot = new System.Windows.Forms.TabPage();
-            this.btnFindItemInLoot = new System.Windows.Forms.Button();
+            this.btnLootSearch = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.tLootSearch = new System.Windows.Forms.TextBox();
             this.dgvLoot = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -65,9 +67,7 @@
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnLootSearch = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.tLootSearch = new System.Windows.Forms.TextBox();
+            this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             this.tpItems.SuspendLayout();
@@ -103,7 +103,7 @@
             // 
             // tbTables
             // 
-            this.tbTables.Controls.Add(this.btnOpenDB);
+            this.tbTables.Controls.Add(this.btnOpenServerDB);
             this.tbTables.Controls.Add(this.lbTableNames);
             this.tbTables.Controls.Add(this.label2);
             this.tbTables.Controls.Add(this.cbItemSearchLanguage);
@@ -115,15 +115,15 @@
             this.tbTables.Text = "Tables and Settings";
             this.tbTables.UseVisualStyleBackColor = true;
             // 
-            // btnOpenDB
+            // btnOpenServerDB
             // 
-            this.btnOpenDB.Location = new System.Drawing.Point(282, 6);
-            this.btnOpenDB.Name = "btnOpenDB";
-            this.btnOpenDB.Size = new System.Drawing.Size(122, 23);
-            this.btnOpenDB.TabIndex = 6;
-            this.btnOpenDB.Text = "Open DB";
-            this.btnOpenDB.UseVisualStyleBackColor = true;
-            this.btnOpenDB.Click += new System.EventHandler(this.BtnOpenDB_Click);
+            this.btnOpenServerDB.Location = new System.Drawing.Point(282, 6);
+            this.btnOpenServerDB.Name = "btnOpenServerDB";
+            this.btnOpenServerDB.Size = new System.Drawing.Size(122, 23);
+            this.btnOpenServerDB.TabIndex = 6;
+            this.btnOpenServerDB.Text = "Open DB";
+            this.btnOpenServerDB.UseVisualStyleBackColor = true;
+            this.btnOpenServerDB.Click += new System.EventHandler(this.BtnOpenServerDB_Click);
             // 
             // label2
             // 
@@ -149,7 +149,8 @@
             "zh_cn",
             "zh_tw",
             "de",
-            "fr"});
+            "fr",
+            "ja"});
             this.cbItemSearchLanguage.Location = new System.Drawing.Point(694, 6);
             this.cbItemSearchLanguage.Name = "cbItemSearchLanguage";
             this.cbItemSearchLanguage.Size = new System.Drawing.Size(75, 21);
@@ -175,10 +176,10 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.rtItemDesc);
             this.groupBox1.Controls.Add(this.btnFindItemInLoot);
             this.groupBox1.Controls.Add(this.lItemLevel);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.tItemDesc);
             this.groupBox1.Controls.Add(this.lItemCategory);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.lItemName);
@@ -191,6 +192,30 @@
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Item Info";
+            // 
+            // rtItemDesc
+            // 
+            this.rtItemDesc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtItemDesc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.rtItemDesc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
+            this.rtItemDesc.Location = new System.Drawing.Point(9, 99);
+            this.rtItemDesc.Name = "rtItemDesc";
+            this.rtItemDesc.Size = new System.Drawing.Size(287, 163);
+            this.rtItemDesc.TabIndex = 10;
+            this.rtItemDesc.Text = "";
+            // 
+            // btnFindItemInLoot
+            // 
+            this.btnFindItemInLoot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnFindItemInLoot.Location = new System.Drawing.Point(9, 268);
+            this.btnFindItemInLoot.Name = "btnFindItemInLoot";
+            this.btnFindItemInLoot.Size = new System.Drawing.Size(92, 23);
+            this.btnFindItemInLoot.TabIndex = 9;
+            this.btnFindItemInLoot.Text = "Find in Loot";
+            this.btnFindItemInLoot.UseVisualStyleBackColor = true;
+            this.btnFindItemInLoot.Click += new System.EventHandler(this.BtnFindItemInLoot_Click);
             // 
             // lItemLevel
             // 
@@ -209,18 +234,6 @@
             this.label6.Size = new System.Drawing.Size(33, 13);
             this.label6.TabIndex = 7;
             this.label6.Text = "Level";
-            // 
-            // tItemDesc
-            // 
-            this.tItemDesc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tItemDesc.Location = new System.Drawing.Point(9, 99);
-            this.tItemDesc.Multiline = true;
-            this.tItemDesc.Name = "tItemDesc";
-            this.tItemDesc.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tItemDesc.Size = new System.Drawing.Size(287, 163);
-            this.tItemDesc.TabIndex = 6;
             // 
             // lItemCategory
             // 
@@ -330,27 +343,20 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(8, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(121, 13);
+            this.label1.Size = new System.Drawing.Size(189, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Search Item Name or ID";
+            this.label1.Text = "Search in Item ID, Name or description";
             // 
             // tItemSearch
             // 
             this.tItemSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tItemSearch.Location = new System.Drawing.Point(135, 6);
+            this.tItemSearch.Location = new System.Drawing.Point(197, 6);
             this.tItemSearch.Name = "tItemSearch";
-            this.tItemSearch.Size = new System.Drawing.Size(244, 20);
+            this.tItemSearch.Size = new System.Drawing.Size(182, 20);
             this.tItemSearch.TabIndex = 0;
             this.tItemSearch.TextChanged += new System.EventHandler(this.TItemSearch_TextChanged);
             this.tItemSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TItemSearch_KeyDown);
-            // 
-            // openDBDlg
-            // 
-            this.openDBDlg.DefaultExt = "sqlite3";
-            this.openDBDlg.FileName = "compact.sqlite3";
-            this.openDBDlg.Filter = "SQLite3 files|*.sqlite3|All files|*.*";
-            this.openDBDlg.Title = "Open Server DB File";
             // 
             // tpLoot
             // 
@@ -366,15 +372,37 @@
             this.tpLoot.Text = "Loot";
             this.tpLoot.UseVisualStyleBackColor = true;
             // 
-            // btnFindItemInLoot
+            // btnLootSearch
             // 
-            this.btnFindItemInLoot.Location = new System.Drawing.Point(9, 268);
-            this.btnFindItemInLoot.Name = "btnFindItemInLoot";
-            this.btnFindItemInLoot.Size = new System.Drawing.Size(92, 23);
-            this.btnFindItemInLoot.TabIndex = 9;
-            this.btnFindItemInLoot.Text = "Find in Loot";
-            this.btnFindItemInLoot.UseVisualStyleBackColor = true;
-            this.btnFindItemInLoot.Click += new System.EventHandler(this.BtnFindItemInLoot_Click);
+            this.btnLootSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLootSearch.Enabled = false;
+            this.btnLootSearch.Location = new System.Drawing.Point(220, 9);
+            this.btnLootSearch.Name = "btnLootSearch";
+            this.btnLootSearch.Size = new System.Drawing.Size(79, 23);
+            this.btnLootSearch.TabIndex = 6;
+            this.btnLootSearch.Text = "Search";
+            this.btnLootSearch.UseVisualStyleBackColor = true;
+            this.btnLootSearch.Click += new System.EventHandler(this.BtnLootSearch_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(8, 14);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(107, 13);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "Search Loot Pack ID";
+            // 
+            // tLootSearch
+            // 
+            this.tLootSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tLootSearch.Location = new System.Drawing.Point(121, 11);
+            this.tLootSearch.Name = "tLootSearch";
+            this.tLootSearch.Size = new System.Drawing.Size(93, 20);
+            this.tLootSearch.TabIndex = 4;
+            this.tLootSearch.TextChanged += new System.EventHandler(this.TLootSearch_TextChanged);
+            this.tLootSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TLootSearch_KeyDown);
             // 
             // dgvLoot
             // 
@@ -476,37 +504,12 @@
             this.Column8.ReadOnly = true;
             this.Column8.Width = 61;
             // 
-            // btnLootSearch
+            // openDBDlg
             // 
-            this.btnLootSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLootSearch.Enabled = false;
-            this.btnLootSearch.Location = new System.Drawing.Point(220, 9);
-            this.btnLootSearch.Name = "btnLootSearch";
-            this.btnLootSearch.Size = new System.Drawing.Size(79, 23);
-            this.btnLootSearch.TabIndex = 6;
-            this.btnLootSearch.Text = "Search";
-            this.btnLootSearch.UseVisualStyleBackColor = true;
-            this.btnLootSearch.Click += new System.EventHandler(this.BtnLootSearch_Click);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(8, 14);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(107, 13);
-            this.label7.TabIndex = 5;
-            this.label7.Text = "Search Loot Pack ID";
-            // 
-            // tLootSearch
-            // 
-            this.tLootSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tLootSearch.Location = new System.Drawing.Point(121, 11);
-            this.tLootSearch.Name = "tLootSearch";
-            this.tLootSearch.Size = new System.Drawing.Size(93, 20);
-            this.tLootSearch.TabIndex = 4;
-            this.tLootSearch.TextChanged += new System.EventHandler(this.TLootSearch_TextChanged);
-            this.tLootSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TLootSearch_KeyDown);
+            this.openDBDlg.DefaultExt = "sqlite3";
+            this.openDBDlg.FileName = "compact.sqlite3";
+            this.openDBDlg.Filter = "SQLite3 files|*.sqlite3|All files|*.*";
+            this.openDBDlg.Title = "Open Server DB File";
             // 
             // MainForm
             // 
@@ -553,11 +556,10 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lItemID;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox tItemDesc;
         private System.Windows.Forms.Label lItemLevel;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.OpenFileDialog openDBDlg;
-        private System.Windows.Forms.Button btnOpenDB;
+        private System.Windows.Forms.Button btnOpenServerDB;
         private System.Windows.Forms.TabPage tpLoot;
         private System.Windows.Forms.Button btnFindItemInLoot;
         private System.Windows.Forms.DataGridView dgvLoot;
@@ -574,6 +576,7 @@
         private System.Windows.Forms.Button btnLootSearch;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox tLootSearch;
+        private System.Windows.Forms.RichTextBox rtItemDesc;
     }
 }
 
