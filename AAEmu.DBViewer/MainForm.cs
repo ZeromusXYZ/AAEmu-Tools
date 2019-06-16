@@ -125,6 +125,22 @@ namespace AAEmu.DBViewer
                 pak.ClosePak();
         }
 
+        private long GetInt64(SQLiteWrapperReader reader, string fieldname)
+        {
+            if (reader.IsDBNull(fieldname))
+                return 0;
+            else
+                return reader.GetInt64(fieldname);
+        }
+
+        private string GetString(SQLiteWrapperReader reader, string fieldname)
+        {
+            if (reader.IsDBNull(fieldname))
+                return string.Empty;
+            else
+                return reader.GetString(fieldname);
+        }
+
         private void LoadTableNames()
         {
             string sql = "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name ASC";
@@ -140,7 +156,7 @@ namespace AAEmu.DBViewer
                         lbTableNames.Items.Clear();
                         while (reader.Read())
                         {
-                            lbTableNames.Items.Add(reader.GetString("name"));
+                            lbTableNames.Items.Add(GetString(reader,"name"));
                         }
                     }
                 }
@@ -162,7 +178,7 @@ namespace AAEmu.DBViewer
                         AllIcons.Clear();
                         while (reader.Read())
                         {
-                            AllIcons.Add(reader.GetInt64("id"), reader.GetString("filename"));
+                            AllIcons.Add(GetInt64(reader, "id"), GetString(reader, "filename"));
                         }
                     }
                 }
@@ -190,10 +206,10 @@ namespace AAEmu.DBViewer
                         while (reader.Read())
                         {
                             GameTranslation t = new GameTranslation();
-                            t.idx = reader.GetInt64("idx");
-                            t.table = reader.GetString("tbl_name");
-                            t.field = reader.GetString("tbl_column_name");
-                            t.value = reader.GetString(lng);
+                            t.idx = GetInt64(reader,"idx");
+                            t.table = GetString(reader,"tbl_name");
+                            t.field = GetString(reader,"tbl_column_name");
+                            t.value = GetString(reader,lng);
                             string k = t.table + ":" + t.field + ":" + t.idx.ToString();
                             CurrentTranslations.Add(k, t);
                         }
@@ -232,16 +248,16 @@ namespace AAEmu.DBViewer
                         while (reader.Read())
                         {
                             GameItem t = new GameItem();
-                            t.id = reader.GetInt64("id");
-                            t.name = reader.GetString("name");
-                            t.catgegory_id = reader.GetInt64("category_id");
-                            t.description = reader.GetString("description");
-                            t.price = reader.GetInt64("price");
-                            t.refund = reader.GetInt64("refund");
-                            t.max_stack_size = reader.GetInt64("max_stack_size");
-                            t.icon_id = reader.GetInt64("icon_id");
-                            t.sellable = DBValueToBool(reader.GetString("sellable"));
-                            t.fixed_grade = reader.GetInt64("fixed_grade");
+                            t.id = GetInt64(reader,"id");
+                            t.name = GetString(reader, "name");
+                            t.catgegory_id = GetInt64(reader, "category_id");
+                            t.description = GetString(reader, "description");
+                            t.price = GetInt64(reader, "price");
+                            t.refund = GetInt64(reader, "refund");
+                            t.max_stack_size = GetInt64(reader, "max_stack_size");
+                            t.icon_id = GetInt64(reader, "icon_id");
+                            t.sellable = DBValueToBool(GetString(reader, "sellable"));
+                            t.fixed_grade = GetInt64(reader, "fixed_grade");
 
                             t.nameLocalized = GetTranslationByID(t.id, "items", "name", t.name);
                             t.descriptionLocalized = GetTranslationByID(t.id, "items", "description", t.descriptionLocalized);
@@ -281,21 +297,21 @@ namespace AAEmu.DBViewer
                         while (reader.Read())
                         {
                             GameSkills t = new GameSkills();
-                            t.id = reader.GetInt64("id");
-                            t.name = reader.GetString("name");
-                            t.desc = reader.GetString("desc");
-                            t.web_desc = reader.GetString("web_desc");
-                            t.cost = reader.GetInt64("cost");
-                            t.icon_id = reader.GetInt64("icon_id");
-                            t.show = DBValueToBool(reader.GetString("show"));
-                            t.cooldown_time = reader.GetInt64("cooldown_time");
-                            t.casting_time = reader.GetInt64("casting_time");
-                            t.ignore_global_cooldown = DBValueToBool(reader.GetString("ignore_global_cooldown"));
-                            t.effect_delay = reader.GetInt64("effect_delay");
-                            t.ability_id = reader.GetInt64("ability_id");
-                            t.mana_cost = reader.GetInt64("mana_cost");
-                            t.timing_id = reader.GetInt64("timing_id");
-                            t.consume_lp = reader.GetInt64("consume_lp");
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+                            t.desc = GetString(reader, "desc");
+                            t.web_desc = GetString(reader, "web_desc");
+                            t.cost = GetInt64(reader, "cost");
+                            t.icon_id = GetInt64(reader, "icon_id");
+                            t.show = DBValueToBool(GetString(reader, "show"));
+                            t.cooldown_time = GetInt64(reader, "cooldown_time");
+                            t.casting_time = GetInt64(reader, "casting_time");
+                            t.ignore_global_cooldown = DBValueToBool(GetString(reader, "ignore_global_cooldown"));
+                            t.effect_delay = GetInt64(reader, "effect_delay");
+                            t.ability_id = GetInt64(reader, "ability_id");
+                            t.mana_cost = GetInt64(reader, "mana_cost");
+                            t.timing_id = GetInt64(reader, "timing_id");
+                            t.consume_lp = GetInt64(reader, "consume_lp");
 
                             t.nameLocalized = GetTranslationByID(t.id, "skills", "name", t.name);
                             t.descriptionLocalized = GetTranslationByID(t.id, "skills", "desc", t.descriptionLocalized);
@@ -332,14 +348,14 @@ namespace AAEmu.DBViewer
                         while (reader.Read())
                         {
                             var t = new GameNPC();
-                            t.id = reader.GetInt64("id");
-                            t.name = reader.GetString("name");
-                            t.char_race_id = reader.GetInt64("char_race_id");
-                            t.npc_grade_id = reader.GetInt64("npc_grade_id");
-                            t.npc_kind_id = reader.GetInt64("npc_kind_id");
-                            t.level = reader.GetInt64("level");
-                            t.faction_id = reader.GetInt64("faction_id");
-                            t.model_id = reader.GetInt64("model_id");
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+                            t.char_race_id = GetInt64(reader, "char_race_id");
+                            t.npc_grade_id = GetInt64(reader, "npc_grade_id");
+                            t.npc_kind_id = GetInt64(reader, "npc_kind_id");
+                            t.level = GetInt64(reader, "level");
+                            t.faction_id = GetInt64(reader, "faction_id");
+                            t.model_id = GetInt64(reader, "model_id");
                             t.nameLocalized = GetTranslationByID(t.id, "npcs", "name", t.name);
 
                             t.SearchString = t.name + " " + t.nameLocalized ;
@@ -755,21 +771,21 @@ namespace AAEmu.DBViewer
                         dgvLoot.Rows.Clear();
                         while (reader.Read())
                         {
-                            if (reader.GetInt64("item_id") == idx)
+                            if (GetInt64(reader, "item_id") == idx)
                             {
                                 int line = dgvLoot.Rows.Add();
                                 var row = dgvLoot.Rows[line];
 
-                                row.Cells[0].Value = reader.GetInt64("id").ToString();
-                                row.Cells[1].Value = reader.GetInt64("loot_pack_id").ToString();
+                                row.Cells[0].Value = GetInt64(reader, "id").ToString();
+                                row.Cells[1].Value = GetInt64(reader, "loot_pack_id").ToString();
                                 row.Cells[2].Value = idx.ToString();
                                 row.Cells[3].Value = GetTranslationByID(idx, "items", "name");
-                                row.Cells[4].Value = VisualizeDropRate(reader.GetInt64("drop_rate"));
-                                row.Cells[5].Value = reader.GetInt64("min_amount").ToString();
-                                row.Cells[6].Value = reader.GetInt64("max_amount").ToString();
-                                row.Cells[7].Value = reader.GetInt64("grade_id").ToString();
-                                row.Cells[8].Value = reader.GetString("always_drop").ToString();
-                                row.Cells[9].Value = reader.GetInt64("group").ToString();
+                                row.Cells[4].Value = VisualizeDropRate(GetInt64(reader, "drop_rate"));
+                                row.Cells[5].Value = GetInt64(reader, "min_amount").ToString();
+                                row.Cells[6].Value = GetInt64(reader, "max_amount").ToString();
+                                row.Cells[7].Value = GetInt64(reader, "grade_id").ToString();
+                                row.Cells[8].Value = GetString(reader, "always_drop").ToString();
+                                row.Cells[9].Value = GetInt64(reader, "group").ToString();
                             }
                         }
                     }
@@ -794,22 +810,22 @@ namespace AAEmu.DBViewer
                         dgvLoot.Visible = false;
                         while (reader.Read())
                         {
-                            if (reader.GetInt64("loot_pack_id") == loot_id)
+                            if (GetInt64(reader, "loot_pack_id") == loot_id)
                             {
                                 int line = dgvLoot.Rows.Add();
                                 var row = dgvLoot.Rows[line];
 
-                                var itemid = reader.GetInt64("item_id");
-                                row.Cells[0].Value = reader.GetInt64("id").ToString();
-                                row.Cells[1].Value = reader.GetInt64("loot_pack_id").ToString();
+                                var itemid = GetInt64(reader, "item_id");
+                                row.Cells[0].Value = GetInt64(reader, "id").ToString();
+                                row.Cells[1].Value = GetInt64(reader, "loot_pack_id").ToString();
                                 row.Cells[2].Value = itemid.ToString();
                                 row.Cells[3].Value = GetTranslationByID(itemid, "items", "name");
-                                row.Cells[4].Value = VisualizeDropRate(reader.GetInt64("drop_rate"));
-                                row.Cells[5].Value = reader.GetInt64("min_amount").ToString();
-                                row.Cells[6].Value = reader.GetInt64("max_amount").ToString();
-                                row.Cells[7].Value = reader.GetInt64("grade_id").ToString();
-                                row.Cells[8].Value = reader.GetString("always_drop").ToString();
-                                row.Cells[9].Value = reader.GetInt64("group").ToString();
+                                row.Cells[4].Value = VisualizeDropRate(GetInt64(reader, "drop_rate"));
+                                row.Cells[5].Value = GetInt64(reader, "min_amount").ToString();
+                                row.Cells[6].Value = GetInt64(reader, "max_amount").ToString();
+                                row.Cells[7].Value = GetInt64(reader, "grade_id").ToString();
+                                row.Cells[8].Value = GetString(reader, "always_drop").ToString();
+                                row.Cells[9].Value = GetInt64(reader, "group").ToString();
                             }
                         }
                         dgvLoot.Visible = true;
