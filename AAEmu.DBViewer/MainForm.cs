@@ -417,14 +417,22 @@ namespace AAEmu.DBViewer
 
         private string GetTranslationByID(long idx, string table, string field, string defaultValue = "")
         {
+            string res = string.Empty;
             string k = table + ":" + field + ":" + idx.ToString();
             if (CurrentTranslations.TryGetValue(k, out GameTranslation val))
-                return val.value;
+                res = val.value;
             // If no translation found ...
-            if (defaultValue == "")
-                return "<NT:" + table + ":" + field + ":" + idx.ToString() + ">";
+            if (res == string.Empty)
+            {
+                if (defaultValue == string.Empty)
+                    return "<NT:" + table + ":" + field + ":" + idx.ToString() + ">";
+                else
+                    return defaultValue;
+            }
             else
-                return defaultValue;
+            {
+                return res;
+            }
         }
 
         /// <summary>
