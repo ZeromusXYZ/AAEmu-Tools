@@ -31,11 +31,14 @@
             this.lbTableNames = new System.Windows.Forms.ListBox();
             this.tcViewer = new System.Windows.Forms.TabControl();
             this.tbTables = new System.Windows.Forms.TabPage();
+            this.label8 = new System.Windows.Forms.Label();
+            this.btnFindGameClient = new System.Windows.Forms.Button();
             this.btnOpenServerDB = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.cbItemSearchLanguage = new System.Windows.Forms.ComboBox();
             this.tpItems = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.itemIcon = new System.Windows.Forms.Label();
             this.rtItemDesc = new System.Windows.Forms.RichTextBox();
             this.btnFindItemInLoot = new System.Windows.Forms.Button();
             this.lItemLevel = new System.Windows.Forms.Label();
@@ -68,9 +71,31 @@
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
-            this.itemIcon = new System.Windows.Forms.Label();
-            this.btnFindGameClient = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
+            this.tpSkills = new System.Windows.Forms.TabPage();
+            this.btnSkillSearch = new System.Windows.Forms.Button();
+            this.dgvSkills = new System.Windows.Forms.DataGridView();
+            this.label9 = new System.Windows.Forms.Label();
+            this.tSkillSearch = new System.Windows.Forms.TextBox();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.skillIcon = new System.Windows.Forms.Label();
+            this.lSkillName = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.lSkillID = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.rtSkillDescription = new System.Windows.Forms.RichTextBox();
+            this.lSkillCost = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.lSkillMana = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.lSkillLabor = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.lSkillCooldown = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.lSkillGCD = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             this.tpItems.SuspendLayout();
@@ -78,6 +103,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvItem)).BeginInit();
             this.tpLoot.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLoot)).BeginInit();
+            this.tpSkills.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSkills)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbTableNames
@@ -98,6 +126,7 @@
             this.tcViewer.Controls.Add(this.tbTables);
             this.tcViewer.Controls.Add(this.tpItems);
             this.tcViewer.Controls.Add(this.tpLoot);
+            this.tcViewer.Controls.Add(this.tpSkills);
             this.tcViewer.Location = new System.Drawing.Point(0, 3);
             this.tcViewer.Name = "tcViewer";
             this.tcViewer.SelectedIndex = 0;
@@ -119,6 +148,24 @@
             this.tbTables.TabIndex = 0;
             this.tbTables.Text = "Tables and Settings";
             this.tbTables.UseVisualStyleBackColor = true;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(474, 40);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(134, 13);
+            this.label8.TabIndex = 8;
+            this.label8.Text = "Only used for loading icons";
+            // 
+            // btnFindGameClient
+            // 
+            this.btnFindGameClient.Location = new System.Drawing.Point(282, 35);
+            this.btnFindGameClient.Name = "btnFindGameClient";
+            this.btnFindGameClient.Size = new System.Drawing.Size(186, 23);
+            this.btnFindGameClient.TabIndex = 7;
+            this.btnFindGameClient.Text = "Locate Client game_pak";
+            this.btnFindGameClient.UseVisualStyleBackColor = true;
             // 
             // btnOpenServerDB
             // 
@@ -200,6 +247,17 @@
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Item Info";
+            // 
+            // itemIcon
+            // 
+            this.itemIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.itemIcon.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.itemIcon.Location = new System.Drawing.Point(232, 14);
+            this.itemIcon.Name = "itemIcon";
+            this.itemIcon.Size = new System.Drawing.Size(64, 64);
+            this.itemIcon.TabIndex = 11;
+            this.itemIcon.Text = "???";
+            this.itemIcon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // rtItemDesc
             // 
@@ -521,34 +579,276 @@
             this.openDBDlg.Filter = "SQLite3 files|*.sqlite3|All files|*.*";
             this.openDBDlg.Title = "Open Server DB File";
             // 
-            // itemIcon
+            // tpSkills
             // 
-            this.itemIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.itemIcon.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.itemIcon.Location = new System.Drawing.Point(232, 14);
-            this.itemIcon.Name = "itemIcon";
-            this.itemIcon.Size = new System.Drawing.Size(64, 64);
-            this.itemIcon.TabIndex = 11;
-            this.itemIcon.Text = "???";
-            this.itemIcon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.tpSkills.Controls.Add(this.groupBox2);
+            this.tpSkills.Controls.Add(this.btnSkillSearch);
+            this.tpSkills.Controls.Add(this.dgvSkills);
+            this.tpSkills.Controls.Add(this.label9);
+            this.tpSkills.Controls.Add(this.tSkillSearch);
+            this.tpSkills.Location = new System.Drawing.Point(4, 22);
+            this.tpSkills.Name = "tpSkills";
+            this.tpSkills.Padding = new System.Windows.Forms.Padding(3);
+            this.tpSkills.Size = new System.Drawing.Size(778, 314);
+            this.tpSkills.TabIndex = 3;
+            this.tpSkills.Text = "Skill";
+            this.tpSkills.UseVisualStyleBackColor = true;
             // 
-            // btnFindGameClient
+            // btnSkillSearch
             // 
-            this.btnFindGameClient.Location = new System.Drawing.Point(282, 35);
-            this.btnFindGameClient.Name = "btnFindGameClient";
-            this.btnFindGameClient.Size = new System.Drawing.Size(186, 23);
-            this.btnFindGameClient.TabIndex = 7;
-            this.btnFindGameClient.Text = "Locate Client game_pak";
-            this.btnFindGameClient.UseVisualStyleBackColor = true;
+            this.btnSkillSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSkillSearch.Enabled = false;
+            this.btnSkillSearch.Location = new System.Drawing.Point(426, 4);
+            this.btnSkillSearch.Name = "btnSkillSearch";
+            this.btnSkillSearch.Size = new System.Drawing.Size(79, 23);
+            this.btnSkillSearch.TabIndex = 7;
+            this.btnSkillSearch.Text = "Search";
+            this.btnSkillSearch.UseVisualStyleBackColor = true;
+            this.btnSkillSearch.Click += new System.EventHandler(this.BtnSkillSearch_Click);
             // 
-            // label8
+            // dgvSkills
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(474, 40);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(134, 13);
-            this.label8.TabIndex = 8;
-            this.label8.Text = "Only used for loading icons";
+            this.dgvSkills.AllowUserToAddRows = false;
+            this.dgvSkills.AllowUserToDeleteRows = false;
+            this.dgvSkills.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvSkills.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvSkills.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvSkills.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvSkills.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3,
+            this.Column10});
+            this.dgvSkills.Location = new System.Drawing.Point(11, 33);
+            this.dgvSkills.Name = "dgvSkills";
+            this.dgvSkills.ReadOnly = true;
+            this.dgvSkills.RowHeadersVisible = false;
+            this.dgvSkills.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvSkills.Size = new System.Drawing.Size(494, 275);
+            this.dgvSkills.TabIndex = 6;
+            this.dgvSkills.SelectionChanged += new System.EventHandler(this.DgvSkills_SelectionChanged);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(8, 9);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(188, 13);
+            this.label9.TabIndex = 5;
+            this.label9.Text = "Search in Skill ID, Name or description";
+            // 
+            // tSkillSearch
+            // 
+            this.tSkillSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tSkillSearch.Location = new System.Drawing.Point(197, 6);
+            this.tSkillSearch.Name = "tSkillSearch";
+            this.tSkillSearch.Size = new System.Drawing.Size(223, 20);
+            this.tSkillSearch.TabIndex = 4;
+            this.tSkillSearch.TextChanged += new System.EventHandler(this.TSkillSearch_TextChanged);
+            this.tSkillSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSkillSearch_KeyDown);
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Width = 43;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.FillWeight = 200F;
+            this.dataGridViewTextBoxColumn3.HeaderText = "Name";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Width = 60;
+            // 
+            // Column10
+            // 
+            this.Column10.HeaderText = "Description";
+            this.Column10.Name = "Column10";
+            this.Column10.ReadOnly = true;
+            this.Column10.Width = 85;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.groupBox2.Controls.Add(this.lSkillGCD);
+            this.groupBox2.Controls.Add(this.label20);
+            this.groupBox2.Controls.Add(this.lSkillCooldown);
+            this.groupBox2.Controls.Add(this.label17);
+            this.groupBox2.Controls.Add(this.lSkillLabor);
+            this.groupBox2.Controls.Add(this.label14);
+            this.groupBox2.Controls.Add(this.lSkillMana);
+            this.groupBox2.Controls.Add(this.label12);
+            this.groupBox2.Controls.Add(this.lSkillCost);
+            this.groupBox2.Controls.Add(this.label11);
+            this.groupBox2.Controls.Add(this.skillIcon);
+            this.groupBox2.Controls.Add(this.rtSkillDescription);
+            this.groupBox2.Controls.Add(this.lSkillName);
+            this.groupBox2.Controls.Add(this.label16);
+            this.groupBox2.Controls.Add(this.lSkillID);
+            this.groupBox2.Controls.Add(this.label18);
+            this.groupBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
+            this.groupBox2.Location = new System.Drawing.Point(511, 6);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(258, 299);
+            this.groupBox2.TabIndex = 8;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Item Info";
+            // 
+            // skillIcon
+            // 
+            this.skillIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.skillIcon.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.skillIcon.Location = new System.Drawing.Point(188, 53);
+            this.skillIcon.Name = "skillIcon";
+            this.skillIcon.Size = new System.Drawing.Size(64, 64);
+            this.skillIcon.TabIndex = 11;
+            this.skillIcon.Text = "???";
+            this.skillIcon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lSkillName
+            // 
+            this.lSkillName.AutoSize = true;
+            this.lSkillName.Location = new System.Drawing.Point(58, 29);
+            this.lSkillName.Name = "lSkillName";
+            this.lSkillName.Size = new System.Drawing.Size(43, 13);
+            this.lSkillName.TabIndex = 3;
+            this.lSkillName.Text = "<none>";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(6, 29);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(35, 13);
+            this.label16.TabIndex = 2;
+            this.label16.Text = "Name";
+            // 
+            // lSkillID
+            // 
+            this.lSkillID.AutoSize = true;
+            this.lSkillID.Location = new System.Drawing.Point(58, 16);
+            this.lSkillID.Name = "lSkillID";
+            this.lSkillID.Size = new System.Drawing.Size(13, 13);
+            this.lSkillID.TabIndex = 1;
+            this.lSkillID.Text = "0";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(6, 16);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(33, 13);
+            this.label18.TabIndex = 0;
+            this.label18.Text = "Index";
+            // 
+            // rtSkillDescription
+            // 
+            this.rtSkillDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtSkillDescription.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.rtSkillDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
+            this.rtSkillDescription.Location = new System.Drawing.Point(9, 125);
+            this.rtSkillDescription.Name = "rtSkillDescription";
+            this.rtSkillDescription.Size = new System.Drawing.Size(243, 168);
+            this.rtSkillDescription.TabIndex = 10;
+            this.rtSkillDescription.Text = "";
+            // 
+            // lSkillCost
+            // 
+            this.lSkillCost.AutoSize = true;
+            this.lSkillCost.Location = new System.Drawing.Point(97, 51);
+            this.lSkillCost.Name = "lSkillCost";
+            this.lSkillCost.Size = new System.Drawing.Size(13, 13);
+            this.lSkillCost.TabIndex = 13;
+            this.lSkillCost.Text = "0";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 51);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(28, 13);
+            this.label11.TabIndex = 12;
+            this.label11.Text = "Cost";
+            // 
+            // lSkillMana
+            // 
+            this.lSkillMana.AutoSize = true;
+            this.lSkillMana.Location = new System.Drawing.Point(97, 65);
+            this.lSkillMana.Name = "lSkillMana";
+            this.lSkillMana.Size = new System.Drawing.Size(13, 13);
+            this.lSkillMana.TabIndex = 15;
+            this.lSkillMana.Text = "0";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 65);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(34, 13);
+            this.label12.TabIndex = 14;
+            this.label12.Text = "Mana";
+            // 
+            // lSkillLabor
+            // 
+            this.lSkillLabor.AutoSize = true;
+            this.lSkillLabor.Location = new System.Drawing.Point(97, 78);
+            this.lSkillLabor.Name = "lSkillLabor";
+            this.lSkillLabor.Size = new System.Drawing.Size(13, 13);
+            this.lSkillLabor.TabIndex = 17;
+            this.lSkillLabor.Text = "0";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 78);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(34, 13);
+            this.label14.TabIndex = 16;
+            this.label14.Text = "Labor";
+            // 
+            // lSkillCooldown
+            // 
+            this.lSkillCooldown.AutoSize = true;
+            this.lSkillCooldown.Location = new System.Drawing.Point(97, 91);
+            this.lSkillCooldown.Name = "lSkillCooldown";
+            this.lSkillCooldown.Size = new System.Drawing.Size(13, 13);
+            this.lSkillCooldown.TabIndex = 19;
+            this.lSkillCooldown.Text = "0";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(6, 91);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(54, 13);
+            this.label17.TabIndex = 18;
+            this.label17.Text = "Cooldown";
+            // 
+            // lSkillGCD
+            // 
+            this.lSkillGCD.AutoSize = true;
+            this.lSkillGCD.Location = new System.Drawing.Point(97, 104);
+            this.lSkillGCD.Name = "lSkillGCD";
+            this.lSkillGCD.Size = new System.Drawing.Size(13, 13);
+            this.lSkillGCD.TabIndex = 21;
+            this.lSkillGCD.Text = "0";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(6, 104);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(87, 13);
+            this.label20.TabIndex = 20;
+            this.label20.Text = "Global Cooldown";
             // 
             // MainForm
             // 
@@ -571,6 +871,11 @@
             this.tpLoot.ResumeLayout(false);
             this.tpLoot.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLoot)).EndInit();
+            this.tpSkills.ResumeLayout(false);
+            this.tpSkills.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSkills)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -619,6 +924,31 @@
         private System.Windows.Forms.Label itemIcon;
         private System.Windows.Forms.Button btnFindGameClient;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TabPage tpSkills;
+        private System.Windows.Forms.Button btnSkillSearch;
+        private System.Windows.Forms.DataGridView dgvSkills;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox tSkillSearch;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label skillIcon;
+        private System.Windows.Forms.RichTextBox rtSkillDescription;
+        private System.Windows.Forms.Label lSkillName;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label lSkillID;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label lSkillCost;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label lSkillGCD;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label lSkillCooldown;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label lSkillLabor;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label lSkillMana;
+        private System.Windows.Forms.Label label12;
     }
 }
 
