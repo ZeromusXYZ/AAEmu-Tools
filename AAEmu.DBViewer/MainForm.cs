@@ -187,7 +187,7 @@ namespace AAEmu.DBViewer
 
         private void LoadTranslations(string lng)
         {
-            string sql = "SELECT id, tbl_name, tbl_column_name, idx, "+lng+ " FROM localized_texts ORDER BY tbl_name, tbl_column_name, idx";
+            string sql = "SELECT tbl_name, tbl_column_name, idx, "+lng+ " FROM localized_texts ORDER BY tbl_name, tbl_column_name, idx";
 
             using (var connection = SQLite.CreateConnection())
             {
@@ -893,11 +893,12 @@ namespace AAEmu.DBViewer
             }
 
             SQLite.SQLiteFileName = sqlfile;
-            Properties.Settings.Default.DBFileName = sqlfile;
 
             var i = cbItemSearchLanguage.Items.IndexOf(Properties.Settings.Default.DefaultGameLanguage);
             cbItemSearchLanguage.SelectedIndex = i;
+            // The table name loading is basically just to check if we can read the DB file
             LoadTableNames();
+            Properties.Settings.Default.DBFileName = sqlfile;
             Text = defaultTitle + " - " + sqlfile + " ("+ Properties.Settings.Default.DefaultGameLanguage + ")";
             // make sure translations are loaded first, other tables depend on it
             LoadTranslations(Properties.Settings.Default.DefaultGameLanguage);
