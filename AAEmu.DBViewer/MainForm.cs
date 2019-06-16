@@ -18,6 +18,7 @@ namespace AAEmu.DBViewer
     {
         private string defaultTitle;
         private AAPak pak = new AAPak("");
+        private List<string> possibleLanguageIDs = new List<string>();
 
         class GameTranslation
         {
@@ -42,6 +43,7 @@ namespace AAEmu.DBViewer
             public long icon_id = 1;
             public bool sellable = false;
             public long fixed_grade = -1;
+            public long use_skill_id = 0;
 
             // Helpers
             public string nameLocalized = string.Empty;
@@ -62,6 +64,8 @@ namespace AAEmu.DBViewer
             public long cooldown_time = 0;
             public long casting_time = 0;
             public bool ignore_global_cooldown = false;
+            public bool default_gcd = true;
+            public long custom_gcd = 0 ;
             public long effect_delay = 0;
             public long ability_id = 0;
             public long mana_cost = 0;
@@ -106,15 +110,26 @@ namespace AAEmu.DBViewer
         private void MainForm_Load(object sender, EventArgs e)
         {
             defaultTitle = Text;
+            possibleLanguageIDs.Clear();
+            possibleLanguageIDs.Add("ko");
+            possibleLanguageIDs.Add("ru");
+            possibleLanguageIDs.Add("en_us");
+            possibleLanguageIDs.Add("zh_cn");
+            possibleLanguageIDs.Add("zh_tw");
+            possibleLanguageIDs.Add("de");
+            possibleLanguageIDs.Add("fr");
+            possibleLanguageIDs.Add("ja");
+
             if (!LoadServerDB(false))
             {
                 Close();
                 return;
             }
-            string game_pakFileName = "C:\\ArcheAge\\Working\\game_pak";
+            string game_pakFileName = Properties.Settings.Default.GamePakFileName ;
             if (File.Exists(game_pakFileName))
             {
-                pak.OpenPak(game_pakFileName, true);
+                if (pak.OpenPak(game_pakFileName, true))
+                    Properties.Settings.Default.GamePakFileName = game_pakFileName;
             }
             tcViewer.SelectedTab = tpItems;
         }
@@ -187,7 +202,9 @@ namespace AAEmu.DBViewer
 
         private void LoadTranslations(string lng)
         {
-            string sql = "SELECT tbl_name, tbl_column_name, idx, "+lng+ " FROM localized_texts ORDER BY tbl_name, tbl_column_name, idx";
+            string sql = "SELECT * FROM localized_texts ORDER BY tbl_name, tbl_column_name, idx";
+
+            List<string> columnNames = null ;
 
             using (var connection = SQLite.CreateConnection())
             {
@@ -202,13 +219,47 @@ namespace AAEmu.DBViewer
                     {
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
-
                         while (reader.Read())
                         {
+                            if (columnNames == null)
+                            {
+                                columnNames = reader.GetColumnNames();
+                                if (columnNames.IndexOf(lng) < 0)
+                                {
+                                    // selected language not found, revert to en_us or ko as default
+
+                                    if (columnNames.IndexOf("en_us") >= 0)
+                                    {
+                                        MessageBox.Show("The selected language \"" + lng + "\" was not found in localized_texts !\r\n" +
+                                            "Reverted to English",
+                                            "Language not found",
+                                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        lng = "en_us";
+                                    }
+                                    else
+                                    if (columnNames.IndexOf("ko") >= 0)
+                                    {
+                                        MessageBox.Show("The selected language \"" + lng + "\" was not found in localized_texts !\r\n" +
+                                            "Reverted to Korean",
+                                            "Language not found",
+                                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        lng = "ko";
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("The selected language \"" + lng + "\" was not found in localized_texts !\r\n" +
+                                            "Also was not able to revert to English or Korean, functionality of this program is not guaranteed", 
+                                            "Language not found", 
+                                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    }
+                                }
+                            }
+
                             GameTranslation t = new GameTranslation();
                             t.idx = GetInt64(reader,"idx");
                             t.table = GetString(reader,"tbl_name");
                             t.field = GetString(reader,"tbl_column_name");
+                            
                             t.value = GetString(reader,lng);
                             string k = t.table + ":" + t.field + ":" + t.idx.ToString();
                             CurrentTranslations.Add(k, t);
@@ -218,6 +269,32 @@ namespace AAEmu.DBViewer
                         Application.UseWaitCursor = false;
 
                     }
+                }
+            }
+            if (columnNames != null)
+            {
+                try
+                {
+                    cbItemSearchLanguage.Enabled = false;
+
+                    List<string> availableLng = new List<string>();
+                    foreach(var l in possibleLanguageIDs)
+                    {
+                        if (columnNames.IndexOf(l) >= 0)
+                            availableLng.Add(l);
+                    }
+                    cbItemSearchLanguage.Items.Clear();
+                    for(int i = 0; i < availableLng.Count;i++)
+                    {
+                        var l = availableLng[i];
+                        cbItemSearchLanguage.Items.Add(l);
+                        if (l == lng)
+                            cbItemSearchLanguage.SelectedIndex = i;
+                    }                    
+                }
+                finally
+                {
+                    cbItemSearchLanguage.Enabled = true;
                 }
             }
             Properties.Settings.Default.DefaultGameLanguage = lng ;
@@ -258,6 +335,8 @@ namespace AAEmu.DBViewer
                             t.icon_id = GetInt64(reader, "icon_id");
                             t.sellable = DBValueToBool(GetString(reader, "sellable"));
                             t.fixed_grade = GetInt64(reader, "fixed_grade");
+                            t.use_skill_id = GetInt64(reader, "use_skill_id");
+                            t.use_skill_id = GetInt64(reader, "use_skill_id");
 
                             t.nameLocalized = GetTranslationByID(t.id, "items", "name", t.name);
                             t.descriptionLocalized = GetTranslationByID(t.id, "items", "description", t.descriptionLocalized);
@@ -312,6 +391,8 @@ namespace AAEmu.DBViewer
                             t.mana_cost = GetInt64(reader, "mana_cost");
                             t.timing_id = GetInt64(reader, "timing_id");
                             t.consume_lp = GetInt64(reader, "consume_lp");
+                            t.default_gcd = DBValueToBool(GetString(reader, "default_gcd")); ;
+                            t.custom_gcd = GetInt64(reader,"custom_gcd");
 
                             t.nameLocalized = GetTranslationByID(t.id, "skills", "name", t.name);
                             t.descriptionLocalized = GetTranslationByID(t.id, "skills", "desc", t.descriptionLocalized);
@@ -707,6 +788,7 @@ namespace AAEmu.DBViewer
                 FormattedTextToRichtEdit(item.descriptionLocalized,rtItemDesc);
                 lItemLevel.Text = item.level.ToString();
                 IconIDToLabel(item.icon_id, itemIcon);
+                btnFindItemSkill.Enabled = (item.use_skill_id > 0);
             }
             else
             {
@@ -716,6 +798,7 @@ namespace AAEmu.DBViewer
                 rtItemDesc.Clear();
                 lItemLevel.Text = "";
                 itemIcon.Text = "???";
+                btnFindItemSkill.Enabled = false;
             }
         }
 
@@ -729,7 +812,25 @@ namespace AAEmu.DBViewer
                 lSkillMana.Text = skill.mana_cost.ToString();
                 lSkillLabor.Text = skill.consume_lp.ToString();
                 lSkillCooldown.Text = MSToString(skill.cooldown_time);
-                lSkillGCD.Text = skill.ignore_global_cooldown ? "Ignore" : "Normal";
+                if ((skill.default_gcd) && (!skill.ignore_global_cooldown))
+                {
+                    lSkillGCD.Text = "Default";
+                }
+                else
+                if ((!skill.default_gcd) && (!skill.ignore_global_cooldown))
+                {
+                    lSkillGCD.Text = MSToString(skill.custom_gcd);
+                }
+                else
+                if ((!skill.default_gcd) && (skill.ignore_global_cooldown))
+                {
+                    lSkillGCD.Text = "Ignored";
+                }
+                else
+                {
+                    lSkillGCD.Text = "Default";
+                }
+                // lSkillGCD.Text = skill.ignore_global_cooldown ? "Ignore" : "Normal";
                 FormattedTextToRichtEdit(skill.descriptionLocalized, rtSkillDescription);
                 IconIDToLabel(skill.icon_id, skillIcon);
             }
@@ -863,11 +964,15 @@ namespace AAEmu.DBViewer
 
         private void CbItemSearchLanguage_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (cbItemSearchLanguage.Enabled == false)
+                return;
+            cbItemSearchLanguage.Enabled = false;
             if (cbItemSearchLanguage.Text != Properties.Settings.Default.DefaultGameLanguage)
             {
                 Properties.Settings.Default.DefaultGameLanguage = cbItemSearchLanguage.Text;
                 LoadServerDB(false);
             }
+            cbItemSearchLanguage.Enabled = true;
         }
 
         private void BtnOpenServerDB_Click(object sender, EventArgs e)
@@ -1057,6 +1162,41 @@ namespace AAEmu.DBViewer
             if (val == null)
                 return;
             ShowDBSkill(long.Parse(val.ToString()));
+        }
+
+        private void ShowDBSkillByItem(long id)
+        {
+            if (AllItems.TryGetValue(id, out var item))
+            {
+                tSkillSearch.Text = item.use_skill_id.ToString();
+                BtnSkillSearch_Click(null, null);
+            }
+        }
+
+        private void BtnFindItemSkill_Click(object sender, EventArgs e)
+        {
+            if (dgvItem.SelectedRows.Count <= 0)
+                return;
+            var row = dgvItem.SelectedRows[0];
+            if (row.Cells.Count <= 0)
+                return;
+
+            var val = row.Cells[0].Value;
+            if (val == null)
+                return;
+
+            ShowDBSkillByItem(long.Parse(val.ToString()));
+            tcViewer.SelectedTab = tpSkills;
+        }
+
+        private void BtnFindGameClient_Click(object sender, EventArgs e)
+        {
+            if (openGamePakFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                pak.ClosePak();
+                if (pak.OpenPak(openGamePakFileDialog.FileName,true))
+                    Properties.Settings.Default.GamePakFileName = openGamePakFileDialog.FileName;
+            }
         }
     }
 }

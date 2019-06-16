@@ -97,6 +97,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.tSkillSearch = new System.Windows.Forms.TextBox();
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
+            this.btnFindItemSkill = new System.Windows.Forms.Button();
+            this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             this.tpItems.SuspendLayout();
@@ -167,6 +169,7 @@
             this.btnFindGameClient.TabIndex = 7;
             this.btnFindGameClient.Text = "Locate Client game_pak";
             this.btnFindGameClient.UseVisualStyleBackColor = true;
+            this.btnFindGameClient.Click += new System.EventHandler(this.BtnFindGameClient_Click);
             // 
             // btnOpenServerDB
             // 
@@ -230,6 +233,7 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.groupBox1.Controls.Add(this.btnFindItemSkill);
             this.groupBox1.Controls.Add(this.itemIcon);
             this.groupBox1.Controls.Add(this.rtItemDesc);
             this.groupBox1.Controls.Add(this.btnFindItemInLoot);
@@ -280,7 +284,7 @@
             this.btnFindItemInLoot.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnFindItemInLoot.Location = new System.Drawing.Point(9, 268);
             this.btnFindItemInLoot.Name = "btnFindItemInLoot";
-            this.btnFindItemInLoot.Size = new System.Drawing.Size(92, 23);
+            this.btnFindItemInLoot.Size = new System.Drawing.Size(80, 23);
             this.btnFindItemInLoot.TabIndex = 9;
             this.btnFindItemInLoot.Text = "Find in Loot";
             this.btnFindItemInLoot.UseVisualStyleBackColor = false;
@@ -859,6 +863,26 @@
             this.openDBDlg.Filter = "SQLite3 files|*.sqlite3|All files|*.*";
             this.openDBDlg.Title = "Open Server DB File";
             // 
+            // btnFindItemSkill
+            // 
+            this.btnFindItemSkill.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnFindItemSkill.BackColor = System.Drawing.SystemColors.Control;
+            this.btnFindItemSkill.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnFindItemSkill.Location = new System.Drawing.Point(95, 268);
+            this.btnFindItemSkill.Name = "btnFindItemSkill";
+            this.btnFindItemSkill.Size = new System.Drawing.Size(111, 23);
+            this.btnFindItemSkill.TabIndex = 12;
+            this.btnFindItemSkill.Text = "Goto Useable Skill";
+            this.btnFindItemSkill.UseVisualStyleBackColor = false;
+            this.btnFindItemSkill.Click += new System.EventHandler(this.BtnFindItemSkill_Click);
+            // 
+            // openGamePakFileDialog
+            // 
+            this.openGamePakFileDialog.FileName = "game_pakl";
+            this.openGamePakFileDialog.Filter = "AA Game Pak|game_pak|All files|*.*";
+            this.openGamePakFileDialog.RestoreDirectory = true;
+            this.openGamePakFileDialog.Title = "Open game_pak";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -959,6 +983,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
+        private System.Windows.Forms.Button btnFindItemSkill;
+        private System.Windows.Forms.OpenFileDialog openGamePakFileDialog;
     }
 }
 

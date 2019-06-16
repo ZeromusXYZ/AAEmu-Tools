@@ -167,6 +167,14 @@ namespace AAEmu.Game.Utils.DB
             return ordinal;
         }
 
+        public List<string> GetColumnNames()
+        {
+            List<string> res = new List<string>();
+            for(int i = 0; i < _reader.FieldCount; i++)
+                res.Add(_reader.GetName(i));
+            return res;
+        }
+
         public void Dispose()
         {
             _ordinal.Clear();

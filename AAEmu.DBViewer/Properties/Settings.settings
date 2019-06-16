@@ -8,5 +8,8 @@
     <Setting Name="DBFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">data\compact.sqlite3</Value>
     </Setting>
+    <Setting Name="GamePakFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\\ArcheAge\\Working\\game_pak</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
