@@ -90,13 +90,13 @@
             this.label18 = new System.Windows.Forms.Label();
             this.btnSkillSearch = new System.Windows.Forms.Button();
             this.dgvSkills = new System.Windows.Forms.DataGridView();
-            this.label9 = new System.Windows.Forms.Label();
-            this.tSkillSearch = new System.Windows.Forms.TextBox();
-            this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label9 = new System.Windows.Forms.Label();
+            this.tSkillSearch = new System.Windows.Forms.TextBox();
+            this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             this.tpItems.SuspendLayout();
@@ -615,7 +615,7 @@
             this.groupBox2.Size = new System.Drawing.Size(258, 299);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Item Info";
+            this.groupBox2.Text = "Skill Info";
             // 
             // lSkillGCD
             // 
@@ -803,33 +803,6 @@
             this.dgvSkills.TabIndex = 6;
             this.dgvSkills.SelectionChanged += new System.EventHandler(this.DgvSkills_SelectionChanged);
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(8, 9);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(188, 13);
-            this.label9.TabIndex = 5;
-            this.label9.Text = "Search in Skill ID, Name or description";
-            // 
-            // tSkillSearch
-            // 
-            this.tSkillSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tSkillSearch.Location = new System.Drawing.Point(197, 6);
-            this.tSkillSearch.Name = "tSkillSearch";
-            this.tSkillSearch.Size = new System.Drawing.Size(223, 20);
-            this.tSkillSearch.TabIndex = 4;
-            this.tSkillSearch.TextChanged += new System.EventHandler(this.TSkillSearch_TextChanged);
-            this.tSkillSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSkillSearch_KeyDown);
-            // 
-            // openDBDlg
-            // 
-            this.openDBDlg.DefaultExt = "sqlite3";
-            this.openDBDlg.FileName = "compact.sqlite3";
-            this.openDBDlg.Filter = "SQLite3 files|*.sqlite3|All files|*.*";
-            this.openDBDlg.Title = "Open Server DB File";
-            // 
             // dataGridViewTextBoxColumn2
             // 
             this.dataGridViewTextBoxColumn2.HeaderText = "ID";
@@ -858,6 +831,33 @@
             this.Column11.Name = "Column11";
             this.Column11.ReadOnly = true;
             this.Column11.Width = 86;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(8, 9);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(188, 13);
+            this.label9.TabIndex = 5;
+            this.label9.Text = "Search in Skill ID, Name or description";
+            // 
+            // tSkillSearch
+            // 
+            this.tSkillSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tSkillSearch.Location = new System.Drawing.Point(197, 6);
+            this.tSkillSearch.Name = "tSkillSearch";
+            this.tSkillSearch.Size = new System.Drawing.Size(223, 20);
+            this.tSkillSearch.TabIndex = 4;
+            this.tSkillSearch.TextChanged += new System.EventHandler(this.TSkillSearch_TextChanged);
+            this.tSkillSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSkillSearch_KeyDown);
+            // 
+            // openDBDlg
+            // 
+            this.openDBDlg.DefaultExt = "sqlite3";
+            this.openDBDlg.FileName = "compact.sqlite3";
+            this.openDBDlg.Filter = "SQLite3 files|*.sqlite3|All files|*.*";
+            this.openDBDlg.Title = "Open Server DB File";
             // 
             // MainForm
             // 
