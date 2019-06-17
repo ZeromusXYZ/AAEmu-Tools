@@ -36,8 +36,12 @@
             this.btnOpenServerDB = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.cbItemSearchLanguage = new System.Windows.Forms.ComboBox();
+            this.tpCurrentRecord = new System.Windows.Forms.TabPage();
+            this.lCurrentDataInfo = new System.Windows.Forms.Label();
+            this.dgvCurrentData = new System.Windows.Forms.DataGridView();
             this.tpItems = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnFindItemSkill = new System.Windows.Forms.Button();
             this.itemIcon = new System.Windows.Forms.Label();
             this.rtItemDesc = new System.Windows.Forms.RichTextBox();
             this.btnFindItemInLoot = new System.Windows.Forms.Button();
@@ -97,10 +101,14 @@
             this.label9 = new System.Windows.Forms.Label();
             this.tSkillSearch = new System.Windows.Forms.TextBox();
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
-            this.btnFindItemSkill = new System.Windows.Forms.Button();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
+            this.tpCurrentRecord.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentData)).BeginInit();
             this.tpItems.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItem)).BeginInit();
@@ -127,6 +135,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tcViewer.Controls.Add(this.tbTables);
+            this.tcViewer.Controls.Add(this.tpCurrentRecord);
             this.tcViewer.Controls.Add(this.tpItems);
             this.tcViewer.Controls.Add(this.tpLoot);
             this.tcViewer.Controls.Add(this.tpSkills);
@@ -213,6 +222,48 @@
             this.cbItemSearchLanguage.TabIndex = 5;
             this.cbItemSearchLanguage.SelectedIndexChanged += new System.EventHandler(this.CbItemSearchLanguage_SelectedIndexChanged);
             // 
+            // tpCurrentRecord
+            // 
+            this.tpCurrentRecord.Controls.Add(this.lCurrentDataInfo);
+            this.tpCurrentRecord.Controls.Add(this.dgvCurrentData);
+            this.tpCurrentRecord.Location = new System.Drawing.Point(4, 22);
+            this.tpCurrentRecord.Name = "tpCurrentRecord";
+            this.tpCurrentRecord.Size = new System.Drawing.Size(778, 314);
+            this.tpCurrentRecord.TabIndex = 4;
+            this.tpCurrentRecord.Text = "Selected Data";
+            this.tpCurrentRecord.UseVisualStyleBackColor = true;
+            // 
+            // lCurrentDataInfo
+            // 
+            this.lCurrentDataInfo.AutoSize = true;
+            this.lCurrentDataInfo.Location = new System.Drawing.Point(8, 10);
+            this.lCurrentDataInfo.Name = "lCurrentDataInfo";
+            this.lCurrentDataInfo.Size = new System.Drawing.Size(87, 13);
+            this.lCurrentDataInfo.TabIndex = 4;
+            this.lCurrentDataInfo.Text = "Nothing selected";
+            // 
+            // dgvCurrentData
+            // 
+            this.dgvCurrentData.AllowUserToAddRows = false;
+            this.dgvCurrentData.AllowUserToDeleteRows = false;
+            this.dgvCurrentData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvCurrentData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvCurrentData.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvCurrentData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn4,
+            this.dataGridViewTextBoxColumn5,
+            this.Column12});
+            this.dgvCurrentData.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.dgvCurrentData.Location = new System.Drawing.Point(8, 26);
+            this.dgvCurrentData.MultiSelect = false;
+            this.dgvCurrentData.Name = "dgvCurrentData";
+            this.dgvCurrentData.RowHeadersVisible = false;
+            this.dgvCurrentData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgvCurrentData.Size = new System.Drawing.Size(761, 282);
+            this.dgvCurrentData.TabIndex = 3;
+            // 
             // tpItems
             // 
             this.tpItems.Controls.Add(this.groupBox1);
@@ -252,6 +303,19 @@
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Item Info";
+            // 
+            // btnFindItemSkill
+            // 
+            this.btnFindItemSkill.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnFindItemSkill.BackColor = System.Drawing.SystemColors.Control;
+            this.btnFindItemSkill.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnFindItemSkill.Location = new System.Drawing.Point(95, 268);
+            this.btnFindItemSkill.Name = "btnFindItemSkill";
+            this.btnFindItemSkill.Size = new System.Drawing.Size(111, 23);
+            this.btnFindItemSkill.TabIndex = 12;
+            this.btnFindItemSkill.Text = "Goto Useable Skill";
+            this.btnFindItemSkill.UseVisualStyleBackColor = false;
+            this.btnFindItemSkill.Click += new System.EventHandler(this.BtnFindItemSkill_Click);
             // 
             // itemIcon
             // 
@@ -863,25 +927,30 @@
             this.openDBDlg.Filter = "SQLite3 files|*.sqlite3|All files|*.*";
             this.openDBDlg.Title = "Open Server DB File";
             // 
-            // btnFindItemSkill
-            // 
-            this.btnFindItemSkill.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnFindItemSkill.BackColor = System.Drawing.SystemColors.Control;
-            this.btnFindItemSkill.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnFindItemSkill.Location = new System.Drawing.Point(95, 268);
-            this.btnFindItemSkill.Name = "btnFindItemSkill";
-            this.btnFindItemSkill.Size = new System.Drawing.Size(111, 23);
-            this.btnFindItemSkill.TabIndex = 12;
-            this.btnFindItemSkill.Text = "Goto Useable Skill";
-            this.btnFindItemSkill.UseVisualStyleBackColor = false;
-            this.btnFindItemSkill.Click += new System.EventHandler(this.BtnFindItemSkill_Click);
-            // 
             // openGamePakFileDialog
             // 
             this.openGamePakFileDialog.FileName = "game_pakl";
             this.openGamePakFileDialog.Filter = "AA Game Pak|game_pak|All files|*.*";
             this.openGamePakFileDialog.RestoreDirectory = true;
             this.openGamePakFileDialog.Title = "Open game_pak";
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewTextBoxColumn4.FillWeight = 75F;
+            this.dataGridViewTextBoxColumn4.HeaderText = "Field Name";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.Width = 85;
+            // 
+            // dataGridViewTextBoxColumn5
+            // 
+            this.dataGridViewTextBoxColumn5.HeaderText = "Value";
+            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            // 
+            // Column12
+            // 
+            this.Column12.HeaderText = "Localized";
+            this.Column12.Name = "Column12";
             // 
             // MainForm
             // 
@@ -896,6 +965,9 @@
             this.tcViewer.ResumeLayout(false);
             this.tbTables.ResumeLayout(false);
             this.tbTables.PerformLayout();
+            this.tpCurrentRecord.ResumeLayout(false);
+            this.tpCurrentRecord.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentData)).EndInit();
             this.tpItems.ResumeLayout(false);
             this.tpItems.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -985,6 +1057,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
         private System.Windows.Forms.Button btnFindItemSkill;
         private System.Windows.Forms.OpenFileDialog openGamePakFileDialog;
+        private System.Windows.Forms.TabPage tpCurrentRecord;
+        private System.Windows.Forms.Label lCurrentDataInfo;
+        private System.Windows.Forms.DataGridView dgvCurrentData;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
     }
 }
 

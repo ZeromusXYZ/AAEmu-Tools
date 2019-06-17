@@ -125,11 +125,18 @@ namespace AAEmu.DBViewer
                 Close();
                 return;
             }
-            string game_pakFileName = Properties.Settings.Default.GamePakFileName ;
+
+
+            string game_pakFileName = Properties.Settings.Default.GamePakFileName;
             if (File.Exists(game_pakFileName))
             {
-                if (pak.OpenPak(game_pakFileName, true))
-                    Properties.Settings.Default.GamePakFileName = game_pakFileName;
+                using (var loading = new LoadingForm())
+                {
+                    loading.Show();
+                    loading.ShowInfo("Opening: " + Path.GetFileName(game_pakFileName));
+                    if (pak.OpenPak(game_pakFileName, true))
+                        Properties.Settings.Default.GamePakFileName = game_pakFileName;
+                }
             }
             tcViewer.SelectedTab = tpItems;
         }
@@ -360,6 +367,9 @@ namespace AAEmu.DBViewer
         {
             string sql = "SELECT * FROM skills ORDER BY id ASC";
 
+            List<string> columnNames = null;
+            bool readWebDesc = false;
+
             using (var connection = SQLite.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
@@ -373,13 +383,24 @@ namespace AAEmu.DBViewer
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
 
+                        if (columnNames == null)
+                        {
+                            columnNames = reader.GetColumnNames();
+                            if (columnNames.IndexOf("web_desc") >= 0)
+                                readWebDesc = true;
+                        }
+
                         while (reader.Read())
                         {
                             GameSkills t = new GameSkills();
                             t.id = GetInt64(reader, "id");
                             t.name = GetString(reader, "name");
                             t.desc = GetString(reader, "desc");
-                            t.web_desc = GetString(reader, "web_desc");
+                            // Added a check for this
+                            if (readWebDesc)
+                                t.web_desc = GetString(reader, "web_desc");
+                            else
+                                t.web_desc = string.Empty;
                             t.cost = GetInt64(reader, "cost");
                             t.icon_id = GetInt64(reader, "icon_id");
                             t.show = DBValueToBool(GetString(reader, "show"));
@@ -396,7 +417,10 @@ namespace AAEmu.DBViewer
 
                             t.nameLocalized = GetTranslationByID(t.id, "skills", "name", t.name);
                             t.descriptionLocalized = GetTranslationByID(t.id, "skills", "desc", t.descriptionLocalized);
-                            t.webDescriptionLocalized = GetTranslationByID(t.id, "skills", "web_desc", t.webDescriptionLocalized);
+                            if (readWebDesc)
+                                t.webDescriptionLocalized = GetTranslationByID(t.id, "skills", "web_desc", t.webDescriptionLocalized);
+                            else
+                                t.webDescriptionLocalized = string.Empty;
 
                             t.SearchString = t.name + " " + t.desc + " " + t.nameLocalized + " " + t.descriptionLocalized;
                             t.SearchString = t.SearchString.ToLower();
@@ -789,6 +813,8 @@ namespace AAEmu.DBViewer
                 lItemLevel.Text = item.level.ToString();
                 IconIDToLabel(item.icon_id, itemIcon);
                 btnFindItemSkill.Enabled = (item.use_skill_id > 0);
+
+                ShowSelectedData("items", "(id = " + idx.ToString() + ")", "id ASC");
             }
             else
             {
@@ -833,6 +859,8 @@ namespace AAEmu.DBViewer
                 // lSkillGCD.Text = skill.ignore_global_cooldown ? "Ignore" : "Normal";
                 FormattedTextToRichtEdit(skill.descriptionLocalized, rtSkillDescription);
                 IconIDToLabel(skill.icon_id, skillIcon);
+
+                ShowSelectedData("skills", "(id = " + idx.ToString() + ")", "id ASC");
             }
             else
             {
@@ -1001,16 +1029,26 @@ namespace AAEmu.DBViewer
 
             var i = cbItemSearchLanguage.Items.IndexOf(Properties.Settings.Default.DefaultGameLanguage);
             cbItemSearchLanguage.SelectedIndex = i;
-            // The table name loading is basically just to check if we can read the DB file
-            LoadTableNames();
-            Properties.Settings.Default.DBFileName = sqlfile;
-            Text = defaultTitle + " - " + sqlfile + " ("+ Properties.Settings.Default.DefaultGameLanguage + ")";
-            // make sure translations are loaded first, other tables depend on it
-            LoadTranslations(Properties.Settings.Default.DefaultGameLanguage);
-            LoadIcons();
-            LoadItems();
-            LoadSkills();
-            LoadNPCs();
+            using (var loading = new LoadingForm())
+            {
+                loading.Show();
+                loading.ShowInfo("Loading: Table names");
+                // The table name loading is basically just to check if we can read the DB file
+                LoadTableNames();
+                Properties.Settings.Default.DBFileName = sqlfile;
+                Text = defaultTitle + " - " + sqlfile + " (" + Properties.Settings.Default.DefaultGameLanguage + ")";
+                // make sure translations are loaded first, other tables depend on it
+                loading.ShowInfo("Loading: Translation");
+                LoadTranslations(Properties.Settings.Default.DefaultGameLanguage);
+                loading.ShowInfo("Loading: Icon info");
+                LoadIcons();
+                loading.ShowInfo("Loading: Items");
+                LoadItems();
+                loading.ShowInfo("Loading: Skills");
+                LoadSkills();
+                loading.ShowInfo("Loading: NPCs");
+                LoadNPCs();
+            }
 
             return true;
         }
@@ -1050,9 +1088,14 @@ namespace AAEmu.DBViewer
                 return;
 
             var val = row.Cells[1].Value;
+            var id = row.Cells[0].Value;
             if (val == null)
                 return;
             tLootSearch.Text = val.ToString();
+
+            //"SELECT * FROM loots WHERE (loot_pack_id = @tpackid) ORDER BY id ASC";
+            if (id != null)
+            ShowSelectedData("loots", "(id = " + id.ToString() + ")", "id ASC");
         }
 
         private void BtnLootSearch_Click(object sender, EventArgs e)
@@ -1197,6 +1240,45 @@ namespace AAEmu.DBViewer
                 if (pak.OpenPak(openGamePakFileDialog.FileName,true))
                     Properties.Settings.Default.GamePakFileName = openGamePakFileDialog.FileName;
             }
+        }
+
+        private void ShowSelectedData(string table, string whereStatement, string orderStatement)
+        {
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM " + table + " WHERE " + whereStatement + " ORDER BY " + orderStatement + " LIMIT 1";
+                    lCurrentDataInfo.Text = command.CommandText;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+                        dgvCurrentData.Rows.Clear();
+                        var columnNames = reader.GetColumnNames();
+
+                        while (reader.Read())
+                        {
+                            long thisID = -1 ;
+                            if (columnNames.IndexOf("id") >= 0)
+                                thisID = GetInt64(reader, "id");
+
+                            foreach(var col in columnNames)
+                            {
+                                int line = dgvCurrentData.Rows.Add();
+                                var row = dgvCurrentData.Rows[line];
+                                row.Cells[0].Value = col;
+                                row.Cells[1].Value = reader.GetValue(col).ToString(); ;
+                                row.Cells[2].Value = GetTranslationByID(thisID, table, col, " ");
+                            }
+                        }
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
+
         }
     }
 }
