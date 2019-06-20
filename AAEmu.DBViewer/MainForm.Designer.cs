@@ -99,7 +99,13 @@
             this.label18 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dgvSkillProducts = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvSkillReagents = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label13 = new System.Windows.Forms.Label();
             this.lSkillReagents = new System.Windows.Forms.Label();
             this.btnSkillSearch = new System.Windows.Forms.Button();
@@ -109,14 +115,20 @@
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label9 = new System.Windows.Forms.Label();
             this.tSkillSearch = new System.Windows.Forms.TextBox();
+            this.tpZones = new System.Windows.Forms.TabPage();
+            this.btnZonesShowAll = new System.Windows.Forms.Button();
+            this.btnSearchZones = new System.Windows.Forms.Button();
+            this.dgvZones = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label10 = new System.Windows.Forms.Label();
+            this.tZonesSearch = new System.Windows.Forms.TextBox();
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             this.tpCurrentRecord.SuspendLayout();
@@ -134,6 +146,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkillProducts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkillReagents)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkills)).BeginInit();
+            this.tpZones.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).BeginInit();
             this.SuspendLayout();
             // 
             // lbTableNames
@@ -143,7 +157,7 @@
             this.lbTableNames.FormattingEnabled = true;
             this.lbTableNames.Location = new System.Drawing.Point(6, 6);
             this.lbTableNames.Name = "lbTableNames";
-            this.lbTableNames.Size = new System.Drawing.Size(270, 303);
+            this.lbTableNames.Size = new System.Drawing.Size(270, 459);
             this.lbTableNames.TabIndex = 1;
             // 
             // tcViewer
@@ -156,10 +170,11 @@
             this.tcViewer.Controls.Add(this.tpItems);
             this.tcViewer.Controls.Add(this.tpLoot);
             this.tcViewer.Controls.Add(this.tpSkills);
+            this.tcViewer.Controls.Add(this.tpZones);
             this.tcViewer.Location = new System.Drawing.Point(0, 3);
             this.tcViewer.Name = "tcViewer";
             this.tcViewer.SelectedIndex = 0;
-            this.tcViewer.Size = new System.Drawing.Size(786, 340);
+            this.tcViewer.Size = new System.Drawing.Size(935, 506);
             this.tcViewer.TabIndex = 3;
             // 
             // tbTables
@@ -173,7 +188,7 @@
             this.tbTables.Location = new System.Drawing.Point(4, 22);
             this.tbTables.Name = "tbTables";
             this.tbTables.Padding = new System.Windows.Forms.Padding(3);
-            this.tbTables.Size = new System.Drawing.Size(778, 314);
+            this.tbTables.Size = new System.Drawing.Size(927, 480);
             this.tbTables.TabIndex = 0;
             this.tbTables.Text = "Tables and Settings";
             this.tbTables.UseVisualStyleBackColor = true;
@@ -211,7 +226,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(633, 9);
+            this.label2.Location = new System.Drawing.Point(782, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(55, 13);
             this.label2.TabIndex = 4;
@@ -233,7 +248,7 @@
             "de",
             "fr",
             "ja"});
-            this.cbItemSearchLanguage.Location = new System.Drawing.Point(694, 6);
+            this.cbItemSearchLanguage.Location = new System.Drawing.Point(843, 6);
             this.cbItemSearchLanguage.Name = "cbItemSearchLanguage";
             this.cbItemSearchLanguage.Size = new System.Drawing.Size(75, 21);
             this.cbItemSearchLanguage.TabIndex = 5;
@@ -245,7 +260,7 @@
             this.tpCurrentRecord.Controls.Add(this.dgvCurrentData);
             this.tpCurrentRecord.Location = new System.Drawing.Point(4, 22);
             this.tpCurrentRecord.Name = "tpCurrentRecord";
-            this.tpCurrentRecord.Size = new System.Drawing.Size(778, 314);
+            this.tpCurrentRecord.Size = new System.Drawing.Size(927, 480);
             this.tpCurrentRecord.TabIndex = 4;
             this.tpCurrentRecord.Text = "Selected Data";
             this.tpCurrentRecord.UseVisualStyleBackColor = true;
@@ -278,7 +293,7 @@
             this.dgvCurrentData.Name = "dgvCurrentData";
             this.dgvCurrentData.RowHeadersVisible = false;
             this.dgvCurrentData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvCurrentData.Size = new System.Drawing.Size(761, 282);
+            this.dgvCurrentData.Size = new System.Drawing.Size(910, 448);
             this.dgvCurrentData.TabIndex = 3;
             // 
             // dataGridViewTextBoxColumn4
@@ -311,7 +326,7 @@
             this.tpItems.Location = new System.Drawing.Point(4, 22);
             this.tpItems.Name = "tpItems";
             this.tpItems.Padding = new System.Windows.Forms.Padding(3);
-            this.tpItems.Size = new System.Drawing.Size(778, 314);
+            this.tpItems.Size = new System.Drawing.Size(927, 480);
             this.tpItems.TabIndex = 1;
             this.tpItems.Text = "Items";
             this.tpItems.UseVisualStyleBackColor = true;
@@ -321,7 +336,7 @@
             this.btnFindItemSkill.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnFindItemSkill.BackColor = System.Drawing.SystemColors.Control;
             this.btnFindItemSkill.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnFindItemSkill.Location = new System.Drawing.Point(97, 277);
+            this.btnFindItemSkill.Location = new System.Drawing.Point(97, 443);
             this.btnFindItemSkill.Name = "btnFindItemSkill";
             this.btnFindItemSkill.Size = new System.Drawing.Size(111, 23);
             this.btnFindItemSkill.TabIndex = 12;
@@ -345,9 +360,9 @@
             this.groupBox1.Controls.Add(this.lItemID);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
-            this.groupBox1.Location = new System.Drawing.Point(470, 9);
+            this.groupBox1.Location = new System.Drawing.Point(619, 9);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(302, 299);
+            this.groupBox1.Size = new System.Drawing.Size(302, 465);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Item Info";
@@ -372,7 +387,7 @@
             this.rtItemDesc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
             this.rtItemDesc.Location = new System.Drawing.Point(9, 81);
             this.rtItemDesc.Name = "rtItemDesc";
-            this.rtItemDesc.Size = new System.Drawing.Size(287, 210);
+            this.rtItemDesc.Size = new System.Drawing.Size(287, 376);
             this.rtItemDesc.TabIndex = 10;
             this.rtItemDesc.Text = "";
             // 
@@ -452,7 +467,7 @@
             // 
             this.btnItemSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnItemSearch.Enabled = false;
-            this.btnItemSearch.Location = new System.Drawing.Point(385, 4);
+            this.btnItemSearch.Location = new System.Drawing.Point(534, 4);
             this.btnItemSearch.Name = "btnItemSearch";
             this.btnItemSearch.Size = new System.Drawing.Size(79, 23);
             this.btnItemSearch.TabIndex = 3;
@@ -478,7 +493,7 @@
             this.dgvItem.ReadOnly = true;
             this.dgvItem.RowHeadersVisible = false;
             this.dgvItem.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvItem.Size = new System.Drawing.Size(453, 238);
+            this.dgvItem.Size = new System.Drawing.Size(602, 404);
             this.dgvItem.TabIndex = 2;
             this.dgvItem.SelectionChanged += new System.EventHandler(this.DgvItemSearch_SelectionChanged);
             // 
@@ -502,7 +517,7 @@
             this.btnFindItemInLoot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnFindItemInLoot.BackColor = System.Drawing.SystemColors.Control;
             this.btnFindItemInLoot.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnFindItemInLoot.Location = new System.Drawing.Point(11, 277);
+            this.btnFindItemInLoot.Location = new System.Drawing.Point(11, 443);
             this.btnFindItemInLoot.Name = "btnFindItemInLoot";
             this.btnFindItemInLoot.Size = new System.Drawing.Size(80, 23);
             this.btnFindItemInLoot.TabIndex = 9;
@@ -525,7 +540,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tItemSearch.Location = new System.Drawing.Point(197, 6);
             this.tItemSearch.Name = "tItemSearch";
-            this.tItemSearch.Size = new System.Drawing.Size(182, 20);
+            this.tItemSearch.Size = new System.Drawing.Size(331, 20);
             this.tItemSearch.TabIndex = 0;
             this.tItemSearch.TextChanged += new System.EventHandler(this.TItemSearch_TextChanged);
             this.tItemSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TItemSearch_KeyDown);
@@ -539,7 +554,7 @@
             this.tpLoot.Location = new System.Drawing.Point(4, 22);
             this.tpLoot.Name = "tpLoot";
             this.tpLoot.Padding = new System.Windows.Forms.Padding(3);
-            this.tpLoot.Size = new System.Drawing.Size(778, 314);
+            this.tpLoot.Size = new System.Drawing.Size(927, 480);
             this.tpLoot.TabIndex = 2;
             this.tpLoot.Text = "Loot";
             this.tpLoot.UseVisualStyleBackColor = true;
@@ -548,7 +563,7 @@
             // 
             this.btnLootSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLootSearch.Enabled = false;
-            this.btnLootSearch.Location = new System.Drawing.Point(220, 9);
+            this.btnLootSearch.Location = new System.Drawing.Point(369, 9);
             this.btnLootSearch.Name = "btnLootSearch";
             this.btnLootSearch.Size = new System.Drawing.Size(79, 23);
             this.btnLootSearch.TabIndex = 6;
@@ -571,7 +586,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tLootSearch.Location = new System.Drawing.Point(121, 11);
             this.tLootSearch.Name = "tLootSearch";
-            this.tLootSearch.Size = new System.Drawing.Size(93, 20);
+            this.tLootSearch.Size = new System.Drawing.Size(242, 20);
             this.tLootSearch.TabIndex = 4;
             this.tLootSearch.TextChanged += new System.EventHandler(this.TLootSearch_TextChanged);
             this.tLootSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TLootSearch_KeyDown);
@@ -602,7 +617,7 @@
             this.dgvLoot.ReadOnly = true;
             this.dgvLoot.RowHeadersVisible = false;
             this.dgvLoot.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvLoot.Size = new System.Drawing.Size(761, 266);
+            this.dgvLoot.Size = new System.Drawing.Size(910, 432);
             this.dgvLoot.TabIndex = 3;
             this.dgvLoot.SelectionChanged += new System.EventHandler(this.DgvLoot_SelectionChanged);
             // 
@@ -686,7 +701,7 @@
             this.tpSkills.Location = new System.Drawing.Point(4, 22);
             this.tpSkills.Name = "tpSkills";
             this.tpSkills.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSkills.Size = new System.Drawing.Size(778, 314);
+            this.tpSkills.Size = new System.Drawing.Size(927, 480);
             this.tpSkills.TabIndex = 3;
             this.tpSkills.Text = "Skill";
             this.tpSkills.UseVisualStyleBackColor = true;
@@ -697,11 +712,11 @@
             this.tcSkillInfo.Controls.Add(this.tpSkillInfo);
             this.tcSkillInfo.Controls.Add(this.tabPage2);
             this.tcSkillInfo.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tcSkillInfo.Location = new System.Drawing.Point(481, 3);
+            this.tcSkillInfo.Location = new System.Drawing.Point(630, 3);
             this.tcSkillInfo.Multiline = true;
             this.tcSkillInfo.Name = "tcSkillInfo";
             this.tcSkillInfo.SelectedIndex = 0;
-            this.tcSkillInfo.Size = new System.Drawing.Size(294, 308);
+            this.tcSkillInfo.Size = new System.Drawing.Size(294, 474);
             this.tcSkillInfo.TabIndex = 9;
             // 
             // tpSkillInfo
@@ -712,7 +727,7 @@
             this.tpSkillInfo.Location = new System.Drawing.Point(4, 4);
             this.tpSkillInfo.Name = "tpSkillInfo";
             this.tpSkillInfo.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSkillInfo.Size = new System.Drawing.Size(286, 282);
+            this.tpSkillInfo.Size = new System.Drawing.Size(286, 448);
             this.tpSkillInfo.TabIndex = 0;
             this.tpSkillInfo.Text = "Skill";
             // 
@@ -739,7 +754,7 @@
             this.groupBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
             this.groupBox2.Location = new System.Drawing.Point(3, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(280, 276);
+            this.groupBox2.Size = new System.Drawing.Size(280, 442);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Skill Info";
@@ -753,7 +768,7 @@
             this.rtSkillDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
             this.rtSkillDescription.Location = new System.Drawing.Point(9, 120);
             this.rtSkillDescription.Name = "rtSkillDescription";
-            this.rtSkillDescription.Size = new System.Drawing.Size(265, 150);
+            this.rtSkillDescription.Size = new System.Drawing.Size(265, 316);
             this.rtSkillDescription.TabIndex = 10;
             this.rtSkillDescription.Text = "";
             // 
@@ -903,7 +918,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(286, 282);
+            this.tabPage2.Size = new System.Drawing.Size(286, 448);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Items?";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -927,8 +942,30 @@
             this.dgvSkillProducts.ReadOnly = true;
             this.dgvSkillProducts.RowHeadersVisible = false;
             this.dgvSkillProducts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSkillProducts.Size = new System.Drawing.Size(271, 92);
+            this.dgvSkillProducts.Size = new System.Drawing.Size(271, 258);
             this.dgvSkillProducts.TabIndex = 8;
+            // 
+            // dataGridViewTextBoxColumn9
+            // 
+            this.dataGridViewTextBoxColumn9.HeaderText = "Item ID";
+            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
+            this.dataGridViewTextBoxColumn9.ReadOnly = true;
+            this.dataGridViewTextBoxColumn9.Width = 66;
+            // 
+            // dataGridViewTextBoxColumn10
+            // 
+            this.dataGridViewTextBoxColumn10.FillWeight = 200F;
+            this.dataGridViewTextBoxColumn10.HeaderText = "Name";
+            this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
+            this.dataGridViewTextBoxColumn10.ReadOnly = true;
+            this.dataGridViewTextBoxColumn10.Width = 60;
+            // 
+            // dataGridViewTextBoxColumn11
+            // 
+            this.dataGridViewTextBoxColumn11.HeaderText = "Amount";
+            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
+            this.dataGridViewTextBoxColumn11.ReadOnly = true;
+            this.dataGridViewTextBoxColumn11.Width = 68;
             // 
             // dgvSkillReagents
             // 
@@ -949,8 +986,30 @@
             this.dgvSkillReagents.ReadOnly = true;
             this.dgvSkillReagents.RowHeadersVisible = false;
             this.dgvSkillReagents.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSkillReagents.Size = new System.Drawing.Size(271, 139);
+            this.dgvSkillReagents.Size = new System.Drawing.Size(271, 305);
             this.dgvSkillReagents.TabIndex = 7;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            this.dataGridViewTextBoxColumn6.HeaderText = "Item ID";
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.ReadOnly = true;
+            this.dataGridViewTextBoxColumn6.Width = 66;
+            // 
+            // dataGridViewTextBoxColumn7
+            // 
+            this.dataGridViewTextBoxColumn7.FillWeight = 200F;
+            this.dataGridViewTextBoxColumn7.HeaderText = "Name";
+            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
+            this.dataGridViewTextBoxColumn7.ReadOnly = true;
+            this.dataGridViewTextBoxColumn7.Width = 60;
+            // 
+            // dataGridViewTextBoxColumn8
+            // 
+            this.dataGridViewTextBoxColumn8.HeaderText = "Amount";
+            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
+            this.dataGridViewTextBoxColumn8.ReadOnly = true;
+            this.dataGridViewTextBoxColumn8.Width = 68;
             // 
             // label13
             // 
@@ -974,7 +1033,7 @@
             // 
             this.btnSkillSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSkillSearch.Enabled = false;
-            this.btnSkillSearch.Location = new System.Drawing.Point(396, 4);
+            this.btnSkillSearch.Location = new System.Drawing.Point(545, 4);
             this.btnSkillSearch.Name = "btnSkillSearch";
             this.btnSkillSearch.Size = new System.Drawing.Size(79, 23);
             this.btnSkillSearch.TabIndex = 7;
@@ -1001,7 +1060,7 @@
             this.dgvSkills.ReadOnly = true;
             this.dgvSkills.RowHeadersVisible = false;
             this.dgvSkills.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSkills.Size = new System.Drawing.Size(464, 275);
+            this.dgvSkills.Size = new System.Drawing.Size(613, 441);
             this.dgvSkills.TabIndex = 6;
             this.dgvSkills.SelectionChanged += new System.EventHandler(this.DgvSkills_SelectionChanged);
             // 
@@ -1042,10 +1101,134 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tSkillSearch.Location = new System.Drawing.Point(197, 6);
             this.tSkillSearch.Name = "tSkillSearch";
-            this.tSkillSearch.Size = new System.Drawing.Size(193, 20);
+            this.tSkillSearch.Size = new System.Drawing.Size(342, 20);
             this.tSkillSearch.TabIndex = 4;
             this.tSkillSearch.TextChanged += new System.EventHandler(this.TSkillSearch_TextChanged);
             this.tSkillSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSkillSearch_KeyDown);
+            // 
+            // tpZones
+            // 
+            this.tpZones.Controls.Add(this.btnZonesShowAll);
+            this.tpZones.Controls.Add(this.btnSearchZones);
+            this.tpZones.Controls.Add(this.dgvZones);
+            this.tpZones.Controls.Add(this.label10);
+            this.tpZones.Controls.Add(this.tZonesSearch);
+            this.tpZones.Location = new System.Drawing.Point(4, 22);
+            this.tpZones.Name = "tpZones";
+            this.tpZones.Padding = new System.Windows.Forms.Padding(3);
+            this.tpZones.Size = new System.Drawing.Size(927, 480);
+            this.tpZones.TabIndex = 5;
+            this.tpZones.Text = "Zones";
+            this.tpZones.UseVisualStyleBackColor = true;
+            // 
+            // btnZonesShowAll
+            // 
+            this.btnZonesShowAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnZonesShowAll.Location = new System.Drawing.Point(446, 9);
+            this.btnZonesShowAll.Name = "btnZonesShowAll";
+            this.btnZonesShowAll.Size = new System.Drawing.Size(79, 23);
+            this.btnZonesShowAll.TabIndex = 8;
+            this.btnZonesShowAll.Text = "Show All";
+            this.btnZonesShowAll.UseVisualStyleBackColor = true;
+            this.btnZonesShowAll.Click += new System.EventHandler(this.BtnZonesShowAll_Click);
+            // 
+            // btnSearchZones
+            // 
+            this.btnSearchZones.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSearchZones.Enabled = false;
+            this.btnSearchZones.Location = new System.Drawing.Point(361, 9);
+            this.btnSearchZones.Name = "btnSearchZones";
+            this.btnSearchZones.Size = new System.Drawing.Size(79, 23);
+            this.btnSearchZones.TabIndex = 7;
+            this.btnSearchZones.Text = "Search";
+            this.btnSearchZones.UseVisualStyleBackColor = true;
+            this.btnSearchZones.Click += new System.EventHandler(this.BtnZonesSearch_Click);
+            // 
+            // dgvZones
+            // 
+            this.dgvZones.AllowUserToAddRows = false;
+            this.dgvZones.AllowUserToDeleteRows = false;
+            this.dgvZones.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvZones.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvZones.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvZones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvZones.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn12,
+            this.dataGridViewTextBoxColumn13,
+            this.Column15,
+            this.Column11,
+            this.Column13,
+            this.Column14});
+            this.dgvZones.Location = new System.Drawing.Point(11, 38);
+            this.dgvZones.Name = "dgvZones";
+            this.dgvZones.ReadOnly = true;
+            this.dgvZones.RowHeadersVisible = false;
+            this.dgvZones.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvZones.Size = new System.Drawing.Size(907, 436);
+            this.dgvZones.TabIndex = 6;
+            this.dgvZones.SelectionChanged += new System.EventHandler(this.DgvZones_SelectionChanged);
+            // 
+            // dataGridViewTextBoxColumn12
+            // 
+            this.dataGridViewTextBoxColumn12.FillWeight = 50F;
+            this.dataGridViewTextBoxColumn12.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
+            this.dataGridViewTextBoxColumn12.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn13
+            // 
+            this.dataGridViewTextBoxColumn13.HeaderText = "Internal Name";
+            this.dataGridViewTextBoxColumn13.Name = "dataGridViewTextBoxColumn13";
+            this.dataGridViewTextBoxColumn13.ReadOnly = true;
+            // 
+            // Column15
+            // 
+            this.Column15.FillWeight = 50F;
+            this.Column15.HeaderText = "Group ID";
+            this.Column15.Name = "Column15";
+            this.Column15.ReadOnly = true;
+            // 
+            // Column11
+            // 
+            this.Column11.FillWeight = 50F;
+            this.Column11.HeaderText = "Zone Key";
+            this.Column11.Name = "Column11";
+            this.Column11.ReadOnly = true;
+            // 
+            // Column13
+            // 
+            this.Column13.HeaderText = "Display Text";
+            this.Column13.Name = "Column13";
+            this.Column13.ReadOnly = true;
+            // 
+            // Column14
+            // 
+            this.Column14.FillWeight = 50F;
+            this.Column14.HeaderText = "Is Closed";
+            this.Column14.Name = "Column14";
+            this.Column14.ReadOnly = true;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(8, 14);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(161, 13);
+            this.label10.TabIndex = 5;
+            this.label10.Text = "Search in Zone ID, Key or Name";
+            // 
+            // tZonesSearch
+            // 
+            this.tZonesSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tZonesSearch.Location = new System.Drawing.Point(175, 11);
+            this.tZonesSearch.Name = "tZonesSearch";
+            this.tZonesSearch.Size = new System.Drawing.Size(180, 20);
+            this.tZonesSearch.TabIndex = 4;
+            this.tZonesSearch.TextChanged += new System.EventHandler(this.TZonesSearch_TextChanged);
+            this.tZonesSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TZonesSearch_KeyDown);
             // 
             // openDBDlg
             // 
@@ -1061,55 +1244,11 @@
             this.openGamePakFileDialog.RestoreDirectory = true;
             this.openGamePakFileDialog.Title = "Open game_pak";
             // 
-            // dataGridViewTextBoxColumn6
-            // 
-            this.dataGridViewTextBoxColumn6.HeaderText = "Item ID";
-            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
-            this.dataGridViewTextBoxColumn6.ReadOnly = true;
-            this.dataGridViewTextBoxColumn6.Width = 66;
-            // 
-            // dataGridViewTextBoxColumn7
-            // 
-            this.dataGridViewTextBoxColumn7.FillWeight = 200F;
-            this.dataGridViewTextBoxColumn7.HeaderText = "Name";
-            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
-            this.dataGridViewTextBoxColumn7.ReadOnly = true;
-            this.dataGridViewTextBoxColumn7.Width = 60;
-            // 
-            // dataGridViewTextBoxColumn8
-            // 
-            this.dataGridViewTextBoxColumn8.HeaderText = "Amount";
-            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
-            this.dataGridViewTextBoxColumn8.ReadOnly = true;
-            this.dataGridViewTextBoxColumn8.Width = 68;
-            // 
-            // dataGridViewTextBoxColumn9
-            // 
-            this.dataGridViewTextBoxColumn9.HeaderText = "Item ID";
-            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
-            this.dataGridViewTextBoxColumn9.ReadOnly = true;
-            this.dataGridViewTextBoxColumn9.Width = 66;
-            // 
-            // dataGridViewTextBoxColumn10
-            // 
-            this.dataGridViewTextBoxColumn10.FillWeight = 200F;
-            this.dataGridViewTextBoxColumn10.HeaderText = "Name";
-            this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
-            this.dataGridViewTextBoxColumn10.ReadOnly = true;
-            this.dataGridViewTextBoxColumn10.Width = 60;
-            // 
-            // dataGridViewTextBoxColumn11
-            // 
-            this.dataGridViewTextBoxColumn11.HeaderText = "Amount";
-            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
-            this.dataGridViewTextBoxColumn11.ReadOnly = true;
-            this.dataGridViewTextBoxColumn11.Width = 68;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(785, 345);
+            this.ClientSize = new System.Drawing.Size(934, 511);
             this.Controls.Add(this.tcViewer);
             this.Name = "MainForm";
             this.Text = "AAEmu.DBViewer";
@@ -1140,6 +1279,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkillProducts)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkillReagents)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkills)).EndInit();
+            this.tpZones.ResumeLayout(false);
+            this.tpZones.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1234,6 +1376,18 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
+        private System.Windows.Forms.TabPage tpZones;
+        private System.Windows.Forms.Button btnSearchZones;
+        private System.Windows.Forms.DataGridView dgvZones;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox tZonesSearch;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn12;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn13;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column15;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column13;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column14;
+        private System.Windows.Forms.Button btnZonesShowAll;
     }
 }
 

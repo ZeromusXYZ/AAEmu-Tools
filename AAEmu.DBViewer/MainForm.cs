@@ -105,12 +105,30 @@ namespace AAEmu.DBViewer
             public long amount = 0;
         }
 
+        class GameZone
+        {
+            public long id = 0;
+            public string name = string.Empty;
+            public long zone_key = 0;
+            public long group_id = 0;
+            public bool closed = false;
+            public string display_text = string.Empty;
+            public long faction_id = 0;
+            public long zone_climate_id = 0;
+            public bool abox_show = false; // no idea what this is, seems to be always set to false
+
+            // Helpers
+            public string display_textLocalized = string.Empty;
+            public string SearchString = string.Empty;
+        }
+
         Dictionary<long, GameItem> DB_Items = new Dictionary<long, GameItem>();
         Dictionary<long, GameSkills> DB_Skills = new Dictionary<long, GameSkills>();
         Dictionary<long, GameNPC> DB_NPCs = new Dictionary<long, GameNPC>();
         Dictionary<long, string> DB_Icons = new Dictionary<long, string>();
         Dictionary<long, GameSkillItems> DB_Skill_Reagents = new Dictionary<long, GameSkillItems>();
         Dictionary<long, GameSkillItems> DB_Skill_Products = new Dictionary<long, GameSkillItems>();
+        Dictionary<long, GameZone> DB_Zones = new Dictionary<long, GameZone>();
 
         public MainForm()
         {
@@ -322,6 +340,56 @@ namespace AAEmu.DBViewer
             return ((val != null) && ((val == "t") || (val == "T") || (val == "1")));
         }
 
+        private void LoadZones()
+        {
+            string sql = "SELECT * FROM zones ORDER BY id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    DB_Zones.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            GameZone t = new GameZone();
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+                            t.zone_key = GetInt64(reader, "zone_key");
+                            t.group_id = GetInt64(reader, "group_id");
+                            t.closed = DBValueToBool(GetString(reader, "closed"));
+                            t.display_text = GetString(reader, "display_text");
+                            t.faction_id = GetInt64(reader, "faction_id");
+                            t.zone_climate_id = GetInt64(reader, "zone_climate_id");
+                            t.abox_show = DBValueToBool(GetString(reader, "abox_show"));
+
+                            if (t.display_text != string.Empty)
+                                t.display_textLocalized = GetTranslationByID(t.id, "zones", "display_text", t.display_text);
+                            else
+                                t.display_textLocalized = "" ;
+                            t.SearchString = t.name + " " + t.display_text + " " + t.display_textLocalized ;
+                            t.SearchString = t.SearchString.ToLower();
+
+                            DB_Zones.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+
+                    }
+                }
+            }
+
+        }
+
+
         private void LoadItems()
         {
             string sql = "SELECT * FROM items ORDER BY id ASC";
@@ -352,7 +420,6 @@ namespace AAEmu.DBViewer
                             t.icon_id = GetInt64(reader, "icon_id");
                             t.sellable = DBValueToBool(GetString(reader, "sellable"));
                             t.fixed_grade = GetInt64(reader, "fixed_grade");
-                            t.use_skill_id = GetInt64(reader, "use_skill_id");
                             t.use_skill_id = GetInt64(reader, "use_skill_id");
 
                             t.nameLocalized = GetTranslationByID(t.id, "items", "name", t.name);
@@ -1174,6 +1241,8 @@ namespace AAEmu.DBViewer
                 LoadTranslations(Properties.Settings.Default.DefaultGameLanguage);
                 loading.ShowInfo("Loading: Icon info");
                 LoadIcons();
+                loading.ShowInfo("Loading: Zones");
+                LoadZones();
                 loading.ShowInfo("Loading: Items");
                 LoadItems();
                 loading.ShowInfo("Loading: Skills");
@@ -1449,6 +1518,82 @@ namespace AAEmu.DBViewer
                 }
             }
 
+        }
+
+        private void BtnZonesSearch_Click(object sender, EventArgs e)
+        {
+            string searchText = tZonesSearch.Text.ToLower();
+            if (searchText == string.Empty)
+                return;
+            long searchID;
+            if (!long.TryParse(searchText, out searchID))
+                searchID = -1 ;
+
+            dgvZones.Rows.Clear();
+            foreach(var t in DB_Zones)
+            {
+                var z = t.Value;
+                if ((z.id == searchID) || (z.zone_key == searchID) || (z.group_id == searchID) || (z.SearchString.IndexOf(searchText) >= 0))
+                {
+                    var line = dgvZones.Rows.Add();
+                    var row = dgvZones.Rows[line];
+
+                    row.Cells[0].Value = z.id.ToString();
+                    row.Cells[1].Value = z.name;
+                    row.Cells[2].Value = z.group_id.ToString();
+                    row.Cells[3].Value = z.zone_key.ToString();
+                    row.Cells[4].Value = z.display_textLocalized;
+                    row.Cells[5].Value = z.closed.ToString();
+
+                }
+            }
+        }
+
+        private void TZonesSearch_TextChanged(object sender, EventArgs e)
+        {
+            btnSearchZones.Enabled = (tZonesSearch.Text != string.Empty);
+        }
+
+        private void BtnZonesShowAll_Click(object sender, EventArgs e)
+        {
+            dgvZones.Rows.Clear();
+            foreach (var t in DB_Zones)
+            {
+                var z = t.Value;
+                var line = dgvZones.Rows.Add();
+                var row = dgvZones.Rows[line];
+
+                row.Cells[0].Value = z.id.ToString();
+                row.Cells[1].Value = z.name;
+                row.Cells[2].Value = z.group_id.ToString();
+                row.Cells[3].Value = z.zone_key.ToString();
+                row.Cells[4].Value = z.display_textLocalized;
+                row.Cells[5].Value = z.closed.ToString();
+            }
+
+        }
+
+        private void TZonesSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                BtnZonesSearch_Click(null, null);
+            }
+
+        }
+
+        private void DgvZones_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvZones.SelectedRows.Count <= 0)
+                return;
+            var row = dgvZones.SelectedRows[0];
+            if (row.Cells.Count <= 0)
+                return;
+
+            var val = row.Cells[0].Value;
+            if (val == null)
+                return;
+            ShowSelectedData("zones", "(id = " + val.ToString() + ")", "id ASC");
         }
     }
 }
