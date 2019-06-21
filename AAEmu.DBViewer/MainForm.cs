@@ -122,6 +122,30 @@ namespace AAEmu.DBViewer
             public string SearchString = string.Empty;
         }
 
+        class GameZone_Groups
+        {
+            public long id = 0;
+            public string name = string.Empty;
+            public double x = 0;
+            public double y = 0;
+            public double w = 0;
+            public double h = 0;
+            public long image_map = 0;
+            public long sound_id = 0;
+            public long target_id = 0;
+            public string display_text = string.Empty;
+            public long faction_chat_region_id = 0;
+            public long sound_pack_id = 0;
+            public long pirate_desperado = 0;
+            public long fishing_sea_loot_pack_id = 0;
+            public long fishing_land_loot_pack_id = 0;
+            public long buff_id = 0;
+
+            // Helpers
+            public string display_textLocalized = string.Empty;
+            public string SearchString = string.Empty;
+        }
+
         Dictionary<long, GameItem> DB_Items = new Dictionary<long, GameItem>();
         Dictionary<long, GameSkills> DB_Skills = new Dictionary<long, GameSkills>();
         Dictionary<long, GameNPC> DB_NPCs = new Dictionary<long, GameNPC>();
@@ -129,6 +153,7 @@ namespace AAEmu.DBViewer
         Dictionary<long, GameSkillItems> DB_Skill_Reagents = new Dictionary<long, GameSkillItems>();
         Dictionary<long, GameSkillItems> DB_Skill_Products = new Dictionary<long, GameSkillItems>();
         Dictionary<long, GameZone> DB_Zones = new Dictionary<long, GameZone>();
+        Dictionary<long, GameZone_Groups> DB_Zone_Groups = new Dictionary<long, GameZone_Groups>();
 
         public MainForm()
         {
@@ -189,6 +214,14 @@ namespace AAEmu.DBViewer
                 return string.Empty;
             else
                 return reader.GetString(fieldname);
+        }
+
+        private double GetDouble(SQLiteWrapperReader reader, string fieldname)
+        {
+            if (reader.IsDBNull(fieldname))
+                return 0;
+            else
+                return reader.GetDouble(fieldname);
         }
 
         private void LoadTableNames()
@@ -343,7 +376,6 @@ namespace AAEmu.DBViewer
         private void LoadZones()
         {
             string sql = "SELECT * FROM zones ORDER BY id ASC";
-
             using (var connection = SQLite.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
@@ -378,6 +410,59 @@ namespace AAEmu.DBViewer
                             t.SearchString = t.SearchString.ToLower();
 
                             DB_Zones.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+
+                    }
+                }
+            }
+
+            sql = "SELECT * FROM zone_groups ORDER BY id ASC";
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    DB_Zone_Groups.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            GameZone_Groups t = new GameZone_Groups();
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+                            t.x = GetDouble(reader, "x");
+                            t.y = GetDouble(reader, "y");
+                            t.w = GetDouble(reader, "w");
+                            t.h = GetDouble(reader, "h");
+                            t.image_map = GetInt64(reader, "image_map");
+                            t.sound_id = GetInt64(reader, "sound_id");
+                            t.target_id = GetInt64(reader, "target_id");
+                            t.display_text = GetString(reader, "display_text");
+                            t.faction_chat_region_id = GetInt64(reader, "faction_chat_region_id");
+                            t.sound_pack_id = GetInt64(reader, "sound_pack_id");
+                            t.pirate_desperado = GetInt64(reader, "pirate_desperado");
+                            t.sound_pack_id = GetInt64(reader, "sound_pack_id");
+                            t.pirate_desperado = GetInt64(reader, "pirate_desperado");
+                            t.fishing_sea_loot_pack_id = GetInt64(reader, "fishing_sea_loot_pack_id");
+                            t.fishing_land_loot_pack_id = GetInt64(reader, "fishing_land_loot_pack_id");
+                            t.buff_id = GetInt64(reader, "buff_id");
+
+                            if (t.display_text != string.Empty)
+                                t.display_textLocalized = GetTranslationByID(t.id, "zone_groups", "display_text", t.display_text);
+                            else
+                                t.display_textLocalized = "";
+                            t.SearchString = t.name + " " + t.display_text + " " + t.display_textLocalized;
+                            t.SearchString = t.SearchString.ToLower();
+
+                            DB_Zone_Groups.Add(t.id, t);
                         }
 
                         Cursor = Cursors.Default;
