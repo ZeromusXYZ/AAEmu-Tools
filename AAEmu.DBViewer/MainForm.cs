@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using AAPakEditor;
+using AAEmu.DBDefs;
 using AAEmu.Game.Utils.DB;
 using FreeImageAPI;
 
@@ -19,141 +20,6 @@ namespace AAEmu.DBViewer
         private string defaultTitle;
         private AAPak pak = new AAPak("");
         private List<string> possibleLanguageIDs = new List<string>();
-
-        class GameTranslation
-        {
-            public long idx = 0;
-            public string table = string.Empty ;
-            public string field = string.Empty ;
-            public string value = string.Empty ;
-        }
-        Dictionary<string, GameTranslation> CurrentTranslations = new Dictionary<string, GameTranslation>();
-
-        class GameItem
-        {
-            // Actual DB entries
-            public long id = 0;
-            public string name = string.Empty;
-            public long catgegory_id = 1 ;
-            public long level = 1 ;
-            public string description = string.Empty;
-            public long price = 0;
-            public long refund = 0;
-            public long max_stack_size = 1;
-            public long icon_id = 1;
-            public bool sellable = false;
-            public long fixed_grade = -1;
-            public long use_skill_id = 0;
-
-            // Helpers
-            public string nameLocalized = string.Empty;
-            public string descriptionLocalized = string.Empty;
-            public string SearchString = string.Empty;
-        }
-
-        class GameSkills
-        {
-            // Actual DB entries
-            public long id = 0;
-            public string name = string.Empty;
-            public string desc = string.Empty;
-            public string web_desc = string.Empty;
-            public long cost = 0;
-            public long icon_id = 0;
-            public bool show = false;
-            public long cooldown_time = 0;
-            public long casting_time = 0;
-            public bool ignore_global_cooldown = false;
-            public bool default_gcd = true;
-            public long custom_gcd = 0 ;
-            public long effect_delay = 0;
-            public long ability_id = 0;
-            public long mana_cost = 0;
-            public long timing_id = 0;
-            public long consume_lp = 0;
-            public bool first_reagent_only = false;
-
-            // Helpers
-            public string nameLocalized = string.Empty;
-            public string descriptionLocalized = string.Empty;
-            public string webDescriptionLocalized = string.Empty;
-            public string SearchString = string.Empty;
-        }
-
-        class GameNPC
-        {
-            // Actual DB entries
-            public long id = 0;
-            public string name = string.Empty;
-            public long char_race_id = 0;
-            public long npc_grade_id = 0;
-            public long npc_kind_id = 0;
-            public long level = 0;
-            public long faction_id = 0;
-            public long model_id = 0;
-
-            // Helpers
-            public string nameLocalized = string.Empty;
-            public string SearchString = string.Empty;
-        }
-
-        class GameSkillItems
-        {
-            public long id = 0;
-            public long skill_id = 0;
-            public long item_id = 0;
-            public long amount = 0;
-        }
-
-        class GameZone
-        {
-            public long id = 0;
-            public string name = string.Empty;
-            public long zone_key = 0;
-            public long group_id = 0;
-            public bool closed = false;
-            public string display_text = string.Empty;
-            public long faction_id = 0;
-            public long zone_climate_id = 0;
-            public bool abox_show = false; // no idea what this is, seems to be always set to false
-
-            // Helpers
-            public string display_textLocalized = string.Empty;
-            public string SearchString = string.Empty;
-        }
-
-        class GameZone_Groups
-        {
-            public long id = 0;
-            public string name = string.Empty;
-            public double x = 0;
-            public double y = 0;
-            public double w = 0;
-            public double h = 0;
-            public long image_map = 0;
-            public long sound_id = 0;
-            public long target_id = 0;
-            public string display_text = string.Empty;
-            public long faction_chat_region_id = 0;
-            public long sound_pack_id = 0;
-            public long pirate_desperado = 0;
-            public long fishing_sea_loot_pack_id = 0;
-            public long fishing_land_loot_pack_id = 0;
-            public long buff_id = 0;
-
-            // Helpers
-            public string display_textLocalized = string.Empty;
-            public string SearchString = string.Empty;
-        }
-
-        Dictionary<long, GameItem> DB_Items = new Dictionary<long, GameItem>();
-        Dictionary<long, GameSkills> DB_Skills = new Dictionary<long, GameSkills>();
-        Dictionary<long, GameNPC> DB_NPCs = new Dictionary<long, GameNPC>();
-        Dictionary<long, string> DB_Icons = new Dictionary<long, string>();
-        Dictionary<long, GameSkillItems> DB_Skill_Reagents = new Dictionary<long, GameSkillItems>();
-        Dictionary<long, GameSkillItems> DB_Skill_Products = new Dictionary<long, GameSkillItems>();
-        Dictionary<long, GameZone> DB_Zones = new Dictionary<long, GameZone>();
-        Dictionary<long, GameZone_Groups> DB_Zone_Groups = new Dictionary<long, GameZone_Groups>();
 
         public MainForm()
         {
@@ -216,12 +82,12 @@ namespace AAEmu.DBViewer
                 return reader.GetString(fieldname);
         }
 
-        private double GetDouble(SQLiteWrapperReader reader, string fieldname)
+        private float GetFloat(SQLiteWrapperReader reader, string fieldname)
         {
             if (reader.IsDBNull(fieldname))
                 return 0;
             else
-                return reader.GetDouble(fieldname);
+                return reader.GetFloat(fieldname);
         }
 
         private void LoadTableNames()
@@ -258,10 +124,10 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        DB_Icons.Clear();
+                        AADB.DB_Icons.Clear();
                         while (reader.Read())
                         {
-                            DB_Icons.Add(GetInt64(reader, "id"), GetString(reader, "filename"));
+                            AADB.DB_Icons.Add(GetInt64(reader, "id"), GetString(reader, "filename"));
                         }
                     }
                 }
@@ -278,7 +144,7 @@ namespace AAEmu.DBViewer
             {
                 using (var command = connection.CreateCommand())
                 {
-                    CurrentTranslations.Clear();
+                    AADB.DB_Translations.Clear();
 
                     command.CommandText = sql;
                     command.Prepare();
@@ -330,7 +196,7 @@ namespace AAEmu.DBViewer
                             
                             t.value = GetString(reader,lng);
                             string k = t.table + ":" + t.field + ":" + t.idx.ToString();
-                            CurrentTranslations.Add(k, t);
+                            AADB.DB_Translations.Add(k, t);
                         }
 
                         Cursor = Cursors.Default;
@@ -375,12 +241,14 @@ namespace AAEmu.DBViewer
 
         private void LoadZones()
         {
+
+            // Zones
             string sql = "SELECT * FROM zones ORDER BY id ASC";
             using (var connection = SQLite.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
                 {
-                    DB_Zones.Clear();
+                    AADB.DB_Zones.Clear();
 
                     command.CommandText = sql;
                     command.Prepare();
@@ -409,7 +277,7 @@ namespace AAEmu.DBViewer
                             t.SearchString = t.name + " " + t.display_text + " " + t.display_textLocalized ;
                             t.SearchString = t.SearchString.ToLower();
 
-                            DB_Zones.Add(t.id, t);
+                            AADB.DB_Zones.Add(t.id, t);
                         }
 
                         Cursor = Cursors.Default;
@@ -419,12 +287,13 @@ namespace AAEmu.DBViewer
                 }
             }
 
+            // Zone_Groups
             sql = "SELECT * FROM zone_groups ORDER BY id ASC";
             using (var connection = SQLite.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
                 {
-                    DB_Zone_Groups.Clear();
+                    AADB.DB_Zone_Groups.Clear();
 
                     command.CommandText = sql;
                     command.Prepare();
@@ -438,17 +307,16 @@ namespace AAEmu.DBViewer
                             GameZone_Groups t = new GameZone_Groups();
                             t.id = GetInt64(reader, "id");
                             t.name = GetString(reader, "name");
-                            t.x = GetDouble(reader, "x");
-                            t.y = GetDouble(reader, "y");
-                            t.w = GetDouble(reader, "w");
-                            t.h = GetDouble(reader, "h");
+                            var x = GetFloat(reader, "x");
+                            var y = GetFloat(reader, "y");
+                            var w = GetFloat(reader, "w");
+                            var h = GetFloat(reader, "h");
+                            t.PosAndSize = new RectangleF(x, y, w, h);
                             t.image_map = GetInt64(reader, "image_map");
                             t.sound_id = GetInt64(reader, "sound_id");
                             t.target_id = GetInt64(reader, "target_id");
                             t.display_text = GetString(reader, "display_text");
                             t.faction_chat_region_id = GetInt64(reader, "faction_chat_region_id");
-                            t.sound_pack_id = GetInt64(reader, "sound_pack_id");
-                            t.pirate_desperado = GetInt64(reader, "pirate_desperado");
                             t.sound_pack_id = GetInt64(reader, "sound_pack_id");
                             t.pirate_desperado = GetInt64(reader, "pirate_desperado");
                             t.fishing_sea_loot_pack_id = GetInt64(reader, "fishing_sea_loot_pack_id");
@@ -462,7 +330,7 @@ namespace AAEmu.DBViewer
                             t.SearchString = t.name + " " + t.display_text + " " + t.display_textLocalized;
                             t.SearchString = t.SearchString.ToLower();
 
-                            DB_Zone_Groups.Add(t.id, t);
+                            AADB.DB_Zone_Groups.Add(t.id, t);
                         }
 
                         Cursor = Cursors.Default;
@@ -471,6 +339,52 @@ namespace AAEmu.DBViewer
                     }
                 }
             }
+
+            // World_Groups
+            sql = "SELECT * FROM world_groups ORDER BY id ASC";
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_World_Groups.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            GameWorld_Groups t = new GameWorld_Groups();
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+                            int x = (int)GetInt64(reader, "x");
+                            int y = (int)GetInt64(reader, "y");
+                            int w = (int)GetInt64(reader, "w");
+                            int h = (int)GetInt64(reader, "h");
+                            int ix = (int)GetInt64(reader, "image_x");
+                            int iy = (int)GetInt64(reader, "image_y");
+                            int iw = (int)GetInt64(reader, "image_w");
+                            int ih = (int)GetInt64(reader, "image_h");
+                            t.PosAndSize = new Rectangle(x, y, w, h);
+                            t.Image_PosAndSize = new Rectangle(ix, iy, iw, ih);
+                            t.image_map = GetInt64(reader, "image_map");
+                            t.target_id = GetInt64(reader, "target_id");
+
+                            t.SearchString = t.name.ToLower();
+
+                            AADB.DB_World_Groups.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+
+                    }
+                }
+            }
+
 
         }
 
@@ -483,7 +397,7 @@ namespace AAEmu.DBViewer
             {
                 using (var command = connection.CreateCommand())
                 {
-                    DB_Items.Clear();
+                    AADB.DB_Items.Clear();
 
                     command.CommandText = sql;
                     command.Prepare();
@@ -513,7 +427,7 @@ namespace AAEmu.DBViewer
                             t.SearchString = t.name + " " + t.description + " " + t.nameLocalized + " " + t.descriptionLocalized ;
                             t.SearchString = t.SearchString.ToLower();
 
-                            DB_Items.Add(t.id, t);
+                            AADB.DB_Items.Add(t.id, t);
                         }
 
                         Cursor = Cursors.Default;
@@ -536,7 +450,7 @@ namespace AAEmu.DBViewer
             {
                 using (var command = connection.CreateCommand())
                 {
-                    DB_Skills.Clear();
+                    AADB.DB_Skills.Clear();
 
                     command.CommandText = sql;
                     command.Prepare();
@@ -588,7 +502,7 @@ namespace AAEmu.DBViewer
                             t.SearchString = t.name + " " + t.desc + " " + t.nameLocalized + " " + t.descriptionLocalized;
                             t.SearchString = t.SearchString.ToLower();
 
-                            DB_Skills.Add(t.id, t);
+                            AADB.DB_Skills.Add(t.id, t);
                         }
 
                         Cursor = Cursors.Default;
@@ -608,7 +522,7 @@ namespace AAEmu.DBViewer
             {
                 using (var command = connection.CreateCommand())
                 {
-                    DB_Skill_Reagents.Clear();
+                    AADB.DB_Skill_Reagents.Clear();
 
                     command.CommandText = sql;
                     command.Prepare();
@@ -625,7 +539,7 @@ namespace AAEmu.DBViewer
                             t.item_id = GetInt64(reader, "item_id");
                             t.amount = GetInt64(reader, "amount");
 
-                            DB_Skill_Reagents.Add(t.id, t);
+                            AADB.DB_Skill_Reagents.Add(t.id, t);
                         }
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
@@ -643,7 +557,7 @@ namespace AAEmu.DBViewer
             {
                 using (var command = connection.CreateCommand())
                 {
-                    DB_Skill_Products.Clear();
+                    AADB.DB_Skill_Products.Clear();
 
                     command.CommandText = sql;
                     command.Prepare();
@@ -660,7 +574,7 @@ namespace AAEmu.DBViewer
                             t.item_id = GetInt64(reader, "item_id");
                             t.amount = GetInt64(reader, "amount");
 
-                            DB_Skill_Products.Add(t.id, t);
+                            AADB.DB_Skill_Products.Add(t.id, t);
                         }
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
@@ -682,7 +596,7 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        DB_NPCs.Clear();
+                        AADB.DB_NPCs.Clear();
                         while (reader.Read())
                         {
                             var t = new GameNPC();
@@ -698,7 +612,7 @@ namespace AAEmu.DBViewer
 
                             t.SearchString = t.name + " " + t.nameLocalized ;
                             t.SearchString = t.SearchString.ToLower();
-                            DB_NPCs.Add(t.id, t);
+                            AADB.DB_NPCs.Add(t.id, t);
                         }
                     }
                 }
@@ -729,7 +643,7 @@ namespace AAEmu.DBViewer
             Application.UseWaitCursor = true;
             Cursor = Cursors.WaitCursor;
             dgvItem.Visible = false;
-            foreach (var item in DB_Items)
+            foreach (var item in AADB.DB_Items)
             {
                 bool addThis = false;
                 if (SearchByID)
@@ -773,7 +687,7 @@ namespace AAEmu.DBViewer
         {
             string res = string.Empty;
             string k = table + ":" + field + ":" + idx.ToString();
-            if (CurrentTranslations.TryGetValue(k, out GameTranslation val))
+            if (AADB.DB_Translations.TryGetValue(k, out GameTranslation val))
                 res = val.value;
             // If no translation found ...
             if (res == string.Empty)
@@ -872,12 +786,12 @@ namespace AAEmu.DBViewer
                         {
                             rt.AppendText(restText.Substring(0, atStart));
                             rt.SelectionColor = Color.Yellow;
-                            if ((fieldNameStr == "ITEM_NAME") && (DB_Items.TryGetValue(itemVal, out GameItem item)))
+                            if ((fieldNameStr == "ITEM_NAME") && (AADB.DB_Items.TryGetValue(itemVal, out GameItem item)))
                             {
                                 rt.AppendText(item.nameLocalized);
                             }
                             else
-                            if ((fieldNameStr == "NPC_NAME") && (DB_NPCs.TryGetValue(itemVal, out GameNPC npc)))
+                            if ((fieldNameStr == "NPC_NAME") && (AADB.DB_NPCs.TryGetValue(itemVal, out GameNPC npc)))
                             {
                                 rt.AppendText(npc.nameLocalized);
                             }
@@ -962,7 +876,7 @@ namespace AAEmu.DBViewer
 
             if (pak.isOpen)
             {
-                if (DB_Icons.TryGetValue(icon_id, out var iconname))
+                if (AADB.DB_Icons.TryGetValue(icon_id, out var iconname))
                 {
                     var fn = "game/ui/icon/" + iconname;
 
@@ -1037,7 +951,7 @@ namespace AAEmu.DBViewer
 
         private void ShowDBItem(long idx)
         {
-            if (DB_Items.TryGetValue(idx,out var item))
+            if (AADB.DB_Items.TryGetValue(idx,out var item))
             {
                 lItemID.Text = idx.ToString();
                 lItemName.Text = item.nameLocalized ;
@@ -1063,7 +977,7 @@ namespace AAEmu.DBViewer
 
         private void ShowDBSkill(long idx)
         {
-            if (DB_Skills.TryGetValue(idx, out var skill))
+            if (AADB.DB_Skills.TryGetValue(idx, out var skill))
             {
                 lSkillID.Text = idx.ToString();
                 lSkillName.Text = skill.nameLocalized;
@@ -1105,14 +1019,14 @@ namespace AAEmu.DBViewer
                 }
                 // Produces
                 dgvSkillProducts.Rows.Clear();
-                foreach(var p in DB_Skill_Products)
+                foreach(var p in AADB.DB_Skill_Products)
                 {
                     if (p.Value.skill_id == idx)
                     {
                         var line = dgvSkillProducts.Rows.Add();
                         var row = dgvSkillProducts.Rows[line];
                         row.Cells[0].Value = p.Value.item_id.ToString();
-                        if (DB_Items.TryGetValue(p.Value.item_id, out var item))
+                        if (AADB.DB_Items.TryGetValue(p.Value.item_id, out var item))
                         {
                             row.Cells[1].Value = item.nameLocalized ;
                         }
@@ -1126,14 +1040,14 @@ namespace AAEmu.DBViewer
 
                 // Reagents
                 dgvSkillReagents.Rows.Clear();
-                foreach (var p in DB_Skill_Reagents)
+                foreach (var p in AADB.DB_Skill_Reagents)
                 {
                     if (p.Value.skill_id == idx)
                     {
                         var line = dgvSkillReagents.Rows.Add();
                         var row = dgvSkillReagents.Rows[line];
                         row.Cells[0].Value = p.Value.item_id.ToString();
-                        if (DB_Items.TryGetValue(p.Value.item_id, out var item))
+                        if (AADB.DB_Items.TryGetValue(p.Value.item_id, out var item))
                         {
                             row.Cells[1].Value = item.nameLocalized;
                         }
@@ -1159,6 +1073,128 @@ namespace AAEmu.DBViewer
                 skillIcon.Image = null;
                 skillIcon.Text = "???";
             }
+        }
+
+        private void ShowDBZone(long idx)
+        {
+            bool blank_zone_groups = false;
+            bool blank_world_groups = false;
+            if (AADB.DB_Zones.TryGetValue(idx, out var zone))
+            {
+                // From Zones
+                lZoneID.Text = zone.id.ToString();
+                if (zone.closed)
+                    lZoneDisplayName.Text = zone.display_textLocalized + " (closed)";
+                else
+                    lZoneDisplayName.Text = zone.display_textLocalized;
+                lZoneName.Text = zone.name;
+                lZoneKey.Text = zone.zone_key.ToString();
+                lZoneGroupID.Text = zone.group_id.ToString();
+                lZoneFactionID.Text = zone.faction_id.ToString();
+                lZoneClimateID.Text = zone.zone_climate_id.ToString();
+                lZoneABoxShow.Text = zone.abox_show.ToString();
+
+                // From Zone_Groups
+                if (AADB.DB_Zone_Groups.TryGetValue(zone.group_id, out var zg))
+                {
+                    lZoneGroupsDisplayName.Text = zg.display_textLocalized;
+                    lZoneGroupsName.Text = zg.name;
+                    lZoneGroupsSizePos.Text = "X:" + zg.PosAndSize.X.ToString("0.0") + " Y:" + zg.PosAndSize.Y.ToString("0.0") + "  W:" + zg.PosAndSize.Width.ToString("0.0") + " H:" + zg.PosAndSize.Height.ToString("0.0");
+                    lZoneGroupsImageMap.Text = zg.image_map.ToString();
+                    lZoneGroupsSoundID.Text = zg.sound_id.ToString();
+                    lZoneGroupsSoundPackID.Text = zg.sound_pack_id.ToString();
+                    lZoneGroupsTargetID.Text = zg.target_id.ToString();
+                    lZoneGroupsFactionChatID.Text = zg.faction_chat_region_id.ToString();
+                    lZoneGroupsPirateDesperado.Text = zg.pirate_desperado.ToString();
+                    lZoneGroupsBuffID.Text = zg.buff_id.ToString();
+                    if (zg.fishing_sea_loot_pack_id > 0)
+                    {
+                        btnZoneGroupsSaltWaterFish.Tag = zg.fishing_sea_loot_pack_id;
+                        btnZoneGroupsSaltWaterFish.Enabled = true;
+                    }
+                    else
+                    {
+                        btnZoneGroupsSaltWaterFish.Tag = 0;
+                        btnZoneGroupsSaltWaterFish.Enabled = false;
+                    }
+                    if (zg.fishing_land_loot_pack_id > 0)
+                    {
+                        btnZoneGroupsFreshWaterFish.Tag = zg.fishing_land_loot_pack_id;
+                        btnZoneGroupsFreshWaterFish.Enabled = true;
+                    }
+                    else
+                    {
+                        btnZoneGroupsFreshWaterFish.Tag = 0;
+                        btnZoneGroupsFreshWaterFish.Enabled = false;
+                    }
+
+                    // From World_Group
+                    if (AADB.DB_World_Groups.TryGetValue(zg.target_id, out var wg))
+                    {
+                        lWorldGroupName.Text = wg.name;
+                        lWorldGroupSizeAndPos.Text = "X:" + wg.PosAndSize.X.ToString() + " Y:" + wg.PosAndSize.Y.ToString() + "  W:" + wg.PosAndSize.Width.ToString() + " H:" + wg.PosAndSize.Height.ToString();
+                        lWorldGroupImageSizeAndPos.Text = "X:" + wg.Image_PosAndSize.X.ToString() + " Y:" + wg.Image_PosAndSize.Y.ToString() + "  W:" + wg.Image_PosAndSize.Width.ToString() + " H:" + wg.Image_PosAndSize.Height.ToString();
+                        lWorldGroupImageMap.Text = wg.image_map.ToString();
+                        lWorldGroupTargetID.Text = wg.target_id.ToString();
+                    }
+                    else
+                    {
+                        blank_world_groups = true;
+                    }
+
+                }
+                else
+                {
+                    blank_zone_groups = true;
+                    blank_world_groups = true;
+                }
+
+                ShowSelectedData("zones", "(id = " + idx.ToString() + ")", "id ASC");
+            }
+            else
+            {
+                lZoneID.Text = "";
+                lZoneDisplayName.Text = "<none>";
+                lZoneName.Text = "<none>";
+                lZoneKey.Text = "";
+                lZoneGroupID.Text = "";
+                lZoneFactionID.Text = "";
+                lZoneClimateID.Text = "";
+                lZoneABoxShow.Text = "";
+
+                blank_world_groups = true;
+                blank_zone_groups = true;
+            }
+
+            if (blank_zone_groups)
+            {
+                // blank stuff
+                lZoneGroupsDisplayName.Text = "<none>";
+                lZoneGroupsName.Text = "<none>";
+                lZoneGroupsSizePos.Text = "";
+                lZoneGroupsImageMap.Text = "";
+                lZoneGroupsSoundID.Text = "";
+                lZoneGroupsSoundPackID.Text = "";
+                lZoneGroupsTargetID.Text = "";
+                lZoneGroupsFactionChatID.Text = "";
+                lZoneGroupsPirateDesperado.Text = "";
+                lZoneGroupsBuffID.Text = "";
+
+                btnZoneGroupsSaltWaterFish.Tag = 0;
+                btnZoneGroupsSaltWaterFish.Enabled = false;
+                btnZoneGroupsFreshWaterFish.Tag = 0;
+                btnZoneGroupsFreshWaterFish.Enabled = false;
+            }
+
+            if (blank_world_groups)
+            {
+                lWorldGroupName.Text = "<none>";
+                lWorldGroupSizeAndPos.Text = "";
+                lWorldGroupImageSizeAndPos.Text = "";
+                lWorldGroupImageMap.Text = "";
+                lWorldGroupTargetID.Text = "";
+            }
+
         }
 
 
@@ -1436,7 +1472,7 @@ namespace AAEmu.DBViewer
             Application.UseWaitCursor = true;
             Cursor = Cursors.WaitCursor;
             dgvSkills.Visible = false;
-            foreach (var skill in DB_Skills)
+            foreach (var skill in AADB.DB_Skills)
             {
                 bool addThis = false;
                 if (SearchByID)
@@ -1499,7 +1535,7 @@ namespace AAEmu.DBViewer
 
         private void AddSkillLine(long skillindex)
         {
-            if (DB_Skills.TryGetValue(skillindex, out var skill))
+            if (AADB.DB_Skills.TryGetValue(skillindex, out var skill))
             {
                 int line = dgvSkills.Rows.Add();
                 var row = dgvSkills.Rows[line];
@@ -1514,7 +1550,7 @@ namespace AAEmu.DBViewer
 
         private void ShowDBSkillByItem(long id)
         {
-            if (DB_Items.TryGetValue(id, out var item))
+            if (AADB.DB_Items.TryGetValue(id, out var item))
             {
                 dgvSkills.Rows.Clear();
                 dgvSkillReagents.Rows.Clear();
@@ -1522,12 +1558,12 @@ namespace AAEmu.DBViewer
                 if (item.use_skill_id > 0)
                     AddSkillLine(item.use_skill_id);
 
-                foreach(var p in DB_Skill_Reagents)
+                foreach(var p in AADB.DB_Skill_Reagents)
                 {
                     if (p.Value.item_id == id)
                         AddSkillLine(p.Value.skill_id);
                 }
-                foreach (var p in DB_Skill_Products)
+                foreach (var p in AADB.DB_Skill_Products)
                 {
                     if (p.Value.item_id == id)
                         AddSkillLine(p.Value.skill_id);
@@ -1615,7 +1651,7 @@ namespace AAEmu.DBViewer
                 searchID = -1 ;
 
             dgvZones.Rows.Clear();
-            foreach(var t in DB_Zones)
+            foreach(var t in AADB.DB_Zones)
             {
                 var z = t.Value;
                 if ((z.id == searchID) || (z.zone_key == searchID) || (z.group_id == searchID) || (z.SearchString.IndexOf(searchText) >= 0))
@@ -1642,7 +1678,7 @@ namespace AAEmu.DBViewer
         private void BtnZonesShowAll_Click(object sender, EventArgs e)
         {
             dgvZones.Rows.Clear();
-            foreach (var t in DB_Zones)
+            foreach (var t in AADB.DB_Zones)
             {
                 var z = t.Value;
                 var line = dgvZones.Rows.Add();
@@ -1678,7 +1714,26 @@ namespace AAEmu.DBViewer
             var val = row.Cells[0].Value;
             if (val == null)
                 return;
-            ShowSelectedData("zones", "(id = " + val.ToString() + ")", "id ASC");
+
+            ShowDBZone(long.Parse(val.ToString()));
+        }
+
+        private void BtnZoneGroupsFishLoot_Click(object sender, EventArgs e)
+        {
+            if ( (sender != null) && (sender is Button) )
+            {
+                Button b = (sender as Button);
+                if (b != null)
+                {
+                    long LootID = (long)b.Tag;
+
+                    if (LootID > 0)
+                    {
+                        ShowDBLootByID(LootID);
+                        tcViewer.SelectedTab = tpLoot;
+                    }
+                }
+            }
         }
     }
 }

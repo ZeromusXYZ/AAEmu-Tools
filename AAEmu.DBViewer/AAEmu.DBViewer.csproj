@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AADBDefs.cs" />
     <Compile Include="AAPak.cs" />
     <Compile Include="LoadingForm.cs">
       <SubType>Form</SubType>

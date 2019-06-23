@@ -116,6 +116,46 @@
             this.label9 = new System.Windows.Forms.Label();
             this.tSkillSearch = new System.Windows.Forms.TextBox();
             this.tpZones = new System.Windows.Forms.TabPage();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.lZoneGroupsSoundPackID = new System.Windows.Forms.Label();
+            this.lZoneGroupsDisplayName = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.btnZoneGroupsFreshWaterFish = new System.Windows.Forms.Button();
+            this.btnZoneGroupsSaltWaterFish = new System.Windows.Forms.Button();
+            this.lZoneGroupsName = new System.Windows.Forms.Label();
+            this.lZoneGroupsBuffID = new System.Windows.Forms.Label();
+            this.label38 = new System.Windows.Forms.Label();
+            this.lZoneGroupsSizePosL = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.lZoneGroupsSizePos = new System.Windows.Forms.Label();
+            this.lZoneGroupsPirateDesperado = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.lZoneGroupsImageMap = new System.Windows.Forms.Label();
+            this.lZoneGroupsFactionChatID = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.lZoneGroupsSoundID = new System.Windows.Forms.Label();
+            this.lZoneGroupsTargetID = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lZoneDisplayName = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.lZoneABoxShow = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.lZoneClimateID = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.lZoneFactionID = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.lZoneGroupID = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.lZoneKey = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.lZoneName = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.lZoneID = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
             this.btnZonesShowAll = new System.Windows.Forms.Button();
             this.btnSearchZones = new System.Windows.Forms.Button();
             this.dgvZones = new System.Windows.Forms.DataGridView();
@@ -129,6 +169,17 @@
             this.tZonesSearch = new System.Windows.Forms.TextBox();
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.lWorldGroupName = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label37 = new System.Windows.Forms.Label();
+            this.lWorldGroupSizeAndPos = new System.Windows.Forms.Label();
+            this.label40 = new System.Windows.Forms.Label();
+            this.lWorldGroupImageMap = new System.Windows.Forms.Label();
+            this.lWorldGroupTargetID = new System.Windows.Forms.Label();
+            this.label43 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.lWorldGroupImageSizeAndPos = new System.Windows.Forms.Label();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             this.tpCurrentRecord.SuspendLayout();
@@ -147,7 +198,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkillReagents)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkills)).BeginInit();
             this.tpZones.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).BeginInit();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbTableNames
@@ -1108,6 +1162,9 @@
             // 
             // tpZones
             // 
+            this.tpZones.Controls.Add(this.groupBox5);
+            this.tpZones.Controls.Add(this.groupBox4);
+            this.tpZones.Controls.Add(this.groupBox3);
             this.tpZones.Controls.Add(this.btnZonesShowAll);
             this.tpZones.Controls.Add(this.btnSearchZones);
             this.tpZones.Controls.Add(this.dgvZones);
@@ -1120,6 +1177,410 @@
             this.tpZones.TabIndex = 5;
             this.tpZones.Text = "Zones";
             this.tpZones.UseVisualStyleBackColor = true;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.label15);
+            this.groupBox4.Controls.Add(this.lZoneGroupsSoundPackID);
+            this.groupBox4.Controls.Add(this.lZoneGroupsDisplayName);
+            this.groupBox4.Controls.Add(this.label31);
+            this.groupBox4.Controls.Add(this.btnZoneGroupsFreshWaterFish);
+            this.groupBox4.Controls.Add(this.btnZoneGroupsSaltWaterFish);
+            this.groupBox4.Controls.Add(this.lZoneGroupsName);
+            this.groupBox4.Controls.Add(this.lZoneGroupsBuffID);
+            this.groupBox4.Controls.Add(this.label38);
+            this.groupBox4.Controls.Add(this.lZoneGroupsSizePosL);
+            this.groupBox4.Controls.Add(this.label36);
+            this.groupBox4.Controls.Add(this.lZoneGroupsSizePos);
+            this.groupBox4.Controls.Add(this.lZoneGroupsPirateDesperado);
+            this.groupBox4.Controls.Add(this.label24);
+            this.groupBox4.Controls.Add(this.label34);
+            this.groupBox4.Controls.Add(this.lZoneGroupsImageMap);
+            this.groupBox4.Controls.Add(this.lZoneGroupsFactionChatID);
+            this.groupBox4.Controls.Add(this.label22);
+            this.groupBox4.Controls.Add(this.label32);
+            this.groupBox4.Controls.Add(this.lZoneGroupsSoundID);
+            this.groupBox4.Controls.Add(this.lZoneGroupsTargetID);
+            this.groupBox4.Controls.Add(this.label30);
+            this.groupBox4.Location = new System.Drawing.Point(616, 142);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(301, 184);
+            this.groupBox4.TabIndex = 10;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Zone Groups Info";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(165, 84);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(80, 13);
+            this.label15.TabIndex = 32;
+            this.label15.Text = "Sound Pack ID";
+            // 
+            // lZoneGroupsSoundPackID
+            // 
+            this.lZoneGroupsSoundPackID.AutoSize = true;
+            this.lZoneGroupsSoundPackID.Location = new System.Drawing.Point(251, 84);
+            this.lZoneGroupsSoundPackID.Name = "lZoneGroupsSoundPackID";
+            this.lZoneGroupsSoundPackID.Size = new System.Drawing.Size(13, 13);
+            this.lZoneGroupsSoundPackID.TabIndex = 33;
+            this.lZoneGroupsSoundPackID.Text = "0";
+            // 
+            // lZoneGroupsDisplayName
+            // 
+            this.lZoneGroupsDisplayName.AutoSize = true;
+            this.lZoneGroupsDisplayName.Location = new System.Drawing.Point(92, 16);
+            this.lZoneGroupsDisplayName.Name = "lZoneGroupsDisplayName";
+            this.lZoneGroupsDisplayName.Size = new System.Drawing.Size(43, 13);
+            this.lZoneGroupsDisplayName.TabIndex = 31;
+            this.lZoneGroupsDisplayName.Text = "<none>";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(6, 16);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(72, 13);
+            this.label31.TabIndex = 30;
+            this.label31.Text = "Display Name";
+            // 
+            // btnZoneGroupsFreshWaterFish
+            // 
+            this.btnZoneGroupsFreshWaterFish.Location = new System.Drawing.Point(152, 149);
+            this.btnZoneGroupsFreshWaterFish.Name = "btnZoneGroupsFreshWaterFish";
+            this.btnZoneGroupsFreshWaterFish.Size = new System.Drawing.Size(140, 23);
+            this.btnZoneGroupsFreshWaterFish.TabIndex = 29;
+            this.btnZoneGroupsFreshWaterFish.Text = "Freshwater Fishing Loot";
+            this.btnZoneGroupsFreshWaterFish.UseVisualStyleBackColor = true;
+            this.btnZoneGroupsFreshWaterFish.Click += new System.EventHandler(this.BtnZoneGroupsFishLoot_Click);
+            // 
+            // btnZoneGroupsSaltWaterFish
+            // 
+            this.btnZoneGroupsSaltWaterFish.Location = new System.Drawing.Point(6, 149);
+            this.btnZoneGroupsSaltWaterFish.Name = "btnZoneGroupsSaltWaterFish";
+            this.btnZoneGroupsSaltWaterFish.Size = new System.Drawing.Size(140, 23);
+            this.btnZoneGroupsSaltWaterFish.TabIndex = 28;
+            this.btnZoneGroupsSaltWaterFish.Text = "Saltwater Fishing Loot";
+            this.btnZoneGroupsSaltWaterFish.UseVisualStyleBackColor = true;
+            this.btnZoneGroupsSaltWaterFish.Click += new System.EventHandler(this.BtnZoneGroupsFishLoot_Click);
+            // 
+            // lZoneGroupsName
+            // 
+            this.lZoneGroupsName.AutoSize = true;
+            this.lZoneGroupsName.Location = new System.Drawing.Point(92, 29);
+            this.lZoneGroupsName.Name = "lZoneGroupsName";
+            this.lZoneGroupsName.Size = new System.Drawing.Size(43, 13);
+            this.lZoneGroupsName.TabIndex = 15;
+            this.lZoneGroupsName.Text = "<none>";
+            // 
+            // lZoneGroupsBuffID
+            // 
+            this.lZoneGroupsBuffID.AutoSize = true;
+            this.lZoneGroupsBuffID.Location = new System.Drawing.Point(92, 133);
+            this.lZoneGroupsBuffID.Name = "lZoneGroupsBuffID";
+            this.lZoneGroupsBuffID.Size = new System.Drawing.Size(13, 13);
+            this.lZoneGroupsBuffID.TabIndex = 27;
+            this.lZoneGroupsBuffID.Text = "0";
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(6, 29);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(35, 13);
+            this.label38.TabIndex = 14;
+            this.label38.Text = "Name";
+            // 
+            // lZoneGroupsSizePosL
+            // 
+            this.lZoneGroupsSizePosL.AutoSize = true;
+            this.lZoneGroupsSizePosL.Location = new System.Drawing.Point(6, 49);
+            this.lZoneGroupsSizePosL.Name = "lZoneGroupsSizePosL";
+            this.lZoneGroupsSizePosL.Size = new System.Drawing.Size(76, 13);
+            this.lZoneGroupsSizePosL.TabIndex = 14;
+            this.lZoneGroupsSizePosL.Text = "Size && Position";
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(6, 133);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(40, 13);
+            this.label36.TabIndex = 26;
+            this.label36.Text = "Buff ID";
+            // 
+            // lZoneGroupsSizePos
+            // 
+            this.lZoneGroupsSizePos.AutoSize = true;
+            this.lZoneGroupsSizePos.Location = new System.Drawing.Point(92, 49);
+            this.lZoneGroupsSizePos.Name = "lZoneGroupsSizePos";
+            this.lZoneGroupsSizePos.Size = new System.Drawing.Size(43, 13);
+            this.lZoneGroupsSizePos.TabIndex = 15;
+            this.lZoneGroupsSizePos.Text = "<none>";
+            // 
+            // lZoneGroupsPirateDesperado
+            // 
+            this.lZoneGroupsPirateDesperado.AutoSize = true;
+            this.lZoneGroupsPirateDesperado.Location = new System.Drawing.Point(251, 97);
+            this.lZoneGroupsPirateDesperado.Name = "lZoneGroupsPirateDesperado";
+            this.lZoneGroupsPirateDesperado.Size = new System.Drawing.Size(13, 13);
+            this.lZoneGroupsPirateDesperado.TabIndex = 25;
+            this.lZoneGroupsPirateDesperado.Text = "0";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(6, 62);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(60, 13);
+            this.label24.TabIndex = 16;
+            this.label24.Text = "Image Map";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(165, 97);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(87, 13);
+            this.label34.TabIndex = 24;
+            this.label34.Text = "Pirate desperado";
+            // 
+            // lZoneGroupsImageMap
+            // 
+            this.lZoneGroupsImageMap.AutoSize = true;
+            this.lZoneGroupsImageMap.Location = new System.Drawing.Point(92, 62);
+            this.lZoneGroupsImageMap.Name = "lZoneGroupsImageMap";
+            this.lZoneGroupsImageMap.Size = new System.Drawing.Size(13, 13);
+            this.lZoneGroupsImageMap.TabIndex = 17;
+            this.lZoneGroupsImageMap.Text = "0";
+            // 
+            // lZoneGroupsFactionChatID
+            // 
+            this.lZoneGroupsFactionChatID.AutoSize = true;
+            this.lZoneGroupsFactionChatID.Location = new System.Drawing.Point(130, 120);
+            this.lZoneGroupsFactionChatID.Name = "lZoneGroupsFactionChatID";
+            this.lZoneGroupsFactionChatID.Size = new System.Drawing.Size(13, 13);
+            this.lZoneGroupsFactionChatID.TabIndex = 23;
+            this.lZoneGroupsFactionChatID.Text = "0";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(6, 84);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(52, 13);
+            this.label22.TabIndex = 18;
+            this.label22.Text = "Sound ID";
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(6, 120);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(118, 13);
+            this.label32.TabIndex = 22;
+            this.label32.Text = "Faction Chat Region ID";
+            // 
+            // lZoneGroupsSoundID
+            // 
+            this.lZoneGroupsSoundID.AutoSize = true;
+            this.lZoneGroupsSoundID.Location = new System.Drawing.Point(92, 84);
+            this.lZoneGroupsSoundID.Name = "lZoneGroupsSoundID";
+            this.lZoneGroupsSoundID.Size = new System.Drawing.Size(13, 13);
+            this.lZoneGroupsSoundID.TabIndex = 19;
+            this.lZoneGroupsSoundID.Text = "0";
+            // 
+            // lZoneGroupsTargetID
+            // 
+            this.lZoneGroupsTargetID.AutoSize = true;
+            this.lZoneGroupsTargetID.Location = new System.Drawing.Point(92, 97);
+            this.lZoneGroupsTargetID.Name = "lZoneGroupsTargetID";
+            this.lZoneGroupsTargetID.Size = new System.Drawing.Size(13, 13);
+            this.lZoneGroupsTargetID.TabIndex = 21;
+            this.lZoneGroupsTargetID.Text = "0";
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(6, 97);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(52, 13);
+            this.label30.TabIndex = 20;
+            this.label30.Text = "Target ID";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox3.Controls.Add(this.lZoneDisplayName);
+            this.groupBox3.Controls.Add(this.label28);
+            this.groupBox3.Controls.Add(this.lZoneABoxShow);
+            this.groupBox3.Controls.Add(this.label29);
+            this.groupBox3.Controls.Add(this.lZoneClimateID);
+            this.groupBox3.Controls.Add(this.label26);
+            this.groupBox3.Controls.Add(this.lZoneFactionID);
+            this.groupBox3.Controls.Add(this.label23);
+            this.groupBox3.Controls.Add(this.lZoneGroupID);
+            this.groupBox3.Controls.Add(this.label21);
+            this.groupBox3.Controls.Add(this.lZoneKey);
+            this.groupBox3.Controls.Add(this.label19);
+            this.groupBox3.Controls.Add(this.lZoneName);
+            this.groupBox3.Controls.Add(this.label25);
+            this.groupBox3.Controls.Add(this.lZoneID);
+            this.groupBox3.Controls.Add(this.label27);
+            this.groupBox3.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox3.Location = new System.Drawing.Point(616, 9);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(302, 127);
+            this.groupBox3.TabIndex = 9;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Zone Info";
+            // 
+            // lZoneDisplayName
+            // 
+            this.lZoneDisplayName.AutoSize = true;
+            this.lZoneDisplayName.Location = new System.Drawing.Point(92, 29);
+            this.lZoneDisplayName.Name = "lZoneDisplayName";
+            this.lZoneDisplayName.Size = new System.Drawing.Size(43, 13);
+            this.lZoneDisplayName.TabIndex = 15;
+            this.lZoneDisplayName.Text = "<none>";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(6, 42);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(35, 13);
+            this.label28.TabIndex = 14;
+            this.label28.Text = "Name";
+            // 
+            // lZoneABoxShow
+            // 
+            this.lZoneABoxShow.AutoSize = true;
+            this.lZoneABoxShow.Location = new System.Drawing.Point(92, 103);
+            this.lZoneABoxShow.Name = "lZoneABoxShow";
+            this.lZoneABoxShow.Size = new System.Drawing.Size(32, 13);
+            this.lZoneABoxShow.TabIndex = 13;
+            this.lZoneABoxShow.Text = "False";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(6, 103);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(61, 13);
+            this.label29.TabIndex = 12;
+            this.label29.Text = "abox_show";
+            // 
+            // lZoneClimateID
+            // 
+            this.lZoneClimateID.AutoSize = true;
+            this.lZoneClimateID.Location = new System.Drawing.Point(92, 77);
+            this.lZoneClimateID.Name = "lZoneClimateID";
+            this.lZoneClimateID.Size = new System.Drawing.Size(13, 13);
+            this.lZoneClimateID.TabIndex = 11;
+            this.lZoneClimateID.Text = "0";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(6, 77);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(83, 13);
+            this.label26.TabIndex = 10;
+            this.label26.Text = "Zone Climate ID";
+            // 
+            // lZoneFactionID
+            // 
+            this.lZoneFactionID.AutoSize = true;
+            this.lZoneFactionID.Location = new System.Drawing.Point(92, 90);
+            this.lZoneFactionID.Name = "lZoneFactionID";
+            this.lZoneFactionID.Size = new System.Drawing.Size(13, 13);
+            this.lZoneFactionID.TabIndex = 9;
+            this.lZoneFactionID.Text = "0";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(6, 90);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(56, 13);
+            this.label23.TabIndex = 8;
+            this.label23.Text = "Faction ID";
+            // 
+            // lZoneGroupID
+            // 
+            this.lZoneGroupID.AutoSize = true;
+            this.lZoneGroupID.Location = new System.Drawing.Point(251, 64);
+            this.lZoneGroupID.Name = "lZoneGroupID";
+            this.lZoneGroupID.Size = new System.Drawing.Size(13, 13);
+            this.lZoneGroupID.TabIndex = 7;
+            this.lZoneGroupID.Text = "0";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(165, 64);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(50, 13);
+            this.label21.TabIndex = 6;
+            this.label21.Text = "Group ID";
+            // 
+            // lZoneKey
+            // 
+            this.lZoneKey.AutoSize = true;
+            this.lZoneKey.Location = new System.Drawing.Point(92, 64);
+            this.lZoneKey.Name = "lZoneKey";
+            this.lZoneKey.Size = new System.Drawing.Size(13, 13);
+            this.lZoneKey.TabIndex = 5;
+            this.lZoneKey.Text = "0";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(6, 64);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(53, 13);
+            this.label19.TabIndex = 4;
+            this.label19.Text = "Zone Key";
+            // 
+            // lZoneName
+            // 
+            this.lZoneName.AutoSize = true;
+            this.lZoneName.Location = new System.Drawing.Point(92, 42);
+            this.lZoneName.Name = "lZoneName";
+            this.lZoneName.Size = new System.Drawing.Size(43, 13);
+            this.lZoneName.TabIndex = 3;
+            this.lZoneName.Text = "<none>";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(6, 29);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(72, 13);
+            this.label25.TabIndex = 2;
+            this.label25.Text = "Display Name";
+            // 
+            // lZoneID
+            // 
+            this.lZoneID.AutoSize = true;
+            this.lZoneID.Location = new System.Drawing.Point(92, 16);
+            this.lZoneID.Name = "lZoneID";
+            this.lZoneID.Size = new System.Drawing.Size(13, 13);
+            this.lZoneID.TabIndex = 1;
+            this.lZoneID.Text = "0";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(6, 16);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(33, 13);
+            this.label27.TabIndex = 0;
+            this.label27.Text = "Index";
             // 
             // btnZonesShowAll
             // 
@@ -1166,13 +1627,13 @@
             this.dgvZones.ReadOnly = true;
             this.dgvZones.RowHeadersVisible = false;
             this.dgvZones.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvZones.Size = new System.Drawing.Size(907, 436);
+            this.dgvZones.Size = new System.Drawing.Size(599, 436);
             this.dgvZones.TabIndex = 6;
             this.dgvZones.SelectionChanged += new System.EventHandler(this.DgvZones_SelectionChanged);
             // 
             // dataGridViewTextBoxColumn12
             // 
-            this.dataGridViewTextBoxColumn12.FillWeight = 50F;
+            this.dataGridViewTextBoxColumn12.FillWeight = 40F;
             this.dataGridViewTextBoxColumn12.HeaderText = "ID";
             this.dataGridViewTextBoxColumn12.Name = "dataGridViewTextBoxColumn12";
             this.dataGridViewTextBoxColumn12.ReadOnly = true;
@@ -1185,14 +1646,14 @@
             // 
             // Column15
             // 
-            this.Column15.FillWeight = 50F;
+            this.Column15.FillWeight = 60F;
             this.Column15.HeaderText = "Group ID";
             this.Column15.Name = "Column15";
             this.Column15.ReadOnly = true;
             // 
             // Column11
             // 
-            this.Column11.FillWeight = 50F;
+            this.Column11.FillWeight = 60F;
             this.Column11.HeaderText = "Zone Key";
             this.Column11.Name = "Column11";
             this.Column11.ReadOnly = true;
@@ -1205,7 +1666,7 @@
             // 
             // Column14
             // 
-            this.Column14.FillWeight = 50F;
+            this.Column14.FillWeight = 60F;
             this.Column14.HeaderText = "Is Closed";
             this.Column14.Name = "Column14";
             this.Column14.ReadOnly = true;
@@ -1244,6 +1705,116 @@
             this.openGamePakFileDialog.RestoreDirectory = true;
             this.openGamePakFileDialog.Title = "Open game_pak";
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.label33);
+            this.groupBox5.Controls.Add(this.lWorldGroupImageSizeAndPos);
+            this.groupBox5.Controls.Add(this.lWorldGroupTargetID);
+            this.groupBox5.Controls.Add(this.lWorldGroupName);
+            this.groupBox5.Controls.Add(this.label43);
+            this.groupBox5.Controls.Add(this.label35);
+            this.groupBox5.Controls.Add(this.lWorldGroupImageMap);
+            this.groupBox5.Controls.Add(this.label37);
+            this.groupBox5.Controls.Add(this.label40);
+            this.groupBox5.Controls.Add(this.lWorldGroupSizeAndPos);
+            this.groupBox5.Location = new System.Drawing.Point(616, 332);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(301, 102);
+            this.groupBox5.TabIndex = 11;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "World Group Info";
+            // 
+            // lWorldGroupName
+            // 
+            this.lWorldGroupName.AutoSize = true;
+            this.lWorldGroupName.Location = new System.Drawing.Point(92, 16);
+            this.lWorldGroupName.Name = "lWorldGroupName";
+            this.lWorldGroupName.Size = new System.Drawing.Size(43, 13);
+            this.lWorldGroupName.TabIndex = 36;
+            this.lWorldGroupName.Text = "<none>";
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(6, 16);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(35, 13);
+            this.label35.TabIndex = 34;
+            this.label35.Text = "Name";
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(6, 36);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(76, 13);
+            this.label37.TabIndex = 35;
+            this.label37.Text = "Size && Position";
+            // 
+            // lWorldGroupSizeAndPos
+            // 
+            this.lWorldGroupSizeAndPos.AutoSize = true;
+            this.lWorldGroupSizeAndPos.Location = new System.Drawing.Point(92, 36);
+            this.lWorldGroupSizeAndPos.Name = "lWorldGroupSizeAndPos";
+            this.lWorldGroupSizeAndPos.Size = new System.Drawing.Size(43, 13);
+            this.lWorldGroupSizeAndPos.TabIndex = 37;
+            this.lWorldGroupSizeAndPos.Text = "<none>";
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Location = new System.Drawing.Point(6, 69);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(60, 13);
+            this.label40.TabIndex = 38;
+            this.label40.Text = "Image Map";
+            // 
+            // lWorldGroupImageMap
+            // 
+            this.lWorldGroupImageMap.AutoSize = true;
+            this.lWorldGroupImageMap.Location = new System.Drawing.Point(92, 69);
+            this.lWorldGroupImageMap.Name = "lWorldGroupImageMap";
+            this.lWorldGroupImageMap.Size = new System.Drawing.Size(13, 13);
+            this.lWorldGroupImageMap.TabIndex = 39;
+            this.lWorldGroupImageMap.Text = "0";
+            // 
+            // lWorldGroupTargetID
+            // 
+            this.lWorldGroupTargetID.AutoSize = true;
+            this.lWorldGroupTargetID.Location = new System.Drawing.Point(92, 82);
+            this.lWorldGroupTargetID.Name = "lWorldGroupTargetID";
+            this.lWorldGroupTargetID.Size = new System.Drawing.Size(13, 13);
+            this.lWorldGroupTargetID.TabIndex = 35;
+            this.lWorldGroupTargetID.Text = "0";
+            // 
+            // label43
+            // 
+            this.label43.AutoSize = true;
+            this.label43.Location = new System.Drawing.Point(6, 82);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(52, 13);
+            this.label43.TabIndex = 34;
+            this.label43.Text = "Target ID";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(6, 49);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(36, 13);
+            this.label33.TabIndex = 40;
+            this.label33.Text = "Image";
+            // 
+            // lWorldGroupImageSizeAndPos
+            // 
+            this.lWorldGroupImageSizeAndPos.AutoSize = true;
+            this.lWorldGroupImageSizeAndPos.Location = new System.Drawing.Point(92, 49);
+            this.lWorldGroupImageSizeAndPos.Name = "lWorldGroupImageSizeAndPos";
+            this.lWorldGroupImageSizeAndPos.Size = new System.Drawing.Size(43, 13);
+            this.lWorldGroupImageSizeAndPos.TabIndex = 41;
+            this.lWorldGroupImageSizeAndPos.Text = "<none>";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1281,7 +1852,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkills)).EndInit();
             this.tpZones.ResumeLayout(false);
             this.tpZones.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).EndInit();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1381,13 +1958,64 @@
         private System.Windows.Forms.DataGridView dgvZones;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox tZonesSearch;
+        private System.Windows.Forms.Button btnZonesShowAll;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label lZoneName;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label lZoneID;
+        private System.Windows.Forms.Label label27;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn12;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn13;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column15;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column11;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column13;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column14;
-        private System.Windows.Forms.Button btnZonesShowAll;
+        private System.Windows.Forms.Label lZoneKey;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label lZoneGroupsSizePos;
+        private System.Windows.Forms.Label lZoneGroupsSizePosL;
+        private System.Windows.Forms.Label lZoneABoxShow;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label lZoneClimateID;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label lZoneFactionID;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label lZoneGroupID;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label lZoneGroupsName;
+        private System.Windows.Forms.Label lZoneGroupsBuffID;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Label lZoneGroupsPirateDesperado;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label lZoneGroupsImageMap;
+        private System.Windows.Forms.Label lZoneGroupsFactionChatID;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Label lZoneGroupsSoundID;
+        private System.Windows.Forms.Label lZoneGroupsTargetID;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Button btnZoneGroupsFreshWaterFish;
+        private System.Windows.Forms.Button btnZoneGroupsSaltWaterFish;
+        private System.Windows.Forms.Label lZoneDisplayName;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label lZoneGroupsDisplayName;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label lZoneGroupsSoundPackID;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Label lWorldGroupImageSizeAndPos;
+        private System.Windows.Forms.Label lWorldGroupTargetID;
+        private System.Windows.Forms.Label lWorldGroupName;
+        private System.Windows.Forms.Label label43;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label lWorldGroupImageMap;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.Label label40;
+        private System.Windows.Forms.Label lWorldGroupSizeAndPos;
     }
 }
 
