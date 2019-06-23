@@ -318,7 +318,7 @@ namespace AAEmu.DBViewer
                             t.display_text = GetString(reader, "display_text");
                             t.faction_chat_region_id = GetInt64(reader, "faction_chat_region_id");
                             t.sound_pack_id = GetInt64(reader, "sound_pack_id");
-                            t.pirate_desperado = GetInt64(reader, "pirate_desperado");
+                            t.pirate_desperado = DBValueToBool(GetString(reader, "pirate_desperado"));
                             t.fishing_sea_loot_pack_id = GetInt64(reader, "fishing_sea_loot_pack_id");
                             t.fishing_land_loot_pack_id = GetInt64(reader, "fishing_land_loot_pack_id");
                             t.buff_id = GetInt64(reader, "buff_id");

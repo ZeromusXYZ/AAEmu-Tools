@@ -120,7 +120,7 @@ namespace AAEmu.DBDefs
         public string display_text = string.Empty;
         public long faction_chat_region_id = 0;
         public long sound_pack_id = 0;
-        public long pirate_desperado = 0;
+        public bool pirate_desperado = false;
         public long fishing_sea_loot_pack_id = 0;
         public long fishing_land_loot_pack_id = 0;
         public long buff_id = 0;
