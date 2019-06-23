@@ -62,6 +62,7 @@ namespace AAEmu.DBViewer
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Properties.Settings.Default.Save();
             if (pak != null)
                 pak.ClosePak();
         }
@@ -81,6 +82,18 @@ namespace AAEmu.DBViewer
             else
                 return reader.GetString(fieldname);
         }
+
+        private bool GetBool(SQLiteWrapperReader reader, string fieldname)
+        {
+            if (reader.IsDBNull(fieldname))
+                return false;
+            else
+            {
+                var val = reader.GetString(fieldname);
+                return ((val != null) && ((val == "t") || (val == "T") || (val == "1")));
+            }
+        }
+
 
         private float GetFloat(SQLiteWrapperReader reader, string fieldname)
         {
@@ -234,11 +247,6 @@ namespace AAEmu.DBViewer
             Properties.Settings.Default.DefaultGameLanguage = lng ;
         }
 
-        private bool DBValueToBool(string val)
-        {
-            return ((val != null) && ((val == "t") || (val == "T") || (val == "1")));
-        }
-
         private void LoadZones()
         {
 
@@ -264,11 +272,11 @@ namespace AAEmu.DBViewer
                             t.name = GetString(reader, "name");
                             t.zone_key = GetInt64(reader, "zone_key");
                             t.group_id = GetInt64(reader, "group_id");
-                            t.closed = DBValueToBool(GetString(reader, "closed"));
+                            t.closed = GetBool(reader, "closed");
                             t.display_text = GetString(reader, "display_text");
                             t.faction_id = GetInt64(reader, "faction_id");
                             t.zone_climate_id = GetInt64(reader, "zone_climate_id");
-                            t.abox_show = DBValueToBool(GetString(reader, "abox_show"));
+                            t.abox_show = GetBool(reader, "abox_show");
 
                             if (t.display_text != string.Empty)
                                 t.display_textLocalized = GetTranslationByID(t.id, "zones", "display_text", t.display_text);
@@ -318,7 +326,7 @@ namespace AAEmu.DBViewer
                             t.display_text = GetString(reader, "display_text");
                             t.faction_chat_region_id = GetInt64(reader, "faction_chat_region_id");
                             t.sound_pack_id = GetInt64(reader, "sound_pack_id");
-                            t.pirate_desperado = DBValueToBool(GetString(reader, "pirate_desperado"));
+                            t.pirate_desperado = GetBool(reader, "pirate_desperado");
                             t.fishing_sea_loot_pack_id = GetInt64(reader, "fishing_sea_loot_pack_id");
                             t.fishing_land_loot_pack_id = GetInt64(reader, "fishing_land_loot_pack_id");
                             t.buff_id = GetInt64(reader, "buff_id");
@@ -417,7 +425,7 @@ namespace AAEmu.DBViewer
                             t.refund = GetInt64(reader, "refund");
                             t.max_stack_size = GetInt64(reader, "max_stack_size");
                             t.icon_id = GetInt64(reader, "icon_id");
-                            t.sellable = DBValueToBool(GetString(reader, "sellable"));
+                            t.sellable = GetBool(reader, "sellable");
                             t.fixed_grade = GetInt64(reader, "fixed_grade");
                             t.use_skill_id = GetInt64(reader, "use_skill_id");
 
@@ -479,18 +487,18 @@ namespace AAEmu.DBViewer
                                 t.web_desc = string.Empty;
                             t.cost = GetInt64(reader, "cost");
                             t.icon_id = GetInt64(reader, "icon_id");
-                            t.show = DBValueToBool(GetString(reader, "show"));
+                            t.show = GetBool(reader, "show");
                             t.cooldown_time = GetInt64(reader, "cooldown_time");
                             t.casting_time = GetInt64(reader, "casting_time");
-                            t.ignore_global_cooldown = DBValueToBool(GetString(reader, "ignore_global_cooldown"));
+                            t.ignore_global_cooldown = GetBool(reader, "ignore_global_cooldown");
                             t.effect_delay = GetInt64(reader, "effect_delay");
                             t.ability_id = GetInt64(reader, "ability_id");
                             t.mana_cost = GetInt64(reader, "mana_cost");
                             t.timing_id = GetInt64(reader, "timing_id");
                             t.consume_lp = GetInt64(reader, "consume_lp");
-                            t.default_gcd = DBValueToBool(GetString(reader, "default_gcd")); ;
+                            t.default_gcd = GetBool(reader, "default_gcd"); ;
                             t.custom_gcd = GetInt64(reader,"custom_gcd");
-                            t.first_reagent_only = DBValueToBool(GetString(reader, "first_reagent_only")); ;
+                            t.first_reagent_only = GetBool(reader, "first_reagent_only");
 
                             t.nameLocalized = GetTranslationByID(t.id, "skills", "name", t.name);
                             t.descriptionLocalized = GetTranslationByID(t.id, "skills", "desc", t.descriptionLocalized);
@@ -600,6 +608,7 @@ namespace AAEmu.DBViewer
                         while (reader.Read())
                         {
                             var t = new GameNPC();
+                            // Actual DB entries
                             t.id = GetInt64(reader, "id");
                             t.name = GetString(reader, "name");
                             t.char_race_id = GetInt64(reader, "char_race_id");
@@ -608,6 +617,82 @@ namespace AAEmu.DBViewer
                             t.level = GetInt64(reader, "level");
                             t.faction_id = GetInt64(reader, "faction_id");
                             t.model_id = GetInt64(reader, "model_id");
+                            t.npc_template_id = GetInt64(reader, "npc_template_id");
+                            t.equip_bodies_id = GetInt64(reader, "equip_bodies_id");
+                            t.equip_cloths_id = GetInt64(reader, "equip_cloths_id");
+                            t.equip_weapons_id = GetInt64(reader, "equip_weapons_id");
+                            t.skill_trainer = GetBool(reader, "skill_trainer");
+                            t.ai_file_id = GetInt64(reader, "ai_file_id");
+                            t.merchant = GetBool(reader, "merchant");
+                            t.npc_nickname_id = GetInt64(reader, "npc_nickname_id");
+                            t.auctioneer = GetBool(reader, "auctioneer");
+                            t.show_name_tag = GetBool(reader, "show_name_tag");
+                            t.visible_to_creator_only = GetBool(reader, "visible_to_creator_only");
+                            t.no_exp = GetBool(reader, "no_exp");
+                            t.pet_item_id = GetInt64(reader, "pet_item_id");
+                            t.base_skill_id = GetInt64(reader, "base_skill_id");
+                            t.track_friendship = GetBool(reader, "track_friendship");
+                            t.priest = GetBool(reader, "priest");
+                            t.comment1 = GetString(reader, "comment1");
+                            t.npc_tendency_id = GetInt64(reader, "npc_tendency_id");
+                            t.blacksmith = GetBool(reader, "blacksmith");
+                            t.teleporter = GetBool(reader, "teleporter");
+                            t.opacity = GetFloat(reader, "opacity");
+                            t.ability_changer = GetBool(reader, "ability_changer");
+                            t.scale = GetFloat(reader, "scale");
+                            t.comment2 = GetString(reader, "comment2");
+                            t.comment3 = GetString(reader, "comment3");
+                            t.sight_range_scale = GetFloat(reader, "sight_range_scale");
+                            t.sight_fov_scale = GetFloat(reader, "sight_fov_scale");
+                            t.milestone_id = GetInt64(reader, "milestone_id");
+                            t.attack_start_range_scale = GetFloat(reader, "attack_start_range_scale");
+                            t.aggression = GetBool(reader, "aggression");
+                            t.exp_multiplier = GetFloat(reader, "exp_multiplier");
+                            t.exp_adder = GetInt64(reader, "exp_adder");
+                            t.stabler = GetBool(reader, "stabler");
+                            t.accept_aggro_link = GetBool(reader, "accept_aggro_link");
+                            t.recruiting_battle_field_id = GetInt64(reader, "recruiting_battle_field_id");
+                            t.return_distance = GetInt64(reader, "return_distance");
+                            t.npc_ai_param_id = GetInt64(reader, "npc_ai_param_id");
+                            t.non_pushable_by_actor = GetBool(reader, "non_pushable_by_actor");
+                            t.banker = GetBool(reader, "banker");
+                            t.aggro_link_special_rule_id = GetInt64(reader, "aggro_link_special_rule_id");
+                            t.aggro_link_help_dist = GetFloat(reader, "aggro_link_help_dist");
+                            t.aggro_link_sight_check = GetBool(reader, "aggro_link_sight_check");
+                            t.expedition = GetBool(reader, "expedition");
+                            t.honor_point = GetInt64(reader, "honor_point");
+                            t.trader = GetBool(reader, "trader");
+                            t.aggro_link_special_guard = GetBool(reader, "aggro_link_special_guard");
+                            t.aggro_link_special_ignore_npc_attacker = GetBool(reader, "aggro_link_special_ignore_npc_attacker");
+                            t.comment_wear = GetString(reader, "comment_wear");
+                            t.absolute_return_distance = GetFloat(reader, "absolute_return_distance");
+                            t.repairman = GetBool(reader, "repairman");
+                            t.activate_ai_always = GetBool(reader, "activate_ai_always");
+                            t.so_state = GetString(reader, "so_state");
+                            t.specialty = GetBool(reader, "specialty");
+                            t.sound_pack_id = GetInt64(reader, "sound_pack_id");
+                            t.specialty_coin_id = GetInt64(reader, "specialty_coin_id");
+                            t.use_range_mod = GetBool(reader, "use_range_mod");
+                            t.npc_posture_set_id = GetInt64(reader, "npc_posture_set_id");
+                            t.mate_equip_slot_pack_id = GetInt64(reader, "mate_equip_slot_pack_id");
+                            t.mate_kind_id = GetInt64(reader, "mate_kind_id");
+                            t.engage_combat_give_quest_id = GetInt64(reader, "engage_combat_give_quest_id");
+                            t.total_custom_id = GetInt64(reader, "total_custom_id");
+                            t.no_apply_total_custom = GetBool(reader, "no_apply_total_custom");
+                            t.base_skill_strafe = GetBool(reader, "base_skill_strafe");
+                            t.base_skill_delay = GetFloat(reader, "base_skill_delay");
+                            t.npc_interaction_set_id = GetInt64(reader, "npc_interaction_set_id");
+                            t.use_abuser_list = GetBool(reader, "use_abuser_list");
+                            t.return_when_enter_housing_area = GetBool(reader, "return_when_enter_housing_area");
+                            t.look_converter = GetBool(reader, "look_converter");
+                            t.use_ddcms_mount_skill = GetBool(reader, "use_ddcms_mount_skill");
+                            t.crowd_effect = GetBool(reader, "crowd_effect");
+                            t.fx_scale = GetFloat(reader, "fx_scale");
+                            t.translate = GetBool(reader, "translate");
+                            t.no_penalty = GetBool(reader, "no_penalty");
+                            t.show_faction_tag = GetBool(reader, "show_faction_tag");
+
+
                             t.nameLocalized = GetTranslationByID(t.id, "npcs", "name", t.name);
 
                             t.SearchString = t.name + " " + t.nameLocalized ;
@@ -1419,7 +1504,7 @@ namespace AAEmu.DBViewer
 
             //"SELECT * FROM loots WHERE (loot_pack_id = @tpackid) ORDER BY id ASC";
             if (id != null)
-            ShowSelectedData("loots", "(id = " + id.ToString() + ")", "id ASC");
+                ShowSelectedData("loots", "(id = " + id.ToString() + ")", "id ASC");
         }
 
         private void BtnLootSearch_Click(object sender, EventArgs e)
@@ -1734,6 +1819,144 @@ namespace AAEmu.DBViewer
                     }
                 }
             }
+        }
+
+        private void LbTableNames_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var tablename = lbTableNames.SelectedItem.ToString();
+            tSimpleSQL.Text = "SELECT * FROM " + tablename + " LIMIT 0, 50";
+
+            BtnSimpleSQL_Click(null, null);
+        }
+
+        private void BtnSimpleSQL_Click(object sender, EventArgs e)
+        {
+            if (tSimpleSQL.Text == string.Empty)
+                return;
+
+            try
+            {
+                using (var connection = SQLite.CreateConnection())
+                {
+                    using (var command = connection.CreateCommand())
+                    {
+                        command.CommandText = tSimpleSQL.Text;
+                        command.Prepare();
+                        using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                        {
+                            Application.UseWaitCursor = true;
+                            Cursor = Cursors.WaitCursor;
+                            dgvSimple.Rows.Clear();
+                            dgvSimple.Columns.Clear();
+                            var columnNames = reader.GetColumnNames();
+
+                            foreach (var col in columnNames)
+                            {
+                                dgvSimple.Columns.Add(col, col);
+                            }
+
+                            while (reader.Read())
+                            {
+                                int line = dgvSimple.Rows.Add();
+                                var row = dgvSimple.Rows[line];
+                                int c = 0;
+                                foreach (var col in columnNames)
+                                {
+                                    row.Cells[c].Value = reader.GetValue(col).ToString();
+                                    c++;
+                                }
+                            }
+                            Cursor = Cursors.Default;
+                            Application.UseWaitCursor = false;
+                        }
+                    }
+                }
+            }
+            catch (Exception x)
+            {
+                Cursor = Cursors.Default;
+                Application.UseWaitCursor = false;
+                MessageBox.Show(x.Message, "Run MySQL Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        private void TSimpleSQL_TextChanged(object sender, EventArgs e)
+        {
+            btnSimpleSQL.Enabled = (tSimpleSQL.Text != string.Empty);
+        }
+
+        private void TSimpleSQL_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) && (btnSimpleSQL.Enabled))
+                BtnSimpleSQL_Click(null, null);
+        }
+
+        private void BtnSearchNPC_Click(object sender, EventArgs e)
+        {
+            string searchText = tSearchNPC.Text.ToLower();
+            if (searchText == string.Empty)
+                return;
+            long searchID;
+            if (!long.TryParse(searchText, out searchID))
+                searchID = -1;
+
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+            dgvNPCs.Rows.Clear();
+            int c = 0;
+            foreach (var t in AADB.DB_NPCs)
+            {
+                var z = t.Value;
+                if ((z.id == searchID) || (z.model_id == searchID) || (z.SearchString.IndexOf(searchText) >= 0))
+                {
+                    var line = dgvNPCs.Rows.Add();
+                    var row = dgvNPCs.Rows[line];
+
+                    row.Cells[0].Value = z.id.ToString();
+                    row.Cells[1].Value = z.nameLocalized;
+                    row.Cells[2].Value = z.level.ToString();
+                    row.Cells[3].Value = z.npc_template_id.ToString();
+                    row.Cells[4].Value = z.npc_kind_id.ToString();
+                    row.Cells[5].Value = z.npc_grade_id.ToString();
+                    row.Cells[6].Value = z.faction_id.ToString();
+                    row.Cells[7].Value = z.model_id.ToString();
+                    c++;
+
+                    if (c >= 250)
+                    {
+                        MessageBox.Show("The results were cut off at " + c.ToString() + " items, please refine your search !", "Too many entries", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        break;
+                    }
+                }
+
+            }
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+        }
+
+        private void TSearchNPC_TextChanged(object sender, EventArgs e)
+        {
+            btnSearchNPC.Enabled = (tSearchNPC.Text != string.Empty);
+        }
+
+        private void TSearchNPC_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) && (btnSearchNPC.Enabled))
+                BtnSearchNPC_Click(null, null);
+        }
+
+        private void DgvNPCs_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvNPCs.SelectedRows.Count <= 0)
+                return;
+            var row = dgvNPCs.SelectedRows[0];
+            if (row.Cells.Count <= 0)
+                return;
+
+            var id = row.Cells[0].Value;
+            if (id != null)
+                ShowSelectedData("npcs", "(id = " + id.ToString() + ")", "id ASC");
         }
     }
 }

@@ -117,6 +117,17 @@
             this.label9 = new System.Windows.Forms.Label();
             this.tSkillSearch = new System.Windows.Forms.TextBox();
             this.tpZones = new System.Windows.Forms.TabPage();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label33 = new System.Windows.Forms.Label();
+            this.lWorldGroupImageSizeAndPos = new System.Windows.Forms.Label();
+            this.lWorldGroupTargetID = new System.Windows.Forms.Label();
+            this.lWorldGroupName = new System.Windows.Forms.Label();
+            this.label43 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
+            this.lWorldGroupImageMap = new System.Windows.Forms.Label();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label40 = new System.Windows.Forms.Label();
+            this.lWorldGroupSizeAndPos = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label15 = new System.Windows.Forms.Label();
             this.lZoneGroupsSoundPackID = new System.Windows.Forms.Label();
@@ -170,17 +181,23 @@
             this.tZonesSearch = new System.Windows.Forms.TextBox();
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.lWorldGroupName = new System.Windows.Forms.Label();
-            this.label35 = new System.Windows.Forms.Label();
-            this.label37 = new System.Windows.Forms.Label();
-            this.lWorldGroupSizeAndPos = new System.Windows.Forms.Label();
-            this.label40 = new System.Windows.Forms.Label();
-            this.lWorldGroupImageMap = new System.Windows.Forms.Label();
-            this.lWorldGroupTargetID = new System.Windows.Forms.Label();
-            this.label43 = new System.Windows.Forms.Label();
-            this.label33 = new System.Windows.Forms.Label();
-            this.lWorldGroupImageSizeAndPos = new System.Windows.Forms.Label();
+            this.tpNPCs = new System.Windows.Forms.TabPage();
+            this.btnSearchNPC = new System.Windows.Forms.Button();
+            this.label39 = new System.Windows.Forms.Label();
+            this.tSearchNPC = new System.Windows.Forms.TextBox();
+            this.dgvNPCs = new System.Windows.Forms.DataGridView();
+            this.dgvSimple = new System.Windows.Forms.DataGridView();
+            this.tSimpleSQL = new System.Windows.Forms.TextBox();
+            this.btnSimpleSQL = new System.Windows.Forms.Button();
+            this.label41 = new System.Windows.Forms.Label();
+            this.dataGridViewTextBoxColumn14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             this.tpCurrentRecord.SuspendLayout();
@@ -199,10 +216,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkillReagents)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkills)).BeginInit();
             this.tpZones.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).BeginInit();
-            this.groupBox5.SuspendLayout();
+            this.tpNPCs.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvNPCs)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
             this.SuspendLayout();
             // 
             // lbTableNames
@@ -214,6 +234,7 @@
             this.lbTableNames.Name = "lbTableNames";
             this.lbTableNames.Size = new System.Drawing.Size(270, 459);
             this.lbTableNames.TabIndex = 1;
+            this.lbTableNames.SelectedIndexChanged += new System.EventHandler(this.LbTableNames_SelectedIndexChanged);
             // 
             // tcViewer
             // 
@@ -224,6 +245,7 @@
             this.tcViewer.Controls.Add(this.tpCurrentRecord);
             this.tcViewer.Controls.Add(this.tpItems);
             this.tcViewer.Controls.Add(this.tpLoot);
+            this.tcViewer.Controls.Add(this.tpNPCs);
             this.tcViewer.Controls.Add(this.tpSkills);
             this.tcViewer.Controls.Add(this.tpZones);
             this.tcViewer.Location = new System.Drawing.Point(0, 3);
@@ -234,6 +256,10 @@
             // 
             // tbTables
             // 
+            this.tbTables.Controls.Add(this.label41);
+            this.tbTables.Controls.Add(this.btnSimpleSQL);
+            this.tbTables.Controls.Add(this.tSimpleSQL);
+            this.tbTables.Controls.Add(this.dgvSimple);
             this.tbTables.Controls.Add(this.label8);
             this.tbTables.Controls.Add(this.btnFindGameClient);
             this.tbTables.Controls.Add(this.btnOpenServerDB);
@@ -982,8 +1008,7 @@
             // 
             this.dgvSkillProducts.AllowUserToAddRows = false;
             this.dgvSkillProducts.AllowUserToDeleteRows = false;
-            this.dgvSkillProducts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgvSkillProducts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvSkillProducts.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvSkillProducts.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
@@ -992,12 +1017,12 @@
             this.dataGridViewTextBoxColumn9,
             this.dataGridViewTextBoxColumn10,
             this.dataGridViewTextBoxColumn11});
-            this.dgvSkillProducts.Location = new System.Drawing.Point(8, 184);
+            this.dgvSkillProducts.Location = new System.Drawing.Point(8, 308);
             this.dgvSkillProducts.Name = "dgvSkillProducts";
             this.dgvSkillProducts.ReadOnly = true;
             this.dgvSkillProducts.RowHeadersVisible = false;
             this.dgvSkillProducts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSkillProducts.Size = new System.Drawing.Size(271, 258);
+            this.dgvSkillProducts.Size = new System.Drawing.Size(271, 134);
             this.dgvSkillProducts.TabIndex = 8;
             // 
             // dataGridViewTextBoxColumn9
@@ -1041,7 +1066,7 @@
             this.dgvSkillReagents.ReadOnly = true;
             this.dgvSkillReagents.RowHeadersVisible = false;
             this.dgvSkillReagents.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSkillReagents.Size = new System.Drawing.Size(271, 305);
+            this.dgvSkillReagents.Size = new System.Drawing.Size(271, 263);
             this.dgvSkillReagents.TabIndex = 7;
             // 
             // dataGridViewTextBoxColumn6
@@ -1068,8 +1093,9 @@
             // 
             // label13
             // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(6, 168);
+            this.label13.Location = new System.Drawing.Point(6, 292);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(106, 13);
             this.label13.TabIndex = 1;
@@ -1088,7 +1114,7 @@
             // 
             this.btnSkillSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSkillSearch.Enabled = false;
-            this.btnSkillSearch.Location = new System.Drawing.Point(545, 4);
+            this.btnSkillSearch.Location = new System.Drawing.Point(549, 6);
             this.btnSkillSearch.Name = "btnSkillSearch";
             this.btnSkillSearch.Size = new System.Drawing.Size(79, 23);
             this.btnSkillSearch.TabIndex = 7;
@@ -1110,12 +1136,12 @@
             this.dataGridViewTextBoxColumn2,
             this.dataGridViewTextBoxColumn3,
             this.Column10});
-            this.dgvSkills.Location = new System.Drawing.Point(11, 33);
+            this.dgvSkills.Location = new System.Drawing.Point(6, 32);
             this.dgvSkills.Name = "dgvSkills";
             this.dgvSkills.ReadOnly = true;
             this.dgvSkills.RowHeadersVisible = false;
             this.dgvSkills.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSkills.Size = new System.Drawing.Size(613, 441);
+            this.dgvSkills.Size = new System.Drawing.Size(622, 442);
             this.dgvSkills.TabIndex = 6;
             this.dgvSkills.SelectionChanged += new System.EventHandler(this.DgvSkills_SelectionChanged);
             // 
@@ -1154,7 +1180,7 @@
             // 
             this.tSkillSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tSkillSearch.Location = new System.Drawing.Point(197, 6);
+            this.tSkillSearch.Location = new System.Drawing.Point(201, 6);
             this.tSkillSearch.Name = "tSkillSearch";
             this.tSkillSearch.Size = new System.Drawing.Size(342, 20);
             this.tSkillSearch.TabIndex = 4;
@@ -1178,6 +1204,116 @@
             this.tpZones.TabIndex = 5;
             this.tpZones.Text = "Zones";
             this.tpZones.UseVisualStyleBackColor = true;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.label33);
+            this.groupBox5.Controls.Add(this.lWorldGroupImageSizeAndPos);
+            this.groupBox5.Controls.Add(this.lWorldGroupTargetID);
+            this.groupBox5.Controls.Add(this.lWorldGroupName);
+            this.groupBox5.Controls.Add(this.label43);
+            this.groupBox5.Controls.Add(this.label35);
+            this.groupBox5.Controls.Add(this.lWorldGroupImageMap);
+            this.groupBox5.Controls.Add(this.label37);
+            this.groupBox5.Controls.Add(this.label40);
+            this.groupBox5.Controls.Add(this.lWorldGroupSizeAndPos);
+            this.groupBox5.Location = new System.Drawing.Point(616, 332);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(301, 102);
+            this.groupBox5.TabIndex = 11;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "World Group Info";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(6, 49);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(36, 13);
+            this.label33.TabIndex = 40;
+            this.label33.Text = "Image";
+            // 
+            // lWorldGroupImageSizeAndPos
+            // 
+            this.lWorldGroupImageSizeAndPos.AutoSize = true;
+            this.lWorldGroupImageSizeAndPos.Location = new System.Drawing.Point(92, 49);
+            this.lWorldGroupImageSizeAndPos.Name = "lWorldGroupImageSizeAndPos";
+            this.lWorldGroupImageSizeAndPos.Size = new System.Drawing.Size(43, 13);
+            this.lWorldGroupImageSizeAndPos.TabIndex = 41;
+            this.lWorldGroupImageSizeAndPos.Text = "<none>";
+            // 
+            // lWorldGroupTargetID
+            // 
+            this.lWorldGroupTargetID.AutoSize = true;
+            this.lWorldGroupTargetID.Location = new System.Drawing.Point(92, 82);
+            this.lWorldGroupTargetID.Name = "lWorldGroupTargetID";
+            this.lWorldGroupTargetID.Size = new System.Drawing.Size(13, 13);
+            this.lWorldGroupTargetID.TabIndex = 35;
+            this.lWorldGroupTargetID.Text = "0";
+            // 
+            // lWorldGroupName
+            // 
+            this.lWorldGroupName.AutoSize = true;
+            this.lWorldGroupName.Location = new System.Drawing.Point(92, 16);
+            this.lWorldGroupName.Name = "lWorldGroupName";
+            this.lWorldGroupName.Size = new System.Drawing.Size(43, 13);
+            this.lWorldGroupName.TabIndex = 36;
+            this.lWorldGroupName.Text = "<none>";
+            // 
+            // label43
+            // 
+            this.label43.AutoSize = true;
+            this.label43.Location = new System.Drawing.Point(6, 82);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(52, 13);
+            this.label43.TabIndex = 34;
+            this.label43.Text = "Target ID";
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(6, 16);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(35, 13);
+            this.label35.TabIndex = 34;
+            this.label35.Text = "Name";
+            // 
+            // lWorldGroupImageMap
+            // 
+            this.lWorldGroupImageMap.AutoSize = true;
+            this.lWorldGroupImageMap.Location = new System.Drawing.Point(92, 69);
+            this.lWorldGroupImageMap.Name = "lWorldGroupImageMap";
+            this.lWorldGroupImageMap.Size = new System.Drawing.Size(13, 13);
+            this.lWorldGroupImageMap.TabIndex = 39;
+            this.lWorldGroupImageMap.Text = "0";
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(6, 36);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(76, 13);
+            this.label37.TabIndex = 35;
+            this.label37.Text = "Size && Position";
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Location = new System.Drawing.Point(6, 69);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(60, 13);
+            this.label40.TabIndex = 38;
+            this.label40.Text = "Image Map";
+            // 
+            // lWorldGroupSizeAndPos
+            // 
+            this.lWorldGroupSizeAndPos.AutoSize = true;
+            this.lWorldGroupSizeAndPos.Location = new System.Drawing.Point(92, 36);
+            this.lWorldGroupSizeAndPos.Name = "lWorldGroupSizeAndPos";
+            this.lWorldGroupSizeAndPos.Size = new System.Drawing.Size(43, 13);
+            this.lWorldGroupSizeAndPos.TabIndex = 37;
+            this.lWorldGroupSizeAndPos.Text = "<none>";
             // 
             // groupBox4
             // 
@@ -1249,6 +1385,7 @@
             // 
             // btnZoneGroupsFreshWaterFish
             // 
+            this.btnZoneGroupsFreshWaterFish.Enabled = false;
             this.btnZoneGroupsFreshWaterFish.Location = new System.Drawing.Point(152, 149);
             this.btnZoneGroupsFreshWaterFish.Name = "btnZoneGroupsFreshWaterFish";
             this.btnZoneGroupsFreshWaterFish.Size = new System.Drawing.Size(140, 23);
@@ -1259,6 +1396,7 @@
             // 
             // btnZoneGroupsSaltWaterFish
             // 
+            this.btnZoneGroupsSaltWaterFish.Enabled = false;
             this.btnZoneGroupsSaltWaterFish.Location = new System.Drawing.Point(6, 149);
             this.btnZoneGroupsSaltWaterFish.Name = "btnZoneGroupsSaltWaterFish";
             this.btnZoneGroupsSaltWaterFish.Size = new System.Drawing.Size(140, 23);
@@ -1586,7 +1724,7 @@
             // btnZonesShowAll
             // 
             this.btnZonesShowAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnZonesShowAll.Location = new System.Drawing.Point(446, 9);
+            this.btnZonesShowAll.Location = new System.Drawing.Point(531, 11);
             this.btnZonesShowAll.Name = "btnZonesShowAll";
             this.btnZonesShowAll.Size = new System.Drawing.Size(79, 23);
             this.btnZonesShowAll.TabIndex = 8;
@@ -1598,7 +1736,7 @@
             // 
             this.btnSearchZones.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSearchZones.Enabled = false;
-            this.btnSearchZones.Location = new System.Drawing.Point(361, 9);
+            this.btnSearchZones.Location = new System.Drawing.Point(446, 11);
             this.btnSearchZones.Name = "btnSearchZones";
             this.btnSearchZones.Size = new System.Drawing.Size(79, 23);
             this.btnSearchZones.TabIndex = 7;
@@ -1687,7 +1825,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tZonesSearch.Location = new System.Drawing.Point(175, 11);
             this.tZonesSearch.Name = "tZonesSearch";
-            this.tZonesSearch.Size = new System.Drawing.Size(180, 20);
+            this.tZonesSearch.Size = new System.Drawing.Size(265, 20);
             this.tZonesSearch.TabIndex = 4;
             this.tZonesSearch.TextChanged += new System.EventHandler(this.TZonesSearch_TextChanged);
             this.tZonesSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TZonesSearch_KeyDown);
@@ -1701,120 +1839,190 @@
             // 
             // openGamePakFileDialog
             // 
-            this.openGamePakFileDialog.FileName = "game_pakl";
             this.openGamePakFileDialog.Filter = "AA Game Pak|game_pak|All files|*.*";
             this.openGamePakFileDialog.RestoreDirectory = true;
             this.openGamePakFileDialog.Title = "Open game_pak";
             // 
-            // groupBox5
+            // tpNPCs
             // 
-            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox5.Controls.Add(this.label33);
-            this.groupBox5.Controls.Add(this.lWorldGroupImageSizeAndPos);
-            this.groupBox5.Controls.Add(this.lWorldGroupTargetID);
-            this.groupBox5.Controls.Add(this.lWorldGroupName);
-            this.groupBox5.Controls.Add(this.label43);
-            this.groupBox5.Controls.Add(this.label35);
-            this.groupBox5.Controls.Add(this.lWorldGroupImageMap);
-            this.groupBox5.Controls.Add(this.label37);
-            this.groupBox5.Controls.Add(this.label40);
-            this.groupBox5.Controls.Add(this.lWorldGroupSizeAndPos);
-            this.groupBox5.Location = new System.Drawing.Point(616, 332);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(301, 102);
-            this.groupBox5.TabIndex = 11;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "World Group Info";
+            this.tpNPCs.Controls.Add(this.btnSearchNPC);
+            this.tpNPCs.Controls.Add(this.label39);
+            this.tpNPCs.Controls.Add(this.tSearchNPC);
+            this.tpNPCs.Controls.Add(this.dgvNPCs);
+            this.tpNPCs.Location = new System.Drawing.Point(4, 22);
+            this.tpNPCs.Name = "tpNPCs";
+            this.tpNPCs.Padding = new System.Windows.Forms.Padding(3);
+            this.tpNPCs.Size = new System.Drawing.Size(927, 480);
+            this.tpNPCs.TabIndex = 6;
+            this.tpNPCs.Text = "NPCs";
+            this.tpNPCs.UseVisualStyleBackColor = true;
             // 
-            // lWorldGroupName
+            // btnSearchNPC
             // 
-            this.lWorldGroupName.AutoSize = true;
-            this.lWorldGroupName.Location = new System.Drawing.Point(92, 16);
-            this.lWorldGroupName.Name = "lWorldGroupName";
-            this.lWorldGroupName.Size = new System.Drawing.Size(43, 13);
-            this.lWorldGroupName.TabIndex = 36;
-            this.lWorldGroupName.Text = "<none>";
+            this.btnSearchNPC.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSearchNPC.Enabled = false;
+            this.btnSearchNPC.Location = new System.Drawing.Point(839, 8);
+            this.btnSearchNPC.Name = "btnSearchNPC";
+            this.btnSearchNPC.Size = new System.Drawing.Size(79, 23);
+            this.btnSearchNPC.TabIndex = 10;
+            this.btnSearchNPC.Text = "Search";
+            this.btnSearchNPC.UseVisualStyleBackColor = true;
+            this.btnSearchNPC.Click += new System.EventHandler(this.BtnSearchNPC_Click);
             // 
-            // label35
+            // label39
             // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(6, 16);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(35, 13);
-            this.label35.TabIndex = 34;
-            this.label35.Text = "Name";
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(8, 13);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(172, 13);
+            this.label39.TabIndex = 9;
+            this.label39.Text = "Search NPC ID, Name or Model ID";
             // 
-            // label37
+            // tSearchNPC
             // 
-            this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(6, 36);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(76, 13);
-            this.label37.TabIndex = 35;
-            this.label37.Text = "Size && Position";
+            this.tSearchNPC.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tSearchNPC.Location = new System.Drawing.Point(186, 10);
+            this.tSearchNPC.Name = "tSearchNPC";
+            this.tSearchNPC.Size = new System.Drawing.Size(647, 20);
+            this.tSearchNPC.TabIndex = 8;
+            this.tSearchNPC.TextChanged += new System.EventHandler(this.TSearchNPC_TextChanged);
+            this.tSearchNPC.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSearchNPC_KeyDown);
             // 
-            // lWorldGroupSizeAndPos
+            // dgvNPCs
             // 
-            this.lWorldGroupSizeAndPos.AutoSize = true;
-            this.lWorldGroupSizeAndPos.Location = new System.Drawing.Point(92, 36);
-            this.lWorldGroupSizeAndPos.Name = "lWorldGroupSizeAndPos";
-            this.lWorldGroupSizeAndPos.Size = new System.Drawing.Size(43, 13);
-            this.lWorldGroupSizeAndPos.TabIndex = 37;
-            this.lWorldGroupSizeAndPos.Text = "<none>";
+            this.dgvNPCs.AllowUserToAddRows = false;
+            this.dgvNPCs.AllowUserToDeleteRows = false;
+            this.dgvNPCs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvNPCs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvNPCs.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvNPCs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvNPCs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn14,
+            this.dataGridViewTextBoxColumn17,
+            this.Column18,
+            this.Column19,
+            this.Column17,
+            this.Column16,
+            this.Column21,
+            this.Column20});
+            this.dgvNPCs.Location = new System.Drawing.Point(8, 41);
+            this.dgvNPCs.Name = "dgvNPCs";
+            this.dgvNPCs.ReadOnly = true;
+            this.dgvNPCs.RowHeadersVisible = false;
+            this.dgvNPCs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvNPCs.Size = new System.Drawing.Size(910, 432);
+            this.dgvNPCs.TabIndex = 7;
+            this.dgvNPCs.SelectionChanged += new System.EventHandler(this.DgvNPCs_SelectionChanged);
             // 
-            // label40
+            // dgvSimple
             // 
-            this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(6, 69);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(60, 13);
-            this.label40.TabIndex = 38;
-            this.label40.Text = "Image Map";
+            this.dgvSimple.AllowUserToAddRows = false;
+            this.dgvSimple.AllowUserToDeleteRows = false;
+            this.dgvSimple.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvSimple.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvSimple.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvSimple.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.dgvSimple.Location = new System.Drawing.Point(282, 131);
+            this.dgvSimple.MultiSelect = false;
+            this.dgvSimple.Name = "dgvSimple";
+            this.dgvSimple.RowHeadersVisible = false;
+            this.dgvSimple.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgvSimple.Size = new System.Drawing.Size(636, 333);
+            this.dgvSimple.TabIndex = 9;
             // 
-            // lWorldGroupImageMap
+            // tSimpleSQL
             // 
-            this.lWorldGroupImageMap.AutoSize = true;
-            this.lWorldGroupImageMap.Location = new System.Drawing.Point(92, 69);
-            this.lWorldGroupImageMap.Name = "lWorldGroupImageMap";
-            this.lWorldGroupImageMap.Size = new System.Drawing.Size(13, 13);
-            this.lWorldGroupImageMap.TabIndex = 39;
-            this.lWorldGroupImageMap.Text = "0";
+            this.tSimpleSQL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tSimpleSQL.Location = new System.Drawing.Point(282, 105);
+            this.tSimpleSQL.Name = "tSimpleSQL";
+            this.tSimpleSQL.Size = new System.Drawing.Size(555, 20);
+            this.tSimpleSQL.TabIndex = 10;
+            this.tSimpleSQL.TextChanged += new System.EventHandler(this.TSimpleSQL_TextChanged);
+            this.tSimpleSQL.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSimpleSQL_KeyDown);
             // 
-            // lWorldGroupTargetID
+            // btnSimpleSQL
             // 
-            this.lWorldGroupTargetID.AutoSize = true;
-            this.lWorldGroupTargetID.Location = new System.Drawing.Point(92, 82);
-            this.lWorldGroupTargetID.Name = "lWorldGroupTargetID";
-            this.lWorldGroupTargetID.Size = new System.Drawing.Size(13, 13);
-            this.lWorldGroupTargetID.TabIndex = 35;
-            this.lWorldGroupTargetID.Text = "0";
+            this.btnSimpleSQL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSimpleSQL.Location = new System.Drawing.Point(843, 103);
+            this.btnSimpleSQL.Name = "btnSimpleSQL";
+            this.btnSimpleSQL.Size = new System.Drawing.Size(75, 23);
+            this.btnSimpleSQL.TabIndex = 11;
+            this.btnSimpleSQL.Text = "Run SQL";
+            this.btnSimpleSQL.UseVisualStyleBackColor = true;
+            this.btnSimpleSQL.Click += new System.EventHandler(this.BtnSimpleSQL_Click);
             // 
-            // label43
+            // label41
             // 
-            this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(6, 82);
-            this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(52, 13);
-            this.label43.TabIndex = 34;
-            this.label43.Text = "Target ID";
+            this.label41.AutoSize = true;
+            this.label41.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.label41.Location = new System.Drawing.Point(282, 89);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(493, 13);
+            this.label41.TabIndex = 12;
+            this.label41.Text = "You can click a table to preview, or type a simple SQLite statement here. It is p" +
+    "retty slow on large tables";
             // 
-            // label33
+            // dataGridViewTextBoxColumn14
             // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(6, 49);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(36, 13);
-            this.label33.TabIndex = 40;
-            this.label33.Text = "Image";
+            this.dataGridViewTextBoxColumn14.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
+            this.dataGridViewTextBoxColumn14.ReadOnly = true;
+            this.dataGridViewTextBoxColumn14.Width = 43;
             // 
-            // lWorldGroupImageSizeAndPos
+            // dataGridViewTextBoxColumn17
             // 
-            this.lWorldGroupImageSizeAndPos.AutoSize = true;
-            this.lWorldGroupImageSizeAndPos.Location = new System.Drawing.Point(92, 49);
-            this.lWorldGroupImageSizeAndPos.Name = "lWorldGroupImageSizeAndPos";
-            this.lWorldGroupImageSizeAndPos.Size = new System.Drawing.Size(43, 13);
-            this.lWorldGroupImageSizeAndPos.TabIndex = 41;
-            this.lWorldGroupImageSizeAndPos.Text = "<none>";
+            this.dataGridViewTextBoxColumn17.HeaderText = "Name";
+            this.dataGridViewTextBoxColumn17.Name = "dataGridViewTextBoxColumn17";
+            this.dataGridViewTextBoxColumn17.ReadOnly = true;
+            this.dataGridViewTextBoxColumn17.Width = 60;
+            // 
+            // Column18
+            // 
+            this.Column18.HeaderText = "Level";
+            this.Column18.Name = "Column18";
+            this.Column18.ReadOnly = true;
+            this.Column18.Width = 58;
+            // 
+            // Column19
+            // 
+            this.Column19.HeaderText = "Template ID";
+            this.Column19.Name = "Column19";
+            this.Column19.ReadOnly = true;
+            this.Column19.Width = 90;
+            // 
+            // Column17
+            // 
+            this.Column17.HeaderText = "Kind ID";
+            this.Column17.Name = "Column17";
+            this.Column17.ReadOnly = true;
+            this.Column17.Width = 67;
+            // 
+            // Column16
+            // 
+            this.Column16.HeaderText = "Grade ID";
+            this.Column16.Name = "Column16";
+            this.Column16.ReadOnly = true;
+            this.Column16.Width = 75;
+            // 
+            // Column21
+            // 
+            this.Column21.HeaderText = "Faction ID";
+            this.Column21.Name = "Column21";
+            this.Column21.ReadOnly = true;
+            this.Column21.Width = 81;
+            // 
+            // Column20
+            // 
+            this.Column20.HeaderText = "Model ID";
+            this.Column20.Name = "Column20";
+            this.Column20.ReadOnly = true;
+            this.Column20.Width = 75;
             // 
             // MainForm
             // 
@@ -1854,13 +2062,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkills)).EndInit();
             this.tpZones.ResumeLayout(false);
             this.tpZones.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).EndInit();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
+            this.tpNPCs.ResumeLayout(false);
+            this.tpNPCs.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvNPCs)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2018,6 +2230,23 @@
         private System.Windows.Forms.Label label37;
         private System.Windows.Forms.Label label40;
         private System.Windows.Forms.Label lWorldGroupSizeAndPos;
+        private System.Windows.Forms.TabPage tpNPCs;
+        private System.Windows.Forms.Button btnSearchNPC;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.TextBox tSearchNPC;
+        private System.Windows.Forms.DataGridView dgvNPCs;
+        private System.Windows.Forms.DataGridView dgvSimple;
+        private System.Windows.Forms.Button btnSimpleSQL;
+        private System.Windows.Forms.TextBox tSimpleSQL;
+        private System.Windows.Forms.Label label41;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn14;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn17;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column18;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column19;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column17;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column21;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column20;
     }
 }
 

@@ -76,8 +76,82 @@ namespace AAEmu.DBDefs
         public long npc_grade_id = 0;
         public long npc_kind_id = 0;
         public long level = 0;
-        public long faction_id = 0;
         public long model_id = 0;
+        public long faction_id = 0;
+        public long npc_template_id = 0;
+        public long equip_bodies_id = 0;
+        public long equip_cloths_id = 0;
+        public long equip_weapons_id = 0;
+        public bool skill_trainer = false;
+        public long ai_file_id = 0;
+        public bool merchant = false;
+        public long npc_nickname_id = 0;
+        public bool auctioneer = false;
+        public bool show_name_tag = false;
+        public bool visible_to_creator_only = false;
+        public bool no_exp = false;
+        public long pet_item_id = 0;
+        public long base_skill_id = 0;
+        public bool track_friendship = false;
+        public bool priest = false;
+        public string comment1 = string.Empty;
+        public long npc_tendency_id = 0;
+        public bool blacksmith = false;
+        public bool teleporter = false;
+        public float opacity = 0.0f;
+        public bool ability_changer = false;
+        public float scale = 1.0f;
+        public string comment2 = string.Empty;
+        public string comment3 = string.Empty;
+        public float sight_range_scale = 0.0f;
+        public float sight_fov_scale = 0.0f;
+        public long milestone_id = 0;
+        public float attack_start_range_scale = 0.0f;
+        public bool aggression = false;
+        public float exp_multiplier = 1.0f;
+        public long exp_adder = 0;
+        public bool stabler = false;
+        public bool accept_aggro_link = false;
+        public long recruiting_battle_field_id = 0;
+        public float return_distance = 0;
+        public long npc_ai_param_id = 0;
+        public bool non_pushable_by_actor = false;
+        public bool banker = false;
+        public long aggro_link_special_rule_id = 0;
+        public float aggro_link_help_dist = 0.0f;
+        public bool aggro_link_sight_check = false;
+        public bool expedition = false;
+        public long honor_point = 0;
+        public bool trader = false;
+        public bool aggro_link_special_guard = false;
+        public bool aggro_link_special_ignore_npc_attacker = false;
+        public string comment_wear = string.Empty;
+        public float absolute_return_distance = 0.0f;
+        public bool repairman = false;
+        public bool activate_ai_always = false;
+        public string so_state = string.Empty;
+        public bool specialty = false;
+        public long sound_pack_id = 0;
+        public long specialty_coin_id = 0;
+        public bool use_range_mod = false;
+        public long npc_posture_set_id = 0;
+        public long mate_equip_slot_pack_id = 0;
+        public long mate_kind_id = 0;
+        public long engage_combat_give_quest_id = 0;
+        public long total_custom_id = 0;
+        public bool no_apply_total_custom = false;
+        public bool base_skill_strafe = false;
+        public float base_skill_delay = 0.0f;
+        public long npc_interaction_set_id = 0;
+        public bool use_abuser_list = false;
+        public bool return_when_enter_housing_area = false;
+        public bool look_converter = false;
+        public bool use_ddcms_mount_skill = false;
+        public bool crowd_effect = false;
+        public float fx_scale = 1.0f;
+        public bool translate = false;
+        public bool no_penalty = false;
+        public bool show_faction_tag = false;
 
         // Helpers
         public string nameLocalized = string.Empty;
@@ -142,6 +216,35 @@ namespace AAEmu.DBDefs
         // Helpers
         public string SearchString = string.Empty;
     }
+
+    class GameSystem_Factions
+    {
+        public long id = 0;
+        public string name = string.Empty;
+        public string owner_name = string.Empty;
+        public long owner_type_id = 0;
+        public long owner_id = 0;
+        public long political_system_id = 0;
+        public long mother_id = 0;
+        public bool aggro_link = false;
+        public bool guard_help = false;
+        public bool is_diplomacy_tgt = false;
+        public long diplomacy_link_id = 0;
+
+        // Helpers
+        public string nameLocalized = string.Empty;
+        public string owner_nameLocalized = string.Empty;
+        public string SearchString = string.Empty;
+    }
+
+    class GameSystem_Faction_Relations
+    {
+        public long id = 0;
+        public long faction1_id = 0;
+        public long faction2_id = 0;
+        public long state_id = 0;
+    }
+
 
     static class AADB
     {
