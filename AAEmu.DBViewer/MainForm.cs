@@ -803,6 +803,73 @@ namespace AAEmu.DBViewer
 
         }
 
+        private void LoadDoodads()
+        {
+            string sql = "SELECT * FROM doodad_almighties ORDER BY id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        AADB.DB_Doodad_Almighties.Clear();
+                        while (reader.Read())
+                        {
+                            var t = new GameDoodad();
+                            // Actual DB entries
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+                            t.model = GetString(reader, "model");
+                            t.once_one_man = GetBool(reader, "once_one_man");
+                            t.once_one_interaction = GetBool(reader, "once_one_interaction");
+                            t.show_name = GetBool(reader, "show_name");
+                            t.mgmt_spawn = GetBool(reader, "mgmt_spawn");
+                            t.percent = GetInt64(reader, "percent");
+                            t.min_time = GetInt64(reader, "min_time");
+                            t.max_time = GetInt64(reader, "max_time");
+                            t.model_kind_id = GetInt64(reader, "model_kind_id");
+                            t.use_creator_faction = GetBool(reader, "use_creator_faction");
+                            t.force_tod_top_priority = GetBool(reader, "force_tod_top_priority");
+                            t.milestone_id = GetInt64(reader, "milestone_id");
+                            t.group_id = GetInt64(reader, "group_id");
+                            t.show_minimap = GetBool(reader, "show_minimap");
+                            t.use_target_decal = GetBool(reader, "use_target_decal");
+                            t.use_target_silhouette = GetBool(reader, "use_target_silhouette");
+                            t.use_target_highlight = GetBool(reader, "use_target_highlight");
+                            t.target_decal_size = GetFloat(reader, "target_decal_size");
+                            t.sim_radius = GetInt64(reader, "sim_radius");
+                            t.collide_ship = GetBool(reader, "collide_ship");
+                            t.collide_vehicle = GetBool(reader, "collide_vehicle");
+                            t.climate_id = GetInt64(reader, "climate_id");
+                            t.save_indun = GetBool(reader, "save_indun");
+                            t.mark_model = GetString(reader, "mark_model");
+                            t.force_up_action = GetBool(reader , "force_up_action");
+                            t.load_model_from_world = GetBool(reader, "load_model_from_world");
+                            t.parentable = GetBool(reader, "parentable");
+                            t.childable = GetBool(reader, "childable");
+                            t.faction_id = GetInt64(reader, "faction_id");
+                            t.growth_time = GetInt64(reader, "growth_time");
+                            t.despawn_on_collision = GetBool(reader, "despawn_on_collision");
+                            t.no_collision = GetBool(reader, "no_collision");
+                            t.restrict_zone_id = GetInt64(reader, "restrict_zone_id");
+                            t.translate = GetBool(reader, "translate");
+
+                            // Helpers
+                            t.nameLocalized = GetTranslationByID(t.id, "doodad_almighties", "name", t.name);
+                            t.SearchString = t.name + " " + t.nameLocalized ;
+                            t.SearchString = t.SearchString.ToLower();
+                            AADB.DB_Doodad_Almighties.Add(t.id, t);
+                        }
+                    }
+                }
+            }
+
+        }
+
+
 
 
         private void BtnItemSearch_Click(object sender, EventArgs e)
@@ -1551,6 +1618,8 @@ namespace AAEmu.DBViewer
                 LoadFactions();
                 loading.ShowInfo("Loading: Zones");
                 LoadZones();
+                loading.ShowInfo("Loading: Doodads");
+                LoadDoodads();
                 loading.ShowInfo("Loading: Items");
                 LoadItems();
                 loading.ShowInfo("Loading: Skills");
@@ -2241,6 +2310,66 @@ namespace AAEmu.DBViewer
                 lFactionHostileHaranya.Text = "";
             }
 
+        }
+
+        private void TSearchDoodads_TextChanged(object sender, EventArgs e)
+        {
+            btnSearchDoodads.Enabled = (tSearchDoodads.Text != string.Empty);
+        }
+
+        private void TSearchDoodads_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                BtnSearchDoodads_Click(null, null);
+        }
+
+        private void BtnSearchDoodads_Click(object sender, EventArgs e)
+        {
+            string searchText = tSearchDoodads.Text.ToLower();
+            if (searchText == string.Empty)
+                return;
+            long searchID;
+            if (!long.TryParse(searchText, out searchID))
+                searchID = -1;
+
+            bool first = true;
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+            dgvDoodads.Rows.Clear();
+            int c = 0;
+            foreach(var t in AADB.DB_Doodad_Almighties)
+            {
+                var z = t.Value;
+                if ((z.id == searchID) || (z.SearchString.IndexOf(searchText) >= 0))
+                {
+                    var line = dgvDoodads.Rows.Add();
+                    var row = dgvDoodads.Rows[line];
+
+                    row.Cells[0].Value = z.id.ToString();
+                    row.Cells[1].Value = z.nameLocalized;
+                    row.Cells[2].Value = z.mgmt_spawn.ToString();
+                    row.Cells[3].Value = z.group_id.ToString();
+                    row.Cells[4].Value = z.percent.ToString();
+                    row.Cells[5].Value = z.model_kind_id.ToString();
+                    row.Cells[6].Value = z.model ;
+
+                    if (first)
+                    {
+                        first = false;
+                        // ShowDBFaction(z.id);
+                    }
+
+                    c++;
+                    if (c >= 250)
+                    {
+                        MessageBox.Show("The results were cut off at " + c.ToString() + " doodads, please refine your search !", "Too many entries", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        break;
+                    }
+                }
+
+            }
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
         }
     }
 }

@@ -246,6 +246,51 @@ namespace AAEmu.DBDefs
         public long state_id = 0;
     }
 
+    class GameDoodad
+    {
+        // TABLE doodad_almighties
+        public long id = 0;
+        public string name = string.Empty;
+        public string model = string.Empty;
+        public bool once_one_man = false;
+        public bool once_one_interaction = false;
+        public bool show_name = false;
+        public bool mgmt_spawn = false;
+        public long percent = 0;
+        public long min_time = 0;
+        public long max_time = 0;
+        public long model_kind_id = 0;
+        public bool use_creator_faction = false;
+        public bool force_tod_top_priority = false;
+        public long milestone_id = 0;
+        public long group_id = 0 ;
+        public bool show_minimap = false;
+        public bool use_target_decal = false;
+        public bool use_target_silhouette = false;
+        public bool use_target_highlight = false;
+        public float target_decal_size = 0.0f;
+        public long sim_radius = 0 ;
+        public bool collide_ship = false;
+        public bool collide_vehicle = false;
+        public long climate_id = 0;
+        public bool save_indun = false;
+        public string mark_model = string.Empty;
+        public bool force_up_action = false;
+        public bool load_model_from_world = false;
+        public bool parentable = false;
+        public bool childable = false;
+        public long faction_id = 0;
+        public long growth_time = 0;
+        public bool despawn_on_collision = false;
+        public bool no_collision = false;
+        public long restrict_zone_id = 0;
+        public bool translate = false;
+
+        // Helpers
+        public string nameLocalized = string.Empty;
+        public string SearchString = string.Empty;
+    }
+
 
     static class AADB
     {
@@ -261,6 +306,7 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameWorld_Groups> DB_World_Groups = new Dictionary<long, GameWorld_Groups>();
         static public Dictionary<long, GameSystemFaction> DB_GameSystem_Factions = new Dictionary<long, GameSystemFaction>();
         static public Dictionary<long, GameSystemFactionRelation> DB_GameSystem_Faction_Relations = new Dictionary<long, GameSystemFactionRelation>();
+        static public Dictionary<long, GameDoodad> DB_Doodad_Almighties = new Dictionary<long, GameDoodad>();
 
         static public string GetFactionName(long faction_id)
         {
