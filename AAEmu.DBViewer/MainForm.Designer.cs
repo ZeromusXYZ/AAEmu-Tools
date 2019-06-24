@@ -32,6 +32,10 @@
             this.lbTableNames = new System.Windows.Forms.ListBox();
             this.tcViewer = new System.Windows.Forms.TabControl();
             this.tbTables = new System.Windows.Forms.TabPage();
+            this.label41 = new System.Windows.Forms.Label();
+            this.btnSimpleSQL = new System.Windows.Forms.Button();
+            this.tSimpleSQL = new System.Windows.Forms.TextBox();
+            this.dgvSimple = new System.Windows.Forms.DataGridView();
             this.label8 = new System.Windows.Forms.Label();
             this.btnFindGameClient = new System.Windows.Forms.Button();
             this.btnOpenServerDB = new System.Windows.Forms.Button();
@@ -78,6 +82,19 @@
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tpNPCs = new System.Windows.Forms.TabPage();
+            this.btnSearchNPC = new System.Windows.Forms.Button();
+            this.label39 = new System.Windows.Forms.Label();
+            this.tSearchNPC = new System.Windows.Forms.TextBox();
+            this.dgvNPCs = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpSkills = new System.Windows.Forms.TabPage();
             this.tcSkillInfo = new System.Windows.Forms.TabControl();
             this.tpSkillInfo = new System.Windows.Forms.TabPage();
@@ -181,25 +198,50 @@
             this.tZonesSearch = new System.Windows.Forms.TextBox();
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.tpNPCs = new System.Windows.Forms.TabPage();
-            this.btnSearchNPC = new System.Windows.Forms.Button();
-            this.label39 = new System.Windows.Forms.Label();
-            this.tSearchNPC = new System.Windows.Forms.TextBox();
-            this.dgvNPCs = new System.Windows.Forms.DataGridView();
-            this.dgvSimple = new System.Windows.Forms.DataGridView();
-            this.tSimpleSQL = new System.Windows.Forms.TextBox();
-            this.btnSimpleSQL = new System.Windows.Forms.Button();
-            this.label41 = new System.Windows.Forms.Label();
-            this.dataGridViewTextBoxColumn14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tbFactions = new System.Windows.Forms.TabPage();
+            this.btnSearchFaction = new System.Windows.Forms.Button();
+            this.label42 = new System.Windows.Forms.Label();
+            this.tSearchFaction = new System.Windows.Forms.TextBox();
+            this.dgvFactions = new System.Windows.Forms.DataGridView();
+            this.btnFactionsAll = new System.Windows.Forms.Button();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.label45 = new System.Windows.Forms.Label();
+            this.lFactionName = new System.Windows.Forms.Label();
+            this.lFactionID = new System.Windows.Forms.Label();
+            this.label59 = new System.Windows.Forms.Label();
+            this.dataGridViewTextBoxColumn15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column30 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column24 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column29 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label44 = new System.Windows.Forms.Label();
+            this.lFactionOwnerName = new System.Windows.Forms.Label();
+            this.lFactionOwnerID = new System.Windows.Forms.Label();
+            this.label48 = new System.Windows.Forms.Label();
+            this.lFactionOwnerTypeID = new System.Windows.Forms.Label();
+            this.label50 = new System.Windows.Forms.Label();
+            this.LFactionPoliticalSystemID = new System.Windows.Forms.Label();
+            this.label52 = new System.Windows.Forms.Label();
+            this.lFactionAggroLink = new System.Windows.Forms.Label();
+            this.label54 = new System.Windows.Forms.Label();
+            this.lFactionGuardLink = new System.Windows.Forms.Label();
+            this.label57 = new System.Windows.Forms.Label();
+            this.lFactionIsDiplomacyTarget = new System.Windows.Forms.Label();
+            this.label61 = new System.Windows.Forms.Label();
+            this.lFactionDiplomacyLinkID = new System.Windows.Forms.Label();
+            this.label63 = new System.Windows.Forms.Label();
+            this.lFactionMotherID = new System.Windows.Forms.Label();
+            this.label65 = new System.Windows.Forms.Label();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.lFactionHostileNuia = new System.Windows.Forms.Label();
+            this.label76 = new System.Windows.Forms.Label();
+            this.lFactionHostileHaranya = new System.Windows.Forms.Label();
+            this.label47 = new System.Windows.Forms.Label();
+            this.lFactionHostilePirate = new System.Windows.Forms.Label();
+            this.label49 = new System.Windows.Forms.Label();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
             this.tpCurrentRecord.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentData)).BeginInit();
             this.tpItems.SuspendLayout();
@@ -207,6 +249,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvItem)).BeginInit();
             this.tpLoot.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLoot)).BeginInit();
+            this.tpNPCs.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvNPCs)).BeginInit();
             this.tpSkills.SuspendLayout();
             this.tcSkillInfo.SuspendLayout();
             this.tpSkillInfo.SuspendLayout();
@@ -220,9 +264,10 @@
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).BeginInit();
-            this.tpNPCs.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvNPCs)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
+            this.tbFactions.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvFactions)).BeginInit();
+            this.groupBox6.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbTableNames
@@ -243,6 +288,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tcViewer.Controls.Add(this.tbTables);
             this.tcViewer.Controls.Add(this.tpCurrentRecord);
+            this.tcViewer.Controls.Add(this.tbFactions);
             this.tcViewer.Controls.Add(this.tpItems);
             this.tcViewer.Controls.Add(this.tpLoot);
             this.tcViewer.Controls.Add(this.tpNPCs);
@@ -273,6 +319,57 @@
             this.tbTables.TabIndex = 0;
             this.tbTables.Text = "Tables and Settings";
             this.tbTables.UseVisualStyleBackColor = true;
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.label41.Location = new System.Drawing.Point(282, 89);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(493, 13);
+            this.label41.TabIndex = 12;
+            this.label41.Text = "You can click a table to preview, or type a simple SQLite statement here. It is p" +
+    "retty slow on large tables";
+            // 
+            // btnSimpleSQL
+            // 
+            this.btnSimpleSQL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSimpleSQL.Location = new System.Drawing.Point(843, 103);
+            this.btnSimpleSQL.Name = "btnSimpleSQL";
+            this.btnSimpleSQL.Size = new System.Drawing.Size(75, 23);
+            this.btnSimpleSQL.TabIndex = 11;
+            this.btnSimpleSQL.Text = "Run SQL";
+            this.btnSimpleSQL.UseVisualStyleBackColor = true;
+            this.btnSimpleSQL.Click += new System.EventHandler(this.BtnSimpleSQL_Click);
+            // 
+            // tSimpleSQL
+            // 
+            this.tSimpleSQL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tSimpleSQL.Location = new System.Drawing.Point(282, 105);
+            this.tSimpleSQL.Name = "tSimpleSQL";
+            this.tSimpleSQL.Size = new System.Drawing.Size(555, 20);
+            this.tSimpleSQL.TabIndex = 10;
+            this.tSimpleSQL.TextChanged += new System.EventHandler(this.TSimpleSQL_TextChanged);
+            this.tSimpleSQL.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSimpleSQL_KeyDown);
+            // 
+            // dgvSimple
+            // 
+            this.dgvSimple.AllowUserToAddRows = false;
+            this.dgvSimple.AllowUserToDeleteRows = false;
+            this.dgvSimple.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvSimple.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvSimple.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvSimple.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.dgvSimple.Location = new System.Drawing.Point(282, 131);
+            this.dgvSimple.MultiSelect = false;
+            this.dgvSimple.Name = "dgvSimple";
+            this.dgvSimple.RowHeadersVisible = false;
+            this.dgvSimple.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgvSimple.Size = new System.Drawing.Size(636, 333);
+            this.dgvSimple.TabIndex = 9;
             // 
             // label8
             // 
@@ -771,6 +868,136 @@
             this.Column8.Name = "Column8";
             this.Column8.ReadOnly = true;
             this.Column8.Width = 61;
+            // 
+            // tpNPCs
+            // 
+            this.tpNPCs.Controls.Add(this.btnSearchNPC);
+            this.tpNPCs.Controls.Add(this.label39);
+            this.tpNPCs.Controls.Add(this.tSearchNPC);
+            this.tpNPCs.Controls.Add(this.dgvNPCs);
+            this.tpNPCs.Location = new System.Drawing.Point(4, 22);
+            this.tpNPCs.Name = "tpNPCs";
+            this.tpNPCs.Padding = new System.Windows.Forms.Padding(3);
+            this.tpNPCs.Size = new System.Drawing.Size(927, 480);
+            this.tpNPCs.TabIndex = 6;
+            this.tpNPCs.Text = "NPCs";
+            this.tpNPCs.UseVisualStyleBackColor = true;
+            // 
+            // btnSearchNPC
+            // 
+            this.btnSearchNPC.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSearchNPC.Enabled = false;
+            this.btnSearchNPC.Location = new System.Drawing.Point(839, 8);
+            this.btnSearchNPC.Name = "btnSearchNPC";
+            this.btnSearchNPC.Size = new System.Drawing.Size(79, 23);
+            this.btnSearchNPC.TabIndex = 10;
+            this.btnSearchNPC.Text = "Search";
+            this.btnSearchNPC.UseVisualStyleBackColor = true;
+            this.btnSearchNPC.Click += new System.EventHandler(this.BtnSearchNPC_Click);
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(8, 13);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(172, 13);
+            this.label39.TabIndex = 9;
+            this.label39.Text = "Search NPC ID, Name or Model ID";
+            // 
+            // tSearchNPC
+            // 
+            this.tSearchNPC.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tSearchNPC.Location = new System.Drawing.Point(186, 10);
+            this.tSearchNPC.Name = "tSearchNPC";
+            this.tSearchNPC.Size = new System.Drawing.Size(647, 20);
+            this.tSearchNPC.TabIndex = 8;
+            this.tSearchNPC.TextChanged += new System.EventHandler(this.TSearchNPC_TextChanged);
+            this.tSearchNPC.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSearchNPC_KeyDown);
+            // 
+            // dgvNPCs
+            // 
+            this.dgvNPCs.AllowUserToAddRows = false;
+            this.dgvNPCs.AllowUserToDeleteRows = false;
+            this.dgvNPCs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvNPCs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvNPCs.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvNPCs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvNPCs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn14,
+            this.dataGridViewTextBoxColumn17,
+            this.Column18,
+            this.Column19,
+            this.Column17,
+            this.Column16,
+            this.Column21,
+            this.Column20});
+            this.dgvNPCs.Location = new System.Drawing.Point(8, 41);
+            this.dgvNPCs.Name = "dgvNPCs";
+            this.dgvNPCs.ReadOnly = true;
+            this.dgvNPCs.RowHeadersVisible = false;
+            this.dgvNPCs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvNPCs.Size = new System.Drawing.Size(910, 432);
+            this.dgvNPCs.TabIndex = 7;
+            this.dgvNPCs.SelectionChanged += new System.EventHandler(this.DgvNPCs_SelectionChanged);
+            // 
+            // dataGridViewTextBoxColumn14
+            // 
+            this.dataGridViewTextBoxColumn14.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
+            this.dataGridViewTextBoxColumn14.ReadOnly = true;
+            this.dataGridViewTextBoxColumn14.Width = 43;
+            // 
+            // dataGridViewTextBoxColumn17
+            // 
+            this.dataGridViewTextBoxColumn17.HeaderText = "Name";
+            this.dataGridViewTextBoxColumn17.Name = "dataGridViewTextBoxColumn17";
+            this.dataGridViewTextBoxColumn17.ReadOnly = true;
+            this.dataGridViewTextBoxColumn17.Width = 60;
+            // 
+            // Column18
+            // 
+            this.Column18.HeaderText = "Level";
+            this.Column18.Name = "Column18";
+            this.Column18.ReadOnly = true;
+            this.Column18.Width = 58;
+            // 
+            // Column19
+            // 
+            this.Column19.HeaderText = "Template ID";
+            this.Column19.Name = "Column19";
+            this.Column19.ReadOnly = true;
+            this.Column19.Width = 90;
+            // 
+            // Column17
+            // 
+            this.Column17.HeaderText = "Kind ID";
+            this.Column17.Name = "Column17";
+            this.Column17.ReadOnly = true;
+            this.Column17.Width = 67;
+            // 
+            // Column16
+            // 
+            this.Column16.HeaderText = "Grade ID";
+            this.Column16.Name = "Column16";
+            this.Column16.ReadOnly = true;
+            this.Column16.Width = 75;
+            // 
+            // Column21
+            // 
+            this.Column21.HeaderText = "Faction ID";
+            this.Column21.Name = "Column21";
+            this.Column21.ReadOnly = true;
+            this.Column21.Width = 81;
+            // 
+            // Column20
+            // 
+            this.Column20.HeaderText = "Model ID";
+            this.Column20.Name = "Column20";
+            this.Column20.ReadOnly = true;
+            this.Column20.Width = 75;
             // 
             // tpSkills
             // 
@@ -1843,186 +2070,429 @@
             this.openGamePakFileDialog.RestoreDirectory = true;
             this.openGamePakFileDialog.Title = "Open game_pak";
             // 
-            // tpNPCs
+            // tbFactions
             // 
-            this.tpNPCs.Controls.Add(this.btnSearchNPC);
-            this.tpNPCs.Controls.Add(this.label39);
-            this.tpNPCs.Controls.Add(this.tSearchNPC);
-            this.tpNPCs.Controls.Add(this.dgvNPCs);
-            this.tpNPCs.Location = new System.Drawing.Point(4, 22);
-            this.tpNPCs.Name = "tpNPCs";
-            this.tpNPCs.Padding = new System.Windows.Forms.Padding(3);
-            this.tpNPCs.Size = new System.Drawing.Size(927, 480);
-            this.tpNPCs.TabIndex = 6;
-            this.tpNPCs.Text = "NPCs";
-            this.tpNPCs.UseVisualStyleBackColor = true;
+            this.tbFactions.Controls.Add(this.groupBox7);
+            this.tbFactions.Controls.Add(this.groupBox6);
+            this.tbFactions.Controls.Add(this.btnFactionsAll);
+            this.tbFactions.Controls.Add(this.btnSearchFaction);
+            this.tbFactions.Controls.Add(this.label42);
+            this.tbFactions.Controls.Add(this.tSearchFaction);
+            this.tbFactions.Controls.Add(this.dgvFactions);
+            this.tbFactions.Location = new System.Drawing.Point(4, 22);
+            this.tbFactions.Name = "tbFactions";
+            this.tbFactions.Padding = new System.Windows.Forms.Padding(3);
+            this.tbFactions.Size = new System.Drawing.Size(927, 480);
+            this.tbFactions.TabIndex = 7;
+            this.tbFactions.Text = "Factions";
+            this.tbFactions.UseVisualStyleBackColor = true;
             // 
-            // btnSearchNPC
+            // btnSearchFaction
             // 
-            this.btnSearchNPC.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSearchNPC.Enabled = false;
-            this.btnSearchNPC.Location = new System.Drawing.Point(839, 8);
-            this.btnSearchNPC.Name = "btnSearchNPC";
-            this.btnSearchNPC.Size = new System.Drawing.Size(79, 23);
-            this.btnSearchNPC.TabIndex = 10;
-            this.btnSearchNPC.Text = "Search";
-            this.btnSearchNPC.UseVisualStyleBackColor = true;
-            this.btnSearchNPC.Click += new System.EventHandler(this.BtnSearchNPC_Click);
+            this.btnSearchFaction.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSearchFaction.Enabled = false;
+            this.btnSearchFaction.Location = new System.Drawing.Point(446, 8);
+            this.btnSearchFaction.Name = "btnSearchFaction";
+            this.btnSearchFaction.Size = new System.Drawing.Size(79, 23);
+            this.btnSearchFaction.TabIndex = 14;
+            this.btnSearchFaction.Text = "Search";
+            this.btnSearchFaction.UseVisualStyleBackColor = true;
+            this.btnSearchFaction.Click += new System.EventHandler(this.BtnSearchFaction_Click);
             // 
-            // label39
+            // label42
             // 
-            this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(8, 13);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(172, 13);
-            this.label39.TabIndex = 9;
-            this.label39.Text = "Search NPC ID, Name or Model ID";
+            this.label42.AutoSize = true;
+            this.label42.Location = new System.Drawing.Point(8, 13);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(207, 13);
+            this.label42.TabIndex = 13;
+            this.label42.Text = "Search Faction ID, Name (includes owner)";
             // 
-            // tSearchNPC
+            // tSearchFaction
             // 
-            this.tSearchNPC.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.tSearchFaction.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tSearchNPC.Location = new System.Drawing.Point(186, 10);
-            this.tSearchNPC.Name = "tSearchNPC";
-            this.tSearchNPC.Size = new System.Drawing.Size(647, 20);
-            this.tSearchNPC.TabIndex = 8;
-            this.tSearchNPC.TextChanged += new System.EventHandler(this.TSearchNPC_TextChanged);
-            this.tSearchNPC.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSearchNPC_KeyDown);
+            this.tSearchFaction.Location = new System.Drawing.Point(221, 10);
+            this.tSearchFaction.Name = "tSearchFaction";
+            this.tSearchFaction.Size = new System.Drawing.Size(219, 20);
+            this.tSearchFaction.TabIndex = 12;
+            this.tSearchFaction.TextChanged += new System.EventHandler(this.TSearchFaction_TextChanged);
+            this.tSearchFaction.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSearchFaction_KeyDown);
             // 
-            // dgvNPCs
+            // dgvFactions
             // 
-            this.dgvNPCs.AllowUserToAddRows = false;
-            this.dgvNPCs.AllowUserToDeleteRows = false;
-            this.dgvNPCs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.dgvFactions.AllowUserToAddRows = false;
+            this.dgvFactions.AllowUserToDeleteRows = false;
+            this.dgvFactions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvNPCs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvNPCs.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dgvNPCs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvNPCs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn14,
-            this.dataGridViewTextBoxColumn17,
-            this.Column18,
-            this.Column19,
-            this.Column17,
-            this.Column16,
-            this.Column21,
-            this.Column20});
-            this.dgvNPCs.Location = new System.Drawing.Point(8, 41);
-            this.dgvNPCs.Name = "dgvNPCs";
-            this.dgvNPCs.ReadOnly = true;
-            this.dgvNPCs.RowHeadersVisible = false;
-            this.dgvNPCs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvNPCs.Size = new System.Drawing.Size(910, 432);
-            this.dgvNPCs.TabIndex = 7;
-            this.dgvNPCs.SelectionChanged += new System.EventHandler(this.DgvNPCs_SelectionChanged);
+            this.dgvFactions.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvFactions.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvFactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvFactions.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn15,
+            this.dataGridViewTextBoxColumn16,
+            this.Column30,
+            this.Column24,
+            this.Column29});
+            this.dgvFactions.Location = new System.Drawing.Point(8, 41);
+            this.dgvFactions.Name = "dgvFactions";
+            this.dgvFactions.ReadOnly = true;
+            this.dgvFactions.RowHeadersVisible = false;
+            this.dgvFactions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvFactions.Size = new System.Drawing.Size(602, 432);
+            this.dgvFactions.TabIndex = 11;
+            this.dgvFactions.SelectionChanged += new System.EventHandler(this.DgvFactions_SelectionChanged);
             // 
-            // dgvSimple
+            // btnFactionsAll
             // 
-            this.dgvSimple.AllowUserToAddRows = false;
-            this.dgvSimple.AllowUserToDeleteRows = false;
-            this.dgvSimple.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvSimple.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvSimple.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dgvSimple.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.dgvSimple.Location = new System.Drawing.Point(282, 131);
-            this.dgvSimple.MultiSelect = false;
-            this.dgvSimple.Name = "dgvSimple";
-            this.dgvSimple.RowHeadersVisible = false;
-            this.dgvSimple.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvSimple.Size = new System.Drawing.Size(636, 333);
-            this.dgvSimple.TabIndex = 9;
+            this.btnFactionsAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnFactionsAll.Location = new System.Drawing.Point(531, 8);
+            this.btnFactionsAll.Name = "btnFactionsAll";
+            this.btnFactionsAll.Size = new System.Drawing.Size(79, 23);
+            this.btnFactionsAll.TabIndex = 15;
+            this.btnFactionsAll.Text = "Show All";
+            this.btnFactionsAll.UseVisualStyleBackColor = true;
+            this.btnFactionsAll.Click += new System.EventHandler(this.BtnFactionsAll_Click);
             // 
-            // tSimpleSQL
+            // groupBox6
             // 
-            this.tSimpleSQL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tSimpleSQL.Location = new System.Drawing.Point(282, 105);
-            this.tSimpleSQL.Name = "tSimpleSQL";
-            this.tSimpleSQL.Size = new System.Drawing.Size(555, 20);
-            this.tSimpleSQL.TabIndex = 10;
-            this.tSimpleSQL.TextChanged += new System.EventHandler(this.TSimpleSQL_TextChanged);
-            this.tSimpleSQL.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSimpleSQL_KeyDown);
+            this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox6.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox6.Controls.Add(this.lFactionMotherID);
+            this.groupBox6.Controls.Add(this.label65);
+            this.groupBox6.Controls.Add(this.lFactionDiplomacyLinkID);
+            this.groupBox6.Controls.Add(this.label63);
+            this.groupBox6.Controls.Add(this.lFactionIsDiplomacyTarget);
+            this.groupBox6.Controls.Add(this.label61);
+            this.groupBox6.Controls.Add(this.lFactionGuardLink);
+            this.groupBox6.Controls.Add(this.label57);
+            this.groupBox6.Controls.Add(this.lFactionAggroLink);
+            this.groupBox6.Controls.Add(this.label54);
+            this.groupBox6.Controls.Add(this.LFactionPoliticalSystemID);
+            this.groupBox6.Controls.Add(this.label52);
+            this.groupBox6.Controls.Add(this.lFactionOwnerTypeID);
+            this.groupBox6.Controls.Add(this.label50);
+            this.groupBox6.Controls.Add(this.label44);
+            this.groupBox6.Controls.Add(this.lFactionOwnerName);
+            this.groupBox6.Controls.Add(this.lFactionOwnerID);
+            this.groupBox6.Controls.Add(this.label48);
+            this.groupBox6.Controls.Add(this.label45);
+            this.groupBox6.Controls.Add(this.lFactionName);
+            this.groupBox6.Controls.Add(this.lFactionID);
+            this.groupBox6.Controls.Add(this.label59);
+            this.groupBox6.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox6.Location = new System.Drawing.Point(616, 10);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(302, 226);
+            this.groupBox6.TabIndex = 16;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Faction Info";
             // 
-            // btnSimpleSQL
+            // label45
             // 
-            this.btnSimpleSQL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSimpleSQL.Location = new System.Drawing.Point(843, 103);
-            this.btnSimpleSQL.Name = "btnSimpleSQL";
-            this.btnSimpleSQL.Size = new System.Drawing.Size(75, 23);
-            this.btnSimpleSQL.TabIndex = 11;
-            this.btnSimpleSQL.Text = "Run SQL";
-            this.btnSimpleSQL.UseVisualStyleBackColor = true;
-            this.btnSimpleSQL.Click += new System.EventHandler(this.BtnSimpleSQL_Click);
+            this.label45.AutoSize = true;
+            this.label45.Location = new System.Drawing.Point(6, 29);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(35, 13);
+            this.label45.TabIndex = 14;
+            this.label45.Text = "Name";
             // 
-            // label41
+            // lFactionName
             // 
-            this.label41.AutoSize = true;
-            this.label41.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label41.Location = new System.Drawing.Point(282, 89);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(493, 13);
-            this.label41.TabIndex = 12;
-            this.label41.Text = "You can click a table to preview, or type a simple SQLite statement here. It is p" +
-    "retty slow on large tables";
+            this.lFactionName.AutoSize = true;
+            this.lFactionName.Location = new System.Drawing.Point(106, 29);
+            this.lFactionName.Name = "lFactionName";
+            this.lFactionName.Size = new System.Drawing.Size(43, 13);
+            this.lFactionName.TabIndex = 3;
+            this.lFactionName.Text = "<none>";
             // 
-            // dataGridViewTextBoxColumn14
+            // lFactionID
             // 
-            this.dataGridViewTextBoxColumn14.HeaderText = "ID";
-            this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
-            this.dataGridViewTextBoxColumn14.ReadOnly = true;
-            this.dataGridViewTextBoxColumn14.Width = 43;
+            this.lFactionID.AutoSize = true;
+            this.lFactionID.Location = new System.Drawing.Point(106, 16);
+            this.lFactionID.Name = "lFactionID";
+            this.lFactionID.Size = new System.Drawing.Size(13, 13);
+            this.lFactionID.TabIndex = 1;
+            this.lFactionID.Text = "0";
             // 
-            // dataGridViewTextBoxColumn17
+            // label59
             // 
-            this.dataGridViewTextBoxColumn17.HeaderText = "Name";
-            this.dataGridViewTextBoxColumn17.Name = "dataGridViewTextBoxColumn17";
-            this.dataGridViewTextBoxColumn17.ReadOnly = true;
-            this.dataGridViewTextBoxColumn17.Width = 60;
+            this.label59.AutoSize = true;
+            this.label59.Location = new System.Drawing.Point(6, 16);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(33, 13);
+            this.label59.TabIndex = 0;
+            this.label59.Text = "Index";
             // 
-            // Column18
+            // dataGridViewTextBoxColumn15
             // 
-            this.Column18.HeaderText = "Level";
-            this.Column18.Name = "Column18";
-            this.Column18.ReadOnly = true;
-            this.Column18.Width = 58;
+            this.dataGridViewTextBoxColumn15.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn15.Name = "dataGridViewTextBoxColumn15";
+            this.dataGridViewTextBoxColumn15.ReadOnly = true;
+            this.dataGridViewTextBoxColumn15.Width = 43;
             // 
-            // Column19
+            // dataGridViewTextBoxColumn16
             // 
-            this.Column19.HeaderText = "Template ID";
-            this.Column19.Name = "Column19";
-            this.Column19.ReadOnly = true;
-            this.Column19.Width = 90;
+            this.dataGridViewTextBoxColumn16.HeaderText = "Name";
+            this.dataGridViewTextBoxColumn16.Name = "dataGridViewTextBoxColumn16";
+            this.dataGridViewTextBoxColumn16.ReadOnly = true;
+            this.dataGridViewTextBoxColumn16.Width = 60;
             // 
-            // Column17
+            // Column30
             // 
-            this.Column17.HeaderText = "Kind ID";
-            this.Column17.Name = "Column17";
-            this.Column17.ReadOnly = true;
-            this.Column17.Width = 67;
+            this.Column30.HeaderText = "Mother";
+            this.Column30.Name = "Column30";
+            this.Column30.ReadOnly = true;
+            this.Column30.Width = 65;
             // 
-            // Column16
+            // Column24
             // 
-            this.Column16.HeaderText = "Grade ID";
-            this.Column16.Name = "Column16";
-            this.Column16.ReadOnly = true;
-            this.Column16.Width = 75;
+            this.Column24.HeaderText = "Owner";
+            this.Column24.Name = "Column24";
+            this.Column24.ReadOnly = true;
+            this.Column24.Width = 63;
             // 
-            // Column21
+            // Column29
             // 
-            this.Column21.HeaderText = "Faction ID";
-            this.Column21.Name = "Column21";
-            this.Column21.ReadOnly = true;
-            this.Column21.Width = 81;
+            this.Column29.HeaderText = "Diplomacy";
+            this.Column29.Name = "Column29";
+            this.Column29.ReadOnly = true;
+            this.Column29.Width = 81;
             // 
-            // Column20
+            // label44
             // 
-            this.Column20.HeaderText = "Model ID";
-            this.Column20.Name = "Column20";
-            this.Column20.ReadOnly = true;
-            this.Column20.Width = 75;
+            this.label44.AutoSize = true;
+            this.label44.Location = new System.Drawing.Point(6, 54);
+            this.label44.Name = "label44";
+            this.label44.Size = new System.Drawing.Size(69, 13);
+            this.label44.TabIndex = 18;
+            this.label44.Text = "Owner Name";
+            // 
+            // lFactionOwnerName
+            // 
+            this.lFactionOwnerName.AutoSize = true;
+            this.lFactionOwnerName.Location = new System.Drawing.Point(106, 54);
+            this.lFactionOwnerName.Name = "lFactionOwnerName";
+            this.lFactionOwnerName.Size = new System.Drawing.Size(43, 13);
+            this.lFactionOwnerName.TabIndex = 17;
+            this.lFactionOwnerName.Text = "<none>";
+            // 
+            // lFactionOwnerID
+            // 
+            this.lFactionOwnerID.AutoSize = true;
+            this.lFactionOwnerID.Location = new System.Drawing.Point(106, 80);
+            this.lFactionOwnerID.Name = "lFactionOwnerID";
+            this.lFactionOwnerID.Size = new System.Drawing.Size(13, 13);
+            this.lFactionOwnerID.TabIndex = 16;
+            this.lFactionOwnerID.Text = "0";
+            // 
+            // label48
+            // 
+            this.label48.AutoSize = true;
+            this.label48.Location = new System.Drawing.Point(6, 80);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(52, 13);
+            this.label48.TabIndex = 15;
+            this.label48.Text = "Owner ID";
+            // 
+            // lFactionOwnerTypeID
+            // 
+            this.lFactionOwnerTypeID.AutoSize = true;
+            this.lFactionOwnerTypeID.Location = new System.Drawing.Point(106, 67);
+            this.lFactionOwnerTypeID.Name = "lFactionOwnerTypeID";
+            this.lFactionOwnerTypeID.Size = new System.Drawing.Size(13, 13);
+            this.lFactionOwnerTypeID.TabIndex = 20;
+            this.lFactionOwnerTypeID.Text = "0";
+            // 
+            // label50
+            // 
+            this.label50.AutoSize = true;
+            this.label50.Location = new System.Drawing.Point(6, 67);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(79, 13);
+            this.label50.TabIndex = 19;
+            this.label50.Text = "Owner Type ID";
+            // 
+            // LFactionPoliticalSystemID
+            // 
+            this.LFactionPoliticalSystemID.AutoSize = true;
+            this.LFactionPoliticalSystemID.Location = new System.Drawing.Point(106, 104);
+            this.LFactionPoliticalSystemID.Name = "LFactionPoliticalSystemID";
+            this.LFactionPoliticalSystemID.Size = new System.Drawing.Size(13, 13);
+            this.LFactionPoliticalSystemID.TabIndex = 22;
+            this.LFactionPoliticalSystemID.Text = "0";
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(6, 104);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(94, 13);
+            this.label52.TabIndex = 21;
+            this.label52.Text = "Political System ID";
+            // 
+            // lFactionAggroLink
+            // 
+            this.lFactionAggroLink.AutoSize = true;
+            this.lFactionAggroLink.Location = new System.Drawing.Point(106, 150);
+            this.lFactionAggroLink.Name = "lFactionAggroLink";
+            this.lFactionAggroLink.Size = new System.Drawing.Size(32, 13);
+            this.lFactionAggroLink.TabIndex = 24;
+            this.lFactionAggroLink.Text = "False";
+            // 
+            // label54
+            // 
+            this.label54.AutoSize = true;
+            this.label54.Location = new System.Drawing.Point(6, 150);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(58, 13);
+            this.label54.TabIndex = 23;
+            this.label54.Text = "Aggro Link";
+            // 
+            // lFactionGuardLink
+            // 
+            this.lFactionGuardLink.AutoSize = true;
+            this.lFactionGuardLink.Location = new System.Drawing.Point(106, 163);
+            this.lFactionGuardLink.Name = "lFactionGuardLink";
+            this.lFactionGuardLink.Size = new System.Drawing.Size(32, 13);
+            this.lFactionGuardLink.TabIndex = 26;
+            this.lFactionGuardLink.Text = "False";
+            // 
+            // label57
+            // 
+            this.label57.AutoSize = true;
+            this.label57.Location = new System.Drawing.Point(6, 163);
+            this.label57.Name = "label57";
+            this.label57.Size = new System.Drawing.Size(59, 13);
+            this.label57.TabIndex = 25;
+            this.label57.Text = "Guard Link";
+            // 
+            // lFactionIsDiplomacyTarget
+            // 
+            this.lFactionIsDiplomacyTarget.AutoSize = true;
+            this.lFactionIsDiplomacyTarget.Location = new System.Drawing.Point(106, 188);
+            this.lFactionIsDiplomacyTarget.Name = "lFactionIsDiplomacyTarget";
+            this.lFactionIsDiplomacyTarget.Size = new System.Drawing.Size(32, 13);
+            this.lFactionIsDiplomacyTarget.TabIndex = 28;
+            this.lFactionIsDiplomacyTarget.Text = "False";
+            // 
+            // label61
+            // 
+            this.label61.AutoSize = true;
+            this.label61.Location = new System.Drawing.Point(6, 188);
+            this.label61.Name = "label61";
+            this.label61.Size = new System.Drawing.Size(101, 13);
+            this.label61.TabIndex = 27;
+            this.label61.Text = "Is Diplomacy Target";
+            // 
+            // lFactionDiplomacyLinkID
+            // 
+            this.lFactionDiplomacyLinkID.AutoSize = true;
+            this.lFactionDiplomacyLinkID.Location = new System.Drawing.Point(106, 201);
+            this.lFactionDiplomacyLinkID.Name = "lFactionDiplomacyLinkID";
+            this.lFactionDiplomacyLinkID.Size = new System.Drawing.Size(13, 13);
+            this.lFactionDiplomacyLinkID.TabIndex = 30;
+            this.lFactionDiplomacyLinkID.Text = "0";
+            // 
+            // label63
+            // 
+            this.label63.AutoSize = true;
+            this.label63.Location = new System.Drawing.Point(6, 201);
+            this.label63.Name = "label63";
+            this.label63.Size = new System.Drawing.Size(98, 13);
+            this.label63.TabIndex = 29;
+            this.label63.Text = "Displomacy Link ID";
+            // 
+            // lFactionMotherID
+            // 
+            this.lFactionMotherID.AutoSize = true;
+            this.lFactionMotherID.Location = new System.Drawing.Point(106, 126);
+            this.lFactionMotherID.Name = "lFactionMotherID";
+            this.lFactionMotherID.Size = new System.Drawing.Size(13, 13);
+            this.lFactionMotherID.TabIndex = 32;
+            this.lFactionMotherID.Text = "0";
+            // 
+            // label65
+            // 
+            this.label65.AutoSize = true;
+            this.label65.Location = new System.Drawing.Point(6, 126);
+            this.label65.Name = "label65";
+            this.label65.Size = new System.Drawing.Size(54, 13);
+            this.label65.TabIndex = 31;
+            this.label65.Text = "Mother ID";
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox7.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox7.Controls.Add(this.lFactionHostilePirate);
+            this.groupBox7.Controls.Add(this.label49);
+            this.groupBox7.Controls.Add(this.lFactionHostileHaranya);
+            this.groupBox7.Controls.Add(this.label47);
+            this.groupBox7.Controls.Add(this.lFactionHostileNuia);
+            this.groupBox7.Controls.Add(this.label76);
+            this.groupBox7.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox7.Location = new System.Drawing.Point(616, 242);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(302, 88);
+            this.groupBox7.TabIndex = 33;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Hostile";
+            // 
+            // lFactionHostileNuia
+            // 
+            this.lFactionHostileNuia.AutoSize = true;
+            this.lFactionHostileNuia.Location = new System.Drawing.Point(106, 16);
+            this.lFactionHostileNuia.Name = "lFactionHostileNuia";
+            this.lFactionHostileNuia.Size = new System.Drawing.Size(13, 13);
+            this.lFactionHostileNuia.TabIndex = 1;
+            this.lFactionHostileNuia.Text = "0";
+            // 
+            // label76
+            // 
+            this.label76.AutoSize = true;
+            this.label76.Location = new System.Drawing.Point(6, 16);
+            this.label76.Name = "label76";
+            this.label76.Size = new System.Drawing.Size(46, 13);
+            this.label76.TabIndex = 0;
+            this.label76.Text = "vs. Nuia";
+            // 
+            // lFactionHostileHaranya
+            // 
+            this.lFactionHostileHaranya.AutoSize = true;
+            this.lFactionHostileHaranya.Location = new System.Drawing.Point(106, 38);
+            this.lFactionHostileHaranya.Name = "lFactionHostileHaranya";
+            this.lFactionHostileHaranya.Size = new System.Drawing.Size(13, 13);
+            this.lFactionHostileHaranya.TabIndex = 3;
+            this.lFactionHostileHaranya.Text = "0";
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Location = new System.Drawing.Point(6, 38);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(64, 13);
+            this.label47.TabIndex = 2;
+            this.label47.Text = "vs. Haranya";
+            // 
+            // lFactionHostilePirate
+            // 
+            this.lFactionHostilePirate.AutoSize = true;
+            this.lFactionHostilePirate.Location = new System.Drawing.Point(106, 62);
+            this.lFactionHostilePirate.Name = "lFactionHostilePirate";
+            this.lFactionHostilePirate.Size = new System.Drawing.Size(13, 13);
+            this.lFactionHostilePirate.TabIndex = 5;
+            this.lFactionHostilePirate.Text = "0";
+            // 
+            // label49
+            // 
+            this.label49.AutoSize = true;
+            this.label49.Location = new System.Drawing.Point(6, 62);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(51, 13);
+            this.label49.TabIndex = 4;
+            this.label49.Text = "vs. Pirate";
             // 
             // MainForm
             // 
@@ -2038,6 +2508,7 @@
             this.tcViewer.ResumeLayout(false);
             this.tbTables.ResumeLayout(false);
             this.tbTables.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).EndInit();
             this.tpCurrentRecord.ResumeLayout(false);
             this.tpCurrentRecord.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentData)).EndInit();
@@ -2049,6 +2520,9 @@
             this.tpLoot.ResumeLayout(false);
             this.tpLoot.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLoot)).EndInit();
+            this.tpNPCs.ResumeLayout(false);
+            this.tpNPCs.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvNPCs)).EndInit();
             this.tpSkills.ResumeLayout(false);
             this.tpSkills.PerformLayout();
             this.tcSkillInfo.ResumeLayout(false);
@@ -2069,10 +2543,13 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).EndInit();
-            this.tpNPCs.ResumeLayout(false);
-            this.tpNPCs.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvNPCs)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).EndInit();
+            this.tbFactions.ResumeLayout(false);
+            this.tbFactions.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvFactions)).EndInit();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2247,6 +2724,47 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column21;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column20;
+        private System.Windows.Forms.TabPage tbFactions;
+        private System.Windows.Forms.Button btnSearchFaction;
+        private System.Windows.Forms.Label label42;
+        private System.Windows.Forms.TextBox tSearchFaction;
+        private System.Windows.Forms.DataGridView dgvFactions;
+        private System.Windows.Forms.Button btnFactionsAll;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Label label45;
+        private System.Windows.Forms.Label lFactionName;
+        private System.Windows.Forms.Label lFactionID;
+        private System.Windows.Forms.Label label59;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn15;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn16;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column30;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column24;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column29;
+        private System.Windows.Forms.Label label44;
+        private System.Windows.Forms.Label lFactionOwnerName;
+        private System.Windows.Forms.Label lFactionOwnerID;
+        private System.Windows.Forms.Label label48;
+        private System.Windows.Forms.Label lFactionOwnerTypeID;
+        private System.Windows.Forms.Label label50;
+        private System.Windows.Forms.Label LFactionPoliticalSystemID;
+        private System.Windows.Forms.Label label52;
+        private System.Windows.Forms.Label lFactionGuardLink;
+        private System.Windows.Forms.Label label57;
+        private System.Windows.Forms.Label lFactionAggroLink;
+        private System.Windows.Forms.Label label54;
+        private System.Windows.Forms.Label lFactionDiplomacyLinkID;
+        private System.Windows.Forms.Label label63;
+        private System.Windows.Forms.Label lFactionIsDiplomacyTarget;
+        private System.Windows.Forms.Label label61;
+        private System.Windows.Forms.Label lFactionMotherID;
+        private System.Windows.Forms.Label label65;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.Label lFactionHostileHaranya;
+        private System.Windows.Forms.Label label47;
+        private System.Windows.Forms.Label lFactionHostileNuia;
+        private System.Windows.Forms.Label label76;
+        private System.Windows.Forms.Label lFactionHostilePirate;
+        private System.Windows.Forms.Label label49;
     }
 }
 

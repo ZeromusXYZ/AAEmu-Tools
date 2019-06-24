@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using AAEmu.Game.Utils.DB;
 
 namespace AAEmu.DBDefs
@@ -217,7 +218,7 @@ namespace AAEmu.DBDefs
         public string SearchString = string.Empty;
     }
 
-    class GameSystem_Factions
+    class GameSystemFaction
     {
         public long id = 0;
         public string name = string.Empty;
@@ -237,7 +238,7 @@ namespace AAEmu.DBDefs
         public string SearchString = string.Empty;
     }
 
-    class GameSystem_Faction_Relations
+    class GameSystemFactionRelation
     {
         public long id = 0;
         public long faction1_id = 0;
@@ -258,6 +259,82 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameZone> DB_Zones = new Dictionary<long, GameZone>();
         static public Dictionary<long, GameZone_Groups> DB_Zone_Groups = new Dictionary<long, GameZone_Groups>();
         static public Dictionary<long, GameWorld_Groups> DB_World_Groups = new Dictionary<long, GameWorld_Groups>();
+        static public Dictionary<long, GameSystemFaction> DB_GameSystem_Factions = new Dictionary<long, GameSystemFaction>();
+        static public Dictionary<long, GameSystemFactionRelation> DB_GameSystem_Faction_Relations = new Dictionary<long, GameSystemFactionRelation>();
+
+        static public string GetFactionName(long faction_id)
+        {
+            if (DB_GameSystem_Factions.TryGetValue(faction_id, out var faction))
+            {
+                return faction.nameLocalized;
+            }
+            else
+            {
+                return "FactionID " + faction.ToString();
+            }
+        }
+
+        static public long GetFactionHostility(long f1, long f2)
+        {
+            foreach (var fr in DB_GameSystem_Faction_Relations)
+            {
+                if ((fr.Value.faction1_id == f1) && (fr.Value.faction2_id == f2))
+                {
+                    return fr.Value.state_id;
+                }
+                if ((fr.Value.faction1_id == f2) && (fr.Value.faction2_id == f1))
+                {
+                    return fr.Value.state_id;
+                }
+            }
+            return 0;
+        }
+
+        static public string GetFactionHostileName(long f)
+        {
+            switch (f)
+            {
+                case 0: return "Normal";
+                case 1: return "Hostile";
+                case 2: return "Neutral";
+                case 3: return "Friendly";
+                default:
+                    return "UnknownID: " + f.ToString();
+            }
+        }
+
+        static public void SetFactionRelationLabel(GameSystemFaction thisFaction, long targetFactionID, ref Label targetLabel)
+        {
+            var n = GetFactionHostility(thisFaction.id, targetFactionID);
+            if ((n == 0) && (thisFaction.mother_id != 0))
+            {
+                n = GetFactionHostility(thisFaction.mother_id, targetFactionID);
+            }
+            if ((n == 0) && (thisFaction.diplomacy_link_id != 0))
+            {
+                n = GetFactionHostility(thisFaction.diplomacy_link_id, targetFactionID);
+            }
+            targetLabel.Text = AADB.GetFactionHostileName(n);
+            switch (n)
+            {
+                case 0:
+                    targetLabel.ForeColor = SystemColors.ControlText;
+                    break;
+                case 1:
+                    targetLabel.ForeColor = Color.Red;
+                    break;
+                case 2:
+                    targetLabel.ForeColor = Color.Orange;
+                    break;
+                case 3:
+                    targetLabel.ForeColor = Color.Green;
+                    break;
+                default:
+                    targetLabel.ForeColor = SystemColors.ControlText;
+                    break;
+            }
+
+        }
     }
 
 }

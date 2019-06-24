@@ -147,6 +147,31 @@ namespace AAEmu.DBViewer
             }
         }
 
+        private void AddCustomTranslation(string table, string field, long idx, string val)
+        {
+            // Try overriding if empty
+            foreach(var tl in AADB.DB_Translations)
+            {
+                if ((tl.Value.idx == idx) && (tl.Value.table == table) && (tl.Value.field == field))
+                {
+                    if (tl.Value.value == string.Empty)
+                    {
+                        tl.Value.value = val;
+                    }
+                    return;
+                }
+            }
+
+            // Not in table yet, add it
+            GameTranslation t = new GameTranslation();
+            t.idx = idx;
+            t.table = table;
+            t.field = field;
+            t.value = val;
+            string k = t.table + ":" + t.field + ":" + t.idx.ToString();
+            AADB.DB_Translations.Add(k, t);
+        }
+
         private void LoadTranslations(string lng)
         {
             string sql = "SELECT * FROM localized_texts ORDER BY tbl_name, tbl_column_name, idx";
@@ -244,6 +269,12 @@ namespace AAEmu.DBViewer
                     cbItemSearchLanguage.Enabled = true;
                 }
             }
+            // Custom Translations
+            // For whatever reason, these are not defined in en_us, so we add them ourselves as they are kinda important for the visuals
+            AddCustomTranslation("system_factions", "name", 1, "[Friendly]");
+            AddCustomTranslation("system_factions", "name", 2, "[Neutral]");
+            AddCustomTranslation("system_factions", "name", 3, "[Hostile]");
+            // End of Custom Translations
             Properties.Settings.Default.DefaultGameLanguage = lng ;
         }
 
@@ -703,6 +734,75 @@ namespace AAEmu.DBViewer
                 }
             }
         }
+
+        private void LoadFactions()
+        {
+            string sql = "SELECT * FROM system_factions ORDER BY id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        AADB.DB_GameSystem_Factions.Clear();
+                        while (reader.Read())
+                        {
+                            var t = new GameSystemFaction();
+                            // Actual DB entries
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+                            t.owner_name = GetString(reader, "owner_name");
+                            t.owner_type_id = GetInt64(reader, "owner_type_id");
+                            t.owner_id = GetInt64(reader, "owner_id");
+                            t.political_system_id = GetInt64(reader, "political_system_id");
+                            t.mother_id = GetInt64(reader, "mother_id");
+                            t.aggro_link = GetBool(reader, "aggro_link");
+                            t.guard_help = GetBool(reader, "guard_help");
+                            t.is_diplomacy_tgt = GetBool(reader, "is_diplomacy_tgt");
+                            t.diplomacy_link_id = GetInt64(reader, "diplomacy_link_id");
+
+                            t.nameLocalized = GetTranslationByID(t.id, "system_factions", "name", t.name);
+                            if (t.owner_name != string.Empty)
+                                t.owner_nameLocalized = GetTranslationByID(t.id, "system_factions", "name", t.owner_name);
+                            else
+                                t.owner_nameLocalized = "";
+                            t.SearchString = t.name + " " + t.nameLocalized + " " + t.owner_nameLocalized ;
+                            t.SearchString = t.SearchString.ToLower();
+                            AADB.DB_GameSystem_Factions.Add(t.id, t);
+                        }
+                    }
+                }
+            }
+
+            sql = "SELECT * FROM system_faction_relations ORDER BY id ASC";
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        AADB.DB_GameSystem_Faction_Relations.Clear();
+                        while (reader.Read())
+                        {
+                            var t = new GameSystemFactionRelation();
+                            // Actual DB entries
+                            t.id = GetInt64(reader, "id");
+                            t.faction1_id = GetInt64(reader, "faction1_id");
+                            t.faction2_id = GetInt64(reader, "faction2_id");
+                            t.state_id = GetInt64(reader, "state_id");
+                            AADB.DB_GameSystem_Faction_Relations.Add(t.id, t);
+                        }
+                    }
+                }
+            }
+
+        }
+
 
 
         private void BtnItemSearch_Click(object sender, EventArgs e)
@@ -1447,6 +1547,8 @@ namespace AAEmu.DBViewer
                 LoadTranslations(Properties.Settings.Default.DefaultGameLanguage);
                 loading.ShowInfo("Loading: Icon info");
                 LoadIcons();
+                loading.ShowInfo("Loading: Factions");
+                LoadFactions();
                 loading.ShowInfo("Loading: Zones");
                 LoadZones();
                 loading.ShowInfo("Loading: Items");
@@ -1919,7 +2021,7 @@ namespace AAEmu.DBViewer
                     row.Cells[3].Value = z.npc_template_id.ToString();
                     row.Cells[4].Value = z.npc_kind_id.ToString();
                     row.Cells[5].Value = z.npc_grade_id.ToString();
-                    row.Cells[6].Value = z.faction_id.ToString();
+                    row.Cells[6].Value = AADB.GetFactionName(z.faction_id) + " ("+ z.faction_id.ToString() + ")";
                     row.Cells[7].Value = z.model_id.ToString();
                     c++;
 
@@ -1957,6 +2059,188 @@ namespace AAEmu.DBViewer
             var id = row.Cells[0].Value;
             if (id != null)
                 ShowSelectedData("npcs", "(id = " + id.ToString() + ")", "id ASC");
+        }
+
+        private void TSearchFaction_TextChanged(object sender, EventArgs e)
+        {
+            btnSearchFaction.Enabled = (tSearchFaction.Text != string.Empty);
+        }
+
+        private void BtnSearchFaction_Click(object sender, EventArgs e)
+        {
+            string searchText = tSearchFaction.Text.ToLower();
+            if (searchText == string.Empty)
+                return;
+            long searchID;
+            if (!long.TryParse(searchText, out searchID))
+                searchID = -1;
+
+            bool first = true;
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+            dgvFactions.Rows.Clear();
+            foreach (var t in AADB.DB_GameSystem_Factions)
+            {
+                var z = t.Value;
+                if ((z.id == searchID) || (z.owner_id == searchID) || (z.mother_id == searchID) || (z.SearchString.IndexOf(searchText) >= 0))
+                {
+                    var line = dgvFactions.Rows.Add();
+                    var row = dgvFactions.Rows[line];
+
+                    row.Cells[0].Value = z.id.ToString();
+                    row.Cells[1].Value = z.nameLocalized;
+                    if (z.mother_id != 0)
+                    {
+                        var motherName = AADB.GetFactionName(z.mother_id);
+                        if (motherName != string.Empty)
+                            row.Cells[2].Value = motherName + " (" + z.mother_id.ToString() + ")";
+                        else
+                            row.Cells[2].Value = z.mother_id.ToString();
+                    }
+                    else
+                    {
+                        row.Cells[2].Value = string.Empty;
+                    }
+                    if (z.owner_nameLocalized != string.Empty)
+                        row.Cells[3].Value = z.owner_nameLocalized + " (" + z.owner_id.ToString() + ")";
+                    else
+                        row.Cells[3].Value = z.owner_id.ToString();
+                    string d = string.Empty;
+                    if (z.is_diplomacy_tgt)
+                        d += "Is Target ";
+                    if (z.diplomacy_link_id != 0)
+                    {
+                        var diploName = AADB.GetFactionName(z.diplomacy_link_id);
+                        if (diploName != string.Empty)
+                            d = diploName + " (" + z.diplomacy_link_id.ToString() + ")";
+                        else
+                            d = z.diplomacy_link_id.ToString();
+                    }
+                    row.Cells[4].Value = d;
+                    if (first)
+                    {
+                        first = false;
+                        ShowDBFaction(z.id);
+                    }
+                }
+
+            }
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+        }
+
+        private void TSearchFaction_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                BtnSearchFaction_Click(null, null);
+        }
+
+        private void BtnFactionsAll_Click(object sender, EventArgs e)
+        {
+            bool first = true;
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+            dgvFactions.Rows.Clear();
+            foreach (var t in AADB.DB_GameSystem_Factions)
+            {
+                var z = t.Value;
+                var line = dgvFactions.Rows.Add();
+                var row = dgvFactions.Rows[line];
+
+                row.Cells[0].Value = z.id.ToString();
+                row.Cells[1].Value = z.nameLocalized;
+                if (z.mother_id != 0)
+                {
+                    var motherName = AADB.GetFactionName(z.mother_id);
+                    if (motherName != string.Empty)
+                        row.Cells[2].Value = motherName + " (" + z.mother_id.ToString() + ")";
+                    else
+                        row.Cells[2].Value = z.mother_id.ToString();
+                }
+                else
+                {
+                    row.Cells[2].Value = string.Empty;
+                }
+                if (z.owner_nameLocalized != string.Empty)
+                    row.Cells[3].Value = z.owner_nameLocalized + " (" + z.owner_id.ToString() + ")";
+                else
+                    row.Cells[3].Value = z.owner_id.ToString();
+                string d = string.Empty;
+                if (z.is_diplomacy_tgt)
+                    d += "Is Target ";
+                if (z.diplomacy_link_id != 0)
+                {
+                    var diploName = AADB.GetFactionName(z.diplomacy_link_id);
+                    if (diploName != string.Empty)
+                        d = diploName + " (" + z.diplomacy_link_id.ToString() + ")";
+                    else
+                        d = z.diplomacy_link_id.ToString();
+                }
+                row.Cells[4].Value = d;
+
+                if (first)
+                {
+                    first = false;
+                    ShowDBFaction(z.id);
+                }
+            }
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+        }
+
+        private void DgvFactions_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvFactions.SelectedRows.Count <= 0)
+                return;
+            var row = dgvFactions.SelectedRows[0];
+            if (row.Cells.Count <= 0)
+                return;
+
+            var id = row.Cells[0].Value;
+            if (id != null)
+            {
+                ShowDBFaction(long.Parse(id.ToString()));
+                ShowSelectedData("system_factions", "(id = " + id.ToString() + ")", "id ASC");
+            }
+        }
+
+        private void ShowDBFaction(long id)
+        {
+            if (AADB.DB_GameSystem_Factions.TryGetValue(id, out var f))
+            {
+                lFactionID.Text = f.id.ToString();
+                lFactionName.Text = f.nameLocalized;
+                lFactionOwnerName.Text = f.owner_nameLocalized;
+                lFactionOwnerTypeID.Text = f.owner_type_id.ToString();
+                lFactionOwnerID.Text = f.owner_id.ToString();
+                LFactionPoliticalSystemID.Text = f.political_system_id.ToString();
+                lFactionMotherID.Text = f.mother_id.ToString();
+                lFactionAggroLink.Text = f.aggro_link.ToString();
+                lFactionGuardLink.Text = f.guard_help.ToString();
+                lFactionIsDiplomacyTarget.Text = f.is_diplomacy_tgt.ToString();
+                lFactionDiplomacyLinkID.Text = f.diplomacy_link_id.ToString();
+
+                AADB.SetFactionRelationLabel(f, 148, ref lFactionHostileNuia);
+                AADB.SetFactionRelationLabel(f, 149, ref lFactionHostileHaranya);
+                AADB.SetFactionRelationLabel(f, 114, ref lFactionHostilePirate);
+            }
+            else
+            {
+                lFactionID.Text = "0";
+                lFactionName.Text = "<none>";
+                lFactionOwnerName.Text = "";
+                lFactionOwnerTypeID.Text = "";
+                lFactionOwnerID.Text = "";
+                LFactionPoliticalSystemID.Text = "";
+                lFactionMotherID.Text = "";
+                lFactionAggroLink.Text = "";
+                lFactionGuardLink.Text = "";
+                lFactionIsDiplomacyTarget.Text = "";
+                lFactionDiplomacyLinkID.Text = "";
+                lFactionHostileNuia.Text = "";
+                lFactionHostileHaranya.Text = "";
+            }
+
         }
     }
 }
