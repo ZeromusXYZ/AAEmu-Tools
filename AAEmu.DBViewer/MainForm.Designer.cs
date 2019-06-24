@@ -47,6 +47,11 @@
             this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tpDoodads = new System.Windows.Forms.TabPage();
+            this.btnSearchDoodads = new System.Windows.Forms.Button();
+            this.label46 = new System.Windows.Forms.Label();
+            this.tSearchDoodads = new System.Windows.Forms.TextBox();
+            this.dgvDoodads = new System.Windows.Forms.DataGridView();
             this.tbFactions = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.lFactionHostilePirate = new System.Windows.Forms.Label();
@@ -239,16 +244,12 @@
             this.tZonesSearch = new System.Windows.Forms.TextBox();
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.tpDoodads = new System.Windows.Forms.TabPage();
-            this.btnSearchDoodads = new System.Windows.Forms.Button();
-            this.label46 = new System.Windows.Forms.Label();
-            this.tSearchDoodads = new System.Windows.Forms.TextBox();
-            this.dgvDoodads = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column23 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column28 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column25 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column26 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column31 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tcViewer.SuspendLayout();
@@ -256,6 +257,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
             this.tpCurrentRecord.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentData)).BeginInit();
+            this.tpDoodads.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvDoodads)).BeginInit();
             this.tbFactions.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -280,8 +283,6 @@
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).BeginInit();
-            this.tpDoodads.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvDoodads)).BeginInit();
             this.SuspendLayout();
             // 
             // lbTableNames
@@ -506,6 +507,80 @@
             // 
             this.Column12.HeaderText = "Localized";
             this.Column12.Name = "Column12";
+            // 
+            // tpDoodads
+            // 
+            this.tpDoodads.Controls.Add(this.btnSearchDoodads);
+            this.tpDoodads.Controls.Add(this.label46);
+            this.tpDoodads.Controls.Add(this.tSearchDoodads);
+            this.tpDoodads.Controls.Add(this.dgvDoodads);
+            this.tpDoodads.Location = new System.Drawing.Point(4, 22);
+            this.tpDoodads.Name = "tpDoodads";
+            this.tpDoodads.Padding = new System.Windows.Forms.Padding(3);
+            this.tpDoodads.Size = new System.Drawing.Size(927, 480);
+            this.tpDoodads.TabIndex = 8;
+            this.tpDoodads.Text = "Doodads";
+            this.tpDoodads.UseVisualStyleBackColor = true;
+            // 
+            // btnSearchDoodads
+            // 
+            this.btnSearchDoodads.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSearchDoodads.Enabled = false;
+            this.btnSearchDoodads.Location = new System.Drawing.Point(839, 8);
+            this.btnSearchDoodads.Name = "btnSearchDoodads";
+            this.btnSearchDoodads.Size = new System.Drawing.Size(79, 23);
+            this.btnSearchDoodads.TabIndex = 14;
+            this.btnSearchDoodads.Text = "Search";
+            this.btnSearchDoodads.UseVisualStyleBackColor = true;
+            this.btnSearchDoodads.Click += new System.EventHandler(this.BtnSearchDoodads_Click);
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(8, 13);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(174, 13);
+            this.label46.TabIndex = 13;
+            this.label46.Text = "Search Doodad ID, Name or Model";
+            // 
+            // tSearchDoodads
+            // 
+            this.tSearchDoodads.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tSearchDoodads.Location = new System.Drawing.Point(186, 10);
+            this.tSearchDoodads.Name = "tSearchDoodads";
+            this.tSearchDoodads.Size = new System.Drawing.Size(647, 20);
+            this.tSearchDoodads.TabIndex = 12;
+            this.tSearchDoodads.TextChanged += new System.EventHandler(this.TSearchDoodads_TextChanged);
+            this.tSearchDoodads.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSearchDoodads_KeyDown);
+            // 
+            // dgvDoodads
+            // 
+            this.dgvDoodads.AllowUserToAddRows = false;
+            this.dgvDoodads.AllowUserToDeleteRows = false;
+            this.dgvDoodads.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvDoodads.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvDoodads.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvDoodads.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvDoodads.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn18,
+            this.dataGridViewTextBoxColumn19,
+            this.Column23,
+            this.Column28,
+            this.Column25,
+            this.Column26,
+            this.Column31,
+            this.Column22});
+            this.dgvDoodads.Location = new System.Drawing.Point(8, 41);
+            this.dgvDoodads.Name = "dgvDoodads";
+            this.dgvDoodads.ReadOnly = true;
+            this.dgvDoodads.RowHeadersVisible = false;
+            this.dgvDoodads.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvDoodads.Size = new System.Drawing.Size(910, 432);
+            this.dgvDoodads.TabIndex = 11;
+            this.dgvDoodads.SelectionChanged += new System.EventHandler(this.DgvDoodads_SelectionChanged);
             // 
             // tbFactions
             // 
@@ -2509,78 +2584,6 @@
             this.openGamePakFileDialog.RestoreDirectory = true;
             this.openGamePakFileDialog.Title = "Open game_pak";
             // 
-            // tpDoodads
-            // 
-            this.tpDoodads.Controls.Add(this.btnSearchDoodads);
-            this.tpDoodads.Controls.Add(this.label46);
-            this.tpDoodads.Controls.Add(this.tSearchDoodads);
-            this.tpDoodads.Controls.Add(this.dgvDoodads);
-            this.tpDoodads.Location = new System.Drawing.Point(4, 22);
-            this.tpDoodads.Name = "tpDoodads";
-            this.tpDoodads.Padding = new System.Windows.Forms.Padding(3);
-            this.tpDoodads.Size = new System.Drawing.Size(927, 480);
-            this.tpDoodads.TabIndex = 8;
-            this.tpDoodads.Text = "Doodads";
-            this.tpDoodads.UseVisualStyleBackColor = true;
-            // 
-            // btnSearchDoodads
-            // 
-            this.btnSearchDoodads.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSearchDoodads.Enabled = false;
-            this.btnSearchDoodads.Location = new System.Drawing.Point(839, 8);
-            this.btnSearchDoodads.Name = "btnSearchDoodads";
-            this.btnSearchDoodads.Size = new System.Drawing.Size(79, 23);
-            this.btnSearchDoodads.TabIndex = 14;
-            this.btnSearchDoodads.Text = "Search";
-            this.btnSearchDoodads.UseVisualStyleBackColor = true;
-            this.btnSearchDoodads.Click += new System.EventHandler(this.BtnSearchDoodads_Click);
-            // 
-            // label46
-            // 
-            this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(8, 13);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(174, 13);
-            this.label46.TabIndex = 13;
-            this.label46.Text = "Search Doodad ID, Name or Model";
-            // 
-            // tSearchDoodads
-            // 
-            this.tSearchDoodads.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tSearchDoodads.Location = new System.Drawing.Point(186, 10);
-            this.tSearchDoodads.Name = "tSearchDoodads";
-            this.tSearchDoodads.Size = new System.Drawing.Size(647, 20);
-            this.tSearchDoodads.TabIndex = 12;
-            this.tSearchDoodads.TextChanged += new System.EventHandler(this.TSearchDoodads_TextChanged);
-            this.tSearchDoodads.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSearchDoodads_KeyDown);
-            // 
-            // dgvDoodads
-            // 
-            this.dgvDoodads.AllowUserToAddRows = false;
-            this.dgvDoodads.AllowUserToDeleteRows = false;
-            this.dgvDoodads.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvDoodads.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvDoodads.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dgvDoodads.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvDoodads.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn18,
-            this.dataGridViewTextBoxColumn19,
-            this.Column23,
-            this.Column28,
-            this.Column25,
-            this.Column31,
-            this.Column22});
-            this.dgvDoodads.Location = new System.Drawing.Point(8, 41);
-            this.dgvDoodads.Name = "dgvDoodads";
-            this.dgvDoodads.ReadOnly = true;
-            this.dgvDoodads.RowHeadersVisible = false;
-            this.dgvDoodads.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDoodads.Size = new System.Drawing.Size(910, 432);
-            this.dgvDoodads.TabIndex = 11;
-            // 
             // dataGridViewTextBoxColumn18
             // 
             this.dataGridViewTextBoxColumn18.HeaderText = "ID";
@@ -2616,6 +2619,13 @@
             this.Column25.ReadOnly = true;
             this.Column25.Width = 69;
             // 
+            // Column26
+            // 
+            this.Column26.HeaderText = "Faction";
+            this.Column26.Name = "Column26";
+            this.Column26.ReadOnly = true;
+            this.Column26.Width = 67;
+            // 
             // Column31
             // 
             this.Column31.HeaderText = "Model Type";
@@ -2648,6 +2658,9 @@
             this.tpCurrentRecord.ResumeLayout(false);
             this.tpCurrentRecord.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentData)).EndInit();
+            this.tpDoodads.ResumeLayout(false);
+            this.tpDoodads.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvDoodads)).EndInit();
             this.tbFactions.ResumeLayout(false);
             this.tbFactions.PerformLayout();
             this.groupBox7.ResumeLayout(false);
@@ -2686,9 +2699,6 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).EndInit();
-            this.tpDoodads.ResumeLayout(false);
-            this.tpDoodads.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvDoodads)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2914,6 +2924,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column23;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column28;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column25;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column26;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column31;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column22;
     }

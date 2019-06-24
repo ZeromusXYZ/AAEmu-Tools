@@ -765,6 +765,7 @@ namespace AAEmu.DBViewer
                             t.diplomacy_link_id = GetInt64(reader, "diplomacy_link_id");
 
                             t.nameLocalized = GetTranslationByID(t.id, "system_factions", "name", t.name);
+                            // Actuall not sure if this can be localized
                             if (t.owner_name != string.Empty)
                                 t.owner_nameLocalized = GetTranslationByID(t.id, "system_factions", "name", t.owner_name);
                             else
@@ -2090,7 +2091,7 @@ namespace AAEmu.DBViewer
                     row.Cells[3].Value = z.npc_template_id.ToString();
                     row.Cells[4].Value = z.npc_kind_id.ToString();
                     row.Cells[5].Value = z.npc_grade_id.ToString();
-                    row.Cells[6].Value = AADB.GetFactionName(z.faction_id) + " ("+ z.faction_id.ToString() + ")";
+                    row.Cells[6].Value = AADB.GetFactionName(z.faction_id,true);
                     row.Cells[7].Value = z.model_id.ToString();
                     c++;
 
@@ -2160,11 +2161,7 @@ namespace AAEmu.DBViewer
                     row.Cells[1].Value = z.nameLocalized;
                     if (z.mother_id != 0)
                     {
-                        var motherName = AADB.GetFactionName(z.mother_id);
-                        if (motherName != string.Empty)
-                            row.Cells[2].Value = motherName + " (" + z.mother_id.ToString() + ")";
-                        else
-                            row.Cells[2].Value = z.mother_id.ToString();
+                        row.Cells[2].Value = AADB.GetFactionName(z.mother_id,true);
                     }
                     else
                     {
@@ -2179,13 +2176,10 @@ namespace AAEmu.DBViewer
                         d += "Is Target ";
                     if (z.diplomacy_link_id != 0)
                     {
-                        var diploName = AADB.GetFactionName(z.diplomacy_link_id);
-                        if (diploName != string.Empty)
-                            d = diploName + " (" + z.diplomacy_link_id.ToString() + ")";
-                        else
-                            d = z.diplomacy_link_id.ToString();
+                        d += AADB.GetFactionName(z.diplomacy_link_id, true);
                     }
                     row.Cells[4].Value = d;
+
                     if (first)
                     {
                         first = false;
@@ -2220,11 +2214,7 @@ namespace AAEmu.DBViewer
                 row.Cells[1].Value = z.nameLocalized;
                 if (z.mother_id != 0)
                 {
-                    var motherName = AADB.GetFactionName(z.mother_id);
-                    if (motherName != string.Empty)
-                        row.Cells[2].Value = motherName + " (" + z.mother_id.ToString() + ")";
-                    else
-                        row.Cells[2].Value = z.mother_id.ToString();
+                    row.Cells[2].Value = AADB.GetFactionName(z.mother_id,true);
                 }
                 else
                 {
@@ -2239,11 +2229,7 @@ namespace AAEmu.DBViewer
                     d += "Is Target ";
                 if (z.diplomacy_link_id != 0)
                 {
-                    var diploName = AADB.GetFactionName(z.diplomacy_link_id);
-                    if (diploName != string.Empty)
-                        d = diploName + " (" + z.diplomacy_link_id.ToString() + ")";
-                    else
-                        d = z.diplomacy_link_id.ToString();
+                    d += AADB.GetFactionName(z.diplomacy_link_id, true);
                 }
                 row.Cells[4].Value = d;
 
@@ -2350,13 +2336,17 @@ namespace AAEmu.DBViewer
                     row.Cells[2].Value = z.mgmt_spawn.ToString();
                     row.Cells[3].Value = z.group_id.ToString();
                     row.Cells[4].Value = z.percent.ToString();
-                    row.Cells[5].Value = z.model_kind_id.ToString();
-                    row.Cells[6].Value = z.model ;
+                    if (z.faction_id != 0)
+                        row.Cells[5].Value = AADB.GetFactionName(z.faction_id, true);
+                    else
+                        row.Cells[5].Value = string.Empty;
+                    row.Cells[6].Value = z.model_kind_id.ToString();
+                    row.Cells[7].Value = z.model ;
 
                     if (first)
                     {
                         first = false;
-                        // ShowDBFaction(z.id);
+                        // ShowDBDoodad(z.id);
                     }
 
                     c++;
@@ -2370,6 +2360,23 @@ namespace AAEmu.DBViewer
             }
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
+        }
+
+        private void DgvDoodads_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvDoodads.SelectedRows.Count <= 0)
+                return;
+            var row = dgvDoodads.SelectedRows[0];
+            if (row.Cells.Count <= 0)
+                return;
+
+            var id = row.Cells[0].Value;
+            if (id != null)
+            {
+                // ShowDBDoodad(long.Parse(id.ToString()));
+                ShowSelectedData("doodad_almighties", "(id = " + id.ToString() + ")", "id ASC");
+            }
+            //
         }
     }
 }

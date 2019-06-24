@@ -308,15 +308,21 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameSystemFactionRelation> DB_GameSystem_Faction_Relations = new Dictionary<long, GameSystemFactionRelation>();
         static public Dictionary<long, GameDoodad> DB_Doodad_Almighties = new Dictionary<long, GameDoodad>();
 
-        static public string GetFactionName(long faction_id)
+        static public string GetFactionName(long faction_id, bool addID = false)
         {
             if (DB_GameSystem_Factions.TryGetValue(faction_id, out var faction))
             {
-                return faction.nameLocalized;
+                if (addID)
+                    return faction.nameLocalized + " ("+ faction_id + ")";
+                else
+                    return faction.nameLocalized;
             }
             else
             {
-                return "FactionID " + faction.ToString();
+                if (addID)
+                    return "FactionID " + faction_id.ToString();
+                else
+                    return string.Empty;
             }
         }
 
