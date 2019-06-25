@@ -333,6 +333,14 @@ namespace AAEmu.DBDefs
                     return faction.nameLocalized;
             }
             else
+            if (faction_id == 0)
+            {
+                if (addID)
+                    return "None (0)";
+                else
+                    return "None";
+            }
+            else
             {
                 if (addID)
                     return "FactionID " + faction_id.ToString();
