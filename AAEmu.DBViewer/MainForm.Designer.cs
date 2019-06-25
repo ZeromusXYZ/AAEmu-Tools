@@ -539,17 +539,17 @@
             this.label46.AutoSize = true;
             this.label46.Location = new System.Drawing.Point(8, 13);
             this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(174, 13);
+            this.label46.Size = new System.Drawing.Size(223, 13);
             this.label46.TabIndex = 13;
-            this.label46.Text = "Search Doodad ID, Name or Model";
+            this.label46.Text = "Search Doodad ID, Group ID, Name or Model";
             // 
             // tSearchDoodads
             // 
             this.tSearchDoodads.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tSearchDoodads.Location = new System.Drawing.Point(186, 10);
+            this.tSearchDoodads.Location = new System.Drawing.Point(237, 10);
             this.tSearchDoodads.Name = "tSearchDoodads";
-            this.tSearchDoodads.Size = new System.Drawing.Size(647, 20);
+            this.tSearchDoodads.Size = new System.Drawing.Size(596, 20);
             this.tSearchDoodads.TabIndex = 12;
             this.tSearchDoodads.TextChanged += new System.EventHandler(this.TSearchDoodads_TextChanged);
             this.tSearchDoodads.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSearchDoodads_KeyDown);
@@ -2607,10 +2607,10 @@
             // 
             // Column28
             // 
-            this.Column28.HeaderText = "Group ID";
+            this.Column28.HeaderText = "Group";
             this.Column28.Name = "Column28";
             this.Column28.ReadOnly = true;
-            this.Column28.Width = 75;
+            this.Column28.Width = 61;
             // 
             // Column25
             // 

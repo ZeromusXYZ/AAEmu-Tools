@@ -246,6 +246,20 @@ namespace AAEmu.DBDefs
         public long state_id = 0;
     }
 
+    class GameDoodadGroup
+    {
+        // TABLE doodad_groups
+        public long id = 0;
+        public string name = string.Empty;
+        public bool is_export = false;
+        public long guard_on_field_time = 0;
+        public bool removed_by_house = false;
+
+        // Helpers
+        public string nameLocalized = string.Empty;
+        public string SearchString = string.Empty;
+    }
+
     class GameDoodad
     {
         // TABLE doodad_almighties
@@ -263,13 +277,13 @@ namespace AAEmu.DBDefs
         public bool use_creator_faction = false;
         public bool force_tod_top_priority = false;
         public long milestone_id = 0;
-        public long group_id = 0 ;
+        public long group_id = 0;
         public bool show_minimap = false;
         public bool use_target_decal = false;
         public bool use_target_silhouette = false;
         public bool use_target_highlight = false;
         public float target_decal_size = 0.0f;
-        public long sim_radius = 0 ;
+        public long sim_radius = 0;
         public bool collide_ship = false;
         public bool collide_vehicle = false;
         public long climate_id = 0;
@@ -307,6 +321,7 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameSystemFaction> DB_GameSystem_Factions = new Dictionary<long, GameSystemFaction>();
         static public Dictionary<long, GameSystemFactionRelation> DB_GameSystem_Faction_Relations = new Dictionary<long, GameSystemFactionRelation>();
         static public Dictionary<long, GameDoodad> DB_Doodad_Almighties = new Dictionary<long, GameDoodad>();
+        static public Dictionary<long, GameDoodadGroup> DB_Doodad_Groups = new Dictionary<long, GameDoodadGroup>();
 
         static public string GetFactionName(long faction_id, bool addID = false)
         {

@@ -172,6 +172,101 @@ namespace AAEmu.DBViewer
             AADB.DB_Translations.Add(k, t);
         }
 
+        private void AddCustomTranslations()
+        {
+            // Custom Translations
+            // For whatever reason, these are not defined in en_us, so we add them ourselves as they are kinda important for the visuals
+            AddCustomTranslation("system_factions", "name", 1, "[Friendly]");
+            AddCustomTranslation("system_factions", "name", 2, "[Neutral]");
+            AddCustomTranslation("system_factions", "name", 3, "[Hostile]");
+
+            // Manually translated the doodad group from korean, just to make it easier to read
+            AddCustomTranslation("doodad_groups", "name", 2, "[Deforestation - Trees]");
+            AddCustomTranslation("doodad_groups", "name", 3, "[Picking - Herbs]");
+            AddCustomTranslation("doodad_groups", "name", 4, "[Mining - Minerals]");
+            AddCustomTranslation("doodad_groups", "name", 5, "[Livestock - Livestock]");
+            AddCustomTranslation("doodad_groups", "name", 6, "[Other - Mailbox]");
+            AddCustomTranslation("doodad_groups", "name", 7, "[Workbench - Pension item]");
+            AddCustomTranslation("doodad_groups", "name", 8, "[Workbench - Architecture]");
+            AddCustomTranslation("doodad_groups", "name", 9, "[Workbench - Cooking]");
+            AddCustomTranslation("doodad_groups", "name", 10, "[Workbench - Handicraft]");
+            AddCustomTranslation("doodad_groups", "name", 11, "[Others - Quest]");
+            AddCustomTranslation("doodad_groups", "name", 12, "[Agriculture - Crops]");
+            AddCustomTranslation("doodad_groups", "name", 13, "[Others - Skill]");
+            AddCustomTranslation("doodad_groups", "name", 14, "[Collect - Water]");
+            AddCustomTranslation("doodad_groups", "name", 15, "[Collect - Soil]");
+            AddCustomTranslation("doodad_groups", "name", 16, "[Workbench - Machine]");
+            AddCustomTranslation("doodad_groups", "name", 17, "[Workbench - Metal]");
+            AddCustomTranslation("doodad_groups", "name", 18, "[Workbench - Crest]");
+            AddCustomTranslation("doodad_groups", "name", 19, "[Workbench - Masonry]");
+            AddCustomTranslation("doodad_groups", "name", 20, "[Workbench - Fabric]");
+            AddCustomTranslation("doodad_groups", "name", 21, "[Workbench - Leather]");
+            AddCustomTranslation("doodad_groups", "name", 22, "[Workbench - Weapons]");
+            AddCustomTranslation("doodad_groups", "name", 23, "[Workbench - Wood]");
+            AddCustomTranslation("doodad_groups", "name", 24, "[Others - Interaction]");
+            AddCustomTranslation("doodad_groups", "name", 25, "[Others - Level]");
+            AddCustomTranslation("doodad_groups", "name", 26, "[Interaction - Sales]");
+            AddCustomTranslation("doodad_groups", "name", 27, "[Interaction - Adventure T1]");
+            AddCustomTranslation("doodad_groups", "name", 28, "[Interaction - Adventure T2]");
+            AddCustomTranslation("doodad_groups", "name", 29, "[Interaction - Adventure T3]");
+            AddCustomTranslation("doodad_groups", "name", 30, "[Interaction - Adventure T4]");
+            AddCustomTranslation("doodad_groups", "name", 31, "[Interaction - Adventure T5]");
+            AddCustomTranslation("doodad_groups", "name", 32, "[Interaction - Adventure T6]");
+            AddCustomTranslation("doodad_groups", "name", 33, "[Interaction - Adventure T7]");
+            //AddCustomTranslation("doodad_groups", "name", 34, "[Test Doodad]");
+            //AddCustomTranslation("doodad_groups", "name", 35, "[Trash Doodad]");
+            //AddCustomTranslation("doodad_groups", "name", 36, "[Door]");
+            //AddCustomTranslation("doodad_groups", "name", 37, "[Can Place On Water]");
+            AddCustomTranslation("doodad_groups", "name", 38, "[Interaction - Backpack]");
+            AddCustomTranslation("doodad_groups", "name", 39, "[Interaction - Excavation]");
+            AddCustomTranslation("doodad_groups", "name", 40, "[Agriculture - Marine Crops]");
+            //AddCustomTranslation("doodad_groups", "name", 41, "[]");
+            AddCustomTranslation("doodad_groups", "name", 42, "[Marine related]");
+            AddCustomTranslation("doodad_groups", "name", 43, "[Portal - Space gap]");
+            AddCustomTranslation("doodad_groups", "name", 44, "[Portal - Mirage Island]");
+            AddCustomTranslation("doodad_groups", "name", 45, "[Portal - Instance Dungeon]");
+            AddCustomTranslation("doodad_groups", "name", 46, "[Workbench - Specialties]");
+            AddCustomTranslation("doodad_groups", "name", 47, "[Unused]");
+            AddCustomTranslation("doodad_groups", "name", 48, "[Workbench - Archeum]");
+            AddCustomTranslation("doodad_groups", "name", 49, "[Workbench - Cloth Armor]");
+            AddCustomTranslation("doodad_groups", "name", 50, "[Workbench - Leather Armor]");
+            AddCustomTranslation("doodad_groups", "name", 51, "[Workbench - Woodworking]");
+            AddCustomTranslation("doodad_groups", "name", 52, "[Workbench - Metal Armor]");
+            AddCustomTranslation("doodad_groups", "name", 53, "[Others - Spatial Records]");
+            AddCustomTranslation("doodad_groups", "name", 54, "[Others - Quest (hunting grounds)]");
+            AddCustomTranslation("doodad_groups", "name", 55, "[Normal Treasure]");
+            AddCustomTranslation("doodad_groups", "name", 56, "[Grand Treasure]");
+            AddCustomTranslation("doodad_groups", "name", 57, "[Rare Treasure]");
+            AddCustomTranslation("doodad_groups", "name", 58, "[Arcane Treasure]");
+            AddCustomTranslation("doodad_groups", "name", 59, "[Heroic Treasure]");
+            AddCustomTranslation("doodad_groups", "name", 60, "[Housing Area Marker - General Residential Area]");
+            AddCustomTranslation("doodad_groups", "name", 61, "[Housing Area Marker - Marine Residential Area]");
+            AddCustomTranslation("doodad_groups", "name", 62, "[Housing Area Marker - Luxury Residential Area]");
+            AddCustomTranslation("doodad_groups", "name", 63, "[Housing Area Marker - Private Pumpkin Scarecrow Garden]");
+            AddCustomTranslation("doodad_groups", "name", 64, "[Housing Area Marker - Thatched Farmhouse Area]");
+            AddCustomTranslation("doodad_groups", "name", 65, "[Fish]");
+            AddCustomTranslation("doodad_groups", "name", 66, "[Workbench - Paper]");
+            AddCustomTranslation("doodad_groups", "name", 67, "[Workbench - Printing]");
+            AddCustomTranslation("doodad_groups", "name", 68, "[Housing - Doors/Windows]");
+            AddCustomTranslation("doodad_groups", "name", 69, "[Housing - Furniture]");
+            AddCustomTranslation("doodad_groups", "name", 70, "[Fish Furniture]");
+            AddCustomTranslation("doodad_groups", "name", 71, "[Fish Stand]");
+            //AddCustomTranslation("doodad_groups", "name", 72, "[Collide check]");
+            //AddCustomTranslation("doodad_groups", "name", 73, "[o_abyss_gate_mine_A]");
+            //AddCustomTranslation("doodad_groups", "name", 74, "[o_abyss_gate_mine_B]");
+            //AddCustomTranslation("doodad_groups", "name", 75, "[o_abyss_gate_warning_A]");
+            //AddCustomTranslation("doodad_groups", "name", 76, "[o_abyss_gate_warning_B]");
+            AddCustomTranslation("doodad_groups", "name", 77, "[Others - Quest_Do not apply frost protection]");
+            AddCustomTranslation("doodad_groups", "name", 78, "[Housing Area Marker - Straw Hat Scarecrow Garden]");
+            AddCustomTranslation("doodad_groups", "name", 79, "[Housing Area Marker - Water Residential Area]");
+            AddCustomTranslation("doodad_groups", "name", 80, "[Holy Statue?]");
+            //AddCustomTranslation("doodad_groups", "name", 81, "[arche_mall_race]");
+            AddCustomTranslation("doodad_groups", "name", 82, "[Backpack Storage]");
+            AddCustomTranslation("doodad_groups", "name", 83, "[Workbench - Art]");
+
+            // End of Custom Translations
+        }
+
         private void LoadTranslations(string lng)
         {
             string sql = "SELECT * FROM localized_texts ORDER BY tbl_name, tbl_column_name, idx";
@@ -269,12 +364,6 @@ namespace AAEmu.DBViewer
                     cbItemSearchLanguage.Enabled = true;
                 }
             }
-            // Custom Translations
-            // For whatever reason, these are not defined in en_us, so we add them ourselves as they are kinda important for the visuals
-            AddCustomTranslation("system_factions", "name", 1, "[Friendly]");
-            AddCustomTranslation("system_factions", "name", 2, "[Neutral]");
-            AddCustomTranslation("system_factions", "name", 3, "[Hostile]");
-            // End of Custom Translations
             Properties.Settings.Default.DefaultGameLanguage = lng ;
         }
 
@@ -765,7 +854,7 @@ namespace AAEmu.DBViewer
                             t.diplomacy_link_id = GetInt64(reader, "diplomacy_link_id");
 
                             t.nameLocalized = GetTranslationByID(t.id, "system_factions", "name", t.name);
-                            // Actuall not sure if this can be localized
+                            // Actuall not even sure if owner_name can be localized, also not sure yet what owner_id points to
                             if (t.owner_name != string.Empty)
                                 t.owner_nameLocalized = GetTranslationByID(t.id, "system_factions", "name", t.owner_name);
                             else
@@ -806,8 +895,8 @@ namespace AAEmu.DBViewer
 
         private void LoadDoodads()
         {
+            // doodad_almighties
             string sql = "SELECT * FROM doodad_almighties ORDER BY id ASC";
-
             using (var connection = SQLite.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
@@ -863,6 +952,37 @@ namespace AAEmu.DBViewer
                             t.SearchString = t.name + " " + t.nameLocalized ;
                             t.SearchString = t.SearchString.ToLower();
                             AADB.DB_Doodad_Almighties.Add(t.id, t);
+                        }
+                    }
+                }
+            }
+
+            // doodad_groups
+            sql = "SELECT * FROM doodad_groups ORDER BY id ASC";
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        AADB.DB_Doodad_Groups.Clear();
+                        while (reader.Read())
+                        {
+                            var t = new GameDoodadGroup();
+                            // Actual DB entries
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+                            t.is_export = GetBool(reader, "is_export");
+                            t.guard_on_field_time = GetInt64(reader, "guard_on_field_time");
+                            t.removed_by_house = GetBool(reader, "removed_by_house");
+
+                            // Helpers
+                            t.nameLocalized = GetTranslationByID(t.id, "doodad_groups", "name", t.name);
+                            t.SearchString = t.name + " " + t.nameLocalized;
+                            t.SearchString = t.SearchString.ToLower();
+                            AADB.DB_Doodad_Groups.Add(t.id, t);
                         }
                     }
                 }
@@ -1613,6 +1733,8 @@ namespace AAEmu.DBViewer
                 // make sure translations are loaded first, other tables depend on it
                 loading.ShowInfo("Loading: Translation");
                 LoadTranslations(Properties.Settings.Default.DefaultGameLanguage);
+                loading.ShowInfo("Loading: Custom Translations");
+                AddCustomTranslations();
                 loading.ShowInfo("Loading: Icon info");
                 LoadIcons();
                 loading.ShowInfo("Loading: Factions");
@@ -2326,7 +2448,7 @@ namespace AAEmu.DBViewer
             foreach(var t in AADB.DB_Doodad_Almighties)
             {
                 var z = t.Value;
-                if ((z.id == searchID) || (z.SearchString.IndexOf(searchText) >= 0))
+                if ((z.id == searchID) || (z.group_id == searchID) || (z.SearchString.IndexOf(searchText) >= 0))
                 {
                     var line = dgvDoodads.Rows.Add();
                     var row = dgvDoodads.Rows[line];
@@ -2334,7 +2456,14 @@ namespace AAEmu.DBViewer
                     row.Cells[0].Value = z.id.ToString();
                     row.Cells[1].Value = z.nameLocalized;
                     row.Cells[2].Value = z.mgmt_spawn.ToString();
-                    row.Cells[3].Value = z.group_id.ToString();
+                    if (AADB.DB_Doodad_Groups.TryGetValue(z.group_id, out var dGroup))
+                    {
+                        row.Cells[3].Value = dGroup.nameLocalized + " (" +z.group_id.ToString() + ")"; 
+                    }
+                    else
+                    {
+                        row.Cells[3].Value = z.group_id.ToString();
+                    }
                     row.Cells[4].Value = z.percent.ToString();
                     if (z.faction_id != 0)
                         row.Cells[5].Value = AADB.GetFactionName(z.faction_id, true);
