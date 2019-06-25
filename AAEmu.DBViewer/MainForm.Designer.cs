@@ -252,6 +252,91 @@
             this.Column26 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column31 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tcDoodads = new System.Windows.Forms.TabControl();
+            this.tpDoodadInfo = new System.Windows.Forms.TabPage();
+            this.tpDoodadFunctions = new System.Windows.Forms.TabPage();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.lDoodadOnceOneMan = new System.Windows.Forms.Label();
+            this.lDoodadName = new System.Windows.Forms.Label();
+            this.label58 = new System.Windows.Forms.Label();
+            this.label60 = new System.Windows.Forms.Label();
+            this.lDoodadID = new System.Windows.Forms.Label();
+            this.label69 = new System.Windows.Forms.Label();
+            this.lDoodadModel = new System.Windows.Forms.Label();
+            this.label71 = new System.Windows.Forms.Label();
+            this.lDoodadOnceOneInteraction = new System.Windows.Forms.Label();
+            this.label53 = new System.Windows.Forms.Label();
+            this.lDoodadShowName = new System.Windows.Forms.Label();
+            this.label64 = new System.Windows.Forms.Label();
+            this.lDoodadMgmtSpawn = new System.Windows.Forms.Label();
+            this.label67 = new System.Windows.Forms.Label();
+            this.lDoodadPercent = new System.Windows.Forms.Label();
+            this.label73 = new System.Windows.Forms.Label();
+            this.lDoodadMinTime = new System.Windows.Forms.Label();
+            this.label75 = new System.Windows.Forms.Label();
+            this.lDoodadMaxTime = new System.Windows.Forms.Label();
+            this.label78 = new System.Windows.Forms.Label();
+            this.lDoodadModelKindID = new System.Windows.Forms.Label();
+            this.label80 = new System.Windows.Forms.Label();
+            this.lDoodadUseCreatorFaction = new System.Windows.Forms.Label();
+            this.label82 = new System.Windows.Forms.Label();
+            this.lDoodadForceToDTopPriority = new System.Windows.Forms.Label();
+            this.label84 = new System.Windows.Forms.Label();
+            this.lDoodadMilestoneID = new System.Windows.Forms.Label();
+            this.label86 = new System.Windows.Forms.Label();
+            this.lDoodadGroupID = new System.Windows.Forms.Label();
+            this.label88 = new System.Windows.Forms.Label();
+            this.lDoodadShowMinimap = new System.Windows.Forms.Label();
+            this.label90 = new System.Windows.Forms.Label();
+            this.lDoodadUseTargetDecal = new System.Windows.Forms.Label();
+            this.label92 = new System.Windows.Forms.Label();
+            this.lDoodadUseTargetSilhouette = new System.Windows.Forms.Label();
+            this.label94 = new System.Windows.Forms.Label();
+            this.lDoodadUseTargetHighlight = new System.Windows.Forms.Label();
+            this.label96 = new System.Windows.Forms.Label();
+            this.lDoodadTargetDecalSize = new System.Windows.Forms.Label();
+            this.label98 = new System.Windows.Forms.Label();
+            this.lDoodadSimRadius = new System.Windows.Forms.Label();
+            this.label100 = new System.Windows.Forms.Label();
+            this.lDoodadCollideShip = new System.Windows.Forms.Label();
+            this.label102 = new System.Windows.Forms.Label();
+            this.lDoodadCollideVehicle = new System.Windows.Forms.Label();
+            this.label104 = new System.Windows.Forms.Label();
+            this.lDoodadClimateID = new System.Windows.Forms.Label();
+            this.label106 = new System.Windows.Forms.Label();
+            this.lDoodadMarkModel = new System.Windows.Forms.Label();
+            this.label108 = new System.Windows.Forms.Label();
+            this.lDoodadForceUpAction = new System.Windows.Forms.Label();
+            this.label110 = new System.Windows.Forms.Label();
+            this.lDoodadLoadModelFromWorld = new System.Windows.Forms.Label();
+            this.label112 = new System.Windows.Forms.Label();
+            this.lDoodadParentable = new System.Windows.Forms.Label();
+            this.label114 = new System.Windows.Forms.Label();
+            this.lDoodadChildable = new System.Windows.Forms.Label();
+            this.label116 = new System.Windows.Forms.Label();
+            this.lDoodadFactionID = new System.Windows.Forms.Label();
+            this.label118 = new System.Windows.Forms.Label();
+            this.lDoodadGrowthTime = new System.Windows.Forms.Label();
+            this.label120 = new System.Windows.Forms.Label();
+            this.lDoodadDespawnOnCollision = new System.Windows.Forms.Label();
+            this.label122 = new System.Windows.Forms.Label();
+            this.lDoodadNoCollision = new System.Windows.Forms.Label();
+            this.label124 = new System.Windows.Forms.Label();
+            this.lDoodadRestrictZoneID = new System.Windows.Forms.Label();
+            this.label126 = new System.Windows.Forms.Label();
+            this.lDoodadSaveIndun = new System.Windows.Forms.Label();
+            this.label55 = new System.Windows.Forms.Label();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.label62 = new System.Windows.Forms.Label();
+            this.lDoodadGroupName = new System.Windows.Forms.Label();
+            this.label68 = new System.Windows.Forms.Label();
+            this.label70 = new System.Windows.Forms.Label();
+            this.lDoodadGroupIsExport = new System.Windows.Forms.Label();
+            this.label56 = new System.Windows.Forms.Label();
+            this.lDoodadGroupGuardOnFieldTime = new System.Windows.Forms.Label();
+            this.label72 = new System.Windows.Forms.Label();
+            this.lDoodadGroupRemovedByHouse = new System.Windows.Forms.Label();
+            this.label77 = new System.Windows.Forms.Label();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -283,6 +368,10 @@
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).BeginInit();
+            this.tcDoodads.SuspendLayout();
+            this.tpDoodadInfo.SuspendLayout();
+            this.groupBox8.SuspendLayout();
+            this.groupBox9.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbTableNames
@@ -510,6 +599,7 @@
             // 
             // tpDoodads
             // 
+            this.tpDoodads.Controls.Add(this.tcDoodads);
             this.tpDoodads.Controls.Add(this.btnSearchDoodads);
             this.tpDoodads.Controls.Add(this.label46);
             this.tpDoodads.Controls.Add(this.tSearchDoodads);
@@ -526,7 +616,7 @@
             // 
             this.btnSearchDoodads.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSearchDoodads.Enabled = false;
-            this.btnSearchDoodads.Location = new System.Drawing.Point(839, 8);
+            this.btnSearchDoodads.Location = new System.Drawing.Point(497, 8);
             this.btnSearchDoodads.Name = "btnSearchDoodads";
             this.btnSearchDoodads.Size = new System.Drawing.Size(79, 23);
             this.btnSearchDoodads.TabIndex = 14;
@@ -549,7 +639,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tSearchDoodads.Location = new System.Drawing.Point(237, 10);
             this.tSearchDoodads.Name = "tSearchDoodads";
-            this.tSearchDoodads.Size = new System.Drawing.Size(596, 20);
+            this.tSearchDoodads.Size = new System.Drawing.Size(254, 20);
             this.tSearchDoodads.TabIndex = 12;
             this.tSearchDoodads.TextChanged += new System.EventHandler(this.TSearchDoodads_TextChanged);
             this.tSearchDoodads.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSearchDoodads_KeyDown);
@@ -578,7 +668,7 @@
             this.dgvDoodads.ReadOnly = true;
             this.dgvDoodads.RowHeadersVisible = false;
             this.dgvDoodads.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDoodads.Size = new System.Drawing.Size(910, 432);
+            this.dgvDoodads.Size = new System.Drawing.Size(568, 432);
             this.dgvDoodads.TabIndex = 11;
             this.dgvDoodads.SelectionChanged += new System.EventHandler(this.DgvDoodads_SelectionChanged);
             // 
@@ -2640,6 +2730,861 @@
             this.Column22.ReadOnly = true;
             this.Column22.Width = 61;
             // 
+            // tcDoodads
+            // 
+            this.tcDoodads.Alignment = System.Windows.Forms.TabAlignment.Bottom;
+            this.tcDoodads.Controls.Add(this.tpDoodadInfo);
+            this.tcDoodads.Controls.Add(this.tpDoodadFunctions);
+            this.tcDoodads.Dock = System.Windows.Forms.DockStyle.Right;
+            this.tcDoodads.Location = new System.Drawing.Point(582, 3);
+            this.tcDoodads.Multiline = true;
+            this.tcDoodads.Name = "tcDoodads";
+            this.tcDoodads.SelectedIndex = 0;
+            this.tcDoodads.Size = new System.Drawing.Size(342, 474);
+            this.tcDoodads.TabIndex = 15;
+            // 
+            // tpDoodadInfo
+            // 
+            this.tpDoodadInfo.Controls.Add(this.groupBox9);
+            this.tpDoodadInfo.Controls.Add(this.groupBox8);
+            this.tpDoodadInfo.Location = new System.Drawing.Point(4, 4);
+            this.tpDoodadInfo.Name = "tpDoodadInfo";
+            this.tpDoodadInfo.Padding = new System.Windows.Forms.Padding(3);
+            this.tpDoodadInfo.Size = new System.Drawing.Size(334, 448);
+            this.tpDoodadInfo.TabIndex = 1;
+            this.tpDoodadInfo.Text = "Doodad";
+            this.tpDoodadInfo.UseVisualStyleBackColor = true;
+            // 
+            // tpDoodadFunctions
+            // 
+            this.tpDoodadFunctions.Location = new System.Drawing.Point(4, 4);
+            this.tpDoodadFunctions.Name = "tpDoodadFunctions";
+            this.tpDoodadFunctions.Padding = new System.Windows.Forms.Padding(3);
+            this.tpDoodadFunctions.Size = new System.Drawing.Size(334, 448);
+            this.tpDoodadFunctions.TabIndex = 2;
+            this.tpDoodadFunctions.Text = "Functions";
+            this.tpDoodadFunctions.UseVisualStyleBackColor = true;
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.lDoodadSaveIndun);
+            this.groupBox8.Controls.Add(this.label55);
+            this.groupBox8.Controls.Add(this.lDoodadRestrictZoneID);
+            this.groupBox8.Controls.Add(this.label126);
+            this.groupBox8.Controls.Add(this.lDoodadNoCollision);
+            this.groupBox8.Controls.Add(this.label124);
+            this.groupBox8.Controls.Add(this.lDoodadDespawnOnCollision);
+            this.groupBox8.Controls.Add(this.label122);
+            this.groupBox8.Controls.Add(this.lDoodadGrowthTime);
+            this.groupBox8.Controls.Add(this.label120);
+            this.groupBox8.Controls.Add(this.lDoodadFactionID);
+            this.groupBox8.Controls.Add(this.label118);
+            this.groupBox8.Controls.Add(this.lDoodadChildable);
+            this.groupBox8.Controls.Add(this.label116);
+            this.groupBox8.Controls.Add(this.lDoodadParentable);
+            this.groupBox8.Controls.Add(this.label114);
+            this.groupBox8.Controls.Add(this.lDoodadLoadModelFromWorld);
+            this.groupBox8.Controls.Add(this.label112);
+            this.groupBox8.Controls.Add(this.lDoodadForceUpAction);
+            this.groupBox8.Controls.Add(this.label110);
+            this.groupBox8.Controls.Add(this.lDoodadMarkModel);
+            this.groupBox8.Controls.Add(this.label108);
+            this.groupBox8.Controls.Add(this.lDoodadClimateID);
+            this.groupBox8.Controls.Add(this.label106);
+            this.groupBox8.Controls.Add(this.lDoodadCollideVehicle);
+            this.groupBox8.Controls.Add(this.label104);
+            this.groupBox8.Controls.Add(this.lDoodadCollideShip);
+            this.groupBox8.Controls.Add(this.label102);
+            this.groupBox8.Controls.Add(this.lDoodadSimRadius);
+            this.groupBox8.Controls.Add(this.label100);
+            this.groupBox8.Controls.Add(this.lDoodadTargetDecalSize);
+            this.groupBox8.Controls.Add(this.label98);
+            this.groupBox8.Controls.Add(this.lDoodadUseTargetHighlight);
+            this.groupBox8.Controls.Add(this.label96);
+            this.groupBox8.Controls.Add(this.lDoodadUseTargetSilhouette);
+            this.groupBox8.Controls.Add(this.label94);
+            this.groupBox8.Controls.Add(this.lDoodadUseTargetDecal);
+            this.groupBox8.Controls.Add(this.label92);
+            this.groupBox8.Controls.Add(this.lDoodadShowMinimap);
+            this.groupBox8.Controls.Add(this.label90);
+            this.groupBox8.Controls.Add(this.lDoodadGroupID);
+            this.groupBox8.Controls.Add(this.label88);
+            this.groupBox8.Controls.Add(this.lDoodadMilestoneID);
+            this.groupBox8.Controls.Add(this.label86);
+            this.groupBox8.Controls.Add(this.lDoodadForceToDTopPriority);
+            this.groupBox8.Controls.Add(this.label84);
+            this.groupBox8.Controls.Add(this.lDoodadUseCreatorFaction);
+            this.groupBox8.Controls.Add(this.label82);
+            this.groupBox8.Controls.Add(this.lDoodadModelKindID);
+            this.groupBox8.Controls.Add(this.label80);
+            this.groupBox8.Controls.Add(this.lDoodadMaxTime);
+            this.groupBox8.Controls.Add(this.label78);
+            this.groupBox8.Controls.Add(this.lDoodadMinTime);
+            this.groupBox8.Controls.Add(this.label75);
+            this.groupBox8.Controls.Add(this.lDoodadPercent);
+            this.groupBox8.Controls.Add(this.label73);
+            this.groupBox8.Controls.Add(this.lDoodadMgmtSpawn);
+            this.groupBox8.Controls.Add(this.label67);
+            this.groupBox8.Controls.Add(this.lDoodadShowName);
+            this.groupBox8.Controls.Add(this.label64);
+            this.groupBox8.Controls.Add(this.lDoodadOnceOneInteraction);
+            this.groupBox8.Controls.Add(this.label53);
+            this.groupBox8.Controls.Add(this.lDoodadModel);
+            this.groupBox8.Controls.Add(this.label71);
+            this.groupBox8.Controls.Add(this.lDoodadID);
+            this.groupBox8.Controls.Add(this.label69);
+            this.groupBox8.Controls.Add(this.lDoodadOnceOneMan);
+            this.groupBox8.Controls.Add(this.lDoodadName);
+            this.groupBox8.Controls.Add(this.label58);
+            this.groupBox8.Controls.Add(this.label60);
+            this.groupBox8.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox8.Location = new System.Drawing.Point(3, 3);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(328, 357);
+            this.groupBox8.TabIndex = 12;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Doodad Info";
+            // 
+            // lDoodadOnceOneMan
+            // 
+            this.lDoodadOnceOneMan.AutoSize = true;
+            this.lDoodadOnceOneMan.Location = new System.Drawing.Point(112, 66);
+            this.lDoodadOnceOneMan.Name = "lDoodadOnceOneMan";
+            this.lDoodadOnceOneMan.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadOnceOneMan.TabIndex = 35;
+            this.lDoodadOnceOneMan.Text = "0";
+            // 
+            // lDoodadName
+            // 
+            this.lDoodadName.AutoSize = true;
+            this.lDoodadName.Location = new System.Drawing.Point(131, 16);
+            this.lDoodadName.Name = "lDoodadName";
+            this.lDoodadName.Size = new System.Drawing.Size(43, 13);
+            this.lDoodadName.TabIndex = 36;
+            this.lDoodadName.Text = "<none>";
+            // 
+            // label58
+            // 
+            this.label58.AutoSize = true;
+            this.label58.Location = new System.Drawing.Point(6, 66);
+            this.label58.Name = "label58";
+            this.label58.Size = new System.Drawing.Size(80, 13);
+            this.label58.TabIndex = 34;
+            this.label58.Text = "Once One Man";
+            // 
+            // label60
+            // 
+            this.label60.AutoSize = true;
+            this.label60.Location = new System.Drawing.Point(90, 16);
+            this.label60.Name = "label60";
+            this.label60.Size = new System.Drawing.Size(35, 13);
+            this.label60.TabIndex = 34;
+            this.label60.Text = "Name";
+            // 
+            // lDoodadID
+            // 
+            this.lDoodadID.AutoSize = true;
+            this.lDoodadID.Location = new System.Drawing.Point(30, 16);
+            this.lDoodadID.Name = "lDoodadID";
+            this.lDoodadID.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadID.TabIndex = 43;
+            this.lDoodadID.Text = "0";
+            // 
+            // label69
+            // 
+            this.label69.AutoSize = true;
+            this.label69.Location = new System.Drawing.Point(6, 16);
+            this.label69.Name = "label69";
+            this.label69.Size = new System.Drawing.Size(18, 13);
+            this.label69.TabIndex = 42;
+            this.label69.Text = "ID";
+            // 
+            // lDoodadModel
+            // 
+            this.lDoodadModel.AutoSize = true;
+            this.lDoodadModel.Location = new System.Drawing.Point(54, 40);
+            this.lDoodadModel.Name = "lDoodadModel";
+            this.lDoodadModel.Size = new System.Drawing.Size(43, 13);
+            this.lDoodadModel.TabIndex = 45;
+            this.lDoodadModel.Text = "<none>";
+            // 
+            // label71
+            // 
+            this.label71.AutoSize = true;
+            this.label71.Location = new System.Drawing.Point(6, 40);
+            this.label71.Name = "label71";
+            this.label71.Size = new System.Drawing.Size(36, 13);
+            this.label71.TabIndex = 44;
+            this.label71.Text = "Model";
+            // 
+            // lDoodadOnceOneInteraction
+            // 
+            this.lDoodadOnceOneInteraction.AutoSize = true;
+            this.lDoodadOnceOneInteraction.Location = new System.Drawing.Point(282, 66);
+            this.lDoodadOnceOneInteraction.Name = "lDoodadOnceOneInteraction";
+            this.lDoodadOnceOneInteraction.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadOnceOneInteraction.TabIndex = 47;
+            this.lDoodadOnceOneInteraction.Text = "0";
+            // 
+            // label53
+            // 
+            this.label53.AutoSize = true;
+            this.label53.Location = new System.Drawing.Point(167, 66);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(109, 13);
+            this.label53.TabIndex = 46;
+            this.label53.Text = "Once One Interaction";
+            // 
+            // lDoodadShowName
+            // 
+            this.lDoodadShowName.AutoSize = true;
+            this.lDoodadShowName.Location = new System.Drawing.Point(112, 79);
+            this.lDoodadShowName.Name = "lDoodadShowName";
+            this.lDoodadShowName.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadShowName.TabIndex = 49;
+            this.lDoodadShowName.Text = "0";
+            // 
+            // label64
+            // 
+            this.label64.AutoSize = true;
+            this.label64.Location = new System.Drawing.Point(6, 79);
+            this.label64.Name = "label64";
+            this.label64.Size = new System.Drawing.Size(65, 13);
+            this.label64.TabIndex = 48;
+            this.label64.Text = "Show Name";
+            // 
+            // lDoodadMgmtSpawn
+            // 
+            this.lDoodadMgmtSpawn.AutoSize = true;
+            this.lDoodadMgmtSpawn.Location = new System.Drawing.Point(282, 79);
+            this.lDoodadMgmtSpawn.Name = "lDoodadMgmtSpawn";
+            this.lDoodadMgmtSpawn.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadMgmtSpawn.TabIndex = 51;
+            this.lDoodadMgmtSpawn.Text = "0";
+            // 
+            // label67
+            // 
+            this.label67.AutoSize = true;
+            this.label67.Location = new System.Drawing.Point(167, 79);
+            this.label67.Name = "label67";
+            this.label67.Size = new System.Drawing.Size(69, 13);
+            this.label67.TabIndex = 50;
+            this.label67.Text = "Mgmt Spawn";
+            // 
+            // lDoodadPercent
+            // 
+            this.lDoodadPercent.AutoSize = true;
+            this.lDoodadPercent.Location = new System.Drawing.Point(248, 101);
+            this.lDoodadPercent.Name = "lDoodadPercent";
+            this.lDoodadPercent.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadPercent.TabIndex = 53;
+            this.lDoodadPercent.Text = "0";
+            // 
+            // label73
+            // 
+            this.label73.AutoSize = true;
+            this.label73.Location = new System.Drawing.Point(167, 101);
+            this.label73.Name = "label73";
+            this.label73.Size = new System.Drawing.Size(44, 13);
+            this.label73.TabIndex = 52;
+            this.label73.Text = "Percent";
+            // 
+            // lDoodadMinTime
+            // 
+            this.lDoodadMinTime.AutoSize = true;
+            this.lDoodadMinTime.Location = new System.Drawing.Point(84, 114);
+            this.lDoodadMinTime.Name = "lDoodadMinTime";
+            this.lDoodadMinTime.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadMinTime.TabIndex = 55;
+            this.lDoodadMinTime.Text = "0";
+            // 
+            // label75
+            // 
+            this.label75.AutoSize = true;
+            this.label75.Location = new System.Drawing.Point(6, 114);
+            this.label75.Name = "label75";
+            this.label75.Size = new System.Drawing.Size(74, 13);
+            this.label75.TabIndex = 54;
+            this.label75.Text = "Minimum Time";
+            // 
+            // lDoodadMaxTime
+            // 
+            this.lDoodadMaxTime.AutoSize = true;
+            this.lDoodadMaxTime.Location = new System.Drawing.Point(248, 114);
+            this.lDoodadMaxTime.Name = "lDoodadMaxTime";
+            this.lDoodadMaxTime.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadMaxTime.TabIndex = 57;
+            this.lDoodadMaxTime.Text = "0";
+            // 
+            // label78
+            // 
+            this.label78.AutoSize = true;
+            this.label78.Location = new System.Drawing.Point(167, 114);
+            this.label78.Name = "label78";
+            this.label78.Size = new System.Drawing.Size(77, 13);
+            this.label78.TabIndex = 56;
+            this.label78.Text = "Maximum Time";
+            // 
+            // lDoodadModelKindID
+            // 
+            this.lDoodadModelKindID.AutoSize = true;
+            this.lDoodadModelKindID.Location = new System.Drawing.Point(112, 53);
+            this.lDoodadModelKindID.Name = "lDoodadModelKindID";
+            this.lDoodadModelKindID.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadModelKindID.TabIndex = 59;
+            this.lDoodadModelKindID.Text = "0";
+            // 
+            // label80
+            // 
+            this.label80.AutoSize = true;
+            this.label80.Location = new System.Drawing.Point(6, 53);
+            this.label80.Name = "label80";
+            this.label80.Size = new System.Drawing.Size(74, 13);
+            this.label80.TabIndex = 58;
+            this.label80.Text = "Model Kind ID";
+            // 
+            // lDoodadUseCreatorFaction
+            // 
+            this.lDoodadUseCreatorFaction.AutoSize = true;
+            this.lDoodadUseCreatorFaction.Location = new System.Drawing.Point(112, 147);
+            this.lDoodadUseCreatorFaction.Name = "lDoodadUseCreatorFaction";
+            this.lDoodadUseCreatorFaction.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadUseCreatorFaction.TabIndex = 61;
+            this.lDoodadUseCreatorFaction.Text = "0";
+            // 
+            // label82
+            // 
+            this.label82.AutoSize = true;
+            this.label82.Location = new System.Drawing.Point(6, 147);
+            this.label82.Name = "label82";
+            this.label82.Size = new System.Drawing.Size(101, 13);
+            this.label82.TabIndex = 60;
+            this.label82.Text = "Use Creator Faction";
+            // 
+            // lDoodadForceToDTopPriority
+            // 
+            this.lDoodadForceToDTopPriority.AutoSize = true;
+            this.lDoodadForceToDTopPriority.Location = new System.Drawing.Point(282, 147);
+            this.lDoodadForceToDTopPriority.Name = "lDoodadForceToDTopPriority";
+            this.lDoodadForceToDTopPriority.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadForceToDTopPriority.TabIndex = 63;
+            this.lDoodadForceToDTopPriority.Text = "0";
+            // 
+            // label84
+            // 
+            this.label84.AutoSize = true;
+            this.label84.Location = new System.Drawing.Point(167, 147);
+            this.label84.Name = "label84";
+            this.label84.Size = new System.Drawing.Size(114, 13);
+            this.label84.TabIndex = 62;
+            this.label84.Text = "Force ToD Top Priority";
+            // 
+            // lDoodadMilestoneID
+            // 
+            this.lDoodadMilestoneID.AutoSize = true;
+            this.lDoodadMilestoneID.Location = new System.Drawing.Point(282, 160);
+            this.lDoodadMilestoneID.Name = "lDoodadMilestoneID";
+            this.lDoodadMilestoneID.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadMilestoneID.TabIndex = 65;
+            this.lDoodadMilestoneID.Text = "0";
+            // 
+            // label86
+            // 
+            this.label86.AutoSize = true;
+            this.label86.Location = new System.Drawing.Point(167, 160);
+            this.label86.Name = "label86";
+            this.label86.Size = new System.Drawing.Size(66, 13);
+            this.label86.TabIndex = 64;
+            this.label86.Text = "Milestone ID";
+            // 
+            // lDoodadGroupID
+            // 
+            this.lDoodadGroupID.AutoSize = true;
+            this.lDoodadGroupID.Location = new System.Drawing.Point(282, 53);
+            this.lDoodadGroupID.Name = "lDoodadGroupID";
+            this.lDoodadGroupID.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadGroupID.TabIndex = 67;
+            this.lDoodadGroupID.Text = "0";
+            // 
+            // label88
+            // 
+            this.label88.AutoSize = true;
+            this.label88.Location = new System.Drawing.Point(167, 53);
+            this.label88.Name = "label88";
+            this.label88.Size = new System.Drawing.Size(50, 13);
+            this.label88.TabIndex = 66;
+            this.label88.Text = "Group ID";
+            // 
+            // lDoodadShowMinimap
+            // 
+            this.lDoodadShowMinimap.AutoSize = true;
+            this.lDoodadShowMinimap.Location = new System.Drawing.Point(112, 160);
+            this.lDoodadShowMinimap.Name = "lDoodadShowMinimap";
+            this.lDoodadShowMinimap.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadShowMinimap.TabIndex = 69;
+            this.lDoodadShowMinimap.Text = "0";
+            // 
+            // label90
+            // 
+            this.label90.AutoSize = true;
+            this.label90.Location = new System.Drawing.Point(6, 160);
+            this.label90.Name = "label90";
+            this.label90.Size = new System.Drawing.Size(76, 13);
+            this.label90.TabIndex = 68;
+            this.label90.Text = "Show Minimap";
+            // 
+            // lDoodadUseTargetDecal
+            // 
+            this.lDoodadUseTargetDecal.AutoSize = true;
+            this.lDoodadUseTargetDecal.Location = new System.Drawing.Point(112, 173);
+            this.lDoodadUseTargetDecal.Name = "lDoodadUseTargetDecal";
+            this.lDoodadUseTargetDecal.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadUseTargetDecal.TabIndex = 71;
+            this.lDoodadUseTargetDecal.Text = "0";
+            // 
+            // label92
+            // 
+            this.label92.AutoSize = true;
+            this.label92.Location = new System.Drawing.Point(6, 173);
+            this.label92.Name = "label92";
+            this.label92.Size = new System.Drawing.Size(91, 13);
+            this.label92.TabIndex = 70;
+            this.label92.Text = "Use Target Decal";
+            // 
+            // lDoodadUseTargetSilhouette
+            // 
+            this.lDoodadUseTargetSilhouette.AutoSize = true;
+            this.lDoodadUseTargetSilhouette.Location = new System.Drawing.Point(112, 186);
+            this.lDoodadUseTargetSilhouette.Name = "lDoodadUseTargetSilhouette";
+            this.lDoodadUseTargetSilhouette.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadUseTargetSilhouette.TabIndex = 73;
+            this.lDoodadUseTargetSilhouette.Text = "0";
+            // 
+            // label94
+            // 
+            this.label94.AutoSize = true;
+            this.label94.Location = new System.Drawing.Point(6, 186);
+            this.label94.Name = "label94";
+            this.label94.Size = new System.Drawing.Size(110, 13);
+            this.label94.TabIndex = 72;
+            this.label94.Text = "Use Target Silhouette";
+            // 
+            // lDoodadUseTargetHighlight
+            // 
+            this.lDoodadUseTargetHighlight.AutoSize = true;
+            this.lDoodadUseTargetHighlight.Location = new System.Drawing.Point(282, 186);
+            this.lDoodadUseTargetHighlight.Name = "lDoodadUseTargetHighlight";
+            this.lDoodadUseTargetHighlight.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadUseTargetHighlight.TabIndex = 75;
+            this.lDoodadUseTargetHighlight.Text = "0";
+            // 
+            // label96
+            // 
+            this.label96.AutoSize = true;
+            this.label96.Location = new System.Drawing.Point(167, 186);
+            this.label96.Name = "label96";
+            this.label96.Size = new System.Drawing.Size(104, 13);
+            this.label96.TabIndex = 74;
+            this.label96.Text = "Use Target Highlight";
+            // 
+            // lDoodadTargetDecalSize
+            // 
+            this.lDoodadTargetDecalSize.AutoSize = true;
+            this.lDoodadTargetDecalSize.Location = new System.Drawing.Point(112, 199);
+            this.lDoodadTargetDecalSize.Name = "lDoodadTargetDecalSize";
+            this.lDoodadTargetDecalSize.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadTargetDecalSize.TabIndex = 77;
+            this.lDoodadTargetDecalSize.Text = "0";
+            // 
+            // label98
+            // 
+            this.label98.AutoSize = true;
+            this.label98.Location = new System.Drawing.Point(6, 199);
+            this.label98.Name = "label98";
+            this.label98.Size = new System.Drawing.Size(92, 13);
+            this.label98.TabIndex = 76;
+            this.label98.Text = "Target Decal Size";
+            // 
+            // lDoodadSimRadius
+            // 
+            this.lDoodadSimRadius.AutoSize = true;
+            this.lDoodadSimRadius.Location = new System.Drawing.Point(84, 127);
+            this.lDoodadSimRadius.Name = "lDoodadSimRadius";
+            this.lDoodadSimRadius.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadSimRadius.TabIndex = 79;
+            this.lDoodadSimRadius.Text = "0";
+            // 
+            // label100
+            // 
+            this.label100.AutoSize = true;
+            this.label100.Location = new System.Drawing.Point(6, 127);
+            this.label100.Name = "label100";
+            this.label100.Size = new System.Drawing.Size(60, 13);
+            this.label100.TabIndex = 78;
+            this.label100.Text = "Sim Radius";
+            // 
+            // lDoodadCollideShip
+            // 
+            this.lDoodadCollideShip.AutoSize = true;
+            this.lDoodadCollideShip.Location = new System.Drawing.Point(112, 225);
+            this.lDoodadCollideShip.Name = "lDoodadCollideShip";
+            this.lDoodadCollideShip.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadCollideShip.TabIndex = 81;
+            this.lDoodadCollideShip.Text = "0";
+            // 
+            // label102
+            // 
+            this.label102.AutoSize = true;
+            this.label102.Location = new System.Drawing.Point(6, 225);
+            this.label102.Name = "label102";
+            this.label102.Size = new System.Drawing.Size(62, 13);
+            this.label102.TabIndex = 80;
+            this.label102.Text = "Collide Ship";
+            // 
+            // lDoodadCollideVehicle
+            // 
+            this.lDoodadCollideVehicle.AutoSize = true;
+            this.lDoodadCollideVehicle.Location = new System.Drawing.Point(282, 225);
+            this.lDoodadCollideVehicle.Name = "lDoodadCollideVehicle";
+            this.lDoodadCollideVehicle.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadCollideVehicle.TabIndex = 83;
+            this.lDoodadCollideVehicle.Text = "0";
+            // 
+            // label104
+            // 
+            this.label104.AutoSize = true;
+            this.label104.Location = new System.Drawing.Point(167, 225);
+            this.label104.Name = "label104";
+            this.label104.Size = new System.Drawing.Size(76, 13);
+            this.label104.TabIndex = 82;
+            this.label104.Text = "Collide Vehicle";
+            // 
+            // lDoodadClimateID
+            // 
+            this.lDoodadClimateID.AutoSize = true;
+            this.lDoodadClimateID.Location = new System.Drawing.Point(248, 127);
+            this.lDoodadClimateID.Name = "lDoodadClimateID";
+            this.lDoodadClimateID.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadClimateID.TabIndex = 85;
+            this.lDoodadClimateID.Text = "0";
+            // 
+            // label106
+            // 
+            this.label106.AutoSize = true;
+            this.label106.Location = new System.Drawing.Point(167, 127);
+            this.label106.Name = "label106";
+            this.label106.Size = new System.Drawing.Size(55, 13);
+            this.label106.TabIndex = 84;
+            this.label106.Text = "Climate ID";
+            // 
+            // lDoodadMarkModel
+            // 
+            this.lDoodadMarkModel.AutoSize = true;
+            this.lDoodadMarkModel.Location = new System.Drawing.Point(112, 251);
+            this.lDoodadMarkModel.Name = "lDoodadMarkModel";
+            this.lDoodadMarkModel.Size = new System.Drawing.Size(43, 13);
+            this.lDoodadMarkModel.TabIndex = 87;
+            this.lDoodadMarkModel.Text = "<none>";
+            // 
+            // label108
+            // 
+            this.label108.AutoSize = true;
+            this.label108.Location = new System.Drawing.Point(6, 251);
+            this.label108.Name = "label108";
+            this.label108.Size = new System.Drawing.Size(63, 13);
+            this.label108.TabIndex = 86;
+            this.label108.Text = "Mark Model";
+            // 
+            // lDoodadForceUpAction
+            // 
+            this.lDoodadForceUpAction.AutoSize = true;
+            this.lDoodadForceUpAction.Location = new System.Drawing.Point(112, 264);
+            this.lDoodadForceUpAction.Name = "lDoodadForceUpAction";
+            this.lDoodadForceUpAction.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadForceUpAction.TabIndex = 89;
+            this.lDoodadForceUpAction.Text = "0";
+            // 
+            // label110
+            // 
+            this.label110.AutoSize = true;
+            this.label110.Location = new System.Drawing.Point(6, 264);
+            this.label110.Name = "label110";
+            this.label110.Size = new System.Drawing.Size(84, 13);
+            this.label110.TabIndex = 88;
+            this.label110.Text = "Force Up Action";
+            // 
+            // lDoodadLoadModelFromWorld
+            // 
+            this.lDoodadLoadModelFromWorld.AutoSize = true;
+            this.lDoodadLoadModelFromWorld.Location = new System.Drawing.Point(282, 264);
+            this.lDoodadLoadModelFromWorld.Name = "lDoodadLoadModelFromWorld";
+            this.lDoodadLoadModelFromWorld.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadLoadModelFromWorld.TabIndex = 91;
+            this.lDoodadLoadModelFromWorld.Text = "0";
+            // 
+            // label112
+            // 
+            this.label112.AutoSize = true;
+            this.label112.Location = new System.Drawing.Point(161, 264);
+            this.label112.Name = "label112";
+            this.label112.Size = new System.Drawing.Size(120, 13);
+            this.label112.TabIndex = 90;
+            this.label112.Text = "Load Model From World";
+            // 
+            // lDoodadParentable
+            // 
+            this.lDoodadParentable.AutoSize = true;
+            this.lDoodadParentable.Location = new System.Drawing.Point(112, 286);
+            this.lDoodadParentable.Name = "lDoodadParentable";
+            this.lDoodadParentable.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadParentable.TabIndex = 93;
+            this.lDoodadParentable.Text = "0";
+            // 
+            // label114
+            // 
+            this.label114.AutoSize = true;
+            this.label114.Location = new System.Drawing.Point(6, 286);
+            this.label114.Name = "label114";
+            this.label114.Size = new System.Drawing.Size(58, 13);
+            this.label114.TabIndex = 92;
+            this.label114.Text = "Parentable";
+            // 
+            // lDoodadChildable
+            // 
+            this.lDoodadChildable.AutoSize = true;
+            this.lDoodadChildable.Location = new System.Drawing.Point(282, 286);
+            this.lDoodadChildable.Name = "lDoodadChildable";
+            this.lDoodadChildable.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadChildable.TabIndex = 95;
+            this.lDoodadChildable.Text = "0";
+            // 
+            // label116
+            // 
+            this.label116.AutoSize = true;
+            this.label116.Location = new System.Drawing.Point(167, 286);
+            this.label116.Name = "label116";
+            this.label116.Size = new System.Drawing.Size(50, 13);
+            this.label116.TabIndex = 94;
+            this.label116.Text = "Childable";
+            // 
+            // lDoodadFactionID
+            // 
+            this.lDoodadFactionID.AutoSize = true;
+            this.lDoodadFactionID.Location = new System.Drawing.Point(112, 299);
+            this.lDoodadFactionID.Name = "lDoodadFactionID";
+            this.lDoodadFactionID.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadFactionID.TabIndex = 97;
+            this.lDoodadFactionID.Text = "0";
+            // 
+            // label118
+            // 
+            this.label118.AutoSize = true;
+            this.label118.Location = new System.Drawing.Point(6, 299);
+            this.label118.Name = "label118";
+            this.label118.Size = new System.Drawing.Size(56, 13);
+            this.label118.TabIndex = 96;
+            this.label118.Text = "Faction ID";
+            // 
+            // lDoodadGrowthTime
+            // 
+            this.lDoodadGrowthTime.AutoSize = true;
+            this.lDoodadGrowthTime.Location = new System.Drawing.Point(84, 101);
+            this.lDoodadGrowthTime.Name = "lDoodadGrowthTime";
+            this.lDoodadGrowthTime.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadGrowthTime.TabIndex = 99;
+            this.lDoodadGrowthTime.Text = "0";
+            // 
+            // label120
+            // 
+            this.label120.AutoSize = true;
+            this.label120.Location = new System.Drawing.Point(6, 101);
+            this.label120.Name = "label120";
+            this.label120.Size = new System.Drawing.Size(67, 13);
+            this.label120.TabIndex = 98;
+            this.label120.Text = "Growth Time";
+            // 
+            // lDoodadDespawnOnCollision
+            // 
+            this.lDoodadDespawnOnCollision.AutoSize = true;
+            this.lDoodadDespawnOnCollision.Location = new System.Drawing.Point(112, 325);
+            this.lDoodadDespawnOnCollision.Name = "lDoodadDespawnOnCollision";
+            this.lDoodadDespawnOnCollision.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadDespawnOnCollision.TabIndex = 101;
+            this.lDoodadDespawnOnCollision.Text = "0";
+            // 
+            // label122
+            // 
+            this.label122.AutoSize = true;
+            this.label122.Location = new System.Drawing.Point(6, 325);
+            this.label122.Name = "label122";
+            this.label122.Size = new System.Drawing.Size(107, 13);
+            this.label122.TabIndex = 100;
+            this.label122.Text = "Despawn on collision";
+            // 
+            // lDoodadNoCollision
+            // 
+            this.lDoodadNoCollision.AutoSize = true;
+            this.lDoodadNoCollision.Location = new System.Drawing.Point(282, 325);
+            this.lDoodadNoCollision.Name = "lDoodadNoCollision";
+            this.lDoodadNoCollision.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadNoCollision.TabIndex = 103;
+            this.lDoodadNoCollision.Text = "0";
+            // 
+            // label124
+            // 
+            this.label124.AutoSize = true;
+            this.label124.Location = new System.Drawing.Point(167, 325);
+            this.label124.Name = "label124";
+            this.label124.Size = new System.Drawing.Size(61, 13);
+            this.label124.TabIndex = 102;
+            this.label124.Text = "No collision";
+            // 
+            // lDoodadRestrictZoneID
+            // 
+            this.lDoodadRestrictZoneID.AutoSize = true;
+            this.lDoodadRestrictZoneID.Location = new System.Drawing.Point(112, 338);
+            this.lDoodadRestrictZoneID.Name = "lDoodadRestrictZoneID";
+            this.lDoodadRestrictZoneID.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadRestrictZoneID.TabIndex = 105;
+            this.lDoodadRestrictZoneID.Text = "0";
+            // 
+            // label126
+            // 
+            this.label126.AutoSize = true;
+            this.label126.Location = new System.Drawing.Point(6, 338);
+            this.label126.Name = "label126";
+            this.label126.Size = new System.Drawing.Size(85, 13);
+            this.label126.TabIndex = 104;
+            this.label126.Text = "Restrict Zone ID";
+            // 
+            // lDoodadSaveIndun
+            // 
+            this.lDoodadSaveIndun.AutoSize = true;
+            this.lDoodadSaveIndun.Location = new System.Drawing.Point(282, 238);
+            this.lDoodadSaveIndun.Name = "lDoodadSaveIndun";
+            this.lDoodadSaveIndun.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadSaveIndun.TabIndex = 107;
+            this.lDoodadSaveIndun.Text = "0";
+            // 
+            // label55
+            // 
+            this.label55.AutoSize = true;
+            this.label55.Location = new System.Drawing.Point(167, 238);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(62, 13);
+            this.label55.TabIndex = 106;
+            this.label55.Text = "Save Indun";
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox9.Controls.Add(this.lDoodadGroupRemovedByHouse);
+            this.groupBox9.Controls.Add(this.label77);
+            this.groupBox9.Controls.Add(this.lDoodadGroupGuardOnFieldTime);
+            this.groupBox9.Controls.Add(this.label72);
+            this.groupBox9.Controls.Add(this.lDoodadGroupIsExport);
+            this.groupBox9.Controls.Add(this.label56);
+            this.groupBox9.Controls.Add(this.label62);
+            this.groupBox9.Controls.Add(this.lDoodadGroupName);
+            this.groupBox9.Controls.Add(this.label68);
+            this.groupBox9.Controls.Add(this.label70);
+            this.groupBox9.Location = new System.Drawing.Point(3, 365);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(328, 80);
+            this.groupBox9.TabIndex = 13;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "Doodad Group Info";
+            // 
+            // label62
+            // 
+            this.label62.AutoSize = true;
+            this.label62.Location = new System.Drawing.Point(92, 82);
+            this.label62.Name = "label62";
+            this.label62.Size = new System.Drawing.Size(13, 13);
+            this.label62.TabIndex = 35;
+            this.label62.Text = "0";
+            // 
+            // lDoodadGroupName
+            // 
+            this.lDoodadGroupName.AutoSize = true;
+            this.lDoodadGroupName.Location = new System.Drawing.Point(116, 16);
+            this.lDoodadGroupName.Name = "lDoodadGroupName";
+            this.lDoodadGroupName.Size = new System.Drawing.Size(43, 13);
+            this.lDoodadGroupName.TabIndex = 36;
+            this.lDoodadGroupName.Text = "<none>";
+            // 
+            // label68
+            // 
+            this.label68.AutoSize = true;
+            this.label68.Location = new System.Drawing.Point(6, 82);
+            this.label68.Name = "label68";
+            this.label68.Size = new System.Drawing.Size(52, 13);
+            this.label68.TabIndex = 34;
+            this.label68.Text = "Target ID";
+            // 
+            // label70
+            // 
+            this.label70.AutoSize = true;
+            this.label70.Location = new System.Drawing.Point(6, 16);
+            this.label70.Name = "label70";
+            this.label70.Size = new System.Drawing.Size(35, 13);
+            this.label70.TabIndex = 34;
+            this.label70.Text = "Name";
+            // 
+            // lDoodadGroupIsExport
+            // 
+            this.lDoodadGroupIsExport.AutoSize = true;
+            this.lDoodadGroupIsExport.Location = new System.Drawing.Point(116, 29);
+            this.lDoodadGroupIsExport.Name = "lDoodadGroupIsExport";
+            this.lDoodadGroupIsExport.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadGroupIsExport.TabIndex = 38;
+            this.lDoodadGroupIsExport.Text = "0";
+            // 
+            // label56
+            // 
+            this.label56.AutoSize = true;
+            this.label56.Location = new System.Drawing.Point(6, 29);
+            this.label56.Name = "label56";
+            this.label56.Size = new System.Drawing.Size(48, 13);
+            this.label56.TabIndex = 37;
+            this.label56.Text = "Is Export";
+            // 
+            // lDoodadGroupGuardOnFieldTime
+            // 
+            this.lDoodadGroupGuardOnFieldTime.AutoSize = true;
+            this.lDoodadGroupGuardOnFieldTime.Location = new System.Drawing.Point(116, 42);
+            this.lDoodadGroupGuardOnFieldTime.Name = "lDoodadGroupGuardOnFieldTime";
+            this.lDoodadGroupGuardOnFieldTime.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadGroupGuardOnFieldTime.TabIndex = 40;
+            this.lDoodadGroupGuardOnFieldTime.Text = "0";
+            // 
+            // label72
+            // 
+            this.label72.AutoSize = true;
+            this.label72.Location = new System.Drawing.Point(6, 42);
+            this.label72.Name = "label72";
+            this.label72.Size = new System.Drawing.Size(104, 13);
+            this.label72.TabIndex = 39;
+            this.label72.Text = "Guard On Field Time";
+            // 
+            // lDoodadGroupRemovedByHouse
+            // 
+            this.lDoodadGroupRemovedByHouse.AutoSize = true;
+            this.lDoodadGroupRemovedByHouse.Location = new System.Drawing.Point(116, 55);
+            this.lDoodadGroupRemovedByHouse.Name = "lDoodadGroupRemovedByHouse";
+            this.lDoodadGroupRemovedByHouse.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadGroupRemovedByHouse.TabIndex = 42;
+            this.lDoodadGroupRemovedByHouse.Text = "0";
+            // 
+            // label77
+            // 
+            this.label77.AutoSize = true;
+            this.label77.Location = new System.Drawing.Point(6, 55);
+            this.label77.Name = "label77";
+            this.label77.Size = new System.Drawing.Size(102, 13);
+            this.label77.TabIndex = 41;
+            this.label77.Text = "Removed By House";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2699,6 +3644,12 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).EndInit();
+            this.tcDoodads.ResumeLayout(false);
+            this.tpDoodadInfo.ResumeLayout(false);
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2927,6 +3878,91 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column26;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column31;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column22;
+        private System.Windows.Forms.TabControl tcDoodads;
+        private System.Windows.Forms.TabPage tpDoodadInfo;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.Label lDoodadID;
+        private System.Windows.Forms.Label label69;
+        private System.Windows.Forms.Label lDoodadOnceOneMan;
+        private System.Windows.Forms.Label lDoodadName;
+        private System.Windows.Forms.Label label58;
+        private System.Windows.Forms.Label label60;
+        private System.Windows.Forms.TabPage tpDoodadFunctions;
+        private System.Windows.Forms.Label lDoodadModel;
+        private System.Windows.Forms.Label label71;
+        private System.Windows.Forms.Label lDoodadMinTime;
+        private System.Windows.Forms.Label label75;
+        private System.Windows.Forms.Label lDoodadPercent;
+        private System.Windows.Forms.Label label73;
+        private System.Windows.Forms.Label lDoodadMgmtSpawn;
+        private System.Windows.Forms.Label label67;
+        private System.Windows.Forms.Label lDoodadShowName;
+        private System.Windows.Forms.Label label64;
+        private System.Windows.Forms.Label lDoodadOnceOneInteraction;
+        private System.Windows.Forms.Label label53;
+        private System.Windows.Forms.Label lDoodadGroupID;
+        private System.Windows.Forms.Label label88;
+        private System.Windows.Forms.Label lDoodadMilestoneID;
+        private System.Windows.Forms.Label label86;
+        private System.Windows.Forms.Label lDoodadForceToDTopPriority;
+        private System.Windows.Forms.Label label84;
+        private System.Windows.Forms.Label lDoodadUseCreatorFaction;
+        private System.Windows.Forms.Label label82;
+        private System.Windows.Forms.Label lDoodadModelKindID;
+        private System.Windows.Forms.Label label80;
+        private System.Windows.Forms.Label lDoodadMaxTime;
+        private System.Windows.Forms.Label label78;
+        private System.Windows.Forms.Label lDoodadCollideVehicle;
+        private System.Windows.Forms.Label label104;
+        private System.Windows.Forms.Label lDoodadCollideShip;
+        private System.Windows.Forms.Label label102;
+        private System.Windows.Forms.Label lDoodadSimRadius;
+        private System.Windows.Forms.Label label100;
+        private System.Windows.Forms.Label lDoodadTargetDecalSize;
+        private System.Windows.Forms.Label label98;
+        private System.Windows.Forms.Label lDoodadUseTargetHighlight;
+        private System.Windows.Forms.Label label96;
+        private System.Windows.Forms.Label lDoodadUseTargetSilhouette;
+        private System.Windows.Forms.Label label94;
+        private System.Windows.Forms.Label lDoodadUseTargetDecal;
+        private System.Windows.Forms.Label label92;
+        private System.Windows.Forms.Label lDoodadShowMinimap;
+        private System.Windows.Forms.Label label90;
+        private System.Windows.Forms.Label lDoodadParentable;
+        private System.Windows.Forms.Label label114;
+        private System.Windows.Forms.Label lDoodadLoadModelFromWorld;
+        private System.Windows.Forms.Label label112;
+        private System.Windows.Forms.Label lDoodadForceUpAction;
+        private System.Windows.Forms.Label label110;
+        private System.Windows.Forms.Label lDoodadMarkModel;
+        private System.Windows.Forms.Label label108;
+        private System.Windows.Forms.Label lDoodadClimateID;
+        private System.Windows.Forms.Label label106;
+        private System.Windows.Forms.Label lDoodadGrowthTime;
+        private System.Windows.Forms.Label label120;
+        private System.Windows.Forms.Label lDoodadFactionID;
+        private System.Windows.Forms.Label label118;
+        private System.Windows.Forms.Label lDoodadChildable;
+        private System.Windows.Forms.Label label116;
+        private System.Windows.Forms.Label lDoodadRestrictZoneID;
+        private System.Windows.Forms.Label label126;
+        private System.Windows.Forms.Label lDoodadNoCollision;
+        private System.Windows.Forms.Label label124;
+        private System.Windows.Forms.Label lDoodadDespawnOnCollision;
+        private System.Windows.Forms.Label label122;
+        private System.Windows.Forms.Label lDoodadSaveIndun;
+        private System.Windows.Forms.Label label55;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.Label label62;
+        private System.Windows.Forms.Label lDoodadGroupName;
+        private System.Windows.Forms.Label label68;
+        private System.Windows.Forms.Label label70;
+        private System.Windows.Forms.Label lDoodadGroupRemovedByHouse;
+        private System.Windows.Forms.Label label77;
+        private System.Windows.Forms.Label lDoodadGroupGuardOnFieldTime;
+        private System.Windows.Forms.Label label72;
+        private System.Windows.Forms.Label lDoodadGroupIsExport;
+        private System.Windows.Forms.Label label56;
     }
 }
 

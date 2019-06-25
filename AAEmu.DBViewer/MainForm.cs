@@ -1322,6 +1322,54 @@ namespace AAEmu.DBViewer
             return res;
         }
 
+        private string SecondsToString(long secTime)
+        {
+            string res = string.Empty;
+            long ss = (secTime % 60);
+            secTime = secTime / 60;
+            long mm = (secTime % 60);
+            secTime = secTime / 60;
+            long hh = (secTime % 24);
+            secTime = secTime / 24;
+            long dd = secTime;
+
+            if (dd > 0)
+                res += dd.ToString() + "d ";
+            if (hh > 0)
+                res += hh.ToString() + "h ";
+            if (mm > 0)
+                res += mm.ToString() + "m ";
+            if (ss > 0)
+                res += ss.ToString() + "s ";
+
+            if (res == string.Empty)
+                res = "none";
+
+            return res;
+        }
+
+        private string RangeToString(float range)
+        {
+            if (Math.Abs(range) < 150.0f)
+            {
+                return range.ToString("0")+" mm";
+            }
+            else
+            if (Math.Abs(range) < 1000.0f)
+            {
+                return (range / 10).ToString("0") + " cm";
+            }
+            else
+            if (Math.Abs(range) < 15000.0f)
+            {
+                return (range / 1000).ToString("0.0") + " m";
+            }
+            else
+            {
+                return (range / 1000).ToString("0") + " m";
+            }
+        }
+
         private void ShowDBItem(long idx)
         {
             if (AADB.DB_Items.TryGetValue(idx,out var item))
@@ -2475,7 +2523,7 @@ namespace AAEmu.DBViewer
                     if (first)
                     {
                         first = false;
-                        // ShowDBDoodad(z.id);
+                        ShowDBDoodad(z.id);
                     }
 
                     c++;
@@ -2502,10 +2550,111 @@ namespace AAEmu.DBViewer
             var id = row.Cells[0].Value;
             if (id != null)
             {
-                // ShowDBDoodad(long.Parse(id.ToString()));
+                ShowDBDoodad(long.Parse(id.ToString()));
                 ShowSelectedData("doodad_almighties", "(id = " + id.ToString() + ")", "id ASC");
             }
-            //
+            
+        }
+
+        private void ShowDBDoodad(long id)
+        {
+            if (AADB.DB_Doodad_Almighties.TryGetValue(id,out var doodad))
+            {
+                lDoodadID.Text = doodad.id.ToString();
+                lDoodadName.Text = doodad.nameLocalized;
+                lDoodadModel.Text = doodad.model;
+                lDoodadOnceOneMan.Text = doodad.once_one_man.ToString();
+                lDoodadOnceOneInteraction.Text = doodad.once_one_interaction.ToString() ;
+                lDoodadShowName.Text = doodad.show_name.ToString() ;
+                lDoodadMgmtSpawn.Text = doodad.mgmt_spawn.ToString() ;
+                lDoodadPercent.Text = doodad.percent.ToString();
+                lDoodadMinTime.Text = MSToString(doodad.min_time);
+                lDoodadMaxTime.Text = MSToString(doodad.max_time);
+                lDoodadModelKindID.Text = doodad.model_kind_id.ToString() ;
+                lDoodadUseCreatorFaction.Text = doodad.use_creator_faction.ToString() ;
+                lDoodadForceToDTopPriority.Text = doodad.force_tod_top_priority.ToString() ;
+                lDoodadMilestoneID.Text = doodad.milestone_id.ToString() ;
+                lDoodadGroupID.Text = doodad.group_id.ToString() ;
+                lDoodadShowName.Text = doodad.show_minimap.ToString() ;
+                lDoodadUseTargetDecal.Text = doodad.use_target_decal.ToString() ;
+                lDoodadUseTargetSilhouette.Text = doodad.use_target_silhouette.ToString() ;
+                lDoodadUseTargetHighlight.Text = doodad.use_target_highlight.ToString() ;
+                lDoodadTargetDecalSize.Text = doodad.target_decal_size.ToString();
+                lDoodadSimRadius.Text = RangeToString(doodad.sim_radius);
+                lDoodadCollideShip.Text = doodad.collide_ship.ToString() ;
+                lDoodadCollideVehicle.Text = doodad.collide_vehicle.ToString() ;
+                lDoodadClimateID.Text = doodad.climate_id.ToString() ;
+                lDoodadSaveIndun.Text = doodad.save_indun.ToString() ;
+                lDoodadMarkModel.Text = doodad.mark_model.ToString() ;
+                lDoodadForceUpAction.Text = doodad.force_up_action.ToString() ;
+                lDoodadLoadModelFromWorld.Text = doodad.load_model_from_world.ToString() ;
+                lDoodadParentable.Text = doodad.parentable.ToString() ;
+                lDoodadChildable.Text = doodad.childable.ToString() ;
+                lDoodadFactionID.Text = AADB.GetFactionName(doodad.faction_id,true);
+                lDoodadGrowthTime.Text = MSToString(doodad.growth_time);
+                lDoodadDespawnOnCollision.Text = doodad.despawn_on_collision.ToString() ;
+                lDoodadNoCollision.Text = doodad.no_collision.ToString() ;
+                lDoodadRestrictZoneID.Text = doodad.restrict_zone_id.ToString() ;
+
+                if (AADB.DB_Doodad_Groups.TryGetValue(doodad.group_id,out var dGroup))
+                {
+                    lDoodadGroupName.Text = dGroup.nameLocalized + " (" + doodad.group_id.ToString() + ")";
+                    lDoodadGroupIsExport.Text = dGroup.is_export.ToString();
+                    lDoodadGroupGuardOnFieldTime.Text = SecondsToString(dGroup.guard_on_field_time);
+                    lDoodadGroupRemovedByHouse.Text = dGroup.removed_by_house.ToString();
+                }
+                else
+                {
+                    lDoodadGroupName.Text = "<none>";
+                    lDoodadGroupIsExport.Text = "";
+                    lDoodadGroupGuardOnFieldTime.Text = "";
+                    lDoodadGroupRemovedByHouse.Text = "";
+                }
+            }
+            else
+            {
+                // blank
+                lDoodadID.Text = "0";
+                lDoodadName.Text = "<none>";
+                lDoodadModel.Text = "<none>";
+                lDoodadOnceOneMan.Text = "";
+                lDoodadOnceOneInteraction.Text = "";
+                lDoodadShowName.Text = "";
+                lDoodadMgmtSpawn.Text = "";
+                lDoodadPercent.Text = "";
+                lDoodadMinTime.Text = "";
+                lDoodadMaxTime.Text = "";
+                lDoodadModelKindID.Text = "";
+                lDoodadUseCreatorFaction.Text = "";
+                lDoodadForceToDTopPriority.Text = "";
+                lDoodadMilestoneID.Text = "";
+                lDoodadGroupID.Text = "";
+                lDoodadShowName.Text = "";
+                lDoodadUseTargetDecal.Text = "";
+                lDoodadUseTargetSilhouette.Text = "";
+                lDoodadUseTargetHighlight.Text = "";
+                lDoodadTargetDecalSize.Text = "";
+                lDoodadSimRadius.Text = "";
+                lDoodadCollideShip.Text = "";
+                lDoodadCollideVehicle.Text = "";
+                lDoodadClimateID.Text = "";
+                lDoodadSaveIndun.Text = "";
+                lDoodadMarkModel.Text = "";
+                lDoodadForceUpAction.Text = "";
+                lDoodadLoadModelFromWorld.Text = "";
+                lDoodadParentable.Text = "";
+                lDoodadChildable.Text = "";
+                lDoodadFactionID.Text = "";
+                lDoodadGrowthTime.Text = "";
+                lDoodadDespawnOnCollision.Text = "";
+                lDoodadNoCollision.Text = "";
+                lDoodadRestrictZoneID.Text = "";
+
+                lDoodadGroupName.Text = "<none>";
+                lDoodadGroupIsExport.Text = "";
+                lDoodadGroupGuardOnFieldTime.Text = "";
+                lDoodadGroupRemovedByHouse.Text = "";
+            }
         }
     }
 }
