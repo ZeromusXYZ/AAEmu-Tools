@@ -11,6 +11,7 @@ using System.IO;
 using AAPakEditor;
 using AAEmu.DBDefs;
 using AAEmu.Game.Utils.DB;
+using AAEmu.ClipboardHelper;
 using FreeImageAPI;
 
 namespace AAEmu.DBViewer
@@ -20,6 +21,9 @@ namespace AAEmu.DBViewer
         private string defaultTitle;
         private AAPak pak = new AAPak("");
         private List<string> possibleLanguageIDs = new List<string>();
+        private string map_data_npc_map_dir = "/map_data/npc_map/";
+        private string main_world_dir = "main_world";
+        private string game_worlds_dir = "game/worlds/";
 
         public MainForm()
         {
@@ -58,6 +62,7 @@ namespace AAEmu.DBViewer
                 }
             }
             tcViewer.SelectedTab = tpItems;
+            AttachEventsToLabels();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -65,6 +70,64 @@ namespace AAEmu.DBViewer
             Properties.Settings.Default.Save();
             if (pak != null)
                 pak.ClosePak();
+        }
+
+        public IEnumerable<Control> GetAll(Control control, Type type)
+        {
+            var controls = control.Controls.Cast<Control>();
+            return controls.SelectMany(ctrl => GetAll(ctrl, type))
+                                      .Concat(controls)
+                                      .Where(c => c.GetType() == type);
+        }
+
+        private void CopyToClipBoard(string cliptext)
+        {
+            try
+            {
+                // Because nothing is ever as simple as the next line >.>
+                // Clipboard.SetText(s);
+                // Helper will (try to) prevent errors when copying to clipboard because of threading issues
+                var cliphelp = new SetClipboardHelper(DataFormats.Text, cliptext);
+                cliphelp.DontRetryWorkOnFailed = false;
+                cliphelp.Go();
+            }
+            catch
+            {
+            }
+        }
+
+        private void LabelToCopy_Click(object sender, EventArgs e)
+        {
+            if (sender is Label)
+            {
+                string s = (sender as Label).Text;
+                if ((s == "<none>") || (s == "???") || (s.Trim(' ') == string.Empty))
+                    s = string.Empty;
+                if (s != string.Empty)
+                    CopyToClipBoard(s);
+            }
+        }
+
+        private void AttachEventsToLabels()
+        {
+            var controls = GetAll(this, typeof(Label));
+            foreach (Control c in controls)
+            {
+                if (c is Label)
+                {
+                    Label l = (c as Label);
+                    if (!l.Name.ToLower().StartsWith("label"))
+                    {
+                        // l.ForeColor = Color.Red;
+                        l.Cursor = Cursors.Hand;
+                        l.Click += LabelToCopy_Click;
+                    }
+                    else
+                    {
+                        l.ForeColor = SystemColors.ControlDark;
+                    }
+                }
+            }
         }
 
         private long GetInt64(SQLiteWrapperReader reader, string fieldname)
@@ -988,6 +1051,83 @@ namespace AAEmu.DBViewer
                 }
             }
 
+            // doodad_funcs
+            sql = "SELECT * FROM doodad_funcs ORDER BY doodad_func_group_id ASC, actual_func_id ASC";
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        AADB.DB_Doodad_Funcs.Clear();
+                        while (reader.Read())
+                        {
+                            var t = new GameDoodadFunc();
+                            // Actual DB entries
+                            t.id = GetInt64(reader, "id");
+                            t.doodad_func_group_id = GetInt64(reader, "doodad_func_group_id");
+                            t.actual_func_id = GetInt64(reader, "actual_func_id");
+                            t.actual_func_type = GetString(reader, "actual_func_type");
+                            t.next_phase = GetInt64(reader, "next_phase");
+                            t.sound_id = GetInt64(reader, "sound_id");
+                            t.func_skill_id = GetInt64(reader, "func_skill_id");
+                            t.perm_id = GetInt64(reader, "perm_id");
+                            t.act_count = GetInt64(reader, "act_count");
+                            t.popup_warn = GetBool(reader, "popup_warn");
+                            t.forbid_on_climb = GetBool(reader, "forbid_on_climb");
+
+                            AADB.DB_Doodad_Funcs.Add(t.id, t);
+                        }
+                    }
+                }
+            }
+
+            // doodad_func_groups
+            sql = "SELECT * FROM doodad_func_groups ORDER BY id ASC";
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        AADB.DB_Doodad_Func_Groups.Clear();
+                        while (reader.Read())
+                        {
+                            var t = new GameDoodadFuncGroup();
+                            // Actual DB entries
+                            t.id = GetInt64(reader, "id");
+                            t.model = GetString(reader, "model");
+                            t.doodad_almighty_id = GetInt64(reader, "doodad_almighty_id");
+                            t.doodad_func_group_kind_id = GetInt64(reader, "doodad_func_group_kind_id");
+                            t.phase_msg = GetString(reader, "phase_msg");
+                            t.sound_id = GetInt64(reader, "sound_id");
+                            t.name = GetString(reader, "name");
+                            t.sound_time = GetInt64(reader, "sound_time");
+                            t.comment = GetString(reader, "comment");
+                            t.is_msg_to_zone = GetBool(reader, "is_msg_to_zone");
+
+                            // Helpers
+                            if (t.name != string.Empty)
+                                t.nameLocalized = GetTranslationByID(t.id, "doodad_func_groups", "name");
+                            else
+                                t.nameLocalized = "";
+                            if (t.phase_msgLocalized != string.Empty)
+                                t.phase_msgLocalized = GetTranslationByID(t.id, "doodad_func_groups", "phase_msg");
+                            else
+                                t.phase_msgLocalized = "";
+                            t.SearchString = t.name + " " + t.phase_msg + " " + t.nameLocalized + " " + t.phase_msgLocalized + " " + t.comment;
+                            t.SearchString = t.SearchString.ToLower();
+
+                            AADB.DB_Doodad_Func_Groups.Add(t.id, t);
+                        }
+                    }
+                }
+            }
+
         }
 
 
@@ -1520,6 +1660,26 @@ namespace AAEmu.DBViewer
                 {
                     lZoneGroupsDisplayName.Text = zg.display_textLocalized;
                     lZoneGroupsName.Text = zg.name;
+                    string zonefile;
+                    if (zg.target_id != 1)
+                    {
+                        zonefile = game_worlds_dir + main_world_dir + map_data_npc_map_dir + zg.name + ".dat";
+                    }
+                    else
+                    {
+                        zonefile = game_worlds_dir + zg.name + map_data_npc_map_dir + zg.name + ".dat";
+                    }
+                    if ((pak.isOpen) && (pak.FileExists(zonefile)))
+                    {
+                        btnFindNPCsInZone.Tag = zonefile;
+                        btnFindNPCsInZone.Enabled = true;
+                    }
+                    else
+                    {
+                        btnFindNPCsInZone.Tag = null;
+                        btnFindNPCsInZone.Enabled = false;
+                    }
+
                     lZoneGroupsSizePos.Text = "X:" + zg.PosAndSize.X.ToString("0.0") + " Y:" + zg.PosAndSize.Y.ToString("0.0") + "  W:" + zg.PosAndSize.Width.ToString("0.0") + " H:" + zg.PosAndSize.Height.ToString("0.0");
                     lZoneGroupsImageMap.Text = zg.image_map.ToString();
                     lZoneGroupsSoundID.Text = zg.sound_id.ToString();
@@ -1592,6 +1752,8 @@ namespace AAEmu.DBViewer
                 // blank stuff
                 lZoneGroupsDisplayName.Text = "<none>";
                 lZoneGroupsName.Text = "<none>";
+                btnFindNPCsInZone.Tag = null;
+                btnFindNPCsInZone.Enabled = false;
                 lZoneGroupsSizePos.Text = "";
                 lZoneGroupsImageMap.Text = "";
                 lZoneGroupsSoundID.Text = "";
@@ -2036,7 +2198,7 @@ namespace AAEmu.DBViewer
                 using (var command = connection.CreateCommand())
                 {
                     command.CommandText = "SELECT * FROM " + table + " WHERE " + whereStatement + " ORDER BY " + orderStatement + " LIMIT 1";
-                    lCurrentDataInfo.Text = command.CommandText;
+                    labelCurrentDataInfo.Text = command.CommandText;
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
@@ -2077,6 +2239,7 @@ namespace AAEmu.DBViewer
             if (!long.TryParse(searchText, out searchID))
                 searchID = -1 ;
 
+            bool first = true;
             dgvZones.Rows.Clear();
             foreach(var t in AADB.DB_Zones)
             {
@@ -2093,6 +2256,12 @@ namespace AAEmu.DBViewer
                     row.Cells[4].Value = z.display_textLocalized;
                     row.Cells[5].Value = z.closed.ToString();
 
+                    if (first)
+                    {
+                        first = false;
+                        ShowDBZone(z.id);
+                    }
+
                 }
             }
         }
@@ -2104,6 +2273,7 @@ namespace AAEmu.DBViewer
 
         private void BtnZonesShowAll_Click(object sender, EventArgs e)
         {
+            bool first = true;
             dgvZones.Rows.Clear();
             foreach (var t in AADB.DB_Zones)
             {
@@ -2117,6 +2287,12 @@ namespace AAEmu.DBViewer
                 row.Cells[3].Value = z.zone_key.ToString();
                 row.Cells[4].Value = z.display_textLocalized;
                 row.Cells[5].Value = z.closed.ToString();
+
+                if (first)
+                {
+                    first = false;
+                    ShowDBZone(z.id);
+                }
             }
 
         }
@@ -2263,8 +2439,12 @@ namespace AAEmu.DBViewer
                     row.Cells[5].Value = z.npc_grade_id.ToString();
                     row.Cells[6].Value = AADB.GetFactionName(z.faction_id,true);
                     row.Cells[7].Value = z.model_id.ToString();
-                    c++;
 
+                    if (c == 0)
+                    {
+                        // ShowDBNPC(z.id);
+                    }
+                    c++;
                     if (c >= 250)
                     {
                         MessageBox.Show("The results were cut off at " + c.ToString() + " items, please refine your search !", "Too many entries", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -2610,6 +2790,29 @@ namespace AAEmu.DBViewer
                     lDoodadGroupGuardOnFieldTime.Text = "";
                     lDoodadGroupRemovedByHouse.Text = "";
                 }
+
+                bool firstFuncGroup = true;
+                dgvDoodadFuncGroups.Rows.Clear();
+                foreach(var f in AADB.DB_Doodad_Func_Groups)
+                {
+                    var dFuncGroup = f.Value;
+                    if (dFuncGroup.doodad_almighty_id == doodad.id)
+                    {
+                        var line = dgvDoodadFuncGroups.Rows.Add();
+                        var row = dgvDoodadFuncGroups.Rows[line];
+
+                        row.Cells[0].Value = dFuncGroup.id.ToString();
+                        row.Cells[1].Value = dFuncGroup.doodad_func_group_kind_id.ToString();
+                        row.Cells[2].Value = dFuncGroup.nameLocalized;
+
+                        if (firstFuncGroup)
+                        {
+                            firstFuncGroup = false;
+                            ShowDBDoodadFuncGroup(dFuncGroup.id);
+                        }
+                    }
+                }
+
             }
             else
             {
@@ -2654,7 +2857,139 @@ namespace AAEmu.DBViewer
                 lDoodadGroupIsExport.Text = "";
                 lDoodadGroupGuardOnFieldTime.Text = "";
                 lDoodadGroupRemovedByHouse.Text = "";
+
+                dgvDoodadFuncGroups.Rows.Clear();
             }
+        }
+
+
+        private void ShowDBDoodadFuncGroup(long id)
+        {
+            if (AADB.DB_Doodad_Func_Groups.TryGetValue(id, out var dfg))
+            {
+                // DoodadFuncGroup
+                lDoodadFuncGroupID.Text = dfg.id.ToString();
+                lDoodadFuncGroupModel.Text = dfg.model ;
+                lDoodadFuncGroupKindID.Text = dfg.doodad_func_group_kind_id.ToString();
+                lDoodadFuncGroupPhaseMsg.Text = dfg.phase_msgLocalized ;
+                lDoodadFuncGroupSoundID.Text = dfg.sound_id.ToString();
+                lDoodadFuncGroupName.Text = dfg.nameLocalized;
+                lDoodadFuncGroupSoundTime.Text = MSToString(dfg.sound_time);
+                lDoodadFuncGroupComment.Text = dfg.comment ;
+                lDoodadFuncGroupIsMsgToZone.Text = dfg.is_msg_to_zone.ToString();
+            }
+            else
+            {
+                // blank
+                lDoodadFuncGroupID.Text = "0";
+                lDoodadFuncGroupModel.Text = "<none>";
+                lDoodadFuncGroupKindID.Text = "";
+                lDoodadFuncGroupPhaseMsg.Text = "";
+                lDoodadFuncGroupSoundID.Text = "";
+                lDoodadFuncGroupName.Text = "";
+                lDoodadFuncGroupSoundTime.Text = "";
+                lDoodadFuncGroupComment.Text = "";
+                lDoodadFuncGroupIsMsgToZone.Text = "";
+            }
+        }
+
+        private void DgvDoodadFuncGroups_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvDoodadFuncGroups.SelectedRows.Count <= 0)
+                return;
+            var row = dgvDoodadFuncGroups.SelectedRows[0];
+            if (row.Cells.Count <= 0)
+                return;
+
+            var id = row.Cells[0].Value;
+            if (id != null)
+            {
+                ShowDBDoodadFuncGroup(long.Parse(id.ToString()));
+            }
+
+        }
+
+        private void BtnFindNPCsInZone_Click(object sender, EventArgs e)
+        {
+            List<long> npcList = new List<long>();
+
+            if ((sender != null) && (sender is Button))
+            {
+                Button b = (sender as Button);
+                if (b != null)
+                {
+                    string ZoneGroupFile = (string)b.Tag;
+
+                    if ((ZoneGroupFile != string.Empty) && (pak.isOpen) && (pak.FileExists(ZoneGroupFile)))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        // Open .dat file and read it's contents
+                        using (var fs = pak.ExportFileAsStream(ZoneGroupFile))
+                        {
+                            int indexCount = ((int)fs.Length / 16);
+                            using (var reader = new BinaryReader(fs))
+                            {
+                                for (int i = 0; i < indexCount; i++)
+                                {
+                                    long id = reader.ReadInt32();
+                                    float x = reader.ReadSingle();
+                                    float y = reader.ReadSingle();
+                                    float z = reader.ReadSingle();
+
+                                    // Only add uniques for now
+                                    if (npcList.IndexOf(id) < 0)
+                                        npcList.Add(id);
+                                }
+                            }
+                        }
+
+                        if (npcList.Count > 0)
+                        {
+                            using (var loading = new LoadingForm())
+                            {
+                                loading.ShowInfo("Loading " + npcList.Count.ToString()+" NPCs");
+                                loading.Show();
+
+                                // Add to NPC list
+                                tcViewer.SelectedTab = tpNPCs;
+                                dgvNPCs.Rows.Clear();
+                                Refresh();
+                                int c = 0;
+                                foreach (var npc in npcList)
+                                {
+                                    if (AADB.DB_NPCs.TryGetValue(npc, out var z))
+                                    {
+                                        var line = dgvNPCs.Rows.Add();
+                                        var row = dgvNPCs.Rows[line];
+
+                                        row.Cells[0].Value = z.id.ToString();
+                                        row.Cells[1].Value = z.nameLocalized;
+                                        row.Cells[2].Value = z.level.ToString();
+                                        row.Cells[3].Value = z.npc_template_id.ToString();
+                                        row.Cells[4].Value = z.npc_kind_id.ToString();
+                                        row.Cells[5].Value = z.npc_grade_id.ToString();
+                                        row.Cells[6].Value = AADB.GetFactionName(z.faction_id, true);
+                                        row.Cells[7].Value = z.model_id.ToString();
+
+                                        c++;
+                                        if ((c % 25) == 0)
+                                        {
+                                            loading.ShowInfo("Loading " + c.ToString() + "/" + npcList.Count.ToString() + " NPCs");
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
+
         }
     }
 }

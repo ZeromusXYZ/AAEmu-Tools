@@ -305,6 +305,42 @@ namespace AAEmu.DBDefs
         public string SearchString = string.Empty;
     }
 
+    class GameDoodadFunc
+    {
+        // TABLE doodad_funcs
+        public long id = 0;
+        public long doodad_func_group_id = 0;
+        public long actual_func_id = 0;
+        public string actual_func_type = string.Empty;
+        public long next_phase = 0;
+        public long sound_id = 0;
+        public long func_skill_id = 0;
+        public long perm_id = 0;
+        public long act_count = 0;
+        public bool popup_warn = false;
+        public bool forbid_on_climb = false;
+    }
+
+    class GameDoodadFuncGroup
+    {
+        // TABLE doodad_func_groups
+        public long id = 0;
+        public string model = string.Empty;
+        public long doodad_almighty_id = 0;
+        public long doodad_func_group_kind_id = 0;
+        public string phase_msg = string.Empty;
+        public long sound_id = 0;
+        public string name = string.Empty;
+        public long sound_time = 0;
+        public string comment = string.Empty;
+        public bool is_msg_to_zone = false;
+
+        // Helpers
+        public string nameLocalized = string.Empty;
+        public string phase_msgLocalized = string.Empty;
+        public string SearchString = string.Empty;
+    }
+
 
     static class AADB
     {
@@ -322,6 +358,8 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameSystemFactionRelation> DB_GameSystem_Faction_Relations = new Dictionary<long, GameSystemFactionRelation>();
         static public Dictionary<long, GameDoodad> DB_Doodad_Almighties = new Dictionary<long, GameDoodad>();
         static public Dictionary<long, GameDoodadGroup> DB_Doodad_Groups = new Dictionary<long, GameDoodadGroup>();
+        static public Dictionary<long, GameDoodadFunc> DB_Doodad_Funcs = new Dictionary<long, GameDoodadFunc>();
+        static public Dictionary<long, GameDoodadFuncGroup> DB_Doodad_Func_Groups = new Dictionary<long, GameDoodadFuncGroup>();
 
         static public string GetFactionName(long faction_id, bool addID = false)
         {
