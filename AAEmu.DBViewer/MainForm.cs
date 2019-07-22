@@ -2439,6 +2439,7 @@ namespace AAEmu.DBViewer
                     row.Cells[5].Value = z.npc_grade_id.ToString();
                     row.Cells[6].Value = AADB.GetFactionName(z.faction_id,true);
                     row.Cells[7].Value = z.model_id.ToString();
+                    row.Cells[8].Value = "(??,??)";
 
                     if (c == 0)
                     {
@@ -2909,9 +2910,66 @@ namespace AAEmu.DBViewer
 
         }
 
+        public class MapSpawnLocation
+        {
+            public long id ;
+            public float x ;
+            public float y ;
+            public float z ;
+
+            string FloatToCoord(double f)
+            {
+                var f1 = Math.Floor(f);
+                f -= f1;
+                f *= 60;
+                var f2 = Math.Floor(f);
+                f -= f2;
+                f *= 60;
+                var f3 = Math.Floor(f);
+
+                return f1.ToString("0")+"° "+f2.ToString("00")+"' " + f3.ToString("00")+"\"" ;
+            }
+
+            public string AsSextant()
+            {
+                // https://www.reddit.com/r/archeage/comments/3dak17/datamining_every_location_of_everything_in/
+                // (0.00097657363894522145695357130138029 * (X - Coordinate)) - 21 = (Longitude in degrees)
+                // (0.00097657363894522145695357130138029 * (Y - Coordinate)) - 28 = (Latitude in degrees)
+
+                var fx = (0.00097657363894522145695357130138029f * x) - 21f;
+                var fy = (0.00097657363894522145695357130138029f * y) - 28f;
+                string res = string.Empty;
+                // X - Longitude
+                if (fx >= 0f)
+                {
+                    res += "E ";
+                }
+                else
+                {
+                    res += "W ";
+                    fx *= -1f;
+                }
+                res += FloatToCoord(fx);
+                res += " , ";
+                // Y - Latitude
+                if (fy >= 0f)
+                {
+                    res += "N ";
+                }
+                else
+                {
+                    res += "S ";
+                    fy *= -1f;
+                }
+                res += FloatToCoord(fy);
+
+                return res ;
+            }
+        }
+
         private void BtnFindNPCsInZone_Click(object sender, EventArgs e)
         {
-            List<long> npcList = new List<long>();
+            Dictionary<long, MapSpawnLocation> npcList = new Dictionary<long, MapSpawnLocation>();
 
             if ((sender != null) && (sender is Button))
             {
@@ -2933,14 +2991,15 @@ namespace AAEmu.DBViewer
                             {
                                 for (int i = 0; i < indexCount; i++)
                                 {
-                                    long id = reader.ReadInt32();
-                                    float x = reader.ReadSingle();
-                                    float y = reader.ReadSingle();
-                                    float z = reader.ReadSingle();
+                                    MapSpawnLocation msl = new MapSpawnLocation();
+                                    msl.id = reader.ReadInt32();
+                                    msl.x = reader.ReadSingle();
+                                    msl.y = reader.ReadSingle();
+                                    msl.z = reader.ReadSingle();
 
                                     // Only add uniques for now
-                                    if (npcList.IndexOf(id) < 0)
-                                        npcList.Add(id);
+                                    // if (npcList.TryGetValue .IndexOf(id) < 0)
+                                    npcList.Add(i,msl);
                                 }
                             }
                         }
@@ -2953,13 +3012,13 @@ namespace AAEmu.DBViewer
                                 loading.Show();
 
                                 // Add to NPC list
-                                tcViewer.SelectedTab = tpNPCs;
+                                // tcViewer.SelectedTab = tpNPCs;
                                 dgvNPCs.Rows.Clear();
                                 Refresh();
                                 int c = 0;
                                 foreach (var npc in npcList)
                                 {
-                                    if (AADB.DB_NPCs.TryGetValue(npc, out var z))
+                                    if (AADB.DB_NPCs.TryGetValue(npc.Value.id, out var z))
                                     {
                                         var line = dgvNPCs.Rows.Add();
                                         var row = dgvNPCs.Rows[line];
@@ -2972,6 +3031,7 @@ namespace AAEmu.DBViewer
                                         row.Cells[5].Value = z.npc_grade_id.ToString();
                                         row.Cells[6].Value = AADB.GetFactionName(z.faction_id, true);
                                         row.Cells[7].Value = z.model_id.ToString();
+                                        row.Cells[8].Value = npc.Value.AsSextant();
 
                                         c++;
                                         if ((c % 25) == 0)
@@ -2980,6 +3040,7 @@ namespace AAEmu.DBViewer
                                         }
                                     }
                                 }
+                                tcViewer.SelectedTab = tpNPCs;
 
                             }
                         }

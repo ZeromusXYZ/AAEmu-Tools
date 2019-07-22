@@ -134,7 +134,28 @@
             this.label60 = new System.Windows.Forms.Label();
             this.tpDoodadFunctions = new System.Windows.Forms.TabPage();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.lDoodadFuncGroupIsMsgToZone = new System.Windows.Forms.Label();
+            this.label111 = new System.Windows.Forms.Label();
+            this.lDoodadFuncGroupSoundID = new System.Windows.Forms.Label();
+            this.label107 = new System.Windows.Forms.Label();
+            this.lDoodadFuncGroupSoundTime = new System.Windows.Forms.Label();
+            this.label103 = new System.Windows.Forms.Label();
+            this.lDoodadFuncGroupModel = new System.Windows.Forms.Label();
+            this.label99 = new System.Windows.Forms.Label();
+            this.lDoodadFuncGroupComment = new System.Windows.Forms.Label();
+            this.label95 = new System.Windows.Forms.Label();
+            this.lDoodadFuncGroupPhaseMsg = new System.Windows.Forms.Label();
+            this.label91 = new System.Windows.Forms.Label();
+            this.lDoodadFuncGroupKindID = new System.Windows.Forms.Label();
+            this.label87 = new System.Windows.Forms.Label();
+            this.lDoodadFuncGroupID = new System.Windows.Forms.Label();
+            this.label79 = new System.Windows.Forms.Label();
+            this.lDoodadFuncGroupName = new System.Windows.Forms.Label();
+            this.label66 = new System.Windows.Forms.Label();
             this.dgvDoodadFuncGroups = new System.Windows.Forms.DataGridView();
+            this.Column27 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column32 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column33 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnSearchDoodads = new System.Windows.Forms.Button();
             this.label46 = new System.Windows.Forms.Label();
             this.tSearchDoodads = new System.Windows.Forms.TextBox();
@@ -228,14 +249,6 @@
             this.label39 = new System.Windows.Forms.Label();
             this.tSearchNPC = new System.Windows.Forms.TextBox();
             this.dgvNPCs = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpSkills = new System.Windows.Forms.TabPage();
             this.tcSkillInfo = new System.Windows.Forms.TabControl();
             this.tpSkillInfo = new System.Windows.Forms.TabPage();
@@ -287,6 +300,7 @@
             this.label40 = new System.Windows.Forms.Label();
             this.lWorldGroupSizeAndPos = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnFindNPCsInZone = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
             this.lZoneGroupsSoundPackID = new System.Windows.Forms.Label();
             this.lZoneGroupsDisplayName = new System.Windows.Forms.Label();
@@ -339,28 +353,15 @@
             this.tZonesSearch = new System.Windows.Forms.TextBox();
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.lDoodadFuncGroupName = new System.Windows.Forms.Label();
-            this.label66 = new System.Windows.Forms.Label();
-            this.lDoodadFuncGroupID = new System.Windows.Forms.Label();
-            this.label79 = new System.Windows.Forms.Label();
-            this.lDoodadFuncGroupKindID = new System.Windows.Forms.Label();
-            this.label87 = new System.Windows.Forms.Label();
-            this.lDoodadFuncGroupPhaseMsg = new System.Windows.Forms.Label();
-            this.label91 = new System.Windows.Forms.Label();
-            this.lDoodadFuncGroupComment = new System.Windows.Forms.Label();
-            this.label95 = new System.Windows.Forms.Label();
-            this.lDoodadFuncGroupModel = new System.Windows.Forms.Label();
-            this.label99 = new System.Windows.Forms.Label();
-            this.lDoodadFuncGroupSoundTime = new System.Windows.Forms.Label();
-            this.label103 = new System.Windows.Forms.Label();
-            this.lDoodadFuncGroupSoundID = new System.Windows.Forms.Label();
-            this.label107 = new System.Windows.Forms.Label();
-            this.lDoodadFuncGroupIsMsgToZone = new System.Windows.Forms.Label();
-            this.label111 = new System.Windows.Forms.Label();
-            this.Column27 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column32 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column33 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnFindNPCsInZone = new System.Windows.Forms.Button();
+            this.dataGridViewTextBoxColumn14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column34 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -1524,6 +1525,168 @@
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Doodad Function Groups";
             // 
+            // lDoodadFuncGroupIsMsgToZone
+            // 
+            this.lDoodadFuncGroupIsMsgToZone.AutoSize = true;
+            this.lDoodadFuncGroupIsMsgToZone.Location = new System.Drawing.Point(94, 286);
+            this.lDoodadFuncGroupIsMsgToZone.Name = "lDoodadFuncGroupIsMsgToZone";
+            this.lDoodadFuncGroupIsMsgToZone.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadFuncGroupIsMsgToZone.TabIndex = 56;
+            this.lDoodadFuncGroupIsMsgToZone.Text = "0";
+            // 
+            // label111
+            // 
+            this.label111.AutoSize = true;
+            this.label111.Location = new System.Drawing.Point(6, 286);
+            this.label111.Name = "label111";
+            this.label111.Size = new System.Drawing.Size(83, 13);
+            this.label111.TabIndex = 55;
+            this.label111.Text = "is_msg_to_zone";
+            // 
+            // lDoodadFuncGroupSoundID
+            // 
+            this.lDoodadFuncGroupSoundID.AutoSize = true;
+            this.lDoodadFuncGroupSoundID.Location = new System.Drawing.Point(94, 260);
+            this.lDoodadFuncGroupSoundID.Name = "lDoodadFuncGroupSoundID";
+            this.lDoodadFuncGroupSoundID.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadFuncGroupSoundID.TabIndex = 54;
+            this.lDoodadFuncGroupSoundID.Text = "0";
+            // 
+            // label107
+            // 
+            this.label107.AutoSize = true;
+            this.label107.Location = new System.Drawing.Point(6, 211);
+            this.label107.Name = "label107";
+            this.label107.Size = new System.Drawing.Size(50, 13);
+            this.label107.TabIndex = 53;
+            this.label107.Text = "comment";
+            // 
+            // lDoodadFuncGroupSoundTime
+            // 
+            this.lDoodadFuncGroupSoundTime.AutoSize = true;
+            this.lDoodadFuncGroupSoundTime.Location = new System.Drawing.Point(94, 273);
+            this.lDoodadFuncGroupSoundTime.Name = "lDoodadFuncGroupSoundTime";
+            this.lDoodadFuncGroupSoundTime.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadFuncGroupSoundTime.TabIndex = 52;
+            this.lDoodadFuncGroupSoundTime.Text = "0";
+            // 
+            // label103
+            // 
+            this.label103.AutoSize = true;
+            this.label103.Location = new System.Drawing.Point(6, 273);
+            this.label103.Name = "label103";
+            this.label103.Size = new System.Drawing.Size(61, 13);
+            this.label103.TabIndex = 51;
+            this.label103.Text = "sound_time";
+            // 
+            // lDoodadFuncGroupModel
+            // 
+            this.lDoodadFuncGroupModel.AutoSize = true;
+            this.lDoodadFuncGroupModel.Location = new System.Drawing.Point(64, 224);
+            this.lDoodadFuncGroupModel.Name = "lDoodadFuncGroupModel";
+            this.lDoodadFuncGroupModel.Size = new System.Drawing.Size(43, 13);
+            this.lDoodadFuncGroupModel.TabIndex = 50;
+            this.lDoodadFuncGroupModel.Text = "<none>";
+            // 
+            // label99
+            // 
+            this.label99.AutoSize = true;
+            this.label99.Location = new System.Drawing.Point(6, 224);
+            this.label99.Name = "label99";
+            this.label99.Size = new System.Drawing.Size(35, 13);
+            this.label99.TabIndex = 49;
+            this.label99.Text = "model";
+            // 
+            // lDoodadFuncGroupComment
+            // 
+            this.lDoodadFuncGroupComment.AutoSize = true;
+            this.lDoodadFuncGroupComment.Location = new System.Drawing.Point(64, 211);
+            this.lDoodadFuncGroupComment.Name = "lDoodadFuncGroupComment";
+            this.lDoodadFuncGroupComment.Size = new System.Drawing.Size(43, 13);
+            this.lDoodadFuncGroupComment.TabIndex = 48;
+            this.lDoodadFuncGroupComment.Text = "<none>";
+            // 
+            // label95
+            // 
+            this.label95.AutoSize = true;
+            this.label95.Location = new System.Drawing.Point(6, 260);
+            this.label95.Name = "label95";
+            this.label95.Size = new System.Drawing.Size(50, 13);
+            this.label95.TabIndex = 47;
+            this.label95.Text = "sound_id";
+            // 
+            // lDoodadFuncGroupPhaseMsg
+            // 
+            this.lDoodadFuncGroupPhaseMsg.AutoSize = true;
+            this.lDoodadFuncGroupPhaseMsg.Location = new System.Drawing.Point(64, 198);
+            this.lDoodadFuncGroupPhaseMsg.Name = "lDoodadFuncGroupPhaseMsg";
+            this.lDoodadFuncGroupPhaseMsg.Size = new System.Drawing.Size(43, 13);
+            this.lDoodadFuncGroupPhaseMsg.TabIndex = 46;
+            this.lDoodadFuncGroupPhaseMsg.Text = "<none>";
+            // 
+            // label91
+            // 
+            this.label91.AutoSize = true;
+            this.label91.Location = new System.Drawing.Point(6, 198);
+            this.label91.Name = "label91";
+            this.label91.Size = new System.Drawing.Size(61, 13);
+            this.label91.TabIndex = 45;
+            this.label91.Text = "phase_msg";
+            // 
+            // lDoodadFuncGroupKindID
+            // 
+            this.lDoodadFuncGroupKindID.AutoSize = true;
+            this.lDoodadFuncGroupKindID.Location = new System.Drawing.Point(155, 237);
+            this.lDoodadFuncGroupKindID.Name = "lDoodadFuncGroupKindID";
+            this.lDoodadFuncGroupKindID.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadFuncGroupKindID.TabIndex = 44;
+            this.lDoodadFuncGroupKindID.Text = "0";
+            // 
+            // label87
+            // 
+            this.label87.AutoSize = true;
+            this.label87.Location = new System.Drawing.Point(6, 237);
+            this.label87.Name = "label87";
+            this.label87.Size = new System.Drawing.Size(143, 13);
+            this.label87.TabIndex = 43;
+            this.label87.Text = "doodad_func_group_kind_id";
+            // 
+            // lDoodadFuncGroupID
+            // 
+            this.lDoodadFuncGroupID.AutoSize = true;
+            this.lDoodadFuncGroupID.Location = new System.Drawing.Point(64, 172);
+            this.lDoodadFuncGroupID.Name = "lDoodadFuncGroupID";
+            this.lDoodadFuncGroupID.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadFuncGroupID.TabIndex = 40;
+            this.lDoodadFuncGroupID.Text = "0";
+            // 
+            // label79
+            // 
+            this.label79.AutoSize = true;
+            this.label79.Location = new System.Drawing.Point(6, 172);
+            this.label79.Name = "label79";
+            this.label79.Size = new System.Drawing.Size(18, 13);
+            this.label79.TabIndex = 39;
+            this.label79.Text = "ID";
+            // 
+            // lDoodadFuncGroupName
+            // 
+            this.lDoodadFuncGroupName.AutoSize = true;
+            this.lDoodadFuncGroupName.Location = new System.Drawing.Point(64, 185);
+            this.lDoodadFuncGroupName.Name = "lDoodadFuncGroupName";
+            this.lDoodadFuncGroupName.Size = new System.Drawing.Size(43, 13);
+            this.lDoodadFuncGroupName.TabIndex = 38;
+            this.lDoodadFuncGroupName.Text = "<none>";
+            // 
+            // label66
+            // 
+            this.label66.AutoSize = true;
+            this.label66.Location = new System.Drawing.Point(6, 185);
+            this.label66.Name = "label66";
+            this.label66.Size = new System.Drawing.Size(35, 13);
+            this.label66.TabIndex = 37;
+            this.label66.Text = "Name";
+            // 
             // dgvDoodadFuncGroups
             // 
             this.dgvDoodadFuncGroups.AllowUserToAddRows = false;
@@ -1545,6 +1708,26 @@
             this.dgvDoodadFuncGroups.Size = new System.Drawing.Size(316, 143);
             this.dgvDoodadFuncGroups.TabIndex = 8;
             this.dgvDoodadFuncGroups.SelectionChanged += new System.EventHandler(this.DgvDoodadFuncGroups_SelectionChanged);
+            // 
+            // Column27
+            // 
+            this.Column27.FillWeight = 35F;
+            this.Column27.HeaderText = "ID";
+            this.Column27.Name = "Column27";
+            this.Column27.ReadOnly = true;
+            // 
+            // Column32
+            // 
+            this.Column32.FillWeight = 25F;
+            this.Column32.HeaderText = "Kind";
+            this.Column32.Name = "Column32";
+            this.Column32.ReadOnly = true;
+            // 
+            // Column33
+            // 
+            this.Column33.HeaderText = "Name";
+            this.Column33.Name = "Column33";
+            this.Column33.ReadOnly = true;
             // 
             // btnSearchDoodads
             // 
@@ -2527,7 +2710,8 @@
             this.Column17,
             this.Column16,
             this.Column21,
-            this.Column20});
+            this.Column20,
+            this.Column34});
             this.dgvNPCs.Location = new System.Drawing.Point(8, 41);
             this.dgvNPCs.Name = "dgvNPCs";
             this.dgvNPCs.ReadOnly = true;
@@ -2536,62 +2720,6 @@
             this.dgvNPCs.Size = new System.Drawing.Size(910, 432);
             this.dgvNPCs.TabIndex = 7;
             this.dgvNPCs.SelectionChanged += new System.EventHandler(this.DgvNPCs_SelectionChanged);
-            // 
-            // dataGridViewTextBoxColumn14
-            // 
-            this.dataGridViewTextBoxColumn14.HeaderText = "ID";
-            this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
-            this.dataGridViewTextBoxColumn14.ReadOnly = true;
-            this.dataGridViewTextBoxColumn14.Width = 43;
-            // 
-            // dataGridViewTextBoxColumn17
-            // 
-            this.dataGridViewTextBoxColumn17.HeaderText = "Name";
-            this.dataGridViewTextBoxColumn17.Name = "dataGridViewTextBoxColumn17";
-            this.dataGridViewTextBoxColumn17.ReadOnly = true;
-            this.dataGridViewTextBoxColumn17.Width = 60;
-            // 
-            // Column18
-            // 
-            this.Column18.HeaderText = "Level";
-            this.Column18.Name = "Column18";
-            this.Column18.ReadOnly = true;
-            this.Column18.Width = 58;
-            // 
-            // Column19
-            // 
-            this.Column19.HeaderText = "Template ID";
-            this.Column19.Name = "Column19";
-            this.Column19.ReadOnly = true;
-            this.Column19.Width = 90;
-            // 
-            // Column17
-            // 
-            this.Column17.HeaderText = "Kind ID";
-            this.Column17.Name = "Column17";
-            this.Column17.ReadOnly = true;
-            this.Column17.Width = 67;
-            // 
-            // Column16
-            // 
-            this.Column16.HeaderText = "Grade ID";
-            this.Column16.Name = "Column16";
-            this.Column16.ReadOnly = true;
-            this.Column16.Width = 75;
-            // 
-            // Column21
-            // 
-            this.Column21.HeaderText = "Faction ID";
-            this.Column21.Name = "Column21";
-            this.Column21.ReadOnly = true;
-            this.Column21.Width = 81;
-            // 
-            // Column20
-            // 
-            this.Column20.HeaderText = "Model ID";
-            this.Column20.Name = "Column20";
-            this.Column20.ReadOnly = true;
-            this.Column20.Width = 75;
             // 
             // tpSkills
             // 
@@ -3169,6 +3297,17 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Zone Groups Info";
             // 
+            // btnFindNPCsInZone
+            // 
+            this.btnFindNPCsInZone.Enabled = false;
+            this.btnFindNPCsInZone.Location = new System.Drawing.Point(6, 178);
+            this.btnFindNPCsInZone.Name = "btnFindNPCsInZone";
+            this.btnFindNPCsInZone.Size = new System.Drawing.Size(140, 23);
+            this.btnFindNPCsInZone.TabIndex = 34;
+            this.btnFindNPCsInZone.Text = "Find NPCs in this zone";
+            this.btnFindNPCsInZone.UseVisualStyleBackColor = true;
+            this.btnFindNPCsInZone.Click += new System.EventHandler(this.BtnFindNPCsInZone_Click);
+            // 
             // label15
             // 
             this.label15.AutoSize = true;
@@ -3665,198 +3804,68 @@
             this.openGamePakFileDialog.RestoreDirectory = true;
             this.openGamePakFileDialog.Title = "Open game_pak";
             // 
-            // lDoodadFuncGroupName
+            // dataGridViewTextBoxColumn14
             // 
-            this.lDoodadFuncGroupName.AutoSize = true;
-            this.lDoodadFuncGroupName.Location = new System.Drawing.Point(64, 185);
-            this.lDoodadFuncGroupName.Name = "lDoodadFuncGroupName";
-            this.lDoodadFuncGroupName.Size = new System.Drawing.Size(43, 13);
-            this.lDoodadFuncGroupName.TabIndex = 38;
-            this.lDoodadFuncGroupName.Text = "<none>";
+            this.dataGridViewTextBoxColumn14.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn14.Name = "dataGridViewTextBoxColumn14";
+            this.dataGridViewTextBoxColumn14.ReadOnly = true;
+            this.dataGridViewTextBoxColumn14.Width = 43;
             // 
-            // label66
+            // dataGridViewTextBoxColumn17
             // 
-            this.label66.AutoSize = true;
-            this.label66.Location = new System.Drawing.Point(6, 185);
-            this.label66.Name = "label66";
-            this.label66.Size = new System.Drawing.Size(35, 13);
-            this.label66.TabIndex = 37;
-            this.label66.Text = "Name";
+            this.dataGridViewTextBoxColumn17.HeaderText = "Name";
+            this.dataGridViewTextBoxColumn17.Name = "dataGridViewTextBoxColumn17";
+            this.dataGridViewTextBoxColumn17.ReadOnly = true;
+            this.dataGridViewTextBoxColumn17.Width = 60;
             // 
-            // lDoodadFuncGroupID
+            // Column18
             // 
-            this.lDoodadFuncGroupID.AutoSize = true;
-            this.lDoodadFuncGroupID.Location = new System.Drawing.Point(64, 172);
-            this.lDoodadFuncGroupID.Name = "lDoodadFuncGroupID";
-            this.lDoodadFuncGroupID.Size = new System.Drawing.Size(13, 13);
-            this.lDoodadFuncGroupID.TabIndex = 40;
-            this.lDoodadFuncGroupID.Text = "0";
+            this.Column18.HeaderText = "Level";
+            this.Column18.Name = "Column18";
+            this.Column18.ReadOnly = true;
+            this.Column18.Width = 58;
             // 
-            // label79
+            // Column19
             // 
-            this.label79.AutoSize = true;
-            this.label79.Location = new System.Drawing.Point(6, 172);
-            this.label79.Name = "label79";
-            this.label79.Size = new System.Drawing.Size(18, 13);
-            this.label79.TabIndex = 39;
-            this.label79.Text = "ID";
+            this.Column19.HeaderText = "Template ID";
+            this.Column19.Name = "Column19";
+            this.Column19.ReadOnly = true;
+            this.Column19.Width = 90;
             // 
-            // lDoodadFuncGroupKindID
+            // Column17
             // 
-            this.lDoodadFuncGroupKindID.AutoSize = true;
-            this.lDoodadFuncGroupKindID.Location = new System.Drawing.Point(155, 237);
-            this.lDoodadFuncGroupKindID.Name = "lDoodadFuncGroupKindID";
-            this.lDoodadFuncGroupKindID.Size = new System.Drawing.Size(13, 13);
-            this.lDoodadFuncGroupKindID.TabIndex = 44;
-            this.lDoodadFuncGroupKindID.Text = "0";
+            this.Column17.HeaderText = "Kind ID";
+            this.Column17.Name = "Column17";
+            this.Column17.ReadOnly = true;
+            this.Column17.Width = 67;
             // 
-            // label87
+            // Column16
             // 
-            this.label87.AutoSize = true;
-            this.label87.Location = new System.Drawing.Point(6, 237);
-            this.label87.Name = "label87";
-            this.label87.Size = new System.Drawing.Size(143, 13);
-            this.label87.TabIndex = 43;
-            this.label87.Text = "doodad_func_group_kind_id";
+            this.Column16.HeaderText = "Grade ID";
+            this.Column16.Name = "Column16";
+            this.Column16.ReadOnly = true;
+            this.Column16.Width = 75;
             // 
-            // lDoodadFuncGroupPhaseMsg
+            // Column21
             // 
-            this.lDoodadFuncGroupPhaseMsg.AutoSize = true;
-            this.lDoodadFuncGroupPhaseMsg.Location = new System.Drawing.Point(64, 198);
-            this.lDoodadFuncGroupPhaseMsg.Name = "lDoodadFuncGroupPhaseMsg";
-            this.lDoodadFuncGroupPhaseMsg.Size = new System.Drawing.Size(43, 13);
-            this.lDoodadFuncGroupPhaseMsg.TabIndex = 46;
-            this.lDoodadFuncGroupPhaseMsg.Text = "<none>";
+            this.Column21.HeaderText = "Faction ID";
+            this.Column21.Name = "Column21";
+            this.Column21.ReadOnly = true;
+            this.Column21.Width = 81;
             // 
-            // label91
+            // Column20
             // 
-            this.label91.AutoSize = true;
-            this.label91.Location = new System.Drawing.Point(6, 198);
-            this.label91.Name = "label91";
-            this.label91.Size = new System.Drawing.Size(61, 13);
-            this.label91.TabIndex = 45;
-            this.label91.Text = "phase_msg";
+            this.Column20.HeaderText = "Model ID";
+            this.Column20.Name = "Column20";
+            this.Column20.ReadOnly = true;
+            this.Column20.Width = 75;
             // 
-            // lDoodadFuncGroupComment
+            // Column34
             // 
-            this.lDoodadFuncGroupComment.AutoSize = true;
-            this.lDoodadFuncGroupComment.Location = new System.Drawing.Point(64, 211);
-            this.lDoodadFuncGroupComment.Name = "lDoodadFuncGroupComment";
-            this.lDoodadFuncGroupComment.Size = new System.Drawing.Size(43, 13);
-            this.lDoodadFuncGroupComment.TabIndex = 48;
-            this.lDoodadFuncGroupComment.Text = "<none>";
-            // 
-            // label95
-            // 
-            this.label95.AutoSize = true;
-            this.label95.Location = new System.Drawing.Point(6, 260);
-            this.label95.Name = "label95";
-            this.label95.Size = new System.Drawing.Size(50, 13);
-            this.label95.TabIndex = 47;
-            this.label95.Text = "sound_id";
-            // 
-            // lDoodadFuncGroupModel
-            // 
-            this.lDoodadFuncGroupModel.AutoSize = true;
-            this.lDoodadFuncGroupModel.Location = new System.Drawing.Point(64, 224);
-            this.lDoodadFuncGroupModel.Name = "lDoodadFuncGroupModel";
-            this.lDoodadFuncGroupModel.Size = new System.Drawing.Size(43, 13);
-            this.lDoodadFuncGroupModel.TabIndex = 50;
-            this.lDoodadFuncGroupModel.Text = "<none>";
-            // 
-            // label99
-            // 
-            this.label99.AutoSize = true;
-            this.label99.Location = new System.Drawing.Point(6, 224);
-            this.label99.Name = "label99";
-            this.label99.Size = new System.Drawing.Size(35, 13);
-            this.label99.TabIndex = 49;
-            this.label99.Text = "model";
-            // 
-            // lDoodadFuncGroupSoundTime
-            // 
-            this.lDoodadFuncGroupSoundTime.AutoSize = true;
-            this.lDoodadFuncGroupSoundTime.Location = new System.Drawing.Point(94, 273);
-            this.lDoodadFuncGroupSoundTime.Name = "lDoodadFuncGroupSoundTime";
-            this.lDoodadFuncGroupSoundTime.Size = new System.Drawing.Size(13, 13);
-            this.lDoodadFuncGroupSoundTime.TabIndex = 52;
-            this.lDoodadFuncGroupSoundTime.Text = "0";
-            // 
-            // label103
-            // 
-            this.label103.AutoSize = true;
-            this.label103.Location = new System.Drawing.Point(6, 273);
-            this.label103.Name = "label103";
-            this.label103.Size = new System.Drawing.Size(61, 13);
-            this.label103.TabIndex = 51;
-            this.label103.Text = "sound_time";
-            // 
-            // lDoodadFuncGroupSoundID
-            // 
-            this.lDoodadFuncGroupSoundID.AutoSize = true;
-            this.lDoodadFuncGroupSoundID.Location = new System.Drawing.Point(94, 260);
-            this.lDoodadFuncGroupSoundID.Name = "lDoodadFuncGroupSoundID";
-            this.lDoodadFuncGroupSoundID.Size = new System.Drawing.Size(13, 13);
-            this.lDoodadFuncGroupSoundID.TabIndex = 54;
-            this.lDoodadFuncGroupSoundID.Text = "0";
-            // 
-            // label107
-            // 
-            this.label107.AutoSize = true;
-            this.label107.Location = new System.Drawing.Point(6, 211);
-            this.label107.Name = "label107";
-            this.label107.Size = new System.Drawing.Size(50, 13);
-            this.label107.TabIndex = 53;
-            this.label107.Text = "comment";
-            // 
-            // lDoodadFuncGroupIsMsgToZone
-            // 
-            this.lDoodadFuncGroupIsMsgToZone.AutoSize = true;
-            this.lDoodadFuncGroupIsMsgToZone.Location = new System.Drawing.Point(94, 286);
-            this.lDoodadFuncGroupIsMsgToZone.Name = "lDoodadFuncGroupIsMsgToZone";
-            this.lDoodadFuncGroupIsMsgToZone.Size = new System.Drawing.Size(13, 13);
-            this.lDoodadFuncGroupIsMsgToZone.TabIndex = 56;
-            this.lDoodadFuncGroupIsMsgToZone.Text = "0";
-            // 
-            // label111
-            // 
-            this.label111.AutoSize = true;
-            this.label111.Location = new System.Drawing.Point(6, 286);
-            this.label111.Name = "label111";
-            this.label111.Size = new System.Drawing.Size(83, 13);
-            this.label111.TabIndex = 55;
-            this.label111.Text = "is_msg_to_zone";
-            // 
-            // Column27
-            // 
-            this.Column27.FillWeight = 35F;
-            this.Column27.HeaderText = "ID";
-            this.Column27.Name = "Column27";
-            this.Column27.ReadOnly = true;
-            // 
-            // Column32
-            // 
-            this.Column32.FillWeight = 25F;
-            this.Column32.HeaderText = "Kind";
-            this.Column32.Name = "Column32";
-            this.Column32.ReadOnly = true;
-            // 
-            // Column33
-            // 
-            this.Column33.HeaderText = "Name";
-            this.Column33.Name = "Column33";
-            this.Column33.ReadOnly = true;
-            // 
-            // btnFindNPCsInZone
-            // 
-            this.btnFindNPCsInZone.Enabled = false;
-            this.btnFindNPCsInZone.Location = new System.Drawing.Point(6, 178);
-            this.btnFindNPCsInZone.Name = "btnFindNPCsInZone";
-            this.btnFindNPCsInZone.Size = new System.Drawing.Size(140, 23);
-            this.btnFindNPCsInZone.TabIndex = 34;
-            this.btnFindNPCsInZone.Text = "Find NPCs in this zone";
-            this.btnFindNPCsInZone.UseVisualStyleBackColor = true;
-            this.btnFindNPCsInZone.Click += new System.EventHandler(this.BtnFindNPCsInZone_Click);
+            this.Column34.HeaderText = "Position";
+            this.Column34.Name = "Column34";
+            this.Column34.ReadOnly = true;
+            this.Column34.Width = 69;
             // 
             // MainForm
             // 
@@ -4093,14 +4102,6 @@
         private System.Windows.Forms.Button btnSimpleSQL;
         private System.Windows.Forms.TextBox tSimpleSQL;
         private System.Windows.Forms.Label label41;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn14;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn17;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column18;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column19;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column17;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column21;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column20;
         private System.Windows.Forms.TabPage tbFactions;
         private System.Windows.Forms.Button btnSearchFaction;
         private System.Windows.Forms.Label label42;
@@ -4264,6 +4265,15 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column32;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column33;
         private System.Windows.Forms.Button btnFindNPCsInZone;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn14;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn17;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column18;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column19;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column17;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column21;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column20;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column34;
     }
 }
 
