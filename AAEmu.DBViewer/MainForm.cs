@@ -448,6 +448,9 @@ namespace AAEmu.DBViewer
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
 
+                        var columnNames = reader.GetColumnNames();
+                        bool hasAbox_show = (columnNames.IndexOf("abox_show") > 0);
+
                         while (reader.Read())
                         {
                             GameZone t = new GameZone();
@@ -459,7 +462,11 @@ namespace AAEmu.DBViewer
                             t.display_text = GetString(reader, "display_text");
                             t.faction_id = GetInt64(reader, "faction_id");
                             t.zone_climate_id = GetInt64(reader, "zone_climate_id");
-                            t.abox_show = GetBool(reader, "abox_show");
+
+                            if (hasAbox_show)
+                                t.abox_show = GetBool(reader, "abox_show");
+                            else
+                                t.abox_show = false;
 
                             if (t.display_text != string.Empty)
                                 t.display_textLocalized = GetTranslationByID(t.id, "zones", "display_text", t.display_text);
@@ -788,6 +795,16 @@ namespace AAEmu.DBViewer
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
                         AADB.DB_NPCs.Clear();
+
+                        var columnNames = reader.GetColumnNames();
+                        bool hasEquip_bodies_id = (columnNames.IndexOf("equip_bodies_id") > 0);
+                        bool hasMileStoneID = (columnNames.IndexOf("milestone_id") > 0);
+                        bool hasComments = ((columnNames.IndexOf("comment1") > 0) && (columnNames.IndexOf("comment2") > 0) && (columnNames.IndexOf("comment3") > 0) && (columnNames.IndexOf("comment_wear") > 0));
+                        bool hasNpc_tendency_id = (columnNames.IndexOf("npc_tendency_id") > 0);
+                        bool hasRecruiting_battle_field_id = (columnNames.IndexOf("recruiting_battle_field_id") > 0);
+                        bool hasFX_scale = (columnNames.IndexOf("fx_scale") > 0);
+                        bool hasTranslate = (columnNames.IndexOf("translate") > 0);
+
                         while (reader.Read())
                         {
                             var t = new GameNPC();
@@ -801,7 +818,10 @@ namespace AAEmu.DBViewer
                             t.faction_id = GetInt64(reader, "faction_id");
                             t.model_id = GetInt64(reader, "model_id");
                             t.npc_template_id = GetInt64(reader, "npc_template_id");
-                            t.equip_bodies_id = GetInt64(reader, "equip_bodies_id");
+                            if (hasEquip_bodies_id)
+                                t.equip_bodies_id = GetInt64(reader, "equip_bodies_id");
+                            else
+                                t.equip_bodies_id = -1;
                             t.equip_cloths_id = GetInt64(reader, "equip_cloths_id");
                             t.equip_weapons_id = GetInt64(reader, "equip_weapons_id");
                             t.skill_trainer = GetBool(reader, "skill_trainer");
@@ -816,25 +836,45 @@ namespace AAEmu.DBViewer
                             t.base_skill_id = GetInt64(reader, "base_skill_id");
                             t.track_friendship = GetBool(reader, "track_friendship");
                             t.priest = GetBool(reader, "priest");
-                            t.comment1 = GetString(reader, "comment1");
-                            t.npc_tendency_id = GetInt64(reader, "npc_tendency_id");
+                            if (hasNpc_tendency_id)
+                                t.npc_tendency_id = GetInt64(reader, "npc_tendency_id");
+                            else
+                                t.npc_tendency_id = -1;
                             t.blacksmith = GetBool(reader, "blacksmith");
                             t.teleporter = GetBool(reader, "teleporter");
                             t.opacity = GetFloat(reader, "opacity");
                             t.ability_changer = GetBool(reader, "ability_changer");
                             t.scale = GetFloat(reader, "scale");
-                            t.comment2 = GetString(reader, "comment2");
-                            t.comment3 = GetString(reader, "comment3");
+                            if (hasComments)
+                            {
+                                t.comment1 = GetString(reader, "comment1");
+                                t.comment2 = GetString(reader, "comment2");
+                                t.comment3 = GetString(reader, "comment3");
+                                t.comment_wear = GetString(reader, "comment_wear");
+                            }
+                            else
+                            {
+                                t.comment1 = string.Empty;
+                                t.comment2 = string.Empty;
+                                t.comment3 = string.Empty;
+                                t.comment_wear = string.Empty;
+                            }
                             t.sight_range_scale = GetFloat(reader, "sight_range_scale");
                             t.sight_fov_scale = GetFloat(reader, "sight_fov_scale");
-                            t.milestone_id = GetInt64(reader, "milestone_id");
+                            if (hasMileStoneID)
+                                t.milestone_id = GetInt64(reader, "milestone_id");
+                            else
+                                t.milestone_id = -1;
                             t.attack_start_range_scale = GetFloat(reader, "attack_start_range_scale");
                             t.aggression = GetBool(reader, "aggression");
                             t.exp_multiplier = GetFloat(reader, "exp_multiplier");
                             t.exp_adder = GetInt64(reader, "exp_adder");
                             t.stabler = GetBool(reader, "stabler");
                             t.accept_aggro_link = GetBool(reader, "accept_aggro_link");
-                            t.recruiting_battle_field_id = GetInt64(reader, "recruiting_battle_field_id");
+                            if (hasRecruiting_battle_field_id)
+                                t.recruiting_battle_field_id = GetInt64(reader, "recruiting_battle_field_id");
+                            else
+                                t.recruiting_battle_field_id = -1;
                             t.return_distance = GetInt64(reader, "return_distance");
                             t.npc_ai_param_id = GetInt64(reader, "npc_ai_param_id");
                             t.non_pushable_by_actor = GetBool(reader, "non_pushable_by_actor");
@@ -847,7 +887,6 @@ namespace AAEmu.DBViewer
                             t.trader = GetBool(reader, "trader");
                             t.aggro_link_special_guard = GetBool(reader, "aggro_link_special_guard");
                             t.aggro_link_special_ignore_npc_attacker = GetBool(reader, "aggro_link_special_ignore_npc_attacker");
-                            t.comment_wear = GetString(reader, "comment_wear");
                             t.absolute_return_distance = GetFloat(reader, "absolute_return_distance");
                             t.repairman = GetBool(reader, "repairman");
                             t.activate_ai_always = GetBool(reader, "activate_ai_always");
@@ -870,8 +909,14 @@ namespace AAEmu.DBViewer
                             t.look_converter = GetBool(reader, "look_converter");
                             t.use_ddcms_mount_skill = GetBool(reader, "use_ddcms_mount_skill");
                             t.crowd_effect = GetBool(reader, "crowd_effect");
-                            t.fx_scale = GetFloat(reader, "fx_scale");
-                            t.translate = GetBool(reader, "translate");
+                            if (hasFX_scale)
+                                t.fx_scale = GetFloat(reader, "fx_scale");
+                            else
+                                t.fx_scale = 1.0f;
+                            if (hasTranslate)
+                                t.translate = GetBool(reader, "translate");
+                            else
+                                t.translate = false;
                             t.no_penalty = GetBool(reader, "no_penalty");
                             t.show_faction_tag = GetBool(reader, "show_faction_tag");
 
@@ -969,6 +1014,11 @@ namespace AAEmu.DBViewer
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
                         AADB.DB_Doodad_Almighties.Clear();
+
+                        var columnNames = reader.GetColumnNames();
+                        bool hasMileStoneID = (columnNames.IndexOf("milestone_id") > 0);
+                        bool hasTranslate = (columnNames.IndexOf("translate") > 0);
+
                         while (reader.Read())
                         {
                             var t = new GameDoodad();
@@ -986,7 +1036,10 @@ namespace AAEmu.DBViewer
                             t.model_kind_id = GetInt64(reader, "model_kind_id");
                             t.use_creator_faction = GetBool(reader, "use_creator_faction");
                             t.force_tod_top_priority = GetBool(reader, "force_tod_top_priority");
-                            t.milestone_id = GetInt64(reader, "milestone_id");
+                            if (hasMileStoneID)
+                                t.milestone_id = GetInt64(reader, "milestone_id");
+                            else
+                                t.milestone_id = -1;
                             t.group_id = GetInt64(reader, "group_id");
                             t.show_minimap = GetBool(reader, "show_minimap");
                             t.use_target_decal = GetBool(reader, "use_target_decal");
@@ -1008,7 +1061,10 @@ namespace AAEmu.DBViewer
                             t.despawn_on_collision = GetBool(reader, "despawn_on_collision");
                             t.no_collision = GetBool(reader, "no_collision");
                             t.restrict_zone_id = GetInt64(reader, "restrict_zone_id");
-                            t.translate = GetBool(reader, "translate");
+                            if (hasTranslate)
+                                t.translate = GetBool(reader, "translate");
+                            else
+                                t.translate = false;
 
                             // Helpers
                             t.nameLocalized = GetTranslationByID(t.id, "doodad_almighties", "name", t.name);
@@ -1028,15 +1084,23 @@ namespace AAEmu.DBViewer
                 {
                     command.CommandText = sql;
                     command.Prepare();
+
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
                         AADB.DB_Doodad_Groups.Clear();
+
+                        var columnNames = reader.GetColumnNames();
+                        bool hasName = (columnNames.IndexOf("name") > 0);
+
                         while (reader.Read())
                         {
                             var t = new GameDoodadGroup();
                             // Actual DB entries
                             t.id = GetInt64(reader, "id");
-                            t.name = GetString(reader, "name");
+                            if (hasName)
+                                t.name = GetString(reader, "name");
+                            else
+                                t.name = string.Empty;
                             t.is_export = GetBool(reader, "is_export");
                             t.guard_on_field_time = GetInt64(reader, "guard_on_field_time");
                             t.removed_by_house = GetBool(reader, "removed_by_house");
@@ -1095,6 +1159,10 @@ namespace AAEmu.DBViewer
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
                         AADB.DB_Doodad_Func_Groups.Clear();
+
+                        var columnNames = reader.GetColumnNames();
+                        bool hasComment = (columnNames.IndexOf("comment") > 0);
+
                         while (reader.Read())
                         {
                             var t = new GameDoodadFuncGroup();
@@ -1107,7 +1175,10 @@ namespace AAEmu.DBViewer
                             t.sound_id = GetInt64(reader, "sound_id");
                             t.name = GetString(reader, "name");
                             t.sound_time = GetInt64(reader, "sound_time");
-                            t.comment = GetString(reader, "comment");
+                            if (hasComment)
+                                t.comment = GetString(reader, "comment");
+                            else
+                                t.comment = string.Empty;
                             t.is_msg_to_zone = GetBool(reader, "is_msg_to_zone");
 
                             // Helpers
