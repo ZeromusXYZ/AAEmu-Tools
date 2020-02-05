@@ -34,6 +34,7 @@
             this.btnQuestSphere = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.exportFileDlg = new System.Windows.Forms.SaveFileDialog();
+            this.LQuestSphereData = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // LClientLocation
@@ -86,17 +87,27 @@
             // 
             this.exportFileDlg.Filter = "json files|*.json";
             // 
+            // LQuestSphereData
+            // 
+            this.LQuestSphereData.AutoSize = true;
+            this.LQuestSphereData.Location = new System.Drawing.Point(156, 68);
+            this.LQuestSphereData.Name = "LQuestSphereData";
+            this.LQuestSphereData.Size = new System.Drawing.Size(43, 13);
+            this.LQuestSphereData.TabIndex = 4;
+            this.LQuestSphereData.Text = "<none>";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.LQuestSphereData);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnQuestSphere);
             this.Controls.Add(this.btnFindClient);
             this.Controls.Add(this.LClientLocation);
             this.Name = "MainForm";
-            this.Text = "Client Data Exporter";
+            this.Text = "AAEmu Client Data Exporter";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
@@ -112,6 +123,7 @@
         private System.Windows.Forms.Button btnQuestSphere;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.SaveFileDialog exportFileDlg;
+        private System.Windows.Forms.Label LQuestSphereData;
     }
 }
 
