@@ -341,6 +341,34 @@ namespace AAEmu.DBDefs
         public string SearchString = string.Empty;
     }
 
+    class GameQuestContexts
+    {
+        // TABLE quest_contexts
+        public long id = 0;
+        public string name = string.Empty;
+        public long category_id = 0;
+        public bool repeatable = false;
+        public long level = 0;
+        public bool selective = false;
+        public bool successive = false;
+        public bool restart_on_fail = false;
+        public long chapter_idx = 0;
+        public long quest_idx = 0;
+        public long milestone_id = 0;
+        public bool let_it_done = false;
+        public long detail_id = 0;
+        public long zone_id = 0;
+        public long degree = 0;
+        public bool use_quest_camera = false;
+        public long score = 0;
+        public bool use_accept_message = false;
+        public bool use_complete_message = false;
+        public long grade_id = 0;
+
+        public string nameLocalized = string.Empty;
+        public string SearchString = string.Empty;
+    }
+
 
     static class AADB
     {
@@ -360,6 +388,7 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameDoodadGroup> DB_Doodad_Groups = new Dictionary<long, GameDoodadGroup>();
         static public Dictionary<long, GameDoodadFunc> DB_Doodad_Funcs = new Dictionary<long, GameDoodadFunc>();
         static public Dictionary<long, GameDoodadFuncGroup> DB_Doodad_Func_Groups = new Dictionary<long, GameDoodadFuncGroup>();
+        static public Dictionary<long, GameQuestContexts> DB_Quest_Contexts = new Dictionary<long, GameQuestContexts>();
 
         static public string GetFactionName(long faction_id, bool addID = false)
         {

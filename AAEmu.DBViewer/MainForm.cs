@@ -181,7 +181,7 @@ namespace AAEmu.DBViewer
                         lbTableNames.Items.Clear();
                         while (reader.Read())
                         {
-                            lbTableNames.Items.Add(GetString(reader,"name"));
+                            lbTableNames.Items.Add(GetString(reader, "name"));
                         }
                     }
                 }
@@ -213,7 +213,7 @@ namespace AAEmu.DBViewer
         private void AddCustomTranslation(string table, string field, long idx, string val)
         {
             // Try overriding if empty
-            foreach(var tl in AADB.DB_Translations)
+            foreach (var tl in AADB.DB_Translations)
             {
                 if ((tl.Value.idx == idx) && (tl.Value.table == table) && (tl.Value.field == field))
                 {
@@ -334,7 +334,7 @@ namespace AAEmu.DBViewer
         {
             string sql = "SELECT * FROM localized_texts ORDER BY tbl_name, tbl_column_name, idx";
 
-            List<string> columnNames = null ;
+            List<string> columnNames = null;
 
             using (var connection = SQLite.CreateConnection())
             {
@@ -378,19 +378,19 @@ namespace AAEmu.DBViewer
                                     else
                                     {
                                         MessageBox.Show("The selected language \"" + lng + "\" was not found in localized_texts !\r\n" +
-                                            "Also was not able to revert to English or Korean, functionality of this program is not guaranteed", 
-                                            "Language not found", 
+                                            "Also was not able to revert to English or Korean, functionality of this program is not guaranteed",
+                                            "Language not found",
                                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     }
                                 }
                             }
 
                             GameTranslation t = new GameTranslation();
-                            t.idx = GetInt64(reader,"idx");
-                            t.table = GetString(reader,"tbl_name");
-                            t.field = GetString(reader,"tbl_column_name");
-                            
-                            t.value = GetString(reader,lng);
+                            t.idx = GetInt64(reader, "idx");
+                            t.table = GetString(reader, "tbl_name");
+                            t.field = GetString(reader, "tbl_column_name");
+
+                            t.value = GetString(reader, lng);
                             string k = t.table + ":" + t.field + ":" + t.idx.ToString();
                             AADB.DB_Translations.Add(k, t);
                         }
@@ -408,26 +408,26 @@ namespace AAEmu.DBViewer
                     cbItemSearchLanguage.Enabled = false;
 
                     List<string> availableLng = new List<string>();
-                    foreach(var l in possibleLanguageIDs)
+                    foreach (var l in possibleLanguageIDs)
                     {
                         if (columnNames.IndexOf(l) >= 0)
                             availableLng.Add(l);
                     }
                     cbItemSearchLanguage.Items.Clear();
-                    for(int i = 0; i < availableLng.Count;i++)
+                    for (int i = 0; i < availableLng.Count; i++)
                     {
                         var l = availableLng[i];
                         cbItemSearchLanguage.Items.Add(l);
                         if (l == lng)
                             cbItemSearchLanguage.SelectedIndex = i;
-                    }                    
+                    }
                 }
                 finally
                 {
                     cbItemSearchLanguage.Enabled = true;
                 }
             }
-            Properties.Settings.Default.DefaultGameLanguage = lng ;
+            Properties.Settings.Default.DefaultGameLanguage = lng;
         }
 
         private void LoadZones()
@@ -471,8 +471,8 @@ namespace AAEmu.DBViewer
                             if (t.display_text != string.Empty)
                                 t.display_textLocalized = GetTranslationByID(t.id, "zones", "display_text", t.display_text);
                             else
-                                t.display_textLocalized = "" ;
-                            t.SearchString = t.name + " " + t.display_text + " " + t.display_textLocalized ;
+                                t.display_textLocalized = "";
+                            t.SearchString = t.name + " " + t.display_text + " " + t.display_textLocalized;
                             t.SearchString = t.SearchString.ToLower();
 
                             AADB.DB_Zones.Add(t.id, t);
@@ -607,7 +607,7 @@ namespace AAEmu.DBViewer
                         while (reader.Read())
                         {
                             GameItem t = new GameItem();
-                            t.id = GetInt64(reader,"id");
+                            t.id = GetInt64(reader, "id");
                             t.name = GetString(reader, "name");
                             t.catgegory_id = GetInt64(reader, "category_id");
                             t.description = GetString(reader, "description");
@@ -622,7 +622,7 @@ namespace AAEmu.DBViewer
                             t.nameLocalized = GetTranslationByID(t.id, "items", "name", t.name);
                             t.descriptionLocalized = GetTranslationByID(t.id, "items", "description", t.descriptionLocalized);
 
-                            t.SearchString = t.name + " " + t.description + " " + t.nameLocalized + " " + t.descriptionLocalized ;
+                            t.SearchString = t.name + " " + t.description + " " + t.nameLocalized + " " + t.descriptionLocalized;
                             t.SearchString = t.SearchString.ToLower();
 
                             AADB.DB_Items.Add(t.id, t);
@@ -634,7 +634,7 @@ namespace AAEmu.DBViewer
                     }
                 }
             }
-            
+
         }
 
         private void LoadSkills()
@@ -687,7 +687,7 @@ namespace AAEmu.DBViewer
                             t.timing_id = GetInt64(reader, "timing_id");
                             t.consume_lp = GetInt64(reader, "consume_lp");
                             t.default_gcd = GetBool(reader, "default_gcd"); ;
-                            t.custom_gcd = GetInt64(reader,"custom_gcd");
+                            t.custom_gcd = GetInt64(reader, "custom_gcd");
                             t.first_reagent_only = GetBool(reader, "first_reagent_only");
 
                             t.nameLocalized = GetTranslationByID(t.id, "skills", "name", t.name);
@@ -923,7 +923,7 @@ namespace AAEmu.DBViewer
 
                             t.nameLocalized = GetTranslationByID(t.id, "npcs", "name", t.name);
 
-                            t.SearchString = t.name + " " + t.nameLocalized ;
+                            t.SearchString = t.name + " " + t.nameLocalized;
                             t.SearchString = t.SearchString.ToLower();
                             AADB.DB_NPCs.Add(t.id, t);
                         }
@@ -967,7 +967,7 @@ namespace AAEmu.DBViewer
                                 t.owner_nameLocalized = GetTranslationByID(t.id, "system_factions", "name", t.owner_name);
                             else
                                 t.owner_nameLocalized = "";
-                            t.SearchString = t.name + " " + t.nameLocalized + " " + t.owner_nameLocalized ;
+                            t.SearchString = t.name + " " + t.nameLocalized + " " + t.owner_nameLocalized;
                             t.SearchString = t.SearchString.ToLower();
                             AADB.DB_GameSystem_Factions.Add(t.id, t);
                         }
@@ -1052,7 +1052,7 @@ namespace AAEmu.DBViewer
                             t.climate_id = GetInt64(reader, "climate_id");
                             t.save_indun = GetBool(reader, "save_indun");
                             t.mark_model = GetString(reader, "mark_model");
-                            t.force_up_action = GetBool(reader , "force_up_action");
+                            t.force_up_action = GetBool(reader, "force_up_action");
                             t.load_model_from_world = GetBool(reader, "load_model_from_world");
                             t.parentable = GetBool(reader, "parentable");
                             t.childable = GetBool(reader, "childable");
@@ -1068,7 +1068,7 @@ namespace AAEmu.DBViewer
 
                             // Helpers
                             t.nameLocalized = GetTranslationByID(t.id, "doodad_almighties", "name", t.name);
-                            t.SearchString = t.name + " " + t.nameLocalized ;
+                            t.SearchString = t.name + " " + t.nameLocalized;
                             t.SearchString = t.SearchString.ToLower();
                             AADB.DB_Doodad_Almighties.Add(t.id, t);
                         }
@@ -1201,19 +1201,77 @@ namespace AAEmu.DBViewer
 
         }
 
+        private void LoadQuests()
+        {
+            string sql = "SELECT * FROM quest_contexts ORDER BY id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Items.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            GameQuestContexts t = new GameQuestContexts();
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+                            t.category_id = GetInt64(reader, "category_id");
+                            t.repeatable = GetBool(reader, "repeatable");
+                            t.level = GetInt64(reader, "level");
+                            t.selective = GetBool(reader, "selective");
+                            t.successive = GetBool(reader, "successive");
+                            t.restart_on_fail = GetBool(reader, "restart_on_fail");
+                            t.chapter_idx = GetInt64(reader, "chapter_idx");
+                            t.quest_idx = GetInt64(reader, "quest_idx");
+                            t.milestone_id = GetInt64(reader, "milestone_id");
+                            t.let_it_done = GetBool(reader, "let_it_done");
+                            t.detail_id = GetInt64(reader, "detail_id");
+                            t.zone_id = GetInt64(reader, "zone_id");
+                            t.degree = GetInt64(reader, "degree");
+                            t.use_quest_camera = GetBool(reader, "use_quest_camera");
+                            t.score = GetInt64(reader, "score");
+                            t.use_accept_message = GetBool(reader, "use_accept_message");
+                            t.use_complete_message = GetBool(reader, "use_complete_message");
+                            t.grade_id = GetInt64(reader, "grade_id");
+
+
+                            t.nameLocalized = GetTranslationByID(t.id, "quest_contexts", "name", t.name);
+
+                            t.SearchString = t.name + " " + t.nameLocalized ;
+                            t.SearchString = t.SearchString.ToLower();
+
+                            AADB.DB_Quest_Contexts.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+
+                    }
+                }
+            }
+
+        }
 
 
 
         private void BtnItemSearch_Click(object sender, EventArgs e)
         {
             dgvItem.Rows.Clear();
-            string searchText = tItemSearch.Text ;
+            string searchText = tItemSearch.Text;
             if (searchText == string.Empty)
                 return;
             string lng = cbItemSearchLanguage.Text;
             string sql = string.Empty;
             string sqlWhere = string.Empty;
-            long searchID ;
+            long searchID;
             bool SearchByID = false;
             if (long.TryParse(searchText, out searchID))
                 SearchByID = true;
@@ -1293,10 +1351,10 @@ namespace AAEmu.DBViewer
         /// <param name="hexColor">a hex string: "FFFFFFFF", "00000000"</param>
         public static Color HexStringToARGBColor(string hexARGB)
         {
-            string a ;
-            string r ;
-            string g ;
-            string b ;
+            string a;
+            string r;
+            string g;
+            string b;
             if (hexARGB.Length == 8)
             {
                 a = hexARGB.Substring(0, 2);
@@ -1358,14 +1416,14 @@ namespace AAEmu.DBViewer
                     pipeStart = -1;
                 }
 
-                if ( (atStart >= 0) && (restText.Length >= pipeStart + 12) )
+                if ((atStart >= 0) && (restText.Length >= pipeStart + 12))
                 {
                     var atStartBracket = restText.IndexOf("(", atStart);
                     var atEndBracket = restText.IndexOf(")", atStart);
                     if ((atStartBracket >= 0) && (atEndBracket >= 0) && (atEndBracket > atStartBracket))
                     {
-                        var fieldNameStr = restText.Substring(atStart+1, atStartBracket - atStart - 1);
-                        var fieldValStr = restText.Substring(atStartBracket+1, atEndBracket - atStartBracket - 1);
+                        var fieldNameStr = restText.Substring(atStart + 1, atStartBracket - atStart - 1);
+                        var fieldValStr = restText.Substring(atStartBracket + 1, atEndBracket - atStartBracket - 1);
                         if (long.TryParse(fieldValStr, out long itemVal))
                         {
                             rt.AppendText(restText.Substring(0, atStart));
@@ -1381,7 +1439,7 @@ namespace AAEmu.DBViewer
                             }
                             else
                             {
-                                rt.AppendText("@"+fieldNameStr+"(" + itemVal.ToString() + ")");
+                                rt.AppendText("@" + fieldNameStr + "(" + itemVal.ToString() + ")");
                             }
                             rt.SelectionColor = rt.ForeColor;
 
@@ -1400,10 +1458,12 @@ namespace AAEmu.DBViewer
                     invalidPipe = false;
                     switch (pipeOption)
                     {
-                        case "c": if (restText.Length >= pipeStart + 10)
+                        case "c":
+                            if (restText.Length >= pipeStart + 10)
                                 colStartPos = pipeStart;
                             break;
-                        case "r": if  (restText.Length >= pipeStart + 1)
+                        case "r":
+                            if (restText.Length >= pipeStart + 1)
                                 colResetPos = pipeStart;
                             break;
                         default:
@@ -1452,7 +1512,7 @@ namespace AAEmu.DBViewer
                     restText = string.Empty;
                 }
             }
-            
+
         }
 
         private void IconIDToLabel(long icon_id, Label iconImgLabel)
@@ -1563,7 +1623,7 @@ namespace AAEmu.DBViewer
         {
             if (Math.Abs(range) < 150.0f)
             {
-                return range.ToString("0")+" mm";
+                return range.ToString("0") + " mm";
             }
             else
             if (Math.Abs(range) < 1000.0f)
@@ -1583,12 +1643,12 @@ namespace AAEmu.DBViewer
 
         private void ShowDBItem(long idx)
         {
-            if (AADB.DB_Items.TryGetValue(idx,out var item))
+            if (AADB.DB_Items.TryGetValue(idx, out var item))
             {
                 lItemID.Text = idx.ToString();
-                lItemName.Text = item.nameLocalized ;
+                lItemName.Text = item.nameLocalized;
                 lItemCategory.Text = GetTranslationByID(item.catgegory_id, "item_categories", "name") + " (" + item.catgegory_id.ToString() + ")";
-                FormattedTextToRichtEdit(item.descriptionLocalized,rtItemDesc);
+                FormattedTextToRichtEdit(item.descriptionLocalized, rtItemDesc);
                 lItemLevel.Text = item.level.ToString();
                 IconIDToLabel(item.icon_id, itemIcon);
                 btnFindItemSkill.Enabled = true;// (item.use_skill_id > 0);
@@ -1599,7 +1659,7 @@ namespace AAEmu.DBViewer
             {
                 lItemID.Text = idx.ToString();
                 lItemName.Text = "<not found>";
-                lItemCategory.Text = "" ;
+                lItemCategory.Text = "";
                 rtItemDesc.Clear();
                 lItemLevel.Text = "";
                 itemIcon.Text = "???";
@@ -1651,7 +1711,7 @@ namespace AAEmu.DBViewer
                 }
                 // Produces
                 dgvSkillProducts.Rows.Clear();
-                foreach(var p in AADB.DB_Skill_Products)
+                foreach (var p in AADB.DB_Skill_Products)
                 {
                     if (p.Value.skill_id == idx)
                     {
@@ -1660,7 +1720,7 @@ namespace AAEmu.DBViewer
                         row.Cells[0].Value = p.Value.item_id.ToString();
                         if (AADB.DB_Items.TryGetValue(p.Value.item_id, out var item))
                         {
-                            row.Cells[1].Value = item.nameLocalized ;
+                            row.Cells[1].Value = item.nameLocalized;
                         }
                         else
                         {
@@ -1725,6 +1785,8 @@ namespace AAEmu.DBViewer
                 lZoneFactionID.Text = zone.faction_id.ToString();
                 lZoneClimateID.Text = zone.zone_climate_id.ToString();
                 lZoneABoxShow.Text = zone.abox_show.ToString();
+                btnFindQuestsInZone.Tag = zone.id;
+                btnFindQuestsInZone.Enabled = (zone.id > 0);
 
                 // From Zone_Groups
                 if (AADB.DB_Zone_Groups.TryGetValue(zone.group_id, out var zg))
@@ -1855,9 +1917,12 @@ namespace AAEmu.DBViewer
         private string VisualizeDropRate(long droprate)
         {
             if (droprate == 1)
-                return "1 (Always?)";
+                return "Special";
+            return droprate.ToString();
+            /*
             double d = droprate / 100000;
             return d.ToString("0.00") + " %";
+            */
         }
 
         private void ShowDBLootByItem(long idx)
@@ -1896,12 +1961,19 @@ namespace AAEmu.DBViewer
             }
         }
 
+        private void ShowLootGroupData(long loots_pack_id, long loots_group)
+        {
+            LLootGroupPackID.Text = loots_pack_id.ToString();
+            LLootPackGroupNumber.Text = loots_group.ToString();
+        }
+
         private void ShowDBLootByID(long loot_id)
         {
             using (var connection = SQLite.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
                 {
+                    // command.CommandText = "SELECT * FROM loots as t1 LEFT JOIN loot_groups as t2 ON t1.loot_pack_id = t2.pack_id AND [t1].[group] = t2.group_no WHERE (t1.loot_pack_id = @tpackid) ORDER BY id ASC";
                     command.CommandText = "SELECT * FROM loots WHERE (loot_pack_id = @tpackid) ORDER BY id ASC";
                     command.Prepare();
                     command.Parameters.AddWithValue("@tpackid", loot_id.ToString());
@@ -1946,7 +2018,7 @@ namespace AAEmu.DBViewer
         {
             if (e.KeyCode == Keys.Enter)
             {
-                BtnItemSearch_Click(null,null);
+                BtnItemSearch_Click(null, null);
             }
         }
 
@@ -1986,7 +2058,7 @@ namespace AAEmu.DBViewer
         {
             string sqlfile = Properties.Settings.Default.DBFileName;
 
-            while ( forceDlg || (!File.Exists(sqlfile)) )
+            while (forceDlg || (!File.Exists(sqlfile)))
             {
                 forceDlg = false;
                 if (openDBDlg.ShowDialog() != DialogResult.OK)
@@ -2032,6 +2104,8 @@ namespace AAEmu.DBViewer
                 LoadSkillProducts();
                 loading.ShowInfo("Loading: NPCs");
                 LoadNPCs();
+                loading.ShowInfo("Loading: Quests");
+                LoadQuests();
             }
 
             return true;
@@ -2072,10 +2146,14 @@ namespace AAEmu.DBViewer
                 return;
 
             var val = row.Cells[1].Value;
+            var valgroup = row.Cells[9].Value;
             var id = row.Cells[0].Value;
             if (val == null)
                 return;
             tLootSearch.Text = val.ToString();
+
+            if ((val != null) && (valgroup != null))
+                ShowLootGroupData(long.Parse(val.ToString()), long.Parse(valgroup.ToString()));
 
             //"SELECT * FROM loots WHERE (loot_pack_id = @tpackid) ORDER BY id ASC";
             if (id != null)
@@ -2218,7 +2296,7 @@ namespace AAEmu.DBViewer
                 if (item.use_skill_id > 0)
                     AddSkillLine(item.use_skill_id);
 
-                foreach(var p in AADB.DB_Skill_Reagents)
+                foreach (var p in AADB.DB_Skill_Reagents)
                 {
                     if (p.Value.item_id == id)
                         AddSkillLine(p.Value.skill_id);
@@ -2257,7 +2335,7 @@ namespace AAEmu.DBViewer
             if (openGamePakFileDialog.ShowDialog() == DialogResult.OK)
             {
                 pak.ClosePak();
-                if (pak.OpenPak(openGamePakFileDialog.FileName,true))
+                if (pak.OpenPak(openGamePakFileDialog.FileName, true))
                     Properties.Settings.Default.GamePakFileName = openGamePakFileDialog.FileName;
             }
         }
@@ -2280,11 +2358,11 @@ namespace AAEmu.DBViewer
 
                         while (reader.Read())
                         {
-                            long thisID = -1 ;
+                            long thisID = -1;
                             if (columnNames.IndexOf("id") >= 0)
                                 thisID = GetInt64(reader, "id");
 
-                            foreach(var col in columnNames)
+                            foreach (var col in columnNames)
                             {
                                 int line = dgvCurrentData.Rows.Add();
                                 var row = dgvCurrentData.Rows[line];
@@ -2308,11 +2386,11 @@ namespace AAEmu.DBViewer
                 return;
             long searchID;
             if (!long.TryParse(searchText, out searchID))
-                searchID = -1 ;
+                searchID = -1;
 
             bool first = true;
             dgvZones.Rows.Clear();
-            foreach(var t in AADB.DB_Zones)
+            foreach (var t in AADB.DB_Zones)
             {
                 var z = t.Value;
                 if ((z.id == searchID) || (z.zone_key == searchID) || (z.group_id == searchID) || (z.SearchString.IndexOf(searchText) >= 0))
@@ -2394,7 +2472,7 @@ namespace AAEmu.DBViewer
 
         private void BtnZoneGroupsFishLoot_Click(object sender, EventArgs e)
         {
-            if ( (sender != null) && (sender is Button) )
+            if ((sender != null) && (sender is Button))
             {
                 Button b = (sender as Button);
                 if (b != null)
@@ -2508,7 +2586,7 @@ namespace AAEmu.DBViewer
                     row.Cells[3].Value = z.npc_template_id.ToString();
                     row.Cells[4].Value = z.npc_kind_id.ToString();
                     row.Cells[5].Value = z.npc_grade_id.ToString();
-                    row.Cells[6].Value = AADB.GetFactionName(z.faction_id,true);
+                    row.Cells[6].Value = AADB.GetFactionName(z.faction_id, true);
                     row.Cells[7].Value = z.model_id.ToString();
                     row.Cells[8].Value = "(??,??)";
 
@@ -2583,7 +2661,7 @@ namespace AAEmu.DBViewer
                     row.Cells[1].Value = z.nameLocalized;
                     if (z.mother_id != 0)
                     {
-                        row.Cells[2].Value = AADB.GetFactionName(z.mother_id,true);
+                        row.Cells[2].Value = AADB.GetFactionName(z.mother_id, true);
                     }
                     else
                     {
@@ -2636,7 +2714,7 @@ namespace AAEmu.DBViewer
                 row.Cells[1].Value = z.nameLocalized;
                 if (z.mother_id != 0)
                 {
-                    row.Cells[2].Value = AADB.GetFactionName(z.mother_id,true);
+                    row.Cells[2].Value = AADB.GetFactionName(z.mother_id, true);
                 }
                 else
                 {
@@ -2745,7 +2823,7 @@ namespace AAEmu.DBViewer
             Cursor = Cursors.WaitCursor;
             dgvDoodads.Rows.Clear();
             int c = 0;
-            foreach(var t in AADB.DB_Doodad_Almighties)
+            foreach (var t in AADB.DB_Doodad_Almighties)
             {
                 var z = t.Value;
                 if ((z.id == searchID) || (z.group_id == searchID) || (z.SearchString.IndexOf(searchText) >= 0))
@@ -2758,7 +2836,7 @@ namespace AAEmu.DBViewer
                     row.Cells[2].Value = z.mgmt_spawn.ToString();
                     if (AADB.DB_Doodad_Groups.TryGetValue(z.group_id, out var dGroup))
                     {
-                        row.Cells[3].Value = dGroup.nameLocalized + " (" +z.group_id.ToString() + ")"; 
+                        row.Cells[3].Value = dGroup.nameLocalized + " (" + z.group_id.ToString() + ")";
                     }
                     else
                     {
@@ -2770,7 +2848,7 @@ namespace AAEmu.DBViewer
                     else
                         row.Cells[5].Value = string.Empty;
                     row.Cells[6].Value = z.model_kind_id.ToString();
-                    row.Cells[7].Value = z.model ;
+                    row.Cells[7].Value = z.model;
 
                     if (first)
                     {
@@ -2805,50 +2883,50 @@ namespace AAEmu.DBViewer
                 ShowDBDoodad(long.Parse(id.ToString()));
                 ShowSelectedData("doodad_almighties", "(id = " + id.ToString() + ")", "id ASC");
             }
-            
+
         }
 
         private void ShowDBDoodad(long id)
         {
-            if (AADB.DB_Doodad_Almighties.TryGetValue(id,out var doodad))
+            if (AADB.DB_Doodad_Almighties.TryGetValue(id, out var doodad))
             {
                 lDoodadID.Text = doodad.id.ToString();
                 lDoodadName.Text = doodad.nameLocalized;
                 lDoodadModel.Text = doodad.model;
                 lDoodadOnceOneMan.Text = doodad.once_one_man.ToString();
-                lDoodadOnceOneInteraction.Text = doodad.once_one_interaction.ToString() ;
-                lDoodadShowName.Text = doodad.show_name.ToString() ;
-                lDoodadMgmtSpawn.Text = doodad.mgmt_spawn.ToString() ;
+                lDoodadOnceOneInteraction.Text = doodad.once_one_interaction.ToString();
+                lDoodadShowName.Text = doodad.show_name.ToString();
+                lDoodadMgmtSpawn.Text = doodad.mgmt_spawn.ToString();
                 lDoodadPercent.Text = doodad.percent.ToString();
                 lDoodadMinTime.Text = MSToString(doodad.min_time);
                 lDoodadMaxTime.Text = MSToString(doodad.max_time);
-                lDoodadModelKindID.Text = doodad.model_kind_id.ToString() ;
-                lDoodadUseCreatorFaction.Text = doodad.use_creator_faction.ToString() ;
-                lDoodadForceToDTopPriority.Text = doodad.force_tod_top_priority.ToString() ;
-                lDoodadMilestoneID.Text = doodad.milestone_id.ToString() ;
-                lDoodadGroupID.Text = doodad.group_id.ToString() ;
-                lDoodadShowName.Text = doodad.show_minimap.ToString() ;
-                lDoodadUseTargetDecal.Text = doodad.use_target_decal.ToString() ;
-                lDoodadUseTargetSilhouette.Text = doodad.use_target_silhouette.ToString() ;
-                lDoodadUseTargetHighlight.Text = doodad.use_target_highlight.ToString() ;
+                lDoodadModelKindID.Text = doodad.model_kind_id.ToString();
+                lDoodadUseCreatorFaction.Text = doodad.use_creator_faction.ToString();
+                lDoodadForceToDTopPriority.Text = doodad.force_tod_top_priority.ToString();
+                lDoodadMilestoneID.Text = doodad.milestone_id.ToString();
+                lDoodadGroupID.Text = doodad.group_id.ToString();
+                lDoodadShowName.Text = doodad.show_minimap.ToString();
+                lDoodadUseTargetDecal.Text = doodad.use_target_decal.ToString();
+                lDoodadUseTargetSilhouette.Text = doodad.use_target_silhouette.ToString();
+                lDoodadUseTargetHighlight.Text = doodad.use_target_highlight.ToString();
                 lDoodadTargetDecalSize.Text = doodad.target_decal_size.ToString();
                 lDoodadSimRadius.Text = RangeToString(doodad.sim_radius);
-                lDoodadCollideShip.Text = doodad.collide_ship.ToString() ;
-                lDoodadCollideVehicle.Text = doodad.collide_vehicle.ToString() ;
-                lDoodadClimateID.Text = doodad.climate_id.ToString() ;
-                lDoodadSaveIndun.Text = doodad.save_indun.ToString() ;
-                lDoodadMarkModel.Text = doodad.mark_model.ToString() ;
-                lDoodadForceUpAction.Text = doodad.force_up_action.ToString() ;
-                lDoodadLoadModelFromWorld.Text = doodad.load_model_from_world.ToString() ;
-                lDoodadParentable.Text = doodad.parentable.ToString() ;
-                lDoodadChildable.Text = doodad.childable.ToString() ;
-                lDoodadFactionID.Text = AADB.GetFactionName(doodad.faction_id,true);
+                lDoodadCollideShip.Text = doodad.collide_ship.ToString();
+                lDoodadCollideVehicle.Text = doodad.collide_vehicle.ToString();
+                lDoodadClimateID.Text = doodad.climate_id.ToString();
+                lDoodadSaveIndun.Text = doodad.save_indun.ToString();
+                lDoodadMarkModel.Text = doodad.mark_model.ToString();
+                lDoodadForceUpAction.Text = doodad.force_up_action.ToString();
+                lDoodadLoadModelFromWorld.Text = doodad.load_model_from_world.ToString();
+                lDoodadParentable.Text = doodad.parentable.ToString();
+                lDoodadChildable.Text = doodad.childable.ToString();
+                lDoodadFactionID.Text = AADB.GetFactionName(doodad.faction_id, true);
                 lDoodadGrowthTime.Text = MSToString(doodad.growth_time);
-                lDoodadDespawnOnCollision.Text = doodad.despawn_on_collision.ToString() ;
-                lDoodadNoCollision.Text = doodad.no_collision.ToString() ;
-                lDoodadRestrictZoneID.Text = doodad.restrict_zone_id.ToString() ;
+                lDoodadDespawnOnCollision.Text = doodad.despawn_on_collision.ToString();
+                lDoodadNoCollision.Text = doodad.no_collision.ToString();
+                lDoodadRestrictZoneID.Text = doodad.restrict_zone_id.ToString();
 
-                if (AADB.DB_Doodad_Groups.TryGetValue(doodad.group_id,out var dGroup))
+                if (AADB.DB_Doodad_Groups.TryGetValue(doodad.group_id, out var dGroup))
                 {
                     lDoodadGroupName.Text = dGroup.nameLocalized + " (" + doodad.group_id.ToString() + ")";
                     lDoodadGroupIsExport.Text = dGroup.is_export.ToString();
@@ -2865,7 +2943,7 @@ namespace AAEmu.DBViewer
 
                 bool firstFuncGroup = true;
                 dgvDoodadFuncGroups.Rows.Clear();
-                foreach(var f in AADB.DB_Doodad_Func_Groups)
+                foreach (var f in AADB.DB_Doodad_Func_Groups)
                 {
                     var dFuncGroup = f.Value;
                     if (dFuncGroup.doodad_almighty_id == doodad.id)
@@ -2941,13 +3019,13 @@ namespace AAEmu.DBViewer
             {
                 // DoodadFuncGroup
                 lDoodadFuncGroupID.Text = dfg.id.ToString();
-                lDoodadFuncGroupModel.Text = dfg.model ;
+                lDoodadFuncGroupModel.Text = dfg.model;
                 lDoodadFuncGroupKindID.Text = dfg.doodad_func_group_kind_id.ToString();
-                lDoodadFuncGroupPhaseMsg.Text = dfg.phase_msgLocalized ;
+                lDoodadFuncGroupPhaseMsg.Text = dfg.phase_msgLocalized;
                 lDoodadFuncGroupSoundID.Text = dfg.sound_id.ToString();
                 lDoodadFuncGroupName.Text = dfg.nameLocalized;
                 lDoodadFuncGroupSoundTime.Text = MSToString(dfg.sound_time);
-                lDoodadFuncGroupComment.Text = dfg.comment ;
+                lDoodadFuncGroupComment.Text = dfg.comment;
                 lDoodadFuncGroupIsMsgToZone.Text = dfg.is_msg_to_zone.ToString();
             }
             else
@@ -2983,10 +3061,10 @@ namespace AAEmu.DBViewer
 
         public class MapSpawnLocation
         {
-            public long id ;
-            public float x ;
-            public float y ;
-            public float z ;
+            public long id;
+            public float x;
+            public float y;
+            public float z;
 
             string FloatToCoord(double f)
             {
@@ -2998,7 +3076,7 @@ namespace AAEmu.DBViewer
                 f *= 60;
                 var f3 = Math.Floor(f);
 
-                return f1.ToString("0")+"° "+f2.ToString("00")+"' " + f3.ToString("00")+"\"" ;
+                return f1.ToString("0") + "° " + f2.ToString("00") + "' " + f3.ToString("00") + "\"";
             }
 
             public string AsSextant()
@@ -3034,7 +3112,7 @@ namespace AAEmu.DBViewer
                 }
                 res += FloatToCoord(fy);
 
-                return res ;
+                return res;
             }
         }
 
@@ -3070,7 +3148,7 @@ namespace AAEmu.DBViewer
 
                                     // Only add uniques for now
                                     // if (npcList.TryGetValue .IndexOf(id) < 0)
-                                    npcList.Add(i,msl);
+                                    npcList.Add(i, msl);
                                 }
                             }
                         }
@@ -3079,7 +3157,7 @@ namespace AAEmu.DBViewer
                         {
                             using (var loading = new LoadingForm())
                             {
-                                loading.ShowInfo("Loading " + npcList.Count.ToString()+" NPCs");
+                                loading.ShowInfo("Loading " + npcList.Count.ToString() + " NPCs");
                                 loading.Show();
 
                                 // Add to NPC list
@@ -3122,6 +3200,87 @@ namespace AAEmu.DBViewer
                 }
             }
 
+        }
+
+        private void btnFindQuestsInZone_Click(object sender, EventArgs e)
+        {
+            if ((sender != null) && (sender is Button))
+            {
+                Button b = (sender as Button);
+                if (b.Tag != null)
+                {
+                    long zoneid = (long)b.Tag;
+                    bool first = true;
+
+                    foreach(var quest in AADB.DB_Quest_Contexts)
+                    {
+                        var q = quest.Value;
+                        if (q.zone_id == zoneid)
+                        {
+                            if (first)
+                            {
+                                first = false;
+                                dgvQuests.Rows.Clear();
+                            }
+
+                            var line = dgvQuests.Rows.Add();
+                            var row = dgvQuests.Rows[line];
+
+                            row.Cells[0].Value = q.id.ToString();
+                            row.Cells[1].Value = q.nameLocalized;
+                        }
+                    }
+
+                    tcViewer.SelectedTab = tpQuests;
+                }
+            }
+
+        }
+
+        private void btnQuestsSearch_Click(object sender, EventArgs e)
+        {
+            string searchText = tQuestSearch.Text.ToLower();
+            if (searchText == string.Empty)
+                return;
+            long searchID;
+            if (!long.TryParse(searchText, out searchID))
+                searchID = -1;
+
+            bool first = true;
+            dgvQuests.Rows.Clear();
+            foreach (var t in AADB.DB_Quest_Contexts)
+            {
+                var q = t.Value;
+                if ((q.id == searchID) || (q.SearchString.IndexOf(searchText) >= 0))
+                {
+                    var line = dgvQuests.Rows.Add();
+                    var row = dgvQuests.Rows[line];
+
+                    row.Cells[0].Value = q.id.ToString();
+                    row.Cells[1].Value = q.nameLocalized;
+
+                    if (first)
+                    {
+                        first = false;
+                        // ShowDBQuest(z.id);
+                    }
+
+                }
+            }
+
+        }
+
+        private void tQuestSearch_TextChanged(object sender, EventArgs e)
+        {
+            btnQuestsSearch .Enabled = (tQuestSearch.Text != string.Empty);
+        }
+
+        private void tQuestSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnQuestsSearch_Click(null, null);
+            }
         }
     }
 }
