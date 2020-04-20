@@ -1209,7 +1209,7 @@ namespace AAEmu.DBViewer
             {
                 using (var command = connection.CreateCommand())
                 {
-                    AADB.DB_Items.Clear();
+                    AADB.DB_Quest_Contexts.Clear();
 
                     command.CommandText = sql;
                     command.Prepare();
