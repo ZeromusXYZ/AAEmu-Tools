@@ -1652,6 +1652,11 @@ namespace AAEmu.DBViewer
                 lItemLevel.Text = item.level.ToString();
                 IconIDToLabel(item.icon_id, itemIcon);
                 btnFindItemSkill.Enabled = true;// (item.use_skill_id > 0);
+                var gmadditem = "/additem " + item.id.ToString();
+                gmadditem += " " + item.max_stack_size.ToString();
+                if (item.fixed_grade >= 0)
+                    gmadditem += " " + item.fixed_grade.ToString();
+                lItemAddGMCommand.Text = gmadditem;
 
                 ShowSelectedData("items", "(id = " + idx.ToString() + ")", "id ASC");
             }
@@ -1664,6 +1669,7 @@ namespace AAEmu.DBViewer
                 lItemLevel.Text = "";
                 itemIcon.Text = "???";
                 btnFindItemSkill.Enabled = false;
+                lItemAddGMCommand.Text = "/additem ???";
             }
         }
 
