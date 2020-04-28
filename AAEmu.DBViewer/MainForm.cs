@@ -21,9 +21,6 @@ namespace AAEmu.DBViewer
         private string defaultTitle;
         private AAPak pak = new AAPak("");
         private List<string> possibleLanguageIDs = new List<string>();
-        private string map_data_npc_map_dir = "/map_data/npc_map/";
-        private string main_world_dir = "main_world";
-        private string game_worlds_dir = "game/worlds/";
 
         public MainForm()
         {
@@ -586,6 +583,68 @@ namespace AAEmu.DBViewer
 
         }
 
+        private void LoadItemCategories()
+        {
+            string sql = "SELECT * FROM item_categories ORDER BY id ASC";
+            /*
+            CREATE TABLE item_categories(
+              id INT,
+              name TEXT,
+              processed_state_id INT,
+              usage_id INT,
+              impl1_id INT,
+              impl2_id INT,
+              pickup_sound_id INT,
+              category_order INT,
+              item_group_id INT,
+              use_or_equipment_sound_id INT,
+              secure NUM
+            )             
+            */
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_ItemsCategories.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            GameItemCategories t = new GameItemCategories();
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+
+                            t.nameLocalized = GetTranslationByID(t.id, "item_categories", "name", t.name);
+
+                            AADB.DB_ItemsCategories.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+
+                    }
+                }
+            }
+
+            cbItemSearchItemCategoryTypeList.Items.Clear();
+            List<GameItemCategories> cats = new List<GameItemCategories>();
+            cats.Add(new GameItemCategories());
+            foreach (var t in AADB.DB_ItemsCategories)
+                cats.Add(t.Value);
+            cbItemSearchItemCategoryTypeList.DataSource = cats;
+            cbItemSearchItemCategoryTypeList.DisplayMember = "DisplayListName";
+            cbItemSearchItemCategoryTypeList.ValueMember = "DisplayListValue";
+
+            cbItemSearchItemCategoryTypeList.SelectedIndex = 0;
+            cbItemSearchItemArmorSlotTypeList.SelectedIndex = 0;
+        }
+
 
         private void LoadItems()
         {
@@ -626,6 +685,44 @@ namespace AAEmu.DBViewer
                             t.SearchString = t.SearchString.ToLower();
 
                             AADB.DB_Items.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+
+                    }
+                }
+            }
+
+        }
+
+        private void LoadItemArmors()
+        {
+            string sql = "SELECT * FROM item_armors ORDER BY id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Item_Armors.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            GameItemArmors t = new GameItemArmors();
+                            t.id = GetInt64(reader, "id");
+                            t.item_id = GetInt64(reader, "item_id");
+                            t.slot_type_id = GetInt64(reader, "slot_type_id");
+
+                            AADB.DB_Item_Armors.Add(t.id, t);
+                            if (AADB.DB_Items.TryGetValue(t.item_id, out var item))
+                                item.item_armors = t;
                         }
 
                         Cursor = Cursors.Default;
@@ -1299,6 +1396,23 @@ namespace AAEmu.DBViewer
                 if (item.Value.SearchString.IndexOf(searchTextLower) >= 0)
                     addThis = true;
 
+                // Hardcode * as add all if armor slot is provided
+                if ((searchTextLower == "*") && ((cbItemSearchItemArmorSlotTypeList.SelectedIndex > 0) || (cbItemSearchItemCategoryTypeList.SelectedIndex > 0)))
+                    addThis = true;
+
+                if (addThis && (cbItemSearchItemCategoryTypeList.SelectedIndex > 0))
+                {
+                    if (long.TryParse(cbItemSearchItemCategoryTypeList.SelectedValue.ToString(), out var cId))
+                        if (cId != item.Value.catgegory_id)
+                            addThis = false;
+                }
+
+                if (addThis && (cbItemSearchItemArmorSlotTypeList.SelectedIndex > 0))
+                {
+                    if ((item.Value.item_armors == null) || (cbItemSearchItemArmorSlotTypeList.SelectedIndex != item.Value.item_armors.slot_type_id))
+                        addThis = false;
+                }
+
                 if (addThis)
                 {
                     int line = dgvItem.Rows.Add();
@@ -1773,6 +1887,14 @@ namespace AAEmu.DBViewer
             }
         }
 
+        private GameZone_Groups GetZoneGroupByID(long zoneGroupId)
+        {
+            if (AADB.DB_Zone_Groups.TryGetValue(zoneGroupId, out var zg))
+                return zg;
+            else
+                return null;
+        }
+
         private void ShowDBZone(long idx)
         {
             bool blank_zone_groups = false;
@@ -1794,23 +1916,16 @@ namespace AAEmu.DBViewer
                 btnFindQuestsInZone.Tag = zone.id;
                 btnFindQuestsInZone.Enabled = (zone.id > 0);
 
+                var zg = GetZoneGroupByID(zone.group_id);
                 // From Zone_Groups
-                if (AADB.DB_Zone_Groups.TryGetValue(zone.group_id, out var zg))
+                if (zg != null)
                 {
                     lZoneGroupsDisplayName.Text = zg.display_textLocalized;
                     lZoneGroupsName.Text = zg.name;
-                    string zonefile;
-                    if (zg.target_id != 1)
-                    {
-                        zonefile = game_worlds_dir + main_world_dir + map_data_npc_map_dir + zg.name + ".dat";
-                    }
-                    else
-                    {
-                        zonefile = game_worlds_dir + zg.name + map_data_npc_map_dir + zg.name + ".dat";
-                    }
+                    string zonefile = zg.GamePakZoneNPCsFile ;
                     if ((pak.isOpen) && (pak.FileExists(zonefile)))
                     {
-                        btnFindNPCsInZone.Tag = zonefile;
+                        btnFindNPCsInZone.Tag = zg.id;
                         btnFindNPCsInZone.Enabled = true;
                     }
                     else
@@ -2103,7 +2218,9 @@ namespace AAEmu.DBViewer
                 loading.ShowInfo("Loading: Doodads");
                 LoadDoodads();
                 loading.ShowInfo("Loading: Items");
+                LoadItemCategories();
                 LoadItems();
+                LoadItemArmors();
                 loading.ShowInfo("Loading: Skills");
                 LoadSkills();
                 LoadSkillReagents();
@@ -2589,16 +2706,14 @@ namespace AAEmu.DBViewer
                     row.Cells[0].Value = z.id.ToString();
                     row.Cells[1].Value = z.nameLocalized;
                     row.Cells[2].Value = z.level.ToString();
-                    row.Cells[3].Value = z.npc_template_id.ToString();
-                    row.Cells[4].Value = z.npc_kind_id.ToString();
-                    row.Cells[5].Value = z.npc_grade_id.ToString();
-                    row.Cells[6].Value = AADB.GetFactionName(z.faction_id, true);
-                    row.Cells[7].Value = z.model_id.ToString();
-                    row.Cells[8].Value = "(??,??)";
+                    row.Cells[3].Value = z.npc_kind_id.ToString();
+                    row.Cells[4].Value = z.npc_grade_id.ToString();
+                    row.Cells[5].Value = AADB.GetFactionName(z.faction_id, true);
+                    row.Cells[6].Value = "???";
 
                     if (c == 0)
                     {
-                        // ShowDBNPC(z.id);
+                        ShowDBNPCInfo(z.id);
                     }
                     c++;
                     if (c >= 250)
@@ -2624,6 +2739,20 @@ namespace AAEmu.DBViewer
                 BtnSearchNPC_Click(null, null);
         }
 
+        private void ShowDBNPCInfo(long id)
+        {
+            if (AADB.DB_NPCs.TryGetValue(id, out var npc))
+            {
+                lNPCTemplate.Text = npc.id.ToString();
+                ShowSelectedData("npcs", "(id = " + id.ToString() + ")", "id ASC");
+            }
+            else
+            {
+                lNPCTemplate.Text = "???";
+            }
+            lGMNPCSpawn.Text = "/spawn npc " + lNPCTemplate.Text;
+        }
+
         private void DgvNPCs_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvNPCs.SelectedRows.Count <= 0)
@@ -2632,9 +2761,13 @@ namespace AAEmu.DBViewer
             if (row.Cells.Count <= 0)
                 return;
 
-            var id = row.Cells[0].Value;
-            if (id != null)
-                ShowSelectedData("npcs", "(id = " + id.ToString() + ")", "id ASC");
+
+            long id = -1;
+            if (row.Cells[0].Value != null)
+                if (long.TryParse(row.Cells[0].Value.ToString(), out var i))
+                    id = i;
+            if (id > 0)
+                ShowDBNPCInfo(id);
         }
 
         private void TSearchFaction_TextChanged(object sender, EventArgs e)
@@ -2854,7 +2987,6 @@ namespace AAEmu.DBViewer
                     else
                         row.Cells[5].Value = string.Empty;
                     row.Cells[6].Value = z.model_kind_id.ToString();
-                    row.Cells[7].Value = z.model;
 
                     if (first)
                     {
@@ -3072,6 +3204,10 @@ namespace AAEmu.DBViewer
             public float y;
             public float z;
 
+            // Helpers
+            public long count = 1;
+            public long zoneGroupId; // Used internally, not actually in the files directly
+
             string FloatToCoord(double f)
             {
                 var f1 = Math.Floor(f);
@@ -3122,42 +3258,73 @@ namespace AAEmu.DBViewer
             }
         }
 
+        private List<MapSpawnLocation> GetNPCSpawnsInZoneGroup(long zoneGroupId,bool uniqueOnly = false, long filterByID = -1)
+        {
+            List<MapSpawnLocation> res = new List<MapSpawnLocation>();
+            var zg = GetZoneGroupByID(zoneGroupId);
+            if ((zg != null) && (pak.isOpen) && (pak.FileExists(zg.GamePakZoneNPCsFile)))
+            {
+                // Open .dat file and read it's contents
+                using (var fs = pak.ExportFileAsStream(zg.GamePakZoneNPCsFile))
+                {
+                    int indexCount = ((int)fs.Length / 16);
+                    using (var reader = new BinaryReader(fs))
+                    {
+                        for (int i = 0; i < indexCount; i++)
+                        {
+                            MapSpawnLocation msl = new MapSpawnLocation();
+                            msl.id = reader.ReadInt32();
+                            // Locations not used here, but we need to read it
+                            msl.x = reader.ReadSingle();
+                            msl.y = reader.ReadSingle();
+                            msl.z = reader.ReadSingle();
+
+                            msl.zoneGroupId = zoneGroupId;
+                            if ((filterByID == -1) || (msl.id == filterByID))
+                            {
+                                bool canAdd = true;
+                                if (uniqueOnly)
+                                    foreach (var m in res)
+                                    {
+                                        if (m.id == msl.id)
+                                        {
+                                            canAdd = false;
+                                            m.count++;
+                                            break;
+                                        }
+                                    }
+
+                                if (canAdd)
+                                    res.Add(msl);
+                            }
+                        }
+                    }
+                }
+            }
+            return res;
+        }
+
         private void BtnFindNPCsInZone_Click(object sender, EventArgs e)
         {
-            Dictionary<long, MapSpawnLocation> npcList = new Dictionary<long, MapSpawnLocation>();
+            List<MapSpawnLocation> npcList = new List<MapSpawnLocation>();
 
             if ((sender != null) && (sender is Button))
             {
                 Button b = (sender as Button);
                 if (b != null)
                 {
-                    string ZoneGroupFile = (string)b.Tag;
+                    long ZoneGroupId = (long)b.Tag;
+                    var zg = GetZoneGroupByID(ZoneGroupId);
+                    string ZoneGroupFile = string.Empty;
+                    if (zg != null)
+                        ZoneGroupFile = zg.GamePakZoneNPCsFile;
 
-                    if ((ZoneGroupFile != string.Empty) && (pak.isOpen) && (pak.FileExists(ZoneGroupFile)))
+                    if (zg != null)
                     {
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
 
-                        // Open .dat file and read it's contents
-                        using (var fs = pak.ExportFileAsStream(ZoneGroupFile))
-                        {
-                            int indexCount = ((int)fs.Length / 16);
-                            using (var reader = new BinaryReader(fs))
-                            {
-                                for (int i = 0; i < indexCount; i++)
-                                {
-                                    MapSpawnLocation msl = new MapSpawnLocation();
-                                    msl.id = reader.ReadInt32();
-                                    msl.x = reader.ReadSingle();
-                                    msl.y = reader.ReadSingle();
-                                    msl.z = reader.ReadSingle();
-
-                                    // Only add uniques for now
-                                    // if (npcList.TryGetValue .IndexOf(id) < 0)
-                                    npcList.Add(i, msl);
-                                }
-                            }
-                        }
+                        npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id,true));
 
                         if (npcList.Count > 0)
                         {
@@ -3168,12 +3335,13 @@ namespace AAEmu.DBViewer
 
                                 // Add to NPC list
                                 // tcViewer.SelectedTab = tpNPCs;
+                                dgvNPCs.Hide();
                                 dgvNPCs.Rows.Clear();
                                 Refresh();
                                 int c = 0;
                                 foreach (var npc in npcList)
                                 {
-                                    if (AADB.DB_NPCs.TryGetValue(npc.Value.id, out var z))
+                                    if (AADB.DB_NPCs.TryGetValue(npc.id, out var z))
                                     {
                                         var line = dgvNPCs.Rows.Add();
                                         var row = dgvNPCs.Rows[line];
@@ -3181,12 +3349,13 @@ namespace AAEmu.DBViewer
                                         row.Cells[0].Value = z.id.ToString();
                                         row.Cells[1].Value = z.nameLocalized;
                                         row.Cells[2].Value = z.level.ToString();
-                                        row.Cells[3].Value = z.npc_template_id.ToString();
-                                        row.Cells[4].Value = z.npc_kind_id.ToString();
-                                        row.Cells[5].Value = z.npc_grade_id.ToString();
-                                        row.Cells[6].Value = AADB.GetFactionName(z.faction_id, true);
-                                        row.Cells[7].Value = z.model_id.ToString();
-                                        row.Cells[8].Value = npc.Value.AsSextant();
+                                        row.Cells[3].Value = z.npc_kind_id.ToString();
+                                        row.Cells[4].Value = z.npc_grade_id.ToString();
+                                        row.Cells[5].Value = AADB.GetFactionName(z.faction_id, true);
+                                        if (npc.count == 1)
+                                            row.Cells[6].Value = npc.AsSextant();
+                                        else
+                                            row.Cells[6].Value = npc.count.ToString() + " instances in zone";
 
                                         c++;
                                         if ((c % 25) == 0)
@@ -3196,6 +3365,7 @@ namespace AAEmu.DBViewer
                                     }
                                 }
                                 tcViewer.SelectedTab = tpNPCs;
+                                dgvNPCs.Show();
 
                             }
                         }
@@ -3287,6 +3457,22 @@ namespace AAEmu.DBViewer
             {
                 btnQuestsSearch_Click(null, null);
             }
+        }
+
+        private void cbItemSearchItemArmorSlotTypeList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tItemSearch.Text.Replace("*","") == string.Empty)
+            {
+                if ((cbItemSearchItemArmorSlotTypeList.SelectedIndex > 0) || (cbItemSearchItemCategoryTypeList.SelectedIndex > 0))
+                    tItemSearch.Text = "*";
+                else
+                    tItemSearch.Text = string.Empty;
+            }
+        }
+
+        private void label51_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
