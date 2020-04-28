@@ -33,11 +33,55 @@ namespace AAEmu.DBDefs
         public long fixed_grade = -1;
         public long use_skill_id = 0;
 
+        // Linked
+        public GameItemArmors item_armors = null;
+
         // Helpers
         public string nameLocalized = string.Empty;
         public string descriptionLocalized = string.Empty;
         public string SearchString = string.Empty;
     }
+
+    class GameItemCategories
+    {
+        // Actual DB entries
+        public long id = 0;
+        public string name = "None";
+
+        // Helpers
+        public string nameLocalized = "None";
+
+        override public string ToString()
+        {
+            return nameLocalized + " ("+id.ToString()+")";
+        }
+
+        public string DisplayListName
+        {
+            get
+            {
+                return ToString();
+            }
+        }
+
+        public string DisplayListValue
+        {
+
+            get
+            {
+                return id.ToString();
+            }
+        }
+    }
+
+    class GameItemArmors
+    {
+        // Actual DB entries
+        public long id = 0;
+        public long item_id = 0;
+        public long slot_type_id = 0;
+    }
+
 
     class GameSkills
     {
@@ -186,6 +230,10 @@ namespace AAEmu.DBDefs
 
     class GameZone_Groups
     {
+        static private string main_world_dir = "main_world";
+        static private string game_worlds_dir = "game/worlds/";
+        static private string map_data_npc_map_dir = "/map_data/npc_map/";
+
         public long id = 0;
         public string name = string.Empty;
         public RectangleF PosAndSize = new RectangleF();
@@ -203,6 +251,20 @@ namespace AAEmu.DBDefs
         // Helpers
         public string display_textLocalized = string.Empty;
         public string SearchString = string.Empty;
+        public string GamePakZoneNPCsFile
+        {
+            get
+            {
+                if (target_id != 1)
+                {
+                    return game_worlds_dir + main_world_dir + map_data_npc_map_dir + name + ".dat";
+                }
+                else
+                {
+                    return game_worlds_dir + name + map_data_npc_map_dir + name + ".dat";
+                };
+            }
+        }
     }
 
     class GameWorld_Groups
@@ -373,7 +435,9 @@ namespace AAEmu.DBDefs
     static class AADB
     {
         static public Dictionary<string, GameTranslation> DB_Translations = new Dictionary<string, GameTranslation>();
+        static public Dictionary<long, GameItemCategories> DB_ItemsCategories = new Dictionary<long, GameItemCategories>();
         static public Dictionary<long, GameItem> DB_Items = new Dictionary<long, GameItem>();
+        static public Dictionary<long, GameItemArmors> DB_Item_Armors = new Dictionary<long, GameItemArmors>();
         static public Dictionary<long, GameSkills> DB_Skills = new Dictionary<long, GameSkills>();
         static public Dictionary<long, GameNPC> DB_NPCs = new Dictionary<long, GameNPC>();
         static public Dictionary<long, string> DB_Icons = new Dictionary<long, string>();

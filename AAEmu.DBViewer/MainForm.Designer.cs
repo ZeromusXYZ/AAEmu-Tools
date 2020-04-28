@@ -210,8 +210,11 @@
             this.Column24 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column29 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpItems = new System.Windows.Forms.TabPage();
+            this.label51 = new System.Windows.Forms.Label();
+            this.cbItemSearchItemArmorSlotTypeList = new System.Windows.Forms.ComboBox();
             this.btnFindItemSkill = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lItemAddGMCommand = new System.Windows.Forms.Label();
             this.itemIcon = new System.Windows.Forms.Label();
             this.rtItemDesc = new System.Windows.Forms.RichTextBox();
             this.lItemLevel = new System.Windows.Forms.Label();
@@ -250,6 +253,10 @@
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpNPCs = new System.Windows.Forms.TabPage();
+            this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.lGMNPCSpawn = new System.Windows.Forms.Label();
+            this.lNPCTemplate = new System.Windows.Forms.Label();
+            this.label81 = new System.Windows.Forms.Label();
             this.btnSearchNPC = new System.Windows.Forms.Button();
             this.label39 = new System.Windows.Forms.Label();
             this.tSearchNPC = new System.Windows.Forms.TextBox();
@@ -257,11 +264,9 @@
             this.dataGridViewTextBoxColumn14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column34 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpSkills = new System.Windows.Forms.TabPage();
             this.tcSkillInfo = new System.Windows.Forms.TabControl();
@@ -378,7 +383,8 @@
             this.tZonesSearch = new System.Windows.Forms.TextBox();
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.lItemAddGMCommand = new System.Windows.Forms.Label();
+            this.cbItemSearchItemCategoryTypeList = new System.Windows.Forms.ComboBox();
+            this.label83 = new System.Windows.Forms.Label();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -404,6 +410,7 @@
             this.groupBox11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLoot)).BeginInit();
             this.tpNPCs.SuspendLayout();
+            this.groupBox13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNPCs)).BeginInit();
             this.tpSkills.SuspendLayout();
             this.tcSkillInfo.SuspendLayout();
@@ -2293,6 +2300,10 @@
             // 
             // tpItems
             // 
+            this.tpItems.Controls.Add(this.label83);
+            this.tpItems.Controls.Add(this.cbItemSearchItemCategoryTypeList);
+            this.tpItems.Controls.Add(this.label51);
+            this.tpItems.Controls.Add(this.cbItemSearchItemArmorSlotTypeList);
             this.tpItems.Controls.Add(this.btnFindItemSkill);
             this.tpItems.Controls.Add(this.groupBox1);
             this.tpItems.Controls.Add(this.btnItemSearch);
@@ -2307,6 +2318,59 @@
             this.tpItems.TabIndex = 1;
             this.tpItems.Text = "Items";
             this.tpItems.UseVisualStyleBackColor = true;
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Location = new System.Drawing.Point(343, 33);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(55, 13);
+            this.label51.TabIndex = 15;
+            this.label51.Text = "Armor Slot";
+            this.label51.Click += new System.EventHandler(this.label51_Click);
+            // 
+            // cbItemSearchItemArmorSlotTypeList
+            // 
+            this.cbItemSearchItemArmorSlotTypeList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbItemSearchItemArmorSlotTypeList.FormattingEnabled = true;
+            this.cbItemSearchItemArmorSlotTypeList.Items.AddRange(new object[] {
+            "Any",
+            "Head (1)",
+            "Neck (2)",
+            "Chest (3)",
+            "Waist (4)",
+            "Legs (5)",
+            "Hands (6)",
+            "Feet (7)",
+            "Arms (8)",
+            "Back (9)",
+            "Ear (10)",
+            "Finger (11)",
+            "Undershirt (12)",
+            "Underpants (13)",
+            "Mainhand (14)",
+            "Offhand (15)",
+            "TwoHanded (16)",
+            "OneHanded (17)",
+            "Ranged (18)",
+            "Ammunition (19)",
+            "Shield (20)",
+            "Instrument (21)",
+            "Bag (22)",
+            "Face (23)",
+            "Hair (24)",
+            "Glasses (25)",
+            "Reserved (26)",
+            "Tail (27)",
+            "Body (28)",
+            "Beard (29)",
+            "Backpack (30)",
+            "Cosplay (31)"});
+            this.cbItemSearchItemArmorSlotTypeList.Location = new System.Drawing.Point(404, 30);
+            this.cbItemSearchItemArmorSlotTypeList.Name = "cbItemSearchItemArmorSlotTypeList";
+            this.cbItemSearchItemArmorSlotTypeList.Size = new System.Drawing.Size(124, 21);
+            this.cbItemSearchItemArmorSlotTypeList.TabIndex = 14;
+            this.cbItemSearchItemArmorSlotTypeList.SelectedIndexChanged += new System.EventHandler(this.cbItemSearchItemArmorSlotTypeList_SelectedIndexChanged);
             // 
             // btnFindItemSkill
             // 
@@ -2344,6 +2408,16 @@
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Item Info";
+            // 
+            // lItemAddGMCommand
+            // 
+            this.lItemAddGMCommand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lItemAddGMCommand.AutoSize = true;
+            this.lItemAddGMCommand.Location = new System.Drawing.Point(6, 444);
+            this.lItemAddGMCommand.Name = "lItemAddGMCommand";
+            this.lItemAddGMCommand.Size = new System.Drawing.Size(49, 13);
+            this.lItemAddGMCommand.TabIndex = 12;
+            this.lItemAddGMCommand.Text = "/additem";
             // 
             // itemIcon
             // 
@@ -2466,12 +2540,12 @@
             this.dgvItem.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Item_ID,
             this.Item_Name_EN_US});
-            this.dgvItem.Location = new System.Drawing.Point(11, 33);
+            this.dgvItem.Location = new System.Drawing.Point(11, 57);
             this.dgvItem.Name = "dgvItem";
             this.dgvItem.ReadOnly = true;
             this.dgvItem.RowHeadersVisible = false;
             this.dgvItem.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvItem.Size = new System.Drawing.Size(602, 404);
+            this.dgvItem.Size = new System.Drawing.Size(602, 380);
             this.dgvItem.TabIndex = 2;
             this.dgvItem.SelectionChanged += new System.EventHandler(this.DgvItemSearch_SelectionChanged);
             // 
@@ -2725,6 +2799,7 @@
             // 
             // tpNPCs
             // 
+            this.tpNPCs.Controls.Add(this.groupBox13);
             this.tpNPCs.Controls.Add(this.btnSearchNPC);
             this.tpNPCs.Controls.Add(this.label39);
             this.tpNPCs.Controls.Add(this.tSearchNPC);
@@ -2737,11 +2812,55 @@
             this.tpNPCs.Text = "NPCs";
             this.tpNPCs.UseVisualStyleBackColor = true;
             // 
+            // groupBox13
+            // 
+            this.groupBox13.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.groupBox13.Controls.Add(this.lGMNPCSpawn);
+            this.groupBox13.Controls.Add(this.lNPCTemplate);
+            this.groupBox13.Controls.Add(this.label81);
+            this.groupBox13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
+            this.groupBox13.Location = new System.Drawing.Point(697, 10);
+            this.groupBox13.Name = "groupBox13";
+            this.groupBox13.Size = new System.Drawing.Size(221, 462);
+            this.groupBox13.TabIndex = 13;
+            this.groupBox13.TabStop = false;
+            this.groupBox13.Text = "NPC Info";
+            // 
+            // lGMNPCSpawn
+            // 
+            this.lGMNPCSpawn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lGMNPCSpawn.AutoSize = true;
+            this.lGMNPCSpawn.Location = new System.Drawing.Point(6, 437);
+            this.lGMNPCSpawn.Name = "lGMNPCSpawn";
+            this.lGMNPCSpawn.Size = new System.Drawing.Size(43, 13);
+            this.lGMNPCSpawn.TabIndex = 13;
+            this.lGMNPCSpawn.Text = "/spawn";
+            // 
+            // lNPCTemplate
+            // 
+            this.lNPCTemplate.AutoSize = true;
+            this.lNPCTemplate.Location = new System.Drawing.Point(58, 16);
+            this.lNPCTemplate.Name = "lNPCTemplate";
+            this.lNPCTemplate.Size = new System.Drawing.Size(13, 13);
+            this.lNPCTemplate.TabIndex = 1;
+            this.lNPCTemplate.Text = "0";
+            // 
+            // label81
+            // 
+            this.label81.AutoSize = true;
+            this.label81.Location = new System.Drawing.Point(6, 16);
+            this.label81.Name = "label81";
+            this.label81.Size = new System.Drawing.Size(51, 13);
+            this.label81.TabIndex = 0;
+            this.label81.Text = "Template";
+            // 
             // btnSearchNPC
             // 
             this.btnSearchNPC.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSearchNPC.Enabled = false;
-            this.btnSearchNPC.Location = new System.Drawing.Point(839, 8);
+            this.btnSearchNPC.Location = new System.Drawing.Point(612, 8);
             this.btnSearchNPC.Name = "btnSearchNPC";
             this.btnSearchNPC.Size = new System.Drawing.Size(79, 23);
             this.btnSearchNPC.TabIndex = 10;
@@ -2764,7 +2883,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tSearchNPC.Location = new System.Drawing.Point(186, 10);
             this.tSearchNPC.Name = "tSearchNPC";
-            this.tSearchNPC.Size = new System.Drawing.Size(647, 20);
+            this.tSearchNPC.Size = new System.Drawing.Size(420, 20);
             this.tSearchNPC.TabIndex = 8;
             this.tSearchNPC.TextChanged += new System.EventHandler(this.TSearchNPC_TextChanged);
             this.tSearchNPC.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSearchNPC_KeyDown);
@@ -2783,18 +2902,16 @@
             this.dataGridViewTextBoxColumn14,
             this.dataGridViewTextBoxColumn17,
             this.Column18,
-            this.Column19,
             this.Column17,
             this.Column16,
             this.Column21,
-            this.Column20,
             this.Column34});
             this.dgvNPCs.Location = new System.Drawing.Point(8, 41);
             this.dgvNPCs.Name = "dgvNPCs";
             this.dgvNPCs.ReadOnly = true;
             this.dgvNPCs.RowHeadersVisible = false;
             this.dgvNPCs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvNPCs.Size = new System.Drawing.Size(910, 432);
+            this.dgvNPCs.Size = new System.Drawing.Size(683, 432);
             this.dgvNPCs.TabIndex = 7;
             this.dgvNPCs.SelectionChanged += new System.EventHandler(this.DgvNPCs_SelectionChanged);
             // 
@@ -2819,13 +2936,6 @@
             this.Column18.ReadOnly = true;
             this.Column18.Width = 58;
             // 
-            // Column19
-            // 
-            this.Column19.HeaderText = "Template ID";
-            this.Column19.Name = "Column19";
-            this.Column19.ReadOnly = true;
-            this.Column19.Width = 90;
-            // 
             // Column17
             // 
             this.Column17.HeaderText = "Kind ID";
@@ -2847,19 +2957,12 @@
             this.Column21.ReadOnly = true;
             this.Column21.Width = 81;
             // 
-            // Column20
-            // 
-            this.Column20.HeaderText = "Model ID";
-            this.Column20.Name = "Column20";
-            this.Column20.ReadOnly = true;
-            this.Column20.Width = 75;
-            // 
             // Column34
             // 
-            this.Column34.HeaderText = "Position";
+            this.Column34.HeaderText = "Spawns";
             this.Column34.Name = "Column34";
             this.Column34.ReadOnly = true;
-            this.Column34.Width = 69;
+            this.Column34.Width = 70;
             // 
             // tpSkills
             // 
@@ -4071,14 +4174,26 @@
             this.openGamePakFileDialog.RestoreDirectory = true;
             this.openGamePakFileDialog.Title = "Open game_pak";
             // 
-            // lItemAddGMCommand
+            // cbItemSearchItemCategoryTypeList
             // 
-            this.lItemAddGMCommand.AutoSize = true;
-            this.lItemAddGMCommand.Location = new System.Drawing.Point(6, 444);
-            this.lItemAddGMCommand.Name = "lItemAddGMCommand";
-            this.lItemAddGMCommand.Size = new System.Drawing.Size(49, 13);
-            this.lItemAddGMCommand.TabIndex = 12;
-            this.lItemAddGMCommand.Text = "/additem";
+            this.cbItemSearchItemCategoryTypeList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbItemSearchItemCategoryTypeList.FormattingEnabled = true;
+            this.cbItemSearchItemCategoryTypeList.Items.AddRange(new object[] {
+            "---"});
+            this.cbItemSearchItemCategoryTypeList.Location = new System.Drawing.Point(197, 30);
+            this.cbItemSearchItemCategoryTypeList.Name = "cbItemSearchItemCategoryTypeList";
+            this.cbItemSearchItemCategoryTypeList.Size = new System.Drawing.Size(137, 21);
+            this.cbItemSearchItemCategoryTypeList.TabIndex = 16;
+            this.cbItemSearchItemCategoryTypeList.SelectedIndexChanged += new System.EventHandler(this.cbItemSearchItemArmorSlotTypeList_SelectedIndexChanged);
+            // 
+            // label83
+            // 
+            this.label83.AutoSize = true;
+            this.label83.Location = new System.Drawing.Point(136, 33);
+            this.label83.Name = "label83";
+            this.label83.Size = new System.Drawing.Size(49, 13);
+            this.label83.TabIndex = 17;
+            this.label83.Text = "Category";
             // 
             // MainForm
             // 
@@ -4130,6 +4245,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvLoot)).EndInit();
             this.tpNPCs.ResumeLayout(false);
             this.tpNPCs.PerformLayout();
+            this.groupBox13.ResumeLayout(false);
+            this.groupBox13.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNPCs)).EndInit();
             this.tpSkills.ResumeLayout(false);
             this.tpSkills.PerformLayout();
@@ -4475,15 +4592,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column32;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column33;
         private System.Windows.Forms.Button btnFindNPCsInZone;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn14;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn17;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column18;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column19;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column17;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column21;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column20;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column34;
         private System.Windows.Forms.GroupBox groupBox11;
         private System.Windows.Forms.Label LLootGroupPackID;
         private System.Windows.Forms.Label label101;
@@ -4511,6 +4619,21 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn20;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column35;
         private System.Windows.Forms.Label lItemAddGMCommand;
+        private System.Windows.Forms.GroupBox groupBox13;
+        private System.Windows.Forms.Label lNPCTemplate;
+        private System.Windows.Forms.Label label81;
+        private System.Windows.Forms.Label lGMNPCSpawn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn14;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn17;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column18;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column17;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column16;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column21;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column34;
+        private System.Windows.Forms.ComboBox cbItemSearchItemArmorSlotTypeList;
+        private System.Windows.Forms.Label label51;
+        private System.Windows.Forms.Label label83;
+        private System.Windows.Forms.ComboBox cbItemSearchItemCategoryTypeList;
     }
 }
 
