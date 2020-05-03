@@ -431,6 +431,36 @@ namespace AAEmu.DBDefs
         public string SearchString = string.Empty;
     }
 
+    public class GameTags
+    {
+        public long id = 0;
+        public string name = string.Empty;
+        public string desc = string.Empty;
+
+        // Helpers
+        public string nameLocalized = string.Empty;
+        public string descLocalized = string.Empty;
+        public string SearchString = string.Empty;
+    }
+
+    public class GameZoneGroupBannedTags
+    {
+        /*
+        TABLE zone_group_banned_tags(
+          id INT,
+          zone_group_id INT,
+          tag_id INT,
+          banned_periods_id INT,
+          usage TEXT
+        )
+        */
+        public long id = 0;
+        public long zone_group_id = 0;
+        public long tag_id = 0;
+        public long banned_periods_id = 0;
+        public string usage = string.Empty ;
+    }
+
 
     static class AADB
     {
@@ -453,6 +483,8 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameDoodadFunc> DB_Doodad_Funcs = new Dictionary<long, GameDoodadFunc>();
         static public Dictionary<long, GameDoodadFuncGroup> DB_Doodad_Func_Groups = new Dictionary<long, GameDoodadFuncGroup>();
         static public Dictionary<long, GameQuestContexts> DB_Quest_Contexts = new Dictionary<long, GameQuestContexts>();
+        static public Dictionary<long, GameTags> DB_Tags = new Dictionary<long, GameTags>();
+        static public Dictionary<long, GameZoneGroupBannedTags> DB_Zone_Group_Banned_Tags = new Dictionary<long, GameZoneGroupBannedTags>();
 
         static public string GetFactionName(long faction_id, bool addID = false)
         {

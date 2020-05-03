@@ -324,6 +324,14 @@ namespace AAEmu.DBViewer
             AddCustomTranslation("doodad_groups", "name", 82, "[Backpack Storage]");
             AddCustomTranslation("doodad_groups", "name", 83, "[Workbench - Art]");
 
+            // Missing Tags Information
+            AddCustomTranslation("tags", "name", 1348, "[No fishing allowed]");
+            AddCustomTranslation("tags", "name", 1338, "[Summon Guard/Pet]");
+            AddCustomTranslation("tags", "name", 1456, "[Can't use the training arena]");
+            AddCustomTranslation("tags", "name", 1457, "[Instance Worldview]");
+            AddCustomTranslation("tags", "name", 1545, "[Snowman Event]");
+            AddCustomTranslation("tags", "name", 1574, "[Library Items and Skill restricted]");
+
             // End of Custom Translations
         }
 
@@ -632,6 +640,7 @@ namespace AAEmu.DBViewer
                 }
             }
 
+            cbItemSearchItemCategoryTypeList.DataSource = null;
             cbItemSearchItemCategoryTypeList.Items.Clear();
             List<GameItemCategories> cats = new List<GameItemCategories>();
             cats.Add(new GameItemCategories());
@@ -679,7 +688,7 @@ namespace AAEmu.DBViewer
                             t.use_skill_id = GetInt64(reader, "use_skill_id");
 
                             t.nameLocalized = GetTranslationByID(t.id, "items", "name", t.name);
-                            t.descriptionLocalized = GetTranslationByID(t.id, "items", "description", t.descriptionLocalized);
+                            t.descriptionLocalized = GetTranslationByID(t.id, "items", "description", t.description);
 
                             t.SearchString = t.name + " " + t.description + " " + t.nameLocalized + " " + t.descriptionLocalized;
                             t.SearchString = t.SearchString.ToLower();
@@ -788,9 +797,9 @@ namespace AAEmu.DBViewer
                             t.first_reagent_only = GetBool(reader, "first_reagent_only");
 
                             t.nameLocalized = GetTranslationByID(t.id, "skills", "name", t.name);
-                            t.descriptionLocalized = GetTranslationByID(t.id, "skills", "desc", t.descriptionLocalized);
+                            t.descriptionLocalized = GetTranslationByID(t.id, "skills", "desc", t.desc);
                             if (readWebDesc)
-                                t.webDescriptionLocalized = GetTranslationByID(t.id, "skills", "web_desc", t.webDescriptionLocalized);
+                                t.webDescriptionLocalized = GetTranslationByID(t.id, "skills", "web_desc", t.web_desc);
                             else
                                 t.webDescriptionLocalized = string.Empty;
 
@@ -1357,6 +1366,83 @@ namespace AAEmu.DBViewer
 
         }
 
+        private void LoadTags()
+        {
+            string sql = "SELECT * FROM tags ORDER BY id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Tags.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            GameTags t = new GameTags();
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+                            t.desc = GetString(reader, "desc");
+
+                            t.nameLocalized = GetTranslationByID(t.id, "tags", "name", t.name);
+                            t.descLocalized = GetTranslationByID(t.id, "tags", "desc", t.desc);
+
+                            t.SearchString = t.name + " " + t.nameLocalized + " " + t.desc + " " + t.descLocalized;
+                            t.SearchString = t.SearchString.ToLower();
+
+                            AADB.DB_Tags.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
+
+        }
+
+        private void LoadZoneGroupBannedTags()
+        {
+            string sql = "SELECT * FROM zone_group_banned_tags ORDER BY id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Zone_Group_Banned_Tags.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            GameZoneGroupBannedTags t = new GameZoneGroupBannedTags();
+                            t.id = GetInt64(reader, "id");
+                            t.zone_group_id = GetInt64(reader, "zone_group_id");
+                            t.tag_id = GetInt64(reader, "tag_id");
+                            t.banned_periods_id = GetInt64(reader, "banned_periods_id");
+                            t.usage = GetString(reader, "usage");
+                            AADB.DB_Zone_Group_Banned_Tags.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
+
+        }
+
 
 
         private void BtnItemSearch_Click(object sender, EventArgs e)
@@ -1439,7 +1525,7 @@ namespace AAEmu.DBViewer
 
         }
 
-        private string GetTranslationByID(long idx, string table, string field, string defaultValue = "")
+        private string GetTranslationByID(long idx, string table, string field, string defaultValue = "$NODEFAULT")
         {
             string res = string.Empty;
             string k = table + ":" + field + ":" + idx.ToString();
@@ -1448,7 +1534,7 @@ namespace AAEmu.DBViewer
             // If no translation found ...
             if (res == string.Empty)
             {
-                if (defaultValue == string.Empty)
+                if (defaultValue == "$NODEFAULT")
                     return "<NT:" + table + ":" + field + ":" + idx.ToString() + ">";
                 else
                     return defaultValue;
@@ -1823,11 +1909,11 @@ namespace AAEmu.DBViewer
 
                 if (skill.first_reagent_only)
                 {
-                    lSkillReagents.Text = "Requires either of these items to use";
+                    labelSkillReagents.Text = "Requires either of these items to use";
                 }
                 else
                 {
-                    lSkillReagents.Text = "Required items to use this skill";
+                    labelSkillReagents.Text = "Required items to use this skill";
                 }
                 // Produces
                 dgvSkillProducts.Rows.Clear();
@@ -1961,6 +2047,39 @@ namespace AAEmu.DBViewer
                     {
                         btnZoneGroupsFreshWaterFish.Tag = 0;
                         btnZoneGroupsFreshWaterFish.Enabled = false;
+                    }
+                    var bannedTagsCount = 0;
+                    var bannedInfo = string.Empty;
+                    foreach(var b in AADB.DB_Zone_Group_Banned_Tags)
+                    {
+                        if (b.Value.zone_group_id == zg.id)
+                        {
+                            bannedTagsCount++;
+                            if (AADB.DB_Tags.TryGetValue(b.Value.tag_id, out var tag))
+                            {
+                                bannedInfo += tag.id + " - " + tag.nameLocalized + "\r\n";
+                            }
+                            else
+                            {
+                                bannedInfo += tag.id + " - [Unknown Tag]\r\n";
+                            }
+                        }
+                    }
+                    if (bannedTagsCount <= 0)
+                    {
+                        labelZoneGroupRestrictions.Text = "(no restrictions)";
+                        labelZoneGroupRestrictions.ForeColor = System.Drawing.Color.DarkGray;
+                        labelZoneGroupRestrictions.Tag = 0;
+                        mainFormToolTip.ToolTipTitle = "";
+                        mainFormToolTip.SetToolTip(labelZoneGroupRestrictions, "");
+                    }
+                    else
+                    {
+                        labelZoneGroupRestrictions.Text = "("+ bannedTagsCount.ToString() +" restrictions)";
+                        labelZoneGroupRestrictions.ForeColor = System.Drawing.Color.Red;
+                        labelZoneGroupRestrictions.Tag = zg.id;
+                        mainFormToolTip.ToolTipTitle = "Banned ZoneGroup Tags";
+                        mainFormToolTip.SetToolTip(labelZoneGroupRestrictions, bannedInfo);
                     }
 
                     // From World_Group
@@ -2213,6 +2332,9 @@ namespace AAEmu.DBViewer
                 LoadIcons();
                 loading.ShowInfo("Loading: Factions");
                 LoadFactions();
+                loading.ShowInfo("Loading: Tags");
+                LoadTags();
+                LoadZoneGroupBannedTags();
                 loading.ShowInfo("Loading: Zones");
                 LoadZones();
                 loading.ShowInfo("Loading: Doodads");
@@ -3470,9 +3592,23 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private void label51_Click(object sender, EventArgs e)
+        private void labelZoneGroupRestrictions_Click(object sender, EventArgs e)
         {
-
+            if (!(sender is Label))
+                return;
+            var zoneGroupId = (long)(sender as Label).Tag;
+            var bannedInfo = string.Empty; ;
+            foreach (var b in AADB.DB_Zone_Group_Banned_Tags)
+            {
+                if (b.Value.zone_group_id == zoneGroupId)
+                {
+                    if (AADB.DB_Tags.TryGetValue(b.Value.tag_id,out var tag))
+                    {
+                        bannedInfo += tag.id + " - " + tag.nameLocalized + "\r\n";
+                    }
+                }
+            }
+            MessageBox.Show(bannedInfo, "Restrictions for ZoneGroup " + zoneGroupId.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

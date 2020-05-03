@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.lbTableNames = new System.Windows.Forms.ListBox();
             this.tcViewer = new System.Windows.Forms.TabControl();
@@ -210,6 +211,8 @@
             this.Column24 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column29 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpItems = new System.Windows.Forms.TabPage();
+            this.label83 = new System.Windows.Forms.Label();
+            this.cbItemSearchItemCategoryTypeList = new System.Windows.Forms.ComboBox();
             this.label51 = new System.Windows.Forms.Label();
             this.cbItemSearchItemArmorSlotTypeList = new System.Windows.Forms.ComboBox();
             this.btnFindItemSkill = new System.Windows.Forms.Button();
@@ -298,7 +301,7 @@
             this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label13 = new System.Windows.Forms.Label();
-            this.lSkillReagents = new System.Windows.Forms.Label();
+            this.labelSkillReagents = new System.Windows.Forms.Label();
             this.btnSkillSearch = new System.Windows.Forms.Button();
             this.dgvSkills = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -329,6 +332,7 @@
             this.label40 = new System.Windows.Forms.Label();
             this.lWorldGroupSizeAndPos = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.labelZoneGroupRestrictions = new System.Windows.Forms.Label();
             this.btnFindQuestsInZone = new System.Windows.Forms.Button();
             this.btnFindNPCsInZone = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
@@ -383,8 +387,7 @@
             this.tZonesSearch = new System.Windows.Forms.TextBox();
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.cbItemSearchItemCategoryTypeList = new System.Windows.Forms.ComboBox();
-            this.label83 = new System.Windows.Forms.Label();
+            this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -2319,6 +2322,27 @@
             this.tpItems.Text = "Items";
             this.tpItems.UseVisualStyleBackColor = true;
             // 
+            // label83
+            // 
+            this.label83.AutoSize = true;
+            this.label83.Location = new System.Drawing.Point(136, 33);
+            this.label83.Name = "label83";
+            this.label83.Size = new System.Drawing.Size(49, 13);
+            this.label83.TabIndex = 17;
+            this.label83.Text = "Category";
+            // 
+            // cbItemSearchItemCategoryTypeList
+            // 
+            this.cbItemSearchItemCategoryTypeList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbItemSearchItemCategoryTypeList.FormattingEnabled = true;
+            this.cbItemSearchItemCategoryTypeList.Items.AddRange(new object[] {
+            "---"});
+            this.cbItemSearchItemCategoryTypeList.Location = new System.Drawing.Point(197, 30);
+            this.cbItemSearchItemCategoryTypeList.Name = "cbItemSearchItemCategoryTypeList";
+            this.cbItemSearchItemCategoryTypeList.Size = new System.Drawing.Size(137, 21);
+            this.cbItemSearchItemCategoryTypeList.TabIndex = 16;
+            this.cbItemSearchItemCategoryTypeList.SelectedIndexChanged += new System.EventHandler(this.cbItemSearchItemArmorSlotTypeList_SelectedIndexChanged);
+            // 
             // label51
             // 
             this.label51.AutoSize = true;
@@ -2327,7 +2351,6 @@
             this.label51.Size = new System.Drawing.Size(55, 13);
             this.label51.TabIndex = 15;
             this.label51.Text = "Armor Slot";
-            this.label51.Click += new System.EventHandler(this.label51_Click);
             // 
             // cbItemSearchItemArmorSlotTypeList
             // 
@@ -3187,7 +3210,7 @@
             this.tabPage2.Controls.Add(this.dgvSkillProducts);
             this.tabPage2.Controls.Add(this.dgvSkillReagents);
             this.tabPage2.Controls.Add(this.label13);
-            this.tabPage2.Controls.Add(this.lSkillReagents);
+            this.tabPage2.Controls.Add(this.labelSkillReagents);
             this.tabPage2.Location = new System.Drawing.Point(4, 4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -3293,14 +3316,14 @@
             this.label13.TabIndex = 1;
             this.label13.Text = "Produced by this skill";
             // 
-            // lSkillReagents
+            // labelSkillReagents
             // 
-            this.lSkillReagents.AutoSize = true;
-            this.lSkillReagents.Location = new System.Drawing.Point(6, 7);
-            this.lSkillReagents.Name = "lSkillReagents";
-            this.lSkillReagents.Size = new System.Drawing.Size(148, 13);
-            this.lSkillReagents.TabIndex = 0;
-            this.lSkillReagents.Text = "Required items to use this skill";
+            this.labelSkillReagents.AutoSize = true;
+            this.labelSkillReagents.Location = new System.Drawing.Point(6, 7);
+            this.labelSkillReagents.Name = "labelSkillReagents";
+            this.labelSkillReagents.Size = new System.Drawing.Size(148, 13);
+            this.labelSkillReagents.TabIndex = 0;
+            this.labelSkillReagents.Text = "Required items to use this skill";
             // 
             // btnSkillSearch
             // 
@@ -3625,6 +3648,7 @@
             // groupBox4
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.labelZoneGroupRestrictions);
             this.groupBox4.Controls.Add(this.btnFindQuestsInZone);
             this.groupBox4.Controls.Add(this.btnFindNPCsInZone);
             this.groupBox4.Controls.Add(this.label15);
@@ -3655,6 +3679,19 @@
             this.groupBox4.TabIndex = 10;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Zone Groups Info";
+            // 
+            // labelZoneGroupRestrictions
+            // 
+            this.labelZoneGroupRestrictions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelZoneGroupRestrictions.Location = new System.Drawing.Point(168, 120);
+            this.labelZoneGroupRestrictions.Name = "labelZoneGroupRestrictions";
+            this.labelZoneGroupRestrictions.Size = new System.Drawing.Size(124, 13);
+            this.labelZoneGroupRestrictions.TabIndex = 36;
+            this.labelZoneGroupRestrictions.Tag = "0";
+            this.labelZoneGroupRestrictions.Text = "(Show Restrictions)";
+            this.labelZoneGroupRestrictions.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.mainFormToolTip.SetToolTip(this.labelZoneGroupRestrictions, "Nothing to see here");
+            this.labelZoneGroupRestrictions.Click += new System.EventHandler(this.labelZoneGroupRestrictions_Click);
             // 
             // btnFindQuestsInZone
             // 
@@ -4174,26 +4211,12 @@
             this.openGamePakFileDialog.RestoreDirectory = true;
             this.openGamePakFileDialog.Title = "Open game_pak";
             // 
-            // cbItemSearchItemCategoryTypeList
+            // mainFormToolTip
             // 
-            this.cbItemSearchItemCategoryTypeList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbItemSearchItemCategoryTypeList.FormattingEnabled = true;
-            this.cbItemSearchItemCategoryTypeList.Items.AddRange(new object[] {
-            "---"});
-            this.cbItemSearchItemCategoryTypeList.Location = new System.Drawing.Point(197, 30);
-            this.cbItemSearchItemCategoryTypeList.Name = "cbItemSearchItemCategoryTypeList";
-            this.cbItemSearchItemCategoryTypeList.Size = new System.Drawing.Size(137, 21);
-            this.cbItemSearchItemCategoryTypeList.TabIndex = 16;
-            this.cbItemSearchItemCategoryTypeList.SelectedIndexChanged += new System.EventHandler(this.cbItemSearchItemArmorSlotTypeList_SelectedIndexChanged);
-            // 
-            // label83
-            // 
-            this.label83.AutoSize = true;
-            this.label83.Location = new System.Drawing.Point(136, 33);
-            this.label83.Name = "label83";
-            this.label83.Size = new System.Drawing.Size(49, 13);
-            this.label83.TabIndex = 17;
-            this.label83.Text = "Category";
+            this.mainFormToolTip.AutoPopDelay = 10000;
+            this.mainFormToolTip.InitialDelay = 1000;
+            this.mainFormToolTip.ReshowDelay = 100;
+            this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             // 
             // MainForm
             // 
@@ -4350,7 +4373,7 @@
         private System.Windows.Forms.DataGridView dgvSkillProducts;
         private System.Windows.Forms.DataGridView dgvSkillReagents;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label lSkillReagents;
+        private System.Windows.Forms.Label labelSkillReagents;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
@@ -4634,6 +4657,8 @@
         private System.Windows.Forms.Label label51;
         private System.Windows.Forms.Label label83;
         private System.Windows.Forms.ComboBox cbItemSearchItemCategoryTypeList;
+        private System.Windows.Forms.Label labelZoneGroupRestrictions;
+        private System.Windows.Forms.ToolTip mainFormToolTip;
     }
 }
 
