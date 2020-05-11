@@ -3476,7 +3476,7 @@
             // 
             this.btnQuestsSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnQuestsSearch.Enabled = false;
-            this.btnQuestsSearch.Location = new System.Drawing.Point(460, 7);
+            this.btnQuestsSearch.Location = new System.Drawing.Point(581, 6);
             this.btnQuestsSearch.Name = "btnQuestsSearch";
             this.btnQuestsSearch.Size = new System.Drawing.Size(79, 23);
             this.btnQuestsSearch.TabIndex = 11;
@@ -3499,7 +3499,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tQuestSearch.Location = new System.Drawing.Point(143, 9);
             this.tQuestSearch.Name = "tQuestSearch";
-            this.tQuestSearch.Size = new System.Drawing.Size(286, 20);
+            this.tQuestSearch.Size = new System.Drawing.Size(432, 20);
             this.tQuestSearch.TabIndex = 9;
             this.tQuestSearch.TextChanged += new System.EventHandler(this.tQuestSearch_TextChanged);
             this.tQuestSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tQuestSearch_KeyDown);

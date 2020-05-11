@@ -3690,6 +3690,20 @@ namespace AAEmu.DBViewer
 
                             row.Cells[0].Value = q.id.ToString();
                             row.Cells[1].Value = q.nameLocalized;
+                            row.Cells[2].Value = q.level.ToString();
+                            if (AADB.DB_Zones.TryGetValue(q.zone_id, out var z))
+                            {
+                                if (AADB.DB_Zone_Groups.TryGetValue(z.group_id, out var zg))
+                                    row.Cells[3].Value = zg.display_textLocalized;
+                                else
+                                    row.Cells[3].Value = z.display_textLocalized;
+                            }
+                            else
+                                row.Cells[3].Value = q.zone_id.ToString();
+                            if (AADB.DB_Quest_Categories.TryGetValue(q.category_id, out var qc))
+                                row.Cells[4].Value = qc.nameLocalized;
+                            else
+                                row.Cells[4].Value = q.category_id.ToString();
                         }
                     }
 
