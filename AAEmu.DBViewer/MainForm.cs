@@ -1309,15 +1309,44 @@ namespace AAEmu.DBViewer
 
         private void LoadQuests()
         {
-            string sql = "SELECT * FROM quest_contexts ORDER BY id ASC";
-
             using (var connection = SQLite.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
                 {
+                    AADB.DB_Quest_Categories.Clear();
+
+                    command.CommandText = "SELECT * FROM quest_categories ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            GameQuestCategory t = new GameQuestCategory();
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+
+                            t.nameLocalized = GetTranslationByID(t.id, "quest_categories", "name", t.name);
+
+                            t.SearchString = t.name + " " + t.nameLocalized;
+                            t.SearchString = t.SearchString.ToLower();
+
+                            AADB.DB_Quest_Categories.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+
+                    }
+                }
+
+                using (var command = connection.CreateCommand())
+                {
                     AADB.DB_Quest_Contexts.Clear();
 
-                    command.CommandText = sql;
+                    command.CommandText = "SELECT * FROM quest_contexts ORDER BY id ASC";
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
@@ -1351,7 +1380,7 @@ namespace AAEmu.DBViewer
 
                             t.nameLocalized = GetTranslationByID(t.id, "quest_contexts", "name", t.name);
 
-                            t.SearchString = t.name + " " + t.nameLocalized ;
+                            t.SearchString = t.name + " " + t.nameLocalized;
                             t.SearchString = t.SearchString.ToLower();
 
                             AADB.DB_Quest_Contexts.Add(t.id, t);
@@ -1362,6 +1391,77 @@ namespace AAEmu.DBViewer
 
                     }
                 }
+
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Quest_Acts.Clear();
+
+                    command.CommandText = "SELECT * FROM quest_acts ORDER BY quest_component_id ASC, id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            GameQuestAct t = new GameQuestAct();
+                            t.id = GetInt64(reader, "id");
+                            t.quest_component_id = GetInt64(reader, "quest_component_id");
+                            t.act_detail_id = GetInt64(reader, "act_detail_id");
+                            t.act_detail_type = GetString(reader, "act_detail_type");
+
+                            AADB.DB_Quest_Acts.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+
+                    }
+                }
+
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Quest_Components.Clear();
+
+                    command.CommandText = "SELECT * FROM quest_components ORDER BY quest_context_id ASC, component_kind_id ASC, id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            GameQuestComponent t = new GameQuestComponent();
+                            t.id = GetInt64(reader, "id");
+                            t.quest_context_id = GetInt64(reader, "quest_context_id");
+                            t.component_kind_id = GetInt64(reader, "component_kind_id");
+                            t.next_component = GetInt64(reader, "next_component");
+                            t.npc_ai_id = GetInt64(reader, "npc_ai_id");
+                            t.npc_id = GetInt64(reader, "npc_id");
+                            t.skill_id = GetInt64(reader, "skill_id");
+                            t.skill_self = GetBool(reader, "skill_self");
+                            t.ai_path_name = GetString(reader, "ai_path_name");
+                            t.ai_path_type_id = GetInt64(reader, "ai_path_type_id");
+                            t.sound_id = GetInt64(reader, "sound_id");
+                            t.npc_spawner_id = GetInt64(reader, "npc_spawner_id");
+                            t.play_cinema_before_bubble = GetBool(reader, "play_cinema_before_bubble");
+                            t.ai_command_set_id = GetInt64(reader, "ai_command_set_id");
+                            t.or_unit_reqs = GetBool(reader, "or_unit_reqs");
+                            t.cinema_id = GetInt64(reader, "cinema_id");
+                            t.summary_voice_id = GetInt64(reader, "summary_voice_id");
+                            t.hide_quest_marker = GetBool(reader, "hide_quest_marker");
+                            t.buff_id = GetInt64(reader, "buff_id");
+                            AADB.DB_Quest_Components.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+
+                    }
+                }
+
             }
 
         }
@@ -2008,7 +2108,7 @@ namespace AAEmu.DBViewer
                 {
                     lZoneGroupsDisplayName.Text = zg.display_textLocalized;
                     lZoneGroupsName.Text = zg.name;
-                    string zonefile = zg.GamePakZoneNPCsFile ;
+                    string zonefile = zg.GamePakZoneNPCsFile;
                     if ((pak.isOpen) && (pak.FileExists(zonefile)))
                     {
                         btnFindNPCsInZone.Tag = zg.id;
@@ -2050,7 +2150,7 @@ namespace AAEmu.DBViewer
                     }
                     var bannedTagsCount = 0;
                     var bannedInfo = string.Empty;
-                    foreach(var b in AADB.DB_Zone_Group_Banned_Tags)
+                    foreach (var b in AADB.DB_Zone_Group_Banned_Tags)
                     {
                         if (b.Value.zone_group_id == zg.id)
                         {
@@ -2075,7 +2175,7 @@ namespace AAEmu.DBViewer
                     }
                     else
                     {
-                        labelZoneGroupRestrictions.Text = "("+ bannedTagsCount.ToString() +" restrictions)";
+                        labelZoneGroupRestrictions.Text = "(" + bannedTagsCount.ToString() + " restrictions)";
                         labelZoneGroupRestrictions.ForeColor = System.Drawing.Color.Red;
                         labelZoneGroupRestrictions.Tag = zg.id;
                         mainFormToolTip.ToolTipTitle = "Banned ZoneGroup Tags";
@@ -2251,7 +2351,71 @@ namespace AAEmu.DBViewer
             }
         }
 
+        private void ShowDBQuestActs(long quest_component_id)
+        {
+            if (!AADB.DB_Quest_Components.TryGetValue(quest_component_id,out var c))
+            {
+                dgvQuestActs.Rows.Clear();
+                return;
+            }
+            var acts = from a in AADB.DB_Quest_Acts
+                       where a.Value.quest_component_id == c.id
+                       select a.Value;
 
+            dgvQuestActs.Rows.Clear();
+            foreach (var a in acts)
+            {
+                int line = dgvQuestActs.Rows.Add();
+                var row = dgvQuestActs.Rows[line];
+
+                row.Cells[0].Value = a.act_detail_id.ToString();
+                row.Cells[1].Value = a.act_detail_type.ToString();
+            }
+
+        }
+
+
+        private void ShowDBQuest(long quest_id)
+        {
+
+            if (!AADB.DB_Quest_Contexts.TryGetValue(quest_id, out var q))
+            {
+                lQuestId.Text = "0";
+                dgvQuestComponents.Rows.Clear();
+                return;
+            }
+            lQuestId.Text = q.id.ToString();
+            dgvQuestComponents.Rows.Clear();
+            var comps = from c in AADB.DB_Quest_Components 
+                        where c.Value.quest_context_id == quest_id 
+                        select c.Value ;
+            var first = true;
+            foreach (var c in comps)
+            {
+                int line = dgvQuestComponents.Rows.Add();
+                var row = dgvQuestComponents.Rows[line];
+
+                row.Cells[0].Value = c.id.ToString();
+                row.Cells[1].Value = c.component_kind_id.ToString();
+                row.Cells[2].Value = c.next_component.ToString();
+                if (AADB.DB_NPCs.TryGetValue(c.npc_id, out var npc))
+                    row.Cells[3].Value = npc.nameLocalized + " ("+ c.npc_id + ")";
+                else
+                    row.Cells[3].Value = c.npc_id.ToString();
+                if (AADB.DB_Skills.TryGetValue(c.skill_id, out var skill))
+                    row.Cells[4].Value = skill.nameLocalized + " ("+ c.skill_id.ToString() + ")";
+                else
+                    row.Cells[4].Value = c.skill_id.ToString();
+                row.Cells[5].Value = c.skill_self.ToString();
+                row.Cells[6].Value = c.npc_spawner_id.ToString();
+                row.Cells[7].Value = c.buff_id.ToString();
+                if (first)
+                {
+                    ShowDBQuestActs(c.id);
+                    first = false;
+                }
+            }
+        }
 
 
         private void TItemSearch_KeyDown(object sender, KeyEventArgs e)
@@ -3556,11 +3720,26 @@ namespace AAEmu.DBViewer
 
                     row.Cells[0].Value = q.id.ToString();
                     row.Cells[1].Value = q.nameLocalized;
+                    row.Cells[2].Value = q.level.ToString();
+                    if (AADB.DB_Zones.TryGetValue(q.zone_id, out var z))
+                    {
+                        if (AADB.DB_Zone_Groups.TryGetValue(z.group_id, out var zg))
+                            row.Cells[3].Value = zg.display_textLocalized;
+                        else
+                            row.Cells[3].Value = z.display_textLocalized;
+                    }
+                    else
+                        row.Cells[3].Value = q.zone_id.ToString();
+                    if (AADB.DB_Quest_Categories.TryGetValue(q.category_id, out var qc))
+                        row.Cells[4].Value = qc.nameLocalized;
+                    else
+                        row.Cells[4].Value = q.category_id.ToString();
+
 
                     if (first)
                     {
                         first = false;
-                        // ShowDBQuest(z.id);
+                        ShowDBQuest(q.id);
                     }
 
                 }
@@ -3609,6 +3788,36 @@ namespace AAEmu.DBViewer
                 }
             }
             MessageBox.Show(bannedInfo, "Restrictions for ZoneGroup " + zoneGroupId.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void dgvQuests_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvQuests.SelectedRows.Count <= 0)
+                return;
+            var row = dgvQuests.SelectedRows[0];
+            if (row.Cells.Count <= 0)
+                return;
+
+            var val = row.Cells[0].Value;
+            if (val == null)
+                return;
+
+            ShowDBQuest(long.Parse(val.ToString()));
+        }
+
+        private void dgvQuestComponents_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvQuestComponents.SelectedRows.Count <= 0)
+                return;
+            var row = dgvQuestComponents.SelectedRows[0];
+            if (row.Cells.Count <= 0)
+                return;
+
+            var val = row.Cells[0].Value;
+            if (val == null)
+                return;
+
+            ShowDBQuestActs(long.Parse(val.ToString()));
         }
     }
 }

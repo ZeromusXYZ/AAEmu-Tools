@@ -431,6 +431,50 @@ namespace AAEmu.DBDefs
         public string SearchString = string.Empty;
     }
 
+    class GameQuestCategory
+    {
+        // TABLE quest_category
+        public long id = 0;
+        public string name = string.Empty;
+
+        public string nameLocalized = string.Empty;
+        public string SearchString = string.Empty;
+    }
+
+    class GameQuestAct
+    {
+        // TABLE quest_acts
+        public long id = 0;
+        public long quest_component_id = 0;
+        public long act_detail_id = 0;
+        public string act_detail_type = string.Empty;
+    }
+
+    class GameQuestComponent
+    {
+        // TABLE quest_components
+        public long id = 0;
+        public long quest_context_id = 0;
+        public long component_kind_id = 0;
+        public long next_component = 0;
+        public long npc_ai_id = 0;
+        public long npc_id = 0;
+        public long skill_id = 0;
+        public bool skill_self = false;
+        public string ai_path_name = string.Empty;
+        public long ai_path_type_id = 0;
+        public long sound_id = 0;
+        public long npc_spawner_id = 0;
+        public bool play_cinema_before_bubble = false;
+        public long ai_command_set_id = 0;
+        public bool or_unit_reqs = false;
+        public long cinema_id = 0;
+        public long summary_voice_id = 0;
+        public bool hide_quest_marker = false;
+        public long buff_id = 0;
+    }
+
+
     public class GameTags
     {
         public long id = 0;
@@ -482,7 +526,10 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameDoodadGroup> DB_Doodad_Groups = new Dictionary<long, GameDoodadGroup>();
         static public Dictionary<long, GameDoodadFunc> DB_Doodad_Funcs = new Dictionary<long, GameDoodadFunc>();
         static public Dictionary<long, GameDoodadFuncGroup> DB_Doodad_Func_Groups = new Dictionary<long, GameDoodadFuncGroup>();
+        static public Dictionary<long, GameQuestCategory> DB_Quest_Categories = new Dictionary<long, GameQuestCategory>();
         static public Dictionary<long, GameQuestContexts> DB_Quest_Contexts = new Dictionary<long, GameQuestContexts>();
+        static public Dictionary<long, GameQuestAct> DB_Quest_Acts = new Dictionary<long, GameQuestAct>();
+        static public Dictionary<long, GameQuestComponent> DB_Quest_Components = new Dictionary<long, GameQuestComponent>();
         static public Dictionary<long, GameTags> DB_Tags = new Dictionary<long, GameTags>();
         static public Dictionary<long, GameZoneGroupBannedTags> DB_Zone_Group_Banned_Tags = new Dictionary<long, GameZoneGroupBannedTags>();
 
