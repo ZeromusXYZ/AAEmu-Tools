@@ -13,6 +13,7 @@ using AAEmu.DBDefs;
 using AAEmu.Game.Utils.DB;
 using AAEmu.ClipboardHelper;
 using FreeImageAPI;
+using System.Threading;
 
 namespace AAEmu.DBViewer
 {
@@ -1738,6 +1739,11 @@ namespace AAEmu.DBViewer
                                 rt.AppendText(npc.nameLocalized);
                             }
                             else
+                            if ((fieldNameStr == "QUEST_NAME") && (AADB.DB_Quest_Contexts.TryGetValue(itemVal, out GameQuestContexts quest)))
+                            {
+                                rt.AppendText(quest.nameLocalized);
+                            }
+                            else
                             {
                                 rt.AppendText("@" + fieldNameStr + "(" + itemVal.ToString() + ")");
                             }
@@ -2351,7 +2357,7 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private void ShowDBQuestActs(long quest_component_id)
+        private void ShowDBQuestComponent(long quest_component_id)
         {
             if (!AADB.DB_Quest_Components.TryGetValue(quest_component_id,out var c))
             {
@@ -2368,10 +2374,10 @@ namespace AAEmu.DBViewer
                 int line = dgvQuestActs.Rows.Add();
                 var row = dgvQuestActs.Rows[line];
 
-                row.Cells[0].Value = a.act_detail_id.ToString();
-                row.Cells[1].Value = a.act_detail_type.ToString();
+                row.Cells[0].Value = a.id.ToString();
+                row.Cells[1].Value = a.act_detail_id.ToString();
+                row.Cells[2].Value = a.act_detail_type.ToString();
             }
-
         }
 
 
@@ -2411,10 +2417,11 @@ namespace AAEmu.DBViewer
                 row.Cells[7].Value = c.buff_id.ToString();
                 if (first)
                 {
-                    ShowDBQuestActs(c.id);
+                    ShowDBQuestComponent(c.id);
                     first = false;
                 }
             }
+            ShowSelectedData("quest_contexts", "id = " + q.id.ToString(), "id ASC");
         }
 
 
@@ -2902,7 +2909,7 @@ namespace AAEmu.DBViewer
             var tablename = lbTableNames.SelectedItem.ToString();
             tSimpleSQL.Text = "SELECT * FROM " + tablename + " LIMIT 0, 50";
 
-            BtnSimpleSQL_Click(null, null);
+            // BtnSimpleSQL_Click(null, null);
         }
 
         private void BtnSimpleSQL_Click(object sender, EventArgs e)
@@ -3639,7 +3646,7 @@ namespace AAEmu.DBViewer
                                         row.Cells[4].Value = z.npc_grade_id.ToString();
                                         row.Cells[5].Value = AADB.GetFactionName(z.faction_id, true);
                                         if (npc.count == 1)
-                                            row.Cells[6].Value = npc.AsSextant();
+                                            row.Cells[6].Value = string.Format("{0} , {1} = ({2})",npc.x,npc.y, npc.AsSextant());
                                         else
                                             row.Cells[6].Value = npc.count.ToString() + " instances in zone";
 
@@ -3816,7 +3823,9 @@ namespace AAEmu.DBViewer
             if (val == null)
                 return;
 
-            ShowDBQuest(long.Parse(val.ToString()));
+            var qid = long.Parse(val.ToString());
+            ShowDBQuest(qid);
+            ShowSelectedData("quest_contexts", "id = " + qid.ToString(), "id ASC");
         }
 
         private void dgvQuestComponents_SelectionChanged(object sender, EventArgs e)
@@ -3831,7 +3840,49 @@ namespace AAEmu.DBViewer
             if (val == null)
                 return;
 
-            ShowDBQuestActs(long.Parse(val.ToString()));
+            var cid = long.Parse(val.ToString());
+            ShowDBQuestComponent(cid);
+            ShowSelectedData("quest_components", "id = " + cid.ToString(), "id ASC");
+        }
+
+        private void tSearchLocalized_TextChanged(object sender, EventArgs e)
+        {
+            dgvLocalized.Rows.Clear();
+            var sTexts = tSearchLocalized.Text.ToLower().Split(' ');
+            if (sTexts.Length <= 0)
+                return;
+
+            var count = 0;
+            foreach (var i in AADB.DB_Translations)
+            {
+                var translation = i.Value;
+                var tSearchString = "="+translation.table.ToLower() + "=" + translation.field.ToLower() + "=" + translation.idx.ToString() + "=" + translation.value.ToLower()+"=";
+                var searchOK = true;
+                foreach (var s in sTexts)
+                    if (!tSearchString.Contains(s))
+                    {
+                        searchOK = false;
+                        break;
+                    }
+                if (searchOK)
+                {
+                    int line = dgvLocalized.Rows.Add();
+                    var row = dgvLocalized.Rows[line];
+                    row.Cells[0].Value = translation.table;
+                    row.Cells[1].Value = translation.field;
+                    row.Cells[2].Value = translation.idx.ToString();
+                    row.Cells[3].Value = translation.value;
+                    count++;
+                }
+                if (count > 50)
+                    break;
+            }
+        }
+
+        private void tbLocalizer_Enter(object sender, EventArgs e)
+        {
+            if (tSearchLocalized.Text == string.Empty)
+                tSearchLocalized.Text = "doodad name =320=";
         }
     }
 }
