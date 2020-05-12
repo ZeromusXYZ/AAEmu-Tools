@@ -414,6 +414,27 @@
             this.Column51 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column50 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label93 = new System.Windows.Forms.Label();
+            this.tpV1 = new System.Windows.Forms.TabPage();
+            this.tpBuffs = new System.Windows.Forms.TabPage();
+            this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.lBuffId = new System.Windows.Forms.Label();
+            this.label113 = new System.Windows.Forms.Label();
+            this.btnSearchBuffs = new System.Windows.Forms.Button();
+            this.label115 = new System.Windows.Forms.Label();
+            this.tSearchBuffs = new System.Windows.Forms.TextBox();
+            this.dgvBuffs = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn24 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column52 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.flpBuff = new System.Windows.Forms.FlowLayoutPanel();
+            this.lBuffName = new System.Windows.Forms.Label();
+            this.label105 = new System.Windows.Forms.Label();
+            this.label97 = new System.Windows.Forms.Label();
+            this.buffIcon = new System.Windows.Forms.Label();
+            this.rtBuffDesc = new System.Windows.Forms.RichTextBox();
+            this.label109 = new System.Windows.Forms.Label();
+            this.lBuffDuration = new System.Windows.Forms.Label();
+            this.label119 = new System.Windows.Forms.Label();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -463,6 +484,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).BeginInit();
             this.tbLocalizer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLocalized)).BeginInit();
+            this.tpBuffs.SuspendLayout();
+            this.groupBox14.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBuffs)).BeginInit();
             this.SuspendLayout();
             // 
             // lbTableNames
@@ -484,6 +508,8 @@
             this.tcViewer.Controls.Add(this.tbTables);
             this.tcViewer.Controls.Add(this.tpCurrentRecord);
             this.tcViewer.Controls.Add(this.tbLocalizer);
+            this.tcViewer.Controls.Add(this.tpV1);
+            this.tcViewer.Controls.Add(this.tpBuffs);
             this.tcViewer.Controls.Add(this.tpDoodads);
             this.tcViewer.Controls.Add(this.tbFactions);
             this.tcViewer.Controls.Add(this.tpItems);
@@ -500,6 +526,7 @@
             // 
             // tbTables
             // 
+            this.tbTables.BackColor = System.Drawing.Color.Transparent;
             this.tbTables.Controls.Add(this.label41);
             this.tbTables.Controls.Add(this.btnSimpleSQL);
             this.tbTables.Controls.Add(this.tSimpleSQL);
@@ -516,7 +543,6 @@
             this.tbTables.Size = new System.Drawing.Size(927, 480);
             this.tbTables.TabIndex = 0;
             this.tbTables.Text = "Tables and Settings";
-            this.tbTables.UseVisualStyleBackColor = true;
             // 
             // label41
             // 
@@ -4433,9 +4459,9 @@
             // 
             this.tSearchLocalized.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tSearchLocalized.Location = new System.Drawing.Point(8, 6);
+            this.tSearchLocalized.Location = new System.Drawing.Point(8, 29);
             this.tSearchLocalized.Name = "tSearchLocalized";
-            this.tSearchLocalized.Size = new System.Drawing.Size(393, 20);
+            this.tSearchLocalized.Size = new System.Drawing.Size(365, 20);
             this.tSearchLocalized.TabIndex = 10;
             this.tSearchLocalized.TextChanged += new System.EventHandler(this.tSearchLocalized_TextChanged);
             // 
@@ -4454,12 +4480,12 @@
             this.Column51,
             this.Column50});
             this.dgvLocalized.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            this.dgvLocalized.Location = new System.Drawing.Point(8, 32);
+            this.dgvLocalized.Location = new System.Drawing.Point(8, 55);
             this.dgvLocalized.MultiSelect = false;
             this.dgvLocalized.Name = "dgvLocalized";
             this.dgvLocalized.RowHeadersVisible = false;
             this.dgvLocalized.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvLocalized.Size = new System.Drawing.Size(910, 432);
+            this.dgvLocalized.Size = new System.Drawing.Size(910, 419);
             this.dgvLocalized.TabIndex = 11;
             // 
             // Column48
@@ -4489,12 +4515,247 @@
             // label93
             // 
             this.label93.AutoSize = true;
-            this.label93.Location = new System.Drawing.Point(407, 9);
+            this.label93.Location = new System.Drawing.Point(5, 13);
             this.label93.Name = "label93";
-            this.label93.Size = new System.Drawing.Size(430, 13);
+            this.label93.Size = new System.Drawing.Size(501, 13);
             this.label93.TabIndex = 12;
             this.label93.Text = "Enter (partial) text here to search inside the localized texts. Enclose in =\'s fo" +
-    "r exact search ";
+    "r exact search. Max 50 results";
+            // 
+            // tpV1
+            // 
+            this.tpV1.Location = new System.Drawing.Point(4, 22);
+            this.tpV1.Name = "tpV1";
+            this.tpV1.Padding = new System.Windows.Forms.Padding(3);
+            this.tpV1.Size = new System.Drawing.Size(927, 480);
+            this.tpV1.TabIndex = 11;
+            this.tpV1.Text = "|";
+            this.tpV1.UseVisualStyleBackColor = true;
+            // 
+            // tpBuffs
+            // 
+            this.tpBuffs.Controls.Add(this.groupBox14);
+            this.tpBuffs.Controls.Add(this.btnSearchBuffs);
+            this.tpBuffs.Controls.Add(this.label115);
+            this.tpBuffs.Controls.Add(this.tSearchBuffs);
+            this.tpBuffs.Controls.Add(this.dgvBuffs);
+            this.tpBuffs.Location = new System.Drawing.Point(4, 22);
+            this.tpBuffs.Name = "tpBuffs";
+            this.tpBuffs.Size = new System.Drawing.Size(927, 480);
+            this.tpBuffs.TabIndex = 12;
+            this.tpBuffs.Text = "Buffs";
+            this.tpBuffs.UseVisualStyleBackColor = true;
+            // 
+            // groupBox14
+            // 
+            this.groupBox14.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.groupBox14.Controls.Add(this.lBuffDuration);
+            this.groupBox14.Controls.Add(this.label119);
+            this.groupBox14.Controls.Add(this.label109);
+            this.groupBox14.Controls.Add(this.rtBuffDesc);
+            this.groupBox14.Controls.Add(this.buffIcon);
+            this.groupBox14.Controls.Add(this.label97);
+            this.groupBox14.Controls.Add(this.lBuffName);
+            this.groupBox14.Controls.Add(this.label105);
+            this.groupBox14.Controls.Add(this.flpBuff);
+            this.groupBox14.Controls.Add(this.lBuffId);
+            this.groupBox14.Controls.Add(this.label113);
+            this.groupBox14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
+            this.groupBox14.Location = new System.Drawing.Point(384, 9);
+            this.groupBox14.Name = "groupBox14";
+            this.groupBox14.Size = new System.Drawing.Size(534, 462);
+            this.groupBox14.TabIndex = 12;
+            this.groupBox14.TabStop = false;
+            this.groupBox14.Text = "Buff Info";
+            // 
+            // lBuffId
+            // 
+            this.lBuffId.AutoSize = true;
+            this.lBuffId.Location = new System.Drawing.Point(58, 16);
+            this.lBuffId.Name = "lBuffId";
+            this.lBuffId.Size = new System.Drawing.Size(13, 13);
+            this.lBuffId.TabIndex = 1;
+            this.lBuffId.Text = "0";
+            // 
+            // label113
+            // 
+            this.label113.AutoSize = true;
+            this.label113.Location = new System.Drawing.Point(6, 16);
+            this.label113.Name = "label113";
+            this.label113.Size = new System.Drawing.Size(33, 13);
+            this.label113.TabIndex = 0;
+            this.label113.Text = "Index";
+            // 
+            // btnSearchBuffs
+            // 
+            this.btnSearchBuffs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSearchBuffs.Enabled = false;
+            this.btnSearchBuffs.Location = new System.Drawing.Point(299, 7);
+            this.btnSearchBuffs.Name = "btnSearchBuffs";
+            this.btnSearchBuffs.Size = new System.Drawing.Size(79, 23);
+            this.btnSearchBuffs.TabIndex = 11;
+            this.btnSearchBuffs.Text = "Search";
+            this.btnSearchBuffs.UseVisualStyleBackColor = true;
+            this.btnSearchBuffs.Click += new System.EventHandler(this.btnSearchBuffs_Click);
+            // 
+            // label115
+            // 
+            this.label115.AutoSize = true;
+            this.label115.Location = new System.Drawing.Point(8, 12);
+            this.label115.Name = "label115";
+            this.label115.Size = new System.Drawing.Size(120, 13);
+            this.label115.TabIndex = 10;
+            this.label115.Text = "Search Buff Name or ID";
+            // 
+            // tSearchBuffs
+            // 
+            this.tSearchBuffs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tSearchBuffs.Location = new System.Drawing.Point(134, 9);
+            this.tSearchBuffs.Name = "tSearchBuffs";
+            this.tSearchBuffs.Size = new System.Drawing.Size(159, 20);
+            this.tSearchBuffs.TabIndex = 9;
+            this.tSearchBuffs.TextChanged += new System.EventHandler(this.tSearchBuffs_TextChanged);
+            this.tSearchBuffs.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tSearchBuffs_KeyDown);
+            // 
+            // dgvBuffs
+            // 
+            this.dgvBuffs.AllowUserToAddRows = false;
+            this.dgvBuffs.AllowUserToDeleteRows = false;
+            this.dgvBuffs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.dgvBuffs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvBuffs.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvBuffs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvBuffs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn21,
+            this.dataGridViewTextBoxColumn24,
+            this.Column52});
+            this.dgvBuffs.Location = new System.Drawing.Point(8, 40);
+            this.dgvBuffs.Name = "dgvBuffs";
+            this.dgvBuffs.ReadOnly = true;
+            this.dgvBuffs.RowHeadersVisible = false;
+            this.dgvBuffs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvBuffs.Size = new System.Drawing.Size(370, 432);
+            this.dgvBuffs.TabIndex = 8;
+            this.dgvBuffs.SelectionChanged += new System.EventHandler(this.dgvBuffs_SelectionChanged);
+            // 
+            // dataGridViewTextBoxColumn21
+            // 
+            this.dataGridViewTextBoxColumn21.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.dataGridViewTextBoxColumn21.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn21.MinimumWidth = 50;
+            this.dataGridViewTextBoxColumn21.Name = "dataGridViewTextBoxColumn21";
+            this.dataGridViewTextBoxColumn21.ReadOnly = true;
+            this.dataGridViewTextBoxColumn21.Width = 50;
+            // 
+            // dataGridViewTextBoxColumn24
+            // 
+            this.dataGridViewTextBoxColumn24.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn24.HeaderText = "Name";
+            this.dataGridViewTextBoxColumn24.Name = "dataGridViewTextBoxColumn24";
+            this.dataGridViewTextBoxColumn24.ReadOnly = true;
+            // 
+            // Column52
+            // 
+            this.Column52.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.Column52.HeaderText = "Duration";
+            this.Column52.MinimumWidth = 75;
+            this.Column52.Name = "Column52";
+            this.Column52.ReadOnly = true;
+            this.Column52.Width = 75;
+            // 
+            // flpBuff
+            // 
+            this.flpBuff.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.flpBuff.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.flpBuff.Location = new System.Drawing.Point(9, 168);
+            this.flpBuff.Name = "flpBuff";
+            this.flpBuff.Size = new System.Drawing.Size(519, 288);
+            this.flpBuff.TabIndex = 2;
+            // 
+            // lBuffName
+            // 
+            this.lBuffName.AutoSize = true;
+            this.lBuffName.Location = new System.Drawing.Point(58, 31);
+            this.lBuffName.Name = "lBuffName";
+            this.lBuffName.Size = new System.Drawing.Size(31, 13);
+            this.lBuffName.TabIndex = 4;
+            this.lBuffName.Text = "none";
+            // 
+            // label105
+            // 
+            this.label105.AutoSize = true;
+            this.label105.Location = new System.Drawing.Point(6, 31);
+            this.label105.Name = "label105";
+            this.label105.Size = new System.Drawing.Size(35, 13);
+            this.label105.TabIndex = 3;
+            this.label105.Text = "Name";
+            // 
+            // label97
+            // 
+            this.label97.AutoSize = true;
+            this.label97.Location = new System.Drawing.Point(6, 152);
+            this.label97.Name = "label97";
+            this.label97.Size = new System.Drawing.Size(68, 13);
+            this.label97.TabIndex = 5;
+            this.label97.Text = "Other Values";
+            // 
+            // buffIcon
+            // 
+            this.buffIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buffIcon.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.buffIcon.Location = new System.Drawing.Point(464, 85);
+            this.buffIcon.Name = "buffIcon";
+            this.buffIcon.Size = new System.Drawing.Size(64, 64);
+            this.buffIcon.TabIndex = 12;
+            this.buffIcon.Text = "???";
+            this.buffIcon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // rtBuffDesc
+            // 
+            this.rtBuffDesc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtBuffDesc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.rtBuffDesc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
+            this.rtBuffDesc.Location = new System.Drawing.Point(9, 85);
+            this.rtBuffDesc.Name = "rtBuffDesc";
+            this.rtBuffDesc.Size = new System.Drawing.Size(449, 64);
+            this.rtBuffDesc.TabIndex = 13;
+            this.rtBuffDesc.Text = "";
+            // 
+            // label109
+            // 
+            this.label109.AutoSize = true;
+            this.label109.Location = new System.Drawing.Point(6, 69);
+            this.label109.Name = "label109";
+            this.label109.Size = new System.Drawing.Size(60, 13);
+            this.label109.TabIndex = 14;
+            this.label109.Text = "Description";
+            // 
+            // lBuffDuration
+            // 
+            this.lBuffDuration.AutoSize = true;
+            this.lBuffDuration.Location = new System.Drawing.Point(58, 49);
+            this.lBuffDuration.Name = "lBuffDuration";
+            this.lBuffDuration.Size = new System.Drawing.Size(25, 13);
+            this.lBuffDuration.TabIndex = 16;
+            this.lBuffDuration.Text = "???";
+            // 
+            // label119
+            // 
+            this.label119.AutoSize = true;
+            this.label119.Location = new System.Drawing.Point(6, 49);
+            this.label119.Name = "label119";
+            this.label119.Size = new System.Drawing.Size(47, 13);
+            this.label119.TabIndex = 15;
+            this.label119.Text = "Duration";
             // 
             // MainForm
             // 
@@ -4581,6 +4842,11 @@
             this.tbLocalizer.ResumeLayout(false);
             this.tbLocalizer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLocalized)).EndInit();
+            this.tpBuffs.ResumeLayout(false);
+            this.tpBuffs.PerformLayout();
+            this.groupBox14.ResumeLayout(false);
+            this.groupBox14.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBuffs)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -4970,6 +5236,27 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column51;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column50;
         private System.Windows.Forms.Label label93;
+        private System.Windows.Forms.TabPage tpV1;
+        private System.Windows.Forms.TabPage tpBuffs;
+        private System.Windows.Forms.GroupBox groupBox14;
+        private System.Windows.Forms.Label lBuffId;
+        private System.Windows.Forms.Label label113;
+        private System.Windows.Forms.Button btnSearchBuffs;
+        private System.Windows.Forms.Label label115;
+        private System.Windows.Forms.TextBox tSearchBuffs;
+        private System.Windows.Forms.DataGridView dgvBuffs;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn21;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn24;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column52;
+        private System.Windows.Forms.FlowLayoutPanel flpBuff;
+        private System.Windows.Forms.Label lBuffName;
+        private System.Windows.Forms.Label label105;
+        private System.Windows.Forms.Label buffIcon;
+        private System.Windows.Forms.Label label97;
+        private System.Windows.Forms.Label label109;
+        private System.Windows.Forms.RichTextBox rtBuffDesc;
+        private System.Windows.Forms.Label lBuffDuration;
+        private System.Windows.Forms.Label label119;
     }
 }
 

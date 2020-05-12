@@ -487,6 +487,21 @@ namespace AAEmu.DBDefs
         public string SearchString = string.Empty;
     }
 
+    public class GameBuff
+    {
+        public long id = 0;
+        public string name = string.Empty;
+        public string desc = string.Empty;
+        public long icon_id = 0;
+        public long duration = 0;
+        public Dictionary<string, string> _others = new Dictionary<string, string>();
+
+        // Helpers
+        public string nameLocalized = string.Empty;
+        public string descLocalized = string.Empty;
+        public string SearchString = string.Empty;
+    }
+
     public class GameZoneGroupBannedTags
     {
         /*
@@ -532,6 +547,7 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameQuestComponent> DB_Quest_Components = new Dictionary<long, GameQuestComponent>();
         static public Dictionary<long, GameTags> DB_Tags = new Dictionary<long, GameTags>();
         static public Dictionary<long, GameZoneGroupBannedTags> DB_Zone_Group_Banned_Tags = new Dictionary<long, GameZoneGroupBannedTags>();
+        static public Dictionary<long, GameBuff> DB_Buffs = new Dictionary<long, GameBuff>();
 
         static public string GetFactionName(long faction_id, bool addID = false)
         {

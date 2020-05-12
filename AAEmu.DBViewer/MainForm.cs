@@ -14,6 +14,7 @@ using AAEmu.Game.Utils.DB;
 using AAEmu.ClipboardHelper;
 using FreeImageAPI;
 using System.Threading;
+using System.Globalization;
 
 namespace AAEmu.DBViewer
 {
@@ -1544,6 +1545,81 @@ namespace AAEmu.DBViewer
 
         }
 
+        private void LoadBuffs()
+        {
+            string sql = "SELECT * FROM buffs ORDER BY id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Buffs.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        // Get a list of all fields
+                        var cols = reader.GetColumnNames();
+                        // Remove those that we'll specifically load
+                        cols.Remove("id");
+                        cols.Remove("name");
+                        cols.Remove("desc");
+                        cols.Remove("icon_id");
+                        cols.Remove("duration");
+                        cols.Remove("name_tr");
+                        cols.Remove("desc_tr");
+
+                        while (reader.Read())
+                        {
+
+                            GameBuff t = new GameBuff();
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+                            t.desc = GetString(reader, "desc");
+                            t.icon_id = GetInt64(reader, "icon_id");
+                            t.duration = GetInt64(reader, "duration");
+
+                            t.nameLocalized = GetTranslationByID(t.id, "buffs", "name", t.name);
+                            t.descLocalized = GetTranslationByID(t.id, "buffs", "desc", t.desc);
+
+                            t.SearchString = t.name + " " + t.nameLocalized + " " + t.desc + " " + t.descLocalized;
+                            t.SearchString = t.SearchString.ToLower();
+
+                            // Read remaining data
+                            foreach(var c in cols)
+                            {
+                                if (!reader.IsDBNull(c))
+                                {
+                                    var v = reader.GetString(c,string.Empty);
+                                    var isnumber = double.TryParse(v, NumberStyles.Float, CultureInfo.InvariantCulture, out var dVal);
+                                    if (isnumber)
+                                    {
+                                        if (dVal != 0f)
+                                            t._others.Add(c, v);
+                                    }
+                                    else
+                                    if ((v != string.Empty) && (v != "0") && (v != "f") && (v != "NULL") && (v != "--- :null"))
+                                    {
+                                        t._others.Add(c, v);
+                                    }
+                                }
+                            }
+
+                            AADB.DB_Buffs.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
+
+        }
+
 
 
         private void BtnItemSearch_Click(object sender, EventArgs e)
@@ -1869,7 +1945,7 @@ namespace AAEmu.DBViewer
 
         }
 
-        private string MSToString(long msTime)
+        private string MSToString(long msTime,bool dontShowMS = false)
         {
             string res = string.Empty;
             long ms = (msTime % 1000);
@@ -1888,10 +1964,19 @@ namespace AAEmu.DBViewer
                 res += hh.ToString() + "h ";
             if (mm > 0)
                 res += mm.ToString() + "m ";
-            if (ss > 0)
-                res += ss.ToString() + "s ";
-            if (ms > 0)
-                res += ms.ToString() + "ms";
+            if (dontShowMS == false)
+            {
+                if (ss > 0)
+                    res += ss.ToString() + "s ";
+                if (ms > 0)
+                    res += ms.ToString() + "ms";
+            }
+            else
+            if ((ss > 0) || (ms > 0))
+            {
+                float s = ss + (1f / 1000f * ms);
+                res += s.ToString() + "s";
+            }
 
             if (res == string.Empty)
                 res = "none";
@@ -2425,6 +2510,65 @@ namespace AAEmu.DBViewer
         }
 
 
+        private void AddBuffTag(string name)
+        {
+            if (name.Trim(' ') == string.Empty)
+                return;
+            var lastTagID = flpBuff.Controls.Count + 10 ;
+            var L = new Label();
+            L.Tag = lastTagID;
+            // L.BorderStyle = BorderStyle.FixedSingle;
+            L.Text = name;
+            L.AutoSize = true;
+            // L.BackColor = Color.White;
+            if ((lastTagID % 2) == 0)
+                L.ForeColor = Color.Gray;
+            else
+                L.ForeColor = Color.LightGray;
+            flpBuff.Controls.Add(L);
+            L.Cursor = Cursors.Hand;
+            L.Click += new EventHandler(LabelToCopy_Click);
+        }
+
+        private void ClearBuffTags()
+        {
+            for (int i = flpBuff.Controls.Count - 1; i >= 0; i--)
+            {
+                Label c = (flpBuff.Controls[i] is Label) ? (flpBuff.Controls[i] as Label) : null;
+                if ((c is Label) && (c.Tag != null) && ((int)c.Tag > 0))
+                {
+                    flpBuff.Controls.RemoveAt(i);
+                }
+            }
+        }
+
+
+        private void ShowDBBuff(long buff_id)
+        {
+            if (!AADB.DB_Buffs.TryGetValue(buff_id, out var b))
+            {
+                lBuffId.Text = "???";
+                lBuffName.Text = "???";
+                lBuffDuration.Text = "???";
+                buffIcon.Text = "???";
+                ClearBuffTags();
+                rtBuffDesc.Clear();
+                return;
+            }
+            lBuffId.Text = b.id.ToString();
+            lBuffName.Text = b.nameLocalized;
+            lBuffDuration.Text = MSToString(b.duration);
+            IconIDToLabel(b.icon_id, buffIcon);
+            FormattedTextToRichtEdit(b.descLocalized, rtBuffDesc);
+            ClearBuffTags();
+            foreach (var c in b._others)
+            {
+                AddBuffTag(c.Key+" = "+c.Value);
+            }
+            ShowSelectedData("buffs", "id = " + b.id.ToString(), "id ASC");
+        }
+
+
         private void TItemSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -2503,6 +2647,8 @@ namespace AAEmu.DBViewer
                 LoadIcons();
                 loading.ShowInfo("Loading: Factions");
                 LoadFactions();
+                loading.ShowInfo("Loading: Buffs");
+                LoadBuffs();
                 loading.ShowInfo("Loading: Tags");
                 LoadTags();
                 LoadZoneGroupBannedTags();
@@ -3883,6 +4029,79 @@ namespace AAEmu.DBViewer
         {
             if (tSearchLocalized.Text == string.Empty)
                 tSearchLocalized.Text = "doodad name =320=";
+        }
+
+        private void btnSearchBuffs_Click(object sender, EventArgs e)
+        {
+            string searchText = tSearchBuffs.Text.ToLower();
+            if (searchText == string.Empty)
+                return;
+            long searchID;
+            if (!long.TryParse(searchText, out searchID))
+                searchID = -1;
+
+            bool first = true;
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+            dgvBuffs.Rows.Clear();
+            int c = 0;
+            foreach (var t in AADB.DB_Buffs)
+            {
+                var b = t.Value;
+                if ((b.id == searchID) || (b.SearchString.IndexOf(searchText) >= 0))
+                {
+                    var line = dgvBuffs.Rows.Add();
+                    var row = dgvBuffs.Rows[line];
+
+                    row.Cells[0].Value = b.id.ToString();
+                    row.Cells[1].Value = b.nameLocalized;
+                    row.Cells[2].Value = b.duration > 0 ? MSToString(b.duration,true) : "";
+
+                    if (first)
+                    {
+                        first = false;
+                        ShowDBBuff(b.id);
+                    }
+
+                    c++;
+                    if (c >= 250)
+                    {
+                        MessageBox.Show("The results were cut off at " + c.ToString() + " buffs, please refine your search !", "Too many entries", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        break;
+                    }
+                }
+
+            }
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+        }
+
+        private void tSearchBuffs_TextChanged(object sender, EventArgs e)
+        {
+            btnSearchBuffs.Enabled = (tSearchBuffs.Text.Length > 0);
+        }
+
+        private void tSearchBuffs_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                btnSearchBuffs_Click(null, null);
+        }
+
+        private void dgvBuffs_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvBuffs.SelectedRows.Count <= 0)
+                return;
+            var row = dgvBuffs.SelectedRows[0];
+            if (row.Cells.Count <= 0)
+                return;
+
+            var id = row.Cells[0].Value;
+            if (id != null)
+            {
+                ShowDBBuff(long.Parse(id.ToString()));
+                ShowSelectedData("buffs", "id = " + id.ToString(), "id ASC");
+            }
+
         }
     }
 }
