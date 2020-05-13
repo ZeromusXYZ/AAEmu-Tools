@@ -487,6 +487,14 @@ namespace AAEmu.DBDefs
         public string SearchString = string.Empty;
     }
 
+    public class GameTaggedValues
+    {
+        public long id = 0;
+        public long tag_id = 0;
+        public long target_id = 0;
+    }
+
+
     public class GameBuff
     {
         public long id = 0;
@@ -546,6 +554,10 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameQuestAct> DB_Quest_Acts = new Dictionary<long, GameQuestAct>();
         static public Dictionary<long, GameQuestComponent> DB_Quest_Components = new Dictionary<long, GameQuestComponent>();
         static public Dictionary<long, GameTags> DB_Tags = new Dictionary<long, GameTags>();
+        static public Dictionary<long, GameTaggedValues> DB_Tagged_Buffs = new Dictionary<long, GameTaggedValues>();
+        static public Dictionary<long, GameTaggedValues> DB_Tagged_Items = new Dictionary<long, GameTaggedValues>();
+        static public Dictionary<long, GameTaggedValues> DB_Tagged_NPCs = new Dictionary<long, GameTaggedValues>();
+        static public Dictionary<long, GameTaggedValues> DB_Tagged_Skills = new Dictionary<long, GameTaggedValues>();
         static public Dictionary<long, GameZoneGroupBannedTags> DB_Zone_Group_Banned_Tags = new Dictionary<long, GameZoneGroupBannedTags>();
         static public Dictionary<long, GameBuff> DB_Buffs = new Dictionary<long, GameBuff>();
 

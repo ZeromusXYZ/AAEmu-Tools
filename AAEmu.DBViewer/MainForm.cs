@@ -1470,15 +1470,14 @@ namespace AAEmu.DBViewer
 
         private void LoadTags()
         {
-            string sql = "SELECT * FROM tags ORDER BY id ASC";
-
             using (var connection = SQLite.CreateConnection())
             {
+                // Tag Names
                 using (var command = connection.CreateCommand())
                 {
                     AADB.DB_Tags.Clear();
 
-                    command.CommandText = sql;
+                    command.CommandText = "SELECT * FROM tags ORDER BY id ASC";
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
@@ -1505,6 +1504,99 @@ namespace AAEmu.DBViewer
                         Application.UseWaitCursor = false;
                     }
                 }
+
+                // Buff Tags
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Tagged_Buffs.Clear();
+                    command.CommandText = "SELECT * FROM tagged_buffs ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+                        while (reader.Read())
+                        {
+                            GameTaggedValues t = new GameTaggedValues();
+                            t.id = GetInt64(reader, "id");
+                            t.tag_id = GetInt64(reader, "tag_id");
+                            t.target_id = GetInt64(reader, "buff_id");
+                            AADB.DB_Tagged_Buffs.Add(t.id, t);
+                        }
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+
+                // Items Tags
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Tagged_Items.Clear();
+                    command.CommandText = "SELECT * FROM tagged_items ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+                        while (reader.Read())
+                        {
+                            GameTaggedValues t = new GameTaggedValues();
+                            t.id = GetInt64(reader, "id");
+                            t.tag_id = GetInt64(reader, "tag_id");
+                            t.target_id = GetInt64(reader, "item_id");
+                            AADB.DB_Tagged_Items.Add(t.id, t);
+                        }
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+
+                // NPC Tags
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Tagged_NPCs.Clear();
+                    command.CommandText = "SELECT * FROM tagged_npcs ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+                        while (reader.Read())
+                        {
+                            GameTaggedValues t = new GameTaggedValues();
+                            t.id = GetInt64(reader, "id");
+                            t.tag_id = GetInt64(reader, "tag_id");
+                            t.target_id = GetInt64(reader, "npc_id");
+                            AADB.DB_Tagged_NPCs.Add(t.id, t);
+                        }
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+
+                // Skill Tags
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Tagged_Skills.Clear();
+                    command.CommandText = "SELECT * FROM tagged_skills ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+                        while (reader.Read())
+                        {
+                            GameTaggedValues t = new GameTaggedValues();
+                            t.id = GetInt64(reader, "id");
+                            t.tag_id = GetInt64(reader, "tag_id");
+                            t.target_id = GetInt64(reader, "skill_id");
+                            AADB.DB_Tagged_Skills.Add(t.id, t);
+                        }
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+
             }
 
         }
@@ -2047,6 +2139,7 @@ namespace AAEmu.DBViewer
                 gmadditem += " " + item.max_stack_size.ToString();
                 if (item.fixed_grade >= 0)
                     gmadditem += " " + item.fixed_grade.ToString();
+                lItemTags.Text = TagsAsString(idx, AADB.DB_Tagged_Items);
                 lItemAddGMCommand.Text = gmadditem;
 
                 ShowSelectedData("items", "(id = " + idx.ToString() + ")", "id ASC");
@@ -2060,6 +2153,7 @@ namespace AAEmu.DBViewer
                 lItemLevel.Text = "";
                 itemIcon.Text = "???";
                 btnFindItemSkill.Enabled = false;
+                lItemTags.Text = "???";
                 lItemAddGMCommand.Text = "/additem ???";
             }
         }
@@ -2095,6 +2189,7 @@ namespace AAEmu.DBViewer
                 // lSkillGCD.Text = skill.ignore_global_cooldown ? "Ignore" : "Normal";
                 FormattedTextToRichtEdit(skill.descriptionLocalized, rtSkillDescription);
                 IconIDToLabel(skill.icon_id, skillIcon);
+                lSkillTags.Text = TagsAsString(idx,AADB.DB_Tagged_Skills);
 
                 ShowSelectedData("skills", "(id = " + idx.ToString() + ")", "id ASC");
 
@@ -2161,6 +2256,7 @@ namespace AAEmu.DBViewer
                 rtSkillDescription.Clear();
                 skillIcon.Image = null;
                 skillIcon.Text = "???";
+                lSkillTags.Text = "???";
             }
         }
 
@@ -2542,6 +2638,22 @@ namespace AAEmu.DBViewer
             }
         }
 
+        private string TagsAsString(long target_id, Dictionary<long,GameTaggedValues> lookupTable)
+        {
+            var tags = from t in lookupTable
+                       where t.Value.target_id == target_id
+                       select t.Value;
+            var s = string.Empty;
+            foreach (var t in tags)
+            {
+                if (s.Length > 0)
+                    s += " , ";
+                if (AADB.DB_Tags.TryGetValue(t.tag_id, out var taglookup))
+                    s += taglookup.nameLocalized + " ";
+                s += "(" + t.tag_id.ToString() + ")";
+            }
+            return s;
+        }
 
         private void ShowDBBuff(long buff_id)
         {
@@ -2551,6 +2663,7 @@ namespace AAEmu.DBViewer
                 lBuffName.Text = "???";
                 lBuffDuration.Text = "???";
                 buffIcon.Text = "???";
+                lBuffTags.Text = "???";
                 ClearBuffTags();
                 rtBuffDesc.Clear();
                 return;
@@ -2558,6 +2671,7 @@ namespace AAEmu.DBViewer
             lBuffId.Text = b.id.ToString();
             lBuffName.Text = b.nameLocalized;
             lBuffDuration.Text = MSToString(b.duration);
+            lBuffTags.Text = TagsAsString(buff_id,AADB.DB_Tagged_Buffs);
             IconIDToLabel(b.icon_id, buffIcon);
             FormattedTextToRichtEdit(b.descLocalized, rtBuffDesc);
             ClearBuffTags();
@@ -3183,11 +3297,13 @@ namespace AAEmu.DBViewer
             if (AADB.DB_NPCs.TryGetValue(id, out var npc))
             {
                 lNPCTemplate.Text = npc.id.ToString();
+                lNPCTags.Text = TagsAsString(id, AADB.DB_Tagged_NPCs);
                 ShowSelectedData("npcs", "(id = " + id.ToString() + ")", "id ASC");
             }
             else
             {
                 lNPCTemplate.Text = "???";
+                lNPCTags.Text = "???";
             }
             lGMNPCSpawn.Text = "/spawn npc " + lNPCTemplate.Text;
         }
