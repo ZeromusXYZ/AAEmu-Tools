@@ -57,8 +57,11 @@
             this.Column50 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tSearchLocalized = new System.Windows.Forms.TextBox();
             this.tpV1 = new System.Windows.Forms.TabPage();
+            this.lSpace = new System.Windows.Forms.Label();
             this.tpBuffs = new System.Windows.Forms.TabPage();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.lBuffTags = new System.Windows.Forms.Label();
+            this.label117 = new System.Windows.Forms.Label();
             this.lBuffDuration = new System.Windows.Forms.Label();
             this.label119 = new System.Windows.Forms.Label();
             this.label109 = new System.Windows.Forms.Label();
@@ -246,6 +249,8 @@
             this.cbItemSearchItemArmorSlotTypeList = new System.Windows.Forms.ComboBox();
             this.btnFindItemSkill = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lItemTags = new System.Windows.Forms.Label();
+            this.label127 = new System.Windows.Forms.Label();
             this.lItemAddGMCommand = new System.Windows.Forms.Label();
             this.itemIcon = new System.Windows.Forms.Label();
             this.rtItemDesc = new System.Windows.Forms.RichTextBox();
@@ -286,6 +291,8 @@
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpNPCs = new System.Windows.Forms.TabPage();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.lNPCTags = new System.Windows.Forms.Label();
+            this.label125 = new System.Windows.Forms.Label();
             this.lGMNPCSpawn = new System.Windows.Forms.Label();
             this.lNPCTemplate = new System.Windows.Forms.Label();
             this.label81 = new System.Windows.Forms.Label();
@@ -304,6 +311,8 @@
             this.tcSkillInfo = new System.Windows.Forms.TabControl();
             this.tpSkillInfo = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lSkillTags = new System.Windows.Forms.Label();
+            this.label123 = new System.Windows.Forms.Label();
             this.rtSkillDescription = new System.Windows.Forms.RichTextBox();
             this.lSkillGCD = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
@@ -435,15 +444,7 @@
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.lSpace = new System.Windows.Forms.Label();
-            this.label117 = new System.Windows.Forms.Label();
-            this.lBuffTags = new System.Windows.Forms.Label();
-            this.lSkillTags = new System.Windows.Forms.Label();
-            this.label123 = new System.Windows.Forms.Label();
-            this.lNPCTags = new System.Windows.Forms.Label();
-            this.label125 = new System.Windows.Forms.Label();
-            this.lItemTags = new System.Windows.Forms.Label();
-            this.label127 = new System.Windows.Forms.Label();
+            this.btnExportDataForVieweD = new System.Windows.Forms.Button();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -809,6 +810,7 @@
             // 
             // tpV1
             // 
+            this.tpV1.Controls.Add(this.btnExportDataForVieweD);
             this.tpV1.Controls.Add(this.lSpace);
             this.tpV1.Location = new System.Drawing.Point(4, 22);
             this.tpV1.Name = "tpV1";
@@ -817,6 +819,15 @@
             this.tpV1.TabIndex = 11;
             this.tpV1.Text = "|";
             this.tpV1.UseVisualStyleBackColor = true;
+            // 
+            // lSpace
+            // 
+            this.lSpace.AutoSize = true;
+            this.lSpace.Location = new System.Drawing.Point(69, 33);
+            this.lSpace.Name = "lSpace";
+            this.lSpace.Size = new System.Drawing.Size(127, 13);
+            this.lSpace.TabIndex = 0;
+            this.lSpace.Text = "Space, the final divider ...";
             // 
             // tpBuffs
             // 
@@ -858,6 +869,26 @@
             this.groupBox14.TabIndex = 12;
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Buff Info";
+            // 
+            // lBuffTags
+            // 
+            this.lBuffTags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lBuffTags.AutoSize = true;
+            this.lBuffTags.Location = new System.Drawing.Point(58, 428);
+            this.lBuffTags.Name = "lBuffTags";
+            this.lBuffTags.Size = new System.Drawing.Size(25, 13);
+            this.lBuffTags.TabIndex = 18;
+            this.lBuffTags.Text = "???";
+            // 
+            // label117
+            // 
+            this.label117.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label117.AutoSize = true;
+            this.label117.Location = new System.Drawing.Point(10, 428);
+            this.label117.Name = "label117";
+            this.label117.Size = new System.Drawing.Size(31, 13);
+            this.label117.TabIndex = 17;
+            this.label117.Text = "Tags";
             // 
             // lBuffDuration
             // 
@@ -2821,6 +2852,26 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Item Info";
             // 
+            // lItemTags
+            // 
+            this.lItemTags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lItemTags.AutoSize = true;
+            this.lItemTags.Location = new System.Drawing.Point(6, 426);
+            this.lItemTags.Name = "lItemTags";
+            this.lItemTags.Size = new System.Drawing.Size(25, 13);
+            this.lItemTags.TabIndex = 25;
+            this.lItemTags.Text = "???";
+            // 
+            // label127
+            // 
+            this.label127.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label127.AutoSize = true;
+            this.label127.Location = new System.Drawing.Point(6, 413);
+            this.label127.Name = "label127";
+            this.label127.Size = new System.Drawing.Size(31, 13);
+            this.label127.TabIndex = 24;
+            this.label127.Text = "Tags";
+            // 
             // lItemAddGMCommand
             // 
             this.lItemAddGMCommand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -3242,6 +3293,26 @@
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "NPC Info";
             // 
+            // lNPCTags
+            // 
+            this.lNPCTags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lNPCTags.AutoSize = true;
+            this.lNPCTags.Location = new System.Drawing.Point(6, 386);
+            this.lNPCTags.Name = "lNPCTags";
+            this.lNPCTags.Size = new System.Drawing.Size(25, 13);
+            this.lNPCTags.TabIndex = 25;
+            this.lNPCTags.Text = "???";
+            // 
+            // label125
+            // 
+            this.label125.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label125.AutoSize = true;
+            this.label125.Location = new System.Drawing.Point(6, 363);
+            this.label125.Name = "label125";
+            this.label125.Size = new System.Drawing.Size(31, 13);
+            this.label125.TabIndex = 24;
+            this.label125.Text = "Tags";
+            // 
             // lGMNPCSpawn
             // 
             this.lGMNPCSpawn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -3447,6 +3518,26 @@
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Skill Info";
+            // 
+            // lSkillTags
+            // 
+            this.lSkillTags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lSkillTags.AutoSize = true;
+            this.lSkillTags.Location = new System.Drawing.Point(6, 421);
+            this.lSkillTags.Name = "lSkillTags";
+            this.lSkillTags.Size = new System.Drawing.Size(25, 13);
+            this.lSkillTags.TabIndex = 23;
+            this.lSkillTags.Text = "???";
+            // 
+            // label123
+            // 
+            this.label123.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label123.AutoSize = true;
+            this.label123.Location = new System.Drawing.Point(6, 408);
+            this.label123.Name = "label123";
+            this.label123.Size = new System.Drawing.Size(31, 13);
+            this.label123.TabIndex = 22;
+            this.label123.Text = "Tags";
             // 
             // rtSkillDescription
             // 
@@ -4775,94 +4866,16 @@
             this.mainFormToolTip.ReshowDelay = 100;
             this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             // 
-            // lSpace
+            // btnExportDataForVieweD
             // 
-            this.lSpace.AutoSize = true;
-            this.lSpace.Location = new System.Drawing.Point(69, 33);
-            this.lSpace.Name = "lSpace";
-            this.lSpace.Size = new System.Drawing.Size(127, 13);
-            this.lSpace.TabIndex = 0;
-            this.lSpace.Text = "Space, the final divider ...";
-            // 
-            // label117
-            // 
-            this.label117.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label117.AutoSize = true;
-            this.label117.Location = new System.Drawing.Point(10, 428);
-            this.label117.Name = "label117";
-            this.label117.Size = new System.Drawing.Size(31, 13);
-            this.label117.TabIndex = 17;
-            this.label117.Text = "Tags";
-            // 
-            // lBuffTags
-            // 
-            this.lBuffTags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lBuffTags.AutoSize = true;
-            this.lBuffTags.Location = new System.Drawing.Point(58, 428);
-            this.lBuffTags.Name = "lBuffTags";
-            this.lBuffTags.Size = new System.Drawing.Size(25, 13);
-            this.lBuffTags.TabIndex = 18;
-            this.lBuffTags.Text = "???";
-            // 
-            // lSkillTags
-            // 
-            this.lSkillTags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lSkillTags.AutoSize = true;
-            this.lSkillTags.Location = new System.Drawing.Point(6, 421);
-            this.lSkillTags.Name = "lSkillTags";
-            this.lSkillTags.Size = new System.Drawing.Size(25, 13);
-            this.lSkillTags.TabIndex = 23;
-            this.lSkillTags.Text = "???";
-            // 
-            // label123
-            // 
-            this.label123.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label123.AutoSize = true;
-            this.label123.Location = new System.Drawing.Point(6, 408);
-            this.label123.Name = "label123";
-            this.label123.Size = new System.Drawing.Size(31, 13);
-            this.label123.TabIndex = 22;
-            this.label123.Text = "Tags";
-            // 
-            // lNPCTags
-            // 
-            this.lNPCTags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lNPCTags.AutoSize = true;
-            this.lNPCTags.Location = new System.Drawing.Point(6, 386);
-            this.lNPCTags.Name = "lNPCTags";
-            this.lNPCTags.Size = new System.Drawing.Size(25, 13);
-            this.lNPCTags.TabIndex = 25;
-            this.lNPCTags.Text = "???";
-            // 
-            // label125
-            // 
-            this.label125.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label125.AutoSize = true;
-            this.label125.Location = new System.Drawing.Point(6, 363);
-            this.label125.Name = "label125";
-            this.label125.Size = new System.Drawing.Size(31, 13);
-            this.label125.TabIndex = 24;
-            this.label125.Text = "Tags";
-            // 
-            // lItemTags
-            // 
-            this.lItemTags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lItemTags.AutoSize = true;
-            this.lItemTags.Location = new System.Drawing.Point(6, 426);
-            this.lItemTags.Name = "lItemTags";
-            this.lItemTags.Size = new System.Drawing.Size(25, 13);
-            this.lItemTags.TabIndex = 25;
-            this.lItemTags.Text = "???";
-            // 
-            // label127
-            // 
-            this.label127.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label127.AutoSize = true;
-            this.label127.Location = new System.Drawing.Point(6, 413);
-            this.label127.Name = "label127";
-            this.label127.Size = new System.Drawing.Size(31, 13);
-            this.label127.TabIndex = 24;
-            this.label127.Text = "Tags";
+            this.btnExportDataForVieweD.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnExportDataForVieweD.Location = new System.Drawing.Point(8, 451);
+            this.btnExportDataForVieweD.Name = "btnExportDataForVieweD";
+            this.btnExportDataForVieweD.Size = new System.Drawing.Size(166, 23);
+            this.btnExportDataForVieweD.TabIndex = 1;
+            this.btnExportDataForVieweD.Text = "Export Data for VieweD";
+            this.btnExportDataForVieweD.UseVisualStyleBackColor = true;
+            this.btnExportDataForVieweD.Click += new System.EventHandler(this.btnExportDataForVieweD_Click);
             // 
             // MainForm
             // 
@@ -5375,6 +5388,7 @@
         private System.Windows.Forms.Label label125;
         private System.Windows.Forms.Label lItemTags;
         private System.Windows.Forms.Label label127;
+        private System.Windows.Forms.Button btnExportDataForVieweD;
     }
 }
 

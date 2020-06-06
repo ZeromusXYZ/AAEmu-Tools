@@ -4219,5 +4219,50 @@ namespace AAEmu.DBViewer
             }
 
         }
+
+        private void btnExportDataForVieweD_Click(object sender, EventArgs e)
+        {
+            // Create lookup files for use in VieweD
+
+            var LookupExportPath = Path.Combine(Application.StartupPath, "export", "data", "lookup");
+            try
+            {
+                Directory.CreateDirectory(LookupExportPath);
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show("Failed to create export directory: " + LookupExportPath+"\r\n"+x.Message);
+                return;
+            }
+
+            try
+            {
+                // NPC
+                var NPCList = new List<string>();
+                foreach (var npc in AADB.DB_NPCs)
+                    NPCList.Add(npc.Key.ToString() + ";" + npc.Value.nameLocalized);
+                File.WriteAllLines(Path.Combine(LookupExportPath, "npcs.txt"), NPCList);
+
+                // Doodad
+                var DoodadList = new List<string>();
+                foreach (var doodad in AADB.DB_Doodad_Almighties)
+                    DoodadList.Add(doodad.Key.ToString() + ";" + doodad.Value.nameLocalized);
+                File.WriteAllLines(Path.Combine(LookupExportPath, "doodads.txt"), DoodadList);
+
+                // Skill
+                var SkillList = new List<string>();
+                foreach (var skill in AADB.DB_Skills)
+                    SkillList.Add(skill.Key.ToString() + ";" + skill.Value.nameLocalized);
+                File.WriteAllLines(Path.Combine(LookupExportPath, "skills.txt"), SkillList);
+
+
+                MessageBox.Show("Done exporting", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show("Export Failed !\r\n" + x.Message);
+                return;
+            }
+        }
     }
 }
