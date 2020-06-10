@@ -4255,6 +4255,12 @@ namespace AAEmu.DBViewer
                     SkillList.Add(skill.Key.ToString() + ";" + skill.Value.nameLocalized);
                 File.WriteAllLines(Path.Combine(LookupExportPath, "skills.txt"), SkillList);
 
+                // Items
+                var ItemList = new List<string>();
+                foreach (var item in AADB.DB_Items)
+                    ItemList.Add(item.Key.ToString() + ";" + item.Value.nameLocalized);
+                File.WriteAllLines(Path.Combine(LookupExportPath, "items.txt"), ItemList);
+
 
                 MessageBox.Show("Done exporting", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
