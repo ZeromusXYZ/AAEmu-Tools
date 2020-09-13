@@ -20,13 +20,15 @@ namespace AAEmu.DBViewer
 {
     public partial class MainForm : Form
     {
+        public static MainForm ThisForm;
         private string defaultTitle;
-        private AAPak pak = new AAPak("");
+        public AAPak pak = new AAPak("");
         private List<string> possibleLanguageIDs = new List<string>();
 
         public MainForm()
         {
             InitializeComponent();
+            ThisForm = this;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -4261,6 +4263,18 @@ namespace AAEmu.DBViewer
                     ItemList.Add(item.Key.ToString() + ";" + item.Value.nameLocalized);
                 File.WriteAllLines(Path.Combine(LookupExportPath, "items.txt"), ItemList);
 
+                // Zone Groups
+                var ZoneGroupList = new List<string>();
+                foreach (var zonegroup in AADB.DB_Zone_Groups)
+                    ZoneGroupList.Add(zonegroup.Key.ToString() + ";" + zonegroup.Value.display_textLocalized);
+                File.WriteAllLines(Path.Combine(LookupExportPath, "zonegroups.txt"), ZoneGroupList);
+
+                // Zone Keys
+                var ZoneKeysList = new List<string>();
+                foreach (var zonekey in AADB.DB_Zones)
+                    ZoneKeysList.Add(zonekey.Value.zone_key.ToString() + ";" + zonekey.Value.display_textLocalized);
+                File.WriteAllLines(Path.Combine(LookupExportPath, "zonekeys.txt"), ZoneKeysList);
+
 
                 MessageBox.Show("Done exporting", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -4268,6 +4282,14 @@ namespace AAEmu.DBViewer
             {
                 MessageBox.Show("Export Failed !\r\n" + x.Message);
                 return;
+            }
+        }
+
+        private void btnMap_Click(object sender, EventArgs e)
+        {
+            using (var map = new MapViewForm())
+            {
+                map.ShowDialog();
             }
         }
     }

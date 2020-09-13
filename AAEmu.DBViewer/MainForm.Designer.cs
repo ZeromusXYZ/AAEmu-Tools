@@ -57,6 +57,7 @@
             this.Column50 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tSearchLocalized = new System.Windows.Forms.TextBox();
             this.tpV1 = new System.Windows.Forms.TabPage();
+            this.btnExportDataForVieweD = new System.Windows.Forms.Button();
             this.lSpace = new System.Windows.Forms.Label();
             this.tpBuffs = new System.Windows.Forms.TabPage();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
@@ -444,7 +445,7 @@
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.btnExportDataForVieweD = new System.Windows.Forms.Button();
+            this.btnMap = new System.Windows.Forms.Button();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -810,6 +811,7 @@
             // 
             // tpV1
             // 
+            this.tpV1.Controls.Add(this.btnMap);
             this.tpV1.Controls.Add(this.btnExportDataForVieweD);
             this.tpV1.Controls.Add(this.lSpace);
             this.tpV1.Location = new System.Drawing.Point(4, 22);
@@ -819,6 +821,17 @@
             this.tpV1.TabIndex = 11;
             this.tpV1.Text = "|";
             this.tpV1.UseVisualStyleBackColor = true;
+            // 
+            // btnExportDataForVieweD
+            // 
+            this.btnExportDataForVieweD.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnExportDataForVieweD.Location = new System.Drawing.Point(8, 451);
+            this.btnExportDataForVieweD.Name = "btnExportDataForVieweD";
+            this.btnExportDataForVieweD.Size = new System.Drawing.Size(166, 23);
+            this.btnExportDataForVieweD.TabIndex = 1;
+            this.btnExportDataForVieweD.Text = "Export Data for VieweD";
+            this.btnExportDataForVieweD.UseVisualStyleBackColor = true;
+            this.btnExportDataForVieweD.Click += new System.EventHandler(this.btnExportDataForVieweD_Click);
             // 
             // lSpace
             // 
@@ -4866,16 +4879,15 @@
             this.mainFormToolTip.ReshowDelay = 100;
             this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             // 
-            // btnExportDataForVieweD
+            // btnMap
             // 
-            this.btnExportDataForVieweD.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnExportDataForVieweD.Location = new System.Drawing.Point(8, 451);
-            this.btnExportDataForVieweD.Name = "btnExportDataForVieweD";
-            this.btnExportDataForVieweD.Size = new System.Drawing.Size(166, 23);
-            this.btnExportDataForVieweD.TabIndex = 1;
-            this.btnExportDataForVieweD.Text = "Export Data for VieweD";
-            this.btnExportDataForVieweD.UseVisualStyleBackColor = true;
-            this.btnExportDataForVieweD.Click += new System.EventHandler(this.btnExportDataForVieweD_Click);
+            this.btnMap.Location = new System.Drawing.Point(8, 110);
+            this.btnMap.Name = "btnMap";
+            this.btnMap.Size = new System.Drawing.Size(75, 23);
+            this.btnMap.TabIndex = 2;
+            this.btnMap.Text = "Map";
+            this.btnMap.UseVisualStyleBackColor = true;
+            this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
             // 
             // MainForm
             // 
@@ -5389,6 +5401,7 @@
         private System.Windows.Forms.Label lItemTags;
         private System.Windows.Forms.Label label127;
         private System.Windows.Forms.Button btnExportDataForVieweD;
+        private System.Windows.Forms.Button btnMap;
     }
 }
 
