@@ -57,6 +57,7 @@
             this.Column50 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tSearchLocalized = new System.Windows.Forms.TextBox();
             this.tpV1 = new System.Windows.Forms.TabPage();
+            this.btnMap = new System.Windows.Forms.Button();
             this.btnExportDataForVieweD = new System.Windows.Forms.Button();
             this.lSpace = new System.Windows.Forms.Label();
             this.tpBuffs = new System.Windows.Forms.TabPage();
@@ -445,7 +446,7 @@
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.btnMap = new System.Windows.Forms.Button();
+            this.btnShowNPCsOnMap = new System.Windows.Forms.Button();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -821,6 +822,16 @@
             this.tpV1.TabIndex = 11;
             this.tpV1.Text = "|";
             this.tpV1.UseVisualStyleBackColor = true;
+            // 
+            // btnMap
+            // 
+            this.btnMap.Location = new System.Drawing.Point(8, 110);
+            this.btnMap.Name = "btnMap";
+            this.btnMap.Size = new System.Drawing.Size(75, 23);
+            this.btnMap.TabIndex = 2;
+            this.btnMap.Text = "Map";
+            this.btnMap.UseVisualStyleBackColor = true;
+            this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
             // 
             // btnExportDataForVieweD
             // 
@@ -3293,6 +3304,7 @@
             this.groupBox13.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.groupBox13.Controls.Add(this.btnShowNPCsOnMap);
             this.groupBox13.Controls.Add(this.lNPCTags);
             this.groupBox13.Controls.Add(this.label125);
             this.groupBox13.Controls.Add(this.lGMNPCSpawn);
@@ -4879,15 +4891,16 @@
             this.mainFormToolTip.ReshowDelay = 100;
             this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             // 
-            // btnMap
+            // btnShowNPCsOnMap
             // 
-            this.btnMap.Location = new System.Drawing.Point(8, 110);
-            this.btnMap.Name = "btnMap";
-            this.btnMap.Size = new System.Drawing.Size(75, 23);
-            this.btnMap.TabIndex = 2;
-            this.btnMap.Text = "Map";
-            this.btnMap.UseVisualStyleBackColor = true;
-            this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
+            this.btnShowNPCsOnMap.ForeColor = System.Drawing.Color.Black;
+            this.btnShowNPCsOnMap.Location = new System.Drawing.Point(182, 425);
+            this.btnShowNPCsOnMap.Name = "btnShowNPCsOnMap";
+            this.btnShowNPCsOnMap.Size = new System.Drawing.Size(33, 31);
+            this.btnShowNPCsOnMap.TabIndex = 26;
+            this.btnShowNPCsOnMap.Text = "X";
+            this.btnShowNPCsOnMap.UseVisualStyleBackColor = true;
+            this.btnShowNPCsOnMap.Click += new System.EventHandler(this.btnShowNPCsOnMap_Click);
             // 
             // MainForm
             // 
@@ -5402,6 +5415,7 @@
         private System.Windows.Forms.Label label127;
         private System.Windows.Forms.Button btnExportDataForVieweD;
         private System.Windows.Forms.Button btnMap;
+        private System.Windows.Forms.Button btnShowNPCsOnMap;
     }
 }
 

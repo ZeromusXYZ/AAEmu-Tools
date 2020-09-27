@@ -14,6 +14,7 @@ namespace AAEmu.DBViewer
 {
     public partial class MapViewForm : Form
     {
+        public static MapViewForm ThisForm ;
         private PictureBox pb = new PictureBox();
         private Bitmap mainWorldImage;
         private Point viewOffset = new Point(0, 0);
@@ -21,17 +22,30 @@ namespace AAEmu.DBViewer
         private Point startDragOffset = new Point();
         private bool isDragging = false;
         private float viewScale = 1f;
+        private List<MapViewPoint> poi = new List<MapViewPoint>();
+
 
         public Point ViewOffset { get => viewOffset; set { viewOffset = value; updateStatusBar(); } }
 
         public MapViewForm()
         {
+            MapViewForm.ThisForm = this;
             InitializeComponent();
 
-            pb.SetBounds(0, 0, 65536, 65536);
+            pb.SetBounds(0, 0, 35536, 35536);
             mainWorldImage = PackedImageToBitmap("game/ui/map/world/", "main_world");
 
             pView.MouseWheel += new MouseEventHandler(MapViewOnMouseWheel);
+            viewOffset.Y = 20000;
+            viewScale = 0.05f;
+        }
+
+        public static MapViewForm GetMap()
+        {
+            if (ThisForm != null)
+                return ThisForm;
+            else
+                return new MapViewForm();
         }
 
         private void updateStatusBar()
@@ -46,17 +60,47 @@ namespace AAEmu.DBViewer
         private void MapViewOnMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             if (e.Delta > 0)
-                viewScale += 0.25f;
+            {
+                if (viewScale >= 2f)
+                    viewScale += 0.25f;
+                else
+                    viewScale += 0.025f;
+            }
 
             if (e.Delta < 0)
-                viewScale -= 0.25f;
+            {
+                if (viewScale >= 2f)
+                    viewScale -= 0.25f;
+                else
+                    viewScale -= 0.025f;
+            }
 
-            if (viewScale < 0.25f)
-                viewScale = 0.25f;
+            if (viewScale < 0.025f)
+                viewScale = 0.025f;
             pView.Invalidate();
             updateStatusBar();
         }
 
+        private Point CoordToPixel(Point coord) => CoordToPixel(coord.X,coord.Y);
+
+        private Point CoordToPixel(float x, float y)
+        {
+            return new Point((int)x, (int)y * -1);
+        }
+
+        private void DrawCross(Graphics g,float x, float y, Color color, string name)
+        {
+            const int crossSize = 3;
+            var pen = new Pen(color);
+            var pos = CoordToPixel(x, y);
+            g.DrawLine(pen, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y - crossSize, ViewOffset.X + x, ViewOffset.Y + pos.Y + crossSize);
+            g.DrawLine(pen, ViewOffset.X + pos.X - crossSize, ViewOffset.Y + pos.Y, ViewOffset.X + pos.X + crossSize, ViewOffset.Y + pos.Y);
+            if ((cbPoINames.Checked) && (name != string.Empty) )
+            {
+                var br = new SolidBrush(color);
+                g.DrawString(name, Font, br, ViewOffset.X + pos.X + crossSize, ViewOffset.Y + pos.Y - crossSize);
+            }
+        }
 
         private void pView_Paint(object sender, PaintEventArgs e)
         {
@@ -73,11 +117,45 @@ namespace AAEmu.DBViewer
             // Draw a string on the PictureBox.
             if (isDragging)
                 g.DrawString("Dragging", Font, System.Drawing.Brushes.Blue, new Point(30, 30));
-            else
-                g.DrawString("Map view test", Font, System.Drawing.Brushes.Blue, new Point(30, 30));
+            //else
+            //    g.DrawString("Map view test", Font, System.Drawing.Brushes.Blue, new Point(30, 30));
 
             // Draw a line in the PictureBox.
-            g.DrawLine(System.Drawing.Pens.Red, pb.Left, pb.Top, pb.Right, pb.Bottom);
+            // g.DrawLine(System.Drawing.Pens.Red, pb.Left, pb.Top, pb.Right, pb.Bottom);
+
+            for (var x = 0; x < 36000; x += 4000)
+                g.DrawLine(x % 4000 == 0 ? System.Drawing.Pens.Gray : System.Drawing.Pens.LightGray, ViewOffset.X + x, 0, ViewOffset.X + x, 36000) ;
+            for (var y = 0; y > -36000; y -= 4000)
+                g.DrawLine(y % 4000 == 0 ? System.Drawing.Pens.Gray : System.Drawing.Pens.LightGray, 0, ViewOffset.Y + y, 36000, ViewOffset.Y + y);
+
+            var f = new Font(Font.FontFamily, 100f);
+            foreach (var zg in AADB.DB_Zone_Groups.Values)
+            {
+                if (zg.name.StartsWith("instance"))
+                    continue;
+
+                Color col = Color.Cyan;
+                switch(zg.id % 4)
+                {
+                    case 0: col = Color.Cyan; break;
+                    case 1: col = Color.LimeGreen; break;
+                    case 2: col = Color.Green; break;
+                    case 3: col = Color.LightBlue; break;
+                }
+
+                var br = new System.Drawing.SolidBrush(col);
+                var pn = new System.Drawing.Pen(br);
+
+                var pos = CoordToPixel(zg.PosAndSize.X, zg.PosAndSize.Y);
+                g.DrawRectangle(pn, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y - zg.PosAndSize.Height, zg.PosAndSize.Width, zg.PosAndSize.Height);
+                g.DrawString(zg.display_textLocalized, f, br, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y);
+            }
+
+            // Draw Points of Interest
+            foreach (var p in poi)
+            {
+                DrawCross(g, p.CoordX, p.CoordY, p.PoIColor, p.Name);
+            }
         }
 
         private Bitmap PackedImageToBitmap(string packedFileFolder, string packedFileName)
@@ -146,5 +224,42 @@ namespace AAEmu.DBViewer
             pView.Invalidate();
             updateStatusBar();
         }
+
+        public void AddPoI(Point coords, string name) => AddPoI(coords.X,coords.Y, name, Color.Yellow);
+
+        public void AddPoI(float x, float y, string name, Color col)
+        {
+            var newPoi = new MapViewPoint();
+            newPoi.CoordX = x;
+            newPoi.CoordY = y;
+            newPoi.Name = name;
+            newPoi.PoIColor = col;
+            poi.Add(newPoi);
+        }
+
+        public void ClearPoI()
+        {
+            poi.Clear();
+        }
+
+        private void MapViewForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            ThisForm = null;
+        }
+
+        private void cbPoINames_ClientSizeChanged(object sender, EventArgs e)
+        {
+            pView.Refresh();
+            updateStatusBar();
+        }
     }
+
+    public class MapViewPoint
+    {
+        public float CoordX = 0f;
+        public float CoordY = 0f;
+        public Color PoIColor = Color.Yellow;
+        public string Name = string.Empty;
+    }
+
 }

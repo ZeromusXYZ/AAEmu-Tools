@@ -68,6 +68,9 @@ namespace AAEmu.DBViewer
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            if (MapViewForm.ThisForm != null)
+                MapViewForm.ThisForm.Close();
+
             Properties.Settings.Default.Save();
             if (pak != null)
                 pak.ClosePak();
@@ -3881,6 +3884,10 @@ namespace AAEmu.DBViewer
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
 
+                        var map = MapViewForm.GetMap();
+                        map.Show();
+                        map.ClearPoI();
+
                         npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id,true));
 
                         if (npcList.Count > 0)
@@ -3919,6 +3926,8 @@ namespace AAEmu.DBViewer
                                         {
                                             loading.ShowInfo("Loading " + c.ToString() + "/" + npcList.Count.ToString() + " NPCs");
                                         }
+
+                                        map.AddPoI((int)npc.x,(int)npc.y,z.nameLocalized + " ("+ npc.id.ToString() + ")",Color.Yellow);
                                     }
                                 }
                                 tcViewer.SelectedTab = tpNPCs;
@@ -4287,10 +4296,18 @@ namespace AAEmu.DBViewer
 
         private void btnMap_Click(object sender, EventArgs e)
         {
-            using (var map = new MapViewForm())
-            {
-                map.ShowDialog();
-            }
+            if (MapViewForm.ThisForm != null)
+                MapViewForm.ThisForm.Show();
+
+            var map = new MapViewForm();
+            map.Show();
+        }
+
+        private void btnShowNPCsOnMap_Click(object sender, EventArgs e)
+        {
+            var map = MapViewForm.GetMap();
+            map.Show();
+            map.ClearPoI();
         }
     }
 }
