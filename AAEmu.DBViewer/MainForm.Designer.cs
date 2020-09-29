@@ -293,6 +293,7 @@
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpNPCs = new System.Windows.Forms.TabPage();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.btnShowNPCsOnMap = new System.Windows.Forms.Button();
             this.lNPCTags = new System.Windows.Forms.Label();
             this.label125 = new System.Windows.Forms.Label();
             this.lGMNPCSpawn = new System.Windows.Forms.Label();
@@ -446,7 +447,6 @@
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.btnShowNPCsOnMap = new System.Windows.Forms.Button();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -3318,11 +3318,24 @@
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "NPC Info";
             // 
+            // btnShowNPCsOnMap
+            // 
+            this.btnShowNPCsOnMap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnShowNPCsOnMap.ForeColor = System.Drawing.Color.Black;
+            this.btnShowNPCsOnMap.Location = new System.Drawing.Point(9, 434);
+            this.btnShowNPCsOnMap.Name = "btnShowNPCsOnMap";
+            this.btnShowNPCsOnMap.Size = new System.Drawing.Size(206, 22);
+            this.btnShowNPCsOnMap.TabIndex = 26;
+            this.btnShowNPCsOnMap.Text = "Find Selected";
+            this.btnShowNPCsOnMap.UseVisualStyleBackColor = true;
+            this.btnShowNPCsOnMap.Click += new System.EventHandler(this.btnShowNPCsOnMap_Click);
+            // 
             // lNPCTags
             // 
             this.lNPCTags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lNPCTags.AutoSize = true;
-            this.lNPCTags.Location = new System.Drawing.Point(6, 386);
+            this.lNPCTags.Location = new System.Drawing.Point(6, 351);
             this.lNPCTags.Name = "lNPCTags";
             this.lNPCTags.Size = new System.Drawing.Size(25, 13);
             this.lNPCTags.TabIndex = 25;
@@ -3332,7 +3345,7 @@
             // 
             this.label125.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label125.AutoSize = true;
-            this.label125.Location = new System.Drawing.Point(6, 363);
+            this.label125.Location = new System.Drawing.Point(6, 328);
             this.label125.Name = "label125";
             this.label125.Size = new System.Drawing.Size(31, 13);
             this.label125.TabIndex = 24;
@@ -3342,7 +3355,7 @@
             // 
             this.lGMNPCSpawn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lGMNPCSpawn.AutoSize = true;
-            this.lGMNPCSpawn.Location = new System.Drawing.Point(6, 437);
+            this.lGMNPCSpawn.Location = new System.Drawing.Point(6, 402);
             this.lGMNPCSpawn.Name = "lGMNPCSpawn";
             this.lGMNPCSpawn.Size = new System.Drawing.Size(43, 13);
             this.lGMNPCSpawn.TabIndex = 13;
@@ -4890,17 +4903,6 @@
             this.mainFormToolTip.InitialDelay = 1000;
             this.mainFormToolTip.ReshowDelay = 100;
             this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
-            // 
-            // btnShowNPCsOnMap
-            // 
-            this.btnShowNPCsOnMap.ForeColor = System.Drawing.Color.Black;
-            this.btnShowNPCsOnMap.Location = new System.Drawing.Point(182, 425);
-            this.btnShowNPCsOnMap.Name = "btnShowNPCsOnMap";
-            this.btnShowNPCsOnMap.Size = new System.Drawing.Size(33, 31);
-            this.btnShowNPCsOnMap.TabIndex = 26;
-            this.btnShowNPCsOnMap.Text = "X";
-            this.btnShowNPCsOnMap.UseVisualStyleBackColor = true;
-            this.btnShowNPCsOnMap.Click += new System.EventHandler(this.btnShowNPCsOnMap_Click);
             // 
             // MainForm
             // 

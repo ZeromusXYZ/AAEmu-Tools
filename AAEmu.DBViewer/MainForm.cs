@@ -3304,11 +3304,13 @@ namespace AAEmu.DBViewer
                 lNPCTemplate.Text = npc.id.ToString();
                 lNPCTags.Text = TagsAsString(id, AADB.DB_Tagged_NPCs);
                 ShowSelectedData("npcs", "(id = " + id.ToString() + ")", "id ASC");
+                btnShowNPCsOnMap.Tag = npc.id;
             }
             else
             {
                 lNPCTemplate.Text = "???";
                 lNPCTags.Text = "???";
+                btnShowNPCsOnMap.Tag = 0;
             }
             lGMNPCSpawn.Text = "/spawn npc " + lNPCTemplate.Text;
         }
@@ -3935,7 +3937,8 @@ namespace AAEmu.DBViewer
 
                             }
                         }
-
+                        map.cbPoINames.Checked = false; // Disable this when loading from zone
+                        map.FocusAllPoIs();
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
                     }
@@ -4308,6 +4311,53 @@ namespace AAEmu.DBViewer
             var map = MapViewForm.GetMap();
             map.Show();
             map.ClearPoI();
+
+            var searchId = (long)(sender as Button).Tag;
+            if (searchId <= 0)
+                return;
+
+            List<MapSpawnLocation> npcList = new List<MapSpawnLocation>();
+
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+
+            using (var loading = new LoadingForm())
+            {
+                loading.ShowInfo("Searching in zones: " + AADB.DB_Zone_Groups.Count.ToString());
+                loading.Show();
+
+                var zoneCount = 0;
+                foreach (var zgv in AADB.DB_Zone_Groups)
+                {
+                    var zg = zgv.Value;
+                    if (zg != null)
+                    {
+                        zoneCount++;
+                        loading.ShowInfo("Searching in zones: " + zoneCount.ToString() + "/" + AADB.DB_Zone_Groups.Count.ToString());
+                        npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id, true));
+                    }
+                }
+
+                if (npcList.Count > 0)
+                {
+                    // Add to NPC list
+                    foreach (var npc in npcList)
+                    {
+                        if (npc.id != searchId)
+                            continue;
+                        if (AADB.DB_NPCs.TryGetValue(npc.id, out var z))
+                        {
+                            map.AddPoI((int)npc.x, (int)npc.y, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow);
+                        }
+                    }
+                }
+
+            }
+            map.cbPoINames.Checked = true;
+            map.cbFocus.Checked = true;
+            map.FocusAllPoIs();
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
         }
     }
 }
