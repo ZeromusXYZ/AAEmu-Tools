@@ -213,6 +213,8 @@ namespace AAEmu.DBDefs
 
     class GameZone
     {
+        static private string main_world = "main_world";
+
         public long id = 0;
         public string name = string.Empty;
         public long zone_key = 0;
@@ -226,13 +228,18 @@ namespace AAEmu.DBDefs
         // Helpers
         public string display_textLocalized = string.Empty;
         public string SearchString = string.Empty;
+        public string GamePakZoneTransferPathXML
+        {
+            get
+            {
+                return "game/worlds/" + main_world + "/level_design/zone/" + zone_key.ToString() + "/client/transfer_path.xml";
+            }
+        }
     }
 
     class GameZone_Groups
     {
-        static private string main_world_dir = "main_world";
-        static private string game_worlds_dir = "game/worlds/";
-        static private string map_data_npc_map_dir = "/map_data/npc_map/";
+        static private string main_world = "main_world";
 
         public long id = 0;
         public string name = string.Empty;
@@ -251,17 +258,17 @@ namespace AAEmu.DBDefs
         // Helpers
         public string display_textLocalized = string.Empty;
         public string SearchString = string.Empty;
-        public string GamePakZoneNPCsFile
+        public string GamePakZoneNPCsDat
         {
             get
             {
                 if (target_id != 1)
                 {
-                    return game_worlds_dir + main_world_dir + map_data_npc_map_dir + name + ".dat";
+                    return "game/worlds/" + main_world + "/map_data/npc_map/" + name + ".dat";
                 }
                 else
                 {
-                    return game_worlds_dir + name + map_data_npc_map_dir + name + ".dat";
+                    return "game/worlds/" + name + "/map_data/npc_map/" + name + ".dat";
                 };
             }
         }

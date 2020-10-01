@@ -447,6 +447,7 @@
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.btnFindTransferPathsInZone = new System.Windows.Forms.Button();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -4382,11 +4383,11 @@
             // btnFindQuestsInZone
             // 
             this.btnFindQuestsInZone.Enabled = false;
-            this.btnFindQuestsInZone.Location = new System.Drawing.Point(152, 178);
+            this.btnFindQuestsInZone.Location = new System.Drawing.Point(97, 178);
             this.btnFindQuestsInZone.Name = "btnFindQuestsInZone";
-            this.btnFindQuestsInZone.Size = new System.Drawing.Size(140, 23);
+            this.btnFindQuestsInZone.Size = new System.Drawing.Size(85, 23);
             this.btnFindQuestsInZone.TabIndex = 35;
-            this.btnFindQuestsInZone.Text = "Find Quests in this zone";
+            this.btnFindQuestsInZone.Text = "Find Quests";
             this.btnFindQuestsInZone.UseVisualStyleBackColor = true;
             this.btnFindQuestsInZone.Click += new System.EventHandler(this.btnFindQuestsInZone_Click);
             // 
@@ -4395,9 +4396,9 @@
             this.btnFindNPCsInZone.Enabled = false;
             this.btnFindNPCsInZone.Location = new System.Drawing.Point(6, 178);
             this.btnFindNPCsInZone.Name = "btnFindNPCsInZone";
-            this.btnFindNPCsInZone.Size = new System.Drawing.Size(140, 23);
+            this.btnFindNPCsInZone.Size = new System.Drawing.Size(85, 23);
             this.btnFindNPCsInZone.TabIndex = 34;
-            this.btnFindNPCsInZone.Text = "Find NPCs in this zone";
+            this.btnFindNPCsInZone.Text = "Find NPCs";
             this.btnFindNPCsInZone.UseVisualStyleBackColor = true;
             this.btnFindNPCsInZone.Click += new System.EventHandler(this.BtnFindNPCsInZone_Click);
             // 
@@ -4440,11 +4441,11 @@
             // btnZoneGroupsFreshWaterFish
             // 
             this.btnZoneGroupsFreshWaterFish.Enabled = false;
-            this.btnZoneGroupsFreshWaterFish.Location = new System.Drawing.Point(152, 149);
+            this.btnZoneGroupsFreshWaterFish.Location = new System.Drawing.Point(97, 149);
             this.btnZoneGroupsFreshWaterFish.Name = "btnZoneGroupsFreshWaterFish";
-            this.btnZoneGroupsFreshWaterFish.Size = new System.Drawing.Size(140, 23);
+            this.btnZoneGroupsFreshWaterFish.Size = new System.Drawing.Size(85, 23);
             this.btnZoneGroupsFreshWaterFish.TabIndex = 29;
-            this.btnZoneGroupsFreshWaterFish.Text = "Freshwater Fishing Loot";
+            this.btnZoneGroupsFreshWaterFish.Text = "Freshwater Fish";
             this.btnZoneGroupsFreshWaterFish.UseVisualStyleBackColor = true;
             this.btnZoneGroupsFreshWaterFish.Click += new System.EventHandler(this.BtnZoneGroupsFishLoot_Click);
             // 
@@ -4453,9 +4454,9 @@
             this.btnZoneGroupsSaltWaterFish.Enabled = false;
             this.btnZoneGroupsSaltWaterFish.Location = new System.Drawing.Point(6, 149);
             this.btnZoneGroupsSaltWaterFish.Name = "btnZoneGroupsSaltWaterFish";
-            this.btnZoneGroupsSaltWaterFish.Size = new System.Drawing.Size(140, 23);
+            this.btnZoneGroupsSaltWaterFish.Size = new System.Drawing.Size(85, 23);
             this.btnZoneGroupsSaltWaterFish.TabIndex = 28;
-            this.btnZoneGroupsSaltWaterFish.Text = "Saltwater Fishing Loot";
+            this.btnZoneGroupsSaltWaterFish.Text = "Saltwater Fish";
             this.btnZoneGroupsSaltWaterFish.UseVisualStyleBackColor = true;
             this.btnZoneGroupsSaltWaterFish.Click += new System.EventHandler(this.BtnZoneGroupsFishLoot_Click);
             // 
@@ -4607,6 +4608,7 @@
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox3.Controls.Add(this.btnFindTransferPathsInZone);
             this.groupBox3.Controls.Add(this.lZoneDisplayName);
             this.groupBox3.Controls.Add(this.label28);
             this.groupBox3.Controls.Add(this.lZoneABoxShow);
@@ -4903,6 +4905,16 @@
             this.mainFormToolTip.InitialDelay = 1000;
             this.mainFormToolTip.ReshowDelay = 100;
             this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
+            // 
+            // btnFindTransferPathsInZone
+            // 
+            this.btnFindTransferPathsInZone.Location = new System.Drawing.Point(211, 93);
+            this.btnFindTransferPathsInZone.Name = "btnFindTransferPathsInZone";
+            this.btnFindTransferPathsInZone.Size = new System.Drawing.Size(85, 23);
+            this.btnFindTransferPathsInZone.TabIndex = 37;
+            this.btnFindTransferPathsInZone.Text = "Transfers";
+            this.btnFindTransferPathsInZone.UseVisualStyleBackColor = true;
+            this.btnFindTransferPathsInZone.Click += new System.EventHandler(this.btnFindTransferPathsInZone_Click);
             // 
             // MainForm
             // 
@@ -5418,6 +5430,7 @@
         private System.Windows.Forms.Button btnExportDataForVieweD;
         private System.Windows.Forms.Button btnMap;
         private System.Windows.Forms.Button btnShowNPCsOnMap;
+        private System.Windows.Forms.Button btnFindTransferPathsInZone;
     }
 }
 

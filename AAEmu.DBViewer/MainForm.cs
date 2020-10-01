@@ -15,6 +15,8 @@ using AAEmu.ClipboardHelper;
 using FreeImageAPI;
 using System.Threading;
 using System.Globalization;
+using System.Xml;
+using System.Numerics;
 
 namespace AAEmu.DBViewer
 {
@@ -1687,11 +1689,11 @@ namespace AAEmu.DBViewer
                             t.SearchString = t.SearchString.ToLower();
 
                             // Read remaining data
-                            foreach(var c in cols)
+                            foreach (var c in cols)
                             {
                                 if (!reader.IsDBNull(c))
                                 {
-                                    var v = reader.GetString(c,string.Empty);
+                                    var v = reader.GetString(c, string.Empty);
                                     var isnumber = double.TryParse(v, NumberStyles.Float, CultureInfo.InvariantCulture, out var dVal);
                                     if (isnumber)
                                     {
@@ -2042,7 +2044,7 @@ namespace AAEmu.DBViewer
 
         }
 
-        private string MSToString(long msTime,bool dontShowMS = false)
+        private string MSToString(long msTime, bool dontShowMS = false)
         {
             string res = string.Empty;
             long ms = (msTime % 1000);
@@ -2194,7 +2196,7 @@ namespace AAEmu.DBViewer
                 // lSkillGCD.Text = skill.ignore_global_cooldown ? "Ignore" : "Normal";
                 FormattedTextToRichtEdit(skill.descriptionLocalized, rtSkillDescription);
                 IconIDToLabel(skill.icon_id, skillIcon);
-                lSkillTags.Text = TagsAsString(idx,AADB.DB_Tagged_Skills);
+                lSkillTags.Text = TagsAsString(idx, AADB.DB_Tagged_Skills);
 
                 ShowSelectedData("skills", "(id = " + idx.ToString() + ")", "id ASC");
 
@@ -2293,6 +2295,7 @@ namespace AAEmu.DBViewer
                 lZoneABoxShow.Text = zone.abox_show.ToString();
                 btnFindQuestsInZone.Tag = zone.id;
                 btnFindQuestsInZone.Enabled = (zone.id > 0);
+                btnFindTransferPathsInZone.Tag = zone.zone_key;
 
                 var zg = GetZoneGroupByID(zone.group_id);
                 // From Zone_Groups
@@ -2300,7 +2303,7 @@ namespace AAEmu.DBViewer
                 {
                     lZoneGroupsDisplayName.Text = zg.display_textLocalized;
                     lZoneGroupsName.Text = zg.name;
-                    string zonefile = zg.GamePakZoneNPCsFile;
+                    string zonefile = zg.GamePakZoneNPCsDat;
                     if ((pak.isOpen) && (pak.FileExists(zonefile)))
                     {
                         btnFindNPCsInZone.Tag = zg.id;
@@ -2407,6 +2410,7 @@ namespace AAEmu.DBViewer
                 lZoneFactionID.Text = "";
                 lZoneClimateID.Text = "";
                 lZoneABoxShow.Text = "";
+                btnFindTransferPathsInZone.Tag = 0;
 
                 blank_world_groups = true;
                 blank_zone_groups = true;
@@ -2545,7 +2549,7 @@ namespace AAEmu.DBViewer
 
         private void ShowDBQuestComponent(long quest_component_id)
         {
-            if (!AADB.DB_Quest_Components.TryGetValue(quest_component_id,out var c))
+            if (!AADB.DB_Quest_Components.TryGetValue(quest_component_id, out var c))
             {
                 dgvQuestActs.Rows.Clear();
                 return;
@@ -2578,9 +2582,9 @@ namespace AAEmu.DBViewer
             }
             lQuestId.Text = q.id.ToString();
             dgvQuestComponents.Rows.Clear();
-            var comps = from c in AADB.DB_Quest_Components 
-                        where c.Value.quest_context_id == quest_id 
-                        select c.Value ;
+            var comps = from c in AADB.DB_Quest_Components
+                        where c.Value.quest_context_id == quest_id
+                        select c.Value;
             var first = true;
             foreach (var c in comps)
             {
@@ -2591,11 +2595,11 @@ namespace AAEmu.DBViewer
                 row.Cells[1].Value = c.component_kind_id.ToString();
                 row.Cells[2].Value = c.next_component.ToString();
                 if (AADB.DB_NPCs.TryGetValue(c.npc_id, out var npc))
-                    row.Cells[3].Value = npc.nameLocalized + " ("+ c.npc_id + ")";
+                    row.Cells[3].Value = npc.nameLocalized + " (" + c.npc_id + ")";
                 else
                     row.Cells[3].Value = c.npc_id.ToString();
                 if (AADB.DB_Skills.TryGetValue(c.skill_id, out var skill))
-                    row.Cells[4].Value = skill.nameLocalized + " ("+ c.skill_id.ToString() + ")";
+                    row.Cells[4].Value = skill.nameLocalized + " (" + c.skill_id.ToString() + ")";
                 else
                     row.Cells[4].Value = c.skill_id.ToString();
                 row.Cells[5].Value = c.skill_self.ToString();
@@ -2615,7 +2619,7 @@ namespace AAEmu.DBViewer
         {
             if (name.Trim(' ') == string.Empty)
                 return;
-            var lastTagID = flpBuff.Controls.Count + 10 ;
+            var lastTagID = flpBuff.Controls.Count + 10;
             var L = new Label();
             L.Tag = lastTagID;
             // L.BorderStyle = BorderStyle.FixedSingle;
@@ -2643,7 +2647,7 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private string TagsAsString(long target_id, Dictionary<long,GameTaggedValues> lookupTable)
+        private string TagsAsString(long target_id, Dictionary<long, GameTaggedValues> lookupTable)
         {
             var tags = from t in lookupTable
                        where t.Value.target_id == target_id
@@ -2676,13 +2680,13 @@ namespace AAEmu.DBViewer
             lBuffId.Text = b.id.ToString();
             lBuffName.Text = b.nameLocalized;
             lBuffDuration.Text = MSToString(b.duration);
-            lBuffTags.Text = TagsAsString(buff_id,AADB.DB_Tagged_Buffs);
+            lBuffTags.Text = TagsAsString(buff_id, AADB.DB_Tagged_Buffs);
             IconIDToLabel(b.icon_id, buffIcon);
             FormattedTextToRichtEdit(b.descLocalized, rtBuffDesc);
             ClearBuffTags();
             foreach (var c in b._others)
             {
-                AddBuffTag(c.Key+" = "+c.Value);
+                AddBuffTag(c.Key + " = " + c.Value);
             }
             ShowSelectedData("buffs", "id = " + b.id.ToString(), "id ASC");
         }
@@ -3820,14 +3824,14 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private List<MapSpawnLocation> GetNPCSpawnsInZoneGroup(long zoneGroupId,bool uniqueOnly = false, long filterByID = -1)
+        private List<MapSpawnLocation> GetNPCSpawnsInZoneGroup(long zoneGroupId, bool uniqueOnly = false, long filterByID = -1)
         {
             List<MapSpawnLocation> res = new List<MapSpawnLocation>();
             var zg = GetZoneGroupByID(zoneGroupId);
-            if ((zg != null) && (pak.isOpen) && (pak.FileExists(zg.GamePakZoneNPCsFile)))
+            if ((zg != null) && (pak.isOpen) && (pak.FileExists(zg.GamePakZoneNPCsDat)))
             {
                 // Open .dat file and read it's contents
-                using (var fs = pak.ExportFileAsStream(zg.GamePakZoneNPCsFile))
+                using (var fs = pak.ExportFileAsStream(zg.GamePakZoneNPCsDat))
                 {
                     int indexCount = ((int)fs.Length / 16);
                     using (var reader = new BinaryReader(fs))
@@ -3879,7 +3883,7 @@ namespace AAEmu.DBViewer
                     var zg = GetZoneGroupByID(ZoneGroupId);
                     string ZoneGroupFile = string.Empty;
                     if (zg != null)
-                        ZoneGroupFile = zg.GamePakZoneNPCsFile;
+                        ZoneGroupFile = zg.GamePakZoneNPCsDat;
 
                     if (zg != null)
                     {
@@ -3890,7 +3894,7 @@ namespace AAEmu.DBViewer
                         map.Show();
                         map.ClearPoI();
 
-                        npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id,true));
+                        npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id, true));
 
                         if (npcList.Count > 0)
                         {
@@ -3919,7 +3923,7 @@ namespace AAEmu.DBViewer
                                         row.Cells[4].Value = z.npc_grade_id.ToString();
                                         row.Cells[5].Value = AADB.GetFactionName(z.faction_id, true);
                                         if (npc.count == 1)
-                                            row.Cells[6].Value = string.Format("{0} , {1} = ({2})",npc.x,npc.y, npc.AsSextant());
+                                            row.Cells[6].Value = string.Format("{0} , {1} = ({2})", npc.x, npc.y, npc.AsSextant());
                                         else
                                             row.Cells[6].Value = npc.count.ToString() + " instances in zone";
 
@@ -3929,7 +3933,7 @@ namespace AAEmu.DBViewer
                                             loading.ShowInfo("Loading " + c.ToString() + "/" + npcList.Count.ToString() + " NPCs");
                                         }
 
-                                        map.AddPoI((int)npc.x,(int)npc.y,z.nameLocalized + " ("+ npc.id.ToString() + ")",Color.Yellow);
+                                        map.AddPoI((int)npc.x, (int)npc.y, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow);
                                     }
                                 }
                                 tcViewer.SelectedTab = tpNPCs;
@@ -3957,7 +3961,7 @@ namespace AAEmu.DBViewer
                     long zoneid = (long)b.Tag;
                     bool first = true;
 
-                    foreach(var quest in AADB.DB_Quest_Contexts)
+                    foreach (var quest in AADB.DB_Quest_Contexts)
                     {
                         var q = quest.Value;
                         if (q.zone_id == zoneid)
@@ -4046,7 +4050,7 @@ namespace AAEmu.DBViewer
 
         private void tQuestSearch_TextChanged(object sender, EventArgs e)
         {
-            btnQuestsSearch .Enabled = (tQuestSearch.Text != string.Empty);
+            btnQuestsSearch.Enabled = (tQuestSearch.Text != string.Empty);
         }
 
         private void tQuestSearch_KeyDown(object sender, KeyEventArgs e)
@@ -4059,7 +4063,7 @@ namespace AAEmu.DBViewer
 
         private void cbItemSearchItemArmorSlotTypeList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tItemSearch.Text.Replace("*","") == string.Empty)
+            if (tItemSearch.Text.Replace("*", "") == string.Empty)
             {
                 if ((cbItemSearchItemArmorSlotTypeList.SelectedIndex > 0) || (cbItemSearchItemCategoryTypeList.SelectedIndex > 0))
                     tItemSearch.Text = "*";
@@ -4078,7 +4082,7 @@ namespace AAEmu.DBViewer
             {
                 if (b.Value.zone_group_id == zoneGroupId)
                 {
-                    if (AADB.DB_Tags.TryGetValue(b.Value.tag_id,out var tag))
+                    if (AADB.DB_Tags.TryGetValue(b.Value.tag_id, out var tag))
                     {
                         bannedInfo += tag.id + " - " + tag.nameLocalized + "\r\n";
                     }
@@ -4132,7 +4136,7 @@ namespace AAEmu.DBViewer
             foreach (var i in AADB.DB_Translations)
             {
                 var translation = i.Value;
-                var tSearchString = "="+translation.table.ToLower() + "=" + translation.field.ToLower() + "=" + translation.idx.ToString() + "=" + translation.value.ToLower()+"=";
+                var tSearchString = "=" + translation.table.ToLower() + "=" + translation.field.ToLower() + "=" + translation.idx.ToString() + "=" + translation.value.ToLower() + "=";
                 var searchOK = true;
                 foreach (var s in sTexts)
                     if (!tSearchString.Contains(s))
@@ -4185,7 +4189,7 @@ namespace AAEmu.DBViewer
 
                     row.Cells[0].Value = b.id.ToString();
                     row.Cells[1].Value = b.nameLocalized;
-                    row.Cells[2].Value = b.duration > 0 ? MSToString(b.duration,true) : "";
+                    row.Cells[2].Value = b.duration > 0 ? MSToString(b.duration, true) : "";
 
                     if (first)
                     {
@@ -4245,7 +4249,7 @@ namespace AAEmu.DBViewer
             }
             catch (Exception x)
             {
-                MessageBox.Show("Failed to create export directory: " + LookupExportPath+"\r\n"+x.Message);
+                MessageBox.Show("Failed to create export directory: " + LookupExportPath + "\r\n" + x.Message);
                 return;
             }
 
@@ -4359,5 +4363,139 @@ namespace AAEmu.DBViewer
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
         }
+
+        static public Dictionary<string, string> ReadNodeAttributes(XmlNode node)
+        {
+            var res = new Dictionary<string, string>();
+            res.Clear();
+            if (node.Attributes != null)
+            {
+                for (var i = 0; i < node.Attributes.Count; i++)
+                    res.Add(node.Attributes.Item(i).Name.ToLower(), node.Attributes.Item(i).Value);
+            }
+            return res;
+        }
+
+        private void btnFindTransferPathsInZone_Click(object sender, EventArgs e)
+        {
+            List<Vector3> allpoints = new List<Vector3>();
+
+            if ((sender != null) && (sender is Button))
+            {
+                Button b = (sender as Button);
+                if (b != null)
+                {
+                    if ((sender as Button).Tag == null)
+                        return;
+                    var searchId = (long)(sender as Button).Tag;
+                    if (searchId <= 0)
+                        return;
+
+                    GameZone zone = null;
+                    foreach(var zv in AADB.DB_Zones)
+                        if (zv.Value.zone_key == searchId)
+                            zone = zv.Value;
+
+                    if (zone != null)
+                    {
+
+                        var zoneGroup = GetZoneGroupByID(zone.group_id);
+                        var xOffset = 0f;
+                        var yOffset = 0f;
+                        if (zoneGroup != null)
+                        {
+                            xOffset = zoneGroup.PosAndSize.X;
+                            yOffset = zoneGroup.PosAndSize.Y;
+                        }
+
+                        if (!pak.isOpen || !pak.FileExists(zone.GamePakZoneTransferPathXML))
+                        {
+                            MessageBox.Show("No path file found for this zone");
+                            return;
+                        }
+                        // MessageBox.Show("Loading: " + zone.GamePakZoneTransferPathXML);
+
+                        int pathsFound = 0;
+                        try
+                        {
+                            var fs = pak.ExportFileAsStream(zone.GamePakZoneTransferPathXML);
+
+                            var _doc = new XmlDocument();
+                            _doc.Load(fs);
+                            var _allTransferBlocks = _doc.SelectNodes("/Objects/Transfer");
+                            for (var i = 0; i < _allTransferBlocks.Count; i++)
+                            {
+                                var block = _allTransferBlocks[i];
+                                var attribs = ReadNodeAttributes(block);
+
+                                if (attribs.TryGetValue("name", out var blockName))
+                                {
+                                    //MessageBox.Show("Found: " + blockName);
+                                    pathsFound++;
+
+                                    var pointsxml = block.SelectNodes("Points/Point");
+                                    for (var n = 0; n < pointsxml.Count; n++)
+                                    {
+                                        var pointxml = pointsxml[n];
+                                        var pointattribs = ReadNodeAttributes(pointxml);
+                                        if (pointattribs.TryGetValue("pos", out var posString))
+                                        {
+                                            var posVals = posString.Split(',');
+                                            if (posVals.Length != 3)
+                                            {
+                                                MessageBox.Show("Invalid number of values inside Pos: " + posString);
+                                                continue;
+                                            }
+                                            try
+                                            {
+                                                var vec = new Vector3(
+                                                    xOffset + float.Parse(posVals[0], CultureInfo.InvariantCulture),
+                                                    yOffset + float.Parse(posVals[1], CultureInfo.InvariantCulture), 
+                                                    float.Parse(posVals[2], CultureInfo.InvariantCulture)
+                                                    );
+                                                allpoints.Add(vec);
+                                            }
+                                            catch 
+                                            {
+                                                MessageBox.Show("Invalid float inside Pos: " + posString);
+                                            }
+
+                                        }
+
+                                    }
+
+                                }
+                            }
+                        }
+                        catch (Exception x)
+                        {
+                            MessageBox.Show(x.Message);
+                        }
+                        if (pathsFound <= 0)
+                            MessageBox.Show("No paths found inside this zone");
+                        else
+                        {
+                            MessageBox.Show("Found " + allpoints.Count.ToString() + " points inside " + pathsFound.ToString() + " paths");
+                            // Show on map
+                            var map = MapViewForm.GetMap();
+                            map.Show();
+                            map.ClearPoI();
+                            foreach(var p in allpoints)
+                            {
+                                map.AddPoI(p.X, p.Y, "", Color.White);
+                            }
+                            map.FocusAllPoIs();
+                        }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid zone selected ?");
+                        return;
+                    }
+                }
+            }
+        }
+
     }
 }
