@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Management.Instrumentation;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,6 +19,7 @@ namespace AAEmu.DBViewer
         public static MapViewForm ThisForm ;
         private PictureBox pb = new PictureBox();
         private Point viewOffset = new Point(0, 0);
+        private Point cursorCoords = new Point(0, 0);
         private Point startDragPos = new Point();
         private Point startDragOffset = new Point();
         private bool isDragging = false;
@@ -25,6 +27,7 @@ namespace AAEmu.DBViewer
         private MapLevel minimumDrawLevel = MapLevel.None;
         private List<MapViewPoI> poi = new List<MapViewPoI>();
         private List<MapViewMap> subMaps = new List<MapViewMap>();
+        private List<MapViewPath> paths = new List<MapViewPath>();
         private RectangleF FocusBorder = new RectangleF();
 
         public Point ViewOffset { get => viewOffset; set { viewOffset = value; updateStatusBar(); } }
@@ -56,8 +59,9 @@ namespace AAEmu.DBViewer
                 else
                     fn = iref.FileName;
 
-                //var m = AddMap(zg.PosAndSize.X, zg.PosAndSize.Y, zg.PosAndSize.Width, zg.PosAndSize.Height, zg.display_textLocalized + " ("+zg.id.ToString()+")", "game/ui/map/world/", fn, MapLevel.Zone);
-                var m = AddMap(zg.PosAndSize.X, zg.PosAndSize.Y, zg.PosAndSize.Width, zg.PosAndSize.Height, zg.display_textLocalized, "game/ui/map/road/", zg.name + "_road_100", MapLevel.Zone);
+                var level = MapLevel.Zone;
+                var m = AddMap(zg.PosAndSize.X, zg.PosAndSize.Y, zg.PosAndSize.Width, zg.PosAndSize.Height, zg.display_textLocalized + " ("+zg.id.ToString()+")", "game/ui/map/world/", fn, level);
+                //var m = AddMap(zg.PosAndSize.X, zg.PosAndSize.Y, zg.PosAndSize.Width, zg.PosAndSize.Height, zg.display_textLocalized, "game/ui/map/road/", zg.name + "_road_100", MapLevel.Zone);
 
                 if (zg.faction_chat_region_id == 2)
                     m.MapBorderColor = Color.DarkCyan;
@@ -67,7 +71,11 @@ namespace AAEmu.DBViewer
                     m.MapBorderColor = Color.DarkRed;
                 // If it has the Rough Sea (Turbulance) buff, it's the ocean, use a blue border
                 if (zg.buff_id == 7743)
+                {
                     m.MapBorderColor = Color.Navy;
+                    m.MapLevel = MapLevel.Continent;
+                }
+
             }
 
         }
@@ -87,6 +95,7 @@ namespace AAEmu.DBViewer
             if (isDragging)
                 s += " | drag: " + startDragPos.X.ToString() + " , " + startDragPos.Y.ToString();
             tsslPos.Text = s;
+            tsslCoords.Text = cursorCoords.X.ToString() + " , " + cursorCoords.Y.ToString();
         }
 
         private void MapViewOnMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -157,7 +166,7 @@ namespace AAEmu.DBViewer
                     drawRect.Width = targetRect.Width / targetAspect * imageAspect;
                     drawRect.Height = targetRect.Height;
                     drawRect.X = targetRect.X + ((targetRect.Width - drawRect.Width) / 2);
-                    drawRect.Y = targetRect.Y ;
+                    drawRect.Y = targetRect.Y;
                 }
                 else
                 {
@@ -203,10 +212,10 @@ namespace AAEmu.DBViewer
                         DrawSubMap(g, map);
 
             // Draw Grid
-            for (var x = 0; x < 36000; x += 4000)
-                g.DrawLine(x % 4000 == 0 ? System.Drawing.Pens.Gray : System.Drawing.Pens.LightGray, ViewOffset.X + x, 0, ViewOffset.X + x, 36000) ;
-            for (var y = 0; y > -36000; y -= 4000)
-                g.DrawLine(y % 4000 == 0 ? System.Drawing.Pens.Gray : System.Drawing.Pens.LightGray, 0, ViewOffset.Y + y, 36000, ViewOffset.Y + y);
+            for (var x = 0; x < 36000; x += 512)
+                g.DrawLine(x % 4096 == 0 ? System.Drawing.Pens.Gray : System.Drawing.Pens.LightGray, ViewOffset.X + x, 0, ViewOffset.X + x, 36000) ;
+            for (var y = 0; y > -36000; y -= 512)
+                g.DrawLine(y % 4096 == 0 ? System.Drawing.Pens.Gray : System.Drawing.Pens.LightGray, 0, ViewOffset.Y + y, 36000, ViewOffset.Y + y);
 
             /*
             var f = new Font(Font.FontFamily, 100f);
@@ -237,6 +246,34 @@ namespace AAEmu.DBViewer
             foreach (var p in poi)
             {
                 DrawCross(g, p.CoordX, p.CoordY, p.PoIColor, p.Name);
+            }
+
+            foreach(var path in paths)
+            {
+                if (path.allpoints.Count <= 0)
+                    continue;
+
+                bool first = true;
+                Point lastPos = new Point(0, 0);
+                foreach(var p in path.allpoints)
+                {
+                    if (first)
+                    {
+                        // Draw Startpoint
+                        first = false;
+                        DrawCross(g, p.X, p.Y, path.Color, path.PathName);
+                    }
+                    else
+                    {
+                        // Draw Line
+                        var pen = new Pen(path.Color);
+                        var pos = CoordToPixel(p.X, p.Y);
+                        var lpos = CoordToPixel(lastPos.X, lastPos.Y);
+                        g.DrawLine(pen, ViewOffset.X + lpos.X, ViewOffset.Y + lpos.Y, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y);
+
+                    }
+                    lastPos = new Point((int)p.X, (int)p.Y);
+                }
             }
 
             if (cbFocus.Checked)
@@ -292,6 +329,7 @@ namespace AAEmu.DBViewer
                 ViewOffset = new Point(startDragOffset.X - dx, startDragOffset.Y - dy);
                 pView.Refresh();
             }
+            cursorCoords = new Point((int)(e.X / viewScale) - viewOffset.X,((int)(e.Y / viewScale) - viewOffset.Y) * -1);
             updateStatusBar();
         }
 
@@ -354,6 +392,15 @@ namespace AAEmu.DBViewer
             subMaps.Clear();
         }
 
+        public void AddPath(MapViewPath path)
+        {
+            paths.Add(path);
+        }
+
+        public void ClearPaths()
+        {
+            paths.Clear();
+        }
 
         private void MapViewForm_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -467,5 +514,14 @@ namespace AAEmu.DBViewer
         public Bitmap BitmapImage = null;
         public MapLevel MapLevel = MapLevel.None;
     }
+
+    public class MapViewPath
+    {
+        public string PathName = string.Empty;
+        public Color Color = Color.White;
+        public long PathType = 0 ;
+        public List<Vector3> allpoints = new List<Vector3>();
+    }
+
 
 }

@@ -4378,7 +4378,7 @@ namespace AAEmu.DBViewer
 
         private void btnFindTransferPathsInZone_Click(object sender, EventArgs e)
         {
-            List<Vector3> allpoints = new List<Vector3>();
+            List<MapViewPath> allpaths = new List<MapViewPath>();
 
             if ((sender != null) && (sender is Button))
             {
@@ -4430,6 +4430,40 @@ namespace AAEmu.DBViewer
 
                                 if (attribs.TryGetValue("name", out var blockName))
                                 {
+
+                                    var newPath = new MapViewPath();
+                                    newPath.PathName = blockName;
+                                    try
+                                    {
+                                        newPath.PathType = long.Parse(attribs["type"]);
+                                    }
+                                    catch { }
+
+                                    var cellXOffset = 0;
+                                    var cellYOffset = 0;
+                                    if (attribs.TryGetValue("cellx",out var cellXOffsetString))
+                                    {
+                                        try
+                                        {
+                                            cellXOffset = int.Parse(cellXOffsetString) * 0; 
+                                        }
+                                        catch
+                                        {
+                                            cellXOffset = 0;
+                                        }
+                                    }
+                                    if (attribs.TryGetValue("celly", out var cellYOffsetString))
+                                    {
+                                        try
+                                        {
+                                            cellYOffset = int.Parse(cellYOffsetString) * 0;
+                                        }
+                                        catch
+                                        {
+                                            cellYOffset = 0;
+                                        }
+                                    }
+
                                     //MessageBox.Show("Found: " + blockName);
                                     pathsFound++;
 
@@ -4449,11 +4483,11 @@ namespace AAEmu.DBViewer
                                             try
                                             {
                                                 var vec = new Vector3(
-                                                    xOffset + float.Parse(posVals[0], CultureInfo.InvariantCulture),
-                                                    yOffset + float.Parse(posVals[1], CultureInfo.InvariantCulture), 
+                                                    xOffset + float.Parse(posVals[0], CultureInfo.InvariantCulture) + cellXOffset,
+                                                    yOffset + float.Parse(posVals[1], CultureInfo.InvariantCulture) + cellYOffset, 
                                                     float.Parse(posVals[2], CultureInfo.InvariantCulture)
                                                     );
-                                                allpoints.Add(vec);
+                                                newPath.allpoints.Add(vec);
                                             }
                                             catch 
                                             {
@@ -4461,8 +4495,8 @@ namespace AAEmu.DBViewer
                                             }
 
                                         }
-
                                     }
+                                    allpaths.Add(newPath);
 
                                 }
                             }
@@ -4475,15 +4509,13 @@ namespace AAEmu.DBViewer
                             MessageBox.Show("No paths found inside this zone");
                         else
                         {
-                            MessageBox.Show("Found " + allpoints.Count.ToString() + " points inside " + pathsFound.ToString() + " paths");
                             // Show on map
+                            //MessageBox.Show("Found " + allpoints.Count.ToString() + " points inside " + pathsFound.ToString() + " paths");
                             var map = MapViewForm.GetMap();
                             map.Show();
-                            map.ClearPoI();
-                            foreach(var p in allpoints)
-                            {
-                                map.AddPoI(p.X, p.Y, "", Color.White);
-                            }
+                            map.ClearPaths();
+                            foreach(var p in allpaths)
+                                map.AddPath(p);
                             map.FocusAllPoIs();
                         }
 
