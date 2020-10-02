@@ -28,58 +28,57 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pView = new System.Windows.Forms.Panel();
             this.statusBar = new System.Windows.Forms.StatusStrip();
-            this.tsslPos = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslCoords = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslViewOffset = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslRuler = new System.Windows.Forms.ToolStripStatusLabel();
             this.gbTools = new System.Windows.Forms.GroupBox();
             this.cbFocus = new System.Windows.Forms.CheckBox();
             this.cbZoneBorders = new System.Windows.Forms.CheckBox();
             this.cbShowWorldMap = new System.Windows.Forms.CheckBox();
             this.cbPoINames = new System.Windows.Forms.CheckBox();
+            this.pView = new System.Windows.Forms.PictureBox();
             this.statusBar.SuspendLayout();
             this.gbTools.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pView)).BeginInit();
             this.SuspendLayout();
-            // 
-            // pView
-            // 
-            this.pView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(8)))), ((int)(((byte)(8)))));
-            this.pView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pView.Location = new System.Drawing.Point(0, 0);
-            this.pView.Name = "pView";
-            this.pView.Size = new System.Drawing.Size(628, 460);
-            this.pView.TabIndex = 0;
-            this.pView.Paint += new System.Windows.Forms.PaintEventHandler(this.pView_Paint);
-            this.pView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pView_MouseDown);
-            this.pView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pView_MouseMove);
-            this.pView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pView_MouseUp);
             // 
             // statusBar
             // 
             this.statusBar.BackColor = System.Drawing.SystemColors.Control;
             this.statusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsslPos,
-            this.tsslCoords});
+            this.tsslCoords,
+            this.tsslViewOffset,
+            this.tsslRuler});
             this.statusBar.Location = new System.Drawing.Point(0, 438);
             this.statusBar.Name = "statusBar";
             this.statusBar.Size = new System.Drawing.Size(628, 22);
             this.statusBar.TabIndex = 1;
             this.statusBar.Text = "statusStrip1";
             // 
-            // tsslPos
-            // 
-            this.tsslPos.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsslPos.Name = "tsslPos";
-            this.tsslPos.Size = new System.Drawing.Size(50, 17);
-            this.tsslPos.Text = "Position";
-            this.tsslPos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // tsslCoords
             // 
+            this.tsslCoords.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.tsslCoords.Name = "tsslCoords";
             this.tsslCoords.Size = new System.Drawing.Size(74, 17);
             this.tsslCoords.Text = "0,0 | 0°N, 0°E";
+            this.tsslCoords.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslViewOffset
+            // 
+            this.tsslViewOffset.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslViewOffset.Name = "tsslViewOffset";
+            this.tsslViewOffset.Size = new System.Drawing.Size(50, 17);
+            this.tsslViewOffset.Text = "Position";
+            this.tsslViewOffset.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tsslRuler
+            // 
+            this.tsslRuler.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsslRuler.Name = "tsslRuler";
+            this.tsslRuler.Size = new System.Drawing.Size(36, 17);
+            this.tsslRuler.Text = "-- , --";
+            this.tsslRuler.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // gbTools
             // 
@@ -143,37 +142,54 @@
             this.cbPoINames.UseVisualStyleBackColor = true;
             this.cbPoINames.CheckedChanged += new System.EventHandler(this.cbPoINames_CheckedChanged);
             // 
+            // pView
+            // 
+            this.pView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.pView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pView.Location = new System.Drawing.Point(0, 47);
+            this.pView.Name = "pView";
+            this.pView.Size = new System.Drawing.Size(628, 391);
+            this.pView.TabIndex = 0;
+            this.pView.TabStop = false;
+            this.pView.Click += new System.EventHandler(this.pView_Click);
+            this.pView.Paint += new System.Windows.Forms.PaintEventHandler(this.OnViewPaint);
+            this.pView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnViewMouseDown);
+            this.pView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.OnViewMouseMove);
+            this.pView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OnViewMouseUp);
+            // 
             // MapViewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(628, 460);
+            this.Controls.Add(this.pView);
             this.Controls.Add(this.gbTools);
             this.Controls.Add(this.statusBar);
-            this.Controls.Add(this.pView);
             this.DoubleBuffered = true;
             this.Name = "MapViewForm";
             this.Text = "Map View";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MapViewForm_FormClosed);
+            this.Load += new System.EventHandler(this.MapViewForm_Load);
             this.statusBar.ResumeLayout(false);
             this.statusBar.PerformLayout();
             this.gbTools.ResumeLayout(false);
             this.gbTools.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel pView;
         private System.Windows.Forms.StatusStrip statusBar;
-        private System.Windows.Forms.ToolStripStatusLabel tsslPos;
+        private System.Windows.Forms.ToolStripStatusLabel tsslViewOffset;
         private System.Windows.Forms.ToolStripStatusLabel tsslCoords;
         private System.Windows.Forms.GroupBox gbTools;
         private System.Windows.Forms.CheckBox cbShowWorldMap;
         private System.Windows.Forms.CheckBox cbZoneBorders;
         public System.Windows.Forms.CheckBox cbPoINames;
         public System.Windows.Forms.CheckBox cbFocus;
+        private System.Windows.Forms.PictureBox pView;
+        private System.Windows.Forms.ToolStripStatusLabel tsslRuler;
     }
 }

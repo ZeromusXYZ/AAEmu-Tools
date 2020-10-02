@@ -417,6 +417,7 @@
             this.lZoneGroupsTargetID = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnFindTransferPathsInZone = new System.Windows.Forms.Button();
             this.lZoneDisplayName = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.lZoneABoxShow = new System.Windows.Forms.Label();
@@ -447,7 +448,7 @@
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.btnFindTransferPathsInZone = new System.Windows.Forms.Button();
+            this.btnDebug = new System.Windows.Forms.Button();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -813,6 +814,7 @@
             // 
             // tpV1
             // 
+            this.tpV1.Controls.Add(this.btnDebug);
             this.tpV1.Controls.Add(this.btnMap);
             this.tpV1.Controls.Add(this.btnExportDataForVieweD);
             this.tpV1.Controls.Add(this.lSpace);
@@ -4633,6 +4635,16 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Zone Info";
             // 
+            // btnFindTransferPathsInZone
+            // 
+            this.btnFindTransferPathsInZone.Location = new System.Drawing.Point(211, 93);
+            this.btnFindTransferPathsInZone.Name = "btnFindTransferPathsInZone";
+            this.btnFindTransferPathsInZone.Size = new System.Drawing.Size(85, 23);
+            this.btnFindTransferPathsInZone.TabIndex = 37;
+            this.btnFindTransferPathsInZone.Text = "Move Paths";
+            this.btnFindTransferPathsInZone.UseVisualStyleBackColor = true;
+            this.btnFindTransferPathsInZone.Click += new System.EventHandler(this.btnFindTransferPathsInZone_Click);
+            // 
             // lZoneDisplayName
             // 
             this.lZoneDisplayName.AutoSize = true;
@@ -4906,15 +4918,16 @@
             this.mainFormToolTip.ReshowDelay = 100;
             this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             // 
-            // btnFindTransferPathsInZone
+            // btnDebug
             // 
-            this.btnFindTransferPathsInZone.Location = new System.Drawing.Point(211, 93);
-            this.btnFindTransferPathsInZone.Name = "btnFindTransferPathsInZone";
-            this.btnFindTransferPathsInZone.Size = new System.Drawing.Size(85, 23);
-            this.btnFindTransferPathsInZone.TabIndex = 37;
-            this.btnFindTransferPathsInZone.Text = "Transfers";
-            this.btnFindTransferPathsInZone.UseVisualStyleBackColor = true;
-            this.btnFindTransferPathsInZone.Click += new System.EventHandler(this.btnFindTransferPathsInZone_Click);
+            this.btnDebug.Location = new System.Drawing.Point(131, 152);
+            this.btnDebug.Name = "btnDebug";
+            this.btnDebug.Size = new System.Drawing.Size(120, 23);
+            this.btnDebug.TabIndex = 3;
+            this.btnDebug.Text = "Debug Stuff";
+            this.btnDebug.UseVisualStyleBackColor = true;
+            this.btnDebug.Visible = false;
+            this.btnDebug.Click += new System.EventHandler(this.btnDebug_Click);
             // 
             // MainForm
             // 
@@ -5431,6 +5444,7 @@
         private System.Windows.Forms.Button btnMap;
         private System.Windows.Forms.Button btnShowNPCsOnMap;
         private System.Windows.Forms.Button btnFindTransferPathsInZone;
+        private System.Windows.Forms.Button btnDebug;
     }
 }
 

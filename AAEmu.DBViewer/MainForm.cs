@@ -4379,6 +4379,7 @@ namespace AAEmu.DBViewer
         private void btnFindTransferPathsInZone_Click(object sender, EventArgs e)
         {
             List<MapViewPath> allpaths = new List<MapViewPath>();
+            MapViewZonePathOffsets.LoadOffsetsFromFile(); // Reload every time we press this for debugging
 
             if ((sender != null) && (sender is Button))
             {
@@ -4398,6 +4399,7 @@ namespace AAEmu.DBViewer
 
                     if (zone != null)
                     {
+                        var zonePathOffset = MapViewZonePathOffsets.GetZoneOffset(zone.zone_key);
 
                         var zoneGroup = GetZoneGroupByID(zone.group_id);
                         var xOffset = 0f;
@@ -4439,13 +4441,13 @@ namespace AAEmu.DBViewer
                                     }
                                     catch { }
 
-                                    var cellXOffset = 0;
-                                    var cellYOffset = 0;
+                                    var cellOffset = new PointF();
+                                    /*
                                     if (attribs.TryGetValue("cellx",out var cellXOffsetString))
                                     {
                                         try
                                         {
-                                            cellXOffset = int.Parse(cellXOffsetString) * 0; 
+                                            cellXOffset = int.Parse(cellXOffsetString) * 512; 
                                         }
                                         catch
                                         {
@@ -4456,14 +4458,14 @@ namespace AAEmu.DBViewer
                                     {
                                         try
                                         {
-                                            cellYOffset = int.Parse(cellYOffsetString) * 0;
+                                            cellYOffset = int.Parse(cellYOffsetString) * 512;
                                         }
                                         catch
                                         {
                                             cellYOffset = 0;
                                         }
                                     }
-
+                                    */
                                     //MessageBox.Show("Found: " + blockName);
                                     pathsFound++;
 
@@ -4483,8 +4485,8 @@ namespace AAEmu.DBViewer
                                             try
                                             {
                                                 var vec = new Vector3(
-                                                    xOffset + float.Parse(posVals[0], CultureInfo.InvariantCulture) + cellXOffset,
-                                                    yOffset + float.Parse(posVals[1], CultureInfo.InvariantCulture) + cellYOffset, 
+                                                    xOffset + float.Parse(posVals[0], CultureInfo.InvariantCulture) + cellOffset.X + zonePathOffset.X,
+                                                    yOffset + float.Parse(posVals[1], CultureInfo.InvariantCulture) + cellOffset.Y + zonePathOffset.Y, 
                                                     float.Parse(posVals[2], CultureInfo.InvariantCulture)
                                                     );
                                                 newPath.allpoints.Add(vec);
@@ -4513,9 +4515,12 @@ namespace AAEmu.DBViewer
                             //MessageBox.Show("Found " + allpoints.Count.ToString() + " points inside " + pathsFound.ToString() + " paths");
                             var map = MapViewForm.GetMap();
                             map.Show();
-                            map.ClearPaths();
+                            if (map.GetPathCount() > 0)
+                                if (MessageBox.Show("Append paths ?", "Add path to map", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                                    map.ClearPaths();
                             foreach(var p in allpaths)
                                 map.AddPath(p);
+                            map.cbPoINames.Checked = true;
                             map.FocusAllPoIs();
                         }
 
@@ -4529,5 +4534,17 @@ namespace AAEmu.DBViewer
             }
         }
 
+        private void btnDebug_Click(object sender, EventArgs e)
+        {
+            var s = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n" +
+                    "<!-- Helper file for displaying path data on the map, needs manual editing -->\r\n" +
+                    "<pathoffsets>\r\n";
+            foreach(var zv in AADB.DB_Zones)
+            {
+                s += "<zone key=\""+zv.Value.zone_key.ToString()+"\" x=\"0\" y=\"0\" /><!-- "+zv.Value.name+" -->\r\n";
+            }
+            s += "</pathoffsets>\r\n";
+            File.WriteAllText("debug.xml", s);
+        }
     }
 }

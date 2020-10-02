@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Management.Instrumentation;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace AAEmu.DBViewer
 {
@@ -20,13 +22,17 @@ namespace AAEmu.DBViewer
         private PictureBox pb = new PictureBox();
         private Point viewOffset = new Point(0, 0);
         private Point cursorCoords = new Point(0, 0);
+        private Point rulerCoords = new Point(0, 0);
+        private string cursorZones = string.Empty;
         private Point startDragPos = new Point();
         private Point startDragOffset = new Point();
         private bool isDragging = false;
+        private bool hasDragged = false;
         private float viewScale = 1f;
         private MapLevel minimumDrawLevel = MapLevel.None;
         private List<MapViewPoI> poi = new List<MapViewPoI>();
         private List<MapViewMap> subMaps = new List<MapViewMap>();
+        private MapViewMap topMostMap = null;
         private List<MapViewPath> paths = new List<MapViewPath>();
         private RectangleF FocusBorder = new RectangleF();
 
@@ -88,14 +94,87 @@ namespace AAEmu.DBViewer
                 return new MapViewForm();
         }
 
+        private string GetCursorZones()
+        {
+            MapViewMap newTopMap = null;
+            var res = string.Empty;
+            var cursorZones = new List<MapViewMap>();
+            foreach (var map in subMaps)
+            {
+                if (map.MapLevel <= MapLevel.Continent)
+                    continue;
+                var pos = CoordToPixel(map.ZoneCoordX, map.ZoneCoordY);
+                var targetRect = new RectangleF(map.ZoneCoordX, map.ZoneCoordY, map.ZoneWidth, map.ZoneHeight);
+                if (targetRect.Contains(cursorCoords))
+                    cursorZones.Add(map);
+            }
+
+            // Check if cursor is still inside the current zone
+            if (cursorZones.Contains(topMostMap) && (topMostMap != null))
+            {
+                // Leave everthing as is
+            }
+            else
+            {
+                foreach (var z in cursorZones)
+                {
+                    if (newTopMap == null)
+                    {
+                        newTopMap = z;
+                    }
+                    else
+                    {
+                        if ((newTopMap.ZoneWidth * newTopMap.ZoneHeight) >= (z.ZoneWidth * z.ZoneHeight))
+                        {
+                            newTopMap = z;
+                        }
+                    }
+
+                }
+                topMostMap = newTopMap;
+            }
+
+            foreach (var z in cursorZones)
+            {
+                if (z == topMostMap)
+                    res += "[" + z.Name + "], ";
+                else
+                    res += z.Name + ", ";
+            }
+            return res;
+        }
+
         private void updateStatusBar()
         {
             var s = string.Empty;
-            s += ViewOffset.X.ToString() + " , " + ViewOffset.Y.ToString() + " | " + (viewScale * 100).ToString()+"%" ;
+            // s += ViewOffset.X.ToString() + " , " + ViewOffset.Y.ToString() + " | " ;
+            s += (viewScale * 100).ToString() + "%";
             if (isDragging)
+            {
                 s += " | drag: " + startDragPos.X.ToString() + " , " + startDragPos.Y.ToString();
-            tsslPos.Text = s;
-            tsslCoords.Text = cursorCoords.X.ToString() + " , " + cursorCoords.Y.ToString();
+            }
+            tsslViewOffset.Text = s;
+
+            if ((rulerCoords.X != 0) && (rulerCoords.Y != 0))
+            {
+                var rulerF = new Vector2(rulerCoords.X, rulerCoords.Y);
+                var cursorF = new Vector2(cursorCoords.X, cursorCoords.Y);
+                var offF = Vector2.Subtract(cursorF, rulerF);
+                float dist = Vector2.Distance(cursorF, rulerF);
+                if ((dist < -16f) || (dist > 16))
+                    tsslRuler.Text = rulerCoords.X.ToString() + " , " + rulerCoords.Y.ToString() + " => Off: " + offF.X.ToString() + "," + offF.Y.ToString() + " => D: " + dist.ToString("0.0");
+                else
+                    tsslRuler.Text = rulerCoords.X.ToString() + " , " + rulerCoords.Y.ToString();
+            }
+            else
+            {
+                tsslRuler.Text = "-- , --";
+            }
+
+            var lastTopMap = topMostMap;
+            tsslCoords.Text = cursorCoords.X.ToString() + " , " + cursorCoords.Y.ToString() + " is inside: " + GetCursorZones();
+            if (topMostMap != lastTopMap)
+                pView.Refresh();
         }
 
         private void MapViewOnMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -178,8 +257,10 @@ namespace AAEmu.DBViewer
                 }
 
                 g.DrawImage(map.BitmapImage, drawRect);
+                /*
                 if (cbZoneBorders.Checked)
                     g.DrawRectangle(Pens.Silver, drawRect.X, drawRect.Y, drawRect.Width, drawRect.Height);
+                */
             }
             //g.DrawImage(map.BitmapImage, ViewOffset.X + imgPos.X, ViewOffset.Y + imgPos.Y - map.ImgHeight, map.ImgWidth, map.ImgHeight);
 
@@ -191,7 +272,7 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private void pView_Paint(object sender, PaintEventArgs e)
+        private void OnViewPaint(object sender, PaintEventArgs e)
         {
             // Draw the map, or something like that
 
@@ -206,16 +287,23 @@ namespace AAEmu.DBViewer
             //else
             //    g.DrawString("Map view test", Font, System.Drawing.Brushes.Blue, new Point(30, 30));
 
+            cursorZones = string.Empty;
             foreach (var level in Enum.GetValues(typeof(MapLevel)))
                 foreach (var map in subMaps)
-                    if ((map.MapLevel == (MapLevel)level) && (map.MapLevel >= minimumDrawLevel))
+                    if ((map != topMostMap) && (map.MapLevel == (MapLevel)level) && (map.MapLevel >= minimumDrawLevel))
                         DrawSubMap(g, map);
 
+            if (topMostMap != null)
+                DrawSubMap(g, topMostMap);
+
             // Draw Grid
-            for (var x = 0; x < 36000; x += 512)
-                g.DrawLine(x % 4096 == 0 ? System.Drawing.Pens.Gray : System.Drawing.Pens.LightGray, ViewOffset.X + x, 0, ViewOffset.X + x, 36000) ;
-            for (var y = 0; y > -36000; y -= 512)
-                g.DrawLine(y % 4096 == 0 ? System.Drawing.Pens.Gray : System.Drawing.Pens.LightGray, 0, ViewOffset.Y + y, 36000, ViewOffset.Y + y);
+            var smallGridSize = 512;
+            if (viewScale > 0.5f)
+                smallGridSize = 64;
+            for (var x = 0; x < 35536; x += smallGridSize)
+                g.DrawLine(x % 4096 == 0 ? System.Drawing.Pens.LightGray : System.Drawing.Pens.DarkGray, ViewOffset.X + x, 0, ViewOffset.X + x, 35536) ;
+            for (var y = 0; y > -35536; y -= smallGridSize)
+                g.DrawLine(y % 4096 == 0 ? System.Drawing.Pens.LightGray : System.Drawing.Pens.DarkGray, 0, ViewOffset.Y + y, 35536, ViewOffset.Y + y);
 
             /*
             var f = new Font(Font.FontFamily, 100f);
@@ -267,6 +355,7 @@ namespace AAEmu.DBViewer
                     {
                         // Draw Line
                         var pen = new Pen(path.Color);
+                        pen.Width = (int)(3f / viewScale)+1;
                         var pos = CoordToPixel(p.X, p.Y);
                         var lpos = CoordToPixel(lastPos.X, lastPos.Y);
                         g.DrawLine(pen, ViewOffset.X + lpos.X, ViewOffset.Y + lpos.Y, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y);
@@ -279,6 +368,19 @@ namespace AAEmu.DBViewer
             if (cbFocus.Checked)
                 g.DrawRectangle(Pens.OrangeRed, ViewOffset.X + FocusBorder.X, ViewOffset.Y - FocusBorder.Y - FocusBorder.Height, FocusBorder.Width, FocusBorder.Height);
 
+            // Ruler
+            if ((rulerCoords.X != 0) || (rulerCoords.Y != 0))
+            {
+                DrawCross(g, rulerCoords.X, rulerCoords.Y, Color.Red, "");
+                // Draw Line
+                var pen = new Pen(Color.Red);
+                pen.Width = (int)(3f / viewScale) + 1;
+                var pos = CoordToPixel(rulerCoords.X, rulerCoords.Y);
+                var lpos = CoordToPixel(cursorCoords.X, cursorCoords.Y);
+                g.DrawLine(pen, ViewOffset.X + lpos.X, ViewOffset.Y + lpos.Y, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y);
+            }
+
+            updateStatusBar();
         }
 
         private Bitmap PackedImageToBitmap(string packedFileFolder, string packedFileName)
@@ -320,20 +422,26 @@ namespace AAEmu.DBViewer
 
         }
 
-        private void pView_MouseMove(object sender, MouseEventArgs e)
+        private void OnViewMouseMove(object sender, MouseEventArgs e)
         {
+            cursorCoords = new Point((int)(e.X / viewScale) - viewOffset.X, ((int)(e.Y / viewScale) - viewOffset.Y) * -1);
             if (isDragging)
             {
+                hasDragged = true;
                 var dx = (int)Math.Floor((startDragPos.X - e.X) / viewScale);
                 var dy = (int)Math.Floor((startDragPos.Y - e.Y) / viewScale);
                 ViewOffset = new Point(startDragOffset.X - dx, startDragOffset.Y - dy);
                 pView.Refresh();
             }
-            cursorCoords = new Point((int)(e.X / viewScale) - viewOffset.X,((int)(e.Y / viewScale) - viewOffset.Y) * -1);
+            else
+            {
+                if ((rulerCoords.X != 0) || (rulerCoords.Y != 0))
+                    pView.Refresh();
+            }
             updateStatusBar();
         }
 
-        private void pView_MouseDown(object sender, MouseEventArgs e)
+        private void OnViewMouseDown(object sender, MouseEventArgs e)
         {
             startDragPos = new Point(e.X, e.Y);
             startDragOffset = new Point(ViewOffset.X, ViewOffset.Y);
@@ -342,7 +450,7 @@ namespace AAEmu.DBViewer
             updateStatusBar();
         }
 
-        private void pView_MouseUp(object sender, MouseEventArgs e)
+        private void OnViewMouseUp(object sender, MouseEventArgs e)
         {
             isDragging = false;
             pView.Invalidate();
@@ -463,6 +571,38 @@ namespace AAEmu.DBViewer
                 }
             }
 
+            foreach(var pt in paths)
+                foreach(var p in pt.allpoints)
+                {
+                    if (first)
+                    {
+                        first = false;
+                        FocusBorder.X = p.X;
+                        FocusBorder.Y = p.Y;
+                        FocusBorder.Width = 1;
+                        FocusBorder.Height = 1;
+                    }
+                    else
+                    {
+                        if (p.X < FocusBorder.X)
+                        {
+                            FocusBorder.Width = FocusBorder.Width + FocusBorder.X - p.X;
+                            FocusBorder.X = p.X;
+                        }
+                        if (p.X > FocusBorder.Right)
+                            FocusBorder.Width = p.X - FocusBorder.Left + 1;
+
+                        if (p.Y < FocusBorder.Y)
+                        {
+                            FocusBorder.Height = FocusBorder.Height + FocusBorder.Y - p.Y;
+                            FocusBorder.Y = p.Y;
+                        }
+                        if (p.Y > FocusBorder.Bottom)
+                            FocusBorder.Height = p.Y - FocusBorder.Top + 1;
+                    }
+                }
+
+
             if ((FocusBorder.Width > 0) && (FocusBorder.Height > 0))
             {
                 var center = CoordToPixel(new Point((int)(FocusBorder.X + (FocusBorder.Width / 2f)), (int)(FocusBorder.Y + (FocusBorder.Height / 2))));
@@ -479,7 +619,45 @@ namespace AAEmu.DBViewer
             pView.Refresh();
             updateStatusBar();
         }
+
+        private void pBox_Paint(object sender, PaintEventArgs e)
+        {
+            OnViewPaint(sender, e);
+        }
+
+        private void MapViewForm_Load(object sender, EventArgs e)
+        {
+            MapViewZonePathOffsets.LoadOffsetsFromFile();
+        }
+
+        private void pView_Click(object sender, EventArgs e)
+        {
+            if (!hasDragged)
+            {
+                var rulerF = new Vector2(rulerCoords.X, rulerCoords.Y);
+                var cursorF = new Vector2(cursorCoords.X, cursorCoords.Y);
+                float dist = Vector2.Distance(cursorF, rulerF);
+                if ((dist < -16f) || (dist > 16))
+                    rulerCoords = cursorCoords;
+                else
+                    rulerCoords = new Point();
+            }
+            hasDragged = false;
+            updateStatusBar();
+        }
+
+        public int GetPathCount()
+        {
+            return paths.Count;
+        }
+
+        public int GetPoICount()
+        {
+            return poi.Count;
+        }
+
     }
+
 
     public class MapViewPoI
     {

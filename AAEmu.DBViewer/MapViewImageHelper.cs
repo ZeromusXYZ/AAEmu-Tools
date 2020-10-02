@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace AAEmu.DBViewer
 {
@@ -157,4 +159,56 @@ namespace AAEmu.DBViewer
         public RectangleF Rect ;
         public string FileName;
     }
+
+    public class MapViewZonePathOffsets
+    {
+        private static Dictionary<long, PointF> zones = new Dictionary<long, PointF>();
+
+        public static void LoadOffsetsFromFile()
+        {
+            zones = new Dictionary<long, PointF>();
+            try
+            {
+                var xml = new XmlDocument();
+                xml.Load("data/zone_path_offsets.xml");
+                var nodes = xml.SelectNodes("/pathoffsets/zone");
+                for (var i = 0; i < nodes.Count; i++)
+                {
+                    var node = nodes[i];
+                    long key = 0;
+                    float x = 0;
+                    float y = 0;
+                    for (var a = 0; a < node.Attributes.Count; a++)
+                    {
+                        var attrib = node.Attributes[a];
+                        if (attrib.Name == "key")
+                            key = long.Parse(attrib.Value, CultureInfo.InvariantCulture);
+                        if (attrib.Name == "x")
+                            x = float.Parse(attrib.Value, CultureInfo.InvariantCulture);
+                        if (attrib.Name == "y")
+                            y = float.Parse(attrib.Value, CultureInfo.InvariantCulture);
+                    }
+
+                    if (key > 0)
+                    {
+                        var zoneOffset = new PointF(x, y);
+                        zones.Add(key, zoneOffset);
+                    }
+                }
+            }
+            catch (Exception x)
+            {
+                
+            }
+        }
+
+        public static PointF GetZoneOffset(long zone_key)
+        {
+            if (zones.TryGetValue(zone_key, out var z))
+                return z;
+            else
+                return new PointF();
+        }
+    }
+
 }
