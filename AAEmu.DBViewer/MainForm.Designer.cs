@@ -57,6 +57,7 @@
             this.Column50 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tSearchLocalized = new System.Windows.Forms.TextBox();
             this.tpV1 = new System.Windows.Forms.TabPage();
+            this.btnDebug = new System.Windows.Forms.Button();
             this.btnMap = new System.Windows.Forms.Button();
             this.btnExportDataForVieweD = new System.Windows.Forms.Button();
             this.lSpace = new System.Windows.Forms.Label();
@@ -448,7 +449,7 @@
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.btnDebug = new System.Windows.Forms.Button();
+            this.btnFindAllTransferPaths = new System.Windows.Forms.Button();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -825,6 +826,16 @@
             this.tpV1.TabIndex = 11;
             this.tpV1.Text = "|";
             this.tpV1.UseVisualStyleBackColor = true;
+            // 
+            // btnDebug
+            // 
+            this.btnDebug.Location = new System.Drawing.Point(131, 152);
+            this.btnDebug.Name = "btnDebug";
+            this.btnDebug.Size = new System.Drawing.Size(120, 23);
+            this.btnDebug.TabIndex = 3;
+            this.btnDebug.Text = "Debug Stuff";
+            this.btnDebug.UseVisualStyleBackColor = true;
+            this.btnDebug.Click += new System.EventHandler(this.btnDebug_Click);
             // 
             // btnMap
             // 
@@ -4227,6 +4238,7 @@
             // groupBox5
             // 
             this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.btnFindAllTransferPaths);
             this.groupBox5.Controls.Add(this.label33);
             this.groupBox5.Controls.Add(this.lWorldGroupImageSizeAndPos);
             this.groupBox5.Controls.Add(this.lWorldGroupTargetID);
@@ -4918,16 +4930,15 @@
             this.mainFormToolTip.ReshowDelay = 100;
             this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             // 
-            // btnDebug
+            // btnFindAllTransferPaths
             // 
-            this.btnDebug.Location = new System.Drawing.Point(131, 152);
-            this.btnDebug.Name = "btnDebug";
-            this.btnDebug.Size = new System.Drawing.Size(120, 23);
-            this.btnDebug.TabIndex = 3;
-            this.btnDebug.Text = "Debug Stuff";
-            this.btnDebug.UseVisualStyleBackColor = true;
-            this.btnDebug.Visible = false;
-            this.btnDebug.Click += new System.EventHandler(this.btnDebug_Click);
+            this.btnFindAllTransferPaths.Location = new System.Drawing.Point(210, 73);
+            this.btnFindAllTransferPaths.Name = "btnFindAllTransferPaths";
+            this.btnFindAllTransferPaths.Size = new System.Drawing.Size(85, 23);
+            this.btnFindAllTransferPaths.TabIndex = 38;
+            this.btnFindAllTransferPaths.Text = "All Paths";
+            this.btnFindAllTransferPaths.UseVisualStyleBackColor = true;
+            this.btnFindAllTransferPaths.Click += new System.EventHandler(this.btnFindAllTransferPaths_Click);
             // 
             // MainForm
             // 
@@ -5445,6 +5456,7 @@
         private System.Windows.Forms.Button btnShowNPCsOnMap;
         private System.Windows.Forms.Button btnFindTransferPathsInZone;
         private System.Windows.Forms.Button btnDebug;
+        private System.Windows.Forms.Button btnFindAllTransferPaths;
     }
 }
 

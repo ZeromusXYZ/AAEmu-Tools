@@ -17,6 +17,7 @@ using System.Threading;
 using System.Globalization;
 using System.Xml;
 using System.Numerics;
+using System.Security.Cryptography.X509Certificates;
 
 namespace AAEmu.DBViewer
 {
@@ -1720,6 +1721,78 @@ namespace AAEmu.DBViewer
         }
 
 
+        private void LoadTransfers()
+        {
+            string sql = "SELECT * FROM transfers ORDER BY id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Transfers.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+
+                            GameTransfers t = new GameTransfers();
+                            t.id = GetInt64(reader, "id");
+                            t.model_id = GetInt64(reader, "model_id");
+                            t.path_smoothing = GetFloat(reader, "path_smoothing");
+
+                            AADB.DB_Transfers.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
+        }
+
+        private void LoadTransferPaths()
+        {
+            string sql = "SELECT * FROM transfer_paths ORDER BY id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_TransferPaths.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+
+                            GameTransferPaths t = new GameTransferPaths();
+                            t.id = GetInt64(reader, "id");
+                            t.owner_id = GetInt64(reader, "owner_id");
+                            t.owner_type = GetString(reader, "owner_type");
+                            t.path_name = GetString(reader, "path_name");
+                            t.wait_time_start = GetFloat(reader, "wait_time_start");
+                            t.wait_time_end = GetFloat(reader, "wait_time_end");
+
+                            AADB.DB_TransferPaths.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
+        }
 
         private void BtnItemSearch_Click(object sender, EventArgs e)
         {
@@ -2772,6 +2845,9 @@ namespace AAEmu.DBViewer
                 LoadFactions();
                 loading.ShowInfo("Loading: Buffs");
                 LoadBuffs();
+                loading.ShowInfo("Loading: Transfers");
+                LoadTransfers();
+                LoadTransferPaths();
                 loading.ShowInfo("Loading: Tags");
                 LoadTags();
                 LoadZoneGroupBannedTags();
@@ -4392,145 +4468,185 @@ namespace AAEmu.DBViewer
                     if (searchId <= 0)
                         return;
 
-                    GameZone zone = null;
-                    foreach(var zv in AADB.DB_Zones)
+                    foreach (var zv in AADB.DB_Zones)
                         if (zv.Value.zone_key == searchId)
-                            zone = zv.Value;
+                            AddTransferPath(ref allpaths, zv.Value);
 
-                    if (zone != null)
+                    if (allpaths.Count <= 0)
+                        MessageBox.Show("No paths found inside this zone");
+                    else
                     {
-                        var zonePathOffset = MapViewZonePathOffsets.GetZoneOffset(zone.zone_key);
+                        // Show on map
+                        //MessageBox.Show("Found " + allpoints.Count.ToString() + " points inside " + pathsFound.ToString() + " paths");
+                        var map = MapViewForm.GetMap();
+                        map.Show();
+                        if (map.GetPathCount() > 0)
+                            if (MessageBox.Show("Append paths ?", "Add path to map", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                                map.ClearPaths();
+                        foreach (var p in allpaths)
+                            map.AddPath(p);
+                        map.cbPoINames.Checked = true;
+                        map.FocusAllPoIs();
+                    }
 
-                        var zoneGroup = GetZoneGroupByID(zone.group_id);
-                        var xOffset = 0f;
-                        var yOffset = 0f;
-                        if (zoneGroup != null)
+                }
+            } 
+        }
+
+        private void AddTransferPath(ref List<MapViewPath> allpaths, GameZone zone)
+        {
+            if (zone != null)
+            {
+                var zonePathOffset = MapViewZonePathOffsets.GetZoneOffset(zone.zone_key);
+
+                var zoneGroup = GetZoneGroupByID(zone.group_id);
+                var xOffset = 0f;
+                var yOffset = 0f;
+                if (zoneGroup != null)
+                {
+                    xOffset = zoneGroup.PosAndSize.X;
+                    yOffset = zoneGroup.PosAndSize.Y;
+                }
+
+                if (!pak.isOpen || !pak.FileExists(zone.GamePakZoneTransferPathXML))
+                {
+                    // MessageBox.Show("No path file found for this zone");
+                    return;
+                }
+                // MessageBox.Show("Loading: " + zone.GamePakZoneTransferPathXML);
+
+                int pathsFound = 0;
+                try
+                {
+                    var fs = pak.ExportFileAsStream(zone.GamePakZoneTransferPathXML);
+
+                    var _doc = new XmlDocument();
+                    _doc.Load(fs);
+                    var _allTransferBlocks = _doc.SelectNodes("/Objects/Transfer");
+                    for (var i = 0; i < _allTransferBlocks.Count; i++)
+                    {
+                        var block = _allTransferBlocks[i];
+                        var attribs = ReadNodeAttributes(block);
+
+                        if (attribs.TryGetValue("name", out var blockName))
                         {
-                            xOffset = zoneGroup.PosAndSize.X;
-                            yOffset = zoneGroup.PosAndSize.Y;
-                        }
 
-                        if (!pak.isOpen || !pak.FileExists(zone.GamePakZoneTransferPathXML))
-                        {
-                            MessageBox.Show("No path file found for this zone");
-                            return;
-                        }
-                        // MessageBox.Show("Loading: " + zone.GamePakZoneTransferPathXML);
+                            var newPath = new MapViewPath();
+                            newPath.PathName = blockName;
 
-                        int pathsFound = 0;
-                        try
-                        {
-                            var fs = pak.ExportFileAsStream(zone.GamePakZoneTransferPathXML);
-
-                            var _doc = new XmlDocument();
-                            _doc.Load(fs);
-                            var _allTransferBlocks = _doc.SelectNodes("/Objects/Transfer");
-                            for (var i = 0; i < _allTransferBlocks.Count; i++)
-                            {
-                                var block = _allTransferBlocks[i];
-                                var attribs = ReadNodeAttributes(block);
-
-                                if (attribs.TryGetValue("name", out var blockName))
+                            foreach (var tp in AADB.DB_TransferPaths)
+                                if (tp.Value.path_name == blockName)
                                 {
+                                    newPath.PathType = tp.Value.owner_id;
+                                }
 
-                                    var newPath = new MapViewPath();
-                                    newPath.PathName = blockName;
+                            long model = 0;
+                            if (AADB.DB_Transfers.TryGetValue(newPath.PathType, out var transfer))
+                            {
+                                model = transfer.model_id;
+                            }
+                            bool knownType = true;
+                            switch (model)
+                            {
+                                case 116: // Ferry
+                                    newPath.Color = Color.Navy;
+                                    break;
+                                case 314: // Tram
+                                case 606: // Tram
+                                    newPath.Color = Color.Yellow;
+                                    break;
+                                case 548: // Andelph Train
+                                    newPath.Color = Color.Yellow;
+                                    break;
+                                case 654: // Carriage
+                                    newPath.Color = Color.DarkOrange;
+                                    break;
+                                case 657: // Airship
+                                    newPath.Color = Color.Blue;
+                                    newPath.DrawStyle = 1;
+                                    break;
+                                default:
+                                    knownType = false;
+                                    break;
+                            }
+                            if (!knownType)
+                                newPath.PathName = blockName + "(t:" + newPath.PathType.ToString() + " m:" + model.ToString() + ")";
+                            else
+                                newPath.PathName = blockName + "(" + newPath.PathType.ToString() + ")";
+
+
+                            var cellOffset = new PointF();
+                            /*
+                            if (attribs.TryGetValue("cellx",out var cellXOffsetString))
+                            {
+                                try
+                                {
+                                    cellXOffset = int.Parse(cellXOffsetString) * 512; 
+                                }
+                                catch
+                                {
+                                    cellXOffset = 0;
+                                }
+                            }
+                            if (attribs.TryGetValue("celly", out var cellYOffsetString))
+                            {
+                                try
+                                {
+                                    cellYOffset = int.Parse(cellYOffsetString) * 512;
+                                }
+                                catch
+                                {
+                                    cellYOffset = 0;
+                                }
+                            }
+                            */
+                            //MessageBox.Show("Found: " + blockName);
+                            pathsFound++;
+
+                            var pointsxml = block.SelectNodes("Points/Point");
+                            for (var n = 0; n < pointsxml.Count; n++)
+                            {
+                                var pointxml = pointsxml[n];
+                                var pointattribs = ReadNodeAttributes(pointxml);
+                                if (pointattribs.TryGetValue("pos", out var posString))
+                                {
+                                    var posVals = posString.Split(',');
+                                    if (posVals.Length != 3)
+                                    {
+                                        MessageBox.Show("Invalid number of values inside Pos: " + posString);
+                                        continue;
+                                    }
                                     try
                                     {
-                                        newPath.PathType = long.Parse(attribs["type"]);
+                                        var vec = new Vector3(
+                                            xOffset + float.Parse(posVals[0], CultureInfo.InvariantCulture) + cellOffset.X + zonePathOffset.X,
+                                            yOffset + float.Parse(posVals[1], CultureInfo.InvariantCulture) + cellOffset.Y + zonePathOffset.Y,
+                                            float.Parse(posVals[2], CultureInfo.InvariantCulture)
+                                            );
+                                        newPath.allpoints.Add(vec);
                                     }
-                                    catch { }
-
-                                    var cellOffset = new PointF();
-                                    /*
-                                    if (attribs.TryGetValue("cellx",out var cellXOffsetString))
+                                    catch
                                     {
-                                        try
-                                        {
-                                            cellXOffset = int.Parse(cellXOffsetString) * 512; 
-                                        }
-                                        catch
-                                        {
-                                            cellXOffset = 0;
-                                        }
+                                        MessageBox.Show("Invalid float inside Pos: " + posString);
                                     }
-                                    if (attribs.TryGetValue("celly", out var cellYOffsetString))
-                                    {
-                                        try
-                                        {
-                                            cellYOffset = int.Parse(cellYOffsetString) * 512;
-                                        }
-                                        catch
-                                        {
-                                            cellYOffset = 0;
-                                        }
-                                    }
-                                    */
-                                    //MessageBox.Show("Found: " + blockName);
-                                    pathsFound++;
-
-                                    var pointsxml = block.SelectNodes("Points/Point");
-                                    for (var n = 0; n < pointsxml.Count; n++)
-                                    {
-                                        var pointxml = pointsxml[n];
-                                        var pointattribs = ReadNodeAttributes(pointxml);
-                                        if (pointattribs.TryGetValue("pos", out var posString))
-                                        {
-                                            var posVals = posString.Split(',');
-                                            if (posVals.Length != 3)
-                                            {
-                                                MessageBox.Show("Invalid number of values inside Pos: " + posString);
-                                                continue;
-                                            }
-                                            try
-                                            {
-                                                var vec = new Vector3(
-                                                    xOffset + float.Parse(posVals[0], CultureInfo.InvariantCulture) + cellOffset.X + zonePathOffset.X,
-                                                    yOffset + float.Parse(posVals[1], CultureInfo.InvariantCulture) + cellOffset.Y + zonePathOffset.Y, 
-                                                    float.Parse(posVals[2], CultureInfo.InvariantCulture)
-                                                    );
-                                                newPath.allpoints.Add(vec);
-                                            }
-                                            catch 
-                                            {
-                                                MessageBox.Show("Invalid float inside Pos: " + posString);
-                                            }
-
-                                        }
-                                    }
-                                    allpaths.Add(newPath);
 
                                 }
                             }
-                        }
-                        catch (Exception x)
-                        {
-                            MessageBox.Show(x.Message);
-                        }
-                        if (pathsFound <= 0)
-                            MessageBox.Show("No paths found inside this zone");
-                        else
-                        {
-                            // Show on map
-                            //MessageBox.Show("Found " + allpoints.Count.ToString() + " points inside " + pathsFound.ToString() + " paths");
-                            var map = MapViewForm.GetMap();
-                            map.Show();
-                            if (map.GetPathCount() > 0)
-                                if (MessageBox.Show("Append paths ?", "Add path to map", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
-                                    map.ClearPaths();
-                            foreach(var p in allpaths)
-                                map.AddPath(p);
-                            map.cbPoINames.Checked = true;
-                            map.FocusAllPoIs();
-                        }
+                            allpaths.Add(newPath);
 
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid zone selected ?");
-                        return;
+                        }
                     }
                 }
+                catch (Exception x)
+                {
+                    MessageBox.Show(x.Message);
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Invalid zone selected ?");
+                return;
             }
         }
 
@@ -4541,10 +4657,36 @@ namespace AAEmu.DBViewer
                     "<pathoffsets>\r\n";
             foreach(var zv in AADB.DB_Zones)
             {
-                s += "<zone key=\""+zv.Value.zone_key.ToString()+"\" x=\"0\" y=\"0\" /><!-- "+zv.Value.name+" -->\r\n";
+                s += "\t<zone id=\""+zv.Value.id.ToString()+"\" key=\""+zv.Value.zone_key.ToString()+"\" x=\"0\" y=\"0\" /><!-- "+zv.Value.name+" -->\r\n";
             }
             s += "</pathoffsets>\r\n";
             File.WriteAllText("debug.xml", s);
+        }
+
+        private void btnFindAllTransferPaths_Click(object sender, EventArgs e)
+        {
+            List<MapViewPath> allpaths = new List<MapViewPath>();
+            MapViewZonePathOffsets.LoadOffsetsFromFile(); // Reload every time we press this for debugging
+
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+
+            foreach (var zv in AADB.DB_Zones)
+                AddTransferPath(ref allpaths, zv.Value);
+
+            if (allpaths.Count <= 0)
+                MessageBox.Show("No paths found ?");
+            else
+            {
+                var map = MapViewForm.GetMap();
+                map.Show();
+                map.ClearPaths();
+                foreach (var p in allpaths)
+                    map.AddPath(p);
+            }
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+
         }
     }
 }

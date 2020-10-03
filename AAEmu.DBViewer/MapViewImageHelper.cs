@@ -196,7 +196,7 @@ namespace AAEmu.DBViewer
                     }
                 }
             }
-            catch (Exception x)
+            catch
             {
                 
             }

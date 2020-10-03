@@ -535,6 +535,43 @@ namespace AAEmu.DBDefs
         public string usage = string.Empty ;
     }
 
+    public class GameTransfers
+    {
+        /*
+          CREATE TABLE transfers(
+          id INT,
+          comment TEXT,
+          model_id INT,
+          wait_time REAL,
+          cyclic NUM,
+          path_smoothing REAL
+        )
+        */
+        public long id = 0;
+        public long model_id = 0;
+        public float path_smoothing = 8f;
+    }
+
+    public class GameTransferPaths
+    {
+        /*
+          CREATE TABLE transfer_paths(
+          id INT,
+          owner_id INT,
+          owner_type TEXT,
+          path_name TEXT,
+          wait_time_start REAL,
+          wait_time_end REAL
+          )
+        */
+        public long id = 0;
+        public long owner_id = 0;
+        public string owner_type = string.Empty;
+        public string path_name = string.Empty;
+        public float wait_time_start = 0f;
+        public float wait_time_end = 0f;
+    }
+
 
     static class AADB
     {
@@ -567,6 +604,8 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameTaggedValues> DB_Tagged_Skills = new Dictionary<long, GameTaggedValues>();
         static public Dictionary<long, GameZoneGroupBannedTags> DB_Zone_Group_Banned_Tags = new Dictionary<long, GameZoneGroupBannedTags>();
         static public Dictionary<long, GameBuff> DB_Buffs = new Dictionary<long, GameBuff>();
+        static public Dictionary<long, GameTransfers> DB_Transfers = new Dictionary<long, GameTransfers>();
+        static public Dictionary<long, GameTransferPaths> DB_TransferPaths = new Dictionary<long, GameTransferPaths>();
 
         static public string GetFactionName(long faction_id, bool addID = false)
         {

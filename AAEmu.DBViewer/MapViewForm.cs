@@ -217,7 +217,7 @@ namespace AAEmu.DBViewer
             g.DrawLine(pen, ViewOffset.X + pos.X - crossSize, ViewOffset.Y + pos.Y, ViewOffset.X + pos.X + crossSize, ViewOffset.Y + pos.Y);
             if ((cbPoINames.Checked) && (name != string.Empty) )
             {
-                var f = new Font(Font.FontFamily, 16f / viewScale);
+                var f = new Font(Font.FontFamily, 12f / viewScale);
                 var br = new SolidBrush(color);
                 g.DrawString(name, f, br, ViewOffset.X + pos.X + crossSize, ViewOffset.Y + pos.Y - crossSize);
             }
@@ -356,6 +356,10 @@ namespace AAEmu.DBViewer
                         // Draw Line
                         var pen = new Pen(path.Color);
                         pen.Width = (int)(3f / viewScale)+1;
+                        if (path.DrawStyle == 1)
+                        {
+                            pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                        }
                         var pos = CoordToPixel(p.X, p.Y);
                         var lpos = CoordToPixel(lastPos.X, lastPos.Y);
                         g.DrawLine(pen, ViewOffset.X + lpos.X, ViewOffset.Y + lpos.Y, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y);
@@ -699,6 +703,8 @@ namespace AAEmu.DBViewer
         public Color Color = Color.White;
         public long PathType = 0 ;
         public List<Vector3> allpoints = new List<Vector3>();
+        // Helper data for drawing, not actually related to the data
+        public byte DrawStyle = 0;
     }
 
 
