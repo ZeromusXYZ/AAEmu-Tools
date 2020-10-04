@@ -4018,7 +4018,7 @@ namespace AAEmu.DBViewer
                             }
                         }
                         map.cbPoINames.Checked = false; // Disable this when loading from zone
-                        map.FocusAllPoIs();
+                        map.FocusAll(true,false);
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
                     }
@@ -4435,7 +4435,7 @@ namespace AAEmu.DBViewer
             }
             map.cbPoINames.Checked = true;
             map.cbFocus.Checked = true;
-            map.FocusAllPoIs();
+            map.FocusAll(true,false);
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
         }
@@ -4486,7 +4486,7 @@ namespace AAEmu.DBViewer
                         foreach (var p in allpaths)
                             map.AddPath(p);
                         map.cbPoINames.Checked = true;
-                        map.FocusAllPoIs();
+                        map.FocusAll(false,true);
                     }
 
                 }

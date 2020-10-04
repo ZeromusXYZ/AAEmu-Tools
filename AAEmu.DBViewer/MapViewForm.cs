@@ -29,10 +29,10 @@ namespace AAEmu.DBViewer
         private bool isDragging = false;
         private bool hasDragged = false;
         private float viewScale = 1f;
-        private MapLevel minimumDrawLevel = MapLevel.None;
         private List<MapViewPoI> poi = new List<MapViewPoI>();
         private List<MapViewMap> subMaps = new List<MapViewMap>();
         private MapViewMap topMostMap = null;
+        private MapViewMap WorldMap = null;
         private List<MapViewPath> paths = new List<MapViewPath>();
         private RectangleF FocusBorder = new RectangleF();
 
@@ -52,20 +52,59 @@ namespace AAEmu.DBViewer
             ClearPoI();
             ClearMaps();
             MapViewImageHelper.PopulateList();
+            var mapFolder = "game/ui/map/world/";
+            WorldMap = AddMap(-14731, 46, 64651, 38865, "Erenor", mapFolder, "main_world.dds", MapLevel.WorldMap);
+            AddMap(-6758, 2673, 32130, 19308, "Nuia", mapFolder, "land_west.dds", MapLevel.Continent);
+            AddMap(10627, 1632, 26024, 15636, "Haranya", mapFolder, "land_east.dds", MapLevel.Continent);
+            AddMap(7035, 21504, 24743, 14883, "Auroria", mapFolder, "land_origin.dds", MapLevel.Continent);
+            /*
+            foreach (var wgv in AADB.DB_World_Groups)
+            {
+                var wg = wgv.Value;
+                var level = MapLevel.None;
+                if ((wg.PosAndSize.Width <= 0) || (wg.PosAndSize.Height <= 0))
+                    continue;
+                    //level = MapLevel.None;
+                else
+                if (wg.target_id <= 1)
+                    level = MapLevel.WorldMap;
+                else
+                    level = MapLevel.Continent;
+                var imageName = wg.name;
 
-            AddMap(-14731,46,64651,38865,"Erenor","game/ui/map/world/", "main_world",MapLevel.WorldMap);
+                var mapref = MapViewImageHelper.GetRefByImageMapId(wg.image_map);
 
-            foreach(var zgv in AADB.DB_Zone_Groups)
+                if (mapref != null)
+                {
+                    imageName = mapref.FileName;
+                    level = mapref.Level;
+                }
+
+                AddMap(wg.PosAndSize.X, wg.PosAndSize.Y, wg.PosAndSize.Width, wg.PosAndSize.Height,wg.name,
+                    mapFolder, imageName, level);
+            }
+            */
+
+            foreach (var zgv in AADB.DB_Zone_Groups)
             {
                 var zg = zgv.Value;
-                var iref = MapViewImageHelper.GetRefByImageMapId(zg.image_map);
-                var fn = string.Empty;
-                if (iref == null)
-                    fn = zg.name;
-                else
-                    fn = iref.FileName;
 
+                if ((zg.PosAndSize.Width <= 0) || (zg.PosAndSize.Height <= 0))
+                    continue;
+
+                var iref = MapViewImageHelper.GetRefByImageMapId(zg.image_map);
+                var fn = zg.name + ".dds";
                 var level = MapLevel.Zone;
+                if (iref != null)
+                {
+                    level = iref.Level;
+                    if (MainForm.ThisForm.pak.isOpen && !MainForm.ThisForm.pak.FileExists("game/ui/map/world/" + fn))
+                        fn = iref.FileName;
+                }
+
+                if (level < MapLevel.Zone)
+                    continue;
+
                 var m = AddMap(zg.PosAndSize.X, zg.PosAndSize.Y, zg.PosAndSize.Width, zg.PosAndSize.Height, zg.display_textLocalized + " ("+zg.id.ToString()+")", "game/ui/map/world/", fn, level);
                 //var m = AddMap(zg.PosAndSize.X, zg.PosAndSize.Y, zg.PosAndSize.Width, zg.PosAndSize.Height, zg.display_textLocalized, "game/ui/map/road/", zg.name + "_road_100", MapLevel.Zone);
 
@@ -79,9 +118,8 @@ namespace AAEmu.DBViewer
                 if (zg.buff_id == 7743)
                 {
                     m.MapBorderColor = Color.Navy;
-                    m.MapLevel = MapLevel.Continent;
+                    // m.MapLevel = MapLevel.Continent;
                 }
-
             }
 
         }
@@ -146,14 +184,14 @@ namespace AAEmu.DBViewer
 
         private void updateStatusBar()
         {
-            var s = string.Empty;
-            // s += ViewOffset.X.ToString() + " , " + ViewOffset.Y.ToString() + " | " ;
-            s += (viewScale * 100).ToString() + "%";
+            tsslZoom.Text = "Zoom: " + (viewScale * 100).ToString() + "%";
+            /*
             if (isDragging)
             {
-                s += " | drag: " + startDragPos.X.ToString() + " , " + startDragPos.Y.ToString();
+                tsslViewOffset.Text = "drag from X:" + startDragPos.X.ToString() + " Y:" + startDragPos.Y.ToString();
             }
-            tsslViewOffset.Text = s;
+            */
+            tsslViewOffset.Text = "View X:"+ViewOffset.X.ToString() + " Y:" + ViewOffset.Y.ToString();
 
             if ((rulerCoords.X != 0) && (rulerCoords.Y != 0))
             {
@@ -162,17 +200,19 @@ namespace AAEmu.DBViewer
                 var offF = Vector2.Subtract(cursorF, rulerF);
                 float dist = Vector2.Distance(cursorF, rulerF);
                 if ((dist < -16f) || (dist > 16))
-                    tsslRuler.Text = rulerCoords.X.ToString() + " , " + rulerCoords.Y.ToString() + " => Off: " + offF.X.ToString() + "," + offF.Y.ToString() + " => D: " + dist.ToString("0.0");
+                    tsslRuler.Text = "X:" + rulerCoords.X.ToString() + " Y:" + rulerCoords.Y.ToString() + " => Off X:" + offF.X.ToString() + " Y:" + offF.Y.ToString() + " (D: " + dist.ToString("0.0")+")";
                 else
-                    tsslRuler.Text = rulerCoords.X.ToString() + " , " + rulerCoords.Y.ToString();
+                    tsslRuler.Text = "X:" + rulerCoords.X.ToString() + " Y:" + rulerCoords.Y.ToString();
             }
             else
             {
-                tsslRuler.Text = "-- , --";
+                tsslRuler.Text = "X:-- Y:--";
             }
 
             var lastTopMap = topMostMap;
-            tsslCoords.Text = cursorCoords.X.ToString() + " , " + cursorCoords.Y.ToString() + " is inside: " + GetCursorZones();
+            tsslCoords.Text = "X:"+cursorCoords.X.ToString() + " Y:" + cursorCoords.Y.ToString() + " | " + AADB.CoordToSextant(cursorCoords.X, cursorCoords.Y);
+            tsslSelectionInfo.Text = "inside: " + GetCursorZones();
+
             if (topMostMap != lastTopMap)
                 pView.Refresh();
         }
@@ -215,7 +255,7 @@ namespace AAEmu.DBViewer
             var pos = CoordToPixel(x, y);
             g.DrawLine(pen, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y - crossSize, ViewOffset.X + x, ViewOffset.Y + pos.Y + crossSize);
             g.DrawLine(pen, ViewOffset.X + pos.X - crossSize, ViewOffset.Y + pos.Y, ViewOffset.X + pos.X + crossSize, ViewOffset.Y + pos.Y);
-            if ((cbPoINames.Checked) && (name != string.Empty) )
+            if (name != string.Empty)
             {
                 var f = new Font(Font.FontFamily, 12f / viewScale);
                 var br = new SolidBrush(color);
@@ -225,6 +265,25 @@ namespace AAEmu.DBViewer
 
         private void DrawSubMap(Graphics g, MapViewMap map)
         {
+            var showMap = true;
+            switch (map.MapLevel)
+            {
+                case MapLevel.WorldMap:
+                    showMap = cbShowWorldMap.Checked;
+                    break;
+                case MapLevel.Continent:
+                    showMap = cbShowContinent.Checked;
+                    break;
+                case MapLevel.Zone:
+                    showMap = cbShowZone.Checked;
+                    break;
+                case MapLevel.City:
+                    showMap = cbShowCity.Checked;
+                    break;
+            }
+            if (!showMap)
+                return;
+
             var pen = new Pen(map.MapBorderColor);
             var pos = CoordToPixel(map.ZoneCoordX, map.ZoneCoordY);
             var imgPos = CoordToPixel(map.ImgCoordX, map.ImgCoordY);
@@ -289,52 +348,63 @@ namespace AAEmu.DBViewer
 
             cursorZones = string.Empty;
             foreach (var level in Enum.GetValues(typeof(MapLevel)))
+            {
                 foreach (var map in subMaps)
-                    if ((map != topMostMap) && (map.MapLevel == (MapLevel)level) && (map.MapLevel >= minimumDrawLevel))
+                    if (map.MapLevel == (MapLevel)level)
                         DrawSubMap(g, map);
+            }
 
             if (topMostMap != null)
                 DrawSubMap(g, topMostMap);
 
             // Draw Grid
-            var smallGridSize = 512;
-            if (viewScale > 0.5f)
-                smallGridSize = 64;
-            for (var x = 0; x < 35536; x += smallGridSize)
-                g.DrawLine(x % 4096 == 0 ? System.Drawing.Pens.LightGray : System.Drawing.Pens.DarkGray, ViewOffset.X + x, 0, ViewOffset.X + x, 35536) ;
-            for (var y = 0; y > -35536; y -= smallGridSize)
-                g.DrawLine(y % 4096 == 0 ? System.Drawing.Pens.LightGray : System.Drawing.Pens.DarkGray, 0, ViewOffset.Y + y, 35536, ViewOffset.Y + y);
-
-            /*
-            var f = new Font(Font.FontFamily, 100f);
-            foreach (var zg in AADB.DB_Zone_Groups.Values)
+            if (cbShowGrid.Checked)
             {
-                if (zg.name.StartsWith("instance"))
-                    continue;
-
-                Color col = Color.Cyan;
-                switch(zg.id % 4)
+                var fnt = new Font(Font.FontFamily, 10f / viewScale);
+                var br = new System.Drawing.SolidBrush(Color.White);
+                var smallGridSize = 512; // Cell size
+                if (viewScale > 0.5f)
                 {
-                    case 0: col = Color.Cyan; break;
-                    case 1: col = Color.LimeGreen; break;
-                    case 2: col = Color.Green; break;
-                    case 3: col = Color.LightBlue; break;
+                    smallGridSize = 32; // Sector
+                    fnt = new Font(Font.FontFamily, 7f / viewScale);
                 }
+                for (var x = 0; x <= 32768; x += smallGridSize)
+                {
+                    var s = g.MeasureString(x.ToString(), fnt);
+                    var hTop = CoordToPixel(x, 32768 + 4096);
+                    var hBottom = CoordToPixel(x, 0);
+                    g.DrawLine(x % 4096 == 0 ? System.Drawing.Pens.LightGray : System.Drawing.Pens.DarkGray, ViewOffset.X + hTop.X, ViewOffset.Y + hTop.Y, ViewOffset.X + hBottom.X, ViewOffset.Y + hBottom.Y);
 
-                var br = new System.Drawing.SolidBrush(col);
-                var pn = new System.Drawing.Pen(br);
+                    var ht = new Point(ViewOffset.X + hTop.X, ViewOffset.Y + hTop.Y);
+                    var hb = new Point(ViewOffset.X + hBottom.X, ViewOffset.Y + hBottom.Y);
+                    if (ht.Y < 0)
+                        ht.Y = (int)s.Height ;
+                    if (hb.Y > (int)(pView.Height / viewScale) - (int)s.Height)
+                        hb.Y = (int)(pView.Height / viewScale) - (int)s.Height;
+                    g.DrawString(x.ToString(), fnt, br, ht.X - (s.Width / 2), ht.Y - s.Height);
+                    g.DrawString(x.ToString(), fnt, br, hb.X - (s.Width / 2), hb.Y);
+                }
+                for (var y = 0; y <= 32768 + 4096; y += smallGridSize)
+                {
+                    var s = g.MeasureString(y.ToString(), fnt);
+                    var hTop = CoordToPixel(0, y);
+                    var hBottom = CoordToPixel(32768, y);
+                    g.DrawLine(y % 4096 == 0 ? System.Drawing.Pens.LightGray : System.Drawing.Pens.DarkGray, ViewOffset.X + hTop.X, ViewOffset.Y + hTop.Y, ViewOffset.X + hBottom.X, ViewOffset.Y + hBottom.Y);
 
-                var pos = CoordToPixel(zg.PosAndSize.X, zg.PosAndSize.Y);
-                g.DrawRectangle(pn, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y - zg.PosAndSize.Height, zg.PosAndSize.Width, zg.PosAndSize.Height);
-                g.DrawString(zg.display_textLocalized, f, br, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y);
+                    var ht = new Point(ViewOffset.X + hTop.X, ViewOffset.Y + hTop.Y);
+                    var hb = new Point(ViewOffset.X + hBottom.X, ViewOffset.Y + hBottom.Y);
+                    if (ht.X < 0)
+                        ht.X = (int)s.Width;
+                    if (hb.X > (int)(pView.Width / viewScale) - (int)s.Width)
+                        hb.X = (int)(pView.Width / viewScale) - (int)s.Width;
+                    g.DrawString(y.ToString(), fnt, br, ht.X - s.Width, ht.Y - (s.Height / 2));
+                    g.DrawString(y.ToString(), fnt, br, hb.X, hb.Y - (s.Height / 2));
+                }
             }
-            */
 
             // Draw Points of Interest
             foreach (var p in poi)
-            {
-                DrawCross(g, p.CoordX, p.CoordY, p.PoIColor, p.Name);
-            }
+                DrawCross(g, p.CoordX, p.CoordY, p.PoIColor, cbPoINames.Checked ? p.Name : "");
 
             foreach(var path in paths)
             {
@@ -349,7 +419,7 @@ namespace AAEmu.DBViewer
                     {
                         // Draw Startpoint
                         first = false;
-                        DrawCross(g, p.X, p.Y, path.Color, path.PathName);
+                        DrawCross(g, p.X, p.Y, path.Color, cbPathNames.Checked ? path.PathName : "");
                     }
                     else
                     {
@@ -391,11 +461,11 @@ namespace AAEmu.DBViewer
         {
             if (MainForm.ThisForm.pak.isOpen)
             {
-                var fn = packedFileFolder + packedFileName + ".dds" ;
+                var fn = packedFileFolder + packedFileName ;
 
-                if (MainForm.ThisForm.pak.FileExists(packedFileFolder + Properties.Settings.Default.DefaultGameLanguage + "/" + packedFileName + ".dds"))
+                if (MainForm.ThisForm.pak.FileExists(packedFileFolder + Properties.Settings.Default.DefaultGameLanguage + "/" + packedFileName))
                 {
-                    fn = packedFileFolder + Properties.Settings.Default.DefaultGameLanguage + "/" + packedFileName + ".dds";
+                    fn = packedFileFolder + Properties.Settings.Default.DefaultGameLanguage + "/" + packedFileName;
                 }
 
                 if (MainForm.ThisForm.pak.FileExists(fn))
@@ -519,93 +589,80 @@ namespace AAEmu.DBViewer
             ThisForm = null;
         }
 
-        private void cbShowWorldMap_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cbShowWorldMap.Checked)
-                minimumDrawLevel = MapLevel.None;
-            else
-                minimumDrawLevel = MapLevel.Zone;
-            pView.Refresh();
-            updateStatusBar();
-        }
-
-        private void cbPoINames_CheckedChanged(object sender, EventArgs e)
-        {
-            pView.Refresh();
-            updateStatusBar();
-        }
-
-        private void cbZoneBorders_CheckedChanged(object sender, EventArgs e)
-        {
-            pView.Refresh();
-            updateStatusBar();
-        }
-
-        public void FocusAllPoIs()
+        public void FocusAll(bool focusPoIs, bool focusPaths)
         {
             var first = true;
             FocusBorder = new RectangleF();
-            foreach (var p in poi)
+            if (focusPoIs)
             {
-                if (first)
-                {
-                    first = false;
-                    FocusBorder.X = p.CoordX;
-                    FocusBorder.Y = p.CoordY;
-                    FocusBorder.Width = 1;
-                    FocusBorder.Height = 1;
-                }
-                else
-                {
-                    if (p.CoordX < FocusBorder.X)
-                    {
-                        FocusBorder.Width = FocusBorder.Width + FocusBorder.X - p.CoordX;
-                        FocusBorder.X = p.CoordX;
-                    }
-                    if (p.CoordX > FocusBorder.Right)
-                        FocusBorder.Width = p.CoordX - FocusBorder.Left + 1;
-
-                    if (p.CoordY < FocusBorder.Y)
-                    {
-                        FocusBorder.Height = FocusBorder.Height + FocusBorder.Y - p.CoordY;
-                        FocusBorder.Y = p.CoordY;
-                    }
-                    if (p.CoordY > FocusBorder.Bottom)
-                        FocusBorder.Height = p.CoordY - FocusBorder.Top + 1;
-                }
-            }
-
-            foreach(var pt in paths)
-                foreach(var p in pt.allpoints)
+                foreach (var p in poi)
                 {
                     if (first)
                     {
                         first = false;
-                        FocusBorder.X = p.X;
-                        FocusBorder.Y = p.Y;
+                        FocusBorder.X = p.CoordX;
+                        FocusBorder.Y = p.CoordY;
                         FocusBorder.Width = 1;
                         FocusBorder.Height = 1;
                     }
                     else
                     {
-                        if (p.X < FocusBorder.X)
+                        if (p.CoordX < FocusBorder.X)
                         {
-                            FocusBorder.Width = FocusBorder.Width + FocusBorder.X - p.X;
-                            FocusBorder.X = p.X;
+                            FocusBorder.Width = FocusBorder.Width + FocusBorder.X - p.CoordX;
+                            FocusBorder.X = p.CoordX;
                         }
-                        if (p.X > FocusBorder.Right)
-                            FocusBorder.Width = p.X - FocusBorder.Left + 1;
+                        if (p.CoordX > FocusBorder.Right)
+                            FocusBorder.Width = p.CoordX - FocusBorder.Left + 1;
 
-                        if (p.Y < FocusBorder.Y)
+                        if (p.CoordY < FocusBorder.Y)
                         {
-                            FocusBorder.Height = FocusBorder.Height + FocusBorder.Y - p.Y;
-                            FocusBorder.Y = p.Y;
+                            FocusBorder.Height = FocusBorder.Height + FocusBorder.Y - p.CoordY;
+                            FocusBorder.Y = p.CoordY;
                         }
-                        if (p.Y > FocusBorder.Bottom)
-                            FocusBorder.Height = p.Y - FocusBorder.Top + 1;
+                        if (p.CoordY > FocusBorder.Bottom)
+                            FocusBorder.Height = p.CoordY - FocusBorder.Top + 1;
                     }
                 }
 
+            }
+
+            if (focusPaths)
+            {
+                foreach (var pt in paths)
+                {
+                    foreach (var p in pt.allpoints)
+                    {
+                        if (first)
+                        {
+                            first = false;
+                            FocusBorder.X = p.X;
+                            FocusBorder.Y = p.Y;
+                            FocusBorder.Width = 1;
+                            FocusBorder.Height = 1;
+                        }
+                        else
+                        {
+                            if (p.X < FocusBorder.X)
+                            {
+                                FocusBorder.Width = FocusBorder.Width + FocusBorder.X - p.X;
+                                FocusBorder.X = p.X;
+                            }
+                            if (p.X > FocusBorder.Right)
+                                FocusBorder.Width = p.X - FocusBorder.Left + 1;
+
+                            if (p.Y < FocusBorder.Y)
+                            {
+                                FocusBorder.Height = FocusBorder.Height + FocusBorder.Y - p.Y;
+                                FocusBorder.Y = p.Y;
+                            }
+                            if (p.Y > FocusBorder.Bottom)
+                                FocusBorder.Height = p.Y - FocusBorder.Top + 1;
+                        }
+                    }
+                }
+
+            }
 
             if ((FocusBorder.Width > 0) && (FocusBorder.Height > 0))
             {
@@ -616,12 +673,6 @@ namespace AAEmu.DBViewer
                 viewOffset.Y += (int)Math.Round(((float)pView.Height / viewScale) / 2f);
             }
             pView.Refresh();
-        }
-
-        private void cbFocus_CheckedChanged(object sender, EventArgs e)
-        {
-            pView.Refresh();
-            updateStatusBar();
         }
 
         private void pBox_Paint(object sender, PaintEventArgs e)
@@ -660,6 +711,11 @@ namespace AAEmu.DBViewer
             return poi.Count;
         }
 
+        private void cbOptionsChanged(object sender, EventArgs e)
+        {
+            pView.Refresh();
+            updateStatusBar();
+        }
     }
 
 

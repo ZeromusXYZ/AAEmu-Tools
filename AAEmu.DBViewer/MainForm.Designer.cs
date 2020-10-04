@@ -381,6 +381,7 @@
             this.Column36 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpZones = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.btnFindAllTransferPaths = new System.Windows.Forms.Button();
             this.label33 = new System.Windows.Forms.Label();
             this.lWorldGroupImageSizeAndPos = new System.Windows.Forms.Label();
             this.lWorldGroupTargetID = new System.Windows.Forms.Label();
@@ -449,7 +450,6 @@
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.btnFindAllTransferPaths = new System.Windows.Forms.Button();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -835,6 +835,7 @@
             this.btnDebug.TabIndex = 3;
             this.btnDebug.Text = "Debug Stuff";
             this.btnDebug.UseVisualStyleBackColor = true;
+            this.btnDebug.Visible = false;
             this.btnDebug.Click += new System.EventHandler(this.btnDebug_Click);
             // 
             // btnMap
@@ -4256,6 +4257,16 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "World Group Info";
             // 
+            // btnFindAllTransferPaths
+            // 
+            this.btnFindAllTransferPaths.Location = new System.Drawing.Point(210, 73);
+            this.btnFindAllTransferPaths.Name = "btnFindAllTransferPaths";
+            this.btnFindAllTransferPaths.Size = new System.Drawing.Size(85, 23);
+            this.btnFindAllTransferPaths.TabIndex = 38;
+            this.btnFindAllTransferPaths.Text = "All Paths";
+            this.btnFindAllTransferPaths.UseVisualStyleBackColor = true;
+            this.btnFindAllTransferPaths.Click += new System.EventHandler(this.btnFindAllTransferPaths_Click);
+            // 
             // label33
             // 
             this.label33.AutoSize = true;
@@ -4929,16 +4940,6 @@
             this.mainFormToolTip.InitialDelay = 1000;
             this.mainFormToolTip.ReshowDelay = 100;
             this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
-            // 
-            // btnFindAllTransferPaths
-            // 
-            this.btnFindAllTransferPaths.Location = new System.Drawing.Point(210, 73);
-            this.btnFindAllTransferPaths.Name = "btnFindAllTransferPaths";
-            this.btnFindAllTransferPaths.Size = new System.Drawing.Size(85, 23);
-            this.btnFindAllTransferPaths.TabIndex = 38;
-            this.btnFindAllTransferPaths.Text = "All Paths";
-            this.btnFindAllTransferPaths.UseVisualStyleBackColor = true;
-            this.btnFindAllTransferPaths.Click += new System.EventHandler(this.btnFindAllTransferPaths_Click);
             // 
             // MainForm
             // 

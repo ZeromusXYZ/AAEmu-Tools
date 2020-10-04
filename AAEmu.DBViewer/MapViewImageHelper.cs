@@ -22,6 +22,8 @@ namespace AAEmu.DBViewer
             newRef.ImageId = image_map;
             newRef.FileName = fileName;
             newRef.Rect = new RectangleF();
+
+            ImageRefs.Add(newRef);
         }
 
         public static MapViewImageRef GetRefByImageMapId(long image_map)

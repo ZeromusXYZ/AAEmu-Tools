@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <!-- Helper file for displaying path data on the map, needs manual editing -->
 <pathoffsets>
-	<zone id="1" key="129" x="260" y="0" /><!-- w_gweonid_forest_1 -->
-	<zone id="2" key="133" x="560" y="-670" /><!-- w_marianople_1 -->
+	<zone id="1" key="129" x="340" y="120" /><!-- w_gweonid_forest_1 -->
+	<zone id="2" key="133" x="560" y="-660" /><!-- w_marianople_1 -->
 	<zone id="3" key="136" x="-115" y="-545" /><!-- e_steppe_belt_1 -->
 	<zone id="4" key="137" x="620" y="-220" /><!-- e_ruins_of_hariharalaya_1 -->
 	<zone id="5" key="138" x="1210" y="-800" /><!-- e_lokas_checkers_1 -->
@@ -12,7 +12,7 @@
 	<zone id="9" key="142" x="365" y="45" /><!-- w_solzreed_1 -->
 	<zone id="10" key="143" x="500" y="-545" /><!-- w_white_forest_1 -->
 	<zone id="11" key="144" x="0" y="0" /><!-- w_lilyut_meadow_1 -->
-	<zone id="12" key="145" x="210" y="-250" /><!-- w_the_carcass_1 -->
+	<zone id="12" key="145" x="240" y="-200" /><!-- w_the_carcass_1 -->
 	<zone id="13" key="146" x="0" y="0" /><!-- e_rainbow_field_1 -->
 	<zone id="14" key="148" x="715" y="-375" /><!-- w_cross_plains_1 -->
 	<zone id="15" key="149" x="670" y="-510" /><!-- w_two_crowns_1 -->
@@ -21,12 +21,12 @@
 	<zone id="18" key="153" x="395" y="-210" /><!-- e_mahadevi_1 -->
 	<zone id="19" key="154" x="0" y="6500" /><!-- w_bronze_rock_1 --><!-- This is just a rough estimate as the zone does not have a map image in 1.2 -->
 	<zone id="20" key="155" x="1715" y="-100" /><!-- e_hasla_1 -->
-	<zone id="21" key="156" x="475" y="-270" /><!-- e_falcony_plateau_1 -->
+	<zone id="21" key="156" x="488" y="-260" /><!-- e_falcony_plateau_1 -->
 	<zone id="22" key="157" x="0" y="0" /><!-- e_sunny_wilderness_1 -->
 	<zone id="23" key="158" x="325" y="-325" /><!-- e_tiger_spine_mountains_1 -->
 	<zone id="24" key="159" x="-100" y="-310" /><!-- e_ancient_forest -->
 	<zone id="25" key="160" x="825" y="0" /><!-- e_singing_land_1 -->
-	<zone id="26" key="161" x="1480" y="-95" /><!-- w_hell_swamp_1 -->
+	<zone id="26" key="161" x="1495" y="-95" /><!-- w_hell_swamp_1 -->
 	<zone id="27" key="162" x="-230" y="-675" /><!-- w_long_sand_1 -->
 	<zone id="28" key="164" x="0" y="0" /><!-- w_barren_land -->
 	<zone id="29" key="172" x="0" y="0" /><!-- s_lost_island -->
@@ -128,11 +128,11 @@
 	<zone id="125" key="179" x="0" y="0" /><!-- w_solzreed_3 -->
 	<zone id="126" key="180" x="0" y="0" /><!-- s_silent_sea_7 -->
 	<zone id="127" key="181" x="0" y="0" /><!-- w_gweonid_forest_2 -->
-	<zone id="128" key="182" x="1290" y="120" /><!-- w_gweonid_forest_3 -->
-	<zone id="129" key="183" x="540" y="390" /><!-- w_marianople_2 -->
-	<zone id="130" key="184" x="2525" y="-270" /><!-- e_falcony_plateau_2 -->
+	<zone id="128" key="182" x="1352.02" y="139.95" _x="1290" _y="120" /><!-- w_gweonid_forest_3 -->
+	<zone id="129" key="183" x="545" y="360" /><!-- w_marianople_2 -->
+	<zone id="130" key="184" x="2547" y="-248" /><!-- e_falcony_plateau_2 -->
 	<zone id="131" key="185" x="0" y="0" /><!-- w_garangdol_plains_2 -->
-	<zone id="132" key="186" x="0" y="0" /><!-- w_two_crowns_2 -->
+	<zone id="132" key="186" x="1700" y="-510" /><!-- w_two_crowns_2 -->
 	<zone id="133" key="187" x="0" y="0" /><!-- e_rainbow_field_2 -->
 	<zone id="134" key="188" x="0" y="0" /><!-- e_rainbow_field_3 -->
 	<zone id="135" key="189" x="0" y="0" /><!-- e_rainbow_field_4 -->
@@ -140,13 +140,13 @@
 	<zone id="137" key="191" x="0" y="0" /><!-- e_sunrise_peninsula_2 -->
 	<zone id="138" key="192" x="0" y="0" /><!-- w_bronze_rock_2 -->
 	<zone id="139" key="193" x="0" y="0" /><!-- w_bronze_rock_3 -->
-	<zone id="140" key="194" x="0" y="0" /><!-- e_singing_land_2 -->
-	<zone id="141" key="195" x="0" y="0" /><!-- w_lilyut_meadow_2 -->
-	<zone id="142" key="196" x="0" y="0" /><!-- e_mahadevi_2 -->
-	<zone id="143" key="197" x="0" y="0" /><!-- e_mahadevi_3 -->
-	<zone id="144" key="198" x="0" y="0" /><!-- instance_training_camp -->
-	<zone id="145" key="206" x="0" y="0" /><!-- w_golden_plains_2 -->
-	<zone id="146" key="207" x="0" y="0" /><!-- w_golden_plains_3 -->
+	<zone id="140" key="194" x="-200" y="7" /><!-- e_singing_land_2 -->
+	<zone id="141" key="195" x="345" y="-275" /><!-- w_lilyut_meadow_2 -->
+	<zone id="142" key="196" x="363" y="45" /><!-- e_mahadevi_2 -->
+	<zone id="143" key="197" x="495" y="-550" /><!-- e_mahadevi_3 -->
+	<zone id="144" key="198" x="330" y="-271" /><!-- instance_training_camp -->
+	<zone id="145" key="206" x="-200" y="5" /><!-- w_golden_plains_2 -->
+	<zone id="146" key="207" x="1850" y="0" /><!-- w_golden_plains_3 -->
 	<zone id="147" key="209" x="0" y="0" /><!-- w_dark_side_of_the_moon -->
 	<zone id="148" key="204" x="0" y="0" /><!-- o_salpimari -->
 	<zone id="149" key="205" x="0" y="0" /><!-- o_nuimari -->
@@ -160,7 +160,7 @@
 	<zone id="157" key="217" x="0" y="0" /><!-- s_nightmare_coast -->
 	<zone id="158" key="218" x="0" y="0" /><!-- s_golden_sea_1 -->
 	<zone id="159" key="219" x="0" y="0" /><!-- s_golden_sea_2 -->
-	<zone id="160" key="221" x="0" y="0" /><!-- s_crescent_sea -->
+	<zone id="160" key="221" x="15" y="360" /><!-- s_crescent_sea -->
 	<zone id="161" key="226" x="0" y="0" /><!-- lock_golden_sea -->
 	<zone id="162" key="227" x="0" y="0" /><!-- lock_left_side_of_silent_sea -->
 	<zone id="163" key="228" x="0" y="0" /><!-- lock_right_side_of_silent_sea_1 -->
@@ -171,31 +171,31 @@
 	<zone id="168" key="236" x="0" y="0" /><!-- instance_burntcastle_armory -->
 	<zone id="169" key="241" x="0" y="0" /><!-- instance_hadir_farm -->
 	<zone id="170" key="240" x="0" y="0" /><!-- instance_sal_temple -->
-	<zone id="171" key="248" x="0" y="0" /><!-- w_hell_swamp_2 -->
+	<zone id="171" key="248" x="1495" y="930" /><!-- w_hell_swamp_2 -->
 	<zone id="172" key="247" x="0" y="0" /><!-- e_steppe_belt_2 -->
 	<zone id="173" key="246" x="0" y="0" /><!-- e_lokas_checkers_2 -->
 	<zone id="174" key="242" x="0" y="0" /><!-- e_ruins_of_hariharalaya_2 -->
 	<zone id="175" key="243" x="0" y="0" /><!-- e_ruins_of_hariharalaya_3 -->
-	<zone id="176" key="245" x="0" y="0" /><!-- w_long_sand_2 -->
-	<zone id="177" key="244" x="0" y="0" /><!-- w_white_forest_2 -->
-	<zone id="178" key="256" x="0" y="0" /><!-- e_singing_land_3 -->
-	<zone id="179" key="258" x="0" y="0" /><!-- e_tiger_spine_mountains_2 -->
-	<zone id="180" key="257" x="0" y="0" /><!-- w_cross_plains_2 -->
-	<zone id="181" key="259" x="0" y="0" /><!-- e_ynystere_2 -->
-	<zone id="182" key="261" x="0" y="0" /><!-- e_white_island -->
+	<zone id="176" key="245" x="790" y="-680" /><!-- w_long_sand_2 -->
+	<zone id="177" key="244" x="1520" y="-545" /><!-- w_white_forest_2 -->
+	<zone id="178" key="256" x="825" y="5" /><!-- e_singing_land_3 -->
+	<zone id="179" key="258" x="1345" y="-325" /><!-- e_tiger_spine_mountains_2 -->
+	<zone id="180" key="257" x="715" y="-375" /><!-- w_cross_plains_2 -->
+	<zone id="181" key="259" x="1352.02" y="139.95" /><!-- e_ynystere_2 -->
+	<zone id="182" key="261" x="1347.07935" y="154.05155" /><!-- e_white_island -->
 	<zone id="183" key="260" x="0" y="0" /><!-- arche_mall -->
 	<zone id="184" key="262" x="0" y="0" /><!-- instance_cuttingwind_deadmine -->
-	<zone id="185" key="265" x="0" y="0" /><!-- instance_howling_abyss -->
+	<zone id="185" key="265" x="1845.532429" y="-113.2284" /><!-- instance_howling_abyss -->
 	<zone id="186" key="264" x="0" y="0" /><!-- instance_cradle_of_destruction -->
 	<zone id="187" key="273" x="0" y="0" /><!-- w_the_carcass_2 -->
-	<zone id="188" key="272" x="0" y="0" /><!-- e_hasla_2 -->
-	<zone id="189" key="271" x="0" y="0" /><!-- instance_violent_maelstrom -->
+	<zone id="188" key="272" x="1396" y="-970" /><!-- e_hasla_2 -->
+	<zone id="189" key="271" x="1396" y="-970" /><!-- instance_violent_maelstrom -->
 	<zone id="190" key="274" x="0" y="0" /><!-- e_hasla_3 -->
-	<zone id="191" key="276" x="0" y="0" /><!-- o_abyss_gate -->
+	<zone id="191" key="276" x="1845.532429" y="-113.2284" /><!-- o_abyss_gate -->
 	<zone id="192" key="278" x="0" y="0" /><!-- instance_nachashgar -->
 	<zone id="193" key="275" x="0" y="0" /><!-- o_land_of_sunlights -->
 	<zone id="194" key="280" x="0" y="0" /><!-- instance_howling_abyss_2 -->
-	<zone id="195" key="283" x="0" y="0" /><!-- s_freedom_island -->
+	<zone id="195" key="283" x="345.736673" y="-277.809482" /><!-- s_freedom_island -->
 	<zone id="196" key="284" x="0" y="0" /><!-- s_pirate_island -->
 	<zone id="197" key="282" x="0" y="0" /><!-- o_shining_shore_1 -->
 	<zone id="198" key="281" x="0" y="0" /><!-- o_ruins_of_gold -->
