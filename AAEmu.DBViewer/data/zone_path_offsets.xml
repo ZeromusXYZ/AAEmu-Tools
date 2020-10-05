@@ -19,7 +19,7 @@
 	<zone id="16" key="150" x="0" y="0" /><!-- w_cradle_of_genesis -->
 	<zone id="17" key="151" x="-1220" y="-1020" /><!-- w_golden_plains_1 -->
 	<zone id="18" key="153" x="395" y="-210" /><!-- e_mahadevi_1 -->
-	<zone id="19" key="154" x="0" y="6500" /><!-- w_bronze_rock_1 --><!-- This is just a rough estimate as the zone does not have a map image in 1.2 -->
+	<zone id="19" key="154" x="0" y="0" /><!-- w_bronze_rock_1 -->
 	<zone id="20" key="155" x="1715" y="-100" /><!-- e_hasla_1 -->
 	<zone id="21" key="156" x="488" y="-260" /><!-- e_falcony_plateau_1 -->
 	<zone id="22" key="157" x="0" y="0" /><!-- e_sunny_wilderness_1 -->

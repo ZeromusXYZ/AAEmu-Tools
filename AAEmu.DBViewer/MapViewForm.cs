@@ -340,12 +340,6 @@ namespace AAEmu.DBViewer
 
             g.ScaleTransform(viewScale, viewScale);
 
-            // Draw a string on the PictureBox.
-            if (isDragging)
-                g.DrawString("Dragging", Font, System.Drawing.Brushes.Blue, new Point(30, 30));
-            //else
-            //    g.DrawString("Map view test", Font, System.Drawing.Brushes.Blue, new Point(30, 30));
-
             cursorZones = string.Empty;
             foreach (var level in Enum.GetValues(typeof(MapLevel)))
             {

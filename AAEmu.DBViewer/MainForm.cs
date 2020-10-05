@@ -62,7 +62,10 @@ namespace AAEmu.DBViewer
                     loading.Show();
                     loading.ShowInfo("Opening: " + Path.GetFileName(game_pakFileName));
                     if (pak.OpenPak(game_pakFileName, true))
+                    {
                         Properties.Settings.Default.GamePakFileName = game_pakFileName;
+                        lCurrentPakFile.Text = Properties.Settings.Default.GamePakFileName;
+                    }
                 }
             }
             tcViewer.SelectedTab = tpItems;
@@ -71,10 +74,11 @@ namespace AAEmu.DBViewer
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Properties.Settings.Default.Save();
+
             if (MapViewForm.ThisForm != null)
                 MapViewForm.ThisForm.Close();
 
-            Properties.Settings.Default.Save();
             if (pak != null)
                 pak.ClosePak();
         }
@@ -1376,7 +1380,7 @@ namespace AAEmu.DBViewer
                             t.restart_on_fail = GetBool(reader, "restart_on_fail");
                             t.chapter_idx = GetInt64(reader, "chapter_idx");
                             t.quest_idx = GetInt64(reader, "quest_idx");
-                            t.milestone_id = GetInt64(reader, "milestone_id");
+                            // t.milestone_id = GetInt64(reader, "milestone_id");
                             t.let_it_done = GetBool(reader, "let_it_done");
                             t.detail_id = GetInt64(reader, "detail_id");
                             t.zone_id = GetInt64(reader, "zone_id");
@@ -1492,12 +1496,15 @@ namespace AAEmu.DBViewer
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
 
+                        var hasDesc = reader.GetColumnNames().Contains("desc");
+
                         while (reader.Read())
                         {
                             GameTags t = new GameTags();
                             t.id = GetInt64(reader, "id");
                             t.name = GetString(reader, "name");
-                            t.desc = GetString(reader, "desc");
+                            if (hasDesc)
+                                t.desc = GetString(reader, "desc");
 
                             t.nameLocalized = GetTranslationByID(t.id, "tags", "name", t.name);
                             t.descLocalized = GetTranslationByID(t.id, "tags", "desc", t.desc);
@@ -1758,7 +1765,7 @@ namespace AAEmu.DBViewer
 
         private void LoadTransferPaths()
         {
-            string sql = "SELECT * FROM transfer_paths ORDER BY id ASC";
+            string sql = "SELECT * FROM transfer_paths ORDER BY owner_id ASC";
 
             using (var connection = SQLite.CreateConnection())
             {
@@ -1777,14 +1784,14 @@ namespace AAEmu.DBViewer
                         {
 
                             GameTransferPaths t = new GameTransferPaths();
-                            t.id = GetInt64(reader, "id");
+                            //t.id = GetInt64(reader, "id");
                             t.owner_id = GetInt64(reader, "owner_id");
                             t.owner_type = GetString(reader, "owner_type");
                             t.path_name = GetString(reader, "path_name");
                             t.wait_time_start = GetFloat(reader, "wait_time_start");
                             t.wait_time_end = GetFloat(reader, "wait_time_end");
 
-                            AADB.DB_TransferPaths.Add(t.id, t);
+                            AADB.DB_TransferPaths.Add(t);
                         }
 
                         Cursor = Cursors.Default;
@@ -3097,7 +3104,10 @@ namespace AAEmu.DBViewer
             {
                 pak.ClosePak();
                 if (pak.OpenPak(openGamePakFileDialog.FileName, true))
+                {
                     Properties.Settings.Default.GamePakFileName = openGamePakFileDialog.FileName;
+                    lCurrentPakFile.Text = Properties.Settings.Default.GamePakFileName;
+                }
             }
         }
 
@@ -4535,10 +4545,8 @@ namespace AAEmu.DBViewer
                             newPath.PathName = blockName;
 
                             foreach (var tp in AADB.DB_TransferPaths)
-                                if (tp.Value.path_name == blockName)
-                                {
-                                    newPath.PathType = tp.Value.owner_id;
-                                }
+                                if (tp.path_name == blockName)
+                                    newPath.PathType = tp.owner_id;
 
                             long model = 0;
                             if (AADB.DB_Transfers.TryGetValue(newPath.PathType, out var transfer))

@@ -450,6 +450,7 @@
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.lCurrentPakFile = new System.Windows.Forms.Label();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -543,6 +544,7 @@
             // tbTables
             // 
             this.tbTables.BackColor = System.Drawing.Color.Transparent;
+            this.tbTables.Controls.Add(this.lCurrentPakFile);
             this.tbTables.Controls.Add(this.label41);
             this.tbTables.Controls.Add(this.btnSimpleSQL);
             this.tbTables.Controls.Add(this.tSimpleSQL);
@@ -4941,6 +4943,15 @@
             this.mainFormToolTip.ReshowDelay = 100;
             this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             // 
+            // lCurrentPakFile
+            // 
+            this.lCurrentPakFile.AutoSize = true;
+            this.lCurrentPakFile.Location = new System.Drawing.Point(282, 61);
+            this.lCurrentPakFile.Name = "lCurrentPakFile";
+            this.lCurrentPakFile.Size = new System.Drawing.Size(103, 13);
+            this.lCurrentPakFile.TabIndex = 13;
+            this.lCurrentPakFile.Text = "<no pak file loaded>";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5458,6 +5469,7 @@
         private System.Windows.Forms.Button btnFindTransferPathsInZone;
         private System.Windows.Forms.Button btnDebug;
         private System.Windows.Forms.Button btnFindAllTransferPaths;
+        private System.Windows.Forms.Label lCurrentPakFile;
     }
 }
 

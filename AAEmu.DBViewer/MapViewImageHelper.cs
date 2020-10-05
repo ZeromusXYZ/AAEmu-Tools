@@ -150,6 +150,9 @@ namespace AAEmu.DBViewer
             AddRef(MapLevel.City, 1057, "e_hasla_cemetery_underground.dds", 22112);
             AddRef(MapLevel.City, 1075, "o_abyss_gate_ruin_of_vanishing_snake_1f.dds", 30051);
             AddRef(MapLevel.City, 1076, "o_abyss_gate_ruin_of_vanishing_snake_2f.dds", 30052);
+
+            AddRef(MapLevel.Zone, 10, "w_bronze_rock.dds", 2113);
+            AddRef(MapLevel.Zone, 21, "w_cradle_of_genesis.dds", 2114);
         }
     }
 

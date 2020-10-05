@@ -423,7 +423,7 @@ namespace AAEmu.DBDefs
         public bool restart_on_fail = false;
         public long chapter_idx = 0;
         public long quest_idx = 0;
-        public long milestone_id = 0;
+        // public long milestone_id = 0;
         public bool let_it_done = false;
         public long detail_id = 0;
         public long zone_id = 0;
@@ -564,7 +564,7 @@ namespace AAEmu.DBDefs
           wait_time_end REAL
           )
         */
-        public long id = 0;
+        // public long id = 0;
         public long owner_id = 0;
         public string owner_type = string.Empty;
         public string path_name = string.Empty;
@@ -605,7 +605,7 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameZoneGroupBannedTags> DB_Zone_Group_Banned_Tags = new Dictionary<long, GameZoneGroupBannedTags>();
         static public Dictionary<long, GameBuff> DB_Buffs = new Dictionary<long, GameBuff>();
         static public Dictionary<long, GameTransfers> DB_Transfers = new Dictionary<long, GameTransfers>();
-        static public Dictionary<long, GameTransferPaths> DB_TransferPaths = new Dictionary<long, GameTransferPaths>();
+        static public List<GameTransferPaths> DB_TransferPaths = new List<GameTransferPaths>();
 
         static public string GetFactionName(long faction_id, bool addID = false)
         {
