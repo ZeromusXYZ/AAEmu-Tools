@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Management.Instrumentation;
 using System.Numerics;
@@ -421,9 +422,9 @@ namespace AAEmu.DBViewer
                         var pen = new Pen(path.Color);
                         pen.Width = (int)(3f / viewScale)+1;
                         if (path.DrawStyle == 1)
-                        {
                             pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
-                        }
+                        if (path.DrawStyle == 2)
+                            pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
                         var pos = CoordToPixel(p.X, p.Y);
                         var lpos = CoordToPixel(lastPos.X, lastPos.Y);
                         g.DrawLine(pen, ViewOffset.X + lpos.X, ViewOffset.Y + lpos.Y, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y);
@@ -755,6 +756,71 @@ namespace AAEmu.DBViewer
         public List<Vector3> allpoints = new List<Vector3>();
         // Helper data for drawing, not actually related to the data
         public byte DrawStyle = 0;
+    }
+
+    public class MapViewWorldXMLZoneInfo
+    {
+        public string name = string.Empty;
+        public long zone_key = 0;
+        public int originCellX = 0;
+        public int originCellY = 0;
+    }
+
+    static public class MapViewWorldXML
+    {
+        static public XmlDocument _xml;
+        static public Dictionary<long, MapViewWorldXMLZoneInfo> zones = new Dictionary<long, MapViewWorldXMLZoneInfo>();
+
+        static public bool LoadFromStream(Stream s)
+        {
+            try
+            {
+                zones.Clear();
+                _xml = new XmlDocument();
+                _xml.Load(s);
+                var zoneNodes = _xml.SelectNodes("/World/ZoneList/Zone");
+                for(var i = 0; i < zoneNodes.Count; i++)
+                {
+                    var n = zoneNodes[i];
+                    var attribs = MainForm.ReadNodeAttributes(n);
+                    var newZI = new MapViewWorldXMLZoneInfo();
+                    foreach(var attrib in attribs)
+                    {
+                        switch(attrib.Key)
+                        {
+                            case "name":
+                                newZI.name = attrib.Value;
+                                break;
+                            case "id":
+                                newZI.zone_key = long.Parse(attrib.Value);
+                                break;
+                            case "originx":
+                                newZI.originCellX = int.Parse(attrib.Value);
+                                break;
+                            case "originy":
+                                newZI.originCellY = int.Parse(attrib.Value);
+                                break;
+
+                        }
+                    }
+                    zones.Add(newZI.zone_key, newZI);
+                }
+            }
+            catch
+            {
+                zones.Clear();
+                _xml = null;
+                return false;
+            }
+            return zones.Count > 0 ;
+        }
+
+        static public MapViewWorldXMLZoneInfo GetZoneByKey(long key)
+        {
+            if ((_xml != null) && zones.TryGetValue(key, out var z))
+                return z;
+            return null;
+        }
     }
 
 

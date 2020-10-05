@@ -65,6 +65,9 @@ namespace AAEmu.DBViewer
                     {
                         Properties.Settings.Default.GamePakFileName = game_pakFileName;
                         lCurrentPakFile.Text = Properties.Settings.Default.GamePakFileName;
+
+                        loading.ShowInfo("Loading: World Data");
+                        PrepareWorldXML(true);
                     }
                 }
             }
@@ -3107,6 +3110,8 @@ namespace AAEmu.DBViewer
                 {
                     Properties.Settings.Default.GamePakFileName = openGamePakFileDialog.FileName;
                     lCurrentPakFile.Text = Properties.Settings.Default.GamePakFileName;
+
+                    PrepareWorldXML(true);
                 }
             }
         }
@@ -4464,8 +4469,9 @@ namespace AAEmu.DBViewer
 
         private void btnFindTransferPathsInZone_Click(object sender, EventArgs e)
         {
+            PrepareWorldXML(false);
+
             List<MapViewPath> allpaths = new List<MapViewPath>();
-            MapViewZonePathOffsets.LoadOffsetsFromFile(); // Reload every time we press this for debugging
 
             if ((sender != null) && (sender is Button))
             {
@@ -4507,16 +4513,11 @@ namespace AAEmu.DBViewer
         {
             if (zone != null)
             {
-                var zonePathOffset = MapViewZonePathOffsets.GetZoneOffset(zone.zone_key);
+                var worldOff = MapViewWorldXML.GetZoneByKey(zone.zone_key);
 
-                var zoneGroup = GetZoneGroupByID(zone.group_id);
-                var xOffset = 0f;
-                var yOffset = 0f;
-                if (zoneGroup != null)
-                {
-                    xOffset = zoneGroup.PosAndSize.X;
-                    yOffset = zoneGroup.PosAndSize.Y;
-                }
+                // If it's not in the world.xml, it's probably not a real zone anyway
+                if (worldOff == null)
+                    return;
 
                 if (!pak.isOpen || !pak.FileExists(zone.GamePakZoneTransferPathXML))
                 {
@@ -4573,23 +4574,30 @@ namespace AAEmu.DBViewer
                                     newPath.Color = Color.Blue;
                                     newPath.DrawStyle = 1;
                                     break;
+                                case 2217: // Cargo Ship (2C-Solis)
+                                case 2236: // Cargo Ship (Solz-Yny)
+                                    newPath.Color = Color.DarkCyan;
+                                    newPath.DrawStyle = 2;
+                                    break;
                                 default:
                                     knownType = false;
                                     break;
                             }
                             if (!knownType)
-                                newPath.PathName = blockName + "(t:" + newPath.PathType.ToString() + " m:" + model.ToString() + ")";
+                                newPath.PathName = blockName + "(t:" + newPath.PathType.ToString() + " m:" + model.ToString() + " z:"+zone.zone_key.ToString()+")";
                             else
-                                newPath.PathName = blockName + "(" + newPath.PathType.ToString() + ")";
+                                newPath.PathName = blockName + "(t:" + newPath.PathType.ToString() + " z:" + zone.zone_key.ToString() + ")";
 
-
-                            var cellOffset = new PointF();
+                            // We don't need the cellX/Y values here
                             /*
+                            int cellXOffset = 0;
+                            int cellYOffset = 0;
+
                             if (attribs.TryGetValue("cellx",out var cellXOffsetString))
                             {
                                 try
                                 {
-                                    cellXOffset = int.Parse(cellXOffsetString) * 512; 
+                                    cellXOffset = int.Parse(cellXOffsetString); 
                                 }
                                 catch
                                 {
@@ -4600,7 +4608,7 @@ namespace AAEmu.DBViewer
                             {
                                 try
                                 {
-                                    cellYOffset = int.Parse(cellYOffsetString) * 512;
+                                    cellYOffset = int.Parse(cellYOffsetString);
                                 }
                                 catch
                                 {
@@ -4608,7 +4616,8 @@ namespace AAEmu.DBViewer
                                 }
                             }
                             */
-                            //MessageBox.Show("Found: " + blockName);
+
+                            PointF cellOffset = new PointF((worldOff.originCellX * 1024f), (worldOff.originCellY * 1024f));
                             pathsFound++;
 
                             var pointsxml = block.SelectNodes("Points/Point");
@@ -4627,8 +4636,8 @@ namespace AAEmu.DBViewer
                                     try
                                     {
                                         var vec = new Vector3(
-                                            xOffset + float.Parse(posVals[0], CultureInfo.InvariantCulture) + cellOffset.X + zonePathOffset.X,
-                                            yOffset + float.Parse(posVals[1], CultureInfo.InvariantCulture) + cellOffset.Y + zonePathOffset.Y,
+                                            float.Parse(posVals[0], CultureInfo.InvariantCulture) + cellOffset.X,
+                                            float.Parse(posVals[1], CultureInfo.InvariantCulture) + cellOffset.Y,
                                             float.Parse(posVals[2], CultureInfo.InvariantCulture)
                                             );
                                         newPath.allpoints.Add(vec);
@@ -4673,8 +4682,8 @@ namespace AAEmu.DBViewer
 
         private void btnFindAllTransferPaths_Click(object sender, EventArgs e)
         {
+            PrepareWorldXML(false);
             List<MapViewPath> allpaths = new List<MapViewPath>();
-            MapViewZonePathOffsets.LoadOffsetsFromFile(); // Reload every time we press this for debugging
 
             Application.UseWaitCursor = true;
             Cursor = Cursors.WaitCursor;
@@ -4695,6 +4704,26 @@ namespace AAEmu.DBViewer
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
 
+        }
+
+        public void PrepareWorldXML(bool overwrite)
+        {
+            if (overwrite || (MapViewWorldXML.zones.Count <= 0))
+            {
+                // try loading if no zones loaded yet
+                var worldxmlfile = "game/worlds/main_world/world.xml";
+                if ((!pak.isOpen) || (!pak.FileExists(worldxmlfile)))
+                {
+                    MessageBox.Show("Could not find world.xml");
+                    return;
+                }
+
+                if (!MapViewWorldXML.LoadFromStream(pak.ExportFileAsStream(worldxmlfile)))
+                {
+                    MessageBox.Show("world.xml did not contain valid data");
+                    return;
+                }
+            }
         }
     }
 }
