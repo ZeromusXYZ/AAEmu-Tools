@@ -53,11 +53,11 @@ namespace AAEmu.DBViewer
             ClearPoI();
             ClearMaps();
             MapViewImageHelper.PopulateList();
-            var mapFolder = "game/ui/map/world/";
-            WorldMap = AddMap(-14731, 46, 64651, 38865, "Erenor", mapFolder, "main_world.dds", MapLevel.WorldMap);
-            AddMap(-6758, 2673, 32130, 19308, "Nuia", mapFolder, "land_west.dds", MapLevel.Continent);
-            AddMap(10627, 1632, 26024, 15636, "Haranya", mapFolder, "land_east.dds", MapLevel.Continent);
-            AddMap(7035, 21504, 24743, 14883, "Auroria", mapFolder, "land_origin.dds", MapLevel.Continent);
+            MapViewImageHelper.PopulateMiniMapList();
+            WorldMap = AddMap(new RectangleF(-14731, 46, 64651, 38865), "Erenor", "main_world", MapLevel.WorldMap);
+            AddMap(new RectangleF(-6758, 2673, 32130, 19308), "Nuia", "land_west", MapLevel.Continent);
+            AddMap(new RectangleF(10627, 1632, 26024, 15636), "Haranya", "land_east", MapLevel.Continent);
+            AddMap(new RectangleF(7035, 21504, 24743, 14883), "Auroria", "land_origin", MapLevel.Continent);
             /*
             foreach (var wgv in AADB.DB_World_Groups)
             {
@@ -86,6 +86,8 @@ namespace AAEmu.DBViewer
             }
             */
 
+            var locale = Properties.Settings.Default.DefaultGameLanguage;
+
             foreach (var zgv in AADB.DB_Zone_Groups)
             {
                 var zg = zgv.Value;
@@ -94,20 +96,32 @@ namespace AAEmu.DBViewer
                     continue;
 
                 var iref = MapViewImageHelper.GetRefByImageMapId(zg.image_map);
-                var fn = zg.name + ".dds";
+                var mapFileName = zg.name ;
                 var level = MapLevel.Zone;
                 if (iref != null)
                 {
                     level = iref.Level;
-                    if (MainForm.ThisForm.pak.isOpen && !MainForm.ThisForm.pak.FileExists("game/ui/map/world/" + fn))
-                        fn = iref.FileName;
+                    if (MainForm.ThisForm.pak.isOpen)
+                    {
+                        var fList = iref.GetPossibleFileNames(locale);
+                        // Here we only check if the name has a valid filename in the pak
+                        // When actually loading, this will be repeated again to get the correct file
+                        foreach (var fName in fList)
+                        {
+                            if (MainForm.ThisForm.pak.FileExists(fName))
+                            {
+                                mapFileName = iref.BaseFileName;
+                                break;
+                            }
+                        }
+                    }
                 }
 
                 if (level < MapLevel.Zone)
                     continue;
 
-                var m = AddMap(zg.PosAndSize.X, zg.PosAndSize.Y, zg.PosAndSize.Width, zg.PosAndSize.Height, zg.display_textLocalized + " ("+zg.id.ToString()+")", "game/ui/map/world/", fn, level);
-                //var m = AddMap(zg.PosAndSize.X, zg.PosAndSize.Y, zg.PosAndSize.Width, zg.PosAndSize.Height, zg.display_textLocalized, "game/ui/map/road/", zg.name + "_road_100", MapLevel.Zone);
+                var m = AddMap(zg.PosAndSize, zg.display_textLocalized + " ("+zg.id.ToString()+")", mapFileName, level);
+                //var m = AddMap(zg.PosAndSize, zg.display_textLocalized, "game/ui/map/road/", zg.name + "_road_100", MapLevel.Zone);
 
                 if (zg.faction_chat_region_id == 2)
                     m.MapBorderColor = Color.DarkCyan;
@@ -142,9 +156,8 @@ namespace AAEmu.DBViewer
             {
                 if (map.MapLevel <= MapLevel.Continent)
                     continue;
-                var pos = CoordToPixel(map.ZoneCoordX, map.ZoneCoordY);
-                var targetRect = new RectangleF(map.ZoneCoordX, map.ZoneCoordY, map.ZoneWidth, map.ZoneHeight);
-                if (targetRect.Contains(cursorCoords))
+                var pos = CoordToPixel(map.ZoneCoords.X, map.ZoneCoords.Y);
+                if (map.ZoneCoords.Contains(cursorCoords))
                     cursorZones.Add(map);
             }
 
@@ -163,7 +176,7 @@ namespace AAEmu.DBViewer
                     }
                     else
                     {
-                        if ((newTopMap.ZoneWidth * newTopMap.ZoneHeight) >= (z.ZoneWidth * z.ZoneHeight))
+                        if ((newTopMap.ZoneCoords.Width * newTopMap.ZoneCoords.Height) >= (z.ZoneCoords.Width * z.ZoneCoords.Height))
                         {
                             newTopMap = z;
                         }
@@ -286,10 +299,10 @@ namespace AAEmu.DBViewer
                 return;
 
             var pen = new Pen(map.MapBorderColor);
-            var pos = CoordToPixel(map.ZoneCoordX, map.ZoneCoordY);
-            var imgPos = CoordToPixel(map.ImgCoordX, map.ImgCoordY);
+            var pos = CoordToPixel(map.ZoneCoords.X, map.ZoneCoords.Y);
+            var imgPos = CoordToPixel(map.ImgCoords.X, map.ImgCoords.Y);
 
-            var targetRect = new RectangleF(ViewOffset.X + pos.X, ViewOffset.Y + pos.Y - map.ZoneHeight, map.ZoneWidth, map.ZoneHeight);
+            var targetRect = new RectangleF(ViewOffset.X + pos.X, ViewOffset.Y + pos.Y - map.ZoneCoords.Height, map.ZoneCoords.Width, map.ZoneCoords.Height);
             if (cbZoneBorders.Checked)
                 g.DrawRectangle(pen, targetRect.X, targetRect.Y, targetRect.Width, targetRect.Height);
 
@@ -456,12 +469,21 @@ namespace AAEmu.DBViewer
         {
             if (MainForm.ThisForm.pak.isOpen)
             {
-                var fn = packedFileFolder + packedFileName ;
+                var fn = packedFileFolder + packedFileName;
 
                 if (MainForm.ThisForm.pak.FileExists(packedFileFolder + Properties.Settings.Default.DefaultGameLanguage + "/" + packedFileName))
                 {
                     fn = packedFileFolder + Properties.Settings.Default.DefaultGameLanguage + "/" + packedFileName;
                 }
+                return PackedImageToBitmap(fn);
+            }
+            return null;
+        }
+
+        private Bitmap PackedImageToBitmap(string fn)
+        { 
+            if (MainForm.ThisForm.pak.isOpen)
+            {
 
                 if (MainForm.ThisForm.pak.FileExists(fn))
                 {
@@ -544,21 +566,32 @@ namespace AAEmu.DBViewer
             poi.Clear();
         }
 
-        public MapViewMap AddMap(float x, float y, float w, float h, string name, string fileDirectory, string fileName, MapLevel level)
+        public MapViewMap AddMap(RectangleF mapLoc, string displayName, string fileName, MapLevel level)
         {
             var newMap = new MapViewMap();
-            newMap.ZoneCoordX = x;
-            newMap.ZoneCoordY = y;
-            newMap.ZoneWidth = w;
-            newMap.ZoneHeight = h;
-            newMap.Name = name;
+            newMap.ZoneCoords = mapLoc;
+            newMap.Name = displayName;
             newMap.MapLevel = level;
             newMap.ImageFile = fileName;
-            newMap.BitmapImage = PackedImageToBitmap(fileDirectory, fileName);
-            newMap.ImgCoordX = x;
-            newMap.ImgCoordY = y;
-            newMap.ImgWidth = w;
-            newMap.ImgHeight = h;
+            var fn = string.Empty;
+            if (MainForm.ThisForm.pak.isOpen)
+            {
+                var fList = MapViewImageRef.ListPossibleFileNames(fileName, Properties.Settings.Default.DefaultGameLanguage);
+                foreach (var fName in fList)
+                {
+                    if (MainForm.ThisForm.pak.FileExists(fName))
+                    {
+                        fn = fName;
+                        break;
+                    }
+                }
+            }
+            if (fn != string.Empty)
+                newMap.BitmapImage = PackedImageToBitmap(fn);
+            else
+                newMap.BitmapImage = PackedImageToBitmap("game/ui/map/world/", fn + ".dds");
+
+            newMap.ImgCoords = mapLoc;
 
             subMaps.Add(newMap);
             return newMap;
@@ -733,14 +766,8 @@ namespace AAEmu.DBViewer
 
     public class MapViewMap
     {
-        public float ZoneCoordX = 0f;
-        public float ZoneCoordY = 0f;
-        public float ZoneWidth = 0f;
-        public float ZoneHeight = 0f;
-        public float ImgCoordX = 0f;
-        public float ImgCoordY = 0f;
-        public float ImgWidth = 0f;
-        public float ImgHeight = 0f;
+        public RectangleF ZoneCoords = new RectangleF();
+        public RectangleF ImgCoords = new RectangleF();
         public Color MapBorderColor = Color.Yellow;
         public string Name = string.Empty;
         public string ImageFile = string.Empty;
