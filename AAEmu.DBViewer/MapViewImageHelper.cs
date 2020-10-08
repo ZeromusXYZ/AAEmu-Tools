@@ -1,7 +1,10 @@
-﻿using System;
+﻿using AAEmu.DBDefs;
+using AAPakEditor;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +16,7 @@ namespace AAEmu.DBViewer
     {
         public static List<MapViewImageRef> MapRefs = new List<MapViewImageRef>();
         public static List<MapViewMiniMapRef> MiniMapRefs = new List<MapViewMiniMapRef>();
-
+        public static Dictionary<string, string> GFileVars = new Dictionary<string, string>();
 
         public static void AddRef(MapLevel level, int id, string baseFileName, int image_map)
         {
@@ -179,6 +182,7 @@ namespace AAEmu.DBViewer
 
         public static void PopulateMiniMapList()
         {
+            // Some defaults for older client versions where we can't grab it from the .g files
             AddMiniMapRef(MapLevel.Zone, 31, 50, "i_training_camp", 119, 31, 0, 0, 232, 228);
             AddMiniMapRef(MapLevel.Zone, 31, 70, "i_training_camp", 167, 43, 0, 0, 324, 320);
             AddMiniMapRef(MapLevel.Zone, 31, 100, "i_training_camp", 238, 62, 0, 0, 464, 456);
@@ -462,7 +466,150 @@ namespace AAEmu.DBViewer
             AddMiniMapRef(MapLevel.City, 252, 70, "w_lilyut_meadow_west_ronbann_mine", 79, 34, 0, 0, 476, 312);
             AddMiniMapRef(MapLevel.City, 252, 100, "w_lilyut_meadow_west_ronbann_mine", 112, 52, 0, 0, 680, 436);
 
+            // Read .g file data for roads
+            if ((MainForm.ThisForm.pak != null) && MainForm.ThisForm.pak.isOpen)
+            {
+                foreach (var zg in AADB.DB_Zone_Groups)
+                {
+                    var refs = MapViewMiniMapRef.ListPossibleFileNames(zg.Value.name, 100, Properties.Settings.Default.DefaultGameLanguage,".g");
+                    foreach (var r in refs)
+                        if (MainForm.ThisForm.pak.FileExists(r))
+                            LoadGFileFromPak(MainForm.ThisForm.pak, r);
+                }
+            }
+            // Override refs if needed
+            foreach (var zg in AADB.DB_Zone_Groups)
+            {
+                if (GFileVars.ContainsKey(zg.Value.name + "_road_100.coords.x") &&
+                    GFileVars.ContainsKey(zg.Value.name + "_road_100.coords.y") &&
+                    GFileVars.ContainsKey(zg.Value.name + "_road_100.coords.w") &&
+                    GFileVars.ContainsKey(zg.Value.name + "_road_100.coords.h") &&
+                    GFileVars.ContainsKey(zg.Value.name + "_road_100.offset.x") &&
+                    GFileVars.ContainsKey(zg.Value.name + "_road_100.offset.y"))
+                {
+                    var roadX = GFileValInt(zg.Value.name + "_road_100.coords.x");
+                    var roadY = GFileValInt(zg.Value.name + "_road_100.coords.y");
+                    var roadW = GFileValInt(zg.Value.name + "_road_100.coords.w");
+                    var roadH = GFileValInt(zg.Value.name + "_road_100.coords.h");
+                    var roadXOff = GFileValInt(zg.Value.name + "_road_100.offset.x");
+                    var roadYOff = GFileValInt(zg.Value.name + "_road_100.offset.y");
+
+                    AddMiniMapRef(MapLevel.Zone, (int)zg.Value.id, 100, zg.Value.name, roadXOff, roadYOff, roadX, roadY, roadW, roadH);
+                }
+            }
+
         }
+
+        public static string GFileValString(string key)
+        {
+            if (GFileVars.TryGetValue(key, out var res))
+                return res;
+            return string.Empty;
+        }
+
+        public static int GFileValInt(string key)
+        {
+            var s = GFileValString(key);
+            if (int.TryParse(s,NumberStyles.Integer , CultureInfo.InvariantCulture, out int i))
+                return i;
+            return 0;
+        }
+
+        public static void LoadGFileFromPak(AAPak pak, string fileName)
+        {
+            if ((pak == null) || (!pak.isOpen) || !pak.FileExists(fileName))
+                return;
+
+            var lines = new List<string>();
+            using (var fs = pak.ExportFileAsStream(fileName))
+            {
+                using (var sr = new StreamReader(fs))
+                {
+                    while (!sr.EndOfStream)
+                        lines.Add(sr.ReadLine());
+                }
+            }
+            var gf = ConvertGFileStringList(lines);
+            foreach (var gl in gf)
+            {
+                if (GFileVars.ContainsKey(gl.Key))
+                    GFileVars.Remove(gl.Key);
+                GFileVars.Add(gl.Key, gl.Value);
+            }
+        }
+
+        static Dictionary<string, string> ConvertGFileStringList(List<string> lines)
+        {
+            var res = new Dictionary<string, string>();
+            var currentObjectName = string.Empty;
+
+            foreach (var l in lines)
+            {
+                if (l.Trim() == string.Empty)
+                    continue;
+                if (!l.StartsWith("  "))
+                {
+                    currentObjectName = l.Trim().ToLower();
+                    Console.WriteLine(currentObjectName);
+                }
+                else
+                {
+                    var words = l.Split(' ').ToList();
+                    for (var i = 0; i < words.Count; i++)
+                        words[i] = words[i].Trim();
+                    var containedValues = string.Empty;
+                    var remainderString = string.Join(" ", words.GetRange(1, words.Count - 1)).Replace(',', ' ').Split(' ').ToList();
+                    for (var i = 0; i < remainderString.Count; i++)
+                        remainderString[i] = remainderString[i].Replace(',', ' ').Trim();
+                    var remainder = new List<string>();
+                    foreach (var s in remainderString)
+                        if (s.Trim() != string.Empty)
+                            remainder.Add(s.Trim());
+                    var para = new List<string>();
+                    if ((remainder.Count > 2) && (remainder[1] == "(") && (remainder[remainder.Count - 1] == ")"))
+                    {
+                        for (var i = 2; i < remainder.Count - 1; i++)
+                            para.Add(remainder[i]);
+                    }
+                    var varName = remainder.Count > 1 ? remainder[0].ToLower() : string.Empty;
+
+                    switch (varName)
+                    {
+                        case "coords":
+                            if (para.Count == 4)
+                            {
+                                res.Add(currentObjectName + "." + varName + ".x", para[0]);
+                                res.Add(currentObjectName + "." + varName + ".y", para[1]);
+                                res.Add(currentObjectName + "." + varName + ".w", para[2]);
+                                res.Add(currentObjectName + "." + varName + ".h", para[3]);
+                            }
+                            else
+                            {
+                                Console.Error.WriteLine("Invalid number of parameters for " + currentObjectName + ".coords");
+                            }
+                            break;
+                        case "offset":
+                            if (para.Count == 2)
+                            {
+                                res.Add(currentObjectName + "." + varName + ".x", para[0]);
+                                res.Add(currentObjectName + "." + varName + ".y", para[1]);
+                            }
+                            else
+                            {
+                                Console.Error.WriteLine("Invalid number of parameters for " + currentObjectName + ".offset");
+                            }
+                            break;
+                        default:
+                            Console.Error.WriteLine("Unknown variable name " + varName + " for " + currentObjectName);
+                            break;
+                    }
+                }
+
+            }
+            return res;
+        }
+
+
     }
 
     public class MapViewMiniMapRef
@@ -479,16 +626,16 @@ namespace AAEmu.DBViewer
             return ListPossibleFileNames(BaseFileName, Scale, locale);
         }
 
-        public static List<string> ListPossibleFileNames(string baseFileName, int scale, string locale)
+        public static List<string> ListPossibleFileNames(string baseFileName, int scale, string locale, string ext = ".dds")
         {
             var res = new List<string>();
             // List possible files in order of prefered
             // Version 1.2
-            res.Add("game/ui/map/road/" + locale + "/" + baseFileName + "_road_" + scale.ToString() + ".dds");
-            res.Add("game/ui/map/road/" + baseFileName + "_road_" + scale.ToString() + ".dds");
+            res.Add("game/ui/map/road/" + locale + "/" + baseFileName + "_road_" + scale.ToString() + ext);
+            res.Add("game/ui/map/road/" + baseFileName + "_road_" + scale.ToString() + ext);
             // starting from Version ?.?
-            res.Add("game/ui/map/map_resources/" + baseFileName + "/" + locale + "/road_" + scale.ToString() + ".dds");
-            res.Add("game/ui/map/map_resources/" + baseFileName + "/road_" + scale.ToString() + ".dds");
+            res.Add("game/ui/map/map_resources/" + baseFileName + "/" + locale + "/road_" + scale.ToString() + ext);
+            res.Add("game/ui/map/map_resources/" + baseFileName + "/road_" + scale.ToString() + ext);
             return res;
         }
     }
@@ -569,6 +716,7 @@ namespace AAEmu.DBViewer
             else
                 return new PointF();
         }
+
     }
 
 }
