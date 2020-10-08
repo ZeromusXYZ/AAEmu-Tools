@@ -31,7 +31,7 @@ namespace AAEmu.DBViewer
         private bool hasDragged = false;
         private float viewScale = 1f;
         private List<MapViewPoI> poi = new List<MapViewPoI>();
-        private List<MapViewMap> subMaps = new List<MapViewMap>();
+        private List<MapViewMap> allmaps = new List<MapViewMap>();
         private MapViewMap topMostMap = null;
         private MapViewMap WorldMap = null;
         private List<MapViewPath> paths = new List<MapViewPath>();
@@ -54,10 +54,10 @@ namespace AAEmu.DBViewer
             ClearMaps();
             MapViewImageHelper.PopulateList();
             MapViewImageHelper.PopulateMiniMapList();
-            WorldMap = AddMap(new RectangleF(-14731, 46, 64651, 38865), "Erenor", "main_world", MapLevel.WorldMap);
-            AddMap(new RectangleF(-6758, 2673, 32130, 19308), "Nuia", "land_west", MapLevel.Continent);
-            AddMap(new RectangleF(10627, 1632, 26024, 15636), "Haranya", "land_east", MapLevel.Continent);
-            AddMap(new RectangleF(7035, 21504, 24743, 14883), "Auroria", "land_origin", MapLevel.Continent);
+            WorldMap = AddMap(new RectangleF(-14731, 46, 64651, 38865), "Erenor", "main_world", MapLevel.WorldMap, 0);
+            AddMap(new RectangleF(-6758, 2673, 32130, 19308), "Nuia", "land_west", MapLevel.Continent, 0);
+            AddMap(new RectangleF(10627, 1632, 26024, 15636), "Haranya", "land_east", MapLevel.Continent, 0);
+            AddMap(new RectangleF(7035, 21504, 24743, 14883), "Auroria", "land_origin", MapLevel.Continent, 0);
             /*
             foreach (var wgv in AADB.DB_World_Groups)
             {
@@ -120,7 +120,7 @@ namespace AAEmu.DBViewer
                 if (level < MapLevel.Zone)
                     continue;
 
-                var m = AddMap(zg.PosAndSize, zg.display_textLocalized + " ("+zg.id.ToString()+")", mapFileName, level);
+                var m = AddMap(zg.PosAndSize, zg.display_textLocalized + " ("+zg.id.ToString()+")", mapFileName, level, zg.id);
                 //var m = AddMap(zg.PosAndSize, zg.display_textLocalized, "game/ui/map/road/", zg.name + "_road_100", MapLevel.Zone);
 
                 if (zg.faction_chat_region_id == 2)
@@ -152,11 +152,10 @@ namespace AAEmu.DBViewer
             MapViewMap newTopMap = null;
             var res = string.Empty;
             var cursorZones = new List<MapViewMap>();
-            foreach (var map in subMaps)
+            foreach (var map in allmaps)
             {
                 if (map.MapLevel <= MapLevel.Continent)
                     continue;
-                var pos = CoordToPixel(map.ZoneCoords.X, map.ZoneCoords.Y);
                 if (map.ZoneCoords.Contains(cursorCoords))
                     cursorZones.Add(map);
             }
@@ -277,7 +276,7 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private void DrawSubMap(Graphics g, MapViewMap map)
+        private void DrawMap(Graphics g, MapViewMap map)
         {
             var showMap = true;
             switch (map.MapLevel)
@@ -299,49 +298,49 @@ namespace AAEmu.DBViewer
                 return;
 
             var pen = new Pen(map.MapBorderColor);
-            var pos = CoordToPixel(map.ZoneCoords.X, map.ZoneCoords.Y);
-            var imgPos = CoordToPixel(map.ImgCoords.X, map.ImgCoords.Y);
+            var roadpen = Pens.Black ;
 
-            var targetRect = new RectangleF(ViewOffset.X + pos.X, ViewOffset.Y + pos.Y - map.ZoneCoords.Height, map.ZoneCoords.Width, map.ZoneCoords.Height);
-            if (cbZoneBorders.Checked)
-                g.DrawRectangle(pen, targetRect.X, targetRect.Y, targetRect.Width, targetRect.Height);
+            var mappos = CoordToPixel(map.ZoneCoords.X, map.ZoneCoords.Y);
 
-            if (map.BitmapImage != null)
+            var zoneBorderRect = new RectangleF(ViewOffset.X + mappos.X, ViewOffset.Y + mappos.Y - map.ZoneCoords.Height, map.ZoneCoords.Width, map.ZoneCoords.Height);
+
+            // Main Map
+            if ((map.MapBitmapImage != null) && ((map.MapLevel <= MapLevel.WorldMap) || cbDrawMainMap.Checked))
             {
-                float targetAspect = targetRect.Width / targetRect.Height;
-                float imageAspect = (float)map.BitmapImage.Width / (float)map.BitmapImage.Height;
-                var drawRect = targetRect ;
-
-                if (targetAspect >= imageAspect)
-                {
-                    drawRect = new RectangleF();
-                    drawRect.Width = targetRect.Width / targetAspect * imageAspect;
-                    drawRect.Height = targetRect.Height;
-                    drawRect.X = targetRect.X + ((targetRect.Width - drawRect.Width) / 2);
-                    drawRect.Y = targetRect.Y;
-                }
-                else
-                {
-                    drawRect = new RectangleF();
-                    drawRect.Width = targetRect.Width;
-                    drawRect.Height = targetRect.Height * targetAspect / imageAspect;
-                    drawRect.X = targetRect.X;
-                    drawRect.Y = targetRect.Y + ((targetRect.Height - drawRect.Height) / 2);
-                }
-
-                g.DrawImage(map.BitmapImage, drawRect);
-                /*
-                if (cbZoneBorders.Checked)
-                    g.DrawRectangle(Pens.Silver, drawRect.X, drawRect.Y, drawRect.Width, drawRect.Height);
-                */
+                g.DrawImage(map.MapBitmapImage, zoneBorderRect);
             }
-            //g.DrawImage(map.BitmapImage, ViewOffset.X + imgPos.X, ViewOffset.Y + imgPos.Y - map.ImgHeight, map.ImgWidth, map.ImgHeight);
+
+            var roadBorderRect = new RectangleF();
+            // Road Map Overlay (we need to read image dimensions of the mainmap, so it also requires that one loaded)
+            if ((map.MapBitmapImage != null) && (map.RoadBitmapImage != null))
+            {
+                var roadsize = new SizeF(
+                    map.ZoneCoords.Width * map.RoadBitmapImage.Width / (float)map.MapBitmapImage.Width,
+                    map.ZoneCoords.Height * map.RoadBitmapImage.Height / (float)map.MapBitmapImage.Height
+                    );
+                var roadCoordsOffset = new PointF(
+                    map.RoadMapOffset.X / (float)map.MapBitmapImage.Width * map.ZoneCoords.Width,
+                    map.RoadMapOffset.Y / (float)map.MapBitmapImage.Height * map.ZoneCoords.Height
+                    );
+                /*
+                var roadCoordsOffset = new PointF(
+                    map.RoadMapOffset.X / map.RoadBitmapImage.Width * (float)map.MapBitmapImage.Width,
+                    map.RoadMapOffset.Y / map.RoadBitmapImage.Height * (float)map.MapBitmapImage.Height
+                    );
+                */
+                roadBorderRect = new RectangleF(ViewOffset.X + mappos.X + roadCoordsOffset.X, ViewOffset.Y + mappos.Y + roadCoordsOffset.Y - map.ZoneCoords.Height, roadsize.Width, roadsize.Height);
+                if (cbDrawMiniMap.Checked)
+                    g.DrawImage(map.RoadBitmapImage, roadBorderRect);
+            }
 
             if (cbZoneBorders.Checked && (map.Name != string.Empty))
             {
+                g.DrawRectangle(pen, zoneBorderRect.X, zoneBorderRect.Y, zoneBorderRect.Width, zoneBorderRect.Height);
+                g.DrawRectangle(roadpen, roadBorderRect.X, roadBorderRect.Y, roadBorderRect.Width, roadBorderRect.Height);
+
                 var f = new Font(Font.FontFamily, 100f);
                 var br = new SolidBrush(map.MapBorderColor);
-                g.DrawString(map.Name, f, br, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y);
+                g.DrawString(map.Name, f, br, ViewOffset.X + mappos.X, ViewOffset.Y + mappos.Y);
             }
         }
 
@@ -357,13 +356,13 @@ namespace AAEmu.DBViewer
             cursorZones = string.Empty;
             foreach (var level in Enum.GetValues(typeof(MapLevel)))
             {
-                foreach (var map in subMaps)
+                foreach (var map in allmaps)
                     if (map.MapLevel == (MapLevel)level)
-                        DrawSubMap(g, map);
+                        DrawMap(g, map);
             }
 
             if (topMostMap != null)
-                DrawSubMap(g, topMostMap);
+                DrawMap(g, topMostMap);
 
             // Draw Grid
             if (cbShowGrid.Checked)
@@ -566,13 +565,15 @@ namespace AAEmu.DBViewer
             poi.Clear();
         }
 
-        public MapViewMap AddMap(RectangleF mapLoc, string displayName, string fileName, MapLevel level)
+        public MapViewMap AddMap(RectangleF mapLoc, string displayName, string fileName, MapLevel level, long zone_group_id)
         {
             var newMap = new MapViewMap();
             newMap.ZoneCoords = mapLoc;
             newMap.Name = displayName;
             newMap.MapLevel = level;
-            newMap.ImageFile = fileName;
+            newMap.MapImageFile = fileName;
+
+            // MainMap
             var fn = string.Empty;
             if (MainForm.ThisForm.pak.isOpen)
             {
@@ -582,24 +583,52 @@ namespace AAEmu.DBViewer
                     if (MainForm.ThisForm.pak.FileExists(fName))
                     {
                         fn = fName;
+                        newMap.MapImageFile = fn;
                         break;
                     }
                 }
             }
             if (fn != string.Empty)
-                newMap.BitmapImage = PackedImageToBitmap(fn);
+                newMap.MapBitmapImage = PackedImageToBitmap(fn);
             else
-                newMap.BitmapImage = PackedImageToBitmap("game/ui/map/world/", fn + ".dds");
-
+                newMap.MapBitmapImage = PackedImageToBitmap("game/ui/map/world/", fn + ".dds");
             newMap.ImgCoords = mapLoc;
 
-            subMaps.Add(newMap);
+
+            // RoadMap
+            fn = string.Empty;
+            var roadRef = MapViewImageHelper.GetMiniMapRefByZoneGroup(zone_group_id,100,newMap.MapLevel);
+            if (roadRef != null)
+            {
+                newMap.RoadMapOffset = roadRef.Offset;
+                newMap.RoadMapCoords = roadRef.Rect;
+                if (MainForm.ThisForm.pak.isOpen)
+                {
+                    var fList = roadRef.GetPossibleFileNames(Properties.Settings.Default.DefaultGameLanguage);
+                    foreach (var fName in fList)
+                    {
+                        if (MainForm.ThisForm.pak.FileExists(fName))
+                        {
+                            fn = fName;
+                            newMap.RoadImageFile = fn;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (fn != string.Empty)
+                newMap.RoadBitmapImage = PackedImageToBitmap(fn);
+            else
+                newMap.RoadBitmapImage = PackedImageToBitmap("game/ui/map/world/", fn + "_road_100.dds");
+
+
+            allmaps.Add(newMap);
             return newMap;
         }
 
         public void ClearMaps()
         {
-            subMaps.Clear();
+            allmaps.Clear();
         }
 
         public void AddPath(MapViewPath path)
@@ -766,13 +795,18 @@ namespace AAEmu.DBViewer
 
     public class MapViewMap
     {
+        public MapLevel MapLevel = MapLevel.None;
         public RectangleF ZoneCoords = new RectangleF();
         public RectangleF ImgCoords = new RectangleF();
         public Color MapBorderColor = Color.Yellow;
         public string Name = string.Empty;
-        public string ImageFile = string.Empty;
-        public Bitmap BitmapImage = null;
-        public MapLevel MapLevel = MapLevel.None;
+        public string MapImageFile = string.Empty;
+        public Bitmap MapBitmapImage = null;
+
+        public string RoadImageFile = string.Empty;
+        public PointF RoadMapOffset = new PointF();
+        public RectangleF RoadMapCoords = new RectangleF();
+        public Bitmap RoadBitmapImage = null;
     }
 
     public class MapViewPath

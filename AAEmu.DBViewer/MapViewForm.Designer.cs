@@ -35,6 +35,8 @@
             this.tsslRuler = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslSelectionInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.gbTools = new System.Windows.Forms.GroupBox();
+            this.cbDrawMiniMap = new System.Windows.Forms.CheckBox();
+            this.cbDrawMainMap = new System.Windows.Forms.CheckBox();
             this.cbShowGrid = new System.Windows.Forms.CheckBox();
             this.cbPathNames = new System.Windows.Forms.CheckBox();
             this.cbShowCity = new System.Windows.Forms.CheckBox();
@@ -124,6 +126,8 @@
             // 
             // gbTools
             // 
+            this.gbTools.Controls.Add(this.cbDrawMiniMap);
+            this.gbTools.Controls.Add(this.cbDrawMainMap);
             this.gbTools.Controls.Add(this.cbShowGrid);
             this.gbTools.Controls.Add(this.cbPathNames);
             this.gbTools.Controls.Add(this.cbShowCity);
@@ -141,12 +145,36 @@
             this.gbTools.TabStop = false;
             this.gbTools.Text = "Show";
             // 
+            // cbDrawMiniMap
+            // 
+            this.cbDrawMiniMap.AutoSize = true;
+            this.cbDrawMiniMap.Checked = true;
+            this.cbDrawMiniMap.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbDrawMiniMap.Location = new System.Drawing.Point(6, 143);
+            this.cbDrawMiniMap.Name = "cbDrawMiniMap";
+            this.cbDrawMiniMap.Size = new System.Drawing.Size(69, 17);
+            this.cbDrawMiniMap.TabIndex = 10;
+            this.cbDrawMiniMap.Text = "Mini Map";
+            this.cbDrawMiniMap.UseVisualStyleBackColor = true;
+            this.cbDrawMiniMap.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
+            // cbDrawMainMap
+            // 
+            this.cbDrawMainMap.AutoSize = true;
+            this.cbDrawMainMap.Location = new System.Drawing.Point(6, 120);
+            this.cbDrawMainMap.Name = "cbDrawMainMap";
+            this.cbDrawMainMap.Size = new System.Drawing.Size(73, 17);
+            this.cbDrawMainMap.TabIndex = 9;
+            this.cbDrawMainMap.Text = "Main Map";
+            this.cbDrawMainMap.UseVisualStyleBackColor = true;
+            this.cbDrawMainMap.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
             // cbShowGrid
             // 
             this.cbShowGrid.AutoSize = true;
             this.cbShowGrid.Checked = true;
             this.cbShowGrid.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbShowGrid.Location = new System.Drawing.Point(6, 221);
+            this.cbShowGrid.Location = new System.Drawing.Point(6, 283);
             this.cbShowGrid.Name = "cbShowGrid";
             this.cbShowGrid.Size = new System.Drawing.Size(45, 17);
             this.cbShowGrid.TabIndex = 8;
@@ -157,7 +185,7 @@
             // cbPathNames
             // 
             this.cbPathNames.AutoSize = true;
-            this.cbPathNames.Location = new System.Drawing.Point(6, 175);
+            this.cbPathNames.Location = new System.Drawing.Point(6, 237);
             this.cbPathNames.Name = "cbPathNames";
             this.cbPathNames.Size = new System.Drawing.Size(84, 17);
             this.cbPathNames.TabIndex = 7;
@@ -168,8 +196,6 @@
             // cbShowCity
             // 
             this.cbShowCity.AutoSize = true;
-            this.cbShowCity.Checked = true;
-            this.cbShowCity.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbShowCity.Enabled = false;
             this.cbShowCity.Location = new System.Drawing.Point(6, 88);
             this.cbShowCity.Name = "cbShowCity";
@@ -210,7 +236,7 @@
             this.cbFocus.AutoSize = true;
             this.cbFocus.Checked = true;
             this.cbFocus.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbFocus.Location = new System.Drawing.Point(6, 198);
+            this.cbFocus.Location = new System.Drawing.Point(6, 260);
             this.cbFocus.Name = "cbFocus";
             this.cbFocus.Size = new System.Drawing.Size(89, 17);
             this.cbFocus.TabIndex = 3;
@@ -221,7 +247,7 @@
             // cbZoneBorders
             // 
             this.cbZoneBorders.AutoSize = true;
-            this.cbZoneBorders.Location = new System.Drawing.Point(6, 132);
+            this.cbZoneBorders.Location = new System.Drawing.Point(6, 166);
             this.cbZoneBorders.Name = "cbZoneBorders";
             this.cbZoneBorders.Size = new System.Drawing.Size(86, 17);
             this.cbZoneBorders.TabIndex = 2;
@@ -245,7 +271,7 @@
             // cbPoINames
             // 
             this.cbPoINames.AutoSize = true;
-            this.cbPoINames.Location = new System.Drawing.Point(6, 152);
+            this.cbPoINames.Location = new System.Drawing.Point(6, 214);
             this.cbPoINames.Name = "cbPoINames";
             this.cbPoINames.Size = new System.Drawing.Size(78, 17);
             this.cbPoINames.TabIndex = 0;
@@ -309,5 +335,7 @@
         private System.Windows.Forms.CheckBox cbShowContinent;
         public System.Windows.Forms.CheckBox cbPathNames;
         public System.Windows.Forms.CheckBox cbShowGrid;
+        private System.Windows.Forms.CheckBox cbDrawMiniMap;
+        private System.Windows.Forms.CheckBox cbDrawMainMap;
     }
 }

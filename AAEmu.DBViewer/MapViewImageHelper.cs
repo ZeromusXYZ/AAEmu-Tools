@@ -32,8 +32,8 @@ namespace AAEmu.DBViewer
             var newRef = new MapViewMiniMapRef();
             newRef.Level = level;
             newRef.ZoneGroup = zoneGroupId;
-            newRef.Scale = (float)mapScale / 100f;
-            newRef.fileName = baseMapFileName + "_road_" + mapScale.ToString() + ".dds";
+            newRef.Scale = mapScale ;
+            newRef.BaseFileName = baseMapFileName; // + "_road_" + mapScale.ToString() + ".dds";
             newRef.Offset = new PointF(offsetX, offsetY);
             newRef.Rect = new RectangleF(imgX,imgY,imgH,imgW);
             MiniMapRefs.Add(newRef);
@@ -48,10 +48,10 @@ namespace AAEmu.DBViewer
             return null;
         }
 
-        public static MapViewMiniMapRef GetMiniMapRefByZoneGroup(long zonegroup_id)
+        public static MapViewMiniMapRef GetMiniMapRefByZoneGroup(long zonegroup_id, int scale, MapLevel level)
         {
             foreach (var r in MiniMapRefs)
-                if (r.ZoneGroup == zonegroup_id)
+                if ((r.ZoneGroup == zonegroup_id) && (r.Scale == scale) && (r.Level == level))
                     return r;
             return null;
         }
@@ -469,10 +469,28 @@ namespace AAEmu.DBViewer
     {
         public MapLevel Level;
         public long ZoneGroup;
-        public float Scale;
-        public string fileName;
+        public int Scale;
+        public string BaseFileName;
         public PointF Offset;
         public RectangleF Rect;
+
+        public List<string> GetPossibleFileNames(string locale)
+        {
+            return ListPossibleFileNames(BaseFileName, Scale, locale);
+        }
+
+        public static List<string> ListPossibleFileNames(string baseFileName, int scale, string locale)
+        {
+            var res = new List<string>();
+            // List possible files in order of prefered
+            // Version 1.2
+            res.Add("game/ui/map/road/" + locale + "/" + baseFileName + "_road_" + scale.ToString() + ".dds");
+            res.Add("game/ui/map/road/" + baseFileName + "_road_" + scale.ToString() + ".dds");
+            // starting from Version ?.?
+            res.Add("game/ui/map/map_resources/" + baseFileName + "/" + locale + "/road_" + scale.ToString() + ".dds");
+            res.Add("game/ui/map/map_resources/" + baseFileName + "/road_" + scale.ToString() + ".dds");
+            return res;
+        }
     }
 
     public class MapViewImageRef
