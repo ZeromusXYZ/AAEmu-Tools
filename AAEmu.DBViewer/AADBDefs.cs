@@ -586,6 +586,18 @@ namespace AAEmu.DBDefs
         public float wait_time_end = 0f;
     }
 
+    public class QuestSphereEntry
+    {
+        public string worldID = string.Empty;
+        public int zoneID = -1;
+        public int questID = -1;
+        public int componentID = -1;
+        public float X = 0.0f;
+        public float Y = 0.0f;
+        public float Z = 0.0f;
+        public float radius = 0.0f;
+    }
+
 
     static class AADB
     {
@@ -620,6 +632,7 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameBuff> DB_Buffs = new Dictionary<long, GameBuff>();
         static public Dictionary<long, GameTransfers> DB_Transfers = new Dictionary<long, GameTransfers>();
         static public List<GameTransferPaths> DB_TransferPaths = new List<GameTransferPaths>();
+        static public List<QuestSphereEntry> PAK_QuestSignSpheres = new List<QuestSphereEntry>();
 
         static public string GetFactionName(long faction_id, bool addID = false)
         {
@@ -757,6 +770,13 @@ namespace AAEmu.DBDefs
             res += FloatToCoord(fy);
 
             return res;
+        }
+
+        static public PointF SextantToCoord(float longitude, float latitude)
+        {
+            var ux = ((longitude + 21f) / 0.00097657363894522145695357130138029f);
+            var uy = ((latitude + 28f) / 0.00097657363894522145695357130138029f);
+            return new PointF(ux, uy);
         }
     }
 

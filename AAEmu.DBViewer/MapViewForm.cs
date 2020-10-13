@@ -56,8 +56,8 @@ namespace AAEmu.DBViewer
 
                 ClearPoI();
                 ClearMaps();
-                MapViewImageHelper.PopulateList();
-                MapViewImageHelper.PopulateMiniMapList();
+                MapViewHelper.PopulateList();
+                MapViewHelper.PopulateMiniMapList();
                 WorldMap = AddMap(new RectangleF(-14731, 46, 64651, 38865), "Erenor", "main_world", MapLevel.WorldMap, 0);
                 AddMap(new RectangleF(-6758, 2673, 32130, 19308), "Nuia", "land_west", MapLevel.Continent, 0);
                 AddMap(new RectangleF(10627, 1632, 26024, 15636), "Haranya", "land_east", MapLevel.Continent, 0);
@@ -103,7 +103,7 @@ namespace AAEmu.DBViewer
                     if ((zg.PosAndSize.Width <= 0) || (zg.PosAndSize.Height <= 0))
                         continue;
 
-                    var iref = MapViewImageHelper.GetRefByImageMapId(zg.image_map);
+                    var iref = MapViewHelper.GetRefByImageMapId(zg.image_map);
                     var mapFileName = zg.name;
                     var level = MapLevel.Zone;
                     if (iref != null)
@@ -355,6 +355,103 @@ namespace AAEmu.DBViewer
             }
         }
 
+        private void DrawGrid(Graphics g)
+        {
+            var fnt = new Font(Font.FontFamily, 10f / viewScale);
+            var br = new System.Drawing.SolidBrush(Color.White);
+            var smallGridSize = 1024; // Cell size (resolution in heightmap is actualy 2m instead of 1m, so here we use 1024 instead of 512)
+            if ((viewScale > 0.5f) && !rbGridCells.Checked && !rbGridGeo.Checked)
+            {
+                smallGridSize = 32; // Sector
+                fnt = new Font(Font.FontFamily, 7f / viewScale);
+            }
+
+            for (var x = 0; x <= 32768; x += smallGridSize)
+            {
+                var gridString = x.ToString();
+                var off = 0;
+                var p = x % 4096 == 0 ? System.Drawing.Pens.LightGray : System.Drawing.Pens.DarkGray;
+                if (rbGridCells.Checked || rbGridGeo.Checked)
+                {
+                    if (((int)x % 1024) == 0)
+                    {
+                        if (rbGridCells.Checked)
+                        {
+                            gridString = (x / 1024).ToString();
+                            off = 512;
+                        }
+                        else
+                        {
+                            var xx = ((x / 1024) - 21);
+                            if (xx >= 0)
+                                gridString = xx.ToString() + "°E";
+                            else
+                                gridString = (xx * -1).ToString() + "°W";
+                            if (xx == 0)
+                                p = System.Drawing.Pens.DeepPink;
+                        }
+                    }
+                    else
+                        gridString = " ";
+                }
+                var stringSize = g.MeasureString(gridString, fnt);
+                var hTop = CoordToPixel(x, 32768 + 4096);
+                var hBottom = CoordToPixel(x, 0);
+                g.DrawLine(p, ViewOffset.X + hTop.X, ViewOffset.Y + hTop.Y, ViewOffset.X + hBottom.X, ViewOffset.Y + hBottom.Y);
+
+                var ht = new Point(ViewOffset.X + hTop.X, ViewOffset.Y + hTop.Y);
+                var hb = new Point(ViewOffset.X + hBottom.X, ViewOffset.Y + hBottom.Y);
+                if (ht.Y < 0)
+                    ht.Y = (int)stringSize.Height;
+                if (hb.Y > (int)(pView.Height / viewScale) - (int)stringSize.Height)
+                    hb.Y = (int)(pView.Height / viewScale) - (int)stringSize.Height;
+                g.DrawString(gridString, fnt, br, ht.X - (stringSize.Width / 2) + off, ht.Y - stringSize.Height);
+                g.DrawString(gridString, fnt, br, hb.X - (stringSize.Width / 2) + off, hb.Y);
+            }
+            for (var y = 0; y <= 32768 + 4096; y += smallGridSize)
+            {
+                var gridString = y.ToString();
+                var off = 0;
+                var p = y % 4096 == 0 ? System.Drawing.Pens.LightGray : System.Drawing.Pens.DarkGray;
+                if (rbGridCells.Checked || rbGridGeo.Checked)
+                {
+                    if (((int)y % 1024) == 0)
+                    {
+                        if (rbGridCells.Checked)
+                        {
+                            gridString = (y / 1024).ToString();
+                            off = 512;
+                        }
+                        else
+                        {
+                            var yy = ((y / 1024) - 28);
+                            if (yy == 0)
+                                p = System.Drawing.Pens.DeepPink;
+                            if (yy >= 0)
+                                gridString = yy.ToString() + "°N";
+                            else
+                                gridString = (yy * -1).ToString() + "°S";
+                        }
+                    }
+                    else
+                        gridString = " ";
+                }
+                var stringSize = g.MeasureString(gridString, fnt);
+                var hTop = CoordToPixel(0, y);
+                var hBottom = CoordToPixel(32768, y);
+                g.DrawLine(p, ViewOffset.X + hTop.X, ViewOffset.Y + hTop.Y, ViewOffset.X + hBottom.X, ViewOffset.Y + hBottom.Y);
+
+                var ht = new Point(ViewOffset.X + hTop.X, ViewOffset.Y + hTop.Y);
+                var hb = new Point(ViewOffset.X + hBottom.X, ViewOffset.Y + hBottom.Y);
+                if (ht.X < 0)
+                    ht.X = (int)stringSize.Width;
+                if (hb.X > (int)(pView.Width / viewScale) - (int)stringSize.Width)
+                    hb.X = (int)(pView.Width / viewScale) - (int)stringSize.Width;
+                g.DrawString(gridString, fnt, br, ht.X - stringSize.Width, ht.Y - (stringSize.Height / 2) - off);
+                g.DrawString(gridString, fnt, br, hb.X, hb.Y - (stringSize.Height / 2) - off);
+            }
+        }
+
         private void OnViewPaint(object sender, PaintEventArgs e)
         {
             // Draw the map, or something like that
@@ -376,54 +473,14 @@ namespace AAEmu.DBViewer
                 DrawMap(g, topMostMap);
 
             // Draw Grid
-            if (cbShowGrid.Checked)
-            {
-                var fnt = new Font(Font.FontFamily, 10f / viewScale);
-                var br = new System.Drawing.SolidBrush(Color.White);
-                var smallGridSize = 512; // Cell size
-                if (viewScale > 0.5f)
-                {
-                    smallGridSize = 32; // Sector
-                    fnt = new Font(Font.FontFamily, 7f / viewScale);
-                }
-                for (var x = 0; x <= 32768; x += smallGridSize)
-                {
-                    var s = g.MeasureString(x.ToString(), fnt);
-                    var hTop = CoordToPixel(x, 32768 + 4096);
-                    var hBottom = CoordToPixel(x, 0);
-                    g.DrawLine(x % 4096 == 0 ? System.Drawing.Pens.LightGray : System.Drawing.Pens.DarkGray, ViewOffset.X + hTop.X, ViewOffset.Y + hTop.Y, ViewOffset.X + hBottom.X, ViewOffset.Y + hBottom.Y);
-
-                    var ht = new Point(ViewOffset.X + hTop.X, ViewOffset.Y + hTop.Y);
-                    var hb = new Point(ViewOffset.X + hBottom.X, ViewOffset.Y + hBottom.Y);
-                    if (ht.Y < 0)
-                        ht.Y = (int)s.Height ;
-                    if (hb.Y > (int)(pView.Height / viewScale) - (int)s.Height)
-                        hb.Y = (int)(pView.Height / viewScale) - (int)s.Height;
-                    g.DrawString(x.ToString(), fnt, br, ht.X - (s.Width / 2), ht.Y - s.Height);
-                    g.DrawString(x.ToString(), fnt, br, hb.X - (s.Width / 2), hb.Y);
-                }
-                for (var y = 0; y <= 32768 + 4096; y += smallGridSize)
-                {
-                    var s = g.MeasureString(y.ToString(), fnt);
-                    var hTop = CoordToPixel(0, y);
-                    var hBottom = CoordToPixel(32768, y);
-                    g.DrawLine(y % 4096 == 0 ? System.Drawing.Pens.LightGray : System.Drawing.Pens.DarkGray, ViewOffset.X + hTop.X, ViewOffset.Y + hTop.Y, ViewOffset.X + hBottom.X, ViewOffset.Y + hBottom.Y);
-
-                    var ht = new Point(ViewOffset.X + hTop.X, ViewOffset.Y + hTop.Y);
-                    var hb = new Point(ViewOffset.X + hBottom.X, ViewOffset.Y + hBottom.Y);
-                    if (ht.X < 0)
-                        ht.X = (int)s.Width;
-                    if (hb.X > (int)(pView.Width / viewScale) - (int)s.Width)
-                        hb.X = (int)(pView.Width / viewScale) - (int)s.Width;
-                    g.DrawString(y.ToString(), fnt, br, ht.X - s.Width, ht.Y - (s.Height / 2));
-                    g.DrawString(y.ToString(), fnt, br, hb.X, hb.Y - (s.Height / 2));
-                }
-            }
+            if (rbGridUnits.Checked || rbGridCells.Checked || rbGridGeo.Checked)
+                DrawGrid(g);
 
             // Draw Points of Interest
             foreach (var p in poi)
                 DrawCross(g, p.CoordX, p.CoordY, p.PoIColor, cbPoINames.Checked ? p.Name : "");
 
+            // Draw Paths
             foreach(var path in paths)
             {
                 if (path.allpoints.Count <= 0)
@@ -608,7 +665,7 @@ namespace AAEmu.DBViewer
 
             // RoadMap
             fn = string.Empty;
-            var roadRef = MapViewImageHelper.GetMiniMapRefByZoneGroup(zone_group_id,100,newMap.MapLevel);
+            var roadRef = MapViewHelper.GetMiniMapRefByZoneGroup(zone_group_id,100,newMap.MapLevel);
             if (roadRef != null)
             {
                 newMap.RoadMapOffset = roadRef.Offset;

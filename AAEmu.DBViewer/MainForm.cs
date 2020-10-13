@@ -18,6 +18,7 @@ using System.Globalization;
 using System.Xml;
 using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
+using System.Windows.Forms.VisualStyles;
 
 namespace AAEmu.DBViewer
 {
@@ -68,6 +69,8 @@ namespace AAEmu.DBViewer
 
                         loading.ShowInfo("Loading: World Data");
                         PrepareWorldXML(true);
+                        loading.ShowInfo("Loading: Quest Sign Sphere Data");
+                        LoadQuestSpheres();
                     }
                 }
             }
@@ -4055,6 +4058,10 @@ namespace AAEmu.DBViewer
                     long zoneid = (long)b.Tag;
                     bool first = true;
 
+                    Application.UseWaitCursor = true;
+                    Cursor = Cursors.WaitCursor;
+                    dgvQuests.Hide();
+
                     foreach (var quest in AADB.DB_Quest_Contexts)
                     {
                         var q = quest.Value;
@@ -4087,6 +4094,10 @@ namespace AAEmu.DBViewer
                                 row.Cells[4].Value = q.category_id.ToString();
                         }
                     }
+                    dgvQuests.Show();
+
+                    Application.UseWaitCursor = false;
+                    Cursor = Cursors.Default;
 
                     tcViewer.SelectedTab = tpQuests;
                 }
@@ -4706,7 +4717,6 @@ namespace AAEmu.DBViewer
             }
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
-
         }
 
         public void PrepareWorldXML(bool overwrite)
@@ -4825,6 +4835,134 @@ namespace AAEmu.DBViewer
             map.cbPoINames.Checked = true;
             map.cbFocus.Checked = true;
             map.FocusAll(true, false);
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+
+        }
+
+        public void LoadQuestSpheres()
+        {
+            if ((pak == null) || (!pak.isOpen))
+                return;
+
+            
+            AADB.PAK_QuestSignSpheres = new List<QuestSphereEntry>();
+            var sl = new List<string>();
+
+            // Find all related files and concat them into a giant stringlist
+            foreach (var pfi in pak.files)
+            {
+                var lowername = pfi.name.ToLower();
+                if (lowername.EndsWith("quest_sign_sphere.g"))
+                {
+                    var namesplited = lowername.Split('/');
+                    var thisStream = pak.ExportFileAsStream(pfi);
+                    using (var rs = new StreamReader(thisStream))
+                    {
+                        sl.Clear();
+                        while (!rs.EndOfStream)
+                        {
+                            sl.Add(rs.ReadLine().Trim(' ').Trim('\t').ToLower());
+                        }
+                    }
+                    var worldname = "";
+                    var zone = 0;
+
+                    if (namesplited.Length > 6)
+                    {
+                        if ((namesplited[0] == "game") &&
+                            (namesplited[1] == "worlds") &&
+                            (namesplited[3] == "level_design") &&
+                            (namesplited[4] == "zone") &&
+                            (namesplited[6] == "client")
+                            )
+                        {
+                            worldname = namesplited[2];
+                            zone = int.Parse(namesplited[5]);
+                        }
+                    }
+
+                    var zoneOffX = 0f;
+                    var zoneOffY = 0f;
+                    if (AADB.DB_Zones.TryGetValue(zone, out var gameZone))
+                    {
+                        if (AADB.DB_Zone_Groups.TryGetValue(gameZone.group_id, out var zg))
+                        {
+                            zoneOffX = zg.PosAndSize.X;
+                            zoneOffY = zg.PosAndSize.Y;
+                        }
+                        else
+                        {
+                            // no zone group ?
+                        }
+                    }
+                    else
+                    {
+                        // zone not found in DB
+                    }
+
+                    for (int i = 0; i < sl.Count - 4; i++)
+                    {
+                        var l0 = sl[i + 0]; // area
+                        var l1 = sl[i + 1]; // qtype
+                        var l2 = sl[i + 2]; // ctype
+                        var l3 = sl[i + 3]; // pos
+                        var l4 = sl[i + 4]; // radius
+
+
+                        if (l0.StartsWith("area") && l1.StartsWith("qtype") && l2.StartsWith("ctype") && l3.StartsWith("pos") && l4.StartsWith("radius"))
+                        {
+                            try
+                            {
+                                var qse = new QuestSphereEntry();
+                                qse.worldID = worldname;
+                                qse.zoneID = zone;
+
+                                qse.questID = int.Parse(l1.Substring(6));
+
+                                qse.componentID = int.Parse(l2.Substring(6));
+
+                                var subline = l3.Substring(4).Replace("(", "").Replace(")", "").Replace("x", "").Replace("y", "").Replace("z", "").Replace(" ", "");
+                                var posstring = subline.Split(',');
+                                if (posstring.Length == 3)
+                                {
+                                    // Parse the floats with NumberStyles.Float and CultureInfo.InvariantCulture or we get all sorts of 
+                                    // weird stuff with the decimal points depending on the user's language settings
+                                    qse.X = zoneOffX + float.Parse(posstring[0], NumberStyles.Float, CultureInfo.InvariantCulture);
+                                    qse.Y = zoneOffY + float.Parse(posstring[1], NumberStyles.Float, CultureInfo.InvariantCulture);
+                                    qse.Z = float.Parse(posstring[2], NumberStyles.Float, CultureInfo.InvariantCulture);
+                                }
+                                qse.radius = float.Parse(l4.Substring(7), NumberStyles.Float, CultureInfo.InvariantCulture);
+
+                                AADB.PAK_QuestSignSpheres.Add(qse);
+                                i += 5;
+                            }
+                            catch (Exception x)
+                            {
+                                MessageBox.Show("Exception: " + x.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+                        }
+                    }
+                    // System.Threading.Thread.Sleep(5);
+                }
+            }
+
+
+        }
+
+        private void btnFindAllQuestSpheres_Click(object sender, EventArgs e)
+        {
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+
+            PrepareWorldXML(false);
+            var map = MapViewForm.GetMap();
+            map.Show();
+            map.ClearPoI();
+            foreach (var p in AADB.PAK_QuestSignSpheres)
+                map.AddPoI(p.X,p.Y,p.questID.ToString(),Color.LightCyan);
+            map.cbPoINames.Checked = true;
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
 

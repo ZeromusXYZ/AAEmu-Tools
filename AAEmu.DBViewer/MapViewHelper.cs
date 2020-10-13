@@ -12,11 +12,12 @@ using System.Xml;
 
 namespace AAEmu.DBViewer
 {
-    public static class MapViewImageHelper
+    public static class MapViewHelper
     {
         public static List<MapViewImageRef> MapRefs = new List<MapViewImageRef>();
         public static List<MapViewMiniMapRef> MiniMapRefs = new List<MapViewMiniMapRef>();
         public static Dictionary<string, string> GFileVars = new Dictionary<string, string>();
+        public static int GFileAreaIdCounter = 0;
 
         public static void AddRef(MapLevel level, int id, string baseFileName, int image_map)
         {
@@ -542,6 +543,7 @@ namespace AAEmu.DBViewer
         {
             var res = new Dictionary<string, string>();
             var currentObjectName = string.Empty;
+            var areaName = string.Empty ;
 
             foreach (var l in lines)
             {
@@ -575,6 +577,28 @@ namespace AAEmu.DBViewer
 
                     switch (varName)
                     {
+                        // Used in quest_sign_sphere.g
+                        case "qtype":
+                            // qtype is always the first entry in the block, increment a number here to prevent duplicates
+                            // We want unique identifiers here so we can add it to a dictionary
+                            GFileAreaIdCounter++; 
+                            areaName = GFileAreaIdCounter.ToString() + ".";
+                            res.Add(currentObjectName + "." + areaName + "?", "area");
+                            res.Add(currentObjectName + "." + areaName + varName, para[0]);
+                            break;
+                        case "ctype":
+                            res.Add(currentObjectName + "." + areaName + varName, para[0]);
+                            break;
+                        case "radius":
+                            res.Add(currentObjectName + "." + areaName + varName, para[0]);
+                            // radius is normally the last entry in a area block, reset the name here
+                            areaName = string.Empty;
+                            break;
+                        case "pos":
+                            res.Add(currentObjectName + "." + areaName + varName + ".x", para[1]);
+                            res.Add(currentObjectName + "." + areaName + varName + ".y", para[3]);
+                            res.Add(currentObjectName + "." + areaName + varName + ".z", para[5]);
+                            break;
                         case "coords":
                             if (para.Count == 4)
                             {

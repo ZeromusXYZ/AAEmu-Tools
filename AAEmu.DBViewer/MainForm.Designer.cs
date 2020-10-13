@@ -192,6 +192,8 @@
             this.Column27 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column32 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column33 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tpDoodadTools = new System.Windows.Forms.TabPage();
+            this.btnShowDoodadOnMap = new System.Windows.Forms.Button();
             this.btnSearchDoodads = new System.Windows.Forms.Button();
             this.label46 = new System.Windows.Forms.Label();
             this.tSearchDoodads = new System.Windows.Forms.TextBox();
@@ -446,14 +448,15 @@
             this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label10 = new System.Windows.Forms.Label();
             this.tZonesSearch = new System.Windows.Forms.TextBox();
+            this.tpMap = new System.Windows.Forms.TabPage();
+            this.btnFindAllQuestSpheres = new System.Windows.Forms.Button();
+            this.btnFindAllTransferPaths = new System.Windows.Forms.Button();
+            this.btnMap = new System.Windows.Forms.Button();
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.tpMap = new System.Windows.Forms.TabPage();
-            this.btnMap = new System.Windows.Forms.Button();
-            this.btnFindAllTransferPaths = new System.Windows.Forms.Button();
-            this.tpDoodadTools = new System.Windows.Forms.TabPage();
-            this.btnShowDoodadOnMap = new System.Windows.Forms.Button();
+            this.label121 = new System.Windows.Forms.Label();
+            this.label128 = new System.Windows.Forms.Label();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -473,6 +476,7 @@
             this.tpDoodadFunctions.SuspendLayout();
             this.groupBox10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDoodadFuncGroups)).BeginInit();
+            this.tpDoodadTools.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDoodads)).BeginInit();
             this.tbFactions.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -508,7 +512,6 @@
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).BeginInit();
             this.tpMap.SuspendLayout();
-            this.tpDoodadTools.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbTableNames
@@ -2224,6 +2227,30 @@
             this.Column33.Name = "Column33";
             this.Column33.ReadOnly = true;
             // 
+            // tpDoodadTools
+            // 
+            this.tpDoodadTools.Controls.Add(this.btnShowDoodadOnMap);
+            this.tpDoodadTools.Location = new System.Drawing.Point(4, 4);
+            this.tpDoodadTools.Name = "tpDoodadTools";
+            this.tpDoodadTools.Padding = new System.Windows.Forms.Padding(3);
+            this.tpDoodadTools.Size = new System.Drawing.Size(334, 453);
+            this.tpDoodadTools.TabIndex = 3;
+            this.tpDoodadTools.Text = "Tools";
+            this.tpDoodadTools.UseVisualStyleBackColor = true;
+            // 
+            // btnShowDoodadOnMap
+            // 
+            this.btnShowDoodadOnMap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnShowDoodadOnMap.ForeColor = System.Drawing.Color.Black;
+            this.btnShowDoodadOnMap.Location = new System.Drawing.Point(6, 425);
+            this.btnShowDoodadOnMap.Name = "btnShowDoodadOnMap";
+            this.btnShowDoodadOnMap.Size = new System.Drawing.Size(322, 22);
+            this.btnShowDoodadOnMap.TabIndex = 27;
+            this.btnShowDoodadOnMap.Text = "Find Selected";
+            this.btnShowDoodadOnMap.UseVisualStyleBackColor = true;
+            this.btnShowDoodadOnMap.Click += new System.EventHandler(this.btnShowDoodadOnMap_Click);
+            // 
             // btnSearchDoodads
             // 
             this.btnSearchDoodads.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -3757,7 +3784,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(286, 448);
+            this.tabPage2.Size = new System.Drawing.Size(286, 453);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Items?";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -3775,7 +3802,7 @@
             this.dataGridViewTextBoxColumn9,
             this.dataGridViewTextBoxColumn10,
             this.dataGridViewTextBoxColumn11});
-            this.dgvSkillProducts.Location = new System.Drawing.Point(8, 308);
+            this.dgvSkillProducts.Location = new System.Drawing.Point(8, 313);
             this.dgvSkillProducts.Name = "dgvSkillProducts";
             this.dgvSkillProducts.ReadOnly = true;
             this.dgvSkillProducts.RowHeadersVisible = false;
@@ -3824,7 +3851,7 @@
             this.dgvSkillReagents.ReadOnly = true;
             this.dgvSkillReagents.RowHeadersVisible = false;
             this.dgvSkillReagents.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSkillReagents.Size = new System.Drawing.Size(271, 263);
+            this.dgvSkillReagents.Size = new System.Drawing.Size(271, 268);
             this.dgvSkillReagents.TabIndex = 7;
             // 
             // dataGridViewTextBoxColumn6
@@ -3853,7 +3880,7 @@
             // 
             this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(6, 292);
+            this.label13.Location = new System.Drawing.Point(6, 297);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(106, 13);
             this.label13.TabIndex = 1;
@@ -4916,6 +4943,51 @@
             this.tZonesSearch.TextChanged += new System.EventHandler(this.TZonesSearch_TextChanged);
             this.tZonesSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TZonesSearch_KeyDown);
             // 
+            // tpMap
+            // 
+            this.tpMap.Controls.Add(this.label128);
+            this.tpMap.Controls.Add(this.label121);
+            this.tpMap.Controls.Add(this.btnFindAllQuestSpheres);
+            this.tpMap.Controls.Add(this.btnFindAllTransferPaths);
+            this.tpMap.Controls.Add(this.btnMap);
+            this.tpMap.Location = new System.Drawing.Point(4, 22);
+            this.tpMap.Name = "tpMap";
+            this.tpMap.Padding = new System.Windows.Forms.Padding(3);
+            this.tpMap.Size = new System.Drawing.Size(926, 485);
+            this.tpMap.TabIndex = 13;
+            this.tpMap.Text = "Map";
+            this.tpMap.UseVisualStyleBackColor = true;
+            // 
+            // btnFindAllQuestSpheres
+            // 
+            this.btnFindAllQuestSpheres.Location = new System.Drawing.Point(8, 74);
+            this.btnFindAllQuestSpheres.Name = "btnFindAllQuestSpheres";
+            this.btnFindAllQuestSpheres.Size = new System.Drawing.Size(230, 23);
+            this.btnFindAllQuestSpheres.TabIndex = 40;
+            this.btnFindAllQuestSpheres.Text = "Show All Quest Spheres";
+            this.btnFindAllQuestSpheres.UseVisualStyleBackColor = true;
+            this.btnFindAllQuestSpheres.Click += new System.EventHandler(this.btnFindAllQuestSpheres_Click);
+            // 
+            // btnFindAllTransferPaths
+            // 
+            this.btnFindAllTransferPaths.Location = new System.Drawing.Point(8, 45);
+            this.btnFindAllTransferPaths.Name = "btnFindAllTransferPaths";
+            this.btnFindAllTransferPaths.Size = new System.Drawing.Size(230, 23);
+            this.btnFindAllTransferPaths.TabIndex = 39;
+            this.btnFindAllTransferPaths.Text = "Show All Transfer Paths";
+            this.btnFindAllTransferPaths.UseVisualStyleBackColor = true;
+            this.btnFindAllTransferPaths.Click += new System.EventHandler(this.btnFindAllTransferPaths_Click);
+            // 
+            // btnMap
+            // 
+            this.btnMap.Location = new System.Drawing.Point(8, 6);
+            this.btnMap.Name = "btnMap";
+            this.btnMap.Size = new System.Drawing.Size(109, 23);
+            this.btnMap.TabIndex = 3;
+            this.btnMap.Text = "Open Map";
+            this.btnMap.UseVisualStyleBackColor = true;
+            this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
+            // 
             // openDBDlg
             // 
             this.openDBDlg.DefaultExt = "sqlite3";
@@ -4936,61 +5008,23 @@
             this.mainFormToolTip.ReshowDelay = 100;
             this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             // 
-            // tpMap
+            // label121
             // 
-            this.tpMap.Controls.Add(this.btnFindAllTransferPaths);
-            this.tpMap.Controls.Add(this.btnMap);
-            this.tpMap.Location = new System.Drawing.Point(4, 22);
-            this.tpMap.Name = "tpMap";
-            this.tpMap.Padding = new System.Windows.Forms.Padding(3);
-            this.tpMap.Size = new System.Drawing.Size(926, 485);
-            this.tpMap.TabIndex = 13;
-            this.tpMap.Text = "Map";
-            this.tpMap.UseVisualStyleBackColor = true;
+            this.label121.AutoSize = true;
+            this.label121.Location = new System.Drawing.Point(244, 79);
+            this.label121.Name = "label121";
+            this.label121.Size = new System.Drawing.Size(298, 13);
+            this.label121.TabIndex = 41;
+            this.label121.Text = "Note that location info for quest spheres is currently incorrect !";
             // 
-            // btnMap
+            // label128
             // 
-            this.btnMap.Location = new System.Drawing.Point(8, 6);
-            this.btnMap.Name = "btnMap";
-            this.btnMap.Size = new System.Drawing.Size(109, 23);
-            this.btnMap.TabIndex = 3;
-            this.btnMap.Text = "Open Map";
-            this.btnMap.UseVisualStyleBackColor = true;
-            this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
-            // 
-            // btnFindAllTransferPaths
-            // 
-            this.btnFindAllTransferPaths.Location = new System.Drawing.Point(8, 45);
-            this.btnFindAllTransferPaths.Name = "btnFindAllTransferPaths";
-            this.btnFindAllTransferPaths.Size = new System.Drawing.Size(230, 23);
-            this.btnFindAllTransferPaths.TabIndex = 39;
-            this.btnFindAllTransferPaths.Text = "Show All Transfer Paths";
-            this.btnFindAllTransferPaths.UseVisualStyleBackColor = true;
-            this.btnFindAllTransferPaths.Click += new System.EventHandler(this.btnFindAllTransferPaths_Click);
-            // 
-            // tpDoodadTools
-            // 
-            this.tpDoodadTools.Controls.Add(this.btnShowDoodadOnMap);
-            this.tpDoodadTools.Location = new System.Drawing.Point(4, 4);
-            this.tpDoodadTools.Name = "tpDoodadTools";
-            this.tpDoodadTools.Padding = new System.Windows.Forms.Padding(3);
-            this.tpDoodadTools.Size = new System.Drawing.Size(334, 453);
-            this.tpDoodadTools.TabIndex = 3;
-            this.tpDoodadTools.Text = "Tools";
-            this.tpDoodadTools.UseVisualStyleBackColor = true;
-            // 
-            // btnShowDoodadOnMap
-            // 
-            this.btnShowDoodadOnMap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnShowDoodadOnMap.ForeColor = System.Drawing.Color.Black;
-            this.btnShowDoodadOnMap.Location = new System.Drawing.Point(6, 425);
-            this.btnShowDoodadOnMap.Name = "btnShowDoodadOnMap";
-            this.btnShowDoodadOnMap.Size = new System.Drawing.Size(322, 22);
-            this.btnShowDoodadOnMap.TabIndex = 27;
-            this.btnShowDoodadOnMap.Text = "Find Selected";
-            this.btnShowDoodadOnMap.UseVisualStyleBackColor = true;
-            this.btnShowDoodadOnMap.Click += new System.EventHandler(this.btnShowDoodadOnMap_Click);
+            this.label128.AutoSize = true;
+            this.label128.Location = new System.Drawing.Point(244, 50);
+            this.label128.Name = "label128";
+            this.label128.Size = new System.Drawing.Size(253, 13);
+            this.label128.TabIndex = 42;
+            this.label128.Text = "Routes of Airships, Carriage and other fixed pathings";
             // 
             // MainForm
             // 
@@ -5032,6 +5066,7 @@
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDoodadFuncGroups)).EndInit();
+            this.tpDoodadTools.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDoodads)).EndInit();
             this.tbFactions.ResumeLayout(false);
             this.tbFactions.PerformLayout();
@@ -5085,7 +5120,7 @@
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).EndInit();
             this.tpMap.ResumeLayout(false);
-            this.tpDoodadTools.ResumeLayout(false);
+            this.tpMap.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -5515,6 +5550,9 @@
         private System.Windows.Forms.Button btnFindAllTransferPaths;
         private System.Windows.Forms.TabPage tpDoodadTools;
         private System.Windows.Forms.Button btnShowDoodadOnMap;
+        private System.Windows.Forms.Button btnFindAllQuestSpheres;
+        private System.Windows.Forms.Label label128;
+        private System.Windows.Forms.Label label121;
     }
 }
 
