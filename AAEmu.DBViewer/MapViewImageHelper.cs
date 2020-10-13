@@ -636,6 +636,9 @@ namespace AAEmu.DBViewer
             // starting from Version ?.?
             res.Add("game/ui/map/map_resources/" + baseFileName + "/" + locale + "/road_" + scale.ToString() + ext);
             res.Add("game/ui/map/map_resources/" + baseFileName + "/road_" + scale.ToString() + ext);
+            // The following is to capture a error from XLGames on some maps like sanddeep
+            res.Add("game/ui/map/road/" + locale + "/" + baseFileName + "_" + scale.ToString() + ext);
+            res.Add("game/ui/map/road/" + baseFileName + "_" + scale.ToString() + ext);
             return res;
         }
     }

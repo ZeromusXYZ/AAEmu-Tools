@@ -272,6 +272,20 @@ namespace AAEmu.DBDefs
                 };
             }
         }
+        public string GamePakZoneDoodadsDat
+        {
+            get
+            {
+                if (target_id != 1)
+                {
+                    return "game/worlds/" + main_world + "/map_data/doodad_map/" + name + ".dat";
+                }
+                else
+                {
+                    return "game/worlds/" + name + "/map_data/doodad_map/" + name + ".dat";
+                };
+            }
+        }
     }
 
     class GameWorld_Groups

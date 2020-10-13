@@ -3720,6 +3720,7 @@ namespace AAEmu.DBViewer
                 lDoodadDespawnOnCollision.Text = doodad.despawn_on_collision.ToString();
                 lDoodadNoCollision.Text = doodad.no_collision.ToString();
                 lDoodadRestrictZoneID.Text = doodad.restrict_zone_id.ToString();
+                btnShowDoodadOnMap.Tag = doodad.id;
 
                 if (AADB.DB_Doodad_Groups.TryGetValue(doodad.group_id, out var dGroup))
                 {
@@ -3802,6 +3803,8 @@ namespace AAEmu.DBViewer
                 lDoodadGroupIsExport.Text = "";
                 lDoodadGroupGuardOnFieldTime.Text = "";
                 lDoodadGroupRemovedByHouse.Text = "";
+
+                btnShowDoodadOnMap.Tag = 0;
 
                 dgvDoodadFuncGroups.Rows.Clear();
             }
@@ -4429,7 +4432,7 @@ namespace AAEmu.DBViewer
                     {
                         zoneCount++;
                         loading.ShowInfo("Searching in zones: " + zoneCount.ToString() + "/" + AADB.DB_Zone_Groups.Count.ToString());
-                        npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id, true));
+                        npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id, false));
                     }
                 }
 
@@ -4724,6 +4727,107 @@ namespace AAEmu.DBViewer
                     return;
                 }
             }
+        }
+
+        private List<MapSpawnLocation> GetDoodadSpawnsInZoneGroup(long zoneGroupId, bool uniqueOnly = false, long filterByID = -1)
+        {
+            List<MapSpawnLocation> res = new List<MapSpawnLocation>();
+            var zg = GetZoneGroupByID(zoneGroupId);
+            if ((zg != null) && (pak.isOpen) && (pak.FileExists(zg.GamePakZoneDoodadsDat)))
+            {
+                // Open .dat file and read it's contents
+                using (var fs = pak.ExportFileAsStream(zg.GamePakZoneDoodadsDat))
+                {
+                    int indexCount = ((int)fs.Length / 16);
+                    using (var reader = new BinaryReader(fs))
+                    {
+                        for (int i = 0; i < indexCount; i++)
+                        {
+                            MapSpawnLocation msl = new MapSpawnLocation();
+                            msl.id = reader.ReadInt32();
+                            // Locations not used here, but we need to read it
+                            msl.x = reader.ReadSingle();
+                            msl.y = reader.ReadSingle();
+                            msl.z = reader.ReadSingle();
+
+                            msl.zoneGroupId = zoneGroupId;
+                            if ((filterByID == -1) || (msl.id == filterByID))
+                            {
+                                bool canAdd = true;
+                                if (uniqueOnly)
+                                    foreach (var m in res)
+                                    {
+                                        if (m.id == msl.id)
+                                        {
+                                            canAdd = false;
+                                            m.count++;
+                                            break;
+                                        }
+                                    }
+
+                                if (canAdd)
+                                    res.Add(msl);
+                            }
+                        }
+                    }
+                }
+            }
+            return res;
+        }
+
+        private void btnShowDoodadOnMap_Click(object sender, EventArgs e)
+        {
+            var map = MapViewForm.GetMap();
+            map.Show();
+            map.ClearPoI();
+
+            var searchId = (long)(sender as Button).Tag;
+            if (searchId <= 0)
+                return;
+
+            List<MapSpawnLocation> doodadList = new List<MapSpawnLocation>();
+
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+
+            using (var loading = new LoadingForm())
+            {
+                loading.ShowInfo("Searching in zones: " + AADB.DB_Zone_Groups.Count.ToString());
+                loading.Show();
+
+                var zoneCount = 0;
+                foreach (var zgv in AADB.DB_Zone_Groups)
+                {
+                    var zg = zgv.Value;
+                    if (zg != null)
+                    {
+                        zoneCount++;
+                        loading.ShowInfo("Searching in zones: " + zoneCount.ToString() + "/" + AADB.DB_Zone_Groups.Count.ToString());
+                        doodadList.AddRange(GetDoodadSpawnsInZoneGroup(zg.id, false));
+                    }
+                }
+
+                if (doodadList.Count > 0)
+                {
+                    // Add to NPC list
+                    foreach (var doodad in doodadList)
+                    {
+                        if (doodad.id != searchId)
+                            continue;
+                        if (AADB.DB_Doodad_Almighties.TryGetValue(doodad.id, out var z))
+                        {
+                            map.AddPoI((int)doodad.x, (int)doodad.y, z.nameLocalized + " (" + doodad.id.ToString() + ")", Color.Yellow);
+                        }
+                    }
+                }
+
+            }
+            map.cbPoINames.Checked = true;
+            map.cbFocus.Checked = true;
+            map.FocusAll(true, false);
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+
         }
     }
 }

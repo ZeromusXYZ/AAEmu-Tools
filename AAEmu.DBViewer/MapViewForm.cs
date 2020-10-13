@@ -43,98 +43,109 @@ namespace AAEmu.DBViewer
         {
             MapViewForm.ThisForm = this;
             InitializeComponent();
-
-            pb.SetBounds(0, 0, 35536, 35536);
-
-            pView.MouseWheel += new MouseEventHandler(MapViewOnMouseWheel);
-            viewOffset.Y = 20000;
-            viewScale = 0.05f;
-
-            ClearPoI();
-            ClearMaps();
-            MapViewImageHelper.PopulateList();
-            MapViewImageHelper.PopulateMiniMapList();
-            WorldMap = AddMap(new RectangleF(-14731, 46, 64651, 38865), "Erenor", "main_world", MapLevel.WorldMap, 0);
-            AddMap(new RectangleF(-6758, 2673, 32130, 19308), "Nuia", "land_west", MapLevel.Continent, 0);
-            AddMap(new RectangleF(10627, 1632, 26024, 15636), "Haranya", "land_east", MapLevel.Continent, 0);
-            AddMap(new RectangleF(7035, 21504, 24743, 14883), "Auroria", "land_origin", MapLevel.Continent, 0);
-            /*
-            foreach (var wgv in AADB.DB_World_Groups)
+            using (var loadingform = new LoadingForm())
             {
-                var wg = wgv.Value;
-                var level = MapLevel.None;
-                if ((wg.PosAndSize.Width <= 0) || (wg.PosAndSize.Height <= 0))
-                    continue;
-                    //level = MapLevel.None;
-                else
-                if (wg.target_id <= 1)
-                    level = MapLevel.WorldMap;
-                else
-                    level = MapLevel.Continent;
-                var imageName = wg.name;
+                loadingform.Show();
+                loadingform.ShowInfo("Preparing map data ...");
 
-                var mapref = MapViewImageHelper.GetRefByImageMapId(wg.image_map);
+                pb.SetBounds(0, 0, 35536, 35536);
 
-                if (mapref != null)
+                pView.MouseWheel += new MouseEventHandler(MapViewOnMouseWheel);
+                viewOffset.Y = 20000;
+                viewScale = 0.05f;
+
+                ClearPoI();
+                ClearMaps();
+                MapViewImageHelper.PopulateList();
+                MapViewImageHelper.PopulateMiniMapList();
+                WorldMap = AddMap(new RectangleF(-14731, 46, 64651, 38865), "Erenor", "main_world", MapLevel.WorldMap, 0);
+                AddMap(new RectangleF(-6758, 2673, 32130, 19308), "Nuia", "land_west", MapLevel.Continent, 0);
+                AddMap(new RectangleF(10627, 1632, 26024, 15636), "Haranya", "land_east", MapLevel.Continent, 0);
+                AddMap(new RectangleF(7035, 21504, 24743, 14883), "Auroria", "land_origin", MapLevel.Continent, 0);
+                /*
+                foreach (var wgv in AADB.DB_World_Groups)
                 {
-                    imageName = mapref.FileName;
-                    level = mapref.Level;
-                }
+                    var wg = wgv.Value;
+                    var level = MapLevel.None;
+                    if ((wg.PosAndSize.Width <= 0) || (wg.PosAndSize.Height <= 0))
+                        continue;
+                        //level = MapLevel.None;
+                    else
+                    if (wg.target_id <= 1)
+                        level = MapLevel.WorldMap;
+                    else
+                        level = MapLevel.Continent;
+                    var imageName = wg.name;
 
-                AddMap(wg.PosAndSize.X, wg.PosAndSize.Y, wg.PosAndSize.Width, wg.PosAndSize.Height,wg.name,
-                    mapFolder, imageName, level);
-            }
-            */
+                    var mapref = MapViewImageHelper.GetRefByImageMapId(wg.image_map);
 
-            var locale = Properties.Settings.Default.DefaultGameLanguage;
-
-            foreach (var zgv in AADB.DB_Zone_Groups)
-            {
-                var zg = zgv.Value;
-
-                if ((zg.PosAndSize.Width <= 0) || (zg.PosAndSize.Height <= 0))
-                    continue;
-
-                var iref = MapViewImageHelper.GetRefByImageMapId(zg.image_map);
-                var mapFileName = zg.name ;
-                var level = MapLevel.Zone;
-                if (iref != null)
-                {
-                    level = iref.Level;
-                    if (MainForm.ThisForm.pak.isOpen)
+                    if (mapref != null)
                     {
-                        var fList = iref.GetPossibleFileNames(locale);
-                        // Here we only check if the name has a valid filename in the pak
-                        // When actually loading, this will be repeated again to get the correct file
-                        foreach (var fName in fList)
+                        imageName = mapref.FileName;
+                        level = mapref.Level;
+                    }
+
+                    AddMap(wg.PosAndSize.X, wg.PosAndSize.Y, wg.PosAndSize.Width, wg.PosAndSize.Height,wg.name,
+                        mapFolder, imageName, level);
+                }
+                */
+
+                var locale = Properties.Settings.Default.DefaultGameLanguage;
+
+                foreach (var zgv in AADB.DB_Zone_Groups)
+                {
+                    var zg = zgv.Value;
+
+                    // Skip non-main world zones
+                    if (zg.target_id <= 1)
+                        continue;
+
+                    if ((zg.PosAndSize.Width <= 0) || (zg.PosAndSize.Height <= 0))
+                        continue;
+
+                    var iref = MapViewImageHelper.GetRefByImageMapId(zg.image_map);
+                    var mapFileName = zg.name;
+                    var level = MapLevel.Zone;
+                    if (iref != null)
+                    {
+                        level = iref.Level;
+                        if (MainForm.ThisForm.pak.isOpen)
                         {
-                            if (MainForm.ThisForm.pak.FileExists(fName))
+                            var fList = iref.GetPossibleFileNames(locale);
+                            // Here we only check if the name has a valid filename in the pak
+                            // When actually loading, this will be repeated again to get the correct file
+                            foreach (var fName in fList)
                             {
-                                mapFileName = iref.BaseFileName;
-                                break;
+                                if (MainForm.ThisForm.pak.FileExists(fName))
+                                {
+                                    mapFileName = iref.BaseFileName;
+                                    break;
+                                }
                             }
                         }
                     }
+
+                    if (level < MapLevel.Zone)
+                        continue;
+
+                    var m = AddMap(zg.PosAndSize, zg.display_textLocalized + " (" + zg.id.ToString() + ")", mapFileName, level, zg.id);
+                    //var m = AddMap(zg.PosAndSize, zg.display_textLocalized, "game/ui/map/road/", zg.name + "_road_100", MapLevel.Zone);
+
+                    if (zg.faction_chat_region_id == 2)
+                        m.MapBorderColor = Color.DarkCyan;
+                    if (zg.faction_chat_region_id == 3)
+                        m.MapBorderColor = Color.DarkGreen;
+                    if (zg.faction_chat_region_id == 4)
+                        m.MapBorderColor = Color.DarkRed;
+                    // If it has the Rough Sea (Turbulance) buff, it's the ocean, use a blue border
+                    if (zg.buff_id == 7743)
+                    {
+                        m.MapBorderColor = Color.Navy;
+                        // m.MapLevel = MapLevel.Continent;
+                    }
                 }
 
-                if (level < MapLevel.Zone)
-                    continue;
-
-                var m = AddMap(zg.PosAndSize, zg.display_textLocalized + " ("+zg.id.ToString()+")", mapFileName, level, zg.id);
-                //var m = AddMap(zg.PosAndSize, zg.display_textLocalized, "game/ui/map/road/", zg.name + "_road_100", MapLevel.Zone);
-
-                if (zg.faction_chat_region_id == 2)
-                    m.MapBorderColor = Color.DarkCyan;
-                if (zg.faction_chat_region_id == 3)
-                    m.MapBorderColor = Color.DarkGreen;
-                if (zg.faction_chat_region_id == 4)
-                    m.MapBorderColor = Color.DarkRed;
-                // If it has the Rough Sea (Turbulance) buff, it's the ocean, use a blue border
-                if (zg.buff_id == 7743)
-                {
-                    m.MapBorderColor = Color.Navy;
-                    // m.MapLevel = MapLevel.Continent;
-                }
+                // End loading
             }
 
         }
@@ -591,7 +602,7 @@ namespace AAEmu.DBViewer
             if (fn != string.Empty)
                 newMap.MapBitmapImage = PackedImageToBitmap(fn);
             else
-                newMap.MapBitmapImage = PackedImageToBitmap("game/ui/map/world/", fn + ".dds");
+                newMap.MapBitmapImage = PackedImageToBitmap("game/ui/map/world/", fileName + ".dds");
             newMap.ImgCoords = mapLoc;
 
 
@@ -619,7 +630,7 @@ namespace AAEmu.DBViewer
             if (fn != string.Empty)
                 newMap.RoadBitmapImage = PackedImageToBitmap(fn);
             else
-                newMap.RoadBitmapImage = PackedImageToBitmap("game/ui/map/world/", fn + "_road_100.dds");
+                newMap.RoadBitmapImage = PackedImageToBitmap("game/ui/map/world/", fileName + "_road_100.dds");
 
 
             allmaps.Add(newMap);
