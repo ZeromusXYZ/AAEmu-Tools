@@ -39,7 +39,7 @@ namespace AAEmu.DBViewer
             newRef.Scale = mapScale ;
             newRef.BaseFileName = baseMapFileName; // + "_road_" + mapScale.ToString() + ".dds";
             newRef.Offset = new PointF(offsetX, offsetY);
-            newRef.Rect = new RectangleF(imgX,imgY,imgH,imgW);
+            newRef.Rect = new RectangleF(imgX,imgY,imgW,imgH);
             MiniMapRefs.Add(newRef);
         }
 

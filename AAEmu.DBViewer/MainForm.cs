@@ -3115,6 +3115,15 @@ namespace AAEmu.DBViewer
                     lCurrentPakFile.Text = Properties.Settings.Default.GamePakFileName;
 
                     PrepareWorldXML(true);
+                    if (MapViewForm.ThisForm != null)
+                    {
+                        MapViewForm.ThisForm.Close();
+                        MapViewForm.ThisForm = null;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Failed to load: " + openGamePakFileDialog.FileName);
                 }
             }
         }
@@ -4408,10 +4417,7 @@ namespace AAEmu.DBViewer
 
         private void btnMap_Click(object sender, EventArgs e)
         {
-            if (MapViewForm.ThisForm != null)
-                MapViewForm.ThisForm.Show();
-
-            var map = new MapViewForm();
+            var map = MapViewForm.GetMap();
             map.Show();
         }
 
@@ -4561,10 +4567,10 @@ namespace AAEmu.DBViewer
 
                             foreach (var tp in AADB.DB_TransferPaths)
                                 if (tp.path_name == blockName)
-                                    newPath.PathType = tp.owner_id;
+                                    newPath.TypeId = tp.owner_id;
 
                             long model = 0;
-                            if (AADB.DB_Transfers.TryGetValue(newPath.PathType, out var transfer))
+                            if (AADB.DB_Transfers.TryGetValue(newPath.TypeId, out var transfer))
                             {
                                 model = transfer.model_id;
                             }
@@ -4598,9 +4604,9 @@ namespace AAEmu.DBViewer
                                     break;
                             }
                             if (!knownType)
-                                newPath.PathName = blockName + "(t:" + newPath.PathType.ToString() + " m:" + model.ToString() + " z:"+zone.zone_key.ToString()+")";
+                                newPath.PathName = blockName + "(t:" + newPath.TypeId.ToString() + " m:" + model.ToString() + " z:"+zone.zone_key.ToString()+")";
                             else
-                                newPath.PathName = blockName + "(t:" + newPath.PathType.ToString() + " z:" + zone.zone_key.ToString() + ")";
+                                newPath.PathName = blockName + "(t:" + newPath.TypeId.ToString() + " z:" + zone.zone_key.ToString() + ")";
 
                             // We don't need the cellX/Y values here
                             /*
@@ -4608,27 +4614,11 @@ namespace AAEmu.DBViewer
                             int cellYOffset = 0;
 
                             if (attribs.TryGetValue("cellx",out var cellXOffsetString))
-                            {
-                                try
-                                {
-                                    cellXOffset = int.Parse(cellXOffsetString); 
-                                }
-                                catch
-                                {
-                                    cellXOffset = 0;
-                                }
-                            }
+                                try { cellXOffset = int.Parse(cellXOffsetString); }
+                                catch { cellXOffset = 0; }
                             if (attribs.TryGetValue("celly", out var cellYOffsetString))
-                            {
-                                try
-                                {
-                                    cellYOffset = int.Parse(cellYOffsetString);
-                                }
-                                catch
-                                {
-                                    cellYOffset = 0;
-                                }
-                            }
+                                try { cellYOffset = int.Parse(cellYOffsetString); }
+                                catch { cellYOffset = 0; }
                             */
 
                             PointF cellOffset = new PointF((worldOff.originCellX * 1024f), (worldOff.originCellY * 1024f));
@@ -4665,6 +4655,152 @@ namespace AAEmu.DBViewer
                             }
                             allpaths.Add(newPath);
 
+                        }
+                    }
+                }
+                catch (Exception x)
+                {
+                    MessageBox.Show(x.Message);
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Invalid zone selected ?");
+                return;
+            }
+        }
+
+        private void AddHousingZones(ref List<MapViewPath> allareas, GameZone zone)
+        {
+            if (zone != null)
+            {
+                var worldOff = MapViewWorldXML.GetZoneByKey(zone.zone_key);
+
+                // If it's not in the world.xml, it's probably not a real zone anyway
+                if (worldOff == null)
+                    return;
+
+                if (!pak.isOpen || !pak.FileExists(zone.GamePakZoneHousingXML))
+                {
+                    // MessageBox.Show("No path file found for this zone");
+                    return;
+                }
+                // MessageBox.Show("Loading: " + zone.GamePakZoneTransferPathXML);
+
+                int areasFound = 0;
+                try
+                {
+                    var fs = pak.ExportFileAsStream(zone.GamePakZoneHousingXML);
+
+                    var _doc = new XmlDocument();
+                    _doc.Load(fs);
+                    var _allHousingBlocks = _doc.SelectNodes("/Objects/Entity");
+                    for (var i = 0; i < _allHousingBlocks.Count; i++)
+                    {
+                        var block = _allHousingBlocks[i];
+                        var entityAttribs = ReadNodeAttributes(block);
+
+                        if (entityAttribs.TryGetValue("name", out var blockName))
+                        {
+
+                            int cellXOffset = 0;
+                            int cellYOffset = 0;
+
+                            if (entityAttribs.TryGetValue("cellx", out var cellXOffsetString))
+                                try { cellXOffset = int.Parse(cellXOffsetString); }
+                                catch { cellXOffset = 0; }
+                            if (entityAttribs.TryGetValue("celly", out var cellYOffsetString))
+                                try { cellYOffset = int.Parse(cellYOffsetString); }
+                                catch { cellYOffset = 0; }
+
+
+                            var areaNodes = block.SelectNodes("Area");
+                            for (var j = 0; j < areaNodes.Count; j++)
+                            {
+                                var areaNode = areaNodes[j];
+                                var areaAttribs = ReadNodeAttributes(areaNode);
+                                var startVector = new Vector3();
+
+                                var newArea = new MapViewPath();
+                                newArea.PathName = blockName;
+
+
+                                if (areaAttribs.TryGetValue("value1", out var val1))
+                                {
+                                    newArea.TypeId = long.Parse(val1);
+                                }
+
+                                if (newArea.TypeId <= 0)
+                                    newArea.Color = Color.DarkGray;
+
+                                newArea.PathName = blockName + "(v:" + newArea.TypeId.ToString() + " z:" + zone.zone_key.ToString() + ")";
+
+                                if (entityAttribs.TryGetValue("pos", out var valPos))
+                                {
+                                    var posVals = valPos.Split(',');
+                                    if (posVals.Length != 3)
+                                    {
+                                        MessageBox.Show("Invalid number of values inside Pos: " + valPos);
+                                        continue;
+                                    }
+                                    try
+                                    {
+                                        startVector = new Vector3(
+                                            float.Parse(posVals[0], CultureInfo.InvariantCulture),
+                                            float.Parse(posVals[1], CultureInfo.InvariantCulture),
+                                            float.Parse(posVals[2], CultureInfo.InvariantCulture)
+                                            );
+                                    }
+                                    catch
+                                    {
+                                        MessageBox.Show("Invalid float inside Pos: " + valPos);
+                                    }
+                                }
+
+                                PointF cellOffset = new PointF(((worldOff.originCellX + cellXOffset) * 1024f), ((worldOff.originCellY + cellYOffset) * 1024f));
+                                areasFound++;
+
+                                Vector3 firstVector = Vector3.Zero;
+
+                                var pointsxml = areaNode.SelectNodes("Points/Point");
+                                for (var n = 0; n < pointsxml.Count; n++)
+                                {
+                                    var pointxml = pointsxml[n];
+                                    var pointattribs = ReadNodeAttributes(pointxml);
+                                    if (pointattribs.TryGetValue("pos", out var posString))
+                                    {
+                                        var posVals = posString.Split(',');
+                                        if (posVals.Length != 3)
+                                        {
+                                            MessageBox.Show("Invalid number of values inside Pos: " + posString);
+                                            continue;
+                                        }
+                                        try
+                                        {
+                                            var vec = new Vector3(
+                                                float.Parse(posVals[0], CultureInfo.InvariantCulture) + cellOffset.X,
+                                                float.Parse(posVals[1], CultureInfo.InvariantCulture) + cellOffset.Y,
+                                                float.Parse(posVals[2], CultureInfo.InvariantCulture)
+                                                ) + startVector;
+                                            if (firstVector == Vector3.Zero)
+                                                firstVector = vec;
+                                            newArea.allpoints.Add(vec);
+                                        }
+                                        catch
+                                        {
+                                            MessageBox.Show("Invalid float inside Pos: " + posString);
+                                        }
+
+                                    }
+                                }
+                                // Close the loop
+                                if (firstVector != Vector3.Zero)
+                                    newArea.allpoints.Add(firstVector);
+
+                                allareas.Add(newArea);
+
+                            }
                         }
                     }
                 }
@@ -4961,8 +5097,34 @@ namespace AAEmu.DBViewer
             map.Show();
             map.ClearPoI();
             foreach (var p in AADB.PAK_QuestSignSpheres)
-                map.AddPoI(p.X,p.Y,p.questID.ToString(),Color.LightCyan);
+                map.AddPoI(p.X,p.Y,p.questID.ToString(),Color.LightCyan,p.radius);
             map.cbPoINames.Checked = true;
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+
+        }
+
+        private void btnFindAllHousing_Click(object sender, EventArgs e)
+        {
+            PrepareWorldXML(false);
+            List<MapViewPath> allareas = new List<MapViewPath>();
+
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+
+            foreach (var zv in AADB.DB_Zones)
+                AddHousingZones(ref allareas, zv.Value);
+
+            if (allareas.Count <= 0)
+                MessageBox.Show("No housing found ?");
+            else
+            {
+                var map = MapViewForm.GetMap();
+                map.Show();
+                map.ClearPaths();
+                foreach (var p in allareas)
+                    map.AddPath(p);
+            }
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
 

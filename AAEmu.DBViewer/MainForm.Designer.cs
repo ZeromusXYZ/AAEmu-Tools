@@ -449,14 +449,16 @@
             this.label10 = new System.Windows.Forms.Label();
             this.tZonesSearch = new System.Windows.Forms.TextBox();
             this.tpMap = new System.Windows.Forms.TabPage();
+            this.label128 = new System.Windows.Forms.Label();
+            this.label121 = new System.Windows.Forms.Label();
             this.btnFindAllQuestSpheres = new System.Windows.Forms.Button();
             this.btnFindAllTransferPaths = new System.Windows.Forms.Button();
             this.btnMap = new System.Windows.Forms.Button();
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.label121 = new System.Windows.Forms.Label();
-            this.label128 = new System.Windows.Forms.Label();
+            this.label129 = new System.Windows.Forms.Label();
+            this.btnFindAllHousing = new System.Windows.Forms.Button();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -530,6 +532,7 @@
             this.tcViewer.Controls.Add(this.tbTables);
             this.tcViewer.Controls.Add(this.tpCurrentRecord);
             this.tcViewer.Controls.Add(this.tbLocalizer);
+            this.tcViewer.Controls.Add(this.tpMap);
             this.tcViewer.Controls.Add(this.tpV1);
             this.tcViewer.Controls.Add(this.tpBuffs);
             this.tcViewer.Controls.Add(this.tpDoodads);
@@ -537,10 +540,9 @@
             this.tcViewer.Controls.Add(this.tpItems);
             this.tcViewer.Controls.Add(this.tpLoot);
             this.tcViewer.Controls.Add(this.tpNPCs);
-            this.tcViewer.Controls.Add(this.tpSkills);
             this.tcViewer.Controls.Add(this.tpQuests);
+            this.tcViewer.Controls.Add(this.tpSkills);
             this.tcViewer.Controls.Add(this.tpZones);
-            this.tcViewer.Controls.Add(this.tpMap);
             this.tcViewer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tcViewer.Location = new System.Drawing.Point(0, 0);
             this.tcViewer.Multiline = true;
@@ -635,9 +637,9 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(474, 40);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(233, 13);
+            this.label8.Size = new System.Drawing.Size(208, 13);
             this.label8.TabIndex = 8;
-            this.label8.Text = "Only used for loading icons and some zone data";
+            this.label8.Text = "Used for loading icons and map/zone data";
             // 
             // btnFindGameClient
             // 
@@ -4945,6 +4947,8 @@
             // 
             // tpMap
             // 
+            this.tpMap.Controls.Add(this.label129);
+            this.tpMap.Controls.Add(this.btnFindAllHousing);
             this.tpMap.Controls.Add(this.label128);
             this.tpMap.Controls.Add(this.label121);
             this.tpMap.Controls.Add(this.btnFindAllQuestSpheres);
@@ -4957,6 +4961,24 @@
             this.tpMap.TabIndex = 13;
             this.tpMap.Text = "Map";
             this.tpMap.UseVisualStyleBackColor = true;
+            // 
+            // label128
+            // 
+            this.label128.AutoSize = true;
+            this.label128.Location = new System.Drawing.Point(244, 50);
+            this.label128.Name = "label128";
+            this.label128.Size = new System.Drawing.Size(253, 13);
+            this.label128.TabIndex = 42;
+            this.label128.Text = "Routes of Airships, Carriage and other fixed pathings";
+            // 
+            // label121
+            // 
+            this.label121.AutoSize = true;
+            this.label121.Location = new System.Drawing.Point(244, 79);
+            this.label121.Name = "label121";
+            this.label121.Size = new System.Drawing.Size(298, 13);
+            this.label121.TabIndex = 41;
+            this.label121.Text = "Note that location info for quest spheres is currently incorrect !";
             // 
             // btnFindAllQuestSpheres
             // 
@@ -5008,23 +5030,24 @@
             this.mainFormToolTip.ReshowDelay = 100;
             this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             // 
-            // label121
+            // label129
             // 
-            this.label121.AutoSize = true;
-            this.label121.Location = new System.Drawing.Point(244, 79);
-            this.label121.Name = "label121";
-            this.label121.Size = new System.Drawing.Size(298, 13);
-            this.label121.TabIndex = 41;
-            this.label121.Text = "Note that location info for quest spheres is currently incorrect !";
+            this.label129.AutoSize = true;
+            this.label129.Location = new System.Drawing.Point(244, 108);
+            this.label129.Name = "label129";
+            this.label129.Size = new System.Drawing.Size(108, 13);
+            this.label129.TabIndex = 44;
+            this.label129.Text = "Shows housing areas";
             // 
-            // label128
+            // btnFindAllHousing
             // 
-            this.label128.AutoSize = true;
-            this.label128.Location = new System.Drawing.Point(244, 50);
-            this.label128.Name = "label128";
-            this.label128.Size = new System.Drawing.Size(253, 13);
-            this.label128.TabIndex = 42;
-            this.label128.Text = "Routes of Airships, Carriage and other fixed pathings";
+            this.btnFindAllHousing.Location = new System.Drawing.Point(8, 103);
+            this.btnFindAllHousing.Name = "btnFindAllHousing";
+            this.btnFindAllHousing.Size = new System.Drawing.Size(230, 23);
+            this.btnFindAllHousing.TabIndex = 43;
+            this.btnFindAllHousing.Text = "Show All Housing";
+            this.btnFindAllHousing.UseVisualStyleBackColor = true;
+            this.btnFindAllHousing.Click += new System.EventHandler(this.btnFindAllHousing_Click);
             // 
             // MainForm
             // 
@@ -5553,6 +5576,8 @@
         private System.Windows.Forms.Button btnFindAllQuestSpheres;
         private System.Windows.Forms.Label label128;
         private System.Windows.Forms.Label label121;
+        private System.Windows.Forms.Label label129;
+        private System.Windows.Forms.Button btnFindAllHousing;
     }
 }
 

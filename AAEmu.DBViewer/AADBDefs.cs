@@ -235,6 +235,13 @@ namespace AAEmu.DBDefs
                 return "game/worlds/" + main_world + "/level_design/zone/" + zone_key.ToString() + "/client/transfer_path.xml";
             }
         }
+        public string GamePakZoneHousingXML
+        {
+            get
+            {
+                return "game/worlds/" + main_world + "/level_design/zone/" + zone_key.ToString() + "/client/housing_area.xml";
+            }
+        }
     }
 
     class GameZone_Groups

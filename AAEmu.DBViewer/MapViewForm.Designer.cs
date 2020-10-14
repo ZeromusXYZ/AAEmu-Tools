@@ -359,6 +359,7 @@
             this.DoubleBuffered = true;
             this.Name = "MapViewForm";
             this.Text = "Map View";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MapViewForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MapViewForm_FormClosed);
             this.Load += new System.EventHandler(this.MapViewForm_Load);
             this.statusBar.ResumeLayout(false);

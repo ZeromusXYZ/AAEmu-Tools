@@ -287,6 +287,23 @@ namespace AAEmu.DBViewer
             }
         }
 
+        private void DrawRadius(Graphics g, float x, float y, Color color, string name, float radius)
+        {
+            var pen = new Pen(color);
+            var pos = CoordToPixel(x, y);
+            var tl = CoordToPixel(x - radius, y + radius);
+            g.DrawEllipse(pen, new RectangleF(ViewOffset.X + tl.X, ViewOffset.Y + tl.Y, radius * 2f, radius * 2f));
+
+            // g.DrawLine(pen, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y, ViewOffset.X + x, ViewOffset.Y + pos.Y);
+            // g.DrawLine(pen, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y);
+            if (name != string.Empty)
+            {
+                var f = new Font(Font.FontFamily, 12f / viewScale);
+                var br = new SolidBrush(color);
+                g.DrawString(name, f, br, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y);
+            }
+        }
+
         private void DrawMap(Graphics g, MapViewMap map)
         {
             var showMap = true;
@@ -326,6 +343,15 @@ namespace AAEmu.DBViewer
             if ((map.MapBitmapImage != null) && (map.RoadBitmapImage != null))
             {
                 var roadsize = new SizeF(
+                    map.ZoneCoords.Width * map.RoadMapCoords.Width / map.ImgCoords.Width ,
+                    map.ZoneCoords.Height * map.RoadMapCoords.Height / map.ImgCoords.Height
+                    );
+                var roadCoordsOffset = new PointF(
+                    map.RoadMapOffset.X / map.ImgCoords.Width * map.ZoneCoords.Width,
+                    map.RoadMapOffset.Y / map.ImgCoords.Height * map.ZoneCoords.Height
+                    );
+                /*
+                var roadsize = new SizeF(
                     map.ZoneCoords.Width * map.RoadBitmapImage.Width / (float)map.MapBitmapImage.Width,
                     map.ZoneCoords.Height * map.RoadBitmapImage.Height / (float)map.MapBitmapImage.Height
                     );
@@ -333,13 +359,13 @@ namespace AAEmu.DBViewer
                     map.RoadMapOffset.X / (float)map.MapBitmapImage.Width * map.ZoneCoords.Width,
                     map.RoadMapOffset.Y / (float)map.MapBitmapImage.Height * map.ZoneCoords.Height
                     );
-                /*
-                var roadCoordsOffset = new PointF(
-                    map.RoadMapOffset.X / map.RoadBitmapImage.Width * (float)map.MapBitmapImage.Width,
-                    map.RoadMapOffset.Y / map.RoadBitmapImage.Height * (float)map.MapBitmapImage.Height
-                    );
                 */
-                roadBorderRect = new RectangleF(ViewOffset.X + mappos.X + roadCoordsOffset.X, ViewOffset.Y + mappos.Y + roadCoordsOffset.Y - map.ZoneCoords.Height, roadsize.Width, roadsize.Height);
+
+                roadBorderRect = new RectangleF(
+                    ViewOffset.X + mappos.X + roadCoordsOffset.X, 
+                    ViewOffset.Y + mappos.Y + roadCoordsOffset.Y - map.ZoneCoords.Height, 
+                    roadsize.Width, roadsize.Height);
+
                 if (cbDrawMiniMap.Checked)
                     g.DrawImage(map.RoadBitmapImage, roadBorderRect);
             }
@@ -384,9 +410,9 @@ namespace AAEmu.DBViewer
                         {
                             var xx = ((x / 1024) - 21);
                             if (xx >= 0)
-                                gridString = xx.ToString() + "°E";
+                                gridString = "E " + xx.ToString() + "°";
                             else
-                                gridString = (xx * -1).ToString() + "°W";
+                                gridString = "W " + (xx * -1).ToString() + "°";
                             if (xx == 0)
                                 p = System.Drawing.Pens.DeepPink;
                         }
@@ -428,9 +454,9 @@ namespace AAEmu.DBViewer
                             if (yy == 0)
                                 p = System.Drawing.Pens.DeepPink;
                             if (yy >= 0)
-                                gridString = yy.ToString() + "°N";
+                                gridString = "N " + yy.ToString() + "°";
                             else
-                                gridString = (yy * -1).ToString() + "°S";
+                                gridString = "S " + (yy * -1).ToString() + "°";
                         }
                     }
                     else
@@ -478,7 +504,12 @@ namespace AAEmu.DBViewer
 
             // Draw Points of Interest
             foreach (var p in poi)
-                DrawCross(g, p.CoordX, p.CoordY, p.PoIColor, cbPoINames.Checked ? p.Name : "");
+            {
+                if (p.Radius <= 3f)
+                    DrawCross(g, p.CoordX, p.CoordY, p.PoIColor, cbPoINames.Checked ? p.Name : "");
+                else
+                    DrawRadius(g, p.CoordX, p.CoordY, p.PoIColor, cbPoINames.Checked ? p.Name : "", p.Radius);
+            }
 
             // Draw Paths
             foreach(var path in paths)
@@ -560,7 +591,6 @@ namespace AAEmu.DBViewer
                         var fif = FREE_IMAGE_FORMAT.FIF_DDS;
                         FIBITMAP fiBitmap = FreeImage.LoadFromStream(fStream, ref fif);
                         var bmp = FreeImage.GetBitmap(fiBitmap);
-
                         return bmp;
                     }
                     catch
@@ -615,15 +645,16 @@ namespace AAEmu.DBViewer
             updateStatusBar();
         }
 
-        public MapViewPoI AddPoI(Point coords, string name) => AddPoI(coords.X,coords.Y, name, Color.Yellow);
+        public MapViewPoI AddPoI(Point coords, string name) => AddPoI(coords.X,coords.Y, name, Color.Yellow, 0f);
 
-        public MapViewPoI AddPoI(float x, float y, string name, Color col)
+        public MapViewPoI AddPoI(float x, float y, string name, Color col, float radius = 0f)
         {
             var newPoi = new MapViewPoI();
             newPoi.CoordX = x;
             newPoi.CoordY = y;
             newPoi.Name = name;
             newPoi.PoIColor = col;
+            newPoi.Radius = radius;
             poi.Add(newPoi);
             return newPoi;
         }
@@ -660,8 +691,14 @@ namespace AAEmu.DBViewer
                 newMap.MapBitmapImage = PackedImageToBitmap(fn);
             else
                 newMap.MapBitmapImage = PackedImageToBitmap("game/ui/map/world/", fileName + ".dds");
-            newMap.ImgCoords = mapLoc;
 
+            if (newMap.MapBitmapImage != null)
+                newMap.ImgCoords = new RectangleF(0,0,newMap.MapBitmapImage.Width,newMap.MapBitmapImage.Height);
+            else
+                newMap.ImgCoords = new RectangleF(0, 0, 928, 556); // This is the common size for all/most maps
+
+            if (newMap.ImgCoords.Width > 1024)
+                newMap.ImgCoords = new RectangleF(0, 0, newMap.ImgCoords.Width / 2f, newMap.ImgCoords.Height / 2f);
 
             // RoadMap
             fn = string.Empty;
@@ -711,7 +748,23 @@ namespace AAEmu.DBViewer
 
         private void MapViewForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            ThisForm = null;
+            /*
+            if (e.CloseReason != CloseReason.MdiFormClosing)
+            {
+                // Clear some memory
+                poi.Clear();
+                paths.Clear();
+                foreach (var m in allmaps)
+                {
+                    if (m.MapBitmapImage != null)
+                        m.MapBitmapImage.Dispose();
+                    if (m.RoadBitmapImage != null)
+                        m.RoadBitmapImage.Dispose();
+                }
+                allmaps.Clear();
+            }
+            */
+            // ThisForm = null;
         }
 
         public void FocusAll(bool focusPoIs, bool focusPaths)
@@ -807,6 +860,18 @@ namespace AAEmu.DBViewer
 
         private void MapViewForm_Load(object sender, EventArgs e)
         {
+            cbShowWorldMap.Checked = Properties.Settings.Default.MapShowWorld;
+            cbShowContinent.Checked = Properties.Settings.Default.MapShowContinent;
+            cbShowZone.Checked = Properties.Settings.Default.MapShowZone;
+            cbShowCity.Checked = Properties.Settings.Default.MapShowCity;
+
+            cbDrawMainMap.Checked = Properties.Settings.Default.MapShowMainMap;
+            cbDrawMiniMap.Checked = Properties.Settings.Default.MapShowRoadMap;
+
+            rbGridOff.Checked = Properties.Settings.Default.GridMode == 0;
+            rbGridUnits.Checked = Properties.Settings.Default.GridMode == 1;
+            rbGridCells.Checked = Properties.Settings.Default.GridMode == 2;
+            rbGridGeo.Checked = Properties.Settings.Default.GridMode == 3;
             MapViewZonePathOffsets.LoadOffsetsFromFile();
         }
 
@@ -841,6 +906,33 @@ namespace AAEmu.DBViewer
             pView.Refresh();
             updateStatusBar();
         }
+
+        private void MapViewForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Properties.Settings.Default.MapShowWorld = cbShowWorldMap.Checked;
+            Properties.Settings.Default.MapShowContinent = cbShowContinent.Checked;
+            Properties.Settings.Default.MapShowZone = cbShowZone.Checked;
+            Properties.Settings.Default.MapShowCity = cbShowCity.Checked;
+
+            Properties.Settings.Default.MapShowMainMap = cbDrawMainMap.Checked;
+            Properties.Settings.Default.MapShowRoadMap = cbDrawMiniMap.Checked;
+
+            if (rbGridOff.Checked)
+                Properties.Settings.Default.GridMode = 0;
+            if (rbGridUnits.Checked)
+                Properties.Settings.Default.GridMode = 1;
+            if (rbGridCells.Checked)
+                Properties.Settings.Default.GridMode = 2;
+            if (rbGridGeo.Checked)
+                Properties.Settings.Default.GridMode = 3;
+            Properties.Settings.Default.Save();
+
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+                Hide();
+            }
+        }
     }
 
 
@@ -850,6 +942,7 @@ namespace AAEmu.DBViewer
         public float CoordY = 0f;
         public Color PoIColor = Color.Yellow;
         public string Name = string.Empty;
+        public float Radius = 0f;
     }
 
     public enum MapLevel : byte
@@ -881,7 +974,7 @@ namespace AAEmu.DBViewer
     {
         public string PathName = string.Empty;
         public Color Color = Color.White;
-        public long PathType = 0 ;
+        public long TypeId = 0 ;
         public List<Vector3> allpoints = new List<Vector3>();
         // Helper data for drawing, not actually related to the data
         public byte DrawStyle = 0;
