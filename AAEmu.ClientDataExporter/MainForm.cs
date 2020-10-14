@@ -20,7 +20,7 @@ namespace AAEmu.ClientDataExporter
         {
             public string worldID = string.Empty;
             public int zoneID = -1;
-            public int questID = -1 ;
+            public int questID = -1;
             public int componentID = -1;
             public double X = 0.0f;
             public double Y = 0.0f;
@@ -28,8 +28,8 @@ namespace AAEmu.ClientDataExporter
             public double radius = 0.0f;
         }
 
-        private AAPak pak = null ;
-        
+        private AAPak pak = null;
+
         public MainForm()
         {
             InitializeComponent();
@@ -37,7 +37,7 @@ namespace AAEmu.ClientDataExporter
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            
+
 
         }
 
@@ -59,7 +59,7 @@ namespace AAEmu.ClientDataExporter
                 LClientLocation.Update();
                 if (pak != null)
                     pak.ClosePak();
-                pak = new AAPak(clientFolderDlg.SelectedPath + Path.DirectorySeparatorChar + "game_pak",true,false);
+                pak = new AAPak(clientFolderDlg.SelectedPath + Path.DirectorySeparatorChar + "game_pak", true, false);
                 btnQuestSphere.Enabled = (pak.isOpen);
                 LClientLocation.Text = clientFolderDlg.SelectedPath;
             }
@@ -166,6 +166,27 @@ namespace AAEmu.ClientDataExporter
             exportFileDlg.FileName = "quest_sign_spheres.json";
             if (exportFileDlg.ShowDialog() == DialogResult.OK)
                 File.WriteAllText(exportFileDlg.FileName, json);
+        }
+
+        private void btnMissionXml_Click(object sender, EventArgs e)
+        {
+            // example: game/worlds/main_world/zone/139/mission_mission0.xml
+            if ((pak == null) || (!pak.isOpen))
+                return;
+
+            lMissionXml.Text = "<searching for data>";
+            lMissionXml.Update();
+
+            // Find all related files and concat them into a giant stringlist
+            foreach (var pfi in pak.files)
+            {
+                var lowername = pfi.name.ToLower();
+                if (lowername.EndsWith("mission_mission0.xml"))
+                {
+                    // Read/Parse XML data here
+                }
+            }
+            lMissionXml.Text = "<done>";
         }
     }
 }

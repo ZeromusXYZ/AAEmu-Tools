@@ -213,6 +213,8 @@ namespace AAEmu.DBDefs
 
     class GameZone
     {
+        static private string main_world = "main_world";
+
         public long id = 0;
         public string name = string.Empty;
         public long zone_key = 0;
@@ -226,13 +228,25 @@ namespace AAEmu.DBDefs
         // Helpers
         public string display_textLocalized = string.Empty;
         public string SearchString = string.Empty;
+        public string GamePakZoneTransferPathXML
+        {
+            get
+            {
+                return "game/worlds/" + main_world + "/level_design/zone/" + zone_key.ToString() + "/client/transfer_path.xml";
+            }
+        }
+        public string GamePakZoneHousingXML
+        {
+            get
+            {
+                return "game/worlds/" + main_world + "/level_design/zone/" + zone_key.ToString() + "/client/housing_area.xml";
+            }
+        }
     }
 
     class GameZone_Groups
     {
-        static private string main_world_dir = "main_world";
-        static private string game_worlds_dir = "game/worlds/";
-        static private string map_data_npc_map_dir = "/map_data/npc_map/";
+        static private string main_world = "main_world";
 
         public long id = 0;
         public string name = string.Empty;
@@ -251,17 +265,31 @@ namespace AAEmu.DBDefs
         // Helpers
         public string display_textLocalized = string.Empty;
         public string SearchString = string.Empty;
-        public string GamePakZoneNPCsFile
+        public string GamePakZoneNPCsDat
         {
             get
             {
                 if (target_id != 1)
                 {
-                    return game_worlds_dir + main_world_dir + map_data_npc_map_dir + name + ".dat";
+                    return "game/worlds/" + main_world + "/map_data/npc_map/" + name + ".dat";
                 }
                 else
                 {
-                    return game_worlds_dir + name + map_data_npc_map_dir + name + ".dat";
+                    return "game/worlds/" + name + "/map_data/npc_map/" + name + ".dat";
+                };
+            }
+        }
+        public string GamePakZoneDoodadsDat
+        {
+            get
+            {
+                if (target_id != 1)
+                {
+                    return "game/worlds/" + main_world + "/map_data/doodad_map/" + name + ".dat";
+                }
+                else
+                {
+                    return "game/worlds/" + name + "/map_data/doodad_map/" + name + ".dat";
                 };
             }
         }
@@ -416,7 +444,7 @@ namespace AAEmu.DBDefs
         public bool restart_on_fail = false;
         public long chapter_idx = 0;
         public long quest_idx = 0;
-        public long milestone_id = 0;
+        // public long milestone_id = 0;
         public bool let_it_done = false;
         public long detail_id = 0;
         public long zone_id = 0;
@@ -528,6 +556,55 @@ namespace AAEmu.DBDefs
         public string usage = string.Empty ;
     }
 
+    public class GameTransfers
+    {
+        /*
+          CREATE TABLE transfers(
+          id INT,
+          comment TEXT,
+          model_id INT,
+          wait_time REAL,
+          cyclic NUM,
+          path_smoothing REAL
+        )
+        */
+        public long id = 0;
+        public long model_id = 0;
+        public float path_smoothing = 8f;
+    }
+
+    public class GameTransferPaths
+    {
+        /*
+          CREATE TABLE transfer_paths(
+          id INT,
+          owner_id INT,
+          owner_type TEXT,
+          path_name TEXT,
+          wait_time_start REAL,
+          wait_time_end REAL
+          )
+        */
+        // public long id = 0;
+        public long owner_id = 0;
+        public string owner_type = string.Empty;
+        public string path_name = string.Empty;
+        public float wait_time_start = 0f;
+        public float wait_time_end = 0f;
+    }
+
+    public class QuestSphereEntry
+    {
+        public string worldID = string.Empty;
+        public int zoneID = -1;
+        public int questID = -1;
+        public int componentID = -1;
+        public float X = 0.0f;
+        public float Y = 0.0f;
+        public float Z = 0.0f;
+        public float radius = 0.0f;
+    }
+
 
     static class AADB
     {
@@ -560,6 +637,9 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameTaggedValues> DB_Tagged_Skills = new Dictionary<long, GameTaggedValues>();
         static public Dictionary<long, GameZoneGroupBannedTags> DB_Zone_Group_Banned_Tags = new Dictionary<long, GameZoneGroupBannedTags>();
         static public Dictionary<long, GameBuff> DB_Buffs = new Dictionary<long, GameBuff>();
+        static public Dictionary<long, GameTransfers> DB_Transfers = new Dictionary<long, GameTransfers>();
+        static public List<GameTransferPaths> DB_TransferPaths = new List<GameTransferPaths>();
+        static public List<QuestSphereEntry> PAK_QuestSignSpheres = new List<QuestSphereEntry>();
 
         static public string GetFactionName(long faction_id, bool addID = false)
         {
@@ -647,6 +727,63 @@ namespace AAEmu.DBDefs
                     break;
             }
 
+        }
+
+
+        static private string FloatToCoord(double f)
+        {
+            var f1 = Math.Floor(f);
+            f -= f1;
+            f *= 60;
+            var f2 = Math.Floor(f);
+            f -= f2;
+            f *= 60;
+            var f3 = Math.Floor(f);
+
+            return f1.ToString("0") + "°" + f2.ToString("00") + "'" + f3.ToString("00") + "\"";
+        }
+
+        static public string CoordToSextant(float x, float y)
+        {
+            var res = string.Empty;
+            // https://www.reddit.com/r/archeage/comments/3dak17/datamining_every_location_of_everything_in/
+            // (0.00097657363894522145695357130138029 * (X - Coordinate)) - 21 = (Longitude in degrees)
+            // (0.00097657363894522145695357130138029 * (Y - Coordinate)) - 28 = (Latitude in degrees)
+
+            var fx = (0.00097657363894522145695357130138029f * x) - 21f;
+            var fy = (0.00097657363894522145695357130138029f * y) - 28f;
+            // X - Longitude
+            if (fx >= 0f)
+            {
+                res += "E ";
+            }
+            else
+            {
+                res += "W ";
+                fx *= -1f;
+            }
+            res += FloatToCoord(fx);
+            res += " , ";
+            // Y - Latitude
+            if (fy >= 0f)
+            {
+                res += "N ";
+            }
+            else
+            {
+                res += "S ";
+                fy *= -1f;
+            }
+            res += FloatToCoord(fy);
+
+            return res;
+        }
+
+        static public PointF SextantToCoord(float longitude, float latitude)
+        {
+            var ux = ((longitude + 21f) / 0.00097657363894522145695357130138029f);
+            var uy = ((latitude + 28f) / 0.00097657363894522145695357130138029f);
+            return new PointF(ux, uy);
         }
     }
 

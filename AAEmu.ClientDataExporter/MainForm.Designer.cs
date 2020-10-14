@@ -35,6 +35,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.exportFileDlg = new System.Windows.Forms.SaveFileDialog();
             this.LQuestSphereData = new System.Windows.Forms.Label();
+            this.lMissionXml = new System.Windows.Forms.Label();
+            this.btnMissionXml = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // LClientLocation
@@ -96,11 +98,33 @@
             this.LQuestSphereData.TabIndex = 4;
             this.LQuestSphereData.Text = "<none>";
             // 
+            // lMissionXml
+            // 
+            this.lMissionXml.AutoSize = true;
+            this.lMissionXml.Location = new System.Drawing.Point(156, 109);
+            this.lMissionXml.Name = "lMissionXml";
+            this.lMissionXml.Size = new System.Drawing.Size(43, 13);
+            this.lMissionXml.TabIndex = 6;
+            this.lMissionXml.Text = "<none>";
+            // 
+            // btnMissionXml
+            // 
+            this.btnMissionXml.Enabled = false;
+            this.btnMissionXml.Location = new System.Drawing.Point(12, 104);
+            this.btnMissionXml.Name = "btnMissionXml";
+            this.btnMissionXml.Size = new System.Drawing.Size(138, 23);
+            this.btnMissionXml.TabIndex = 5;
+            this.btnMissionXml.Text = "Mission XML Data";
+            this.btnMissionXml.UseVisualStyleBackColor = true;
+            this.btnMissionXml.Click += new System.EventHandler(this.btnMissionXml_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lMissionXml);
+            this.Controls.Add(this.btnMissionXml);
             this.Controls.Add(this.LQuestSphereData);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnQuestSphere);
@@ -124,6 +148,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.SaveFileDialog exportFileDlg;
         private System.Windows.Forms.Label LQuestSphereData;
+        private System.Windows.Forms.Label lMissionXml;
+        private System.Windows.Forms.Button btnMissionXml;
     }
 }
 

@@ -15,18 +15,24 @@ using AAEmu.ClipboardHelper;
 using FreeImageAPI;
 using System.Threading;
 using System.Globalization;
+using System.Xml;
+using System.Numerics;
+using System.Security.Cryptography.X509Certificates;
+using System.Windows.Forms.VisualStyles;
 
 namespace AAEmu.DBViewer
 {
     public partial class MainForm : Form
     {
+        public static MainForm ThisForm;
         private string defaultTitle;
-        private AAPak pak = new AAPak("");
+        public AAPak pak = new AAPak("");
         private List<string> possibleLanguageIDs = new List<string>();
 
         public MainForm()
         {
             InitializeComponent();
+            ThisForm = this;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -57,7 +63,15 @@ namespace AAEmu.DBViewer
                     loading.Show();
                     loading.ShowInfo("Opening: " + Path.GetFileName(game_pakFileName));
                     if (pak.OpenPak(game_pakFileName, true))
+                    {
                         Properties.Settings.Default.GamePakFileName = game_pakFileName;
+                        lCurrentPakFile.Text = Properties.Settings.Default.GamePakFileName;
+
+                        loading.ShowInfo("Loading: World Data");
+                        PrepareWorldXML(true);
+                        loading.ShowInfo("Loading: Quest Sign Sphere Data");
+                        LoadQuestSpheres();
+                    }
                 }
             }
             tcViewer.SelectedTab = tpItems;
@@ -67,6 +81,10 @@ namespace AAEmu.DBViewer
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Properties.Settings.Default.Save();
+
+            if (MapViewForm.ThisForm != null)
+                MapViewForm.ThisForm.Close();
+
             if (pak != null)
                 pak.ClosePak();
         }
@@ -1368,7 +1386,7 @@ namespace AAEmu.DBViewer
                             t.restart_on_fail = GetBool(reader, "restart_on_fail");
                             t.chapter_idx = GetInt64(reader, "chapter_idx");
                             t.quest_idx = GetInt64(reader, "quest_idx");
-                            t.milestone_id = GetInt64(reader, "milestone_id");
+                            // t.milestone_id = GetInt64(reader, "milestone_id");
                             t.let_it_done = GetBool(reader, "let_it_done");
                             t.detail_id = GetInt64(reader, "detail_id");
                             t.zone_id = GetInt64(reader, "zone_id");
@@ -1484,12 +1502,15 @@ namespace AAEmu.DBViewer
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
 
+                        var hasDesc = reader.GetColumnNames().Contains("desc");
+
                         while (reader.Read())
                         {
                             GameTags t = new GameTags();
                             t.id = GetInt64(reader, "id");
                             t.name = GetString(reader, "name");
-                            t.desc = GetString(reader, "desc");
+                            if (hasDesc)
+                                t.desc = GetString(reader, "desc");
 
                             t.nameLocalized = GetTranslationByID(t.id, "tags", "name", t.name);
                             t.descLocalized = GetTranslationByID(t.id, "tags", "desc", t.desc);
@@ -1682,11 +1703,11 @@ namespace AAEmu.DBViewer
                             t.SearchString = t.SearchString.ToLower();
 
                             // Read remaining data
-                            foreach(var c in cols)
+                            foreach (var c in cols)
                             {
                                 if (!reader.IsDBNull(c))
                                 {
-                                    var v = reader.GetString(c,string.Empty);
+                                    var v = reader.GetString(c, string.Empty);
                                     var isnumber = double.TryParse(v, NumberStyles.Float, CultureInfo.InvariantCulture, out var dVal);
                                     if (isnumber)
                                     {
@@ -1713,6 +1734,78 @@ namespace AAEmu.DBViewer
         }
 
 
+        private void LoadTransfers()
+        {
+            string sql = "SELECT * FROM transfers ORDER BY id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Transfers.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+
+                            GameTransfers t = new GameTransfers();
+                            t.id = GetInt64(reader, "id");
+                            t.model_id = GetInt64(reader, "model_id");
+                            t.path_smoothing = GetFloat(reader, "path_smoothing");
+
+                            AADB.DB_Transfers.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
+        }
+
+        private void LoadTransferPaths()
+        {
+            string sql = "SELECT * FROM transfer_paths ORDER BY owner_id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_TransferPaths.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+
+                            GameTransferPaths t = new GameTransferPaths();
+                            //t.id = GetInt64(reader, "id");
+                            t.owner_id = GetInt64(reader, "owner_id");
+                            t.owner_type = GetString(reader, "owner_type");
+                            t.path_name = GetString(reader, "path_name");
+                            t.wait_time_start = GetFloat(reader, "wait_time_start");
+                            t.wait_time_end = GetFloat(reader, "wait_time_end");
+
+                            AADB.DB_TransferPaths.Add(t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
+        }
 
         private void BtnItemSearch_Click(object sender, EventArgs e)
         {
@@ -2037,7 +2130,7 @@ namespace AAEmu.DBViewer
 
         }
 
-        private string MSToString(long msTime,bool dontShowMS = false)
+        private string MSToString(long msTime, bool dontShowMS = false)
         {
             string res = string.Empty;
             long ms = (msTime % 1000);
@@ -2189,7 +2282,7 @@ namespace AAEmu.DBViewer
                 // lSkillGCD.Text = skill.ignore_global_cooldown ? "Ignore" : "Normal";
                 FormattedTextToRichtEdit(skill.descriptionLocalized, rtSkillDescription);
                 IconIDToLabel(skill.icon_id, skillIcon);
-                lSkillTags.Text = TagsAsString(idx,AADB.DB_Tagged_Skills);
+                lSkillTags.Text = TagsAsString(idx, AADB.DB_Tagged_Skills);
 
                 ShowSelectedData("skills", "(id = " + idx.ToString() + ")", "id ASC");
 
@@ -2288,6 +2381,7 @@ namespace AAEmu.DBViewer
                 lZoneABoxShow.Text = zone.abox_show.ToString();
                 btnFindQuestsInZone.Tag = zone.id;
                 btnFindQuestsInZone.Enabled = (zone.id > 0);
+                btnFindTransferPathsInZone.Tag = zone.zone_key;
 
                 var zg = GetZoneGroupByID(zone.group_id);
                 // From Zone_Groups
@@ -2295,7 +2389,7 @@ namespace AAEmu.DBViewer
                 {
                     lZoneGroupsDisplayName.Text = zg.display_textLocalized;
                     lZoneGroupsName.Text = zg.name;
-                    string zonefile = zg.GamePakZoneNPCsFile;
+                    string zonefile = zg.GamePakZoneNPCsDat;
                     if ((pak.isOpen) && (pak.FileExists(zonefile)))
                     {
                         btnFindNPCsInZone.Tag = zg.id;
@@ -2402,6 +2496,7 @@ namespace AAEmu.DBViewer
                 lZoneFactionID.Text = "";
                 lZoneClimateID.Text = "";
                 lZoneABoxShow.Text = "";
+                btnFindTransferPathsInZone.Tag = 0;
 
                 blank_world_groups = true;
                 blank_zone_groups = true;
@@ -2540,7 +2635,7 @@ namespace AAEmu.DBViewer
 
         private void ShowDBQuestComponent(long quest_component_id)
         {
-            if (!AADB.DB_Quest_Components.TryGetValue(quest_component_id,out var c))
+            if (!AADB.DB_Quest_Components.TryGetValue(quest_component_id, out var c))
             {
                 dgvQuestActs.Rows.Clear();
                 return;
@@ -2573,9 +2668,9 @@ namespace AAEmu.DBViewer
             }
             lQuestId.Text = q.id.ToString();
             dgvQuestComponents.Rows.Clear();
-            var comps = from c in AADB.DB_Quest_Components 
-                        where c.Value.quest_context_id == quest_id 
-                        select c.Value ;
+            var comps = from c in AADB.DB_Quest_Components
+                        where c.Value.quest_context_id == quest_id
+                        select c.Value;
             var first = true;
             foreach (var c in comps)
             {
@@ -2586,11 +2681,11 @@ namespace AAEmu.DBViewer
                 row.Cells[1].Value = c.component_kind_id.ToString();
                 row.Cells[2].Value = c.next_component.ToString();
                 if (AADB.DB_NPCs.TryGetValue(c.npc_id, out var npc))
-                    row.Cells[3].Value = npc.nameLocalized + " ("+ c.npc_id + ")";
+                    row.Cells[3].Value = npc.nameLocalized + " (" + c.npc_id + ")";
                 else
                     row.Cells[3].Value = c.npc_id.ToString();
                 if (AADB.DB_Skills.TryGetValue(c.skill_id, out var skill))
-                    row.Cells[4].Value = skill.nameLocalized + " ("+ c.skill_id.ToString() + ")";
+                    row.Cells[4].Value = skill.nameLocalized + " (" + c.skill_id.ToString() + ")";
                 else
                     row.Cells[4].Value = c.skill_id.ToString();
                 row.Cells[5].Value = c.skill_self.ToString();
@@ -2610,7 +2705,7 @@ namespace AAEmu.DBViewer
         {
             if (name.Trim(' ') == string.Empty)
                 return;
-            var lastTagID = flpBuff.Controls.Count + 10 ;
+            var lastTagID = flpBuff.Controls.Count + 10;
             var L = new Label();
             L.Tag = lastTagID;
             // L.BorderStyle = BorderStyle.FixedSingle;
@@ -2638,7 +2733,7 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private string TagsAsString(long target_id, Dictionary<long,GameTaggedValues> lookupTable)
+        private string TagsAsString(long target_id, Dictionary<long, GameTaggedValues> lookupTable)
         {
             var tags = from t in lookupTable
                        where t.Value.target_id == target_id
@@ -2671,13 +2766,13 @@ namespace AAEmu.DBViewer
             lBuffId.Text = b.id.ToString();
             lBuffName.Text = b.nameLocalized;
             lBuffDuration.Text = MSToString(b.duration);
-            lBuffTags.Text = TagsAsString(buff_id,AADB.DB_Tagged_Buffs);
+            lBuffTags.Text = TagsAsString(buff_id, AADB.DB_Tagged_Buffs);
             IconIDToLabel(b.icon_id, buffIcon);
             FormattedTextToRichtEdit(b.descLocalized, rtBuffDesc);
             ClearBuffTags();
             foreach (var c in b._others)
             {
-                AddBuffTag(c.Key+" = "+c.Value);
+                AddBuffTag(c.Key + " = " + c.Value);
             }
             ShowSelectedData("buffs", "id = " + b.id.ToString(), "id ASC");
         }
@@ -2763,6 +2858,9 @@ namespace AAEmu.DBViewer
                 LoadFactions();
                 loading.ShowInfo("Loading: Buffs");
                 LoadBuffs();
+                loading.ShowInfo("Loading: Transfers");
+                LoadTransfers();
+                LoadTransferPaths();
                 loading.ShowInfo("Loading: Tags");
                 LoadTags();
                 LoadZoneGroupBannedTags();
@@ -3012,7 +3110,21 @@ namespace AAEmu.DBViewer
             {
                 pak.ClosePak();
                 if (pak.OpenPak(openGamePakFileDialog.FileName, true))
+                {
                     Properties.Settings.Default.GamePakFileName = openGamePakFileDialog.FileName;
+                    lCurrentPakFile.Text = Properties.Settings.Default.GamePakFileName;
+
+                    PrepareWorldXML(true);
+                    if (MapViewForm.ThisForm != null)
+                    {
+                        MapViewForm.ThisForm.Close();
+                        MapViewForm.ThisForm = null;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Failed to load: " + openGamePakFileDialog.FileName);
+                }
             }
         }
 
@@ -3299,11 +3411,13 @@ namespace AAEmu.DBViewer
                 lNPCTemplate.Text = npc.id.ToString();
                 lNPCTags.Text = TagsAsString(id, AADB.DB_Tagged_NPCs);
                 ShowSelectedData("npcs", "(id = " + id.ToString() + ")", "id ASC");
+                btnShowNPCsOnMap.Tag = npc.id;
             }
             else
             {
                 lNPCTemplate.Text = "???";
                 lNPCTags.Text = "???";
+                btnShowNPCsOnMap.Tag = 0;
             }
             lGMNPCSpawn.Text = "/spawn npc " + lNPCTemplate.Text;
         }
@@ -3618,6 +3732,7 @@ namespace AAEmu.DBViewer
                 lDoodadDespawnOnCollision.Text = doodad.despawn_on_collision.ToString();
                 lDoodadNoCollision.Text = doodad.no_collision.ToString();
                 lDoodadRestrictZoneID.Text = doodad.restrict_zone_id.ToString();
+                btnShowDoodadOnMap.Tag = doodad.id;
 
                 if (AADB.DB_Doodad_Groups.TryGetValue(doodad.group_id, out var dGroup))
                 {
@@ -3700,6 +3815,8 @@ namespace AAEmu.DBViewer
                 lDoodadGroupIsExport.Text = "";
                 lDoodadGroupGuardOnFieldTime.Text = "";
                 lDoodadGroupRemovedByHouse.Text = "";
+
+                btnShowDoodadOnMap.Tag = 0;
 
                 dgvDoodadFuncGroups.Rows.Clear();
             }
@@ -3813,14 +3930,14 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private List<MapSpawnLocation> GetNPCSpawnsInZoneGroup(long zoneGroupId,bool uniqueOnly = false, long filterByID = -1)
+        private List<MapSpawnLocation> GetNPCSpawnsInZoneGroup(long zoneGroupId, bool uniqueOnly = false, long filterByID = -1)
         {
             List<MapSpawnLocation> res = new List<MapSpawnLocation>();
             var zg = GetZoneGroupByID(zoneGroupId);
-            if ((zg != null) && (pak.isOpen) && (pak.FileExists(zg.GamePakZoneNPCsFile)))
+            if ((zg != null) && (pak.isOpen) && (pak.FileExists(zg.GamePakZoneNPCsDat)))
             {
                 // Open .dat file and read it's contents
-                using (var fs = pak.ExportFileAsStream(zg.GamePakZoneNPCsFile))
+                using (var fs = pak.ExportFileAsStream(zg.GamePakZoneNPCsDat))
                 {
                     int indexCount = ((int)fs.Length / 16);
                     using (var reader = new BinaryReader(fs))
@@ -3872,14 +3989,18 @@ namespace AAEmu.DBViewer
                     var zg = GetZoneGroupByID(ZoneGroupId);
                     string ZoneGroupFile = string.Empty;
                     if (zg != null)
-                        ZoneGroupFile = zg.GamePakZoneNPCsFile;
+                        ZoneGroupFile = zg.GamePakZoneNPCsDat;
 
                     if (zg != null)
                     {
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
 
-                        npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id,true));
+                        var map = MapViewForm.GetMap();
+                        map.Show();
+                        map.ClearPoI();
+
+                        npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id, true));
 
                         if (npcList.Count > 0)
                         {
@@ -3908,7 +4029,7 @@ namespace AAEmu.DBViewer
                                         row.Cells[4].Value = z.npc_grade_id.ToString();
                                         row.Cells[5].Value = AADB.GetFactionName(z.faction_id, true);
                                         if (npc.count == 1)
-                                            row.Cells[6].Value = string.Format("{0} , {1} = ({2})",npc.x,npc.y, npc.AsSextant());
+                                            row.Cells[6].Value = string.Format("{0} , {1} = ({2})", npc.x, npc.y, npc.AsSextant());
                                         else
                                             row.Cells[6].Value = npc.count.ToString() + " instances in zone";
 
@@ -3917,6 +4038,8 @@ namespace AAEmu.DBViewer
                                         {
                                             loading.ShowInfo("Loading " + c.ToString() + "/" + npcList.Count.ToString() + " NPCs");
                                         }
+
+                                        map.AddPoI((int)npc.x, (int)npc.y, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow);
                                     }
                                 }
                                 tcViewer.SelectedTab = tpNPCs;
@@ -3924,7 +4047,8 @@ namespace AAEmu.DBViewer
 
                             }
                         }
-
+                        map.cbPoINames.Checked = false; // Disable this when loading from zone
+                        map.FocusAll(true,false);
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
                     }
@@ -3943,7 +4067,11 @@ namespace AAEmu.DBViewer
                     long zoneid = (long)b.Tag;
                     bool first = true;
 
-                    foreach(var quest in AADB.DB_Quest_Contexts)
+                    Application.UseWaitCursor = true;
+                    Cursor = Cursors.WaitCursor;
+                    dgvQuests.Hide();
+
+                    foreach (var quest in AADB.DB_Quest_Contexts)
                     {
                         var q = quest.Value;
                         if (q.zone_id == zoneid)
@@ -3975,6 +4103,10 @@ namespace AAEmu.DBViewer
                                 row.Cells[4].Value = q.category_id.ToString();
                         }
                     }
+                    dgvQuests.Show();
+
+                    Application.UseWaitCursor = false;
+                    Cursor = Cursors.Default;
 
                     tcViewer.SelectedTab = tpQuests;
                 }
@@ -4032,7 +4164,7 @@ namespace AAEmu.DBViewer
 
         private void tQuestSearch_TextChanged(object sender, EventArgs e)
         {
-            btnQuestsSearch .Enabled = (tQuestSearch.Text != string.Empty);
+            btnQuestsSearch.Enabled = (tQuestSearch.Text != string.Empty);
         }
 
         private void tQuestSearch_KeyDown(object sender, KeyEventArgs e)
@@ -4045,7 +4177,7 @@ namespace AAEmu.DBViewer
 
         private void cbItemSearchItemArmorSlotTypeList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tItemSearch.Text.Replace("*","") == string.Empty)
+            if (tItemSearch.Text.Replace("*", "") == string.Empty)
             {
                 if ((cbItemSearchItemArmorSlotTypeList.SelectedIndex > 0) || (cbItemSearchItemCategoryTypeList.SelectedIndex > 0))
                     tItemSearch.Text = "*";
@@ -4064,7 +4196,7 @@ namespace AAEmu.DBViewer
             {
                 if (b.Value.zone_group_id == zoneGroupId)
                 {
-                    if (AADB.DB_Tags.TryGetValue(b.Value.tag_id,out var tag))
+                    if (AADB.DB_Tags.TryGetValue(b.Value.tag_id, out var tag))
                     {
                         bannedInfo += tag.id + " - " + tag.nameLocalized + "\r\n";
                     }
@@ -4118,7 +4250,7 @@ namespace AAEmu.DBViewer
             foreach (var i in AADB.DB_Translations)
             {
                 var translation = i.Value;
-                var tSearchString = "="+translation.table.ToLower() + "=" + translation.field.ToLower() + "=" + translation.idx.ToString() + "=" + translation.value.ToLower()+"=";
+                var tSearchString = "=" + translation.table.ToLower() + "=" + translation.field.ToLower() + "=" + translation.idx.ToString() + "=" + translation.value.ToLower() + "=";
                 var searchOK = true;
                 foreach (var s in sTexts)
                     if (!tSearchString.Contains(s))
@@ -4171,7 +4303,7 @@ namespace AAEmu.DBViewer
 
                     row.Cells[0].Value = b.id.ToString();
                     row.Cells[1].Value = b.nameLocalized;
-                    row.Cells[2].Value = b.duration > 0 ? MSToString(b.duration,true) : "";
+                    row.Cells[2].Value = b.duration > 0 ? MSToString(b.duration, true) : "";
 
                     if (first)
                     {
@@ -4217,6 +4349,784 @@ namespace AAEmu.DBViewer
                 ShowDBBuff(long.Parse(id.ToString()));
                 ShowSelectedData("buffs", "id = " + id.ToString(), "id ASC");
             }
+
+        }
+
+        private void btnExportDataForVieweD_Click(object sender, EventArgs e)
+        {
+            // Create lookup files for use in VieweD
+
+            var LookupExportPath = Path.Combine(Application.StartupPath, "export", "data", "lookup");
+            try
+            {
+                Directory.CreateDirectory(LookupExportPath);
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show("Failed to create export directory: " + LookupExportPath + "\r\n" + x.Message);
+                return;
+            }
+
+            try
+            {
+                // NPC
+                var NPCList = new List<string>();
+                foreach (var npc in AADB.DB_NPCs)
+                    NPCList.Add(npc.Key.ToString() + ";" + npc.Value.nameLocalized);
+                File.WriteAllLines(Path.Combine(LookupExportPath, "npcs.txt"), NPCList);
+
+                // Doodad
+                var DoodadList = new List<string>();
+                foreach (var doodad in AADB.DB_Doodad_Almighties)
+                    DoodadList.Add(doodad.Key.ToString() + ";" + doodad.Value.nameLocalized);
+                File.WriteAllLines(Path.Combine(LookupExportPath, "doodads.txt"), DoodadList);
+
+                // Skill
+                var SkillList = new List<string>();
+                foreach (var skill in AADB.DB_Skills)
+                    SkillList.Add(skill.Key.ToString() + ";" + skill.Value.nameLocalized);
+                File.WriteAllLines(Path.Combine(LookupExportPath, "skills.txt"), SkillList);
+
+                // Items
+                var ItemList = new List<string>();
+                foreach (var item in AADB.DB_Items)
+                    ItemList.Add(item.Key.ToString() + ";" + item.Value.nameLocalized);
+                File.WriteAllLines(Path.Combine(LookupExportPath, "items.txt"), ItemList);
+
+                // Zone Groups
+                var ZoneGroupList = new List<string>();
+                foreach (var zonegroup in AADB.DB_Zone_Groups)
+                    ZoneGroupList.Add(zonegroup.Key.ToString() + ";" + zonegroup.Value.display_textLocalized);
+                File.WriteAllLines(Path.Combine(LookupExportPath, "zonegroups.txt"), ZoneGroupList);
+
+                // Zone Keys
+                var ZoneKeysList = new List<string>();
+                foreach (var zonekey in AADB.DB_Zones)
+                    ZoneKeysList.Add(zonekey.Value.zone_key.ToString() + ";" + zonekey.Value.display_textLocalized);
+                File.WriteAllLines(Path.Combine(LookupExportPath, "zonekeys.txt"), ZoneKeysList);
+
+
+                MessageBox.Show("Done exporting", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show("Export Failed !\r\n" + x.Message);
+                return;
+            }
+        }
+
+        private void btnMap_Click(object sender, EventArgs e)
+        {
+            var map = MapViewForm.GetMap();
+            map.Show();
+        }
+
+        private void btnShowNPCsOnMap_Click(object sender, EventArgs e)
+        {
+            var map = MapViewForm.GetMap();
+            map.Show();
+            map.ClearPoI();
+
+            var searchId = (long)(sender as Button).Tag;
+            if (searchId <= 0)
+                return;
+
+            List<MapSpawnLocation> npcList = new List<MapSpawnLocation>();
+
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+
+            using (var loading = new LoadingForm())
+            {
+                loading.ShowInfo("Searching in zones: " + AADB.DB_Zone_Groups.Count.ToString());
+                loading.Show();
+
+                var zoneCount = 0;
+                foreach (var zgv in AADB.DB_Zone_Groups)
+                {
+                    var zg = zgv.Value;
+                    if (zg != null)
+                    {
+                        zoneCount++;
+                        loading.ShowInfo("Searching in zones: " + zoneCount.ToString() + "/" + AADB.DB_Zone_Groups.Count.ToString());
+                        npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id, false));
+                    }
+                }
+
+                if (npcList.Count > 0)
+                {
+                    // Add to NPC list
+                    foreach (var npc in npcList)
+                    {
+                        if (npc.id != searchId)
+                            continue;
+                        if (AADB.DB_NPCs.TryGetValue(npc.id, out var z))
+                        {
+                            map.AddPoI((int)npc.x, (int)npc.y, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow);
+                        }
+                    }
+                }
+
+            }
+            map.cbPoINames.Checked = true;
+            map.cbFocus.Checked = true;
+            map.FocusAll(true,false);
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+        }
+
+        static public Dictionary<string, string> ReadNodeAttributes(XmlNode node)
+        {
+            var res = new Dictionary<string, string>();
+            res.Clear();
+            if (node.Attributes != null)
+            {
+                for (var i = 0; i < node.Attributes.Count; i++)
+                    res.Add(node.Attributes.Item(i).Name.ToLower(), node.Attributes.Item(i).Value);
+            }
+            return res;
+        }
+
+        private void btnFindTransferPathsInZone_Click(object sender, EventArgs e)
+        {
+            PrepareWorldXML(false);
+
+            List<MapViewPath> allpaths = new List<MapViewPath>();
+
+            if ((sender != null) && (sender is Button))
+            {
+                Button b = (sender as Button);
+                if (b != null)
+                {
+                    if ((sender as Button).Tag == null)
+                        return;
+                    var searchId = (long)(sender as Button).Tag;
+                    if (searchId <= 0)
+                        return;
+
+                    foreach (var zv in AADB.DB_Zones)
+                        if (zv.Value.zone_key == searchId)
+                            AddTransferPath(ref allpaths, zv.Value);
+
+                    if (allpaths.Count <= 0)
+                        MessageBox.Show("No paths found inside this zone");
+                    else
+                    {
+                        // Show on map
+                        //MessageBox.Show("Found " + allpoints.Count.ToString() + " points inside " + pathsFound.ToString() + " paths");
+                        var map = MapViewForm.GetMap();
+                        map.Show();
+                        if (map.GetPathCount() > 0)
+                            if (MessageBox.Show("Append paths ?", "Add path to map", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                                map.ClearPaths();
+                        foreach (var p in allpaths)
+                            map.AddPath(p);
+                        map.cbPoINames.Checked = true;
+                        map.FocusAll(false,true);
+                    }
+
+                }
+            } 
+        }
+
+        private void AddTransferPath(ref List<MapViewPath> allpaths, GameZone zone)
+        {
+            if (zone != null)
+            {
+                var worldOff = MapViewWorldXML.GetZoneByKey(zone.zone_key);
+
+                // If it's not in the world.xml, it's probably not a real zone anyway
+                if (worldOff == null)
+                    return;
+
+                if (!pak.isOpen || !pak.FileExists(zone.GamePakZoneTransferPathXML))
+                {
+                    // MessageBox.Show("No path file found for this zone");
+                    return;
+                }
+                // MessageBox.Show("Loading: " + zone.GamePakZoneTransferPathXML);
+
+                int pathsFound = 0;
+                try
+                {
+                    var fs = pak.ExportFileAsStream(zone.GamePakZoneTransferPathXML);
+
+                    var _doc = new XmlDocument();
+                    _doc.Load(fs);
+                    var _allTransferBlocks = _doc.SelectNodes("/Objects/Transfer");
+                    for (var i = 0; i < _allTransferBlocks.Count; i++)
+                    {
+                        var block = _allTransferBlocks[i];
+                        var attribs = ReadNodeAttributes(block);
+
+                        if (attribs.TryGetValue("name", out var blockName))
+                        {
+
+                            var newPath = new MapViewPath();
+                            newPath.PathName = blockName;
+
+                            foreach (var tp in AADB.DB_TransferPaths)
+                                if (tp.path_name == blockName)
+                                    newPath.TypeId = tp.owner_id;
+
+                            long model = 0;
+                            if (AADB.DB_Transfers.TryGetValue(newPath.TypeId, out var transfer))
+                            {
+                                model = transfer.model_id;
+                            }
+                            bool knownType = true;
+                            switch (model)
+                            {
+                                case 116: // Ferry
+                                    newPath.Color = Color.Navy;
+                                    break;
+                                case 314: // Tram
+                                case 606: // Tram
+                                    newPath.Color = Color.Yellow;
+                                    break;
+                                case 548: // Andelph Train
+                                    newPath.Color = Color.Yellow;
+                                    break;
+                                case 654: // Carriage
+                                    newPath.Color = Color.DarkOrange;
+                                    break;
+                                case 657: // Airship
+                                    newPath.Color = Color.Blue;
+                                    newPath.DrawStyle = 1;
+                                    break;
+                                case 2217: // Cargo Ship (2C-Solis)
+                                case 2236: // Cargo Ship (Solz-Yny)
+                                    newPath.Color = Color.DarkCyan;
+                                    newPath.DrawStyle = 2;
+                                    break;
+                                default:
+                                    knownType = false;
+                                    break;
+                            }
+                            if (!knownType)
+                                newPath.PathName = blockName + "(t:" + newPath.TypeId.ToString() + " m:" + model.ToString() + " z:"+zone.zone_key.ToString()+")";
+                            else
+                                newPath.PathName = blockName + "(t:" + newPath.TypeId.ToString() + " z:" + zone.zone_key.ToString() + ")";
+
+                            // We don't need the cellX/Y values here
+                            /*
+                            int cellXOffset = 0;
+                            int cellYOffset = 0;
+
+                            if (attribs.TryGetValue("cellx",out var cellXOffsetString))
+                                try { cellXOffset = int.Parse(cellXOffsetString); }
+                                catch { cellXOffset = 0; }
+                            if (attribs.TryGetValue("celly", out var cellYOffsetString))
+                                try { cellYOffset = int.Parse(cellYOffsetString); }
+                                catch { cellYOffset = 0; }
+                            */
+
+                            PointF cellOffset = new PointF((worldOff.originCellX * 1024f), (worldOff.originCellY * 1024f));
+                            pathsFound++;
+
+                            var pointsxml = block.SelectNodes("Points/Point");
+                            for (var n = 0; n < pointsxml.Count; n++)
+                            {
+                                var pointxml = pointsxml[n];
+                                var pointattribs = ReadNodeAttributes(pointxml);
+                                if (pointattribs.TryGetValue("pos", out var posString))
+                                {
+                                    var posVals = posString.Split(',');
+                                    if (posVals.Length != 3)
+                                    {
+                                        MessageBox.Show("Invalid number of values inside Pos: " + posString);
+                                        continue;
+                                    }
+                                    try
+                                    {
+                                        var vec = new Vector3(
+                                            float.Parse(posVals[0], CultureInfo.InvariantCulture) + cellOffset.X,
+                                            float.Parse(posVals[1], CultureInfo.InvariantCulture) + cellOffset.Y,
+                                            float.Parse(posVals[2], CultureInfo.InvariantCulture)
+                                            );
+                                        newPath.allpoints.Add(vec);
+                                    }
+                                    catch
+                                    {
+                                        MessageBox.Show("Invalid float inside Pos: " + posString);
+                                    }
+
+                                }
+                            }
+                            allpaths.Add(newPath);
+
+                        }
+                    }
+                }
+                catch (Exception x)
+                {
+                    MessageBox.Show(x.Message);
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Invalid zone selected ?");
+                return;
+            }
+        }
+
+        private void AddHousingZones(ref List<MapViewPath> allareas, GameZone zone)
+        {
+            if (zone != null)
+            {
+                var worldOff = MapViewWorldXML.GetZoneByKey(zone.zone_key);
+
+                // If it's not in the world.xml, it's probably not a real zone anyway
+                if (worldOff == null)
+                    return;
+
+                if (!pak.isOpen || !pak.FileExists(zone.GamePakZoneHousingXML))
+                {
+                    // MessageBox.Show("No path file found for this zone");
+                    return;
+                }
+                // MessageBox.Show("Loading: " + zone.GamePakZoneTransferPathXML);
+
+                int areasFound = 0;
+                try
+                {
+                    var fs = pak.ExportFileAsStream(zone.GamePakZoneHousingXML);
+
+                    var _doc = new XmlDocument();
+                    _doc.Load(fs);
+                    var _allHousingBlocks = _doc.SelectNodes("/Objects/Entity");
+                    for (var i = 0; i < _allHousingBlocks.Count; i++)
+                    {
+                        var block = _allHousingBlocks[i];
+                        var entityAttribs = ReadNodeAttributes(block);
+
+                        if (entityAttribs.TryGetValue("name", out var blockName))
+                        {
+
+                            int cellXOffset = 0;
+                            int cellYOffset = 0;
+
+                            if (entityAttribs.TryGetValue("cellx", out var cellXOffsetString))
+                                try { cellXOffset = int.Parse(cellXOffsetString); }
+                                catch { cellXOffset = 0; }
+                            if (entityAttribs.TryGetValue("celly", out var cellYOffsetString))
+                                try { cellYOffset = int.Parse(cellYOffsetString); }
+                                catch { cellYOffset = 0; }
+
+
+                            var areaNodes = block.SelectNodes("Area");
+                            for (var j = 0; j < areaNodes.Count; j++)
+                            {
+                                var areaNode = areaNodes[j];
+                                var areaAttribs = ReadNodeAttributes(areaNode);
+                                var startVector = new Vector3();
+
+                                var newArea = new MapViewPath();
+                                newArea.PathName = blockName;
+
+
+                                if (areaAttribs.TryGetValue("value1", out var val1))
+                                {
+                                    newArea.TypeId = long.Parse(val1);
+                                }
+
+                                if (newArea.TypeId <= 0)
+                                    newArea.Color = Color.DarkGray;
+
+                                newArea.PathName = blockName + "(v:" + newArea.TypeId.ToString() + " z:" + zone.zone_key.ToString() + ")";
+
+                                if (entityAttribs.TryGetValue("pos", out var valPos))
+                                {
+                                    var posVals = valPos.Split(',');
+                                    if (posVals.Length != 3)
+                                    {
+                                        MessageBox.Show("Invalid number of values inside Pos: " + valPos);
+                                        continue;
+                                    }
+                                    try
+                                    {
+                                        startVector = new Vector3(
+                                            float.Parse(posVals[0], CultureInfo.InvariantCulture),
+                                            float.Parse(posVals[1], CultureInfo.InvariantCulture),
+                                            float.Parse(posVals[2], CultureInfo.InvariantCulture)
+                                            );
+                                    }
+                                    catch
+                                    {
+                                        MessageBox.Show("Invalid float inside Pos: " + valPos);
+                                    }
+                                }
+
+                                PointF cellOffset = new PointF(((worldOff.originCellX + cellXOffset) * 1024f), ((worldOff.originCellY + cellYOffset) * 1024f));
+                                areasFound++;
+
+                                Vector3 firstVector = Vector3.Zero;
+
+                                var pointsxml = areaNode.SelectNodes("Points/Point");
+                                for (var n = 0; n < pointsxml.Count; n++)
+                                {
+                                    var pointxml = pointsxml[n];
+                                    var pointattribs = ReadNodeAttributes(pointxml);
+                                    if (pointattribs.TryGetValue("pos", out var posString))
+                                    {
+                                        var posVals = posString.Split(',');
+                                        if (posVals.Length != 3)
+                                        {
+                                            MessageBox.Show("Invalid number of values inside Pos: " + posString);
+                                            continue;
+                                        }
+                                        try
+                                        {
+                                            var vec = new Vector3(
+                                                float.Parse(posVals[0], CultureInfo.InvariantCulture) + cellOffset.X,
+                                                float.Parse(posVals[1], CultureInfo.InvariantCulture) + cellOffset.Y,
+                                                float.Parse(posVals[2], CultureInfo.InvariantCulture)
+                                                ) + startVector;
+                                            if (firstVector == Vector3.Zero)
+                                                firstVector = vec;
+                                            newArea.allpoints.Add(vec);
+                                        }
+                                        catch
+                                        {
+                                            MessageBox.Show("Invalid float inside Pos: " + posString);
+                                        }
+
+                                    }
+                                }
+                                // Close the loop
+                                if (firstVector != Vector3.Zero)
+                                    newArea.allpoints.Add(firstVector);
+
+                                allareas.Add(newArea);
+
+                            }
+                        }
+                    }
+                }
+                catch (Exception x)
+                {
+                    MessageBox.Show(x.Message);
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Invalid zone selected ?");
+                return;
+            }
+        }
+
+        private void btnDebug_Click(object sender, EventArgs e)
+        {
+            var s = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n" +
+                    "<!-- Helper file for displaying path data on the map, needs manual editing -->\r\n" +
+                    "<pathoffsets>\r\n";
+            foreach(var zv in AADB.DB_Zones)
+            {
+                s += "\t<zone id=\""+zv.Value.id.ToString()+"\" key=\""+zv.Value.zone_key.ToString()+"\" x=\"0\" y=\"0\" /><!-- "+zv.Value.name+" -->\r\n";
+            }
+            s += "</pathoffsets>\r\n";
+            File.WriteAllText("debug.xml", s);
+        }
+
+        private void btnFindAllTransferPaths_Click(object sender, EventArgs e)
+        {
+            PrepareWorldXML(false);
+            List<MapViewPath> allpaths = new List<MapViewPath>();
+
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+
+            foreach (var zv in AADB.DB_Zones)
+                AddTransferPath(ref allpaths, zv.Value);
+
+            if (allpaths.Count <= 0)
+                MessageBox.Show("No paths found ?");
+            else
+            {
+                var map = MapViewForm.GetMap();
+                map.Show();
+                map.ClearPaths();
+                foreach (var p in allpaths)
+                    map.AddPath(p);
+            }
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+        }
+
+        public void PrepareWorldXML(bool overwrite)
+        {
+            if (overwrite || (MapViewWorldXML.zones.Count <= 0))
+            {
+                // try loading if no zones loaded yet
+                var worldxmlfile = "game/worlds/main_world/world.xml";
+                if ((!pak.isOpen) || (!pak.FileExists(worldxmlfile)))
+                {
+                    MessageBox.Show("Could not find world.xml");
+                    return;
+                }
+
+                if (!MapViewWorldXML.LoadFromStream(pak.ExportFileAsStream(worldxmlfile)))
+                {
+                    MessageBox.Show("world.xml did not contain valid data");
+                    return;
+                }
+            }
+        }
+
+        private List<MapSpawnLocation> GetDoodadSpawnsInZoneGroup(long zoneGroupId, bool uniqueOnly = false, long filterByID = -1)
+        {
+            List<MapSpawnLocation> res = new List<MapSpawnLocation>();
+            var zg = GetZoneGroupByID(zoneGroupId);
+            if ((zg != null) && (pak.isOpen) && (pak.FileExists(zg.GamePakZoneDoodadsDat)))
+            {
+                // Open .dat file and read it's contents
+                using (var fs = pak.ExportFileAsStream(zg.GamePakZoneDoodadsDat))
+                {
+                    int indexCount = ((int)fs.Length / 16);
+                    using (var reader = new BinaryReader(fs))
+                    {
+                        for (int i = 0; i < indexCount; i++)
+                        {
+                            MapSpawnLocation msl = new MapSpawnLocation();
+                            msl.id = reader.ReadInt32();
+                            // Locations not used here, but we need to read it
+                            msl.x = reader.ReadSingle();
+                            msl.y = reader.ReadSingle();
+                            msl.z = reader.ReadSingle();
+
+                            msl.zoneGroupId = zoneGroupId;
+                            if ((filterByID == -1) || (msl.id == filterByID))
+                            {
+                                bool canAdd = true;
+                                if (uniqueOnly)
+                                    foreach (var m in res)
+                                    {
+                                        if (m.id == msl.id)
+                                        {
+                                            canAdd = false;
+                                            m.count++;
+                                            break;
+                                        }
+                                    }
+
+                                if (canAdd)
+                                    res.Add(msl);
+                            }
+                        }
+                    }
+                }
+            }
+            return res;
+        }
+
+        private void btnShowDoodadOnMap_Click(object sender, EventArgs e)
+        {
+            var map = MapViewForm.GetMap();
+            map.Show();
+            map.ClearPoI();
+
+            var searchId = (long)(sender as Button).Tag;
+            if (searchId <= 0)
+                return;
+
+            List<MapSpawnLocation> doodadList = new List<MapSpawnLocation>();
+
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+
+            using (var loading = new LoadingForm())
+            {
+                loading.ShowInfo("Searching in zones: " + AADB.DB_Zone_Groups.Count.ToString());
+                loading.Show();
+
+                var zoneCount = 0;
+                foreach (var zgv in AADB.DB_Zone_Groups)
+                {
+                    var zg = zgv.Value;
+                    if (zg != null)
+                    {
+                        zoneCount++;
+                        loading.ShowInfo("Searching in zones: " + zoneCount.ToString() + "/" + AADB.DB_Zone_Groups.Count.ToString());
+                        doodadList.AddRange(GetDoodadSpawnsInZoneGroup(zg.id, false));
+                    }
+                }
+
+                if (doodadList.Count > 0)
+                {
+                    // Add to NPC list
+                    foreach (var doodad in doodadList)
+                    {
+                        if (doodad.id != searchId)
+                            continue;
+                        if (AADB.DB_Doodad_Almighties.TryGetValue(doodad.id, out var z))
+                        {
+                            map.AddPoI((int)doodad.x, (int)doodad.y, z.nameLocalized + " (" + doodad.id.ToString() + ")", Color.Yellow);
+                        }
+                    }
+                }
+
+            }
+            map.cbPoINames.Checked = true;
+            map.cbFocus.Checked = true;
+            map.FocusAll(true, false);
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+
+        }
+
+        public void LoadQuestSpheres()
+        {
+            if ((pak == null) || (!pak.isOpen))
+                return;
+
+            
+            AADB.PAK_QuestSignSpheres = new List<QuestSphereEntry>();
+            var sl = new List<string>();
+
+            // Find all related files and concat them into a giant stringlist
+            foreach (var pfi in pak.files)
+            {
+                var lowername = pfi.name.ToLower();
+                if (lowername.EndsWith("quest_sign_sphere.g"))
+                {
+                    var namesplited = lowername.Split('/');
+                    var thisStream = pak.ExportFileAsStream(pfi);
+                    using (var rs = new StreamReader(thisStream))
+                    {
+                        sl.Clear();
+                        while (!rs.EndOfStream)
+                        {
+                            sl.Add(rs.ReadLine().Trim(' ').Trim('\t').ToLower());
+                        }
+                    }
+                    var worldname = "";
+                    var zone = 0;
+
+                    if (namesplited.Length > 6)
+                    {
+                        if ((namesplited[0] == "game") &&
+                            (namesplited[1] == "worlds") &&
+                            (namesplited[3] == "level_design") &&
+                            (namesplited[4] == "zone") &&
+                            (namesplited[6] == "client")
+                            )
+                        {
+                            worldname = namesplited[2];
+                            zone = int.Parse(namesplited[5]);
+                        }
+                    }
+
+                    var zoneOffX = 0f;
+                    var zoneOffY = 0f;
+                    if (AADB.DB_Zones.TryGetValue(zone, out var gameZone))
+                    {
+                        if (AADB.DB_Zone_Groups.TryGetValue(gameZone.group_id, out var zg))
+                        {
+                            zoneOffX = zg.PosAndSize.X;
+                            zoneOffY = zg.PosAndSize.Y;
+                        }
+                        else
+                        {
+                            // no zone group ?
+                        }
+                    }
+                    else
+                    {
+                        // zone not found in DB
+                    }
+
+                    for (int i = 0; i < sl.Count - 4; i++)
+                    {
+                        var l0 = sl[i + 0]; // area
+                        var l1 = sl[i + 1]; // qtype
+                        var l2 = sl[i + 2]; // ctype
+                        var l3 = sl[i + 3]; // pos
+                        var l4 = sl[i + 4]; // radius
+
+
+                        if (l0.StartsWith("area") && l1.StartsWith("qtype") && l2.StartsWith("ctype") && l3.StartsWith("pos") && l4.StartsWith("radius"))
+                        {
+                            try
+                            {
+                                var qse = new QuestSphereEntry();
+                                qse.worldID = worldname;
+                                qse.zoneID = zone;
+
+                                qse.questID = int.Parse(l1.Substring(6));
+
+                                qse.componentID = int.Parse(l2.Substring(6));
+
+                                var subline = l3.Substring(4).Replace("(", "").Replace(")", "").Replace("x", "").Replace("y", "").Replace("z", "").Replace(" ", "");
+                                var posstring = subline.Split(',');
+                                if (posstring.Length == 3)
+                                {
+                                    // Parse the floats with NumberStyles.Float and CultureInfo.InvariantCulture or we get all sorts of 
+                                    // weird stuff with the decimal points depending on the user's language settings
+                                    qse.X = zoneOffX + float.Parse(posstring[0], NumberStyles.Float, CultureInfo.InvariantCulture);
+                                    qse.Y = zoneOffY + float.Parse(posstring[1], NumberStyles.Float, CultureInfo.InvariantCulture);
+                                    qse.Z = float.Parse(posstring[2], NumberStyles.Float, CultureInfo.InvariantCulture);
+                                }
+                                qse.radius = float.Parse(l4.Substring(7), NumberStyles.Float, CultureInfo.InvariantCulture);
+
+                                AADB.PAK_QuestSignSpheres.Add(qse);
+                                i += 5;
+                            }
+                            catch (Exception x)
+                            {
+                                MessageBox.Show("Exception: " + x.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+                        }
+                    }
+                    // System.Threading.Thread.Sleep(5);
+                }
+            }
+
+
+        }
+
+        private void btnFindAllQuestSpheres_Click(object sender, EventArgs e)
+        {
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+
+            PrepareWorldXML(false);
+            var map = MapViewForm.GetMap();
+            map.Show();
+            map.ClearPoI();
+            foreach (var p in AADB.PAK_QuestSignSpheres)
+                map.AddPoI(p.X,p.Y,p.questID.ToString(),Color.LightCyan,p.radius);
+            map.cbPoINames.Checked = true;
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+
+        }
+
+        private void btnFindAllHousing_Click(object sender, EventArgs e)
+        {
+            PrepareWorldXML(false);
+            List<MapViewPath> allareas = new List<MapViewPath>();
+
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+
+            foreach (var zv in AADB.DB_Zones)
+                AddHousingZones(ref allareas, zv.Value);
+
+            if (allareas.Count <= 0)
+                MessageBox.Show("No housing found ?");
+            else
+            {
+                var map = MapViewForm.GetMap();
+                map.Show();
+                map.ClearPaths();
+                foreach (var p in allareas)
+                    map.AddPath(p);
+            }
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
 
         }
     }
