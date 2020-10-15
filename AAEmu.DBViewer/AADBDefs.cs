@@ -785,6 +785,14 @@ namespace AAEmu.DBDefs
             var uy = ((latitude + 28f) / 0.00097657363894522145695357130138029f);
             return new PointF(ux, uy);
         }
+
+        static public GameZone GetZoneByKey(long zone_key)
+        {
+            foreach (var z in DB_Zones)
+                if (z.Value.zone_key == zone_key)
+                    return z.Value;
+            return null;
+        }
     }
 
 }

@@ -57,6 +57,17 @@
             this.Column51 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column50 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tSearchLocalized = new System.Windows.Forms.TextBox();
+            this.tpMap = new System.Windows.Forms.TabPage();
+            this.label130 = new System.Windows.Forms.Label();
+            this.cbQuestSignSphereSearchShowAll = new System.Windows.Forms.CheckBox();
+            this.eQuestSignSphereSearch = new System.Windows.Forms.TextBox();
+            this.label129 = new System.Windows.Forms.Label();
+            this.btnFindAllHousing = new System.Windows.Forms.Button();
+            this.label128 = new System.Windows.Forms.Label();
+            this.label121 = new System.Windows.Forms.Label();
+            this.btnFindAllQuestSpheres = new System.Windows.Forms.Button();
+            this.btnFindAllTransferPaths = new System.Windows.Forms.Button();
+            this.btnMap = new System.Windows.Forms.Button();
             this.tpV1 = new System.Windows.Forms.TabPage();
             this.btnDebug = new System.Windows.Forms.Button();
             this.btnExportDataForVieweD = new System.Windows.Forms.Button();
@@ -313,6 +324,34 @@
             this.Column16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column34 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tpQuests = new System.Windows.Forms.TabPage();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.lQuestId = new System.Windows.Forms.Label();
+            this.label85 = new System.Windows.Forms.Label();
+            this.tcQuestInfoPanel = new System.Windows.Forms.TabControl();
+            this.tpQuestComponents = new System.Windows.Forms.TabPage();
+            this.dgvQuestActs = new System.Windows.Forms.DataGridView();
+            this.Column47 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column45 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column46 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvQuestComponents = new System.Windows.Forms.DataGridView();
+            this.Column44 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column37 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column38 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column39 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column40 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column41 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column42 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column43 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnQuestsSearch = new System.Windows.Forms.Button();
+            this.label89 = new System.Windows.Forms.Label();
+            this.tQuestSearch = new System.Windows.Forms.TextBox();
+            this.dgvQuests = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column35 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column36 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpSkills = new System.Windows.Forms.TabPage();
             this.tcSkillInfo = new System.Windows.Forms.TabControl();
             this.tpSkillInfo = new System.Windows.Forms.TabPage();
@@ -353,34 +392,6 @@
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label9 = new System.Windows.Forms.Label();
             this.tSkillSearch = new System.Windows.Forms.TextBox();
-            this.tpQuests = new System.Windows.Forms.TabPage();
-            this.groupBox12 = new System.Windows.Forms.GroupBox();
-            this.lQuestId = new System.Windows.Forms.Label();
-            this.label85 = new System.Windows.Forms.Label();
-            this.tcQuestInfoPanel = new System.Windows.Forms.TabControl();
-            this.tpQuestComponents = new System.Windows.Forms.TabPage();
-            this.dgvQuestActs = new System.Windows.Forms.DataGridView();
-            this.Column47 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column45 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column46 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvQuestComponents = new System.Windows.Forms.DataGridView();
-            this.Column44 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column37 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column38 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column39 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column40 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column41 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column42 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column43 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnQuestsSearch = new System.Windows.Forms.Button();
-            this.label89 = new System.Windows.Forms.Label();
-            this.tQuestSearch = new System.Windows.Forms.TextBox();
-            this.dgvQuests = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column35 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column36 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpZones = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label33 = new System.Windows.Forms.Label();
@@ -448,17 +459,9 @@
             this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label10 = new System.Windows.Forms.Label();
             this.tZonesSearch = new System.Windows.Forms.TextBox();
-            this.tpMap = new System.Windows.Forms.TabPage();
-            this.label128 = new System.Windows.Forms.Label();
-            this.label121 = new System.Windows.Forms.Label();
-            this.btnFindAllQuestSpheres = new System.Windows.Forms.Button();
-            this.btnFindAllTransferPaths = new System.Windows.Forms.Button();
-            this.btnMap = new System.Windows.Forms.Button();
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.label129 = new System.Windows.Forms.Label();
-            this.btnFindAllHousing = new System.Windows.Forms.Button();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -466,6 +469,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentData)).BeginInit();
             this.tbLocalizer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLocalized)).BeginInit();
+            this.tpMap.SuspendLayout();
             this.tpV1.SuspendLayout();
             this.tpBuffs.SuspendLayout();
             this.groupBox14.SuspendLayout();
@@ -493,6 +497,13 @@
             this.tpNPCs.SuspendLayout();
             this.groupBox13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNPCs)).BeginInit();
+            this.tpQuests.SuspendLayout();
+            this.groupBox12.SuspendLayout();
+            this.tcQuestInfoPanel.SuspendLayout();
+            this.tpQuestComponents.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvQuestActs)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvQuestComponents)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvQuests)).BeginInit();
             this.tpSkills.SuspendLayout();
             this.tcSkillInfo.SuspendLayout();
             this.tpSkillInfo.SuspendLayout();
@@ -501,19 +512,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkillProducts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkillReagents)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkills)).BeginInit();
-            this.tpQuests.SuspendLayout();
-            this.groupBox12.SuspendLayout();
-            this.tcQuestInfoPanel.SuspendLayout();
-            this.tpQuestComponents.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvQuestActs)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvQuestComponents)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvQuests)).BeginInit();
             this.tpZones.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).BeginInit();
-            this.tpMap.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbTableNames
@@ -833,6 +836,119 @@
             this.tSearchLocalized.Size = new System.Drawing.Size(364, 20);
             this.tSearchLocalized.TabIndex = 10;
             this.tSearchLocalized.TextChanged += new System.EventHandler(this.tSearchLocalized_TextChanged);
+            // 
+            // tpMap
+            // 
+            this.tpMap.Controls.Add(this.label130);
+            this.tpMap.Controls.Add(this.cbQuestSignSphereSearchShowAll);
+            this.tpMap.Controls.Add(this.eQuestSignSphereSearch);
+            this.tpMap.Controls.Add(this.label129);
+            this.tpMap.Controls.Add(this.btnFindAllHousing);
+            this.tpMap.Controls.Add(this.label128);
+            this.tpMap.Controls.Add(this.label121);
+            this.tpMap.Controls.Add(this.btnFindAllQuestSpheres);
+            this.tpMap.Controls.Add(this.btnFindAllTransferPaths);
+            this.tpMap.Controls.Add(this.btnMap);
+            this.tpMap.Location = new System.Drawing.Point(4, 22);
+            this.tpMap.Name = "tpMap";
+            this.tpMap.Padding = new System.Windows.Forms.Padding(3);
+            this.tpMap.Size = new System.Drawing.Size(926, 485);
+            this.tpMap.TabIndex = 13;
+            this.tpMap.Text = "Map";
+            this.tpMap.UseVisualStyleBackColor = true;
+            // 
+            // label130
+            // 
+            this.label130.AutoSize = true;
+            this.label130.Location = new System.Drawing.Point(242, 105);
+            this.label130.Name = "label130";
+            this.label130.Size = new System.Drawing.Size(46, 13);
+            this.label130.TabIndex = 47;
+            this.label130.Text = "Filter by:";
+            // 
+            // cbQuestSignSphereSearchShowAll
+            // 
+            this.cbQuestSignSphereSearchShowAll.AutoSize = true;
+            this.cbQuestSignSphereSearchShowAll.Location = new System.Drawing.Point(471, 104);
+            this.cbQuestSignSphereSearchShowAll.Name = "cbQuestSignSphereSearchShowAll";
+            this.cbQuestSignSphereSearchShowAll.Size = new System.Drawing.Size(106, 17);
+            this.cbQuestSignSphereSearchShowAll.TabIndex = 46;
+            this.cbQuestSignSphereSearchShowAll.Text = "Also show others";
+            this.cbQuestSignSphereSearchShowAll.UseVisualStyleBackColor = true;
+            // 
+            // eQuestSignSphereSearch
+            // 
+            this.eQuestSignSphereSearch.Location = new System.Drawing.Point(294, 102);
+            this.eQuestSignSphereSearch.Name = "eQuestSignSphereSearch";
+            this.eQuestSignSphereSearch.Size = new System.Drawing.Size(171, 20);
+            this.eQuestSignSphereSearch.TabIndex = 45;
+            // 
+            // label129
+            // 
+            this.label129.AutoSize = true;
+            this.label129.Location = new System.Drawing.Point(242, 170);
+            this.label129.Name = "label129";
+            this.label129.Size = new System.Drawing.Size(108, 13);
+            this.label129.TabIndex = 44;
+            this.label129.Text = "Shows housing areas";
+            // 
+            // btnFindAllHousing
+            // 
+            this.btnFindAllHousing.Location = new System.Drawing.Point(6, 165);
+            this.btnFindAllHousing.Name = "btnFindAllHousing";
+            this.btnFindAllHousing.Size = new System.Drawing.Size(230, 23);
+            this.btnFindAllHousing.TabIndex = 43;
+            this.btnFindAllHousing.Text = "Show All Housing";
+            this.btnFindAllHousing.UseVisualStyleBackColor = true;
+            this.btnFindAllHousing.Click += new System.EventHandler(this.btnFindAllHousing_Click);
+            // 
+            // label128
+            // 
+            this.label128.AutoSize = true;
+            this.label128.Location = new System.Drawing.Point(244, 50);
+            this.label128.Name = "label128";
+            this.label128.Size = new System.Drawing.Size(253, 13);
+            this.label128.TabIndex = 42;
+            this.label128.Text = "Routes of Airships, Carriage and other fixed pathings";
+            // 
+            // label121
+            // 
+            this.label121.AutoSize = true;
+            this.label121.Location = new System.Drawing.Point(8, 125);
+            this.label121.Name = "label121";
+            this.label121.Size = new System.Drawing.Size(298, 13);
+            this.label121.TabIndex = 41;
+            this.label121.Text = "Note that location info for quest spheres is currently incorrect !";
+            // 
+            // btnFindAllQuestSpheres
+            // 
+            this.btnFindAllQuestSpheres.Location = new System.Drawing.Point(6, 100);
+            this.btnFindAllQuestSpheres.Name = "btnFindAllQuestSpheres";
+            this.btnFindAllQuestSpheres.Size = new System.Drawing.Size(230, 23);
+            this.btnFindAllQuestSpheres.TabIndex = 40;
+            this.btnFindAllQuestSpheres.Text = "Show All Quest Spheres";
+            this.btnFindAllQuestSpheres.UseVisualStyleBackColor = true;
+            this.btnFindAllQuestSpheres.Click += new System.EventHandler(this.btnFindAllQuestSpheres_Click);
+            // 
+            // btnFindAllTransferPaths
+            // 
+            this.btnFindAllTransferPaths.Location = new System.Drawing.Point(8, 45);
+            this.btnFindAllTransferPaths.Name = "btnFindAllTransferPaths";
+            this.btnFindAllTransferPaths.Size = new System.Drawing.Size(230, 23);
+            this.btnFindAllTransferPaths.TabIndex = 39;
+            this.btnFindAllTransferPaths.Text = "Show All Transfer Paths";
+            this.btnFindAllTransferPaths.UseVisualStyleBackColor = true;
+            this.btnFindAllTransferPaths.Click += new System.EventHandler(this.btnFindAllTransferPaths_Click);
+            // 
+            // btnMap
+            // 
+            this.btnMap.Location = new System.Drawing.Point(8, 6);
+            this.btnMap.Name = "btnMap";
+            this.btnMap.Size = new System.Drawing.Size(109, 23);
+            this.btnMap.TabIndex = 3;
+            this.btnMap.Text = "Open Map";
+            this.btnMap.UseVisualStyleBackColor = true;
+            this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
             // 
             // tpV1
             // 
@@ -3537,6 +3653,285 @@
             this.Column34.ReadOnly = true;
             this.Column34.Width = 70;
             // 
+            // tpQuests
+            // 
+            this.tpQuests.Controls.Add(this.groupBox12);
+            this.tpQuests.Controls.Add(this.tcQuestInfoPanel);
+            this.tpQuests.Controls.Add(this.btnQuestsSearch);
+            this.tpQuests.Controls.Add(this.label89);
+            this.tpQuests.Controls.Add(this.tQuestSearch);
+            this.tpQuests.Controls.Add(this.dgvQuests);
+            this.tpQuests.Location = new System.Drawing.Point(4, 22);
+            this.tpQuests.Name = "tpQuests";
+            this.tpQuests.Padding = new System.Windows.Forms.Padding(3);
+            this.tpQuests.Size = new System.Drawing.Size(926, 485);
+            this.tpQuests.TabIndex = 9;
+            this.tpQuests.Text = "Quests";
+            this.tpQuests.UseVisualStyleBackColor = true;
+            // 
+            // groupBox12
+            // 
+            this.groupBox12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.groupBox12.Controls.Add(this.lQuestId);
+            this.groupBox12.Controls.Add(this.label85);
+            this.groupBox12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
+            this.groupBox12.Location = new System.Drawing.Point(626, 9);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(293, 183);
+            this.groupBox12.TabIndex = 12;
+            this.groupBox12.TabStop = false;
+            this.groupBox12.Text = "Quest Info";
+            // 
+            // lQuestId
+            // 
+            this.lQuestId.AutoSize = true;
+            this.lQuestId.Location = new System.Drawing.Point(58, 16);
+            this.lQuestId.Name = "lQuestId";
+            this.lQuestId.Size = new System.Drawing.Size(13, 13);
+            this.lQuestId.TabIndex = 1;
+            this.lQuestId.Text = "0";
+            // 
+            // label85
+            // 
+            this.label85.AutoSize = true;
+            this.label85.Location = new System.Drawing.Point(6, 16);
+            this.label85.Name = "label85";
+            this.label85.Size = new System.Drawing.Size(33, 13);
+            this.label85.TabIndex = 0;
+            this.label85.Text = "Index";
+            // 
+            // tcQuestInfoPanel
+            // 
+            this.tcQuestInfoPanel.Alignment = System.Windows.Forms.TabAlignment.Bottom;
+            this.tcQuestInfoPanel.Controls.Add(this.tpQuestComponents);
+            this.tcQuestInfoPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tcQuestInfoPanel.Location = new System.Drawing.Point(3, 198);
+            this.tcQuestInfoPanel.Name = "tcQuestInfoPanel";
+            this.tcQuestInfoPanel.SelectedIndex = 0;
+            this.tcQuestInfoPanel.Size = new System.Drawing.Size(920, 284);
+            this.tcQuestInfoPanel.TabIndex = 13;
+            // 
+            // tpQuestComponents
+            // 
+            this.tpQuestComponents.Controls.Add(this.dgvQuestActs);
+            this.tpQuestComponents.Controls.Add(this.dgvQuestComponents);
+            this.tpQuestComponents.Location = new System.Drawing.Point(4, 4);
+            this.tpQuestComponents.Name = "tpQuestComponents";
+            this.tpQuestComponents.Padding = new System.Windows.Forms.Padding(3);
+            this.tpQuestComponents.Size = new System.Drawing.Size(912, 258);
+            this.tpQuestComponents.TabIndex = 1;
+            this.tpQuestComponents.Text = "Components && Acts";
+            this.tpQuestComponents.UseVisualStyleBackColor = true;
+            // 
+            // dgvQuestActs
+            // 
+            this.dgvQuestActs.AllowUserToAddRows = false;
+            this.dgvQuestActs.AllowUserToDeleteRows = false;
+            this.dgvQuestActs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvQuestActs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvQuestActs.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvQuestActs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvQuestActs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column47,
+            this.Column45,
+            this.Column46});
+            this.dgvQuestActs.Location = new System.Drawing.Point(619, 5);
+            this.dgvQuestActs.Name = "dgvQuestActs";
+            this.dgvQuestActs.RowHeadersVisible = false;
+            this.dgvQuestActs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvQuestActs.Size = new System.Drawing.Size(287, 247);
+            this.dgvQuestActs.TabIndex = 10;
+            // 
+            // Column47
+            // 
+            this.Column47.HeaderText = "ID";
+            this.Column47.Name = "Column47";
+            this.Column47.Width = 43;
+            // 
+            // Column45
+            // 
+            this.Column45.FillWeight = 25F;
+            this.Column45.HeaderText = "Act Detail ID";
+            this.Column45.Name = "Column45";
+            this.Column45.Width = 75;
+            // 
+            // Column46
+            // 
+            this.Column46.FillWeight = 75F;
+            this.Column46.HeaderText = "Act Detail Type";
+            this.Column46.Name = "Column46";
+            this.Column46.Width = 96;
+            // 
+            // dgvQuestComponents
+            // 
+            this.dgvQuestComponents.AllowUserToAddRows = false;
+            this.dgvQuestComponents.AllowUserToDeleteRows = false;
+            this.dgvQuestComponents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvQuestComponents.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvQuestComponents.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvQuestComponents.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvQuestComponents.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column44,
+            this.Column37,
+            this.Column38,
+            this.Column39,
+            this.Column40,
+            this.Column41,
+            this.Column42,
+            this.Column43});
+            this.dgvQuestComponents.Location = new System.Drawing.Point(6, 6);
+            this.dgvQuestComponents.Name = "dgvQuestComponents";
+            this.dgvQuestComponents.RowHeadersVisible = false;
+            this.dgvQuestComponents.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvQuestComponents.Size = new System.Drawing.Size(607, 246);
+            this.dgvQuestComponents.TabIndex = 9;
+            this.dgvQuestComponents.SelectionChanged += new System.EventHandler(this.dgvQuestComponents_SelectionChanged);
+            // 
+            // Column44
+            // 
+            this.Column44.HeaderText = "ID";
+            this.Column44.Name = "Column44";
+            this.Column44.Width = 43;
+            // 
+            // Column37
+            // 
+            this.Column37.HeaderText = "Component Kind";
+            this.Column37.Name = "Column37";
+            this.Column37.Width = 101;
+            // 
+            // Column38
+            // 
+            this.Column38.HeaderText = "Next Component";
+            this.Column38.Name = "Column38";
+            this.Column38.Width = 102;
+            // 
+            // Column39
+            // 
+            this.Column39.HeaderText = "NPC ID";
+            this.Column39.Name = "Column39";
+            this.Column39.Width = 63;
+            // 
+            // Column40
+            // 
+            this.Column40.HeaderText = "Skill ID";
+            this.Column40.Name = "Column40";
+            this.Column40.Width = 51;
+            // 
+            // Column41
+            // 
+            this.Column41.HeaderText = "Skill Self";
+            this.Column41.Name = "Column41";
+            this.Column41.Width = 51;
+            // 
+            // Column42
+            // 
+            this.Column42.HeaderText = "NPC Spawner ID";
+            this.Column42.Name = "Column42";
+            this.Column42.Width = 94;
+            // 
+            // Column43
+            // 
+            this.Column43.HeaderText = "Buff ID";
+            this.Column43.Name = "Column43";
+            this.Column43.Width = 51;
+            // 
+            // btnQuestsSearch
+            // 
+            this.btnQuestsSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnQuestsSearch.Enabled = false;
+            this.btnQuestsSearch.Location = new System.Drawing.Point(541, 7);
+            this.btnQuestsSearch.Name = "btnQuestsSearch";
+            this.btnQuestsSearch.Size = new System.Drawing.Size(79, 23);
+            this.btnQuestsSearch.TabIndex = 11;
+            this.btnQuestsSearch.Text = "Search";
+            this.btnQuestsSearch.UseVisualStyleBackColor = true;
+            this.btnQuestsSearch.Click += new System.EventHandler(this.btnQuestsSearch_Click);
+            // 
+            // label89
+            // 
+            this.label89.AutoSize = true;
+            this.label89.Location = new System.Drawing.Point(8, 12);
+            this.label89.Name = "label89";
+            this.label89.Size = new System.Drawing.Size(129, 13);
+            this.label89.TabIndex = 10;
+            this.label89.Text = "Search Quest ID or Name";
+            // 
+            // tQuestSearch
+            // 
+            this.tQuestSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tQuestSearch.Location = new System.Drawing.Point(143, 9);
+            this.tQuestSearch.Name = "tQuestSearch";
+            this.tQuestSearch.Size = new System.Drawing.Size(392, 20);
+            this.tQuestSearch.TabIndex = 9;
+            this.tQuestSearch.TextChanged += new System.EventHandler(this.tQuestSearch_TextChanged);
+            this.tQuestSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tQuestSearch_KeyDown);
+            // 
+            // dgvQuests
+            // 
+            this.dgvQuests.AllowUserToAddRows = false;
+            this.dgvQuests.AllowUserToDeleteRows = false;
+            this.dgvQuests.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvQuests.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvQuests.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvQuests.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvQuests.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn20,
+            this.Column35,
+            this.Column19,
+            this.Column20,
+            this.Column36});
+            this.dgvQuests.Location = new System.Drawing.Point(8, 40);
+            this.dgvQuests.Name = "dgvQuests";
+            this.dgvQuests.ReadOnly = true;
+            this.dgvQuests.RowHeadersVisible = false;
+            this.dgvQuests.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvQuests.Size = new System.Drawing.Size(612, 152);
+            this.dgvQuests.TabIndex = 8;
+            this.dgvQuests.SelectionChanged += new System.EventHandler(this.dgvQuests_SelectionChanged);
+            // 
+            // dataGridViewTextBoxColumn20
+            // 
+            this.dataGridViewTextBoxColumn20.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn20.Name = "dataGridViewTextBoxColumn20";
+            this.dataGridViewTextBoxColumn20.ReadOnly = true;
+            this.dataGridViewTextBoxColumn20.Width = 43;
+            // 
+            // Column35
+            // 
+            this.Column35.HeaderText = "Name";
+            this.Column35.Name = "Column35";
+            this.Column35.ReadOnly = true;
+            this.Column35.Width = 60;
+            // 
+            // Column19
+            // 
+            this.Column19.HeaderText = "Level";
+            this.Column19.Name = "Column19";
+            this.Column19.ReadOnly = true;
+            this.Column19.Width = 58;
+            // 
+            // Column20
+            // 
+            this.Column20.HeaderText = "ZoneId";
+            this.Column20.Name = "Column20";
+            this.Column20.ReadOnly = true;
+            this.Column20.Width = 66;
+            // 
+            // Column36
+            // 
+            this.Column36.HeaderText = "Category";
+            this.Column36.Name = "Column36";
+            this.Column36.ReadOnly = true;
+            this.Column36.Width = 74;
+            // 
             // tpSkills
             // 
             this.tpSkills.Controls.Add(this.tcSkillInfo);
@@ -3973,285 +4368,6 @@
             this.tSkillSearch.TabIndex = 4;
             this.tSkillSearch.TextChanged += new System.EventHandler(this.TSkillSearch_TextChanged);
             this.tSkillSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSkillSearch_KeyDown);
-            // 
-            // tpQuests
-            // 
-            this.tpQuests.Controls.Add(this.groupBox12);
-            this.tpQuests.Controls.Add(this.tcQuestInfoPanel);
-            this.tpQuests.Controls.Add(this.btnQuestsSearch);
-            this.tpQuests.Controls.Add(this.label89);
-            this.tpQuests.Controls.Add(this.tQuestSearch);
-            this.tpQuests.Controls.Add(this.dgvQuests);
-            this.tpQuests.Location = new System.Drawing.Point(4, 22);
-            this.tpQuests.Name = "tpQuests";
-            this.tpQuests.Padding = new System.Windows.Forms.Padding(3);
-            this.tpQuests.Size = new System.Drawing.Size(926, 485);
-            this.tpQuests.TabIndex = 9;
-            this.tpQuests.Text = "Quests";
-            this.tpQuests.UseVisualStyleBackColor = true;
-            // 
-            // groupBox12
-            // 
-            this.groupBox12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
-            this.groupBox12.Controls.Add(this.lQuestId);
-            this.groupBox12.Controls.Add(this.label85);
-            this.groupBox12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
-            this.groupBox12.Location = new System.Drawing.Point(626, 9);
-            this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(293, 183);
-            this.groupBox12.TabIndex = 12;
-            this.groupBox12.TabStop = false;
-            this.groupBox12.Text = "Quest Info";
-            // 
-            // lQuestId
-            // 
-            this.lQuestId.AutoSize = true;
-            this.lQuestId.Location = new System.Drawing.Point(58, 16);
-            this.lQuestId.Name = "lQuestId";
-            this.lQuestId.Size = new System.Drawing.Size(13, 13);
-            this.lQuestId.TabIndex = 1;
-            this.lQuestId.Text = "0";
-            // 
-            // label85
-            // 
-            this.label85.AutoSize = true;
-            this.label85.Location = new System.Drawing.Point(6, 16);
-            this.label85.Name = "label85";
-            this.label85.Size = new System.Drawing.Size(33, 13);
-            this.label85.TabIndex = 0;
-            this.label85.Text = "Index";
-            // 
-            // tcQuestInfoPanel
-            // 
-            this.tcQuestInfoPanel.Alignment = System.Windows.Forms.TabAlignment.Bottom;
-            this.tcQuestInfoPanel.Controls.Add(this.tpQuestComponents);
-            this.tcQuestInfoPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tcQuestInfoPanel.Location = new System.Drawing.Point(3, 198);
-            this.tcQuestInfoPanel.Name = "tcQuestInfoPanel";
-            this.tcQuestInfoPanel.SelectedIndex = 0;
-            this.tcQuestInfoPanel.Size = new System.Drawing.Size(920, 284);
-            this.tcQuestInfoPanel.TabIndex = 13;
-            // 
-            // tpQuestComponents
-            // 
-            this.tpQuestComponents.Controls.Add(this.dgvQuestActs);
-            this.tpQuestComponents.Controls.Add(this.dgvQuestComponents);
-            this.tpQuestComponents.Location = new System.Drawing.Point(4, 4);
-            this.tpQuestComponents.Name = "tpQuestComponents";
-            this.tpQuestComponents.Padding = new System.Windows.Forms.Padding(3);
-            this.tpQuestComponents.Size = new System.Drawing.Size(912, 258);
-            this.tpQuestComponents.TabIndex = 1;
-            this.tpQuestComponents.Text = "Components && Acts";
-            this.tpQuestComponents.UseVisualStyleBackColor = true;
-            // 
-            // dgvQuestActs
-            // 
-            this.dgvQuestActs.AllowUserToAddRows = false;
-            this.dgvQuestActs.AllowUserToDeleteRows = false;
-            this.dgvQuestActs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvQuestActs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvQuestActs.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dgvQuestActs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvQuestActs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column47,
-            this.Column45,
-            this.Column46});
-            this.dgvQuestActs.Location = new System.Drawing.Point(619, 5);
-            this.dgvQuestActs.Name = "dgvQuestActs";
-            this.dgvQuestActs.RowHeadersVisible = false;
-            this.dgvQuestActs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvQuestActs.Size = new System.Drawing.Size(287, 247);
-            this.dgvQuestActs.TabIndex = 10;
-            // 
-            // Column47
-            // 
-            this.Column47.HeaderText = "ID";
-            this.Column47.Name = "Column47";
-            this.Column47.Width = 43;
-            // 
-            // Column45
-            // 
-            this.Column45.FillWeight = 25F;
-            this.Column45.HeaderText = "Act Detail ID";
-            this.Column45.Name = "Column45";
-            this.Column45.Width = 75;
-            // 
-            // Column46
-            // 
-            this.Column46.FillWeight = 75F;
-            this.Column46.HeaderText = "Act Detail Type";
-            this.Column46.Name = "Column46";
-            this.Column46.Width = 96;
-            // 
-            // dgvQuestComponents
-            // 
-            this.dgvQuestComponents.AllowUserToAddRows = false;
-            this.dgvQuestComponents.AllowUserToDeleteRows = false;
-            this.dgvQuestComponents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvQuestComponents.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvQuestComponents.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dgvQuestComponents.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvQuestComponents.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column44,
-            this.Column37,
-            this.Column38,
-            this.Column39,
-            this.Column40,
-            this.Column41,
-            this.Column42,
-            this.Column43});
-            this.dgvQuestComponents.Location = new System.Drawing.Point(6, 6);
-            this.dgvQuestComponents.Name = "dgvQuestComponents";
-            this.dgvQuestComponents.RowHeadersVisible = false;
-            this.dgvQuestComponents.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvQuestComponents.Size = new System.Drawing.Size(607, 246);
-            this.dgvQuestComponents.TabIndex = 9;
-            this.dgvQuestComponents.SelectionChanged += new System.EventHandler(this.dgvQuestComponents_SelectionChanged);
-            // 
-            // Column44
-            // 
-            this.Column44.HeaderText = "ID";
-            this.Column44.Name = "Column44";
-            this.Column44.Width = 43;
-            // 
-            // Column37
-            // 
-            this.Column37.HeaderText = "Component Kind";
-            this.Column37.Name = "Column37";
-            this.Column37.Width = 101;
-            // 
-            // Column38
-            // 
-            this.Column38.HeaderText = "Next Component";
-            this.Column38.Name = "Column38";
-            this.Column38.Width = 102;
-            // 
-            // Column39
-            // 
-            this.Column39.HeaderText = "NPC ID";
-            this.Column39.Name = "Column39";
-            this.Column39.Width = 63;
-            // 
-            // Column40
-            // 
-            this.Column40.HeaderText = "Skill ID";
-            this.Column40.Name = "Column40";
-            this.Column40.Width = 51;
-            // 
-            // Column41
-            // 
-            this.Column41.HeaderText = "Skill Self";
-            this.Column41.Name = "Column41";
-            this.Column41.Width = 51;
-            // 
-            // Column42
-            // 
-            this.Column42.HeaderText = "NPC Spawner ID";
-            this.Column42.Name = "Column42";
-            this.Column42.Width = 94;
-            // 
-            // Column43
-            // 
-            this.Column43.HeaderText = "Buff ID";
-            this.Column43.Name = "Column43";
-            this.Column43.Width = 51;
-            // 
-            // btnQuestsSearch
-            // 
-            this.btnQuestsSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnQuestsSearch.Enabled = false;
-            this.btnQuestsSearch.Location = new System.Drawing.Point(541, 7);
-            this.btnQuestsSearch.Name = "btnQuestsSearch";
-            this.btnQuestsSearch.Size = new System.Drawing.Size(79, 23);
-            this.btnQuestsSearch.TabIndex = 11;
-            this.btnQuestsSearch.Text = "Search";
-            this.btnQuestsSearch.UseVisualStyleBackColor = true;
-            this.btnQuestsSearch.Click += new System.EventHandler(this.btnQuestsSearch_Click);
-            // 
-            // label89
-            // 
-            this.label89.AutoSize = true;
-            this.label89.Location = new System.Drawing.Point(8, 12);
-            this.label89.Name = "label89";
-            this.label89.Size = new System.Drawing.Size(129, 13);
-            this.label89.TabIndex = 10;
-            this.label89.Text = "Search Quest ID or Name";
-            // 
-            // tQuestSearch
-            // 
-            this.tQuestSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tQuestSearch.Location = new System.Drawing.Point(143, 9);
-            this.tQuestSearch.Name = "tQuestSearch";
-            this.tQuestSearch.Size = new System.Drawing.Size(392, 20);
-            this.tQuestSearch.TabIndex = 9;
-            this.tQuestSearch.TextChanged += new System.EventHandler(this.tQuestSearch_TextChanged);
-            this.tQuestSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tQuestSearch_KeyDown);
-            // 
-            // dgvQuests
-            // 
-            this.dgvQuests.AllowUserToAddRows = false;
-            this.dgvQuests.AllowUserToDeleteRows = false;
-            this.dgvQuests.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvQuests.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvQuests.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dgvQuests.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvQuests.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn20,
-            this.Column35,
-            this.Column19,
-            this.Column20,
-            this.Column36});
-            this.dgvQuests.Location = new System.Drawing.Point(8, 40);
-            this.dgvQuests.Name = "dgvQuests";
-            this.dgvQuests.ReadOnly = true;
-            this.dgvQuests.RowHeadersVisible = false;
-            this.dgvQuests.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvQuests.Size = new System.Drawing.Size(612, 152);
-            this.dgvQuests.TabIndex = 8;
-            this.dgvQuests.SelectionChanged += new System.EventHandler(this.dgvQuests_SelectionChanged);
-            // 
-            // dataGridViewTextBoxColumn20
-            // 
-            this.dataGridViewTextBoxColumn20.HeaderText = "ID";
-            this.dataGridViewTextBoxColumn20.Name = "dataGridViewTextBoxColumn20";
-            this.dataGridViewTextBoxColumn20.ReadOnly = true;
-            this.dataGridViewTextBoxColumn20.Width = 43;
-            // 
-            // Column35
-            // 
-            this.Column35.HeaderText = "Name";
-            this.Column35.Name = "Column35";
-            this.Column35.ReadOnly = true;
-            this.Column35.Width = 60;
-            // 
-            // Column19
-            // 
-            this.Column19.HeaderText = "Level";
-            this.Column19.Name = "Column19";
-            this.Column19.ReadOnly = true;
-            this.Column19.Width = 58;
-            // 
-            // Column20
-            // 
-            this.Column20.HeaderText = "ZoneId";
-            this.Column20.Name = "Column20";
-            this.Column20.ReadOnly = true;
-            this.Column20.Width = 66;
-            // 
-            // Column36
-            // 
-            this.Column36.HeaderText = "Category";
-            this.Column36.Name = "Column36";
-            this.Column36.ReadOnly = true;
-            this.Column36.Width = 74;
             // 
             // tpZones
             // 
@@ -4945,71 +5061,6 @@
             this.tZonesSearch.TextChanged += new System.EventHandler(this.TZonesSearch_TextChanged);
             this.tZonesSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TZonesSearch_KeyDown);
             // 
-            // tpMap
-            // 
-            this.tpMap.Controls.Add(this.label129);
-            this.tpMap.Controls.Add(this.btnFindAllHousing);
-            this.tpMap.Controls.Add(this.label128);
-            this.tpMap.Controls.Add(this.label121);
-            this.tpMap.Controls.Add(this.btnFindAllQuestSpheres);
-            this.tpMap.Controls.Add(this.btnFindAllTransferPaths);
-            this.tpMap.Controls.Add(this.btnMap);
-            this.tpMap.Location = new System.Drawing.Point(4, 22);
-            this.tpMap.Name = "tpMap";
-            this.tpMap.Padding = new System.Windows.Forms.Padding(3);
-            this.tpMap.Size = new System.Drawing.Size(926, 485);
-            this.tpMap.TabIndex = 13;
-            this.tpMap.Text = "Map";
-            this.tpMap.UseVisualStyleBackColor = true;
-            // 
-            // label128
-            // 
-            this.label128.AutoSize = true;
-            this.label128.Location = new System.Drawing.Point(244, 50);
-            this.label128.Name = "label128";
-            this.label128.Size = new System.Drawing.Size(253, 13);
-            this.label128.TabIndex = 42;
-            this.label128.Text = "Routes of Airships, Carriage and other fixed pathings";
-            // 
-            // label121
-            // 
-            this.label121.AutoSize = true;
-            this.label121.Location = new System.Drawing.Point(244, 79);
-            this.label121.Name = "label121";
-            this.label121.Size = new System.Drawing.Size(298, 13);
-            this.label121.TabIndex = 41;
-            this.label121.Text = "Note that location info for quest spheres is currently incorrect !";
-            // 
-            // btnFindAllQuestSpheres
-            // 
-            this.btnFindAllQuestSpheres.Location = new System.Drawing.Point(8, 74);
-            this.btnFindAllQuestSpheres.Name = "btnFindAllQuestSpheres";
-            this.btnFindAllQuestSpheres.Size = new System.Drawing.Size(230, 23);
-            this.btnFindAllQuestSpheres.TabIndex = 40;
-            this.btnFindAllQuestSpheres.Text = "Show All Quest Spheres";
-            this.btnFindAllQuestSpheres.UseVisualStyleBackColor = true;
-            this.btnFindAllQuestSpheres.Click += new System.EventHandler(this.btnFindAllQuestSpheres_Click);
-            // 
-            // btnFindAllTransferPaths
-            // 
-            this.btnFindAllTransferPaths.Location = new System.Drawing.Point(8, 45);
-            this.btnFindAllTransferPaths.Name = "btnFindAllTransferPaths";
-            this.btnFindAllTransferPaths.Size = new System.Drawing.Size(230, 23);
-            this.btnFindAllTransferPaths.TabIndex = 39;
-            this.btnFindAllTransferPaths.Text = "Show All Transfer Paths";
-            this.btnFindAllTransferPaths.UseVisualStyleBackColor = true;
-            this.btnFindAllTransferPaths.Click += new System.EventHandler(this.btnFindAllTransferPaths_Click);
-            // 
-            // btnMap
-            // 
-            this.btnMap.Location = new System.Drawing.Point(8, 6);
-            this.btnMap.Name = "btnMap";
-            this.btnMap.Size = new System.Drawing.Size(109, 23);
-            this.btnMap.TabIndex = 3;
-            this.btnMap.Text = "Open Map";
-            this.btnMap.UseVisualStyleBackColor = true;
-            this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
-            // 
             // openDBDlg
             // 
             this.openDBDlg.DefaultExt = "sqlite3";
@@ -5029,25 +5080,6 @@
             this.mainFormToolTip.InitialDelay = 1000;
             this.mainFormToolTip.ReshowDelay = 100;
             this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
-            // 
-            // label129
-            // 
-            this.label129.AutoSize = true;
-            this.label129.Location = new System.Drawing.Point(244, 108);
-            this.label129.Name = "label129";
-            this.label129.Size = new System.Drawing.Size(108, 13);
-            this.label129.TabIndex = 44;
-            this.label129.Text = "Shows housing areas";
-            // 
-            // btnFindAllHousing
-            // 
-            this.btnFindAllHousing.Location = new System.Drawing.Point(8, 103);
-            this.btnFindAllHousing.Name = "btnFindAllHousing";
-            this.btnFindAllHousing.Size = new System.Drawing.Size(230, 23);
-            this.btnFindAllHousing.TabIndex = 43;
-            this.btnFindAllHousing.Text = "Show All Housing";
-            this.btnFindAllHousing.UseVisualStyleBackColor = true;
-            this.btnFindAllHousing.Click += new System.EventHandler(this.btnFindAllHousing_Click);
             // 
             // MainForm
             // 
@@ -5070,6 +5102,8 @@
             this.tbLocalizer.ResumeLayout(false);
             this.tbLocalizer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLocalized)).EndInit();
+            this.tpMap.ResumeLayout(false);
+            this.tpMap.PerformLayout();
             this.tpV1.ResumeLayout(false);
             this.tpV1.PerformLayout();
             this.tpBuffs.ResumeLayout(false);
@@ -5113,6 +5147,15 @@
             this.groupBox13.ResumeLayout(false);
             this.groupBox13.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNPCs)).EndInit();
+            this.tpQuests.ResumeLayout(false);
+            this.tpQuests.PerformLayout();
+            this.groupBox12.ResumeLayout(false);
+            this.groupBox12.PerformLayout();
+            this.tcQuestInfoPanel.ResumeLayout(false);
+            this.tpQuestComponents.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvQuestActs)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvQuestComponents)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvQuests)).EndInit();
             this.tpSkills.ResumeLayout(false);
             this.tpSkills.PerformLayout();
             this.tcSkillInfo.ResumeLayout(false);
@@ -5124,15 +5167,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkillProducts)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkillReagents)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkills)).EndInit();
-            this.tpQuests.ResumeLayout(false);
-            this.tpQuests.PerformLayout();
-            this.groupBox12.ResumeLayout(false);
-            this.groupBox12.PerformLayout();
-            this.tcQuestInfoPanel.ResumeLayout(false);
-            this.tpQuestComponents.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvQuestActs)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvQuestComponents)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvQuests)).EndInit();
             this.tpZones.ResumeLayout(false);
             this.tpZones.PerformLayout();
             this.groupBox5.ResumeLayout(false);
@@ -5142,8 +5176,6 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).EndInit();
-            this.tpMap.ResumeLayout(false);
-            this.tpMap.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -5578,6 +5610,9 @@
         private System.Windows.Forms.Label label121;
         private System.Windows.Forms.Label label129;
         private System.Windows.Forms.Button btnFindAllHousing;
+        private System.Windows.Forms.TextBox eQuestSignSphereSearch;
+        private System.Windows.Forms.Label label130;
+        private System.Windows.Forms.CheckBox cbQuestSignSphereSearchShowAll;
     }
 }
 

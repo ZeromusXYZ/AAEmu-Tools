@@ -4425,7 +4425,6 @@ namespace AAEmu.DBViewer
         {
             var map = MapViewForm.GetMap();
             map.Show();
-            map.ClearPoI();
 
             var searchId = (long)(sender as Button).Tag;
             if (searchId <= 0)
@@ -4452,6 +4451,10 @@ namespace AAEmu.DBViewer
                         npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id, false));
                     }
                 }
+
+                if ((map.GetPoICount() > 0) && (npcList.Count > 0))
+                    if (MessageBox.Show("Keep current PoI's ?", "Add NPC", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        map.ClearPoI();
 
                 if (npcList.Count > 0)
                 {
@@ -4847,7 +4850,11 @@ namespace AAEmu.DBViewer
             {
                 var map = MapViewForm.GetMap();
                 map.Show();
-                map.ClearPaths();
+                
+                if (map.GetPathCount() > 0)
+                    if (MessageBox.Show("Keep current paths ?", "Add Transfers", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        map.ClearPaths();
+
                 foreach (var p in allpaths)
                     map.AddPath(p);
             }
@@ -5020,7 +5027,17 @@ namespace AAEmu.DBViewer
 
                     var zoneOffX = 0f;
                     var zoneOffY = 0f;
-                    if (AADB.DB_Zones.TryGetValue(zone, out var gameZone))
+
+                    var zonexml = MapViewWorldXML.GetZoneByKey(zone);
+                    if (zonexml != null)
+                    {
+                        zoneOffX = zonexml.originCellX * 1024f;
+                        zoneOffY = zonexml.originCellY * 1024f;
+                    }
+
+                    /*
+                    GameZone gameZone = AADB.GetZoneByKey(zone);
+                    if (gameZone != null)
                     {
                         if (AADB.DB_Zone_Groups.TryGetValue(gameZone.group_id, out var zg))
                         {
@@ -5036,6 +5053,7 @@ namespace AAEmu.DBViewer
                     {
                         // zone not found in DB
                     }
+                    */
 
                     for (int i = 0; i < sl.Count - 4; i++)
                     {
@@ -5095,13 +5113,36 @@ namespace AAEmu.DBViewer
             PrepareWorldXML(false);
             var map = MapViewForm.GetMap();
             map.Show();
-            map.ClearPoI();
+
+            if (map.GetPoICount() > 0)
+                if (MessageBox.Show("Keep current PoI's ?", "Add Spheres", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    map.ClearPoI();
+
             foreach (var p in AADB.PAK_QuestSignSpheres)
-                map.AddPoI(p.X,p.Y,p.questID.ToString(),Color.LightCyan,p.radius);
-            map.cbPoINames.Checked = true;
+            {
+                var name = string.Empty;
+                if (AADB.DB_Quest_Contexts.TryGetValue(p.questID, out var qc))
+                    name += qc.nameLocalized + " ";
+                name += "q:" + p.questID.ToString() + " c:" + p.componentID.ToString();
+                Color col = Color.LightCyan;
+
+                var isFilteredVal = false;
+                if ((eQuestSignSphereSearch.Text != string.Empty) && name.Contains(eQuestSignSphereSearch.Text))
+                    isFilteredVal = true;
+                if (isFilteredVal)
+                    col = Color.Red;
+
+                if (cbQuestSignSphereSearchShowAll.Checked || (eQuestSignSphereSearch.Text == string.Empty))
+                {
+                    map.AddPoI(p.X, p.Y, name, col, p.radius);
+                }
+                else
+                if (isFilteredVal)
+                    map.AddPoI(p.X, p.Y, name, col, p.radius);
+            }
+            map.cbPoINames.Checked = (!cbQuestSignSphereSearchShowAll.Checked && (eQuestSignSphereSearch.Text != string.Empty));
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
-
         }
 
         private void btnFindAllHousing_Click(object sender, EventArgs e)
@@ -5121,7 +5162,11 @@ namespace AAEmu.DBViewer
             {
                 var map = MapViewForm.GetMap();
                 map.Show();
-                map.ClearPaths();
+
+                if (map.GetPathCount() > 0)
+                    if (MessageBox.Show("Keep current paths ?", "Add Transfers", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        map.ClearPaths();
+                
                 foreach (var p in allareas)
                     map.AddPath(p);
             }
