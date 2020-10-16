@@ -159,6 +159,14 @@
     <Content Include="FreeImage.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\icon_map_zone.png" />
+    <None Include="Resources\icon_map_city.png" />
+    <None Include="Resources\icon_map_quest.png" />
+    <None Include="Resources\icon_map_poi.png" />
+    <None Include="Resources\icon_map_nuia.png" />
+    <None Include="Resources\icon_map_house.png" />
+    <None Include="Resources\icon_map_globe.png" />
+    <None Include="Resources\icon_map_carriage.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">

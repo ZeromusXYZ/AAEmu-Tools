@@ -42,18 +42,31 @@
             this.rbGridUnits = new System.Windows.Forms.RadioButton();
             this.cbDrawMiniMap = new System.Windows.Forms.CheckBox();
             this.cbDrawMainMap = new System.Windows.Forms.CheckBox();
-            this.cbPathNames = new System.Windows.Forms.CheckBox();
-            this.cbShowCity = new System.Windows.Forms.CheckBox();
-            this.cbShowZone = new System.Windows.Forms.CheckBox();
-            this.cbShowContinent = new System.Windows.Forms.CheckBox();
             this.cbFocus = new System.Windows.Forms.CheckBox();
             this.cbZoneBorders = new System.Windows.Forms.CheckBox();
-            this.cbShowWorldMap = new System.Windows.Forms.CheckBox();
-            this.cbPoINames = new System.Windows.Forms.CheckBox();
+            this.toolBar = new System.Windows.Forms.ToolStrip();
+            this.toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
+            this.tsbDrawWorld = new System.Windows.Forms.ToolStripButton();
+            this.tsbDrawContinent = new System.Windows.Forms.ToolStripButton();
+            this.tsbDrawZone = new System.Windows.Forms.ToolStripButton();
+            this.tsbDrawCity = new System.Windows.Forms.ToolStripButton();
+            this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
+            this.tsbShowPoI = new System.Windows.Forms.ToolStripButton();
+            this.tsbShowPath = new System.Windows.Forms.ToolStripButton();
+            this.tsbShowHousing = new System.Windows.Forms.ToolStripButton();
+            this.tsbShowQuestSphere = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.tsbNamesPoI = new System.Windows.Forms.ToolStripButton();
+            this.tsbNamesPath = new System.Windows.Forms.ToolStripButton();
+            this.tsbNamesHousing = new System.Windows.Forms.ToolStripButton();
+            this.tsbNamesQuestSphere = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.pView = new System.Windows.Forms.PictureBox();
             this.statusBar.SuspendLayout();
             this.gbTools.SuspendLayout();
             this.gbGrid.SuspendLayout();
+            this.toolBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -134,21 +147,15 @@
             this.gbTools.Controls.Add(this.gbGrid);
             this.gbTools.Controls.Add(this.cbDrawMiniMap);
             this.gbTools.Controls.Add(this.cbDrawMainMap);
-            this.gbTools.Controls.Add(this.cbPathNames);
-            this.gbTools.Controls.Add(this.cbShowCity);
-            this.gbTools.Controls.Add(this.cbShowZone);
-            this.gbTools.Controls.Add(this.cbShowContinent);
             this.gbTools.Controls.Add(this.cbFocus);
             this.gbTools.Controls.Add(this.cbZoneBorders);
-            this.gbTools.Controls.Add(this.cbShowWorldMap);
-            this.gbTools.Controls.Add(this.cbPoINames);
             this.gbTools.Dock = System.Windows.Forms.DockStyle.Right;
             this.gbTools.Location = new System.Drawing.Point(518, 0);
             this.gbTools.Name = "gbTools";
             this.gbTools.Size = new System.Drawing.Size(110, 436);
             this.gbTools.TabIndex = 2;
             this.gbTools.TabStop = false;
-            this.gbTools.Text = "Show";
+            this.gbTools.Text = "Options";
             // 
             // gbGrid
             // 
@@ -217,121 +224,243 @@
             this.cbDrawMiniMap.AutoSize = true;
             this.cbDrawMiniMap.Checked = true;
             this.cbDrawMiniMap.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbDrawMiniMap.Location = new System.Drawing.Point(6, 143);
+            this.cbDrawMiniMap.Location = new System.Drawing.Point(6, 42);
             this.cbDrawMiniMap.Name = "cbDrawMiniMap";
-            this.cbDrawMiniMap.Size = new System.Drawing.Size(69, 17);
+            this.cbDrawMiniMap.Size = new System.Drawing.Size(75, 17);
             this.cbDrawMiniMap.TabIndex = 10;
-            this.cbDrawMiniMap.Text = "Mini Map";
+            this.cbDrawMiniMap.Text = "Road map";
             this.cbDrawMiniMap.UseVisualStyleBackColor = true;
             this.cbDrawMiniMap.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
             // 
             // cbDrawMainMap
             // 
             this.cbDrawMainMap.AutoSize = true;
-            this.cbDrawMainMap.Location = new System.Drawing.Point(6, 120);
+            this.cbDrawMainMap.Location = new System.Drawing.Point(6, 19);
             this.cbDrawMainMap.Name = "cbDrawMainMap";
-            this.cbDrawMainMap.Size = new System.Drawing.Size(73, 17);
+            this.cbDrawMainMap.Size = new System.Drawing.Size(65, 17);
             this.cbDrawMainMap.TabIndex = 9;
-            this.cbDrawMainMap.Text = "Main Map";
+            this.cbDrawMainMap.Text = "Full map";
             this.cbDrawMainMap.UseVisualStyleBackColor = true;
             this.cbDrawMainMap.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
-            // 
-            // cbPathNames
-            // 
-            this.cbPathNames.AutoSize = true;
-            this.cbPathNames.Location = new System.Drawing.Point(6, 237);
-            this.cbPathNames.Name = "cbPathNames";
-            this.cbPathNames.Size = new System.Drawing.Size(84, 17);
-            this.cbPathNames.TabIndex = 7;
-            this.cbPathNames.Text = "Path Names";
-            this.cbPathNames.UseVisualStyleBackColor = true;
-            this.cbPathNames.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
-            // 
-            // cbShowCity
-            // 
-            this.cbShowCity.AutoSize = true;
-            this.cbShowCity.Enabled = false;
-            this.cbShowCity.Location = new System.Drawing.Point(6, 88);
-            this.cbShowCity.Name = "cbShowCity";
-            this.cbShowCity.Size = new System.Drawing.Size(43, 17);
-            this.cbShowCity.TabIndex = 6;
-            this.cbShowCity.Text = "City";
-            this.cbShowCity.UseVisualStyleBackColor = true;
-            this.cbShowCity.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
-            // 
-            // cbShowZone
-            // 
-            this.cbShowZone.AutoSize = true;
-            this.cbShowZone.Checked = true;
-            this.cbShowZone.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbShowZone.Location = new System.Drawing.Point(6, 65);
-            this.cbShowZone.Name = "cbShowZone";
-            this.cbShowZone.Size = new System.Drawing.Size(51, 17);
-            this.cbShowZone.TabIndex = 5;
-            this.cbShowZone.Text = "Zone";
-            this.cbShowZone.UseVisualStyleBackColor = true;
-            this.cbShowZone.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
-            // 
-            // cbShowContinent
-            // 
-            this.cbShowContinent.AutoSize = true;
-            this.cbShowContinent.Checked = true;
-            this.cbShowContinent.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbShowContinent.Location = new System.Drawing.Point(6, 42);
-            this.cbShowContinent.Name = "cbShowContinent";
-            this.cbShowContinent.Size = new System.Drawing.Size(71, 17);
-            this.cbShowContinent.TabIndex = 4;
-            this.cbShowContinent.Text = "Continent";
-            this.cbShowContinent.UseVisualStyleBackColor = true;
-            this.cbShowContinent.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
             // 
             // cbFocus
             // 
             this.cbFocus.AutoSize = true;
             this.cbFocus.Checked = true;
             this.cbFocus.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbFocus.Location = new System.Drawing.Point(6, 260);
+            this.cbFocus.Location = new System.Drawing.Point(6, 134);
             this.cbFocus.Name = "cbFocus";
-            this.cbFocus.Size = new System.Drawing.Size(89, 17);
+            this.cbFocus.Size = new System.Drawing.Size(88, 17);
             this.cbFocus.TabIndex = 3;
-            this.cbFocus.Text = "Focus Border";
+            this.cbFocus.Text = "Focus border";
             this.cbFocus.UseVisualStyleBackColor = true;
             this.cbFocus.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
             // 
             // cbZoneBorders
             // 
             this.cbZoneBorders.AutoSize = true;
-            this.cbZoneBorders.Location = new System.Drawing.Point(6, 166);
+            this.cbZoneBorders.Location = new System.Drawing.Point(6, 88);
             this.cbZoneBorders.Name = "cbZoneBorders";
-            this.cbZoneBorders.Size = new System.Drawing.Size(86, 17);
+            this.cbZoneBorders.Size = new System.Drawing.Size(89, 17);
             this.cbZoneBorders.TabIndex = 2;
-            this.cbZoneBorders.Text = "Map Borders";
+            this.cbZoneBorders.Text = "Zone borders";
             this.cbZoneBorders.UseVisualStyleBackColor = true;
             this.cbZoneBorders.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
             // 
-            // cbShowWorldMap
+            // toolBar
             // 
-            this.cbShowWorldMap.AutoSize = true;
-            this.cbShowWorldMap.Checked = true;
-            this.cbShowWorldMap.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbShowWorldMap.Location = new System.Drawing.Point(6, 19);
-            this.cbShowWorldMap.Name = "cbShowWorldMap";
-            this.cbShowWorldMap.Size = new System.Drawing.Size(54, 17);
-            this.cbShowWorldMap.TabIndex = 1;
-            this.cbShowWorldMap.Text = "World";
-            this.cbShowWorldMap.UseVisualStyleBackColor = true;
-            this.cbShowWorldMap.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            this.toolBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripLabel3,
+            this.tsbDrawWorld,
+            this.tsbDrawContinent,
+            this.tsbDrawZone,
+            this.tsbDrawCity,
+            this.toolStripLabel2,
+            this.tsbShowPoI,
+            this.tsbShowPath,
+            this.tsbShowHousing,
+            this.tsbShowQuestSphere,
+            this.toolStripSeparator1,
+            this.toolStripLabel1,
+            this.tsbNamesPoI,
+            this.tsbNamesPath,
+            this.tsbNamesHousing,
+            this.tsbNamesQuestSphere,
+            this.toolStripSeparator2});
+            this.toolBar.Location = new System.Drawing.Point(0, 0);
+            this.toolBar.Name = "toolBar";
+            this.toolBar.Size = new System.Drawing.Size(518, 25);
+            this.toolBar.TabIndex = 3;
+            this.toolBar.Text = "toolStrip1";
             // 
-            // cbPoINames
+            // toolStripLabel3
             // 
-            this.cbPoINames.AutoSize = true;
-            this.cbPoINames.Location = new System.Drawing.Point(6, 214);
-            this.cbPoINames.Name = "cbPoINames";
-            this.cbPoINames.Size = new System.Drawing.Size(78, 17);
-            this.cbPoINames.TabIndex = 0;
-            this.cbPoINames.Text = "PoI Names";
-            this.cbPoINames.UseVisualStyleBackColor = true;
-            this.cbPoINames.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            this.toolStripLabel3.Name = "toolStripLabel3";
+            this.toolStripLabel3.Size = new System.Drawing.Size(34, 22);
+            this.toolStripLabel3.Text = "Draw";
+            // 
+            // tsbDrawWorld
+            // 
+            this.tsbDrawWorld.CheckOnClick = true;
+            this.tsbDrawWorld.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbDrawWorld.Image = global::AAEmu.DBViewer.Properties.Resources.icon_map_globe;
+            this.tsbDrawWorld.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDrawWorld.Name = "tsbDrawWorld";
+            this.tsbDrawWorld.Size = new System.Drawing.Size(23, 22);
+            this.tsbDrawWorld.Text = "World Map";
+            this.tsbDrawWorld.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
+            // tsbDrawContinent
+            // 
+            this.tsbDrawContinent.CheckOnClick = true;
+            this.tsbDrawContinent.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbDrawContinent.Image = global::AAEmu.DBViewer.Properties.Resources.icon_map_nuia;
+            this.tsbDrawContinent.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDrawContinent.Name = "tsbDrawContinent";
+            this.tsbDrawContinent.Size = new System.Drawing.Size(23, 22);
+            this.tsbDrawContinent.Text = "Continent";
+            this.tsbDrawContinent.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
+            // tsbDrawZone
+            // 
+            this.tsbDrawZone.CheckOnClick = true;
+            this.tsbDrawZone.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbDrawZone.Image = global::AAEmu.DBViewer.Properties.Resources.icon_map_zone;
+            this.tsbDrawZone.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDrawZone.Name = "tsbDrawZone";
+            this.tsbDrawZone.Size = new System.Drawing.Size(23, 22);
+            this.tsbDrawZone.Text = "Zone";
+            this.tsbDrawZone.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
+            // tsbDrawCity
+            // 
+            this.tsbDrawCity.CheckOnClick = true;
+            this.tsbDrawCity.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbDrawCity.Enabled = false;
+            this.tsbDrawCity.Image = global::AAEmu.DBViewer.Properties.Resources.icon_map_city;
+            this.tsbDrawCity.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDrawCity.Name = "tsbDrawCity";
+            this.tsbDrawCity.Size = new System.Drawing.Size(23, 22);
+            this.tsbDrawCity.Text = "City/Cave";
+            this.tsbDrawCity.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
+            // toolStripLabel2
+            // 
+            this.toolStripLabel2.Name = "toolStripLabel2";
+            this.toolStripLabel2.Size = new System.Drawing.Size(36, 22);
+            this.toolStripLabel2.Text = "Show";
+            // 
+            // tsbShowPoI
+            // 
+            this.tsbShowPoI.Checked = true;
+            this.tsbShowPoI.CheckOnClick = true;
+            this.tsbShowPoI.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tsbShowPoI.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbShowPoI.Image = global::AAEmu.DBViewer.Properties.Resources.icon_map_poi;
+            this.tsbShowPoI.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbShowPoI.Name = "tsbShowPoI";
+            this.tsbShowPoI.Size = new System.Drawing.Size(23, 22);
+            this.tsbShowPoI.Text = "PoI";
+            this.tsbShowPoI.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
+            // tsbShowPath
+            // 
+            this.tsbShowPath.Checked = true;
+            this.tsbShowPath.CheckOnClick = true;
+            this.tsbShowPath.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tsbShowPath.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbShowPath.Image = global::AAEmu.DBViewer.Properties.Resources.icon_map_carriage;
+            this.tsbShowPath.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbShowPath.Name = "tsbShowPath";
+            this.tsbShowPath.Size = new System.Drawing.Size(23, 22);
+            this.tsbShowPath.Text = "Paths";
+            this.tsbShowPath.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
+            // tsbShowHousing
+            // 
+            this.tsbShowHousing.Checked = true;
+            this.tsbShowHousing.CheckOnClick = true;
+            this.tsbShowHousing.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tsbShowHousing.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbShowHousing.Image = global::AAEmu.DBViewer.Properties.Resources.icon_map_house;
+            this.tsbShowHousing.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbShowHousing.Name = "tsbShowHousing";
+            this.tsbShowHousing.Size = new System.Drawing.Size(23, 22);
+            this.tsbShowHousing.Text = "Housing";
+            this.tsbShowHousing.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
+            // tsbShowQuestSphere
+            // 
+            this.tsbShowQuestSphere.Checked = true;
+            this.tsbShowQuestSphere.CheckOnClick = true;
+            this.tsbShowQuestSphere.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tsbShowQuestSphere.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbShowQuestSphere.Image = global::AAEmu.DBViewer.Properties.Resources.icon_map_quest;
+            this.tsbShowQuestSphere.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbShowQuestSphere.Name = "tsbShowQuestSphere";
+            this.tsbShowQuestSphere.Size = new System.Drawing.Size(23, 22);
+            this.tsbShowQuestSphere.Text = "Quest Spheres";
+            this.tsbShowQuestSphere.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripLabel1
+            // 
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(44, 22);
+            this.toolStripLabel1.Text = "Names";
+            // 
+            // tsbNamesPoI
+            // 
+            this.tsbNamesPoI.CheckOnClick = true;
+            this.tsbNamesPoI.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbNamesPoI.Image = global::AAEmu.DBViewer.Properties.Resources.icon_map_poi;
+            this.tsbNamesPoI.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbNamesPoI.Name = "tsbNamesPoI";
+            this.tsbNamesPoI.Size = new System.Drawing.Size(23, 22);
+            this.tsbNamesPoI.Text = "PoI";
+            this.tsbNamesPoI.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
+            // tsbNamesPath
+            // 
+            this.tsbNamesPath.CheckOnClick = true;
+            this.tsbNamesPath.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbNamesPath.Image = global::AAEmu.DBViewer.Properties.Resources.icon_map_carriage;
+            this.tsbNamesPath.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbNamesPath.Name = "tsbNamesPath";
+            this.tsbNamesPath.Size = new System.Drawing.Size(23, 22);
+            this.tsbNamesPath.Text = "Paths";
+            this.tsbNamesPath.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
+            // tsbNamesHousing
+            // 
+            this.tsbNamesHousing.CheckOnClick = true;
+            this.tsbNamesHousing.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbNamesHousing.Image = global::AAEmu.DBViewer.Properties.Resources.icon_map_house;
+            this.tsbNamesHousing.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbNamesHousing.Name = "tsbNamesHousing";
+            this.tsbNamesHousing.Size = new System.Drawing.Size(23, 22);
+            this.tsbNamesHousing.Text = "Housing";
+            this.tsbNamesHousing.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
+            // tsbNamesQuestSphere
+            // 
+            this.tsbNamesQuestSphere.CheckOnClick = true;
+            this.tsbNamesQuestSphere.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbNamesQuestSphere.Image = global::AAEmu.DBViewer.Properties.Resources.icon_map_quest;
+            this.tsbNamesQuestSphere.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbNamesQuestSphere.Name = "tsbNamesQuestSphere";
+            this.tsbNamesQuestSphere.Size = new System.Drawing.Size(23, 22);
+            this.tsbNamesQuestSphere.Text = "Quest Spheres";
+            this.tsbNamesQuestSphere.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
             // pView
             // 
@@ -353,6 +482,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(628, 460);
+            this.Controls.Add(this.toolBar);
             this.Controls.Add(this.pView);
             this.Controls.Add(this.gbTools);
             this.Controls.Add(this.statusBar);
@@ -368,6 +498,8 @@
             this.gbTools.PerformLayout();
             this.gbGrid.ResumeLayout(false);
             this.gbGrid.PerformLayout();
+            this.toolBar.ResumeLayout(false);
+            this.toolBar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -379,18 +511,12 @@
         private System.Windows.Forms.ToolStripStatusLabel tsslViewOffset;
         private System.Windows.Forms.ToolStripStatusLabel tsslCoords;
         private System.Windows.Forms.GroupBox gbTools;
-        private System.Windows.Forms.CheckBox cbShowWorldMap;
         private System.Windows.Forms.CheckBox cbZoneBorders;
-        public System.Windows.Forms.CheckBox cbPoINames;
         public System.Windows.Forms.CheckBox cbFocus;
         private System.Windows.Forms.PictureBox pView;
         private System.Windows.Forms.ToolStripStatusLabel tsslRuler;
         private System.Windows.Forms.ToolStripStatusLabel tsslZoom;
         private System.Windows.Forms.ToolStripStatusLabel tsslSelectionInfo;
-        private System.Windows.Forms.CheckBox cbShowCity;
-        private System.Windows.Forms.CheckBox cbShowZone;
-        private System.Windows.Forms.CheckBox cbShowContinent;
-        public System.Windows.Forms.CheckBox cbPathNames;
         private System.Windows.Forms.CheckBox cbDrawMiniMap;
         private System.Windows.Forms.CheckBox cbDrawMainMap;
         private System.Windows.Forms.GroupBox gbGrid;
@@ -398,5 +524,23 @@
         private System.Windows.Forms.RadioButton rbGridCells;
         private System.Windows.Forms.RadioButton rbGridUnits;
         private System.Windows.Forms.RadioButton rbGridOff;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        public System.Windows.Forms.ToolStripButton tsbNamesPoI;
+        public System.Windows.Forms.ToolStripButton tsbNamesPath;
+        public System.Windows.Forms.ToolStripButton tsbNamesHousing;
+        public System.Windows.Forms.ToolStripButton tsbNamesQuestSphere;
+        public System.Windows.Forms.ToolStrip toolBar;
+        public System.Windows.Forms.ToolStripButton tsbShowPoI;
+        public System.Windows.Forms.ToolStripButton tsbShowPath;
+        public System.Windows.Forms.ToolStripButton tsbShowHousing;
+        public System.Windows.Forms.ToolStripButton tsbShowQuestSphere;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel3;
+        private System.Windows.Forms.ToolStripButton tsbDrawWorld;
+        private System.Windows.Forms.ToolStripButton tsbDrawContinent;
+        private System.Windows.Forms.ToolStripButton tsbDrawZone;
+        private System.Windows.Forms.ToolStripButton tsbDrawCity;
     }
 }

@@ -30,11 +30,13 @@ namespace AAEmu.DBViewer
         private bool isDragging = false;
         private bool hasDragged = false;
         private float viewScale = 1f;
-        private List<MapViewPoI> poi = new List<MapViewPoI>();
         private List<MapViewMap> allmaps = new List<MapViewMap>();
         private MapViewMap topMostMap = null;
         private MapViewMap WorldMap = null;
+        private List<MapViewPoI> poi = new List<MapViewPoI>();
         private List<MapViewPath> paths = new List<MapViewPath>();
+        private List<MapViewPath> housing = new List<MapViewPath>();
+        private List<MapViewPoI> quest_sign_sphere = new List<MapViewPoI>();
         private RectangleF FocusBorder = new RectangleF();
 
         public Point ViewOffset { get => viewOffset; set { viewOffset = value; updateStatusBar(); } }
@@ -310,16 +312,16 @@ namespace AAEmu.DBViewer
             switch (map.MapLevel)
             {
                 case MapLevel.WorldMap:
-                    showMap = cbShowWorldMap.Checked;
+                    showMap = tsbDrawWorld.Checked;
                     break;
                 case MapLevel.Continent:
-                    showMap = cbShowContinent.Checked;
+                    showMap = tsbDrawContinent.Checked;
                     break;
                 case MapLevel.Zone:
-                    showMap = cbShowZone.Checked;
+                    showMap = tsbDrawZone.Checked;
                     break;
                 case MapLevel.City:
-                    showMap = cbShowCity.Checked;
+                    showMap = tsbDrawCity.Checked;
                     break;
             }
             if (!showMap)
@@ -478,6 +480,39 @@ namespace AAEmu.DBViewer
             }
         }
 
+        private void DrawPath(Graphics g, MapViewPath path, bool showName)
+        {
+            if (path.allpoints.Count <= 0)
+                return;
+
+            bool first = true;
+            Point lastPos = new Point(0, 0);
+            foreach (var p in path.allpoints)
+            {
+                if (first)
+                {
+                    // Draw Startpoint
+                    first = false;
+                    DrawCross(g, p.X, p.Y, path.Color, showName ? path.PathName : "");
+                }
+                else
+                {
+                    // Draw Line
+                    var pen = new Pen(path.Color);
+                    pen.Width = (int)(3f / viewScale) + 1;
+                    if (path.DrawStyle == 1)
+                        pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                    if (path.DrawStyle == 2)
+                        pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                    var pos = CoordToPixel(p.X, p.Y);
+                    var lpos = CoordToPixel(lastPos.X, lastPos.Y);
+                    g.DrawLine(pen, ViewOffset.X + lpos.X, ViewOffset.Y + lpos.Y, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y);
+
+                }
+                lastPos = new Point((int)p.X, (int)p.Y);
+            }
+        }
+
         private void OnViewPaint(object sender, PaintEventArgs e)
         {
             // Draw the map, or something like that
@@ -503,47 +538,34 @@ namespace AAEmu.DBViewer
                 DrawGrid(g);
 
             // Draw Points of Interest
-            foreach (var p in poi)
-            {
-                if (p.Radius <= 3f)
-                    DrawCross(g, p.CoordX, p.CoordY, p.PoIColor, cbPoINames.Checked ? p.Name : "");
-                else
-                    DrawRadius(g, p.CoordX, p.CoordY, p.PoIColor, cbPoINames.Checked ? p.Name : "", p.Radius);
-            }
+            if (tsbShowPoI.Checked)
+                foreach (var p in poi)
+                {
+                    if (p.Radius <= 3f)
+                        DrawCross(g, p.CoordX, p.CoordY, p.PoIColor, tsbNamesPoI.Checked ? p.Name : "");
+                    else
+                        DrawRadius(g, p.CoordX, p.CoordY, p.PoIColor, tsbNamesPoI.Checked ? p.Name : "", p.Radius);
+                }
+
+            // Draw Quest Sign spheres
+            if (tsbShowQuestSphere.Checked)
+                foreach (var p in quest_sign_sphere)
+                {
+                    if (p.Radius <= 3f)
+                        DrawCross(g, p.CoordX, p.CoordY, p.PoIColor, tsbNamesQuestSphere.Checked ? p.Name : "");
+                    else
+                        DrawRadius(g, p.CoordX, p.CoordY, p.PoIColor, tsbNamesQuestSphere.Checked ? p.Name : "", p.Radius);
+                }
 
             // Draw Paths
-            foreach(var path in paths)
-            {
-                if (path.allpoints.Count <= 0)
-                    continue;
+            if (tsbShowPath.Checked)
+                foreach (var path in paths)
+                    DrawPath(g, path, tsbNamesPath.Checked);
 
-                bool first = true;
-                Point lastPos = new Point(0, 0);
-                foreach(var p in path.allpoints)
-                {
-                    if (first)
-                    {
-                        // Draw Startpoint
-                        first = false;
-                        DrawCross(g, p.X, p.Y, path.Color, cbPathNames.Checked ? path.PathName : "");
-                    }
-                    else
-                    {
-                        // Draw Line
-                        var pen = new Pen(path.Color);
-                        pen.Width = (int)(3f / viewScale)+1;
-                        if (path.DrawStyle == 1)
-                            pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
-                        if (path.DrawStyle == 2)
-                            pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
-                        var pos = CoordToPixel(p.X, p.Y);
-                        var lpos = CoordToPixel(lastPos.X, lastPos.Y);
-                        g.DrawLine(pen, ViewOffset.X + lpos.X, ViewOffset.Y + lpos.Y, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y);
-
-                    }
-                    lastPos = new Point((int)p.X, (int)p.Y);
-                }
-            }
+            // Draw Housing
+            if (tsbShowHousing.Checked)
+                foreach (var houseArea in housing)
+                    DrawPath(g, houseArea, tsbNamesHousing.Checked);
 
             if (cbFocus.Checked)
                 g.DrawRectangle(Pens.OrangeRed, ViewOffset.X + FocusBorder.X, ViewOffset.Y - FocusBorder.Y - FocusBorder.Height, FocusBorder.Width, FocusBorder.Height);
@@ -645,8 +667,6 @@ namespace AAEmu.DBViewer
             updateStatusBar();
         }
 
-        public MapViewPoI AddPoI(Point coords, string name) => AddPoI(coords.X,coords.Y, name, Color.Yellow, 0f);
-
         public MapViewPoI AddPoI(float x, float y, string name, Color col, float radius = 0f)
         {
             var newPoi = new MapViewPoI();
@@ -662,6 +682,34 @@ namespace AAEmu.DBViewer
         public void ClearPoI()
         {
             poi.Clear();
+        }
+
+        public int GetPoICount()
+        {
+            return poi.Count;
+        }
+
+
+        public MapViewPoI AddQuestSphere(float x, float y, string name, Color col, float radius = 0f)
+        {
+            var newPoi = new MapViewPoI();
+            newPoi.CoordX = x;
+            newPoi.CoordY = y;
+            newPoi.Name = name;
+            newPoi.PoIColor = col;
+            newPoi.Radius = radius;
+            quest_sign_sphere.Add(newPoi);
+            return newPoi;
+        }
+
+        public void ClearQuestSpheres()
+        {
+            quest_sign_sphere.Clear();
+        }
+
+        public int GetQuestSphereCount()
+        {
+            return quest_sign_sphere.Count;
         }
 
         public MapViewMap AddMap(RectangleF mapLoc, string displayName, string fileName, MapLevel level, long zone_group_id)
@@ -746,6 +794,26 @@ namespace AAEmu.DBViewer
             paths.Clear();
         }
 
+        public int GetPathCount()
+        {
+            return paths.Count;
+        }
+
+        public void AddHousing(MapViewPath path)
+        {
+            housing.Add(path);
+        }
+
+        public void ClearHousing()
+        {
+            housing.Clear();
+        }
+
+        public int GetHousingCount()
+        {
+            return housing.Count;
+        }
+
         private void MapViewForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             /*
@@ -767,7 +835,7 @@ namespace AAEmu.DBViewer
             // ThisForm = null;
         }
 
-        public void FocusAll(bool focusPoIs, bool focusPaths)
+        public void FocusAll(bool focusPoIs, bool focusPaths, bool focusSpheres)
         {
             var first = true;
             FocusBorder = new RectangleF();
@@ -842,6 +910,41 @@ namespace AAEmu.DBViewer
 
             }
 
+            if (focusSpheres)
+            {
+                foreach (var p in quest_sign_sphere)
+                {
+                    if (first)
+                    {
+                        first = false;
+                        FocusBorder.X = p.CoordX;
+                        FocusBorder.Y = p.CoordY;
+                        FocusBorder.Width = 1;
+                        FocusBorder.Height = 1;
+                    }
+                    else
+                    {
+                        if (p.CoordX < FocusBorder.X)
+                        {
+                            FocusBorder.Width = FocusBorder.Width + FocusBorder.X - p.CoordX;
+                            FocusBorder.X = p.CoordX;
+                        }
+                        if (p.CoordX > FocusBorder.Right)
+                            FocusBorder.Width = p.CoordX - FocusBorder.Left + 1;
+
+                        if (p.CoordY < FocusBorder.Y)
+                        {
+                            FocusBorder.Height = FocusBorder.Height + FocusBorder.Y - p.CoordY;
+                            FocusBorder.Y = p.CoordY;
+                        }
+                        if (p.CoordY > FocusBorder.Bottom)
+                            FocusBorder.Height = p.CoordY - FocusBorder.Top + 1;
+                    }
+                }
+
+            }
+
+
             if ((FocusBorder.Width > 0) && (FocusBorder.Height > 0))
             {
                 var center = CoordToPixel(new Point((int)(FocusBorder.X + (FocusBorder.Width / 2f)), (int)(FocusBorder.Y + (FocusBorder.Height / 2))));
@@ -860,10 +963,10 @@ namespace AAEmu.DBViewer
 
         private void MapViewForm_Load(object sender, EventArgs e)
         {
-            cbShowWorldMap.Checked = Properties.Settings.Default.MapShowWorld;
-            cbShowContinent.Checked = Properties.Settings.Default.MapShowContinent;
-            cbShowZone.Checked = Properties.Settings.Default.MapShowZone;
-            cbShowCity.Checked = Properties.Settings.Default.MapShowCity;
+            tsbDrawWorld.Checked = Properties.Settings.Default.MapShowWorld;
+            tsbDrawContinent.Checked = Properties.Settings.Default.MapShowContinent;
+            tsbDrawZone.Checked = Properties.Settings.Default.MapShowZone;
+            tsbDrawCity.Checked = Properties.Settings.Default.MapShowCity;
 
             cbDrawMainMap.Checked = Properties.Settings.Default.MapShowMainMap;
             cbDrawMiniMap.Checked = Properties.Settings.Default.MapShowRoadMap;
@@ -891,15 +994,6 @@ namespace AAEmu.DBViewer
             updateStatusBar();
         }
 
-        public int GetPathCount()
-        {
-            return paths.Count;
-        }
-
-        public int GetPoICount()
-        {
-            return poi.Count;
-        }
 
         private void cbOptionsChanged(object sender, EventArgs e)
         {
@@ -909,10 +1003,10 @@ namespace AAEmu.DBViewer
 
         private void MapViewForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Properties.Settings.Default.MapShowWorld = cbShowWorldMap.Checked;
-            Properties.Settings.Default.MapShowContinent = cbShowContinent.Checked;
-            Properties.Settings.Default.MapShowZone = cbShowZone.Checked;
-            Properties.Settings.Default.MapShowCity = cbShowCity.Checked;
+            Properties.Settings.Default.MapShowWorld = tsbDrawWorld.Checked;
+            Properties.Settings.Default.MapShowContinent = tsbDrawContinent.Checked;
+            Properties.Settings.Default.MapShowZone = tsbDrawZone.Checked;
+            Properties.Settings.Default.MapShowCity = tsbDrawCity.Checked;
 
             Properties.Settings.Default.MapShowMainMap = cbDrawMainMap.Checked;
             Properties.Settings.Default.MapShowRoadMap = cbDrawMiniMap.Checked;

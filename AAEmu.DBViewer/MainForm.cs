@@ -2664,8 +2664,10 @@ namespace AAEmu.DBViewer
             {
                 lQuestId.Text = "0";
                 dgvQuestComponents.Rows.Clear();
+                btnQuestFindRelatedOnMap.Tag = 0;
                 return;
             }
+            btnQuestFindRelatedOnMap.Tag = quest_id;
             lQuestId.Text = q.id.ToString();
             dgvQuestComponents.Rows.Clear();
             var comps = from c in AADB.DB_Quest_Components
@@ -3930,7 +3932,7 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private List<MapSpawnLocation> GetNPCSpawnsInZoneGroup(long zoneGroupId, bool uniqueOnly = false, long filterByID = -1)
+        private List<MapSpawnLocation> GetNPCSpawnsInZoneGroup(long zoneGroupId, bool uniqueOnly = false, List<long> filterByIDs = null)
         {
             List<MapSpawnLocation> res = new List<MapSpawnLocation>();
             var zg = GetZoneGroupByID(zoneGroupId);
@@ -3952,7 +3954,7 @@ namespace AAEmu.DBViewer
                             msl.z = reader.ReadSingle();
 
                             msl.zoneGroupId = zoneGroupId;
-                            if ((filterByID == -1) || (msl.id == filterByID))
+                            if ((filterByIDs == null) || filterByIDs.Contains(msl.id))
                             {
                                 bool canAdd = true;
                                 if (uniqueOnly)
@@ -3998,7 +4000,10 @@ namespace AAEmu.DBViewer
 
                         var map = MapViewForm.GetMap();
                         map.Show();
-                        map.ClearPoI();
+
+                        if (map.GetPoICount() > 0)
+                            if (MessageBox.Show("Keep current PoI's on map ?", "Add NPC", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                                map.ClearPoI();
 
                         npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id, true));
 
@@ -4047,8 +4052,9 @@ namespace AAEmu.DBViewer
 
                             }
                         }
-                        map.cbPoINames.Checked = false; // Disable this when loading from zone
-                        map.FocusAll(true,false);
+                        map.tsbShowPoI.Checked = true;
+                        map.tsbNamesPoI.Checked = false; // Disable this when loading from zone
+                        map.FocusAll(true,false,false);
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
                     }
@@ -4423,6 +4429,7 @@ namespace AAEmu.DBViewer
 
         private void btnShowNPCsOnMap_Click(object sender, EventArgs e)
         {
+            PrepareWorldXML(false);
             var map = MapViewForm.GetMap();
             map.Show();
 
@@ -4471,9 +4478,9 @@ namespace AAEmu.DBViewer
                 }
 
             }
-            map.cbPoINames.Checked = true;
+            map.tsbNamesPoI.Checked = true;
             map.cbFocus.Checked = true;
-            map.FocusAll(true,false);
+            map.FocusAll(true,false, false);
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
         }
@@ -4524,8 +4531,8 @@ namespace AAEmu.DBViewer
                                 map.ClearPaths();
                         foreach (var p in allpaths)
                             map.AddPath(p);
-                        map.cbPoINames.Checked = true;
-                        map.FocusAll(false,true);
+                        map.tsbNamesPoI.Checked = true;
+                        map.FocusAll(false, true, false);
                     }
 
                 }
@@ -4857,6 +4864,8 @@ namespace AAEmu.DBViewer
 
                 foreach (var p in allpaths)
                     map.AddPath(p);
+
+                map.tsbShowPath.Checked = true;
             }
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
@@ -4930,6 +4939,7 @@ namespace AAEmu.DBViewer
 
         private void btnShowDoodadOnMap_Click(object sender, EventArgs e)
         {
+            PrepareWorldXML(false);
             var map = MapViewForm.GetMap();
             map.Show();
             map.ClearPoI();
@@ -4975,9 +4985,9 @@ namespace AAEmu.DBViewer
                 }
 
             }
-            map.cbPoINames.Checked = true;
+            map.tsbNamesPoI.Checked = true;
             map.cbFocus.Checked = true;
-            map.FocusAll(true, false);
+            map.FocusAll(true, false, false);
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
 
@@ -5114,9 +5124,9 @@ namespace AAEmu.DBViewer
             var map = MapViewForm.GetMap();
             map.Show();
 
-            if (map.GetPoICount() > 0)
-                if (MessageBox.Show("Keep current PoI's ?", "Add Spheres", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-                    map.ClearPoI();
+            if (map.GetQuestSphereCount() > 0)
+                if (MessageBox.Show("Keep current Quest Spheres ?", "Add Spheres", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    map.ClearQuestSpheres();
 
             foreach (var p in AADB.PAK_QuestSignSpheres)
             {
@@ -5127,20 +5137,21 @@ namespace AAEmu.DBViewer
                 Color col = Color.LightCyan;
 
                 var isFilteredVal = false;
-                if ((eQuestSignSphereSearch.Text != string.Empty) && name.Contains(eQuestSignSphereSearch.Text))
+                if ((eQuestSignSphereSearch.Text != string.Empty) && name.ToLower().Contains(eQuestSignSphereSearch.Text.ToLower()))
                     isFilteredVal = true;
                 if (isFilteredVal)
                     col = Color.Red;
 
                 if (cbQuestSignSphereSearchShowAll.Checked || (eQuestSignSphereSearch.Text == string.Empty))
                 {
-                    map.AddPoI(p.X, p.Y, name, col, p.radius);
+                    map.AddQuestSphere(p.X, p.Y, name, col, p.radius);
                 }
                 else
                 if (isFilteredVal)
-                    map.AddPoI(p.X, p.Y, name, col, p.radius);
+                    map.AddQuestSphere(p.X, p.Y, name, col, p.radius);
             }
-            map.cbPoINames.Checked = (!cbQuestSignSphereSearchShowAll.Checked && (eQuestSignSphereSearch.Text != string.Empty));
+            map.tsbShowQuestSphere.Checked = true;
+            map.tsbNamesQuestSphere.Checked = (!cbQuestSignSphereSearchShowAll.Checked && (eQuestSignSphereSearch.Text != string.Empty));
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
         }
@@ -5163,16 +5174,160 @@ namespace AAEmu.DBViewer
                 var map = MapViewForm.GetMap();
                 map.Show();
 
-                if (map.GetPathCount() > 0)
-                    if (MessageBox.Show("Keep current paths ?", "Add Transfers", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-                        map.ClearPaths();
+                // We no longer have the housing by zone button, so we no longer need to ask, just clear it
+                //if (map.GetHousingCount() > 0)
+                //    if (MessageBox.Show("Keep current housing areas ?", "Add Housing", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                map.ClearHousing();
                 
                 foreach (var p in allareas)
-                    map.AddPath(p);
+                    map.AddHousing(p);
+
+                map.tsbShowHousing.Checked = true;
             }
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
 
+        }
+
+        private void btnQuestFindRelatedOnMap_Click(object sender, EventArgs e)
+        {
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+
+            if ((sender as Button).Tag == null)
+                return;
+            var searchId = (long)(sender as Button).Tag;
+            if (searchId <= 0)
+                return;
+
+            PrepareWorldXML(false);
+            var map = MapViewForm.GetMap();
+            map.Show();
+
+            var foundCount = 0;
+
+            if ((map.GetQuestSphereCount() > 0) || (map.GetPoICount() > 0))
+                if (MessageBox.Show("Keep current NPC and Quest Spheres ?", "Add Quest Info", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    map.ClearPoI();
+                    map.ClearQuestSpheres();
+                }
+
+            // Quest Spheres
+            foreach (var p in AADB.PAK_QuestSignSpheres)
+            {
+                var name = string.Empty;
+                if (AADB.DB_Quest_Contexts.TryGetValue(p.questID, out var qc))
+                    name += qc.nameLocalized + " ";
+                else
+                    continue;
+                if (qc.id != searchId)
+                    continue;
+                name += "q:" + p.questID.ToString() + " c:" + p.componentID.ToString();
+                map.AddQuestSphere(p.X, p.Y, name, Color.Cyan, p.radius);
+            }
+
+            var NPCsToShow = new List<long>();
+            // TODO: NPCs (start/end/progress)
+            // TODO: Monsters (single, group, zone)
+            var comps = from c in AADB.DB_Quest_Components
+                        where c.Value.quest_context_id == searchId
+                        select c.Value;
+            foreach (var c in comps)
+            {
+                if ((c.npc_id > 0) && (!NPCsToShow.Contains(c.npc_id)))
+                    NPCsToShow.Add(c.npc_id);
+
+                var acts = from a in AADB.DB_Quest_Acts
+                           where a.Value.quest_component_id == c.id
+                           select a.Value;
+
+                foreach (var a in acts)
+                {
+                    if (a.act_detail_type == "QuestActObjMonsterHunt")
+                    {
+                        string sql = "SELECT * FROM quest_act_obj_monster_hunts WHERE id = " + a.act_detail_id.ToString();
+                        using (var connection = SQLite.CreateConnection())
+                        {
+                            using (var command = connection.CreateCommand())
+                            {
+                                command.CommandText = sql;
+                                command.Prepare();
+                                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                                {
+                                    while (reader.Read())
+                                    {
+                                        var huntNPC = GetInt64(reader, "npc_id");
+                                        if (!NPCsToShow.Contains(huntNPC))
+                                        {
+                                            NPCsToShow.Add(huntNPC);
+                                            foundCount++;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (NPCsToShow.Count > 0)
+            {
+                List<MapSpawnLocation> npcList = new List<MapSpawnLocation>();
+
+                using (var loading = new LoadingForm())
+                {
+                    loading.ShowInfo("Searching NPCs in zones: " + AADB.DB_Zone_Groups.Count.ToString());
+                    loading.Show();
+
+                    var zoneCount = 0;
+                    foreach (var zgv in AADB.DB_Zone_Groups)
+                    {
+                        var zg = zgv.Value;
+                        if (zg != null)
+                        {
+                            zoneCount++;
+                            loading.ShowInfo("Searching in zones: " + zoneCount.ToString() + "/" + AADB.DB_Zone_Groups.Count.ToString());
+                            npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id, false, NPCsToShow));
+                        }
+                    }
+
+                    if (npcList.Count > 0)
+                    {
+                        // Add to NPC list
+                        foreach (var npc in npcList)
+                        {
+                            //if (!NPCsToShow.Contains(npc.id))
+                            //    continue;
+                            if (AADB.DB_NPCs.TryGetValue(npc.id, out var z))
+                            {
+                                map.AddPoI((int)npc.x, (int)npc.y, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow);
+                                foundCount++;
+                            }
+                        }
+                    }
+
+                }
+
+            }
+
+            if (foundCount <= 0)
+            {
+                if (NPCsToShow.Count > 0)
+                    MessageBox.Show("The Quest listed NPCs, but no valid match was found in the dat files.");
+                else
+                    MessageBox.Show("Nothing to display");
+            }
+
+
+
+
+
+            map.tsbShowQuestSphere.Checked = true;
+            map.tsbNamesQuestSphere.Checked = true;
+            map.FocusAll(true, false, true);
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
         }
     }
 }

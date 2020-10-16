@@ -64,7 +64,6 @@
             this.label129 = new System.Windows.Forms.Label();
             this.btnFindAllHousing = new System.Windows.Forms.Button();
             this.label128 = new System.Windows.Forms.Label();
-            this.label121 = new System.Windows.Forms.Label();
             this.btnFindAllQuestSpheres = new System.Windows.Forms.Button();
             this.btnFindAllTransferPaths = new System.Windows.Forms.Button();
             this.btnMap = new System.Windows.Forms.Button();
@@ -462,6 +461,7 @@
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.btnQuestFindRelatedOnMap = new System.Windows.Forms.Button();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -845,7 +845,6 @@
             this.tpMap.Controls.Add(this.label129);
             this.tpMap.Controls.Add(this.btnFindAllHousing);
             this.tpMap.Controls.Add(this.label128);
-            this.tpMap.Controls.Add(this.label121);
             this.tpMap.Controls.Add(this.btnFindAllQuestSpheres);
             this.tpMap.Controls.Add(this.btnFindAllTransferPaths);
             this.tpMap.Controls.Add(this.btnMap);
@@ -910,15 +909,6 @@
             this.label128.Size = new System.Drawing.Size(253, 13);
             this.label128.TabIndex = 42;
             this.label128.Text = "Routes of Airships, Carriage and other fixed pathings";
-            // 
-            // label121
-            // 
-            this.label121.AutoSize = true;
-            this.label121.Location = new System.Drawing.Point(8, 125);
-            this.label121.Name = "label121";
-            this.label121.Size = new System.Drawing.Size(298, 13);
-            this.label121.TabIndex = 41;
-            this.label121.Text = "Note that location info for quest spheres is currently incorrect !";
             // 
             // btnFindAllQuestSpheres
             // 
@@ -3674,6 +3664,7 @@
             this.groupBox12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.groupBox12.Controls.Add(this.btnQuestFindRelatedOnMap);
             this.groupBox12.Controls.Add(this.lQuestId);
             this.groupBox12.Controls.Add(this.label85);
             this.groupBox12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
@@ -5081,6 +5072,19 @@
             this.mainFormToolTip.ReshowDelay = 100;
             this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             // 
+            // btnQuestFindRelatedOnMap
+            // 
+            this.btnQuestFindRelatedOnMap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
+            this.btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(9, 155);
+            this.btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
+            this.btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(278, 22);
+            this.btnQuestFindRelatedOnMap.TabIndex = 27;
+            this.btnQuestFindRelatedOnMap.Text = "Show related map points";
+            this.btnQuestFindRelatedOnMap.UseVisualStyleBackColor = true;
+            this.btnQuestFindRelatedOnMap.Click += new System.EventHandler(this.btnQuestFindRelatedOnMap_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5607,12 +5611,12 @@
         private System.Windows.Forms.Button btnShowDoodadOnMap;
         private System.Windows.Forms.Button btnFindAllQuestSpheres;
         private System.Windows.Forms.Label label128;
-        private System.Windows.Forms.Label label121;
         private System.Windows.Forms.Label label129;
         private System.Windows.Forms.Button btnFindAllHousing;
         private System.Windows.Forms.TextBox eQuestSignSphereSearch;
         private System.Windows.Forms.Label label130;
         private System.Windows.Forms.CheckBox cbQuestSignSphereSearchShowAll;
+        private System.Windows.Forms.Button btnQuestFindRelatedOnMap;
     }
 }
 
