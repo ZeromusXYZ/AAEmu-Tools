@@ -19,6 +19,7 @@ using System.Xml;
 using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms.VisualStyles;
+using Newtonsoft.Json;
 
 namespace AAEmu.DBViewer
 {
@@ -2389,7 +2390,7 @@ namespace AAEmu.DBViewer
                 {
                     lZoneGroupsDisplayName.Text = zg.display_textLocalized;
                     lZoneGroupsName.Text = zg.name;
-                    string zonefile = zg.GamePakZoneNPCsDat;
+                    string zonefile = zg.GamePakZoneNPCsDat();
                     if ((pak.isOpen) && (pak.FileExists(zonefile)))
                     {
                         btnFindNPCsInZone.Tag = zg.id;
@@ -3932,14 +3933,14 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private List<MapSpawnLocation> GetNPCSpawnsInZoneGroup(long zoneGroupId, bool uniqueOnly = false, List<long> filterByIDs = null)
+        private List<MapSpawnLocation> GetNPCSpawnsInZoneGroup(long zoneGroupId, bool uniqueOnly = false, List<long> filterByIDs = null, string instanceName = "main_world")
         {
             List<MapSpawnLocation> res = new List<MapSpawnLocation>();
             var zg = GetZoneGroupByID(zoneGroupId);
-            if ((zg != null) && (pak.isOpen) && (pak.FileExists(zg.GamePakZoneNPCsDat)))
+            if ((zg != null) && (pak.isOpen) && (pak.FileExists(zg.GamePakZoneNPCsDat(instanceName))))
             {
                 // Open .dat file and read it's contents
-                using (var fs = pak.ExportFileAsStream(zg.GamePakZoneNPCsDat))
+                using (var fs = pak.ExportFileAsStream(zg.GamePakZoneNPCsDat(instanceName)))
                 {
                     int indexCount = ((int)fs.Length / 16);
                     using (var reader = new BinaryReader(fs))
@@ -3991,7 +3992,7 @@ namespace AAEmu.DBViewer
                     var zg = GetZoneGroupByID(ZoneGroupId);
                     string ZoneGroupFile = string.Empty;
                     if (zg != null)
-                        ZoneGroupFile = zg.GamePakZoneNPCsDat;
+                        ZoneGroupFile = zg.GamePakZoneNPCsDat();
 
                     if (zg != null)
                     {
@@ -4827,17 +4828,74 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private void btnDebug_Click(object sender, EventArgs e)
+        public class NPCExportDataPosition
         {
-            var s = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n" +
-                    "<!-- Helper file for displaying path data on the map, needs manual editing -->\r\n" +
-                    "<pathoffsets>\r\n";
-            foreach(var zv in AADB.DB_Zones)
+            public float X = 0f;
+            public float Y = 0f;
+            public float Z = 0f;
+            public sbyte RotationX = 0;
+            public sbyte RotationY = 0;
+            public sbyte RotationZ = 0;
+        }
+
+        public class NPCExportData
+        {
+            public long Id = 0;
+            public long Count = 1;
+            public long UnitId = 0;
+            public string Title = string.Empty;
+            public NPCExportDataPosition Position = new NPCExportDataPosition();
+            public float Scale = 0f;
+            public long Zone = 0;
+        }
+
+        private void btnExportNPCSpawnData_Click(object sender, EventArgs e)
+        {
+            PrepareWorldXML(false);
+
+            foreach (var inst in MapViewWorldXML.instances)
             {
-                s += "\t<zone id=\""+zv.Value.id.ToString()+"\" key=\""+zv.Value.zone_key.ToString()+"\" x=\"0\" y=\"0\" /><!-- "+zv.Value.name+" -->\r\n";
+                var NPCList = new List<NPCExportData>();
+                var i = 0;
+
+                var zoneGroups = new List<long>();
+                foreach(var z in inst.zones)
+                {
+                    var zone = AADB.GetZoneByKey(z.Value.zone_key);
+                    if (zone != null)
+                        if (!zoneGroups.Contains(zone.group_id))
+                            zoneGroups.Add(zone.group_id);
+                }
+
+                foreach (var zoneGroupId in zoneGroups)
+                {
+                    if (!AADB.DB_Zone_Groups.TryGetValue(zoneGroupId, out var zoneGroup))
+                        continue;
+
+                    var npcs = GetNPCSpawnsInZoneGroup(zoneGroup.id,false,null,inst.WorldName);
+                    foreach (var npc in npcs)
+                    {
+                        i++;
+                        var newNPC = new NPCExportData();
+                        newNPC.Id = i;
+                        newNPC.Count = 1;
+                        newNPC.UnitId = npc.id;
+                        if (AADB.DB_NPCs.TryGetValue(npc.id, out var vNPC))
+                            newNPC.Title = vNPC.nameLocalized;
+                        newNPC.Position.X = npc.x;
+                        newNPC.Position.Y = npc.y;
+                        newNPC.Position.Z = npc.z;
+                        newNPC.Zone = npc.zoneGroupId;
+
+                        NPCList.Add(newNPC);
+                    }
+                }
+                string json = JsonConvert.SerializeObject(NPCList.ToArray(), Newtonsoft.Json.Formatting.Indented);
+                Directory.CreateDirectory(Path.Combine("export", "Data", "Worlds", inst.WorldName));
+                File.WriteAllText(Path.Combine("export", "Data", "Worlds", inst.WorldName, "npc_spawns.json"), json);
+
             }
-            s += "</pathoffsets>\r\n";
-            File.WriteAllText("debug.xml", s);
+            MessageBox.Show("Done");
         }
 
         private void btnFindAllTransferPaths_Click(object sender, EventArgs e)
@@ -4909,14 +4967,14 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private List<MapSpawnLocation> GetDoodadSpawnsInZoneGroup(long zoneGroupId, bool uniqueOnly = false, long filterByID = -1)
+        private List<MapSpawnLocation> GetDoodadSpawnsInZoneGroup(long zoneGroupId, bool uniqueOnly = false, long filterByID = -1, string instanceName = "main_world")
         {
             List<MapSpawnLocation> res = new List<MapSpawnLocation>();
             var zg = GetZoneGroupByID(zoneGroupId);
-            if ((zg != null) && (pak.isOpen) && (pak.FileExists(zg.GamePakZoneDoodadsDat)))
+            if ((zg != null) && (pak.isOpen) && (pak.FileExists(zg.GamePakZoneDoodadsDat(instanceName))))
             {
                 // Open .dat file and read it's contents
-                using (var fs = pak.ExportFileAsStream(zg.GamePakZoneDoodadsDat))
+                using (var fs = pak.ExportFileAsStream(zg.GamePakZoneDoodadsDat(instanceName)))
                 {
                     int indexCount = ((int)fs.Length / 16);
                     using (var reader = new BinaryReader(fs))

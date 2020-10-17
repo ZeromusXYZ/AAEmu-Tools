@@ -265,33 +265,15 @@ namespace AAEmu.DBDefs
         // Helpers
         public string display_textLocalized = string.Empty;
         public string SearchString = string.Empty;
-        public string GamePakZoneNPCsDat
+
+        public string GamePakZoneNPCsDat(string instanceName = "main_world")
         {
-            get
-            {
-                if (target_id != 1)
-                {
-                    return "game/worlds/" + main_world + "/map_data/npc_map/" + name + ".dat";
-                }
-                else
-                {
-                    return "game/worlds/" + name + "/map_data/npc_map/" + name + ".dat";
-                };
-            }
+            return "game/worlds/" + instanceName + "/map_data/npc_map/" + name + ".dat";
         }
-        public string GamePakZoneDoodadsDat
+
+        public string GamePakZoneDoodadsDat(string instanceName = "main_world")
         {
-            get
-            {
-                if (target_id != 1)
-                {
-                    return "game/worlds/" + main_world + "/map_data/doodad_map/" + name + ".dat";
-                }
-                else
-                {
-                    return "game/worlds/" + name + "/map_data/doodad_map/" + name + ".dat";
-                };
-            }
+            return "game/worlds/" + instanceName + "/map_data/doodad_map/" + name + ".dat";
         }
     }
 

@@ -68,7 +68,7 @@
             this.btnFindAllTransferPaths = new System.Windows.Forms.Button();
             this.btnMap = new System.Windows.Forms.Button();
             this.tpV1 = new System.Windows.Forms.TabPage();
-            this.btnDebug = new System.Windows.Forms.Button();
+            this.btnExportNPCSpawnData = new System.Windows.Forms.Button();
             this.btnExportDataForVieweD = new System.Windows.Forms.Button();
             this.lSpace = new System.Windows.Forms.Label();
             this.tpBuffs = new System.Windows.Forms.TabPage();
@@ -325,6 +325,7 @@
             this.Column34 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpQuests = new System.Windows.Forms.TabPage();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.btnQuestFindRelatedOnMap = new System.Windows.Forms.Button();
             this.lQuestId = new System.Windows.Forms.Label();
             this.label85 = new System.Windows.Forms.Label();
             this.tcQuestInfoPanel = new System.Windows.Forms.TabControl();
@@ -461,7 +462,6 @@
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.btnQuestFindRelatedOnMap = new System.Windows.Forms.Button();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -942,7 +942,7 @@
             // 
             // tpV1
             // 
-            this.tpV1.Controls.Add(this.btnDebug);
+            this.tpV1.Controls.Add(this.btnExportNPCSpawnData);
             this.tpV1.Controls.Add(this.btnExportDataForVieweD);
             this.tpV1.Controls.Add(this.lSpace);
             this.tpV1.Location = new System.Drawing.Point(4, 22);
@@ -953,16 +953,15 @@
             this.tpV1.Text = "|";
             this.tpV1.UseVisualStyleBackColor = true;
             // 
-            // btnDebug
+            // btnExportNPCSpawnData
             // 
-            this.btnDebug.Location = new System.Drawing.Point(131, 152);
-            this.btnDebug.Name = "btnDebug";
-            this.btnDebug.Size = new System.Drawing.Size(120, 23);
-            this.btnDebug.TabIndex = 3;
-            this.btnDebug.Text = "Debug Stuff";
-            this.btnDebug.UseVisualStyleBackColor = true;
-            this.btnDebug.Visible = false;
-            this.btnDebug.Click += new System.EventHandler(this.btnDebug_Click);
+            this.btnExportNPCSpawnData.Location = new System.Drawing.Point(8, 427);
+            this.btnExportNPCSpawnData.Name = "btnExportNPCSpawnData";
+            this.btnExportNPCSpawnData.Size = new System.Drawing.Size(166, 23);
+            this.btnExportNPCSpawnData.TabIndex = 3;
+            this.btnExportNPCSpawnData.Text = "Export NPC Spawn Data";
+            this.btnExportNPCSpawnData.UseVisualStyleBackColor = true;
+            this.btnExportNPCSpawnData.Click += new System.EventHandler(this.btnExportNPCSpawnData_Click);
             // 
             // btnExportDataForVieweD
             // 
@@ -3675,6 +3674,19 @@
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Quest Info";
             // 
+            // btnQuestFindRelatedOnMap
+            // 
+            this.btnQuestFindRelatedOnMap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
+            this.btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(9, 155);
+            this.btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
+            this.btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(278, 22);
+            this.btnQuestFindRelatedOnMap.TabIndex = 27;
+            this.btnQuestFindRelatedOnMap.Text = "Show related map points";
+            this.btnQuestFindRelatedOnMap.UseVisualStyleBackColor = true;
+            this.btnQuestFindRelatedOnMap.Click += new System.EventHandler(this.btnQuestFindRelatedOnMap_Click);
+            // 
             // lQuestId
             // 
             this.lQuestId.AutoSize = true;
@@ -5072,19 +5084,6 @@
             this.mainFormToolTip.ReshowDelay = 100;
             this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             // 
-            // btnQuestFindRelatedOnMap
-            // 
-            this.btnQuestFindRelatedOnMap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            this.btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(9, 155);
-            this.btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
-            this.btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(278, 22);
-            this.btnQuestFindRelatedOnMap.TabIndex = 27;
-            this.btnQuestFindRelatedOnMap.Text = "Show related map points";
-            this.btnQuestFindRelatedOnMap.UseVisualStyleBackColor = true;
-            this.btnQuestFindRelatedOnMap.Click += new System.EventHandler(this.btnQuestFindRelatedOnMap_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5602,7 +5601,7 @@
         private System.Windows.Forms.Button btnExportDataForVieweD;
         private System.Windows.Forms.Button btnShowNPCsOnMap;
         private System.Windows.Forms.Button btnFindTransferPathsInZone;
-        private System.Windows.Forms.Button btnDebug;
+        private System.Windows.Forms.Button btnExportNPCSpawnData;
         private System.Windows.Forms.Label lCurrentPakFile;
         private System.Windows.Forms.TabPage tpMap;
         private System.Windows.Forms.Button btnMap;
