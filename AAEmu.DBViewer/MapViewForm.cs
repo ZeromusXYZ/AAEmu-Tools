@@ -19,7 +19,7 @@ namespace AAEmu.DBViewer
 {
     public partial class MapViewForm : Form
     {
-        public static MapViewForm ThisForm ;
+        public static MapViewForm ThisForm;
         private PictureBox pb = new PictureBox();
         private Point viewOffset = new Point(0, 0);
         private Point cursorCoords = new Point(0, 0);
@@ -32,7 +32,6 @@ namespace AAEmu.DBViewer
         private float viewScale = 1f;
         private List<MapViewMap> allmaps = new List<MapViewMap>();
         private MapViewMap topMostMap = null;
-        private MapViewMap WorldMap = null;
         private List<MapViewPoI> poi = new List<MapViewPoI>();
         private List<MapViewPath> paths = new List<MapViewPath>();
         private List<MapViewPath> housing = new List<MapViewPath>();
@@ -60,10 +59,10 @@ namespace AAEmu.DBViewer
                 ClearMaps();
                 MapViewHelper.PopulateList();
                 MapViewHelper.PopulateMiniMapList();
-                WorldMap = AddMap(new RectangleF(-14731, 46, 64651, 38865), "Erenor", "main_world", MapLevel.WorldMap, 0);
-                AddMap(new RectangleF(-6758, 2673, 32130, 19308), "Nuia", "land_west", MapLevel.Continent, 0);
-                AddMap(new RectangleF(10627, 1632, 26024, 15636), "Haranya", "land_east", MapLevel.Continent, 0);
-                AddMap(new RectangleF(7035, 21504, 24743, 14883), "Auroria", "land_origin", MapLevel.Continent, 0);
+                AddMap(new RectangleF(-14731, 46, 64651, 38865), "Erenor", "main_world", MapLevel.WorldMap, 0).InstanceName = "main_world";
+                AddMap(new RectangleF(-6758, 2673, 32130, 19308), "Nuia", "land_west", MapLevel.Continent, 0).InstanceName = "main_world";
+                AddMap(new RectangleF(10627, 1632, 26024, 15636), "Haranya", "land_east", MapLevel.Continent, 0).InstanceName = "main_world";
+                AddMap(new RectangleF(7035, 21504, 24743, 14883), "Auroria", "land_origin", MapLevel.Continent, 0).InstanceName = "main_world";
                 /*
                 foreach (var wgv in AADB.DB_World_Groups)
                 {
@@ -99,8 +98,8 @@ namespace AAEmu.DBViewer
                     var zg = zgv.Value;
 
                     // Skip non-main world zones
-                    if (zg.target_id <= 1)
-                        continue;
+                    //if (zg.target_id <= 1)
+                    //    continue;
 
                     if ((zg.PosAndSize.Width <= 0) || (zg.PosAndSize.Height <= 0))
                         continue;
@@ -169,6 +168,8 @@ namespace AAEmu.DBViewer
             {
                 if (map.MapLevel <= MapLevel.Continent)
                     continue;
+                if (map.InstanceName != cbInstanceSelect.Text)
+                    continue;
                 if (map.ZoneCoords.Contains(cursorCoords))
                     cursorZones.Add(map);
             }
@@ -217,7 +218,7 @@ namespace AAEmu.DBViewer
                 tsslViewOffset.Text = "drag from X:" + startDragPos.X.ToString() + " Y:" + startDragPos.Y.ToString();
             }
             */
-            tsslViewOffset.Text = "View X:"+ViewOffset.X.ToString() + " Y:" + ViewOffset.Y.ToString();
+            tsslViewOffset.Text = "View X:" + ViewOffset.X.ToString() + " Y:" + ViewOffset.Y.ToString();
 
             if ((rulerCoords.X != 0) && (rulerCoords.Y != 0))
             {
@@ -226,7 +227,7 @@ namespace AAEmu.DBViewer
                 var offF = Vector2.Subtract(cursorF, rulerF);
                 float dist = Vector2.Distance(cursorF, rulerF);
                 if ((dist < -16f) || (dist > 16))
-                    tsslRuler.Text = "X:" + rulerCoords.X.ToString() + " Y:" + rulerCoords.Y.ToString() + " => Off X:" + offF.X.ToString() + " Y:" + offF.Y.ToString() + " (D: " + dist.ToString("0.0")+")";
+                    tsslRuler.Text = "X:" + rulerCoords.X.ToString() + " Y:" + rulerCoords.Y.ToString() + " => Off X:" + offF.X.ToString() + " Y:" + offF.Y.ToString() + " (D: " + dist.ToString("0.0") + ")";
                 else
                     tsslRuler.Text = "X:" + rulerCoords.X.ToString() + " Y:" + rulerCoords.Y.ToString();
             }
@@ -236,7 +237,7 @@ namespace AAEmu.DBViewer
             }
 
             var lastTopMap = topMostMap;
-            tsslCoords.Text = "X:"+cursorCoords.X.ToString() + " Y:" + cursorCoords.Y.ToString() + " | " + AADB.CoordToSextant(cursorCoords.X, cursorCoords.Y);
+            tsslCoords.Text = "X:" + cursorCoords.X.ToString() + " Y:" + cursorCoords.Y.ToString() + " | " + AADB.CoordToSextant(cursorCoords.X, cursorCoords.Y);
             tsslSelectionInfo.Text = "inside: " + GetCursorZones();
 
             if (topMostMap != lastTopMap)
@@ -267,16 +268,16 @@ namespace AAEmu.DBViewer
             updateStatusBar();
         }
 
-        private Point CoordToPixel(Point coord) => CoordToPixel(coord.X,coord.Y);
+        private Point CoordToPixel(Point coord) => CoordToPixel(coord.X, coord.Y);
 
         private Point CoordToPixel(float x, float y)
         {
             return new Point((int)x, (int)y * -1);
         }
 
-        private void DrawCross(Graphics g,float x, float y, Color color, string name)
+        private void DrawCross(Graphics g, float x, float y, Color color, string name)
         {
-            int crossSize = (int)(6f / viewScale) + 1 ;
+            int crossSize = (int)(6f / viewScale) + 1;
             var pen = new Pen(color);
             var pos = CoordToPixel(x, y);
             g.DrawLine(pen, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y - crossSize, ViewOffset.X + x, ViewOffset.Y + pos.Y + crossSize);
@@ -328,7 +329,7 @@ namespace AAEmu.DBViewer
                 return;
 
             var pen = new Pen(map.MapBorderColor);
-            var roadpen = Pens.Black ;
+            var roadpen = Pens.Black;
 
             var mappos = CoordToPixel(map.ZoneCoords.X, map.ZoneCoords.Y);
 
@@ -345,7 +346,7 @@ namespace AAEmu.DBViewer
             if ((map.MapBitmapImage != null) && (map.RoadBitmapImage != null))
             {
                 var roadsize = new SizeF(
-                    map.ZoneCoords.Width * map.RoadMapCoords.Width / map.ImgCoords.Width ,
+                    map.ZoneCoords.Width * map.RoadMapCoords.Width / map.ImgCoords.Width,
                     map.ZoneCoords.Height * map.RoadMapCoords.Height / map.ImgCoords.Height
                     );
                 var roadCoordsOffset = new PointF(
@@ -364,8 +365,8 @@ namespace AAEmu.DBViewer
                 */
 
                 roadBorderRect = new RectangleF(
-                    ViewOffset.X + mappos.X + roadCoordsOffset.X, 
-                    ViewOffset.Y + mappos.Y + roadCoordsOffset.Y - map.ZoneCoords.Height, 
+                    ViewOffset.X + mappos.X + roadCoordsOffset.X,
+                    ViewOffset.Y + mappos.Y + roadCoordsOffset.Y - map.ZoneCoords.Height,
                     roadsize.Width, roadsize.Height);
 
                 if (cbDrawMiniMap.Checked)
@@ -385,6 +386,17 @@ namespace AAEmu.DBViewer
 
         private void DrawGrid(Graphics g)
         {
+            var MaxPointX = 32768;
+            var MaxPointY = 32768 + 4096;
+
+            var inst = MapViewWorldXML.GetInstanceByName(cbInstanceSelect.Text);
+            if (inst != null)
+            {
+                MaxPointX = inst.CellCount.X * 1024;
+                MaxPointY = inst.CellCount.Y * 1024;
+            }
+
+
             var fnt = new Font(Font.FontFamily, 10f / viewScale);
             var br = new System.Drawing.SolidBrush(Color.White);
             var smallGridSize = 1024; // Cell size (resolution in heightmap is actualy 2m instead of 1m, so here we use 1024 instead of 512)
@@ -394,7 +406,7 @@ namespace AAEmu.DBViewer
                 fnt = new Font(Font.FontFamily, 7f / viewScale);
             }
 
-            for (var x = 0; x <= 32768; x += smallGridSize)
+            for (var x = 0; x <= MaxPointX; x += smallGridSize)
             {
                 var gridString = x.ToString();
                 var off = 0;
@@ -423,7 +435,7 @@ namespace AAEmu.DBViewer
                         gridString = " ";
                 }
                 var stringSize = g.MeasureString(gridString, fnt);
-                var hTop = CoordToPixel(x, 32768 + 4096);
+                var hTop = CoordToPixel(x, MaxPointY);
                 var hBottom = CoordToPixel(x, 0);
                 g.DrawLine(p, ViewOffset.X + hTop.X, ViewOffset.Y + hTop.Y, ViewOffset.X + hBottom.X, ViewOffset.Y + hBottom.Y);
 
@@ -436,7 +448,7 @@ namespace AAEmu.DBViewer
                 g.DrawString(gridString, fnt, br, ht.X - (stringSize.Width / 2) + off, ht.Y - stringSize.Height);
                 g.DrawString(gridString, fnt, br, hb.X - (stringSize.Width / 2) + off, hb.Y);
             }
-            for (var y = 0; y <= 32768 + 4096; y += smallGridSize)
+            for (var y = 0; y <= MaxPointY; y += smallGridSize)
             {
                 var gridString = y.ToString();
                 var off = 0;
@@ -466,7 +478,7 @@ namespace AAEmu.DBViewer
                 }
                 var stringSize = g.MeasureString(gridString, fnt);
                 var hTop = CoordToPixel(0, y);
-                var hBottom = CoordToPixel(32768, y);
+                var hBottom = CoordToPixel(MaxPointX, y);
                 g.DrawLine(p, ViewOffset.X + hTop.X, ViewOffset.Y + hTop.Y, ViewOffset.X + hBottom.X, ViewOffset.Y + hBottom.Y);
 
                 var ht = new Point(ViewOffset.X + hTop.X, ViewOffset.Y + hTop.Y);
@@ -526,7 +538,7 @@ namespace AAEmu.DBViewer
             foreach (var level in Enum.GetValues(typeof(MapLevel)))
             {
                 foreach (var map in allmaps)
-                    if (map.MapLevel == (MapLevel)level)
+                    if ((map.MapLevel == (MapLevel)level) && (map.InstanceName == cbInstanceSelect.Text))
                         DrawMap(g, map);
             }
 
@@ -601,7 +613,7 @@ namespace AAEmu.DBViewer
         }
 
         private Bitmap PackedImageToBitmap(string fn)
-        { 
+        {
             if (MainForm.ThisForm.pak.isOpen)
             {
 
@@ -720,6 +732,13 @@ namespace AAEmu.DBViewer
             newMap.MapLevel = level;
             newMap.MapImageFile = fileName;
 
+            if (zone_group_id > 0)
+            {
+                var inst = MapViewWorldXML.FindInstanceByZoneGroup(zone_group_id);
+                if (inst != null)
+                    newMap.InstanceName = inst.WorldName;
+            }
+
             // MainMap
             var fn = string.Empty;
             if (MainForm.ThisForm.pak.isOpen)
@@ -741,7 +760,7 @@ namespace AAEmu.DBViewer
                 newMap.MapBitmapImage = PackedImageToBitmap("game/ui/map/world/", fileName + ".dds");
 
             if (newMap.MapBitmapImage != null)
-                newMap.ImgCoords = new RectangleF(0,0,newMap.MapBitmapImage.Width,newMap.MapBitmapImage.Height);
+                newMap.ImgCoords = new RectangleF(0, 0, newMap.MapBitmapImage.Width, newMap.MapBitmapImage.Height);
             else
                 newMap.ImgCoords = new RectangleF(0, 0, 928, 556); // This is the common size for all/most maps
 
@@ -750,7 +769,7 @@ namespace AAEmu.DBViewer
 
             // RoadMap
             fn = string.Empty;
-            var roadRef = MapViewHelper.GetMiniMapRefByZoneGroup(zone_group_id,100,newMap.MapLevel);
+            var roadRef = MapViewHelper.GetMiniMapRefByZoneGroup(zone_group_id, 100, newMap.MapLevel);
             if (roadRef != null)
             {
                 newMap.RoadMapOffset = roadRef.Offset;
@@ -975,7 +994,20 @@ namespace AAEmu.DBViewer
             rbGridUnits.Checked = Properties.Settings.Default.GridMode == 1;
             rbGridCells.Checked = Properties.Settings.Default.GridMode == 2;
             rbGridGeo.Checked = Properties.Settings.Default.GridMode == 3;
+
             MapViewZonePathOffsets.LoadOffsetsFromFile();
+
+            cbInstanceSelect.Items.Clear();
+            if (MapViewWorldXML.instances != null)
+            {
+                foreach (var inst in MapViewWorldXML.instances)
+                {
+                    cbInstanceSelect.Items.Add(inst.WorldName);
+                    if (inst.WorldName == MapViewWorldXML.main_world.WorldName)
+                        cbInstanceSelect.SelectedIndex = cbInstanceSelect.Items.Count - 1;
+                }
+            }
+            cbInstanceSelect.Enabled = true;
         }
 
         private void pView_Click(object sender, EventArgs e)
@@ -1027,6 +1059,11 @@ namespace AAEmu.DBViewer
                 Hide();
             }
         }
+
+        private void gbTools_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 
 
@@ -1040,7 +1077,7 @@ namespace AAEmu.DBViewer
     }
 
     public enum MapLevel : byte
-    { 
+    {
         None = 0,
         WorldMap = 1,
         Continent = 2,
@@ -1055,6 +1092,7 @@ namespace AAEmu.DBViewer
         public RectangleF ImgCoords = new RectangleF();
         public Color MapBorderColor = Color.Yellow;
         public string Name = string.Empty;
+        public string InstanceName = string.Empty;
         public string MapImageFile = string.Empty;
         public Bitmap MapBitmapImage = null;
 
@@ -1068,7 +1106,7 @@ namespace AAEmu.DBViewer
     {
         public string PathName = string.Empty;
         public Color Color = Color.White;
-        public long TypeId = 0 ;
+        public long TypeId = 0;
         public List<Vector3> allpoints = new List<Vector3>();
         // Helper data for drawing, not actually related to the data
         public byte DrawStyle = 0;
@@ -1082,27 +1120,48 @@ namespace AAEmu.DBViewer
         public int originCellY = 0;
     }
 
-    static public class MapViewWorldXML
+    public class MapViewWorldXML
     {
-        static public XmlDocument _xml;
-        static public Dictionary<long, MapViewWorldXMLZoneInfo> zones = new Dictionary<long, MapViewWorldXMLZoneInfo>();
+        static public MapViewWorldXML main_world;
+        static public List<MapViewWorldXML> instances;
+        public XmlDocument _xml;
+        public Dictionary<long, MapViewWorldXMLZoneInfo> zones = new Dictionary<long, MapViewWorldXMLZoneInfo>();
+        public string WorldName = string.Empty;
+        public bool IsInstance = false;
+        public Point CellCount = new Point();
 
-        static public bool LoadFromStream(Stream s)
+        public bool LoadFromStream(Stream s)
         {
             try
             {
                 zones.Clear();
                 _xml = new XmlDocument();
                 _xml.Load(s);
+                var worldNode = _xml.SelectNodes("/World");
+                if (worldNode.Count < 1)
+                    return false;
+                var worldAttribs = MainForm.ReadNodeAttributes(worldNode[0]);
+                if (worldAttribs.TryGetValue("name", out var wName))
+                    WorldName = wName;
+                if (worldAttribs.TryGetValue("cellxcount", out var sCellXCount))
+                    if (worldAttribs.TryGetValue("cellycount", out var sCellYCount))
+                    {
+                        CellCount = new Point(int.Parse(sCellXCount), int.Parse(sCellYCount));
+                    }
+                if (worldAttribs.TryGetValue("isInstance", out var sIsInstance))
+                    if (int.TryParse(sIsInstance, out var vIsInstance))
+                        IsInstance = vIsInstance != 0;
+
+
                 var zoneNodes = _xml.SelectNodes("/World/ZoneList/Zone");
-                for(var i = 0; i < zoneNodes.Count; i++)
+                for (var i = 0; i < zoneNodes.Count; i++)
                 {
                     var n = zoneNodes[i];
                     var attribs = MainForm.ReadNodeAttributes(n);
                     var newZI = new MapViewWorldXMLZoneInfo();
-                    foreach(var attrib in attribs)
+                    foreach (var attrib in attribs)
                     {
-                        switch(attrib.Key)
+                        switch (attrib.Key)
                         {
                             case "name":
                                 newZI.name = attrib.Value;
@@ -1128,16 +1187,50 @@ namespace AAEmu.DBViewer
                 _xml = null;
                 return false;
             }
-            return zones.Count > 0 ;
+            return zones.Count > 0;
         }
 
-        static public MapViewWorldXMLZoneInfo GetZoneByKey(long key)
+        public MapViewWorldXMLZoneInfo GetZoneByKey(long key)
         {
             if ((_xml != null) && zones.TryGetValue(key, out var z))
                 return z;
             return null;
         }
-    }
 
+        static public MapViewWorldXML FindInstanceByZoneKey(long zone_key)
+        {
+            foreach (var i in instances)
+            {
+                foreach (var z in i.zones)
+                    if (z.Value.zone_key == zone_key)
+                        return i;
+            }
+            return null;
+        }
+
+        static public MapViewWorldXML GetInstanceByName(string iName)
+        {
+            foreach (var i in instances)
+            {
+                if (i.WorldName == iName)
+                    return i;
+            }
+            return null;
+        }
+
+        static public MapViewWorldXML FindInstanceByZoneGroup(long zone_group_id)
+        {
+            foreach(var zone in AADB.DB_Zones)
+            {
+                if (zone.Value.group_id == zone_group_id)
+                {
+                    var inst = FindInstanceByZoneKey(zone.Value.zone_key);
+                    if (inst != null)
+                        return inst;
+                }
+            }
+            return null;
+        }
+    }
 
 }

@@ -35,6 +35,7 @@
             this.tsslRuler = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslSelectionInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.gbTools = new System.Windows.Forms.GroupBox();
+            this.cbInstanceSelect = new System.Windows.Forms.ComboBox();
             this.gbGrid = new System.Windows.Forms.GroupBox();
             this.rbGridOff = new System.Windows.Forms.RadioButton();
             this.rbGridGeo = new System.Windows.Forms.RadioButton();
@@ -144,6 +145,7 @@
             // 
             // gbTools
             // 
+            this.gbTools.Controls.Add(this.cbInstanceSelect);
             this.gbTools.Controls.Add(this.gbGrid);
             this.gbTools.Controls.Add(this.cbDrawMiniMap);
             this.gbTools.Controls.Add(this.cbDrawMainMap);
@@ -156,6 +158,23 @@
             this.gbTools.TabIndex = 2;
             this.gbTools.TabStop = false;
             this.gbTools.Text = "Options";
+            this.gbTools.Enter += new System.EventHandler(this.gbTools_Enter);
+            // 
+            // cbInstanceSelect
+            // 
+            this.cbInstanceSelect.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbInstanceSelect.DropDownHeight = 240;
+            this.cbInstanceSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbInstanceSelect.DropDownWidth = 200;
+            this.cbInstanceSelect.Enabled = false;
+            this.cbInstanceSelect.FormattingEnabled = true;
+            this.cbInstanceSelect.IntegralHeight = false;
+            this.cbInstanceSelect.Location = new System.Drawing.Point(6, 409);
+            this.cbInstanceSelect.Name = "cbInstanceSelect";
+            this.cbInstanceSelect.Size = new System.Drawing.Size(98, 21);
+            this.cbInstanceSelect.TabIndex = 12;
+            this.cbInstanceSelect.SelectedIndexChanged += new System.EventHandler(this.cbOptionsChanged);
             // 
             // gbGrid
             // 
@@ -165,7 +184,7 @@
             this.gbGrid.Controls.Add(this.rbGridGeo);
             this.gbGrid.Controls.Add(this.rbGridCells);
             this.gbGrid.Controls.Add(this.rbGridUnits);
-            this.gbGrid.Location = new System.Drawing.Point(6, 316);
+            this.gbGrid.Location = new System.Drawing.Point(7, 289);
             this.gbGrid.Name = "gbGrid";
             this.gbGrid.Size = new System.Drawing.Size(97, 114);
             this.gbGrid.TabIndex = 11;
@@ -542,5 +561,6 @@
         private System.Windows.Forms.ToolStripButton tsbDrawContinent;
         private System.Windows.Forms.ToolStripButton tsbDrawZone;
         private System.Windows.Forms.ToolStripButton tsbDrawCity;
+        private System.Windows.Forms.ComboBox cbInstanceSelect;
     }
 }

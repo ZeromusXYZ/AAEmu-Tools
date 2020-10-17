@@ -4543,7 +4543,7 @@ namespace AAEmu.DBViewer
         {
             if (zone != null)
             {
-                var worldOff = MapViewWorldXML.GetZoneByKey(zone.zone_key);
+                var worldOff = MapViewWorldXML.main_world.GetZoneByKey(zone.zone_key);
 
                 // If it's not in the world.xml, it's probably not a real zone anyway
                 if (worldOff == null)
@@ -4685,7 +4685,7 @@ namespace AAEmu.DBViewer
         {
             if (zone != null)
             {
-                var worldOff = MapViewWorldXML.GetZoneByKey(zone.zone_key);
+                var worldOff = MapViewWorldXML.main_world.GetZoneByKey(zone.zone_key);
 
                 // If it's not in the world.xml, it's probably not a real zone anyway
                 if (worldOff == null)
@@ -4873,21 +4873,39 @@ namespace AAEmu.DBViewer
 
         public void PrepareWorldXML(bool overwrite)
         {
-            if (overwrite || (MapViewWorldXML.zones.Count <= 0))
+            if (overwrite || (MapViewWorldXML.instances == null) || (MapViewWorldXML.instances.Count < 0))
             {
-                // try loading if no zones loaded yet
-                var worldxmlfile = "game/worlds/main_world/world.xml";
-                if ((!pak.isOpen) || (!pak.FileExists(worldxmlfile)))
+                if (!pak.isOpen)
                 {
-                    MessageBox.Show("Could not find world.xml");
+                    MessageBox.Show("Game pak file was not loaded !");
                     return;
                 }
 
-                if (!MapViewWorldXML.LoadFromStream(pak.ExportFileAsStream(worldxmlfile)))
+                MapViewWorldXML.instances = new List<MapViewWorldXML>();
+
+                foreach (var pfi in pak.files)
                 {
-                    MessageBox.Show("world.xml did not contain valid data");
-                    return;
+                    if (pfi.name.EndsWith("/world.xml") && pfi.name.StartsWith("game/worlds/"))
+                    {
+                        var splitName = pfi.name.ToLower().Split('/');
+                        if (splitName.Count() != 4)
+                            continue;
+                        var thisInstanceName = splitName[2];
+
+                        var inst = new MapViewWorldXML();
+                        if (inst.LoadFromStream(pak.ExportFileAsStream("game/worlds/" + thisInstanceName + "/world.xml")))
+                        {
+                            MapViewWorldXML.instances.Add(inst);
+                            if (thisInstanceName == "main_world")
+                                MapViewWorldXML.main_world = inst;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to load " + thisInstanceName);
+                        }
+                    }
                 }
+
             }
         }
 
@@ -5038,7 +5056,7 @@ namespace AAEmu.DBViewer
                     var zoneOffX = 0f;
                     var zoneOffY = 0f;
 
-                    var zonexml = MapViewWorldXML.GetZoneByKey(zone);
+                    var zonexml = MapViewWorldXML.main_world.GetZoneByKey(zone);
                     if (zonexml != null)
                     {
                         zoneOffX = zonexml.originCellX * 1024f;
