@@ -434,9 +434,6 @@
             this.btnFindTransferPathsInZone = new System.Windows.Forms.Button();
             this.lZoneDisplayName = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
-            this.lZoneABoxShow = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
-            this.lZoneClimateID = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.lZoneFactionID = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
@@ -462,6 +459,7 @@
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.lZoneInstance = new System.Windows.Forms.Label();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -955,6 +953,7 @@
             // 
             // btnExportNPCSpawnData
             // 
+            this.btnExportNPCSpawnData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnExportNPCSpawnData.Location = new System.Drawing.Point(8, 427);
             this.btnExportNPCSpawnData.Name = "btnExportNPCSpawnData";
             this.btnExportNPCSpawnData.Size = new System.Drawing.Size(166, 23);
@@ -4776,12 +4775,10 @@
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox3.Controls.Add(this.lZoneInstance);
             this.groupBox3.Controls.Add(this.btnFindTransferPathsInZone);
             this.groupBox3.Controls.Add(this.lZoneDisplayName);
             this.groupBox3.Controls.Add(this.label28);
-            this.groupBox3.Controls.Add(this.lZoneABoxShow);
-            this.groupBox3.Controls.Add(this.label29);
-            this.groupBox3.Controls.Add(this.lZoneClimateID);
             this.groupBox3.Controls.Add(this.label26);
             this.groupBox3.Controls.Add(this.lZoneFactionID);
             this.groupBox3.Controls.Add(this.label23);
@@ -4803,7 +4800,7 @@
             // 
             // btnFindTransferPathsInZone
             // 
-            this.btnFindTransferPathsInZone.Location = new System.Drawing.Point(211, 93);
+            this.btnFindTransferPathsInZone.Location = new System.Drawing.Point(211, 98);
             this.btnFindTransferPathsInZone.Name = "btnFindTransferPathsInZone";
             this.btnFindTransferPathsInZone.Size = new System.Drawing.Size(85, 23);
             this.btnFindTransferPathsInZone.TabIndex = 37;
@@ -4829,46 +4826,19 @@
             this.label28.TabIndex = 14;
             this.label28.Text = "Name";
             // 
-            // lZoneABoxShow
-            // 
-            this.lZoneABoxShow.AutoSize = true;
-            this.lZoneABoxShow.Location = new System.Drawing.Point(92, 103);
-            this.lZoneABoxShow.Name = "lZoneABoxShow";
-            this.lZoneABoxShow.Size = new System.Drawing.Size(32, 13);
-            this.lZoneABoxShow.TabIndex = 13;
-            this.lZoneABoxShow.Text = "False";
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(6, 103);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(61, 13);
-            this.label29.TabIndex = 12;
-            this.label29.Text = "abox_show";
-            // 
-            // lZoneClimateID
-            // 
-            this.lZoneClimateID.AutoSize = true;
-            this.lZoneClimateID.Location = new System.Drawing.Point(92, 77);
-            this.lZoneClimateID.Name = "lZoneClimateID";
-            this.lZoneClimateID.Size = new System.Drawing.Size(13, 13);
-            this.lZoneClimateID.TabIndex = 11;
-            this.lZoneClimateID.Text = "0";
-            // 
             // label26
             // 
             this.label26.AutoSize = true;
             this.label26.Location = new System.Drawing.Point(6, 77);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(83, 13);
+            this.label26.Size = new System.Drawing.Size(48, 13);
             this.label26.TabIndex = 10;
-            this.label26.Text = "Zone Climate ID";
+            this.label26.Text = "Instance";
             // 
             // lZoneFactionID
             // 
             this.lZoneFactionID.AutoSize = true;
-            this.lZoneFactionID.Location = new System.Drawing.Point(92, 90);
+            this.lZoneFactionID.Location = new System.Drawing.Point(92, 103);
             this.lZoneFactionID.Name = "lZoneFactionID";
             this.lZoneFactionID.Size = new System.Drawing.Size(13, 13);
             this.lZoneFactionID.TabIndex = 9;
@@ -4877,7 +4847,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(6, 90);
+            this.label23.Location = new System.Drawing.Point(6, 103);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(56, 13);
             this.label23.TabIndex = 8;
@@ -5084,6 +5054,15 @@
             this.mainFormToolTip.ReshowDelay = 100;
             this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             // 
+            // lZoneInstance
+            // 
+            this.lZoneInstance.AutoSize = true;
+            this.lZoneInstance.Location = new System.Drawing.Point(94, 77);
+            this.lZoneInstance.Name = "lZoneInstance";
+            this.lZoneInstance.Size = new System.Drawing.Size(43, 13);
+            this.lZoneInstance.TabIndex = 38;
+            this.lZoneInstance.Text = "<none>";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5284,9 +5263,6 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label lZoneGroupsSizePos;
         private System.Windows.Forms.Label label01;
-        private System.Windows.Forms.Label lZoneABoxShow;
-        private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.Label lZoneClimateID;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label lZoneFactionID;
         private System.Windows.Forms.Label label23;
@@ -5616,6 +5592,7 @@
         private System.Windows.Forms.Label label130;
         private System.Windows.Forms.CheckBox cbQuestSignSphereSearchShowAll;
         private System.Windows.Forms.Button btnQuestFindRelatedOnMap;
+        private System.Windows.Forms.Label lZoneInstance;
     }
 }
 

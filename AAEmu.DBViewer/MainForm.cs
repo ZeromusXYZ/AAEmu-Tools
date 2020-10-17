@@ -2378,8 +2378,6 @@ namespace AAEmu.DBViewer
                 lZoneKey.Text = zone.zone_key.ToString();
                 lZoneGroupID.Text = zone.group_id.ToString();
                 lZoneFactionID.Text = zone.faction_id.ToString();
-                lZoneClimateID.Text = zone.zone_climate_id.ToString();
-                lZoneABoxShow.Text = zone.abox_show.ToString();
                 btnFindQuestsInZone.Tag = zone.id;
                 btnFindQuestsInZone.Enabled = (zone.id > 0);
                 btnFindTransferPathsInZone.Tag = zone.zone_key;
@@ -2485,6 +2483,32 @@ namespace AAEmu.DBViewer
                     blank_world_groups = true;
                 }
 
+                // Other Info
+                var inst = MapViewWorldXML.FindInstanceByZoneKey(zone.zone_key);
+                if (inst != null)
+                    lZoneInstance.Text = inst.WorldName;
+                else
+                    lZoneInstance.Text = "<unknown>";
+
+                /*
+                // It doesn't seem like there is any zone that exists in multiple instances
+                // But I'm keeping the code here, just in case
+                var instances = string.Empty;
+                foreach (var i in MapViewWorldXML.instances)
+                {
+                    foreach (var z in i.zones)
+                        if (z.Value.zone_key == zone.zone_key)
+                        {
+                            if (instances != string.Empty)
+                                instances += ", ";
+                            instances += i.WorldName;
+                        }
+                }
+                if (instances == string.Empty)
+                    instances = "<unknown>";
+                lZoneInstance.Text = instances;
+                */
+
                 ShowSelectedData("zones", "(id = " + idx.ToString() + ")", "id ASC");
             }
             else
@@ -2495,9 +2519,8 @@ namespace AAEmu.DBViewer
                 lZoneKey.Text = "";
                 lZoneGroupID.Text = "";
                 lZoneFactionID.Text = "";
-                lZoneClimateID.Text = "";
-                lZoneABoxShow.Text = "";
                 btnFindTransferPathsInZone.Tag = 0;
+                lZoneInstance.Text = "<none>";
 
                 blank_world_groups = true;
                 blank_zone_groups = true;
