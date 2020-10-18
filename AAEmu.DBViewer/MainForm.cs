@@ -29,6 +29,7 @@ namespace AAEmu.DBViewer
         private string defaultTitle;
         public AAPak pak = new AAPak("");
         private List<string> possibleLanguageIDs = new List<string>();
+        private List<string> allTableNames = new List<string>();
 
         public MainForm()
         {
@@ -196,10 +197,13 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
+                        allTableNames.Clear();
                         lbTableNames.Items.Clear();
                         while (reader.Read())
                         {
-                            lbTableNames.Items.Add(GetString(reader, "name"));
+                            var tName = GetString(reader, "name");
+                            allTableNames.Add(tName);
+                            lbTableNames.Items.Add(tName);
                         }
                     }
                 }
@@ -5427,6 +5431,30 @@ namespace AAEmu.DBViewer
             map.FocusAll(true, false, true);
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
+        }
+
+        private void tFilterTables_TextChanged(object sender, EventArgs e)
+        {
+            var lastSelected = lbTableNames.SelectedIndex >= 0 ? lbTableNames.Text : "";
+            if (tFilterTables.Text == string.Empty)
+            {
+                lbTableNames.Items.Clear();
+                foreach (var s in allTableNames)
+                    lbTableNames.Items.Add(s);
+            }
+            else
+            {
+                lbTableNames.Items.Clear();
+                foreach (var s in allTableNames)
+                {
+                    if (s.ToLower().Contains(tFilterTables.Text.ToLower()))
+                    {
+                        lbTableNames.Items.Add(s);
+                        if (s == lastSelected)
+                            lbTableNames.SelectedIndex = lbTableNames.Items.Count - 1;
+                    }
+                }
+            }
         }
     }
 }

@@ -431,6 +431,7 @@
             this.lZoneGroupsTargetID = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lZoneInstance = new System.Windows.Forms.Label();
             this.btnFindTransferPathsInZone = new System.Windows.Forms.Button();
             this.lZoneDisplayName = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
@@ -459,7 +460,8 @@
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.lZoneInstance = new System.Windows.Forms.Label();
+            this.tFilterTables = new System.Windows.Forms.TextBox();
+            this.label29 = new System.Windows.Forms.Label();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -522,9 +524,9 @@
             this.lbTableNames.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.lbTableNames.FormattingEnabled = true;
-            this.lbTableNames.Location = new System.Drawing.Point(6, 6);
+            this.lbTableNames.Location = new System.Drawing.Point(6, 32);
             this.lbTableNames.Name = "lbTableNames";
-            this.lbTableNames.Size = new System.Drawing.Size(270, 459);
+            this.lbTableNames.Size = new System.Drawing.Size(270, 433);
             this.lbTableNames.TabIndex = 1;
             this.lbTableNames.SelectedIndexChanged += new System.EventHandler(this.LbTableNames_SelectedIndexChanged);
             // 
@@ -555,6 +557,8 @@
             // tbTables
             // 
             this.tbTables.BackColor = System.Drawing.Color.Transparent;
+            this.tbTables.Controls.Add(this.label29);
+            this.tbTables.Controls.Add(this.tFilterTables);
             this.tbTables.Controls.Add(this.lCurrentPakFile);
             this.tbTables.Controls.Add(this.label41);
             this.tbTables.Controls.Add(this.btnSimpleSQL);
@@ -4798,6 +4802,15 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Zone Info";
             // 
+            // lZoneInstance
+            // 
+            this.lZoneInstance.AutoSize = true;
+            this.lZoneInstance.Location = new System.Drawing.Point(94, 77);
+            this.lZoneInstance.Name = "lZoneInstance";
+            this.lZoneInstance.Size = new System.Drawing.Size(43, 13);
+            this.lZoneInstance.TabIndex = 38;
+            this.lZoneInstance.Text = "<none>";
+            // 
             // btnFindTransferPathsInZone
             // 
             this.btnFindTransferPathsInZone.Location = new System.Drawing.Point(211, 98);
@@ -5054,14 +5067,22 @@
             this.mainFormToolTip.ReshowDelay = 100;
             this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             // 
-            // lZoneInstance
+            // tFilterTables
             // 
-            this.lZoneInstance.AutoSize = true;
-            this.lZoneInstance.Location = new System.Drawing.Point(94, 77);
-            this.lZoneInstance.Name = "lZoneInstance";
-            this.lZoneInstance.Size = new System.Drawing.Size(43, 13);
-            this.lZoneInstance.TabIndex = 38;
-            this.lZoneInstance.Text = "<none>";
+            this.tFilterTables.Location = new System.Drawing.Point(55, 6);
+            this.tFilterTables.Name = "tFilterTables";
+            this.tFilterTables.Size = new System.Drawing.Size(221, 20);
+            this.tFilterTables.TabIndex = 14;
+            this.tFilterTables.TextChanged += new System.EventHandler(this.tFilterTables_TextChanged);
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(8, 9);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(29, 13);
+            this.label29.TabIndex = 15;
+            this.label29.Text = "Filter";
             // 
             // MainForm
             // 
@@ -5593,6 +5614,8 @@
         private System.Windows.Forms.CheckBox cbQuestSignSphereSearchShowAll;
         private System.Windows.Forms.Button btnQuestFindRelatedOnMap;
         private System.Windows.Forms.Label lZoneInstance;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.TextBox tFilterTables;
     }
 }
 
