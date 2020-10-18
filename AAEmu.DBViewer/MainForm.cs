@@ -5316,6 +5316,7 @@ namespace AAEmu.DBViewer
                     map.ClearQuestSpheres();
                 }
 
+            var sphereCount = 0;
             // Quest Spheres
             foreach (var p in AADB.PAK_QuestSignSpheres)
             {
@@ -5328,6 +5329,7 @@ namespace AAEmu.DBViewer
                     continue;
                 name += "q:" + p.questID.ToString() + " c:" + p.componentID.ToString();
                 map.AddQuestSphere(p.X, p.Y, name, Color.Cyan, p.radius);
+                sphereCount++;
             }
 
             var NPCsToShow = new List<long>();
@@ -5418,13 +5420,10 @@ namespace AAEmu.DBViewer
             {
                 if (NPCsToShow.Count > 0)
                     MessageBox.Show("The Quest listed NPCs, but no valid match was found in the dat files.");
-                else
-                    MessageBox.Show("Nothing to display");
             }
 
-
-
-
+            if ((foundCount <= 0) && (sphereCount <= 0))
+                MessageBox.Show("Nothing to display.");
 
             map.tsbShowQuestSphere.Checked = true;
             map.tsbNamesQuestSphere.Checked = true;

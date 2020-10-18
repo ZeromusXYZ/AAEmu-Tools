@@ -400,9 +400,19 @@ namespace AAEmu.DBViewer
             var fnt = new Font(Font.FontFamily, 10f / viewScale);
             var br = new System.Drawing.SolidBrush(Color.White);
             var smallGridSize = 1024; // Cell size (resolution in heightmap is actualy 2m instead of 1m, so here we use 1024 instead of 512)
+
+            if (rbUnits1024.Checked)
+                smallGridSize = 1024;
+            if (rbUnits256.Checked)
+                smallGridSize = 256;
+            if (rbUnits100.Checked)
+                smallGridSize = 100;
+            if (rbUnits32.Checked)
+                smallGridSize = 32;
+
             if ((viewScale > 0.5f) && !rbGridCells.Checked && !rbGridGeo.Checked)
             {
-                smallGridSize = 32; // Sector
+                // smallGridSize = 32; // Sector
                 fnt = new Font(Font.FontFamily, 7f / viewScale);
             }
 
@@ -1061,6 +1071,16 @@ namespace AAEmu.DBViewer
         }
 
         private void gbTools_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
 
         }

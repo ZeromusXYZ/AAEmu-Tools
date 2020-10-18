@@ -37,6 +37,11 @@
             this.gbTools = new System.Windows.Forms.GroupBox();
             this.cbInstanceSelect = new System.Windows.Forms.ComboBox();
             this.gbGrid = new System.Windows.Forms.GroupBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.rbUnits256 = new System.Windows.Forms.RadioButton();
+            this.rbUnits32 = new System.Windows.Forms.RadioButton();
+            this.rbUnits100 = new System.Windows.Forms.RadioButton();
+            this.rbUnits1024 = new System.Windows.Forms.RadioButton();
             this.rbGridOff = new System.Windows.Forms.RadioButton();
             this.rbGridGeo = new System.Windows.Forms.RadioButton();
             this.rbGridCells = new System.Windows.Forms.RadioButton();
@@ -67,6 +72,7 @@
             this.statusBar.SuspendLayout();
             this.gbTools.SuspendLayout();
             this.gbGrid.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.toolBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pView)).BeginInit();
             this.SuspendLayout();
@@ -180,16 +186,77 @@
             // 
             this.gbGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbGrid.Controls.Add(this.groupBox1);
             this.gbGrid.Controls.Add(this.rbGridOff);
             this.gbGrid.Controls.Add(this.rbGridGeo);
             this.gbGrid.Controls.Add(this.rbGridCells);
             this.gbGrid.Controls.Add(this.rbGridUnits);
-            this.gbGrid.Location = new System.Drawing.Point(7, 289);
+            this.gbGrid.Location = new System.Drawing.Point(7, 194);
             this.gbGrid.Name = "gbGrid";
-            this.gbGrid.Size = new System.Drawing.Size(97, 114);
+            this.gbGrid.Size = new System.Drawing.Size(97, 209);
             this.gbGrid.TabIndex = 11;
             this.gbGrid.TabStop = false;
             this.gbGrid.Text = "Grid";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.rbUnits256);
+            this.groupBox1.Controls.Add(this.rbUnits32);
+            this.groupBox1.Controls.Add(this.rbUnits100);
+            this.groupBox1.Controls.Add(this.rbUnits1024);
+            this.groupBox1.Location = new System.Drawing.Point(29, 42);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(62, 113);
+            this.groupBox1.TabIndex = 4;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Units";
+            // 
+            // rbUnits256
+            // 
+            this.rbUnits256.AutoSize = true;
+            this.rbUnits256.Location = new System.Drawing.Point(6, 42);
+            this.rbUnits256.Name = "rbUnits256";
+            this.rbUnits256.Size = new System.Drawing.Size(43, 17);
+            this.rbUnits256.TabIndex = 3;
+            this.rbUnits256.TabStop = true;
+            this.rbUnits256.Text = "256";
+            this.rbUnits256.UseVisualStyleBackColor = true;
+            this.rbUnits256.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
+            // rbUnits32
+            // 
+            this.rbUnits32.AutoSize = true;
+            this.rbUnits32.Location = new System.Drawing.Point(6, 88);
+            this.rbUnits32.Name = "rbUnits32";
+            this.rbUnits32.Size = new System.Drawing.Size(37, 17);
+            this.rbUnits32.TabIndex = 2;
+            this.rbUnits32.Text = "32";
+            this.rbUnits32.UseVisualStyleBackColor = true;
+            this.rbUnits32.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
+            // rbUnits100
+            // 
+            this.rbUnits100.AutoSize = true;
+            this.rbUnits100.Location = new System.Drawing.Point(6, 65);
+            this.rbUnits100.Name = "rbUnits100";
+            this.rbUnits100.Size = new System.Drawing.Size(43, 17);
+            this.rbUnits100.TabIndex = 1;
+            this.rbUnits100.Text = "100";
+            this.rbUnits100.UseVisualStyleBackColor = true;
+            this.rbUnits100.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
+            // rbUnits1024
+            // 
+            this.rbUnits1024.AutoSize = true;
+            this.rbUnits1024.Checked = true;
+            this.rbUnits1024.Location = new System.Drawing.Point(6, 19);
+            this.rbUnits1024.Name = "rbUnits1024";
+            this.rbUnits1024.Size = new System.Drawing.Size(49, 17);
+            this.rbUnits1024.TabIndex = 0;
+            this.rbUnits1024.TabStop = true;
+            this.rbUnits1024.Text = "1024";
+            this.rbUnits1024.UseVisualStyleBackColor = true;
+            this.rbUnits1024.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
             // 
             // rbGridOff
             // 
@@ -207,7 +274,7 @@
             // rbGridGeo
             // 
             this.rbGridGeo.AutoSize = true;
-            this.rbGridGeo.Location = new System.Drawing.Point(8, 88);
+            this.rbGridGeo.Location = new System.Drawing.Point(6, 184);
             this.rbGridGeo.Name = "rbGridGeo";
             this.rbGridGeo.Size = new System.Drawing.Size(45, 17);
             this.rbGridGeo.TabIndex = 2;
@@ -219,7 +286,7 @@
             // rbGridCells
             // 
             this.rbGridCells.AutoSize = true;
-            this.rbGridCells.Location = new System.Drawing.Point(8, 65);
+            this.rbGridCells.Location = new System.Drawing.Point(6, 161);
             this.rbGridCells.Name = "rbGridCells";
             this.rbGridCells.Size = new System.Drawing.Size(47, 17);
             this.rbGridCells.TabIndex = 1;
@@ -232,9 +299,9 @@
             this.rbGridUnits.AutoSize = true;
             this.rbGridUnits.Location = new System.Drawing.Point(8, 42);
             this.rbGridUnits.Name = "rbGridUnits";
-            this.rbGridUnits.Size = new System.Drawing.Size(49, 17);
+            this.rbGridUnits.Size = new System.Drawing.Size(28, 17);
             this.rbGridUnits.TabIndex = 0;
-            this.rbGridUnits.Text = "Units";
+            this.rbGridUnits.Text = " ";
             this.rbGridUnits.UseVisualStyleBackColor = true;
             this.rbGridUnits.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
             // 
@@ -517,6 +584,8 @@
             this.gbTools.PerformLayout();
             this.gbGrid.ResumeLayout(false);
             this.gbGrid.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.toolBar.ResumeLayout(false);
             this.toolBar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pView)).EndInit();
@@ -562,5 +631,10 @@
         private System.Windows.Forms.ToolStripButton tsbDrawZone;
         private System.Windows.Forms.ToolStripButton tsbDrawCity;
         private System.Windows.Forms.ComboBox cbInstanceSelect;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.RadioButton rbUnits256;
+        private System.Windows.Forms.RadioButton rbUnits32;
+        private System.Windows.Forms.RadioButton rbUnits100;
+        private System.Windows.Forms.RadioButton rbUnits1024;
     }
 }
