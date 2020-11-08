@@ -401,14 +401,10 @@ namespace AAEmu.DBViewer
             var br = new System.Drawing.SolidBrush(Color.White);
             var smallGridSize = 1024; // Cell size (resolution in heightmap is actualy 2m instead of 1m, so here we use 1024 instead of 512)
 
-            if (rbUnits1024.Checked)
-                smallGridSize = 1024;
-            if (rbUnits256.Checked)
-                smallGridSize = 256;
-            if (rbUnits100.Checked)
-                smallGridSize = 100;
-            if (rbUnits32.Checked)
-                smallGridSize = 32;
+            if (int.TryParse(cbUnitSize.Text,out int intSize))
+            {
+                smallGridSize = intSize;
+            }
 
             if ((viewScale > 0.5f) && !rbGridCells.Checked && !rbGridGeo.Checked)
             {
@@ -540,70 +536,75 @@ namespace AAEmu.DBViewer
             // Draw the map, or something like that
 
             // Create a local version of the graphics object for the PictureBox.
-            Graphics g = e.Graphics;
-
-            g.ScaleTransform(viewScale, viewScale);
-
-            cursorZones = string.Empty;
-            foreach (var level in Enum.GetValues(typeof(MapLevel)))
+            try
             {
-                foreach (var map in allmaps)
-                    if ((map.MapLevel == (MapLevel)level) && (map.InstanceName == cbInstanceSelect.Text))
-                        DrawMap(g, map);
-            }
+                Graphics g = e.Graphics;
 
-            if (topMostMap != null)
-                DrawMap(g, topMostMap);
+                g.ScaleTransform(viewScale, viewScale);
 
-            // Draw Grid
-            if (rbGridUnits.Checked || rbGridCells.Checked || rbGridGeo.Checked)
-                DrawGrid(g);
-
-            // Draw Points of Interest
-            if (tsbShowPoI.Checked)
-                foreach (var p in poi)
+                cursorZones = string.Empty;
+                foreach (var level in Enum.GetValues(typeof(MapLevel)))
                 {
-                    if (p.Radius <= 3f)
-                        DrawCross(g, p.CoordX, p.CoordY, p.PoIColor, tsbNamesPoI.Checked ? p.Name : "");
-                    else
-                        DrawRadius(g, p.CoordX, p.CoordY, p.PoIColor, tsbNamesPoI.Checked ? p.Name : "", p.Radius);
+                    foreach (var map in allmaps)
+                        if ((map.MapLevel == (MapLevel)level) && (map.InstanceName == cbInstanceSelect.Text))
+                            DrawMap(g, map);
                 }
 
-            // Draw Quest Sign spheres
-            if (tsbShowQuestSphere.Checked)
-                foreach (var p in quest_sign_sphere)
+                if (topMostMap != null)
+                    DrawMap(g, topMostMap);
+
+                // Draw Grid
+                if (rbGridUnits.Checked || rbGridCells.Checked || rbGridGeo.Checked)
+                    DrawGrid(g);
+
+                // Draw Points of Interest
+                if (tsbShowPoI.Checked)
+                    foreach (var p in poi)
+                    {
+                        if (p.Radius <= 3f)
+                            DrawCross(g, p.CoordX, p.CoordY, p.PoIColor, tsbNamesPoI.Checked ? p.Name : "");
+                        else
+                            DrawRadius(g, p.CoordX, p.CoordY, p.PoIColor, tsbNamesPoI.Checked ? p.Name : "", p.Radius);
+                    }
+
+                // Draw Quest Sign spheres
+                if (tsbShowQuestSphere.Checked)
+                    foreach (var p in quest_sign_sphere)
+                    {
+                        if (p.Radius <= 3f)
+                            DrawCross(g, p.CoordX, p.CoordY, p.PoIColor, tsbNamesQuestSphere.Checked ? p.Name : "");
+                        else
+                            DrawRadius(g, p.CoordX, p.CoordY, p.PoIColor, tsbNamesQuestSphere.Checked ? p.Name : "", p.Radius);
+                    }
+
+                // Draw Paths
+                if (tsbShowPath.Checked)
+                    foreach (var path in paths)
+                        DrawPath(g, path, tsbNamesPath.Checked);
+
+                // Draw Housing
+                if (tsbShowHousing.Checked)
+                    foreach (var houseArea in housing)
+                        DrawPath(g, houseArea, tsbNamesHousing.Checked);
+
+                if (cbFocus.Checked)
+                    g.DrawRectangle(Pens.OrangeRed, ViewOffset.X + FocusBorder.X, ViewOffset.Y - FocusBorder.Y - FocusBorder.Height, FocusBorder.Width, FocusBorder.Height);
+
+                // Ruler
+                if ((rulerCoords.X != 0) || (rulerCoords.Y != 0))
                 {
-                    if (p.Radius <= 3f)
-                        DrawCross(g, p.CoordX, p.CoordY, p.PoIColor, tsbNamesQuestSphere.Checked ? p.Name : "");
-                    else
-                        DrawRadius(g, p.CoordX, p.CoordY, p.PoIColor, tsbNamesQuestSphere.Checked ? p.Name : "", p.Radius);
+                    DrawCross(g, rulerCoords.X, rulerCoords.Y, Color.Red, "");
+                    // Draw Line
+                    var pen = new Pen(Color.Red);
+                    pen.Width = (int)(3f / viewScale) + 1;
+                    var pos = CoordToPixel(rulerCoords.X, rulerCoords.Y);
+                    var lpos = CoordToPixel(cursorCoords.X, cursorCoords.Y);
+                    g.DrawLine(pen, ViewOffset.X + lpos.X, ViewOffset.Y + lpos.Y, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y);
                 }
-
-            // Draw Paths
-            if (tsbShowPath.Checked)
-                foreach (var path in paths)
-                    DrawPath(g, path, tsbNamesPath.Checked);
-
-            // Draw Housing
-            if (tsbShowHousing.Checked)
-                foreach (var houseArea in housing)
-                    DrawPath(g, houseArea, tsbNamesHousing.Checked);
-
-            if (cbFocus.Checked)
-                g.DrawRectangle(Pens.OrangeRed, ViewOffset.X + FocusBorder.X, ViewOffset.Y - FocusBorder.Y - FocusBorder.Height, FocusBorder.Width, FocusBorder.Height);
-
-            // Ruler
-            if ((rulerCoords.X != 0) || (rulerCoords.Y != 0))
-            {
-                DrawCross(g, rulerCoords.X, rulerCoords.Y, Color.Red, "");
-                // Draw Line
-                var pen = new Pen(Color.Red);
-                pen.Width = (int)(3f / viewScale) + 1;
-                var pos = CoordToPixel(rulerCoords.X, rulerCoords.Y);
-                var lpos = CoordToPixel(cursorCoords.X, cursorCoords.Y);
-                g.DrawLine(pen, ViewOffset.X + lpos.X, ViewOffset.Y + lpos.Y, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y);
             }
-
+            catch 
+            { 
+            }
             updateStatusBar();
         }
 
@@ -1070,20 +1071,6 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private void gbTools_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton3_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 
 

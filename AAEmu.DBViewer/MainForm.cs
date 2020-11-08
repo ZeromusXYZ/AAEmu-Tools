@@ -4567,6 +4567,91 @@ namespace AAEmu.DBViewer
             } 
         }
 
+        private void AddCustomPath(ref List<MapViewPath> allpaths, Stream fileStream, string rootNodeName = "/Objects/Entity", string PointsNodeName = "Points/Point")
+        {
+            try
+            {
+                var _doc = new XmlDocument();
+                _doc.Load(fileStream);
+                var _allTransferBlocks = _doc.SelectNodes(rootNodeName);
+                var pathsFound = 0;
+                for (var i = 0; i < _allTransferBlocks.Count; i++)
+                {
+                    var block = _allTransferBlocks[i];
+                    var attribs = ReadNodeAttributes(block);
+
+                    if (attribs.TryGetValue("name", out var blockName))
+                    {
+
+                        var newPath = new MapViewPath();
+                        newPath.PathName = blockName;
+
+                        var baseVec = new Vector3();
+
+                        if (attribs.TryGetValue("pos", out var posStringBase))
+                        {
+                            var posVals = posStringBase.Split(',');
+                            if (posVals.Length != 3)
+                            {
+                                MessageBox.Show("Invalid number of values inside Pos: " + posStringBase);
+                                continue;
+                            }
+                            try
+                            {
+                                baseVec = new Vector3(
+                                    float.Parse(posVals[0], CultureInfo.InvariantCulture),
+                                    float.Parse(posVals[1], CultureInfo.InvariantCulture),
+                                    float.Parse(posVals[2], CultureInfo.InvariantCulture)
+                                    );
+                            }
+                            catch
+                            {
+                                MessageBox.Show("Invalid float inside Pos: " + posStringBase);
+                            }
+                        }
+
+
+                        pathsFound++;
+                        var pointsxml = block.SelectNodes(PointsNodeName);
+                        for (var n = 0; n < pointsxml.Count; n++)
+                        {
+                            var pointxml = pointsxml[n];
+                            var pointattribs = ReadNodeAttributes(pointxml);
+                            if (pointattribs.TryGetValue("pos", out var posString))
+                            {
+                                var posVals = posString.Split(',');
+                                if (posVals.Length != 3)
+                                {
+                                    MessageBox.Show("Invalid number of values inside Pos: " + posString);
+                                    continue;
+                                }
+                                try
+                                {
+                                    var vec = new Vector3(
+                                        float.Parse(posVals[0], CultureInfo.InvariantCulture),
+                                        float.Parse(posVals[1], CultureInfo.InvariantCulture),
+                                        float.Parse(posVals[2], CultureInfo.InvariantCulture)
+                                        ) + baseVec;
+                                    newPath.allpoints.Add(vec);
+                                }
+                                catch
+                                {
+                                    MessageBox.Show("Invalid float inside Pos: " + posString);
+                                }
+
+                            }
+                        }
+                        allpaths.Add(newPath);
+
+                    }
+                }
+            }
+            catch (Exception x)
+            {
+                MessageBox.Show(x.Message);
+            }
+        }
+
         private void AddTransferPath(ref List<MapViewPath> allpaths, GameZone zone)
         {
             if (zone != null)
@@ -5454,6 +5539,47 @@ namespace AAEmu.DBViewer
                     }
                 }
             }
+        }
+
+        private void btnLoadCustomPaths_Click(object sender, EventArgs e)
+        {
+            List<MapViewPath> allareas = new List<MapViewPath>();
+
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+
+            if (ofdCustomPaths.ShowDialog() == DialogResult.OK)
+            {
+                using (var fs = new FileStream(ofdCustomPaths.FileName, FileMode.Open, FileAccess.Read))
+                {
+                    AddCustomPath(ref allareas, fs,"/Objects/Entity","Area/Points/Point");
+                }
+            }
+            else
+            {
+                return;
+            }
+
+
+            if (allareas.Count <= 0)
+                MessageBox.Show("Nothing to show ?");
+            else
+            {
+                var map = MapViewForm.GetMap();
+                map.Show();
+                if (map.GetPathCount() > 0)
+                    if (MessageBox.Show("Keep current paths ?", "Add Custom Path", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        map.ClearPaths();
+
+                foreach (var p in allareas)
+                    map.AddPath(p);
+
+                map.FocusAll(false, true, false);
+                map.tsbShowPath.Checked = true;
+            }
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+
         }
     }
 }

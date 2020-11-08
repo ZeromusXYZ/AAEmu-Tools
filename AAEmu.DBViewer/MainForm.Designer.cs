@@ -33,6 +33,8 @@
             this.lbTableNames = new System.Windows.Forms.ListBox();
             this.tcViewer = new System.Windows.Forms.TabControl();
             this.tbTables = new System.Windows.Forms.TabPage();
+            this.label29 = new System.Windows.Forms.Label();
+            this.tFilterTables = new System.Windows.Forms.TextBox();
             this.lCurrentPakFile = new System.Windows.Forms.Label();
             this.label41 = new System.Windows.Forms.Label();
             this.btnSimpleSQL = new System.Windows.Forms.Button();
@@ -460,8 +462,8 @@
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.tFilterTables = new System.Windows.Forms.TextBox();
-            this.label29 = new System.Windows.Forms.Label();
+            this.btnLoadCustomPaths = new System.Windows.Forms.Button();
+            this.ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -576,6 +578,23 @@
             this.tbTables.Size = new System.Drawing.Size(926, 485);
             this.tbTables.TabIndex = 0;
             this.tbTables.Text = "Tables and Settings";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(8, 9);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(29, 13);
+            this.label29.TabIndex = 15;
+            this.label29.Text = "Filter";
+            // 
+            // tFilterTables
+            // 
+            this.tFilterTables.Location = new System.Drawing.Point(55, 6);
+            this.tFilterTables.Name = "tFilterTables";
+            this.tFilterTables.Size = new System.Drawing.Size(221, 20);
+            this.tFilterTables.TabIndex = 14;
+            this.tFilterTables.TextChanged += new System.EventHandler(this.tFilterTables_TextChanged);
             // 
             // lCurrentPakFile
             // 
@@ -841,6 +860,7 @@
             // 
             // tpMap
             // 
+            this.tpMap.Controls.Add(this.btnLoadCustomPaths);
             this.tpMap.Controls.Add(this.label130);
             this.tpMap.Controls.Add(this.cbQuestSignSphereSearchShowAll);
             this.tpMap.Controls.Add(this.eQuestSignSphereSearch);
@@ -5067,22 +5087,21 @@
             this.mainFormToolTip.ReshowDelay = 100;
             this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             // 
-            // tFilterTables
+            // btnLoadCustomPaths
             // 
-            this.tFilterTables.Location = new System.Drawing.Point(55, 6);
-            this.tFilterTables.Name = "tFilterTables";
-            this.tFilterTables.Size = new System.Drawing.Size(221, 20);
-            this.tFilterTables.TabIndex = 14;
-            this.tFilterTables.TextChanged += new System.EventHandler(this.tFilterTables_TextChanged);
+            this.btnLoadCustomPaths.Location = new System.Drawing.Point(8, 234);
+            this.btnLoadCustomPaths.Name = "btnLoadCustomPaths";
+            this.btnLoadCustomPaths.Size = new System.Drawing.Size(230, 23);
+            this.btnLoadCustomPaths.TabIndex = 48;
+            this.btnLoadCustomPaths.Text = "Load custom entity path";
+            this.btnLoadCustomPaths.UseVisualStyleBackColor = true;
+            this.btnLoadCustomPaths.Click += new System.EventHandler(this.btnLoadCustomPaths_Click);
             // 
-            // label29
+            // ofdCustomPaths
             // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(8, 9);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(29, 13);
-            this.label29.TabIndex = 15;
-            this.label29.Text = "Filter";
+            this.ofdCustomPaths.DefaultExt = "xml";
+            this.ofdCustomPaths.Filter = "XML Files|*.xml|All Files|*.*";
+            this.ofdCustomPaths.Title = "Open custom path";
             // 
             // MainForm
             // 
@@ -5616,6 +5635,8 @@
         private System.Windows.Forms.Label lZoneInstance;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.TextBox tFilterTables;
+        private System.Windows.Forms.Button btnLoadCustomPaths;
+        private System.Windows.Forms.OpenFileDialog ofdCustomPaths;
     }
 }
 
