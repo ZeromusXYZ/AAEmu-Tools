@@ -60,6 +60,7 @@
             this.Column50 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tSearchLocalized = new System.Windows.Forms.TextBox();
             this.tpMap = new System.Windows.Forms.TabPage();
+            this.btnLoadCustomPaths = new System.Windows.Forms.Button();
             this.label130 = new System.Windows.Forms.Label();
             this.cbQuestSignSphereSearchShowAll = new System.Windows.Forms.CheckBox();
             this.eQuestSignSphereSearch = new System.Windows.Forms.TextBox();
@@ -462,8 +463,8 @@
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.btnLoadCustomPaths = new System.Windows.Forms.Button();
             this.ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
+            this.lBuffAddGMCommand = new System.Windows.Forms.Label();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -878,6 +879,16 @@
             this.tpMap.Text = "Map";
             this.tpMap.UseVisualStyleBackColor = true;
             // 
+            // btnLoadCustomPaths
+            // 
+            this.btnLoadCustomPaths.Location = new System.Drawing.Point(8, 234);
+            this.btnLoadCustomPaths.Name = "btnLoadCustomPaths";
+            this.btnLoadCustomPaths.Size = new System.Drawing.Size(230, 23);
+            this.btnLoadCustomPaths.TabIndex = 48;
+            this.btnLoadCustomPaths.Text = "Load custom entity path";
+            this.btnLoadCustomPaths.UseVisualStyleBackColor = true;
+            this.btnLoadCustomPaths.Click += new System.EventHandler(this.btnLoadCustomPaths_Click);
+            // 
             // label130
             // 
             this.label130.AutoSize = true;
@@ -1026,6 +1037,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.groupBox14.Controls.Add(this.lBuffAddGMCommand);
             this.groupBox14.Controls.Add(this.lBuffTags);
             this.groupBox14.Controls.Add(this.label117);
             this.groupBox14.Controls.Add(this.lBuffDuration);
@@ -1051,7 +1063,7 @@
             // 
             this.lBuffTags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lBuffTags.AutoSize = true;
-            this.lBuffTags.Location = new System.Drawing.Point(58, 433);
+            this.lBuffTags.Location = new System.Drawing.Point(54, 422);
             this.lBuffTags.Name = "lBuffTags";
             this.lBuffTags.Size = new System.Drawing.Size(25, 13);
             this.lBuffTags.TabIndex = 18;
@@ -1061,7 +1073,7 @@
             // 
             this.label117.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label117.AutoSize = true;
-            this.label117.Location = new System.Drawing.Point(10, 433);
+            this.label117.Location = new System.Drawing.Point(6, 422);
             this.label117.Name = "label117";
             this.label117.Size = new System.Drawing.Size(31, 13);
             this.label117.TabIndex = 17;
@@ -1152,7 +1164,7 @@
             this.flpBuff.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.flpBuff.Location = new System.Drawing.Point(9, 168);
             this.flpBuff.Name = "flpBuff";
-            this.flpBuff.Size = new System.Drawing.Size(518, 257);
+            this.flpBuff.Size = new System.Drawing.Size(518, 251);
             this.flpBuff.TabIndex = 2;
             // 
             // lBuffId
@@ -5087,21 +5099,21 @@
             this.mainFormToolTip.ReshowDelay = 100;
             this.mainFormToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Error;
             // 
-            // btnLoadCustomPaths
-            // 
-            this.btnLoadCustomPaths.Location = new System.Drawing.Point(8, 234);
-            this.btnLoadCustomPaths.Name = "btnLoadCustomPaths";
-            this.btnLoadCustomPaths.Size = new System.Drawing.Size(230, 23);
-            this.btnLoadCustomPaths.TabIndex = 48;
-            this.btnLoadCustomPaths.Text = "Load custom entity path";
-            this.btnLoadCustomPaths.UseVisualStyleBackColor = true;
-            this.btnLoadCustomPaths.Click += new System.EventHandler(this.btnLoadCustomPaths_Click);
-            // 
             // ofdCustomPaths
             // 
             this.ofdCustomPaths.DefaultExt = "xml";
             this.ofdCustomPaths.Filter = "XML Files|*.xml|All Files|*.*";
             this.ofdCustomPaths.Title = "Open custom path";
+            // 
+            // lBuffAddGMCommand
+            // 
+            this.lBuffAddGMCommand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lBuffAddGMCommand.AutoSize = true;
+            this.lBuffAddGMCommand.Location = new System.Drawing.Point(6, 447);
+            this.lBuffAddGMCommand.Name = "lBuffAddGMCommand";
+            this.lBuffAddGMCommand.Size = new System.Drawing.Size(71, 13);
+            this.lBuffAddGMCommand.TabIndex = 19;
+            this.lBuffAddGMCommand.Text = "/addbuff <id>";
             // 
             // MainForm
             // 
@@ -5637,6 +5649,7 @@
         private System.Windows.Forms.TextBox tFilterTables;
         private System.Windows.Forms.Button btnLoadCustomPaths;
         private System.Windows.Forms.OpenFileDialog ofdCustomPaths;
+        private System.Windows.Forms.Label lBuffAddGMCommand;
     }
 }
 

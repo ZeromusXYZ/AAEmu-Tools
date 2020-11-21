@@ -2804,6 +2804,7 @@ namespace AAEmu.DBViewer
             {
                 AddBuffTag(c.Key + " = " + c.Value);
             }
+            lBuffAddGMCommand.Text = "/addbuff " + lBuffId.Text;
             ShowSelectedData("buffs", "id = " + b.id.ToString(), "id ASC");
         }
 
