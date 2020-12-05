@@ -76,6 +76,7 @@
             this.lSpace = new System.Windows.Forms.Label();
             this.tpBuffs = new System.Windows.Forms.TabPage();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.lBuffAddGMCommand = new System.Windows.Forms.Label();
             this.lBuffTags = new System.Windows.Forms.Label();
             this.label117 = new System.Windows.Forms.Label();
             this.lBuffDuration = new System.Windows.Forms.Label();
@@ -211,14 +212,6 @@
             this.label46 = new System.Windows.Forms.Label();
             this.tSearchDoodads = new System.Windows.Forms.TextBox();
             this.dgvDoodads = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column23 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column28 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column25 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column26 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column31 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbFactions = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.lFactionHostilePirate = new System.Windows.Forms.Label();
@@ -464,7 +457,16 @@
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
-            this.lBuffAddGMCommand = new System.Windows.Forms.Label();
+            this.btnFindDoodadsInZone = new System.Windows.Forms.Button();
+            this.dataGridViewTextBoxColumn18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column23 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column28 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column25 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column26 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column31 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column53 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -1058,6 +1060,16 @@
             this.groupBox14.TabIndex = 12;
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Buff Info";
+            // 
+            // lBuffAddGMCommand
+            // 
+            this.lBuffAddGMCommand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lBuffAddGMCommand.AutoSize = true;
+            this.lBuffAddGMCommand.Location = new System.Drawing.Point(6, 447);
+            this.lBuffAddGMCommand.Name = "lBuffAddGMCommand";
+            this.lBuffAddGMCommand.Size = new System.Drawing.Size(71, 13);
+            this.lBuffAddGMCommand.TabIndex = 19;
+            this.lBuffAddGMCommand.Text = "/addbuff <id>";
             // 
             // lBuffTags
             // 
@@ -2443,7 +2455,8 @@
             this.Column25,
             this.Column26,
             this.Column31,
-            this.Column22});
+            this.Column22,
+            this.Column53});
             this.dgvDoodads.Location = new System.Drawing.Point(8, 41);
             this.dgvDoodads.Name = "dgvDoodads";
             this.dgvDoodads.ReadOnly = true;
@@ -2452,62 +2465,6 @@
             this.dgvDoodads.Size = new System.Drawing.Size(567, 437);
             this.dgvDoodads.TabIndex = 11;
             this.dgvDoodads.SelectionChanged += new System.EventHandler(this.DgvDoodads_SelectionChanged);
-            // 
-            // dataGridViewTextBoxColumn18
-            // 
-            this.dataGridViewTextBoxColumn18.HeaderText = "ID";
-            this.dataGridViewTextBoxColumn18.Name = "dataGridViewTextBoxColumn18";
-            this.dataGridViewTextBoxColumn18.ReadOnly = true;
-            this.dataGridViewTextBoxColumn18.Width = 43;
-            // 
-            // dataGridViewTextBoxColumn19
-            // 
-            this.dataGridViewTextBoxColumn19.HeaderText = "Name";
-            this.dataGridViewTextBoxColumn19.Name = "dataGridViewTextBoxColumn19";
-            this.dataGridViewTextBoxColumn19.ReadOnly = true;
-            this.dataGridViewTextBoxColumn19.Width = 60;
-            // 
-            // Column23
-            // 
-            this.Column23.HeaderText = "Managed";
-            this.Column23.Name = "Column23";
-            this.Column23.ReadOnly = true;
-            this.Column23.Width = 77;
-            // 
-            // Column28
-            // 
-            this.Column28.HeaderText = "Group";
-            this.Column28.Name = "Column28";
-            this.Column28.ReadOnly = true;
-            this.Column28.Width = 61;
-            // 
-            // Column25
-            // 
-            this.Column25.HeaderText = "Percent";
-            this.Column25.Name = "Column25";
-            this.Column25.ReadOnly = true;
-            this.Column25.Width = 69;
-            // 
-            // Column26
-            // 
-            this.Column26.HeaderText = "Faction";
-            this.Column26.Name = "Column26";
-            this.Column26.ReadOnly = true;
-            this.Column26.Width = 67;
-            // 
-            // Column31
-            // 
-            this.Column31.HeaderText = "Model Type";
-            this.Column31.Name = "Column31";
-            this.Column31.ReadOnly = true;
-            this.Column31.Width = 88;
-            // 
-            // Column22
-            // 
-            this.Column22.HeaderText = "Model";
-            this.Column22.Name = "Column22";
-            this.Column22.ReadOnly = true;
-            this.Column22.Width = 61;
             // 
             // tbFactions
             // 
@@ -4538,6 +4495,7 @@
             // groupBox4
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.btnFindDoodadsInZone);
             this.groupBox4.Controls.Add(this.labelZoneGroupRestrictions);
             this.groupBox4.Controls.Add(this.btnFindQuestsInZone);
             this.groupBox4.Controls.Add(this.btnFindNPCsInZone);
@@ -5105,15 +5063,79 @@
             this.ofdCustomPaths.Filter = "XML Files|*.xml|All Files|*.*";
             this.ofdCustomPaths.Title = "Open custom path";
             // 
-            // lBuffAddGMCommand
+            // btnFindDoodadsInZone
             // 
-            this.lBuffAddGMCommand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lBuffAddGMCommand.AutoSize = true;
-            this.lBuffAddGMCommand.Location = new System.Drawing.Point(6, 447);
-            this.lBuffAddGMCommand.Name = "lBuffAddGMCommand";
-            this.lBuffAddGMCommand.Size = new System.Drawing.Size(71, 13);
-            this.lBuffAddGMCommand.TabIndex = 19;
-            this.lBuffAddGMCommand.Text = "/addbuff <id>";
+            this.btnFindDoodadsInZone.Enabled = false;
+            this.btnFindDoodadsInZone.Location = new System.Drawing.Point(188, 178);
+            this.btnFindDoodadsInZone.Name = "btnFindDoodadsInZone";
+            this.btnFindDoodadsInZone.Size = new System.Drawing.Size(85, 23);
+            this.btnFindDoodadsInZone.TabIndex = 37;
+            this.btnFindDoodadsInZone.Text = "Find Doodads";
+            this.btnFindDoodadsInZone.UseVisualStyleBackColor = true;
+            this.btnFindDoodadsInZone.Click += new System.EventHandler(this.btnFindDoodadsInZone_Click);
+            // 
+            // dataGridViewTextBoxColumn18
+            // 
+            this.dataGridViewTextBoxColumn18.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn18.Name = "dataGridViewTextBoxColumn18";
+            this.dataGridViewTextBoxColumn18.ReadOnly = true;
+            this.dataGridViewTextBoxColumn18.Width = 43;
+            // 
+            // dataGridViewTextBoxColumn19
+            // 
+            this.dataGridViewTextBoxColumn19.HeaderText = "Name";
+            this.dataGridViewTextBoxColumn19.Name = "dataGridViewTextBoxColumn19";
+            this.dataGridViewTextBoxColumn19.ReadOnly = true;
+            this.dataGridViewTextBoxColumn19.Width = 60;
+            // 
+            // Column23
+            // 
+            this.Column23.HeaderText = "Managed";
+            this.Column23.Name = "Column23";
+            this.Column23.ReadOnly = true;
+            this.Column23.Width = 77;
+            // 
+            // Column28
+            // 
+            this.Column28.HeaderText = "Group";
+            this.Column28.Name = "Column28";
+            this.Column28.ReadOnly = true;
+            this.Column28.Width = 61;
+            // 
+            // Column25
+            // 
+            this.Column25.HeaderText = "Percent";
+            this.Column25.Name = "Column25";
+            this.Column25.ReadOnly = true;
+            this.Column25.Width = 69;
+            // 
+            // Column26
+            // 
+            this.Column26.HeaderText = "Faction";
+            this.Column26.Name = "Column26";
+            this.Column26.ReadOnly = true;
+            this.Column26.Width = 67;
+            // 
+            // Column31
+            // 
+            this.Column31.HeaderText = "Model Type";
+            this.Column31.Name = "Column31";
+            this.Column31.ReadOnly = true;
+            this.Column31.Width = 88;
+            // 
+            // Column22
+            // 
+            this.Column22.HeaderText = "Model";
+            this.Column22.Name = "Column22";
+            this.Column22.ReadOnly = true;
+            this.Column22.Width = 61;
+            // 
+            // Column53
+            // 
+            this.Column53.HeaderText = "Spawns";
+            this.Column53.Name = "Column53";
+            this.Column53.ReadOnly = true;
+            this.Column53.Width = 70;
             // 
             // MainForm
             // 
@@ -5409,14 +5431,6 @@
         private System.Windows.Forms.Label label46;
         private System.Windows.Forms.TextBox tSearchDoodads;
         private System.Windows.Forms.DataGridView dgvDoodads;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn18;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn19;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column23;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column28;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column25;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column26;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column31;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column22;
         private System.Windows.Forms.TabControl tcDoodads;
         private System.Windows.Forms.TabPage tpDoodadInfo;
         private System.Windows.Forms.GroupBox groupBox8;
@@ -5650,6 +5664,16 @@
         private System.Windows.Forms.Button btnLoadCustomPaths;
         private System.Windows.Forms.OpenFileDialog ofdCustomPaths;
         private System.Windows.Forms.Label lBuffAddGMCommand;
+        private System.Windows.Forms.Button btnFindDoodadsInZone;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn18;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn19;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column23;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column28;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column25;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column26;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column31;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column22;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column53;
     }
 }
 

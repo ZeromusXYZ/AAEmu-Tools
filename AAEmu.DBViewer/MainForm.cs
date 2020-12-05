@@ -2392,8 +2392,8 @@ namespace AAEmu.DBViewer
                 {
                     lZoneGroupsDisplayName.Text = zg.display_textLocalized;
                     lZoneGroupsName.Text = zg.name;
-                    string zonefile = zg.GamePakZoneNPCsDat();
-                    if ((pak.isOpen) && (pak.FileExists(zonefile)))
+                    string zoneNPCFile = zg.GamePakZoneNPCsDat();
+                    if ((pak.isOpen) && (pak.FileExists(zoneNPCFile)))
                     {
                         btnFindNPCsInZone.Tag = zg.id;
                         btnFindNPCsInZone.Enabled = true;
@@ -2402,6 +2402,17 @@ namespace AAEmu.DBViewer
                     {
                         btnFindNPCsInZone.Tag = null;
                         btnFindNPCsInZone.Enabled = false;
+                    }
+                    string zoneDoodadFile = zg.GamePakZoneDoodadsDat();
+                    if ((pak.isOpen) && (pak.FileExists(zoneDoodadFile)))
+                    {
+                        btnFindDoodadsInZone.Tag = zg.id;
+                        btnFindDoodadsInZone.Enabled = true;
+                    }
+                    else
+                    {
+                        btnFindDoodadsInZone.Tag = null;
+                        btnFindDoodadsInZone.Enabled = false;
                     }
 
                     lZoneGroupsSizePos.Text = "X:" + zg.PosAndSize.X.ToString("0.0") + " Y:" + zg.PosAndSize.Y.ToString("0.0") + "  W:" + zg.PosAndSize.Width.ToString("0.0") + " H:" + zg.PosAndSize.Height.ToString("0.0");
@@ -5580,6 +5591,93 @@ namespace AAEmu.DBViewer
             }
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
+
+        }
+
+        private void btnFindDoodadsInZone_Click(object sender, EventArgs e)
+        {
+            List<MapSpawnLocation> doodadList = new List<MapSpawnLocation>();
+
+            if ((sender != null) && (sender is Button))
+            {
+                Button b = (sender as Button);
+                if (b != null)
+                {
+                    long ZoneGroupId = (long)b.Tag;
+                    var zg = GetZoneGroupByID(ZoneGroupId);
+                    string ZoneGroupFile = string.Empty;
+                    if (zg != null)
+                        ZoneGroupFile = zg.GamePakZoneDoodadsDat();
+
+                    if (zg != null)
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        var map = MapViewForm.GetMap();
+                        map.Show();
+
+                        if (map.GetPoICount() > 0)
+                            if (MessageBox.Show("Keep current PoI's on map ?", "Add Doodad", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                                map.ClearPoI();
+
+                        doodadList.AddRange(GetDoodadSpawnsInZoneGroup(zg.id, true));
+
+                        if (doodadList.Count > 0)
+                        {
+                            using (var loading = new LoadingForm())
+                            {
+                                loading.ShowInfo("Loading " + doodadList.Count.ToString() + " Doodads");
+                                loading.Show();
+
+                                // Add to NPC list
+                                // tcViewer.SelectedTab = tpNPCs;
+                                dgvDoodads.Hide();
+                                dgvDoodads.Rows.Clear();
+                                Refresh();
+                                int c = 0;
+                                foreach (var doodad in doodadList)
+                                {
+                                    if (AADB.DB_Doodad_Almighties.TryGetValue(doodad.id, out var z))
+                                    {
+                                        var line = dgvDoodads.Rows.Add();
+                                        var row = dgvDoodads.Rows[line];
+
+                                        row.Cells[0].Value = z.id.ToString();
+                                        row.Cells[1].Value = z.nameLocalized;
+                                        row.Cells[2].Value = z.mgmt_spawn.ToString();
+                                        row.Cells[3].Value = z.group_id.ToString();
+                                        row.Cells[4].Value = z.percent.ToString();
+                                        row.Cells[5].Value = AADB.GetFactionName(z.faction_id, true);
+                                        row.Cells[6].Value = z.model_kind_id.ToString();
+                                        row.Cells[7].Value = z.model.ToString();
+                                        if (doodad.count == 1)
+                                            row.Cells[8].Value = string.Format("{0} , {1} = ({2})", doodad.x, doodad.y, doodad.AsSextant());
+                                        else
+                                            row.Cells[8].Value = doodad.count.ToString() + " instances in zone";
+
+                                        c++;
+                                        if ((c % 25) == 0)
+                                        {
+                                            loading.ShowInfo("Loading " + c.ToString() + "/" + doodadList.Count.ToString() + " Doodads");
+                                        }
+
+                                        map.AddPoI((int)doodad.x, (int)doodad.y, z.nameLocalized + " (" + doodad.id.ToString() + ")", Color.Yellow);
+                                    }
+                                }
+                                tcViewer.SelectedTab = tpDoodads;
+                                dgvDoodads.Show();
+
+                            }
+                        }
+                        map.tsbShowPoI.Checked = true;
+                        map.tsbNamesPoI.Checked = false; // Disable this when loading from zone
+                        map.FocusAll(true, false, false);
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
 
         }
     }
