@@ -1862,8 +1862,13 @@ namespace AAEmu.DBViewer
 
                 if (addThis && (cbItemSearchItemArmorSlotTypeList.SelectedIndex > 0))
                 {
-                    if ((item.Value.item_armors == null) || (cbItemSearchItemArmorSlotTypeList.SelectedIndex != item.Value.item_armors.slot_type_id))
+                    if (item.Value.item_armors == null)
                         addThis = false;
+                    else
+                    if (cbItemSearchItemArmorSlotTypeList.SelectedIndex != item.Value.item_armors.slot_type_id)
+                    {
+                        addThis = false;
+                    }
                 }
 
                 if (addThis)
