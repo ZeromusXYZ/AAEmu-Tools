@@ -4680,7 +4680,7 @@ namespace AAEmu.DBViewer
                                         float.Parse(posVals[1], CultureInfo.InvariantCulture),
                                         float.Parse(posVals[2], CultureInfo.InvariantCulture)
                                         ) + baseVec;
-                                    newPath.allpoints.Add(vec);
+                                    newPath.AddPoint(vec);
                                 }
                                 catch
                                 {
@@ -4815,7 +4815,7 @@ namespace AAEmu.DBViewer
                                             float.Parse(posVals[1], CultureInfo.InvariantCulture) + cellOffset.Y,
                                             float.Parse(posVals[2], CultureInfo.InvariantCulture)
                                             );
-                                        newPath.allpoints.Add(vec);
+                                        newPath.AddPoint(vec);
                                     }
                                     catch
                                     {
@@ -4956,7 +4956,7 @@ namespace AAEmu.DBViewer
                                                 ) + startVector;
                                             if (firstVector == Vector3.Zero)
                                                 firstVector = vec;
-                                            newArea.allpoints.Add(vec);
+                                            newArea.AddPoint(vec);
                                         }
                                         catch
                                         {
@@ -4967,7 +4967,7 @@ namespace AAEmu.DBViewer
                                 }
                                 // Close the loop
                                 if (firstVector != Vector3.Zero)
-                                    newArea.allpoints.Add(firstVector);
+                                    newArea.AddPoint(firstVector);
 
                                 allareas.Add(newArea);
 
@@ -5851,12 +5851,12 @@ namespace AAEmu.DBViewer
                             var pointAttribs = ReadNodeAttributes(pointBlocks[p]);
                             var pointPos = ReadXmlPos(pointAttribs["pos"]);
                             var pos = cellPos + areaPos + pointPos;
-                            mapPath.allpoints.Add(pos);
+                            mapPath.AddPoint(pos);
                             if (p == 0)
                                 firstPos = pos;
                         }
                         if (pointBlocks.Count > 2)
-                            mapPath.allpoints.Add(firstPos);
+                            mapPath.AddPoint(firstPos);
 
                         allAreaShapes.Add(mapPath);
                     }
