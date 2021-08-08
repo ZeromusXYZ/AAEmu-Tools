@@ -60,6 +60,7 @@
             this.Column50 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tSearchLocalized = new System.Windows.Forms.TextBox();
             this.tpMap = new System.Windows.Forms.TabPage();
+            this.btnLoadCustomAAEmuJson = new System.Windows.Forms.Button();
             this.btnLoadCustomPaths = new System.Windows.Forms.Button();
             this.label130 = new System.Windows.Forms.Label();
             this.cbQuestSignSphereSearchShowAll = new System.Windows.Forms.CheckBox();
@@ -212,6 +213,15 @@
             this.label46 = new System.Windows.Forms.Label();
             this.tSearchDoodads = new System.Windows.Forms.TextBox();
             this.dgvDoodads = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column23 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column28 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column25 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column26 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column31 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column53 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tbFactions = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.lFactionHostilePirate = new System.Windows.Forms.Label();
@@ -401,6 +411,7 @@
             this.label40 = new System.Windows.Forms.Label();
             this.lWorldGroupSizeAndPos = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnFindDoodadsInZone = new System.Windows.Forms.Button();
             this.labelZoneGroupRestrictions = new System.Windows.Forms.Label();
             this.btnFindQuestsInZone = new System.Windows.Forms.Button();
             this.btnFindNPCsInZone = new System.Windows.Forms.Button();
@@ -457,16 +468,8 @@
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
-            this.btnFindDoodadsInZone = new System.Windows.Forms.Button();
-            this.dataGridViewTextBoxColumn18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column23 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column28 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column25 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column26 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column31 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column53 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ofdJsonData = new System.Windows.Forms.OpenFileDialog();
+            this.btnShowEntityAreaShape = new System.Windows.Forms.Button();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -863,6 +866,8 @@
             // 
             // tpMap
             // 
+            this.tpMap.Controls.Add(this.btnShowEntityAreaShape);
+            this.tpMap.Controls.Add(this.btnLoadCustomAAEmuJson);
             this.tpMap.Controls.Add(this.btnLoadCustomPaths);
             this.tpMap.Controls.Add(this.label130);
             this.tpMap.Controls.Add(this.cbQuestSignSphereSearchShowAll);
@@ -880,6 +885,16 @@
             this.tpMap.TabIndex = 13;
             this.tpMap.Text = "Map";
             this.tpMap.UseVisualStyleBackColor = true;
+            // 
+            // btnLoadCustomAAEmuJson
+            // 
+            this.btnLoadCustomAAEmuJson.Location = new System.Drawing.Point(8, 297);
+            this.btnLoadCustomAAEmuJson.Name = "btnLoadCustomAAEmuJson";
+            this.btnLoadCustomAAEmuJson.Size = new System.Drawing.Size(230, 23);
+            this.btnLoadCustomAAEmuJson.TabIndex = 49;
+            this.btnLoadCustomAAEmuJson.Text = "Load custom AAEmu json entity data";
+            this.btnLoadCustomAAEmuJson.UseVisualStyleBackColor = true;
+            this.btnLoadCustomAAEmuJson.Click += new System.EventHandler(this.btnLoadCustomAAEmuJson_Click);
             // 
             // btnLoadCustomPaths
             // 
@@ -2465,6 +2480,69 @@
             this.dgvDoodads.Size = new System.Drawing.Size(567, 437);
             this.dgvDoodads.TabIndex = 11;
             this.dgvDoodads.SelectionChanged += new System.EventHandler(this.DgvDoodads_SelectionChanged);
+            // 
+            // dataGridViewTextBoxColumn18
+            // 
+            this.dataGridViewTextBoxColumn18.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn18.Name = "dataGridViewTextBoxColumn18";
+            this.dataGridViewTextBoxColumn18.ReadOnly = true;
+            this.dataGridViewTextBoxColumn18.Width = 43;
+            // 
+            // dataGridViewTextBoxColumn19
+            // 
+            this.dataGridViewTextBoxColumn19.HeaderText = "Name";
+            this.dataGridViewTextBoxColumn19.Name = "dataGridViewTextBoxColumn19";
+            this.dataGridViewTextBoxColumn19.ReadOnly = true;
+            this.dataGridViewTextBoxColumn19.Width = 60;
+            // 
+            // Column23
+            // 
+            this.Column23.HeaderText = "Managed";
+            this.Column23.Name = "Column23";
+            this.Column23.ReadOnly = true;
+            this.Column23.Width = 77;
+            // 
+            // Column28
+            // 
+            this.Column28.HeaderText = "Group";
+            this.Column28.Name = "Column28";
+            this.Column28.ReadOnly = true;
+            this.Column28.Width = 61;
+            // 
+            // Column25
+            // 
+            this.Column25.HeaderText = "Percent";
+            this.Column25.Name = "Column25";
+            this.Column25.ReadOnly = true;
+            this.Column25.Width = 69;
+            // 
+            // Column26
+            // 
+            this.Column26.HeaderText = "Faction";
+            this.Column26.Name = "Column26";
+            this.Column26.ReadOnly = true;
+            this.Column26.Width = 67;
+            // 
+            // Column31
+            // 
+            this.Column31.HeaderText = "Model Type";
+            this.Column31.Name = "Column31";
+            this.Column31.ReadOnly = true;
+            this.Column31.Width = 88;
+            // 
+            // Column22
+            // 
+            this.Column22.HeaderText = "Model";
+            this.Column22.Name = "Column22";
+            this.Column22.ReadOnly = true;
+            this.Column22.Width = 61;
+            // 
+            // Column53
+            // 
+            this.Column53.HeaderText = "Spawns";
+            this.Column53.Name = "Column53";
+            this.Column53.ReadOnly = true;
+            this.Column53.Width = 70;
             // 
             // tbFactions
             // 
@@ -4528,6 +4606,17 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Zone Groups Info";
             // 
+            // btnFindDoodadsInZone
+            // 
+            this.btnFindDoodadsInZone.Enabled = false;
+            this.btnFindDoodadsInZone.Location = new System.Drawing.Point(188, 178);
+            this.btnFindDoodadsInZone.Name = "btnFindDoodadsInZone";
+            this.btnFindDoodadsInZone.Size = new System.Drawing.Size(85, 23);
+            this.btnFindDoodadsInZone.TabIndex = 37;
+            this.btnFindDoodadsInZone.Text = "Find Doodads";
+            this.btnFindDoodadsInZone.UseVisualStyleBackColor = true;
+            this.btnFindDoodadsInZone.Click += new System.EventHandler(this.btnFindDoodadsInZone_Click);
+            // 
             // labelZoneGroupRestrictions
             // 
             this.labelZoneGroupRestrictions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -5063,79 +5152,21 @@
             this.ofdCustomPaths.Filter = "XML Files|*.xml|All Files|*.*";
             this.ofdCustomPaths.Title = "Open custom path";
             // 
-            // btnFindDoodadsInZone
+            // ofdJsonData
             // 
-            this.btnFindDoodadsInZone.Enabled = false;
-            this.btnFindDoodadsInZone.Location = new System.Drawing.Point(188, 178);
-            this.btnFindDoodadsInZone.Name = "btnFindDoodadsInZone";
-            this.btnFindDoodadsInZone.Size = new System.Drawing.Size(85, 23);
-            this.btnFindDoodadsInZone.TabIndex = 37;
-            this.btnFindDoodadsInZone.Text = "Find Doodads";
-            this.btnFindDoodadsInZone.UseVisualStyleBackColor = true;
-            this.btnFindDoodadsInZone.Click += new System.EventHandler(this.btnFindDoodadsInZone_Click);
+            this.ofdJsonData.DefaultExt = "xml";
+            this.ofdJsonData.Filter = "Json Files|*.json|All Files|*.*";
+            this.ofdJsonData.Title = "Open custom json data";
             // 
-            // dataGridViewTextBoxColumn18
+            // btnShowEntityAreaShape
             // 
-            this.dataGridViewTextBoxColumn18.HeaderText = "ID";
-            this.dataGridViewTextBoxColumn18.Name = "dataGridViewTextBoxColumn18";
-            this.dataGridViewTextBoxColumn18.ReadOnly = true;
-            this.dataGridViewTextBoxColumn18.Width = 43;
-            // 
-            // dataGridViewTextBoxColumn19
-            // 
-            this.dataGridViewTextBoxColumn19.HeaderText = "Name";
-            this.dataGridViewTextBoxColumn19.Name = "dataGridViewTextBoxColumn19";
-            this.dataGridViewTextBoxColumn19.ReadOnly = true;
-            this.dataGridViewTextBoxColumn19.Width = 60;
-            // 
-            // Column23
-            // 
-            this.Column23.HeaderText = "Managed";
-            this.Column23.Name = "Column23";
-            this.Column23.ReadOnly = true;
-            this.Column23.Width = 77;
-            // 
-            // Column28
-            // 
-            this.Column28.HeaderText = "Group";
-            this.Column28.Name = "Column28";
-            this.Column28.ReadOnly = true;
-            this.Column28.Width = 61;
-            // 
-            // Column25
-            // 
-            this.Column25.HeaderText = "Percent";
-            this.Column25.Name = "Column25";
-            this.Column25.ReadOnly = true;
-            this.Column25.Width = 69;
-            // 
-            // Column26
-            // 
-            this.Column26.HeaderText = "Faction";
-            this.Column26.Name = "Column26";
-            this.Column26.ReadOnly = true;
-            this.Column26.Width = 67;
-            // 
-            // Column31
-            // 
-            this.Column31.HeaderText = "Model Type";
-            this.Column31.Name = "Column31";
-            this.Column31.ReadOnly = true;
-            this.Column31.Width = 88;
-            // 
-            // Column22
-            // 
-            this.Column22.HeaderText = "Model";
-            this.Column22.Name = "Column22";
-            this.Column22.ReadOnly = true;
-            this.Column22.Width = 61;
-            // 
-            // Column53
-            // 
-            this.Column53.HeaderText = "Spawns";
-            this.Column53.Name = "Column53";
-            this.Column53.ReadOnly = true;
-            this.Column53.Width = 70;
+            this.btnShowEntityAreaShape.Location = new System.Drawing.Point(8, 345);
+            this.btnShowEntityAreaShape.Name = "btnShowEntityAreaShape";
+            this.btnShowEntityAreaShape.Size = new System.Drawing.Size(230, 23);
+            this.btnShowEntityAreaShape.TabIndex = 50;
+            this.btnShowEntityAreaShape.Text = "Show All Entity AreaShape";
+            this.btnShowEntityAreaShape.UseVisualStyleBackColor = true;
+            this.btnShowEntityAreaShape.Click += new System.EventHandler(this.btnShowEntityAreaShape_Click);
             // 
             // MainForm
             // 
@@ -5674,6 +5705,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column31;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column22;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column53;
+        private System.Windows.Forms.Button btnLoadCustomAAEmuJson;
+        private System.Windows.Forms.OpenFileDialog ofdJsonData;
+        private System.Windows.Forms.Button btnShowEntityAreaShape;
     }
 }
 

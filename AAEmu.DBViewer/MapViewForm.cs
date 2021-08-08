@@ -277,8 +277,9 @@ namespace AAEmu.DBViewer
 
         private void DrawCross(Graphics g, float x, float y, Color color, string name)
         {
-            int crossSize = (int)(6f / viewScale) + 1;
+            int crossSize = Math.Max((int)(6f / viewScale) + 1, 5);
             var pen = new Pen(color);
+            pen.Width = 1;
             var pos = CoordToPixel(x, y);
             g.DrawLine(pen, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y - crossSize, ViewOffset.X + x, ViewOffset.Y + pos.Y + crossSize);
             g.DrawLine(pen, ViewOffset.X + pos.X - crossSize, ViewOffset.Y + pos.Y, ViewOffset.X + pos.X + crossSize, ViewOffset.Y + pos.Y);
@@ -286,7 +287,13 @@ namespace AAEmu.DBViewer
             {
                 var f = new Font(Font.FontFamily, 12f / viewScale);
                 var br = new SolidBrush(color);
-                g.DrawString(name, f, br, ViewOffset.X + pos.X + crossSize, ViewOffset.Y + pos.Y - crossSize);
+                try
+                {
+                    g.DrawString(name, f, br, ViewOffset.X + pos.X + crossSize, ViewOffset.Y + pos.Y - crossSize);
+                } catch 
+                {
+                    g.DrawString("???", f, br, ViewOffset.X + pos.X + crossSize, ViewOffset.Y + pos.Y - crossSize);
+                }
             }
         }
 

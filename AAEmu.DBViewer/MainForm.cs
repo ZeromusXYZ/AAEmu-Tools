@@ -20,6 +20,7 @@ using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms.VisualStyles;
 using Newtonsoft.Json;
+using AAEmu.DBViewer.JsonData;
 
 namespace AAEmu.DBViewer
 {
@@ -4456,6 +4457,12 @@ namespace AAEmu.DBViewer
                     ZoneKeysList.Add(zonekey.Value.zone_key.ToString() + ";" + zonekey.Value.display_textLocalized);
                 File.WriteAllLines(Path.Combine(LookupExportPath, "zonekeys.txt"), ZoneKeysList);
 
+                // Factions
+                var FactionList = new List<string>();
+                foreach (var faction in AADB.DB_GameSystem_Factions)
+                    FactionList.Add(faction.Key.ToString() + ";" + faction.Value.nameLocalized);
+                File.WriteAllLines(Path.Combine(LookupExportPath, "factions.txt"), FactionList);
+
 
                 MessageBox.Show("Done exporting", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -4582,6 +4589,30 @@ namespace AAEmu.DBViewer
 
                 }
             } 
+        }
+
+        private Vector3 ReadXmlPos(string posStringBase)
+        {
+            var baseVec = Vector3.Zero;
+            var posVals = posStringBase.Split(',');
+            if (posVals.Length != 3)
+            {
+                MessageBox.Show("Invalid number of values inside Pos: " + posStringBase);
+            }
+            else
+            try
+            {
+                baseVec = new Vector3(
+                    float.Parse(posVals[0], CultureInfo.InvariantCulture),
+                    float.Parse(posVals[1], CultureInfo.InvariantCulture),
+                    float.Parse(posVals[2], CultureInfo.InvariantCulture)
+                    );
+            }
+            catch
+            {
+                MessageBox.Show("Invalid float inside Pos: " + posStringBase);
+            }
+            return baseVec;
         }
 
         private void AddCustomPath(ref List<MapViewPath> allpaths, Stream fileStream, string rootNodeName = "/Objects/Entity", string PointsNodeName = "Points/Point")
@@ -5682,6 +5713,199 @@ namespace AAEmu.DBViewer
                         Application.UseWaitCursor = false;
                     }
                 }
+            }
+
+        }
+
+        private void btnLoadCustomAAEmuJson_Click(object sender, EventArgs e)
+        {
+            List<MapViewPoI> allPoIs = new List<MapViewPoI>();
+
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+
+
+            if (ofdJsonData.ShowDialog() == DialogResult.OK)
+            {
+                var jsonFileName = ofdJsonData.FileName;
+                var isDoodads = jsonFileName.ToLower().Contains("doodad");
+                var isNPCs = jsonFileName.ToLower().Contains("npc"); ;
+                var isTransfers = jsonFileName.ToLower().Contains("transfer"); ;
+                var contents = File.ReadAllText(jsonFileName);
+                if (string.IsNullOrWhiteSpace(contents))
+                    MessageBox.Show("File " + jsonFileName + " is empty.");
+                else
+                {
+                    var data = JsonConvert.DeserializeObject<List<JsonNpcSpawns>>(contents);
+                    if (data.Count > 0)
+                    {
+                        try
+                        {
+                            foreach (var spawner in data)
+                            {
+                                var ni = new MapViewPoI();
+                                ni.CoordX = spawner.Position.X;
+                                ni.CoordY = spawner.Position.Y;
+                                ni.PoIColor = Color.LightGray;
+                                if (isNPCs && AADB.DB_NPCs.TryGetValue(spawner.UnitId, out var npc))
+                                {
+                                    ni.Name = npc.nameLocalized;
+                                    ni.PoIColor = Color.Yellow;
+                                }
+                                else
+                                if (isDoodads && AADB.DB_Doodad_Almighties.TryGetValue(spawner.UnitId, out var doodad))
+                                {
+                                    ni.Name = doodad.nameLocalized;
+                                    ni.PoIColor = Color.DarkGreen;
+                                }
+                                else
+                                if (isTransfers && AADB.DB_Transfers.TryGetValue(spawner.UnitId, out var transfer))
+                                {
+                                    ni.Name = "Model: " + transfer.model_id.ToString();
+                                    ni.PoIColor = Color.Navy;
+                                }
+                                else
+                                if (isDoodads || isNPCs || isTransfers)
+                                {
+                                    ni.PoIColor = Color.Red;
+                                }
+                                ni.Name += " (Id:" + spawner.Id + " - tId:" + spawner.UnitId + ")";
+                                if (spawner.UnitId <= 0)
+                                    ni.PoIColor = Color.Red;
+                                allPoIs.Add(ni);
+                            }
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+
+                }
+            }
+            else
+            {
+                return;
+            }
+
+
+            if (allPoIs.Count <= 0)
+                MessageBox.Show("Nothing to show ?");
+            else
+            {
+                var map = MapViewForm.GetMap();
+                map.Show();
+                if (map.GetPoICount() > 0)
+                    if (MessageBox.Show("Keep current PoI ?", "Add Custom Json data", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        map.ClearPoI();
+
+                foreach (var p in allPoIs)
+                    map.AddPoI(p.CoordX,p.CoordY,p.Name,p.PoIColor);
+
+                map.FocusAll(true, false, false);
+                map.tsbShowPoI.Checked = true;
+            }
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+
+        }
+
+        private void AddAreaShapes(string fileName, int cellX, int cellY, ref List<MapViewPath> allAreaShapes)
+        {
+            var fs = pak.ExportFileAsStream(fileName);
+
+            var _doc = new XmlDocument();
+            _doc.Load(fs);
+            var _allEntityBlocks = _doc.SelectNodes("/Mission/Objects/Entity");
+            var cellPos = new Vector3(cellX * 1024, cellY * 1024, 0);
+
+            for (var i = 0; i < _allEntityBlocks.Count; i++)
+            {
+                var block = _allEntityBlocks[i];
+                var attribs = ReadNodeAttributes(block);
+                if (attribs.TryGetValue("entityclass", out var entityClass))
+                {
+                    if (entityClass == "AreaShape")
+                    {
+
+                        var areaName = attribs["name"];
+                        var entityId = attribs["entityid"];
+                        var posString = attribs["pos"];
+                        var areaPos = ReadXmlPos(posString);
+
+                        var mapPath = new MapViewPath();
+                        mapPath.PathName = areaName + " (" + entityId +")";
+
+                        var areaBlock = block.SelectSingleNode("Area");
+                        if (areaBlock == null)
+                            continue; // this shape has no area defined
+
+                        var areaAttribs = ReadNodeAttributes(areaBlock);
+                        var areaHeight = areaAttribs["height"]; // not used in the this viewer
+
+                        var pointBlocks = areaBlock.SelectNodes("Points/Point");
+
+                        var firstPos = Vector3.Zero;
+                        for(var p = 0; p < pointBlocks.Count;p++)
+                        {
+                            var pointAttribs = ReadNodeAttributes(pointBlocks[p]);
+                            var pointPos = ReadXmlPos(pointAttribs["pos"]);
+                            var pos = cellPos + areaPos + pointPos;
+                            mapPath.allpoints.Add(pos);
+                            if (p == 0)
+                                firstPos = pos;
+                        }
+                        if (pointBlocks.Count > 2)
+                            mapPath.allpoints.Add(firstPos);
+
+                        allAreaShapes.Add(mapPath);
+                    }
+                }
+            }
+        }
+
+        private void btnShowEntityAreaShape_Click(object sender, EventArgs e)
+        {
+            if (!pak.isOpen)
+                return;
+
+            var entityFiles = new List<string>();
+            var worldName = "main_world";
+
+            var allAreaShapes = new List<MapViewPath>();
+
+
+            using (var loading = new LoadingForm())
+            {
+                loading.Show();
+                loading.ShowInfo("Searching for cell entities");
+                var worldXml = MapViewWorldXML.GetInstanceByName(worldName);
+
+                for (var y = 0; y <= worldXml.CellCount.Y; y++)
+                    for (var x = 0; x <= worldXml.CellCount.X; x++)
+                    {
+                        var cellName = x.ToString().PadLeft(3, '0') + "_" + y.ToString().PadLeft(3, '0');
+                        var fn = "game/worlds/"+ worldName + "/cells/" + cellName + "/client/entities.xml";
+                        if (pak.FileExists(fn))
+                        {
+                            AddAreaShapes(fn, x, y, ref allAreaShapes);
+                        }
+                    }
+
+
+                var map = MapViewForm.GetMap();
+                map.Show();
+                if (map.GetPathCount() > 0)
+                    if (MessageBox.Show("Keep current Paths ?", "Add AreaShapes", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        map.ClearPaths();
+
+                loading.ShowInfo("Adding " + allAreaShapes.Count.ToString() + " areas");
+
+                foreach (var p in allAreaShapes)
+                    map.AddPath(p);
+
+                map.FocusAll(false, true, false);
+                map.tsbShowPath.Checked = true;
             }
 
         }
