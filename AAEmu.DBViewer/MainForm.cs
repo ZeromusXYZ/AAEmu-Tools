@@ -4463,6 +4463,12 @@ namespace AAEmu.DBViewer
                     FactionList.Add(faction.Key.ToString() + ";" + faction.Value.nameLocalized);
                 File.WriteAllLines(Path.Combine(LookupExportPath, "factions.txt"), FactionList);
 
+                // Quest Names
+                var QuestList = new List<string>();
+                foreach (var quest in AADB.DB_Quest_Contexts)
+                    QuestList.Add(quest.Key.ToString() + ";" + quest.Value.nameLocalized);
+                File.WriteAllLines(Path.Combine(LookupExportPath, "quests.txt"), QuestList);
+
 
                 MessageBox.Show("Done exporting", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
