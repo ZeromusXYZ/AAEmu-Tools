@@ -36,6 +36,7 @@ namespace AAEmu.DBViewer
         private List<MapViewPoI> poi = new List<MapViewPoI>();
         private List<MapViewPath> paths = new List<MapViewPath>();
         private List<MapViewPath> housing = new List<MapViewPath>();
+        private List<MapViewPath> subzone = new List<MapViewPath>();
         private List<MapViewPoI> quest_sign_sphere = new List<MapViewPoI>();
         private RectangleF FocusBorder = new RectangleF();
 
@@ -641,6 +642,10 @@ namespace AAEmu.DBViewer
                     foreach (var houseArea in housing)
                         DrawPath(g, houseArea, tsbNamesHousing.Checked);
 
+                if (tsbShowSubzone.Checked)
+                    foreach (var subzoneArea in subzone)
+                        DrawPath(g, subzoneArea, tsbNamesSubzone.Checked);
+
                 if (cbFocus.Checked)
                     g.DrawRectangle(Pens.OrangeRed, ViewOffset.X + FocusBorder.X, ViewOffset.Y - FocusBorder.Y - FocusBorder.Height, FocusBorder.Width, FocusBorder.Height);
 
@@ -888,14 +893,30 @@ namespace AAEmu.DBViewer
             housing.Add(path);
         }
 
+        
+        public void AddSubZone(MapViewPath path)
+        {
+            subzone.Add(path);
+        }
+
         public void ClearHousing()
         {
             housing.Clear();
         }
 
+        public void ClearSubZone()
+        {
+            subzone.Clear();
+        }
+
         public int GetHousingCount()
         {
             return housing.Count;
+        }
+
+        public int GetSubZoneCount()
+        {
+            return subzone.Count;
         }
 
         private void MapViewForm_FormClosed(object sender, FormClosedEventArgs e)
