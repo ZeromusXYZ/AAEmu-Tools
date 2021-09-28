@@ -66,7 +66,9 @@
             this.cbQuestSignSphereSearchShowAll = new System.Windows.Forms.CheckBox();
             this.eQuestSignSphereSearch = new System.Windows.Forms.TextBox();
             this.label129 = new System.Windows.Forms.Label();
+            this.label131 = new System.Windows.Forms.Label();
             this.btnFindAllHousing = new System.Windows.Forms.Button();
+            this.btnFindAllSubzone = new System.Windows.Forms.Button();
             this.label128 = new System.Windows.Forms.Label();
             this.btnFindAllQuestSpheres = new System.Windows.Forms.Button();
             this.btnFindAllTransferPaths = new System.Windows.Forms.Button();
@@ -873,7 +875,9 @@
             this.tpMap.Controls.Add(this.cbQuestSignSphereSearchShowAll);
             this.tpMap.Controls.Add(this.eQuestSignSphereSearch);
             this.tpMap.Controls.Add(this.label129);
+            this.tpMap.Controls.Add(this.label131);
             this.tpMap.Controls.Add(this.btnFindAllHousing);
+            this.tpMap.Controls.Add(this.btnFindAllSubzone);
             this.tpMap.Controls.Add(this.label128);
             this.tpMap.Controls.Add(this.btnFindAllQuestSpheres);
             this.tpMap.Controls.Add(this.btnFindAllTransferPaths);
@@ -931,6 +935,25 @@
             this.eQuestSignSphereSearch.Name = "eQuestSignSphereSearch";
             this.eQuestSignSphereSearch.Size = new System.Drawing.Size(171, 20);
             this.eQuestSignSphereSearch.TabIndex = 45;
+            //
+            // label131
+            // 
+            this.label131.AutoSize = true;
+            this.label131.Location = new System.Drawing.Point(242, 170);
+            this.label131.Name = "label131";
+            this.label131.Size = new System.Drawing.Size(108, 13);
+            this.label131.TabIndex = 44;
+            this.label131.Text = "Shows subzone areas";
+            // 
+            // btnFindAllSubzone
+            // 
+            this.btnFindAllSubzone.Location = new System.Drawing.Point(6, 185);
+            this.btnFindAllSubzone.Name = "btnFindAllSubzone";
+            this.btnFindAllSubzone.Size = new System.Drawing.Size(230, 23);
+            this.btnFindAllSubzone.TabIndex = 50;
+            this.btnFindAllSubzone.Text = "Show All Subzone";
+            this.btnFindAllSubzone.UseVisualStyleBackColor = true;
+            this.btnFindAllSubzone.Click += new System.EventHandler(this.btnFindAllSubZone_Click);
             // 
             // label129
             // 
@@ -5684,7 +5707,9 @@
         private System.Windows.Forms.Button btnFindAllQuestSpheres;
         private System.Windows.Forms.Label label128;
         private System.Windows.Forms.Label label129;
+        private System.Windows.Forms.Label label131;
         private System.Windows.Forms.Button btnFindAllHousing;
+        private System.Windows.Forms.Button btnFindAllSubzone;
         private System.Windows.Forms.TextBox eQuestSignSphereSearch;
         private System.Windows.Forms.Label label130;
         private System.Windows.Forms.CheckBox cbQuestSignSphereSearchShowAll;

@@ -242,6 +242,13 @@ namespace AAEmu.DBDefs
                 return "game/worlds/" + main_world + "/level_design/zone/" + zone_key.ToString() + "/client/housing_area.xml";
             }
         }
+        public string GamePakSubZoneXML
+        {
+            get
+            {
+                return "game/worlds/" + main_world + "/level_design/zone/" + zone_key.ToString() + "/client/subzone_area.xml";
+            }
+        }
     }
 
     class GameZone_Groups
@@ -331,7 +338,7 @@ namespace AAEmu.DBDefs
         public string nameLocalized = string.Empty;
         public string SearchString = string.Empty;
     }
-
+    
     class GameDoodad
     {
         // TABLE doodad_almighties

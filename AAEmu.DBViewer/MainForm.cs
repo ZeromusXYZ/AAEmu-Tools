@@ -4848,6 +4848,153 @@ namespace AAEmu.DBViewer
             }
         }
 
+        private void AddSubZones(ref List<MapViewPath> allareas, GameZone zone)
+        {
+            if (zone != null)
+            {
+                var worldOff = MapViewWorldXML.main_world.GetZoneByKey(zone.zone_key);
+
+                // If it's not in the world.xml, it's probably not a real zone anyway
+                if (worldOff == null)
+                    return;
+
+                if (!pak.isOpen || !pak.FileExists(zone.GamePakSubZoneXML))
+                {
+                    // MessageBox.Show("No path file found for this zone");
+                    return;
+                }
+                //MessageBox.Show("Loading: " + zone.GamePakZoneTransferPathXML);
+
+                int areasFound = 0;
+                try
+                {
+                    var fs = pak.ExportFileAsStream(zone.GamePakSubZoneXML);
+
+                    var _doc = new XmlDocument();
+                    _doc.Load(fs);
+                    var _allHousingBlocks = _doc.SelectNodes("/Objects/Entity");
+                    for (var i = 0; i < _allHousingBlocks.Count; i++)
+                    {
+                        var block = _allHousingBlocks[i];
+                        var entityAttribs = ReadNodeAttributes(block);
+
+                        if (entityAttribs.TryGetValue("name", out var blockName))
+                        {
+
+                            int cellXOffset = 0;
+                            int cellYOffset = 0;
+
+                            if (entityAttribs.TryGetValue("cellx", out var cellXOffsetString))
+                                try { cellXOffset = int.Parse(cellXOffsetString); }
+                                catch { cellXOffset = 0; }
+                            if (entityAttribs.TryGetValue("celly", out var cellYOffsetString))
+                                try { cellYOffset = int.Parse(cellYOffsetString); }
+                                catch { cellYOffset = 0; }
+
+
+                            var areaNodes = block.SelectNodes("Area");
+                            for (var j = 0; j < areaNodes.Count; j++)
+                            {
+                                var areaNode = areaNodes[j];
+                                var areaAttribs = ReadNodeAttributes(areaNode);
+                                var startVector = new Vector3();
+
+                                var newArea = new MapViewPath();
+                                newArea.PathName = blockName;
+
+
+                                if (areaAttribs.TryGetValue("value1", out var val1))
+                                {
+                                    newArea.TypeId = long.Parse(val1);
+                                }
+
+                                if (newArea.TypeId <= 0)
+                                    newArea.Color = Color.Orange;
+
+                                newArea.PathName = blockName + "(v:" + newArea.TypeId.ToString() + " z:" + zone.zone_key.ToString() + ")";
+
+                                if (entityAttribs.TryGetValue("pos", out var valPos))
+                                {
+                                    var posVals = valPos.Split(',');
+                                    if (posVals.Length != 3)
+                                    {
+                                        MessageBox.Show("Invalid number of values inside Pos: " + valPos);
+                                        continue;
+                                    }
+                                    try
+                                    {
+                                        startVector = new Vector3(
+                                            float.Parse(posVals[0], CultureInfo.InvariantCulture),
+                                            float.Parse(posVals[1], CultureInfo.InvariantCulture),
+                                            float.Parse(posVals[2], CultureInfo.InvariantCulture)
+                                            );
+                                    }
+                                    catch
+                                    {
+                                        MessageBox.Show("Invalid float inside Pos: " + valPos);
+                                    }
+                                }
+
+
+                                PointF cellOffset = new PointF(((worldOff.originCellX + cellXOffset) * 1024f), ((worldOff.originCellY + cellYOffset) * 1024f));
+                                areasFound++;
+
+                                Vector3 firstVector = Vector3.Zero;
+
+                                var pointsxml = areaNode.SelectNodes("Points/Point");
+                                for (var n = 0; n < pointsxml.Count; n++)
+                                {
+                                    var pointxml = pointsxml[n];
+                                    var pointattribs = ReadNodeAttributes(pointxml);
+                                    if (pointattribs.TryGetValue("pos", out var posString))
+                                    {
+                                        var posVals = posString.Split(',');
+                                        if (posVals.Length != 3)
+                                        {
+                                            MessageBox.Show("Invalid number of values inside Pos: " + posString);
+                                            continue;
+                                        }
+                                        try
+                                        {
+                                            var vec = new Vector3(
+                                                float.Parse(posVals[0], CultureInfo.InvariantCulture) + cellOffset.X,
+                                                float.Parse(posVals[1], CultureInfo.InvariantCulture) + cellOffset.Y,
+                                                float.Parse(posVals[2], CultureInfo.InvariantCulture)
+                                                ) + startVector;
+                                            if (firstVector == Vector3.Zero)
+                                                firstVector = vec;
+                                            newArea.AddPoint(vec);
+                                        }
+                                        catch
+                                        {
+                                            MessageBox.Show("Invalid float inside Pos: " + posString);
+                                        }
+
+                                    }
+                                }
+                                // Close the loop
+                                if (firstVector != Vector3.Zero)
+                                    newArea.AddPoint(firstVector);
+
+                                allareas.Add(newArea);
+
+                            }
+                        }
+                    }
+                }
+                catch (Exception x)
+                {
+                    MessageBox.Show(x.Message);
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Invalid zone selected ?");
+                return;
+            }
+        }
+
         private void AddHousingZones(ref List<MapViewPath> allareas, GameZone zone)
         {
             if (zone != null)
@@ -5428,6 +5575,43 @@ namespace AAEmu.DBViewer
             }
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
+
+        }
+
+        private void btnFindAllSubZone_Click(object sender, EventArgs e)
+        {
+            PrepareWorldXML(false);
+            List<MapViewPath> allareas = new List<MapViewPath>();
+
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+
+            foreach (var zv in AADB.DB_Zones)
+                AddSubZones(ref allareas, zv.Value);
+
+            if (allareas.Count <= 0)
+                MessageBox.Show("No subzone found ?");
+            else
+            {
+                var map = MapViewForm.GetMap();
+                map.Show();
+
+                // We no longer have the housing by zone button, so we no longer need to ask, just clear it
+                //if (map.GetHousingCount() > 0)
+                //    if (MessageBox.Show("Keep current housing areas ?", "Add Housing", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                map.ClearSubZone();
+                
+                foreach (var p in allareas)
+                {
+                    map.AddSubZone(p);
+                }
+
+
+                map.tsbShowSubzone.Checked = true;
+            }
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+            
 
         }
 

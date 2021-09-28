@@ -56,12 +56,14 @@
             this.tsbShowPoI = new System.Windows.Forms.ToolStripButton();
             this.tsbShowPath = new System.Windows.Forms.ToolStripButton();
             this.tsbShowHousing = new System.Windows.Forms.ToolStripButton();
+            this.tsbShowSubzone = new System.Windows.Forms.ToolStripButton();
             this.tsbShowQuestSphere = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.tsbNamesPoI = new System.Windows.Forms.ToolStripButton();
             this.tsbNamesPath = new System.Windows.Forms.ToolStripButton();
             this.tsbNamesHousing = new System.Windows.Forms.ToolStripButton();
+            this.tsbNamesSubzone = new System.Windows.Forms.ToolStripButton();
             this.tsbNamesQuestSphere = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.pView = new System.Windows.Forms.PictureBox();
@@ -316,12 +318,14 @@
             this.tsbShowPoI,
             this.tsbShowPath,
             this.tsbShowHousing,
+            this.tsbShowSubzone,
             this.tsbShowQuestSphere,
             this.toolStripSeparator1,
             this.toolStripLabel1,
             this.tsbNamesPoI,
             this.tsbNamesPath,
             this.tsbNamesHousing,
+            this.tsbNamesSubzone,
             this.tsbNamesQuestSphere,
             this.toolStripSeparator2});
             this.toolBar.Location = new System.Drawing.Point(0, 0);
@@ -426,6 +430,19 @@
             this.tsbShowHousing.Text = "Housing";
             this.tsbShowHousing.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
             // 
+            // tsbShowSubzone
+            // 
+            this.tsbShowSubzone.Checked = true;
+            this.tsbShowSubzone.CheckOnClick = true;
+            this.tsbShowSubzone.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tsbShowSubzone.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbShowSubzone.Image = global::AAEmu.DBViewer.Properties.Resources.icon_map_house;
+            this.tsbShowSubzone.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbShowSubzone.Name = "tsbShowSubzone";
+            this.tsbShowSubzone.Size = new System.Drawing.Size(23, 22);
+            this.tsbShowSubzone.Text = "Subzone";
+            this.tsbShowSubzone.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
             // tsbShowQuestSphere
             // 
             this.tsbShowQuestSphere.Checked = true;
@@ -482,6 +499,17 @@
             this.tsbNamesHousing.Size = new System.Drawing.Size(23, 22);
             this.tsbNamesHousing.Text = "Housing";
             this.tsbNamesHousing.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
+            // 
+            // tsbNamesSubzone
+            // 
+            this.tsbNamesSubzone.CheckOnClick = true;
+            this.tsbNamesSubzone.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbNamesSubzone.Image = global::AAEmu.DBViewer.Properties.Resources.icon_map_house;
+            this.tsbNamesSubzone.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbNamesSubzone.Name = "tsbNamesSubzone";
+            this.tsbNamesSubzone.Size = new System.Drawing.Size(23, 22);
+            this.tsbNamesSubzone.Text = "Subzone";
+            this.tsbNamesSubzone.CheckedChanged += new System.EventHandler(this.cbOptionsChanged);
             // 
             // tsbNamesQuestSphere
             // 
@@ -567,11 +595,13 @@
         public System.Windows.Forms.ToolStripButton tsbNamesPoI;
         public System.Windows.Forms.ToolStripButton tsbNamesPath;
         public System.Windows.Forms.ToolStripButton tsbNamesHousing;
+        public System.Windows.Forms.ToolStripButton tsbNamesSubzone;
         public System.Windows.Forms.ToolStripButton tsbNamesQuestSphere;
         public System.Windows.Forms.ToolStrip toolBar;
         public System.Windows.Forms.ToolStripButton tsbShowPoI;
         public System.Windows.Forms.ToolStripButton tsbShowPath;
         public System.Windows.Forms.ToolStripButton tsbShowHousing;
+        public System.Windows.Forms.ToolStripButton tsbShowSubzone;
         public System.Windows.Forms.ToolStripButton tsbShowQuestSphere;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripLabel toolStripLabel3;
