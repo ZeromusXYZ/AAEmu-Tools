@@ -798,7 +798,7 @@ namespace AAEmu.DBViewer
 
                         while (reader.Read())
                         {
-                            GameSkills t = new GameSkills();
+                            var t = new GameSkills();
                             t.id = GetInt64(reader, "id");
                             t.name = GetString(reader, "name");
                             t.desc = GetString(reader, "desc");
@@ -821,6 +821,7 @@ namespace AAEmu.DBViewer
                             t.default_gcd = GetBool(reader, "default_gcd"); ;
                             t.custom_gcd = GetInt64(reader, "custom_gcd");
                             t.first_reagent_only = GetBool(reader, "first_reagent_only");
+                            t.plot_id = GetInt64(reader, "plot_id");
 
                             t.nameLocalized = GetTranslationByID(t.id, "skills", "name", t.name);
                             t.descriptionLocalized = GetTranslationByID(t.id, "skills", "desc", t.desc);
@@ -1813,6 +1814,128 @@ namespace AAEmu.DBViewer
             }
         }
 
+        private void LoadPlots()
+        {
+            // base plots
+            string sql = "SELECT * FROM plots";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_TransferPaths.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+
+                            var t = new GamePlot();
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+                            t.target_type_id = GetInt64(reader, "target_type_id");
+
+                            AADB.DB_Plots.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
+
+            // events
+            sql = "SELECT * FROM plot_events";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_TransferPaths.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+
+                            var t = new GamePlotEvent();
+                            t.id = GetInt64(reader, "id");
+                            t.plot_id = GetInt64(reader, "plot_id");
+                            t.postion = GetInt64(reader, "position");
+                            t.name = GetString(reader, "name");
+                            t.source_update_method_id = GetInt64(reader, "source_update_method_id");
+                            t.target_update_method_id = GetInt64(reader, "target_update_method_id");
+                            t.target_update_method_param1 = GetInt64(reader, "target_update_method_param1");
+                            t.target_update_method_param2 = GetInt64(reader, "target_update_method_param2");
+                            t.target_update_method_param3 = GetInt64(reader, "target_update_method_param3");
+                            t.target_update_method_param4 = GetInt64(reader, "target_update_method_param4");
+                            t.target_update_method_param5 = GetInt64(reader, "target_update_method_param5");
+                            t.target_update_method_param6 = GetInt64(reader, "target_update_method_param6");
+                            t.target_update_method_param7 = GetInt64(reader, "target_update_method_param7");
+                            t.target_update_method_param8 = GetInt64(reader, "target_update_method_param8");
+                            t.target_update_method_param9 = GetInt64(reader, "target_update_method_param9");
+                            t.tickets = GetInt64(reader, "tickets");
+                            t.aeo_diminishing = GetBool(reader, "aoe_diminishing");
+
+                            AADB.DB_Plot_Events.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
+
+            // events
+            sql = "SELECT * FROM plot_next_events";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_TransferPaths.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+
+                            var t = new GamePlotNextEvent();
+                            t.id = GetInt64(reader, "id");
+                            t.event_id = GetInt64(reader, "id");
+                            t.postion = GetInt64(reader, "position");
+                            t.next_event_id = GetInt64(reader, "next_event_id");
+                            t.delay = GetInt64(reader, "delay");
+                            t.speed = GetInt64(reader, "speed");
+
+                            AADB.DB_Plot_Next_Events.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
+
+
+
+        }
+
         private void BtnItemSearch_Click(object sender, EventArgs e)
         {
             dgvItem.Rows.Clear();
@@ -2106,13 +2229,27 @@ namespace AAEmu.DBViewer
                     {
                         try
                         {
-                            var fStream = pak.ExportFileAsStream(fn);
-                            var fif = FREE_IMAGE_FORMAT.FIF_DDS;
-                            FIBITMAP fiBitmap = FreeImage.LoadFromStream(fStream, ref fif);
-                            var bmp = FreeImage.GetBitmap(fiBitmap);
-                            iconImgLabel.Image = bmp;
+                            // Is it cached already ?
+                            var cachedImageIndex = ilIcons.Images.IndexOfKey(icon_id.ToString());
+                            if (cachedImageIndex >= 0)
+                            {
+                                iconImgLabel.Image = ilIcons.Images[cachedImageIndex];
+                                iconImgLabel.Text = "";
+                            }
+                            else
+                            {
+                                // Load from pak if not cached
+                                var fStream = pak.ExportFileAsStream(fn);
+                                var fif = FREE_IMAGE_FORMAT.FIF_DDS;
+                                FIBITMAP fiBitmap = FreeImage.LoadFromStream(fStream, ref fif);
+                                var bmp = FreeImage.GetBitmap(fiBitmap);
+                                iconImgLabel.Image = bmp;
 
-                            iconImgLabel.Text = "";
+                                iconImgLabel.Text = "";
+                                // If not loaded into image list yet, do it now
+                                ilIcons.Images.Add(icon_id.ToString(), iconImgLabel.Image);
+                                ilMiniIcons.Images.Add(icon_id.ToString(), iconImgLabel.Image);
+                            }
                             // itemIcon.Text = "[" + iconname + "]";
                         }
                         catch
@@ -2262,6 +2399,80 @@ namespace AAEmu.DBViewer
             }
         }
 
+        private void AddPlotEventNode(TreeNode parent, GamePlotEvent child, int depth = 0)
+        {
+            depth++;
+            if (depth > 16)
+            {
+                var overflowNode = new TreeNode("Too many recursions !");
+                overflowNode.ImageIndex = 3;
+                overflowNode.SelectedImageIndex = 3;
+                overflowNode.StateImageIndex = 3;
+                overflowNode.Tag = 0;
+                parent.Nodes.Add(overflowNode);
+                return;
+            }
+            var nodeName = child.id.ToString() + " - " + child.name;
+            if (child.tickets > 1)
+                nodeName = child.tickets.ToString() + " x " + nodeName;
+            var eventNode = new TreeNode(nodeName);
+            eventNode.ImageIndex = 0;
+            eventNode.SelectedImageIndex = 0;
+            eventNode.StateImageIndex = 0;
+            eventNode.Tag = child.id;
+            parent.Nodes.Add(eventNode);
+
+            var nextEvents = AADB.DB_Plot_Next_Events.Where(nextEvent => nextEvent.Value.event_id == child.id);
+            foreach (var n in nextEvents)
+            {
+                if (AADB.DB_Plot_Events.TryGetValue(n.Value.next_event_id, out var next))
+                {
+                    AddPlotEventNode(eventNode, next, depth);
+                    /*
+                    var nextNode = new TreeNode(next.id.ToString() + " - " + next.name);
+                    nextNode.Tag = next.id;
+                    parent.Nodes.Add(nextNode);
+                    */
+                }
+                else
+                {
+                    var errorNode = new TreeNode("Unknown Next Event: " + n.Value.next_event_id.ToString());
+                    errorNode.ImageIndex = 3;
+                    errorNode.SelectedImageIndex = 3;
+                    errorNode.StateImageIndex = 3;
+                    errorNode.Tag = 0;
+                    parent.Nodes.Add(errorNode);
+                }
+
+            }
+        }
+
+        private void ShowSkillPlotTree(GameSkills skill)
+        {
+            tvSkill.Nodes.Clear();
+            var imgId = ilIcons.Images.IndexOfKey(skill.icon_id.ToString());
+            var rootNode = new TreeNode(skill.nameLocalized, imgId, imgId);
+            rootNode.Tag = 0;
+            tvSkill.Nodes.Add(rootNode);
+            if (AADB.DB_Plots.TryGetValue(skill.plot_id, out var plot))
+            {
+                var firstPlotNode = new TreeNode(plot.id.ToString() + " - " + plot.name);
+                firstPlotNode.ImageIndex = 1;
+                firstPlotNode.SelectedImageIndex = 1;
+                firstPlotNode.StateImageIndex = 1;
+                firstPlotNode.Tag = plot.id;
+                tvSkill.Nodes.Add(firstPlotNode);
+
+                var events = AADB.DB_Plot_Events.Where(plotEvent => plotEvent.Value.plot_id == plot.id).OrderBy(plotEvent => plotEvent.Value.postion);
+                foreach (var e in events)
+                {
+                    AddPlotEventNode(firstPlotNode, e.Value);
+                }
+            }
+            tvSkill.ExpandAll();
+            tvSkill.SelectedNode = rootNode;
+        }
+
         private void ShowDBSkill(long idx)
         {
             if (AADB.DB_Skills.TryGetValue(idx, out var skill))
@@ -2305,6 +2516,7 @@ namespace AAEmu.DBViewer
                 {
                     labelSkillReagents.Text = "Required items to use this skill";
                 }
+                
                 // Produces
                 dgvSkillProducts.Rows.Clear();
                 foreach (var p in AADB.DB_Skill_Products)
@@ -2347,6 +2559,7 @@ namespace AAEmu.DBViewer
                     }
                 }
 
+                ShowSkillPlotTree(skill);
             }
             else
             {
@@ -2361,6 +2574,7 @@ namespace AAEmu.DBViewer
                 skillIcon.Image = null;
                 skillIcon.Text = "???";
                 lSkillTags.Text = "???";
+                tvSkill.Nodes.Clear();
             }
         }
 
@@ -2904,6 +3118,8 @@ namespace AAEmu.DBViewer
                 LoadIcons();
                 loading.ShowInfo("Loading: Factions");
                 LoadFactions();
+                loading.ShowInfo("Loading: Plots");
+                LoadPlots();
                 loading.ShowInfo("Loading: Buffs");
                 LoadBuffs();
                 loading.ShowInfo("Loading: Transfers");
@@ -6097,6 +6313,55 @@ namespace AAEmu.DBViewer
                 map.FocusAll(false, true, false);
                 map.tsbShowPath.Checked = true;
             }
+
+        }
+
+        private void tpSkills_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tvSkill_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            lPlotEventSourceUpdate.Text = "Source Update: ?";
+            lPlotEventTargetUpdate.Text = "Target Update: ?";
+            lPlotEventP1.Text = "1: ?";
+            lPlotEventP2.Text = "2: ?";
+            lPlotEventP3.Text = "3: ?";
+            lPlotEventP4.Text = "4: ?";
+            lPlotEventP5.Text = "5: ?";
+            lPlotEventP6.Text = "6: ?";
+            lPlotEventP7.Text = "7: ?";
+            lPlotEventP8.Text = "8: ?";
+            lPlotEventP9.Text = "9: ?";
+            lPlotEventTickets.Text = "Tickets: ?";
+            lPlotEventAoE.Text = "AoE: ?";
+
+
+            if (e.Node == null)
+                return;
+            if (!AADB.DB_Plot_Events.TryGetValue(long.Parse(e.Node.Tag.ToString()), out var plotEvent))
+                return;
+
+            lPlotEventSourceUpdate.Text = "Source Update: " + plotEvent.source_update_method_id.ToString();
+            lPlotEventTargetUpdate.Text = "Target Update: " + plotEvent.target_update_method_id.ToString();
+            lPlotEventP1.Text = "1: " + plotEvent.target_update_method_param1.ToString();
+            lPlotEventP2.Text = "2: " + plotEvent.target_update_method_param2.ToString();
+            lPlotEventP3.Text = "3: " + plotEvent.target_update_method_param3.ToString();
+            lPlotEventP4.Text = "4: " + plotEvent.target_update_method_param4.ToString();
+            lPlotEventP5.Text = "5: " + plotEvent.target_update_method_param5.ToString();
+            lPlotEventP6.Text = "6: " + plotEvent.target_update_method_param6.ToString();
+            lPlotEventP7.Text = "7: " + plotEvent.target_update_method_param7.ToString();
+            lPlotEventP8.Text = "8: " + plotEvent.target_update_method_param8.ToString();
+            lPlotEventP9.Text = "9: " + plotEvent.target_update_method_param9.ToString();
+            lPlotEventTickets.Text = "Tickets: " + plotEvent.tickets.ToString();
+            lPlotEventAoE.Text = "AoE: " + (plotEvent.aeo_diminishing ? "Diminishing" : "Normal");
+
+            ShowSelectedData("plot_events", "id == " + plotEvent.id.ToString(), "id");
+        }
+
+        private void label137_Click(object sender, EventArgs e)
+        {
 
         }
     }

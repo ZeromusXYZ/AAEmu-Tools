@@ -104,6 +104,7 @@ namespace AAEmu.DBDefs
         public long timing_id = 0;
         public long consume_lp = 0;
         public bool first_reagent_only = false;
+        public long plot_id = 0;
 
         // Helpers
         public string nameLocalized = string.Empty;
@@ -594,6 +595,45 @@ namespace AAEmu.DBDefs
         public float radius = 0.0f;
     }
 
+    public class GamePlot
+    {
+        public long id = 0;
+        public string name = string.Empty;
+        public long target_type_id = 0;
+    }
+
+    public class GamePlotEvent
+    {
+        public long id = 0;
+        public long plot_id = 0;
+        public long postion = 0;
+        public string name = string.Empty;
+        public long source_update_method_id = 0;
+        public long target_update_method_id = 0;
+        public long target_update_method_param1 = 0;
+        public long target_update_method_param2 = 0;
+        public long target_update_method_param3 = 0;
+        public long target_update_method_param4 = 0;
+        public long target_update_method_param5 = 0;
+        public long target_update_method_param6 = 0;
+        public long target_update_method_param7 = 0;
+        public long target_update_method_param8 = 0;
+        public long target_update_method_param9 = 0;
+        public long tickets = 0;
+        public bool aeo_diminishing = false;
+    }
+
+    public class GamePlotNextEvent
+    {
+        public long id = 0;
+        public long event_id = 0;
+        public long postion = 0;
+        public long next_event_id = 0;
+        public long delay = 0;
+        public long speed = 0;
+        // Not loading the rest for now
+    }
+
 
     static class AADB
     {
@@ -629,6 +669,9 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameTransfers> DB_Transfers = new Dictionary<long, GameTransfers>();
         static public List<GameTransferPaths> DB_TransferPaths = new List<GameTransferPaths>();
         static public List<QuestSphereEntry> PAK_QuestSignSpheres = new List<QuestSphereEntry>();
+        static public Dictionary<long, GamePlot> DB_Plots = new Dictionary<long, GamePlot>();
+        static public Dictionary<long, GamePlotEvent> DB_Plot_Events = new Dictionary<long, GamePlotEvent>();
+        static public Dictionary<long, GamePlotNextEvent> DB_Plot_Next_Events = new Dictionary<long, GamePlotNextEvent>();
 
         static public string GetFactionName(long faction_id, bool addID = false)
         {
