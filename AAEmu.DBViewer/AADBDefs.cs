@@ -645,6 +645,14 @@ namespace AAEmu.DBDefs
         public bool notify_failure = false;
     }
 
+    public class GameNpcSpawnersNpc
+    {
+        public long id = 0;
+        public long npc_spawner_id = 0;
+        public long member_id = 0;
+        public string member_type = string.Empty;
+        public float weight = 0f;
+    }
 
     static class AADB
     {
@@ -684,6 +692,7 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GamePlotEvent> DB_Plot_Events = new Dictionary<long, GamePlotEvent>();
         static public Dictionary<long, GamePlotNextEvent> DB_Plot_Next_Events = new Dictionary<long, GamePlotNextEvent>();
         static public Dictionary<long, GamePlotEventCondition> DB_Plot_Event_Conditions = new Dictionary<long, GamePlotEventCondition>();
+        static public Dictionary<long, GameNpcSpawnersNpc> DB_Npc_Spawner_Npcs = new Dictionary<long, GameNpcSpawnersNpc>();
 
         static public string GetFactionName(long faction_id, bool addID = false)
         {

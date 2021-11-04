@@ -1063,6 +1063,37 @@ namespace AAEmu.DBViewer
                     }
                 }
             }
+
+            sql = "SELECT * FROM npc_spawner_npcs ORDER BY id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        AADB.DB_Npc_Spawner_Npcs.Clear();
+
+                        var columnNames = reader.GetColumnNames();
+
+                        while (reader.Read())
+                        {
+                            var t = new GameNpcSpawnersNpc();
+                            // Actual DB entries
+                            t.id = GetInt64(reader, "id");
+                            t.npc_spawner_id = GetInt64(reader, "npc_spawner_id");
+                            t.member_id = GetInt64(reader, "member_id");
+                            t.member_type = GetString(reader, "member_type");
+                            t.weight = GetFloat(reader, "weight");
+                            AADB.DB_Npc_Spawner_Npcs.Add(t.id, t);
+                        }
+                    }
+                }
+            }
+
+
         }
 
         private void LoadFactions()
@@ -4344,7 +4375,7 @@ namespace AAEmu.DBViewer
                             if (MessageBox.Show("Keep current PoI's on map ?", "Add NPC", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                                 map.ClearPoI();
 
-                        npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id));
+                        npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id, false));
 
                         if (npcList.Count > 0)
                         {
@@ -4372,6 +4403,20 @@ namespace AAEmu.DBViewer
                                         row.Cells[3].Value = z.npc_kind_id.ToString();
                                         row.Cells[4].Value = z.npc_grade_id.ToString();
                                         row.Cells[5].Value = AADB.GetFactionName(z.faction_id, true);
+
+                                        var npc_spawner_npcs = GetNpcSpawnerNpcsByNpcId(z.id);
+
+                                        if (npc_spawner_npcs.Count > 0)
+                                        {
+                                            if (npc_spawner_npcs.Count == 1)
+                                                row.Cells[6].Value = string.Format("Used by 1 spawner, {0}", npc_spawner_npcs[0].npc_spawner_id);
+                                            else
+                                            {
+                                                var ids = npc_spawner_npcs.Select(a => a.npc_spawner_id).ToList();
+                                                row.Cells[6].Value = string.Format("Used by {0} spawners, {1}", ids.Count, string.Join(", ", ids));
+                                            }
+                                        }
+                                        else
                                         if (npc.count == 1)
                                             row.Cells[6].Value = string.Format("{0} , {1} = ({2})", npc.x, npc.y, npc.AsSextant());
                                         else
@@ -4404,6 +4449,17 @@ namespace AAEmu.DBViewer
                 }
             }
 
+        }
+
+        private List<GameNpcSpawnersNpc> GetNpcSpawnerNpcsByNpcId(long id)
+        {
+            var res = new List<GameNpcSpawnersNpc>();
+            foreach(var nsn in AADB.DB_Npc_Spawner_Npcs)
+            {
+                if ((nsn.Value.member_id == id) && (nsn.Value.member_type.ToLower() == "npc"))
+                    res.Add(nsn.Value);
+            }
+            return res;
         }
 
         private void btnFindQuestsInZone_Click(object sender, EventArgs e)
