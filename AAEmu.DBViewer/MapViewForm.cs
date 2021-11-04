@@ -395,7 +395,18 @@ namespace AAEmu.DBViewer
                 tsslViewOffset.Text = "drag from X:" + startDragPos.X.ToString() + " Y:" + startDragPos.Y.ToString();
             }
             */
+
             tsslViewOffset.Text = "View X:" + ViewOffset.X.ToString() + " Y:" + ViewOffset.Y.ToString();
+
+            var cellCursorText = string.Empty;
+            var cursorInstance = MapViewWorldXML.GetInstanceByName(cbInstanceSelect.Text);
+            var cursorCell = cursorInstance != null ? cursorInstance.GetCellByPosition(cursorCoords.X, cursorCoords.Y) : null;
+            if (cursorCell != null)
+            {
+                var cursorLevel = cursorInstance.GetZoneByKey(cursorCell.zone_key);
+                if (cursorLevel != null)
+                    cellCursorText = "[" + cursorLevel.name + "] => X: " + (cursorCoords.X - (cursorLevel.originCellX * 1024)).ToString()+" Y: "+ (cursorCoords.Y - (cursorLevel.originCellY * 1024)).ToString();
+            }
 
             if ((rulerCoords.X != 0) && (rulerCoords.Y != 0))
             {
@@ -416,7 +427,7 @@ namespace AAEmu.DBViewer
             var lastTopMap = topMostMap;
             var lastTopPath = topMostPath;
             var lastTopPoI = topMostPoI;
-            tsslCoords.Text = "X:" + cursorCoords.X.ToString() + " Y:" + cursorCoords.Y.ToString() + " | " + AADB.CoordToSextant(cursorCoords.X, cursorCoords.Y);
+            tsslCoords.Text = "X:" + cursorCoords.X.ToString() + " Y:" + cursorCoords.Y.ToString() + " | " + cellCursorText + " | " + AADB.CoordToSextant(cursorCoords.X, cursorCoords.Y);
             var zoneText = GetCursorZones();
             var pathText = GetCursorPaths();
             var poiText = GetCursorPoI();
@@ -1523,12 +1534,28 @@ namespace AAEmu.DBViewer
         public bool Contains(Point pos) => Contains(pos.X, pos.Y);
     }
 
+    public class MapViewWorldXMLZoneCellInfo
+    {
+        public int X = 0;
+        public int Y = 0;
+        public Rectangle bounds = new Rectangle();
+        public long zone_key = 0;
+    }
+
     public class MapViewWorldXMLZoneInfo
     {
         public string name = string.Empty;
         public long zone_key = 0;
         public int originCellX = 0;
         public int originCellY = 0;
+        public List<MapViewWorldXMLZoneCellInfo> Cells = new List<MapViewWorldXMLZoneCellInfo>();
+        public MapViewWorldXMLZoneCellInfo FindCell(int coordX, int coordY)
+        {
+            foreach (var cell in Cells)
+                if (cell.bounds.Contains(coordX, coordY))
+                    return cell;
+            return null;
+        }
     }
 
     public class MapViewWorldXML
@@ -1589,6 +1616,33 @@ namespace AAEmu.DBViewer
 
                         }
                     }
+
+                    var zoneCells = n.SelectNodes("cellList/cell");
+                    for(var zc = 0; zc < zoneCells.Count; zc++)
+                    {
+                        var cellAttribs = MainForm.ReadNodeAttributes(zoneCells[zc]);
+                        var zcX = 0;
+                        var zcY = 0;
+                        foreach(var cellAttrib in cellAttribs)
+                        {
+                            switch( cellAttrib.Key)
+                            {
+                                case "x":
+                                    zcX = int.Parse(cellAttrib.Value);
+                                    break;
+                                case "y":
+                                    zcY = int.Parse(cellAttrib.Value);
+                                    break;
+                            }
+                        }
+                        var zci = new MapViewWorldXMLZoneCellInfo();
+                        zci.zone_key = newZI.zone_key;
+                        zci.X = zcX;
+                        zci.Y = zcY;
+                        zci.bounds = new Rectangle(zcX * 1024, zcY * 1024, 1024, 1024);
+                        newZI.Cells.Add(zci);
+                    }
+
                     zones.Add(newZI.zone_key, newZI);
                 }
             }
@@ -1639,6 +1693,17 @@ namespace AAEmu.DBViewer
                     if (inst != null)
                         return inst;
                 }
+            }
+            return null;
+        }
+
+        public MapViewWorldXMLZoneCellInfo GetCellByPosition(int x, int y)
+        {
+            foreach(var zone in zones)
+            {
+                var cell = zone.Value.FindCell(x, y);
+                if (cell != null)
+                    return cell;
             }
             return null;
         }
