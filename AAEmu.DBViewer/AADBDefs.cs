@@ -634,6 +634,17 @@ namespace AAEmu.DBDefs
         // Not loading the rest for now
     }
 
+    public class GamePlotEventCondition
+    {
+        public long id = 0;
+        public long event_id = 0;
+        public long condition_id = 0;
+        public long postion = 0;
+        public long source_id = 0;
+        public long target_id = 0;
+        public bool notify_failure = false;
+    }
+
 
     static class AADB
     {
@@ -672,6 +683,7 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GamePlot> DB_Plots = new Dictionary<long, GamePlot>();
         static public Dictionary<long, GamePlotEvent> DB_Plot_Events = new Dictionary<long, GamePlotEvent>();
         static public Dictionary<long, GamePlotNextEvent> DB_Plot_Next_Events = new Dictionary<long, GamePlotNextEvent>();
+        static public Dictionary<long, GamePlotEventCondition> DB_Plot_Event_Conditions = new Dictionary<long, GamePlotEventCondition>();
 
         static public string GetFactionName(long faction_id, bool addID = false)
         {

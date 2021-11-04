@@ -4450,7 +4450,7 @@
             this.tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1});
             this.tvSkill.SelectedImageIndex = 0;
-            this.tvSkill.Size = new System.Drawing.Size(341, 328);
+            this.tvSkill.Size = new System.Drawing.Size(341, 295);
             this.tvSkill.TabIndex = 0;
             this.tvSkill.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvSkill_AfterSelect);
             // 
@@ -5282,9 +5282,9 @@
             this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP3);
             this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP2);
             this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP1);
-            this.gbSkillPlotEventInfo.Location = new System.Drawing.Point(6, 340);
+            this.gbSkillPlotEventInfo.Location = new System.Drawing.Point(6, 307);
             this.gbSkillPlotEventInfo.Name = "gbSkillPlotEventInfo";
-            this.gbSkillPlotEventInfo.Size = new System.Drawing.Size(341, 107);
+            this.gbSkillPlotEventInfo.Size = new System.Drawing.Size(341, 140);
             this.gbSkillPlotEventInfo.TabIndex = 1;
             this.gbSkillPlotEventInfo.TabStop = false;
             this.gbSkillPlotEventInfo.Text = "Parameters";
@@ -5292,7 +5292,7 @@
             // lPlotEventP1
             // 
             this.lPlotEventP1.AutoSize = true;
-            this.lPlotEventP1.Location = new System.Drawing.Point(6, 34);
+            this.lPlotEventP1.Location = new System.Drawing.Point(6, 46);
             this.lPlotEventP1.Name = "lPlotEventP1";
             this.lPlotEventP1.Size = new System.Drawing.Size(16, 13);
             this.lPlotEventP1.TabIndex = 0;
@@ -5301,7 +5301,7 @@
             // lPlotEventP2
             // 
             this.lPlotEventP2.AutoSize = true;
-            this.lPlotEventP2.Location = new System.Drawing.Point(6, 47);
+            this.lPlotEventP2.Location = new System.Drawing.Point(6, 59);
             this.lPlotEventP2.Name = "lPlotEventP2";
             this.lPlotEventP2.Size = new System.Drawing.Size(16, 13);
             this.lPlotEventP2.TabIndex = 1;
@@ -5310,7 +5310,7 @@
             // lPlotEventP3
             // 
             this.lPlotEventP3.AutoSize = true;
-            this.lPlotEventP3.Location = new System.Drawing.Point(6, 60);
+            this.lPlotEventP3.Location = new System.Drawing.Point(6, 72);
             this.lPlotEventP3.Name = "lPlotEventP3";
             this.lPlotEventP3.Size = new System.Drawing.Size(16, 13);
             this.lPlotEventP3.TabIndex = 2;
@@ -5319,7 +5319,7 @@
             // lPlotEventP4
             // 
             this.lPlotEventP4.AutoSize = true;
-            this.lPlotEventP4.Location = new System.Drawing.Point(119, 34);
+            this.lPlotEventP4.Location = new System.Drawing.Point(124, 46);
             this.lPlotEventP4.Name = "lPlotEventP4";
             this.lPlotEventP4.Size = new System.Drawing.Size(16, 13);
             this.lPlotEventP4.TabIndex = 3;
@@ -5328,7 +5328,7 @@
             // lPlotEventP5
             // 
             this.lPlotEventP5.AutoSize = true;
-            this.lPlotEventP5.Location = new System.Drawing.Point(119, 47);
+            this.lPlotEventP5.Location = new System.Drawing.Point(124, 59);
             this.lPlotEventP5.Name = "lPlotEventP5";
             this.lPlotEventP5.Size = new System.Drawing.Size(16, 13);
             this.lPlotEventP5.TabIndex = 4;
@@ -5337,7 +5337,7 @@
             // lPlotEventP6
             // 
             this.lPlotEventP6.AutoSize = true;
-            this.lPlotEventP6.Location = new System.Drawing.Point(119, 60);
+            this.lPlotEventP6.Location = new System.Drawing.Point(124, 72);
             this.lPlotEventP6.Name = "lPlotEventP6";
             this.lPlotEventP6.Size = new System.Drawing.Size(16, 13);
             this.lPlotEventP6.TabIndex = 5;
@@ -5346,7 +5346,7 @@
             // lPlotEventP7
             // 
             this.lPlotEventP7.AutoSize = true;
-            this.lPlotEventP7.Location = new System.Drawing.Point(233, 34);
+            this.lPlotEventP7.Location = new System.Drawing.Point(233, 46);
             this.lPlotEventP7.Name = "lPlotEventP7";
             this.lPlotEventP7.Size = new System.Drawing.Size(16, 13);
             this.lPlotEventP7.TabIndex = 6;
@@ -5355,7 +5355,7 @@
             // lPlotEventP8
             // 
             this.lPlotEventP8.AutoSize = true;
-            this.lPlotEventP8.Location = new System.Drawing.Point(233, 47);
+            this.lPlotEventP8.Location = new System.Drawing.Point(233, 59);
             this.lPlotEventP8.Name = "lPlotEventP8";
             this.lPlotEventP8.Size = new System.Drawing.Size(16, 13);
             this.lPlotEventP8.TabIndex = 7;
@@ -5365,7 +5365,7 @@
             // lPlotEventP9
             // 
             this.lPlotEventP9.AutoSize = true;
-            this.lPlotEventP9.Location = new System.Drawing.Point(233, 60);
+            this.lPlotEventP9.Location = new System.Drawing.Point(233, 72);
             this.lPlotEventP9.Name = "lPlotEventP9";
             this.lPlotEventP9.Size = new System.Drawing.Size(16, 13);
             this.lPlotEventP9.TabIndex = 8;
@@ -5374,7 +5374,7 @@
             // lPlotEventTickets
             // 
             this.lPlotEventTickets.AutoSize = true;
-            this.lPlotEventTickets.Location = new System.Drawing.Point(6, 81);
+            this.lPlotEventTickets.Location = new System.Drawing.Point(6, 97);
             this.lPlotEventTickets.Name = "lPlotEventTickets";
             this.lPlotEventTickets.Size = new System.Drawing.Size(45, 13);
             this.lPlotEventTickets.TabIndex = 9;
@@ -5383,7 +5383,7 @@
             // lPlotEventAoE
             // 
             this.lPlotEventAoE.AutoSize = true;
-            this.lPlotEventAoE.Location = new System.Drawing.Point(119, 81);
+            this.lPlotEventAoE.Location = new System.Drawing.Point(124, 97);
             this.lPlotEventAoE.Name = "lPlotEventAoE";
             this.lPlotEventAoE.Size = new System.Drawing.Size(30, 13);
             this.lPlotEventAoE.TabIndex = 10;
@@ -5401,7 +5401,7 @@
             // lPlotEventTargetUpdate
             // 
             this.lPlotEventTargetUpdate.AutoSize = true;
-            this.lPlotEventTargetUpdate.Location = new System.Drawing.Point(167, 16);
+            this.lPlotEventTargetUpdate.Location = new System.Drawing.Point(6, 29);
             this.lPlotEventTargetUpdate.Name = "lPlotEventTargetUpdate";
             this.lPlotEventTargetUpdate.Size = new System.Drawing.Size(79, 13);
             this.lPlotEventTargetUpdate.TabIndex = 12;

@@ -1896,9 +1896,8 @@ namespace AAEmu.DBViewer
                 }
             }
 
-            // events
+            // next events
             sql = "SELECT * FROM plot_next_events";
-
             using (var connection = SQLite.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
@@ -1924,6 +1923,42 @@ namespace AAEmu.DBViewer
                             t.speed = GetInt64(reader, "speed");
 
                             AADB.DB_Plot_Next_Events.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
+
+            // events condition
+            sql = "SELECT * FROM plot_event_conditions";
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_TransferPaths.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+
+                            var t = new GamePlotEventCondition();
+                            t.id = GetInt64(reader, "id");
+                            t.event_id = GetInt64(reader, "id");
+                            t.postion = GetInt64(reader, "position");
+                            t.condition_id = GetInt64(reader, "condition_id");
+                            t.source_id = GetInt64(reader, "source_id");
+                            t.target_id = GetInt64(reader, "target_id");
+                            t.notify_failure = GetBool(reader, "notify_failure");
+
+                            AADB.DB_Plot_Event_Conditions.Add(t.id, t);
                         }
 
                         Cursor = Cursors.Default;
@@ -2401,6 +2436,33 @@ namespace AAEmu.DBViewer
 
         private void AddPlotEventNode(TreeNode parent, GamePlotEvent child, int depth = 0)
         {
+
+            string ConditionTypeName(long id)
+            {
+                switch (id)
+                {
+                    case 1: return "Level (1)";
+                    case 2: return "Relation (2)";
+                    case 3: return "Direction (3)";
+                    case 4: return "Unk4 (4)";
+                    case 5: return "BuffTag (5)";
+                    case 6: return "WeaponEquipStatus (6)";
+                    case 7: return "Chance (7)";
+                    case 8: return "Dead (8)";
+                    case 9: return "CombatDiceResult (9)";
+                    case 10: return "InstrumentType (10)";
+                    case 11: return "Range (11)";
+                    case 12: return "Variable (12)";
+                    case 13: return "UnitAttrib (13)";
+                    case 14: return "Actability (14)";
+                    case 15: return "Stealth (15)";
+                    case 16: return "Visible (16)";
+                    case 17: return "ABLevel (17)";
+                    default: return id.ToString();
+                }
+
+            }
+
             depth++;
             if (depth > 16)
             {
@@ -2420,7 +2482,22 @@ namespace AAEmu.DBViewer
             eventNode.SelectedImageIndex = 0;
             eventNode.StateImageIndex = 0;
             eventNode.Tag = child.id;
+
             parent.Nodes.Add(eventNode);
+
+            // Does it have conditions ?
+            var eventConditions = AADB.DB_Plot_Event_Conditions.Where(eventCondition => eventCondition.Value.event_id == child.id);
+            foreach (var eventCondition in eventConditions)
+            {
+                var eventConditionName = ConditionTypeName(eventCondition.Value.condition_id);
+                var eventConditionNode = new TreeNode(eventConditionName);
+                eventConditionNode.ImageIndex = 2;
+                eventConditionNode.SelectedImageIndex = 2;
+                eventConditionNode.StateImageIndex = 2;
+                eventConditionNode.Tag = 0;
+                eventNode.Nodes.Add(eventConditionNode);
+            }
+
 
             var nextEvents = AADB.DB_Plot_Next_Events.Where(nextEvent => nextEvent.Value.event_id == child.id);
             foreach (var n in nextEvents)
@@ -4267,7 +4344,7 @@ namespace AAEmu.DBViewer
                             if (MessageBox.Show("Keep current PoI's on map ?", "Add NPC", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                                 map.ClearPoI();
 
-                        npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id, true));
+                        npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id));
 
                         if (npcList.Count > 0)
                         {
@@ -4280,7 +4357,7 @@ namespace AAEmu.DBViewer
                                 // tcViewer.SelectedTab = tpNPCs;
                                 dgvNPCs.Hide();
                                 dgvNPCs.Rows.Clear();
-                                Refresh();
+                                //Refresh();
                                 int c = 0;
                                 foreach (var npc in npcList)
                                 {
@@ -4307,6 +4384,10 @@ namespace AAEmu.DBViewer
                                         }
 
                                         map.AddPoI((int)npc.x, (int)npc.y, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow);
+                                    }
+                                    else
+                                    {
+                                        map.AddPoI((int)npc.x, (int)npc.y, "(" + npc.id.ToString() + ")", Color.Red);
                                     }
                                 }
                                 tcViewer.SelectedTab = tpNPCs;
@@ -6063,7 +6144,7 @@ namespace AAEmu.DBViewer
                             if (MessageBox.Show("Keep current PoI's on map ?", "Add Doodad", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                                 map.ClearPoI();
 
-                        doodadList.AddRange(GetDoodadSpawnsInZoneGroup(zg.id, true));
+                        doodadList.AddRange(GetDoodadSpawnsInZoneGroup(zg.id));
 
                         if (doodadList.Count > 0)
                         {
@@ -6076,7 +6157,7 @@ namespace AAEmu.DBViewer
                                 // tcViewer.SelectedTab = tpNPCs;
                                 dgvDoodads.Hide();
                                 dgvDoodads.Rows.Clear();
-                                Refresh();
+                                //Refresh();
                                 int c = 0;
                                 foreach (var doodad in doodadList)
                                 {
@@ -6105,6 +6186,10 @@ namespace AAEmu.DBViewer
                                         }
 
                                         map.AddPoI((int)doodad.x, (int)doodad.y, z.nameLocalized + " (" + doodad.id.ToString() + ")", Color.Yellow);
+                                    }
+                                    else
+                                    {
+                                        map.AddPoI((int)doodad.x, (int)doodad.y, "(" + doodad.id.ToString() + ")", Color.Red);
                                     }
                                 }
                                 tcViewer.SelectedTab = tpDoodads;
@@ -6323,6 +6408,21 @@ namespace AAEmu.DBViewer
 
         private void tvSkill_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            string PlotUpdateMethode(long id)
+            {
+                switch (id)
+                {
+                    case 1: return "OriginalSource (1)";
+                    case 2: return "OriginalTarget (2)";
+                    case 3: return "PreviousSource (3)";
+                    case 4: return "PreviousTarget (4)";
+                    case 5: return "Area (5)";
+                    case 6: return "RandomUnit (6)";
+                    case 7: return "RandomArea (7)";
+                    default: return id.ToString();
+                }
+            }
+
             lPlotEventSourceUpdate.Text = "Source Update: ?";
             lPlotEventTargetUpdate.Text = "Target Update: ?";
             lPlotEventP1.Text = "1: ?";
@@ -6343,8 +6443,8 @@ namespace AAEmu.DBViewer
             if (!AADB.DB_Plot_Events.TryGetValue(long.Parse(e.Node.Tag.ToString()), out var plotEvent))
                 return;
 
-            lPlotEventSourceUpdate.Text = "Source Update: " + plotEvent.source_update_method_id.ToString();
-            lPlotEventTargetUpdate.Text = "Target Update: " + plotEvent.target_update_method_id.ToString();
+            lPlotEventSourceUpdate.Text = "Source Update Method: " + PlotUpdateMethode(plotEvent.source_update_method_id);
+            lPlotEventTargetUpdate.Text = "Target Update Method: " + PlotUpdateMethode(plotEvent.target_update_method_id);
             lPlotEventP1.Text = "1: " + plotEvent.target_update_method_param1.ToString();
             lPlotEventP2.Text = "2: " + plotEvent.target_update_method_param2.ToString();
             lPlotEventP3.Text = "3: " + plotEvent.target_update_method_param3.ToString();
