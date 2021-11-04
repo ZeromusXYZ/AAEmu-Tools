@@ -28,12 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.statusBar = new System.Windows.Forms.StatusStrip();
             this.tsslViewOffset = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslZoom = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslCoords = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslRuler = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslSelectionInfo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tsslPoIInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.gbTools = new System.Windows.Forms.GroupBox();
             this.cbInstanceSelect = new System.Windows.Forms.ComboBox();
             this.gbGrid = new System.Windows.Forms.GroupBox();
@@ -67,11 +69,17 @@
             this.tsbNamesQuestSphere = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.pView = new System.Windows.Forms.PictureBox();
+            this.cmsMapInfo = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsmPoI = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmPath = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmMap = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmCopyToClipboard = new System.Windows.Forms.ToolStripMenuItem();
             this.statusBar.SuspendLayout();
             this.gbTools.SuspendLayout();
             this.gbGrid.SuspendLayout();
             this.toolBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pView)).BeginInit();
+            this.cmsMapInfo.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusBar
@@ -82,7 +90,8 @@
             this.tsslZoom,
             this.tsslCoords,
             this.tsslRuler,
-            this.tsslSelectionInfo});
+            this.tsslSelectionInfo,
+            this.tsslPoIInfo});
             this.statusBar.Location = new System.Drawing.Point(0, 436);
             this.statusBar.Name = "statusBar";
             this.statusBar.Size = new System.Drawing.Size(628, 24);
@@ -145,6 +154,16 @@
             this.tsslSelectionInfo.Name = "tsslSelectionInfo";
             this.tsslSelectionInfo.Size = new System.Drawing.Size(32, 19);
             this.tsslSelectionInfo.Text = "Info";
+            // 
+            // tsslPoIInfo
+            // 
+            this.tsslPoIInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.tsslPoIInfo.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.tsslPoIInfo.Name = "tsslPoIInfo";
+            this.tsslPoIInfo.Size = new System.Drawing.Size(28, 19);
+            this.tsslPoIInfo.Text = "PoI";
             // 
             // gbTools
             // 
@@ -530,6 +549,7 @@
             // pView
             // 
             this.pView.BackColor = System.Drawing.Color.DimGray;
+            this.pView.ContextMenuStrip = this.cmsMapInfo;
             this.pView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pView.Location = new System.Drawing.Point(0, 0);
             this.pView.Name = "pView";
@@ -541,6 +561,42 @@
             this.pView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnViewMouseDown);
             this.pView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.OnViewMouseMove);
             this.pView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OnViewMouseUp);
+            // 
+            // cmsMapInfo
+            // 
+            this.cmsMapInfo.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmPoI,
+            this.tsmPath,
+            this.tsmMap,
+            this.tsmCopyToClipboard});
+            this.cmsMapInfo.Name = "cmsMapInfo";
+            this.cmsMapInfo.Size = new System.Drawing.Size(167, 92);
+            // 
+            // tsmPoI
+            // 
+            this.tsmPoI.Name = "tsmPoI";
+            this.tsmPoI.Size = new System.Drawing.Size(166, 22);
+            this.tsmPoI.Text = "PoI";
+            // 
+            // tsmPath
+            // 
+            this.tsmPath.Name = "tsmPath";
+            this.tsmPath.Size = new System.Drawing.Size(166, 22);
+            this.tsmPath.Text = "Path";
+            // 
+            // tsmMap
+            // 
+            this.tsmMap.Name = "tsmMap";
+            this.tsmMap.Size = new System.Drawing.Size(166, 22);
+            this.tsmMap.Text = "Map";
+            // 
+            // tsmCopyToClipboard
+            // 
+            this.tsmCopyToClipboard.Name = "tsmCopyToClipboard";
+            this.tsmCopyToClipboard.Size = new System.Drawing.Size(166, 22);
+            this.tsmCopyToClipboard.Text = "CopyToClipboard";
+            this.tsmCopyToClipboard.Visible = false;
+            this.tsmCopyToClipboard.Click += new System.EventHandler(this.tsmCopyToClipboard_Click);
             // 
             // MapViewForm
             // 
@@ -566,6 +622,7 @@
             this.toolBar.ResumeLayout(false);
             this.toolBar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pView)).EndInit();
+            this.cmsMapInfo.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -611,5 +668,11 @@
         private System.Windows.Forms.ToolStripButton tsbDrawCity;
         private System.Windows.Forms.ComboBox cbInstanceSelect;
         private System.Windows.Forms.ComboBox cbUnitSize;
+        private System.Windows.Forms.ToolStripStatusLabel tsslPoIInfo;
+        private System.Windows.Forms.ContextMenuStrip cmsMapInfo;
+        private System.Windows.Forms.ToolStripMenuItem tsmPoI;
+        private System.Windows.Forms.ToolStripMenuItem tsmPath;
+        private System.Windows.Forms.ToolStripMenuItem tsmMap;
+        private System.Windows.Forms.ToolStripMenuItem tsmCopyToClipboard;
     }
 }

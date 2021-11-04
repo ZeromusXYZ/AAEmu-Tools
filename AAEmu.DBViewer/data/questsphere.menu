@@ -1,0 +1,4 @@
+﻿Name: {NAME};{NAME}
+componentId: {ID};{ID}
+Pos: {X} {Y} {Z};{X} {Y} {Z}
+Radius: {RADIUS}

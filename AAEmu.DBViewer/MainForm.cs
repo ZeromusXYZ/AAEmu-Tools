@@ -100,7 +100,7 @@ namespace AAEmu.DBViewer
                                       .Where(c => c.GetType() == type);
         }
 
-        private void CopyToClipBoard(string cliptext)
+        public static void CopyToClipBoard(string cliptext)
         {
             try
             {
@@ -4383,11 +4383,11 @@ namespace AAEmu.DBViewer
                                             loading.ShowInfo("Loading " + c.ToString() + "/" + npcList.Count.ToString() + " NPCs");
                                         }
 
-                                        map.AddPoI((int)npc.x, (int)npc.y, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow);
+                                        map.AddPoI(npc.x, npc.y, npc.z, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow, 0f, "npc", npc.id);
                                     }
                                     else
                                     {
-                                        map.AddPoI((int)npc.x, (int)npc.y, "(" + npc.id.ToString() + ")", Color.Red);
+                                        map.AddPoI(npc.x, npc.y, npc.z, "(" + npc.id.ToString() + ")", Color.Red, 0f, "npc", npc.id);
                                     }
                                 }
                                 tcViewer.SelectedTab = tpNPCs;
@@ -4827,7 +4827,7 @@ namespace AAEmu.DBViewer
                             continue;
                         if (AADB.DB_NPCs.TryGetValue(npc.id, out var z))
                         {
-                            map.AddPoI((int)npc.x, (int)npc.y, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow);
+                            map.AddPoI(npc.x, npc.y, npc.z, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow, 0f, "npc", npc.id);
                         }
                     }
                 }
@@ -5665,7 +5665,7 @@ namespace AAEmu.DBViewer
                             continue;
                         if (AADB.DB_Doodad_Almighties.TryGetValue(doodad.id, out var z))
                         {
-                            map.AddPoI((int)doodad.x, (int)doodad.y, z.nameLocalized + " (" + doodad.id.ToString() + ")", Color.Yellow);
+                            map.AddPoI(doodad.x, doodad.y, doodad.z, z.nameLocalized + " (" + doodad.id.ToString() + ")", Color.Yellow, 0f, "doodad", doodad.id);
                         }
                     }
                 }
@@ -5830,11 +5830,11 @@ namespace AAEmu.DBViewer
 
                 if (cbQuestSignSphereSearchShowAll.Checked || (eQuestSignSphereSearch.Text == string.Empty))
                 {
-                    map.AddQuestSphere(p.X, p.Y, name, col, p.radius);
+                    map.AddQuestSphere(p.X, p.Y, p.Z, name, col, p.radius, p.componentID);
                 }
                 else
                 if (isFilteredVal)
-                    map.AddQuestSphere(p.X, p.Y, name, col, p.radius);
+                    map.AddQuestSphere(p.X, p.Y, p.Z, name, col, p.radius, p.componentID);
             }
             map.tsbShowQuestSphere.Checked = true;
             map.tsbNamesQuestSphere.Checked = (!cbQuestSignSphereSearchShowAll.Checked && (eQuestSignSphereSearch.Text != string.Empty));
@@ -5948,7 +5948,7 @@ namespace AAEmu.DBViewer
                 if (qc.id != searchId)
                     continue;
                 name += "q:" + p.questID.ToString() + " c:" + p.componentID.ToString();
-                map.AddQuestSphere(p.X, p.Y, name, Color.Cyan, p.radius);
+                map.AddQuestSphere(p.X, p.Y, p.Z, name, Color.Cyan, p.radius, p.componentID);
                 sphereCount++;
             }
 
@@ -6026,7 +6026,7 @@ namespace AAEmu.DBViewer
                             //    continue;
                             if (AADB.DB_NPCs.TryGetValue(npc.id, out var z))
                             {
-                                map.AddPoI((int)npc.x, (int)npc.y, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow);
+                                map.AddPoI(npc.x, npc.y, npc.z, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow, 0f, "npc", npc.id);
                                 foundCount++;
                             }
                         }
@@ -6185,11 +6185,11 @@ namespace AAEmu.DBViewer
                                             loading.ShowInfo("Loading " + c.ToString() + "/" + doodadList.Count.ToString() + " Doodads");
                                         }
 
-                                        map.AddPoI((int)doodad.x, (int)doodad.y, z.nameLocalized + " (" + doodad.id.ToString() + ")", Color.Yellow);
+                                        map.AddPoI(doodad.x, doodad.y, doodad.z, z.nameLocalized + " (" + doodad.id.ToString() + ")", Color.Yellow, 0f, "doodad", doodad.id);
                                     }
                                     else
                                     {
-                                        map.AddPoI((int)doodad.x, (int)doodad.y, "(" + doodad.id.ToString() + ")", Color.Red);
+                                        map.AddPoI(doodad.x, doodad.y, doodad.z, "(" + doodad.id.ToString() + ")", Color.Red, 0f, "doodad", doodad.id);
                                     }
                                 }
                                 tcViewer.SelectedTab = tpDoodads;
@@ -6235,31 +6235,41 @@ namespace AAEmu.DBViewer
                             foreach (var spawner in data)
                             {
                                 var ni = new MapViewPoI();
-                                ni.CoordX = spawner.Position.X;
-                                ni.CoordY = spawner.Position.Y;
+                                ni.Coord = new Vector3(spawner.Position.X, spawner.Position.Y, spawner.Position.Z);
                                 ni.PoIColor = Color.LightGray;
                                 if (isNPCs && AADB.DB_NPCs.TryGetValue(spawner.UnitId, out var npc))
                                 {
                                     ni.Name = npc.nameLocalized;
                                     ni.PoIColor = Color.Yellow;
+                                    ni.TypeId = npc.id;
                                 }
                                 else
                                 if (isDoodads && AADB.DB_Doodad_Almighties.TryGetValue(spawner.UnitId, out var doodad))
                                 {
                                     ni.Name = doodad.nameLocalized;
                                     ni.PoIColor = Color.DarkGreen;
+                                    ni.TypeId = doodad.id;
                                 }
                                 else
                                 if (isTransfers && AADB.DB_Transfers.TryGetValue(spawner.UnitId, out var transfer))
                                 {
                                     ni.Name = "Model: " + transfer.model_id.ToString();
                                     ni.PoIColor = Color.Navy;
+                                    ni.TypeId = transfer.id;
                                 }
                                 else
                                 if (isDoodads || isNPCs || isTransfers)
                                 {
                                     ni.PoIColor = Color.Red;
                                 }
+
+                                if (isTransfers)
+                                    ni.TypeName = "transfer";
+                                if (isDoodads)
+                                    ni.TypeName = "doodad";
+                                if (isNPCs)
+                                    ni.TypeName = "npc";
+
                                 ni.Name += " (Id:" + spawner.Id + " - tId:" + spawner.UnitId + ")";
                                 if (spawner.UnitId <= 0)
                                     ni.PoIColor = Color.Red;
@@ -6291,7 +6301,7 @@ namespace AAEmu.DBViewer
                         map.ClearPoI();
 
                 foreach (var p in allPoIs)
-                    map.AddPoI(p.CoordX,p.CoordY,p.Name,p.PoIColor);
+                    map.AddPoI(p.Coord.X, p.Coord.Y, p.Coord.Z, p.Name, p.PoIColor, 0f, p.TypeName, p.TypeId);
 
                 map.FocusAll(true, false, false);
                 map.tsbShowPoI.Checked = true;

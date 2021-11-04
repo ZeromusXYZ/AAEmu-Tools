@@ -33,6 +33,7 @@ namespace AAEmu.DBViewer
         private List<MapViewMap> allmaps = new List<MapViewMap>();
         private MapViewMap topMostMap = null;
         private MapViewPath topMostPath = null;
+        private MapViewPoI topMostPoI = null;
         private List<MapViewPoI> poi = new List<MapViewPoI>();
         private List<MapViewPath> paths = new List<MapViewPath>();
         private List<MapViewPath> housing = new List<MapViewPath>();
@@ -251,6 +252,140 @@ namespace AAEmu.DBViewer
             return res;
         }
 
+        private string GetCursorPoI()
+        {
+            MapViewPoI newTopPoI = null;
+            var res = string.Empty;
+            var cursorPoI = new List<MapViewPoI>();
+            var smallestDelta = -1f;
+            foreach (var PoI in this.poi)
+            {
+                var delta = Vector2.Distance(new Vector2(PoI.Coord.X, PoI.Coord.Y), new Vector2(cursorCoords.X, cursorCoords.Y));
+                if (delta < (PoI.Radius + 32f))
+                    cursorPoI.Add(PoI);
+            }
+
+            // Find the closest point area
+            foreach (var z in cursorPoI)
+            {
+                var delta = Vector2.Distance(new Vector2(z.Coord.X, z.Coord.Y), new Vector2(cursorCoords.X, cursorCoords.Y));
+                if (newTopPoI == null)
+                {
+                    newTopPoI = z;
+                    smallestDelta = delta;
+                }
+                else
+                {
+                    if (delta < smallestDelta)
+                    {
+                        newTopPoI = z;
+                        smallestDelta = delta;
+                    }
+                }
+
+            }
+            topMostPoI = newTopPoI;
+
+            // List all matches
+            foreach (var z in cursorPoI)
+            {
+                if (z == topMostPoI)
+                    res += "[" + z.Name + "], ";
+                else
+                    res += z.Name + ", ";
+            }
+            return res;
+        }
+
+        private void AddMenuItem(ToolStripMenuItem parent, string label, string value)
+        {
+            var ni = new ToolStripMenuItem(label);
+            ni.Tag = value;
+            ni.Click += tsmCopyToClipboard_Click;
+            parent.DropDownItems.Add(ni);
+        }
+
+        private bool AddMenuItems(ToolStripMenuItem parent, object item)
+        {
+            try
+            {
+                if (item is MapViewMap map)
+                {
+                    var fn = Path.Combine(Application.StartupPath, "data", "map.menu");
+                    if (File.Exists(fn))
+                    {
+                        var lines = File.ReadAllLines(fn).ToList();
+                        foreach (var line in lines)
+                        {
+                            var s = line;
+                            s = s.Replace("{NAME}", map.Name);
+                            s = s.Replace("{INSTANCE}", map.InstanceName);
+                            s = s.Replace("{ZONEGROUP}", map.ZoneGroup.ToString());
+                            s = s.Replace("{COORDS}", map.ZoneCoords.ToString());
+                            var vals = s.Split(';');
+                            if (vals.Length != 2)
+                                continue;
+
+                            AddMenuItem(parent, vals[0], vals[1]);
+                        }
+                        return true;
+                    }
+                }
+                else
+                if (item is MapViewPath path)
+                {
+                    var fn = Path.Combine(Application.StartupPath, "data", "path.menu");
+                    if (File.Exists(fn))
+                    {
+                        var lines = File.ReadAllLines(fn).ToList();
+                        foreach (var line in lines)
+                        {
+                            var s = line;
+                            s = s.Replace("{NAME}", path.PathName);
+                            s = s.Replace("{ID}", path.TypeId.ToString());
+                            var vals = s.Split(';');
+                            if (vals.Length != 2)
+                                continue;
+
+                            AddMenuItem(parent, vals[0], vals[1]);
+                        }
+                        return true;
+                    }
+                }
+                else
+                if (item is MapViewPoI PoI)
+                {
+                    var fn = Path.Combine(Application.StartupPath, "data", PoI.TypeName + ".menu");
+                    if (File.Exists(fn))
+                    {
+                        var lines = File.ReadAllLines(fn).ToList();
+                        foreach (var line in lines)
+                        {
+                            var s = line;
+                            s = s.Replace("{NAME}", PoI.Name);
+                            s = s.Replace("{ID}", PoI.TypeId.ToString());
+                            s = s.Replace("{X}", PoI.Coord.X.ToString());
+                            s = s.Replace("{Y}", PoI.Coord.Y.ToString());
+                            s = s.Replace("{Z}", PoI.Coord.Z.ToString());
+                            s = s.Replace("{RADIUS}", PoI.Radius.ToString());
+                            var vals = s.Split(';');
+                            if (vals.Length != 2)
+                                continue;
+
+                            AddMenuItem(parent, vals[0], vals[1]);
+                        }
+                        return true;
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                AddMenuItem(parent, "Exception: " + e.Message, "");
+            }
+            return false;
+        }
+
         private void updateStatusBar()
         {
             tsslZoom.Text = "Zoom: " + (viewScale * 100).ToString() + "%";
@@ -280,13 +415,75 @@ namespace AAEmu.DBViewer
 
             var lastTopMap = topMostMap;
             var lastTopPath = topMostPath;
+            var lastTopPoI = topMostPoI;
             tsslCoords.Text = "X:" + cursorCoords.X.ToString() + " Y:" + cursorCoords.Y.ToString() + " | " + AADB.CoordToSextant(cursorCoords.X, cursorCoords.Y);
             var zoneText = GetCursorZones();
             var pathText = GetCursorPaths();
+            var poiText = GetCursorPoI();
             tsslSelectionInfo.Text = "inside: " + zoneText + (pathText.Length > 0 ? " - " + pathText : "");
+            tsslPoIInfo.Text = "nearby: " + poiText;
 
-            if ((topMostMap != lastTopMap) || (topMostPath != lastTopPath))
+            if ((topMostMap != lastTopMap) || (topMostPath != lastTopPath) || (topMostPoI != lastTopPoI))
                 pView.Refresh();
+
+            tsmMap.DropDownItems.Clear();
+            if (topMostMap == null)
+            {
+                tsmMap.Text = "---";
+                tsmMap.Enabled = false;
+            }
+            else
+            {
+                tsmMap.Text = topMostMap.Name;
+
+                if (!AddMenuItems(tsmMap, topMostMap))
+                {
+                    AddMenuItem(tsmMap, "Name: " + topMostMap.Name, topMostMap.Name);
+                    AddMenuItem(tsmMap, "ZoneGroup: " + topMostMap.ZoneGroup.ToString(), topMostMap.ZoneGroup.ToString());
+                    AddMenuItem(tsmMap, "Instance: " + topMostMap.InstanceName, topMostMap.InstanceName);
+                }
+
+                tsmMap.Enabled = true;
+            }
+
+            tsmPath.DropDownItems.Clear();
+            if (topMostPath == null)
+            {
+                tsmPath.Text = "---";
+                tsmPath.Enabled = false;
+            }
+            else
+            {
+                tsmPath.Text = topMostPath.PathName;
+
+                if (!AddMenuItems(tsmPath, topMostPath))
+                {
+                    AddMenuItem(tsmPath, "Name: " + topMostPath.PathName, topMostPath.PathName);
+                    AddMenuItem(tsmPath, "TypeId: " + topMostPath.TypeId.ToString(), topMostPath.TypeId.ToString());
+                }
+
+                tsmPath.Enabled = true;
+            }
+
+            tsmPoI.DropDownItems.Clear();
+            if (topMostPoI == null)
+            {
+                tsmPoI.Text = "---";
+                tsmPoI.Enabled = false;
+            }
+            else
+            {
+                tsmPoI.Text = topMostPoI.Name;
+
+                if (!AddMenuItems(tsmPoI, topMostPoI))
+                {
+                    AddMenuItem(tsmPoI, "Name: " + topMostPoI.Name, topMostPoI.Name);
+                    AddMenuItem(tsmPoI, "Pos: " + topMostPoI.Coord.ToString(), topMostPoI.Coord.ToString());
+                }
+
+                tsmPoI.Enabled = true;
+            }
+
         }
 
         private void MapViewOnMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -616,10 +813,11 @@ namespace AAEmu.DBViewer
                 if (tsbShowPoI.Checked)
                     foreach (var p in poi)
                     {
+                        var col = (p == topMostPoI) ? Color.White : p.PoIColor;
                         if (p.Radius <= 3f)
-                            DrawCross(g, p.CoordX, p.CoordY, p.PoIColor, tsbNamesPoI.Checked ? p.Name : "");
+                            DrawCross(g, p.Coord.X, p.Coord.Y, col, tsbNamesPoI.Checked ? p.Name : "");
                         else
-                            DrawRadius(g, p.CoordX, p.CoordY, p.PoIColor, tsbNamesPoI.Checked ? p.Name : "", p.Radius);
+                            DrawRadius(g, p.Coord.X, p.Coord.Y, col, tsbNamesPoI.Checked ? p.Name : "", p.Radius);
                     }
 
                 // Draw Quest Sign spheres
@@ -627,9 +825,9 @@ namespace AAEmu.DBViewer
                     foreach (var p in quest_sign_sphere)
                     {
                         if (p.Radius <= 3f)
-                            DrawCross(g, p.CoordX, p.CoordY, p.PoIColor, tsbNamesQuestSphere.Checked ? p.Name : "");
+                            DrawCross(g, p.Coord.X, p.Coord.Y, p.PoIColor, tsbNamesQuestSphere.Checked ? p.Name : "");
                         else
-                            DrawRadius(g, p.CoordX, p.CoordY, p.PoIColor, tsbNamesQuestSphere.Checked ? p.Name : "", p.Radius);
+                            DrawRadius(g, p.Coord.X, p.Coord.Y, p.PoIColor, tsbNamesQuestSphere.Checked ? p.Name : "", p.Radius);
                     }
 
                 // Draw Paths
@@ -749,14 +947,15 @@ namespace AAEmu.DBViewer
             updateStatusBar();
         }
 
-        public MapViewPoI AddPoI(float x, float y, string name, Color col, float radius = 0f)
+        public MapViewPoI AddPoI(float x, float y, float z, string name, Color col, float radius, string typeName, long typeId)
         {
             var newPoi = new MapViewPoI();
-            newPoi.CoordX = x;
-            newPoi.CoordY = y;
+            newPoi.Coord = new Vector3(x, y, z);
             newPoi.Name = name;
             newPoi.PoIColor = col;
             newPoi.Radius = radius;
+            newPoi.TypeName = typeName;
+            newPoi.TypeId = typeId;
             poi.Add(newPoi);
             return newPoi;
         }
@@ -772,14 +971,15 @@ namespace AAEmu.DBViewer
         }
 
 
-        public MapViewPoI AddQuestSphere(float x, float y, string name, Color col, float radius = 0f)
+        public MapViewPoI AddQuestSphere(float x, float y, float z, string name, Color col, float radius, long questSphereId)
         {
             var newPoi = new MapViewPoI();
-            newPoi.CoordX = x;
-            newPoi.CoordY = y;
+            newPoi.Coord = new Vector3(x, y, z);
             newPoi.Name = name;
             newPoi.PoIColor = col;
             newPoi.Radius = radius;
+            newPoi.TypeName = "questsphere";
+            newPoi.TypeId = questSphereId;
             quest_sign_sphere.Add(newPoi);
             return newPoi;
         }
@@ -801,6 +1001,7 @@ namespace AAEmu.DBViewer
             newMap.Name = displayName;
             newMap.MapLevel = level;
             newMap.MapImageFile = fileName;
+            newMap.ZoneGroup = zone_group_id;
 
             if (zone_group_id > 0)
             {
@@ -951,28 +1152,28 @@ namespace AAEmu.DBViewer
                     if (first)
                     {
                         first = false;
-                        FocusBorder.X = p.CoordX;
-                        FocusBorder.Y = p.CoordY;
+                        FocusBorder.X = p.Coord.X;
+                        FocusBorder.Y = p.Coord.Y;
                         FocusBorder.Width = 1;
                         FocusBorder.Height = 1;
                     }
                     else
                     {
-                        if (p.CoordX < FocusBorder.X)
+                        if (p.Coord.X < FocusBorder.X)
                         {
-                            FocusBorder.Width = FocusBorder.Width + FocusBorder.X - p.CoordX;
-                            FocusBorder.X = p.CoordX;
+                            FocusBorder.Width = FocusBorder.Width + FocusBorder.X - p.Coord.X;
+                            FocusBorder.X = p.Coord.X;
                         }
-                        if (p.CoordX > FocusBorder.Right)
-                            FocusBorder.Width = p.CoordX - FocusBorder.Left + 1;
+                        if (p.Coord.X > FocusBorder.Right)
+                            FocusBorder.Width = p.Coord.X - FocusBorder.Left + 1;
 
-                        if (p.CoordY < FocusBorder.Y)
+                        if (p.Coord.Y < FocusBorder.Y)
                         {
-                            FocusBorder.Height = FocusBorder.Height + FocusBorder.Y - p.CoordY;
-                            FocusBorder.Y = p.CoordY;
+                            FocusBorder.Height = FocusBorder.Height + FocusBorder.Y - p.Coord.Y;
+                            FocusBorder.Y = p.Coord.Y;
                         }
-                        if (p.CoordY > FocusBorder.Bottom)
-                            FocusBorder.Height = p.CoordY - FocusBorder.Top + 1;
+                        if (p.Coord.Y > FocusBorder.Bottom)
+                            FocusBorder.Height = p.Coord.Y - FocusBorder.Top + 1;
                     }
                 }
 
@@ -1022,28 +1223,28 @@ namespace AAEmu.DBViewer
                     if (first)
                     {
                         first = false;
-                        FocusBorder.X = p.CoordX;
-                        FocusBorder.Y = p.CoordY;
+                        FocusBorder.X = p.Coord.X;
+                        FocusBorder.Y = p.Coord.Y;
                         FocusBorder.Width = 1;
                         FocusBorder.Height = 1;
                     }
                     else
                     {
-                        if (p.CoordX < FocusBorder.X)
+                        if (p.Coord.X < FocusBorder.X)
                         {
-                            FocusBorder.Width = FocusBorder.Width + FocusBorder.X - p.CoordX;
-                            FocusBorder.X = p.CoordX;
+                            FocusBorder.Width = FocusBorder.Width + FocusBorder.X - p.Coord.X;
+                            FocusBorder.X = p.Coord.X;
                         }
-                        if (p.CoordX > FocusBorder.Right)
-                            FocusBorder.Width = p.CoordX - FocusBorder.Left + 1;
+                        if (p.Coord.X > FocusBorder.Right)
+                            FocusBorder.Width = p.Coord.X - FocusBorder.Left + 1;
 
-                        if (p.CoordY < FocusBorder.Y)
+                        if (p.Coord.Y < FocusBorder.Y)
                         {
-                            FocusBorder.Height = FocusBorder.Height + FocusBorder.Y - p.CoordY;
-                            FocusBorder.Y = p.CoordY;
+                            FocusBorder.Height = FocusBorder.Height + FocusBorder.Y - p.Coord.Y;
+                            FocusBorder.Y = p.Coord.Y;
                         }
-                        if (p.CoordY > FocusBorder.Bottom)
-                            FocusBorder.Height = p.CoordY - FocusBorder.Top + 1;
+                        if (p.Coord.Y > FocusBorder.Bottom)
+                            FocusBorder.Height = p.Coord.Y - FocusBorder.Top + 1;
                     }
                 }
 
@@ -1146,16 +1347,28 @@ namespace AAEmu.DBViewer
             }
         }
 
+        private void tsmCopyToClipboard_Click(object sender, EventArgs e)
+        {
+            // Copy sender's text label to clipboard
+            if (sender is ToolStripMenuItem tsmi)
+            {
+                if (tsmi.Tag is string s)
+                    MainForm.CopyToClipBoard(s);
+                else
+                    MainForm.CopyToClipBoard(tsmi.Text);
+            }
+        }
     }
 
 
     public class MapViewPoI
     {
-        public float CoordX = 0f;
-        public float CoordY = 0f;
+        public Vector3 Coord = Vector3.Zero;
         public Color PoIColor = Color.Yellow;
         public string Name = string.Empty;
         public float Radius = 0f;
+        public string TypeName = string.Empty;
+        public long TypeId = 0;
     }
 
     public enum MapLevel : byte
@@ -1182,6 +1395,8 @@ namespace AAEmu.DBViewer
         public PointF RoadMapOffset = new PointF();
         public RectangleF RoadMapCoords = new RectangleF();
         public Bitmap RoadBitmapImage = null;
+
+        public long ZoneGroup = 0;
     }
 
     public class MapViewPath

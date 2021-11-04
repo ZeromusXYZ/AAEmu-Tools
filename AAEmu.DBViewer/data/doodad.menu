@@ -1,0 +1,4 @@
+﻿Name: {NAME};{NAME}
+TemplateId: {ID};{ID}
+Spawn Command;/spawn doodad {ID}
+Pos: {X} {Y} {Z};{X} {Y} {Z}
