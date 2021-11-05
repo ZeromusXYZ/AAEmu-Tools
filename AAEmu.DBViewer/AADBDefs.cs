@@ -645,13 +645,33 @@ namespace AAEmu.DBDefs
         public bool notify_failure = false;
     }
 
-    public class GameNpcSpawnersNpc
+    public class GameNpcSpawnerNpc
     {
         public long id = 0;
         public long npc_spawner_id = 0;
         public long member_id = 0;
         public string member_type = string.Empty;
         public float weight = 0f;
+    }
+
+    public class GameNpcSpawner
+    {
+        public long id = 0;
+        public long npc_spawner_category_id = 0;
+        public string name = string.Empty;
+        public string comment = string.Empty;
+        public long maxPopulation = 0;
+        public float startTime = 0f;
+        public float endTime = 0f;
+        public float destroyTime = 0f;
+        public float spawn_delay_min = 0f;
+        public bool activation_state = false;
+        public bool save_indun = false;
+        public long min_population = 0;
+        public float test_radius_npc = 0f;
+        public float test_radius_pc = 0f;
+        public long suspend_spawn_count = 0;
+        public float spawn_delay_max = 0f;
     }
 
     static class AADB
@@ -692,7 +712,8 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GamePlotEvent> DB_Plot_Events = new Dictionary<long, GamePlotEvent>();
         static public Dictionary<long, GamePlotNextEvent> DB_Plot_Next_Events = new Dictionary<long, GamePlotNextEvent>();
         static public Dictionary<long, GamePlotEventCondition> DB_Plot_Event_Conditions = new Dictionary<long, GamePlotEventCondition>();
-        static public Dictionary<long, GameNpcSpawnersNpc> DB_Npc_Spawner_Npcs = new Dictionary<long, GameNpcSpawnersNpc>();
+        static public Dictionary<long, GameNpcSpawnerNpc> DB_Npc_Spawner_Npcs = new Dictionary<long, GameNpcSpawnerNpc>();
+        static public Dictionary<long, GameNpcSpawner> DB_Npc_Spawners = new Dictionary<long, GameNpcSpawner>();
 
         static public string GetFactionName(long faction_id, bool addID = false)
         {
@@ -847,9 +868,9 @@ namespace AAEmu.DBDefs
             return null;
         }
 
-        public static List<GameNpcSpawnersNpc> GetNpcSpawnerNpcsByNpcId(long id)
+        public static List<GameNpcSpawnerNpc> GetNpcSpawnerNpcsByNpcId(long id)
         {
-            var res = new List<GameNpcSpawnersNpc>();
+            var res = new List<GameNpcSpawnerNpc>();
             foreach (var nsn in AADB.DB_Npc_Spawner_Npcs)
             {
                 if ((nsn.Value.member_id == id) && (nsn.Value.member_type.ToLower() == "npc"))

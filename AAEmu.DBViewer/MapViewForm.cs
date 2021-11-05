@@ -368,9 +368,11 @@ namespace AAEmu.DBViewer
                             var spawnerEntries = new List<long>();
                             spawnerEntries.Add(0);
 
+                            var npc_spawner_npcs = new List<GameNpcSpawnerNpc>();
+                            npc_spawner_npcs.Add(new GameNpcSpawnerNpc());
                             if ((line.Contains("{SPAWNER_ID}")) && (PoI.SourceObject is GameNPC npc))
                             {
-                                var npc_spawner_npcs = AADB.GetNpcSpawnerNpcsByNpcId(npc.id);
+                                npc_spawner_npcs = AADB.GetNpcSpawnerNpcsByNpcId(npc.id);
                                 if (npc_spawner_npcs.Count > 0)
                                 {
                                     spawnerEntries.Clear();
@@ -380,7 +382,7 @@ namespace AAEmu.DBViewer
 
 
                             }
-                            foreach (var entry in spawnerEntries)
+                            foreach (var entry in npc_spawner_npcs)
                             {
                                 var s = line;
                                 s = s.Replace("{NAME}", PoI.Name);
@@ -389,9 +391,24 @@ namespace AAEmu.DBViewer
                                 s = s.Replace("{Y}", PoI.Coord.Y.ToString());
                                 s = s.Replace("{Z}", PoI.Coord.Z.ToString());
                                 s = s.Replace("{RADIUS}", PoI.Radius.ToString());
-                                if (s.Contains("{SPAWNER_ID}") && (entry <= 0))
-                                    continue; // skip is this entry does not have a spawner
-                                s = s.Replace("{SPAWNER_ID}", entry.ToString());
+                                if (s.Contains("{SPAWNER_ID}"))
+                                {
+                                    if (entry.npc_spawner_id <= 0)
+                                        continue; // skip is this entry does not have a spawner
+                                    s = s.Replace("{SPAWNER_ID}", entry.npc_spawner_id.ToString());
+
+                                    if (AADB.DB_Npc_Spawners.TryGetValue(entry.npc_spawner_id, out var spawner))
+                                    {
+                                        s = s.Replace("{SPAWNER_MIN_POPULATION}", spawner.min_population.ToString());
+                                        s = s.Replace("{SPAWNER_MAX_POPULATION}", spawner.maxPopulation.ToString());
+                                        s = s.Replace("{SPAWNER_RESPAWN_DELAY_MIN}", spawner.spawn_delay_min.ToString());
+                                        s = s.Replace("{SPAWNER_RESPAWN_DELAY_MAX}", spawner.spawn_delay_max.ToString());
+                                        s = s.Replace("{SPAWNER_START_TIME}", spawner.startTime.ToString());
+                                        s = s.Replace("{SPAWNER_END_TIME}", spawner.endTime.ToString());
+                                        s = s.Replace("{SPAWNER_NAME}", spawner.name);
+                                        s = s.Replace("{SPAWNER_COMMENT}", spawner.comment);
+                                    }
+                                }
                                 s = s.Replace("\\n", "\n");
                                 var vals = s.Split(';');
                                 if (vals.Length != 2)

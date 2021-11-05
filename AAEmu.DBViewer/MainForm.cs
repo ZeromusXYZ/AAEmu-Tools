@@ -1080,7 +1080,7 @@ namespace AAEmu.DBViewer
 
                         while (reader.Read())
                         {
-                            var t = new GameNpcSpawnersNpc();
+                            var t = new GameNpcSpawnerNpc();
                             // Actual DB entries
                             t.id = GetInt64(reader, "id");
                             t.npc_spawner_id = GetInt64(reader, "npc_spawner_id");
@@ -1088,6 +1088,48 @@ namespace AAEmu.DBViewer
                             t.member_type = GetString(reader, "member_type");
                             t.weight = GetFloat(reader, "weight");
                             AADB.DB_Npc_Spawner_Npcs.Add(t.id, t);
+                        }
+                    }
+                }
+            }
+
+
+            sql = "SELECT * FROM npc_spawners ORDER BY id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        AADB.DB_Npc_Spawners.Clear();
+
+                        var columnNames = reader.GetColumnNames();
+
+                        while (reader.Read())
+                        {
+                            var t = new GameNpcSpawner();
+                            // Actual DB entries
+                            t.id = GetInt64(reader, "id");
+                            t.npc_spawner_category_id = GetInt64(reader, "npc_spawner_category_id");
+                            t.name = GetString(reader, "name");
+                            t.comment = GetString(reader, "comment");
+                            t.maxPopulation = GetInt64(reader, "maxPopulation");
+                            t.startTime = GetFloat(reader, "startTime");
+                            t.endTime = GetFloat(reader, "endTime");
+                            t.destroyTime = GetFloat(reader, "destroyTime");
+                            t.spawn_delay_min = GetFloat(reader, "spawn_delay_min");
+                            t.activation_state = GetBool(reader, "activation_state");
+                            t.save_indun = GetBool(reader, "save_indun");
+                            t.min_population = GetInt64(reader, "min_population");
+                            t.test_radius_npc = GetFloat(reader, "test_radius_npc");
+                            t.test_radius_pc = GetFloat(reader, "test_radius_pc");
+                            t.suspend_spawn_count = GetInt64(reader, "suspend_spawn_count");
+                            t.spawn_delay_max = GetFloat(reader, "spawn_delay_max");
+
+                            AADB.DB_Npc_Spawners.Add(t.id, t);
                         }
                     }
                 }
