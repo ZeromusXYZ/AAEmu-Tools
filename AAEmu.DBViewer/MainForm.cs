@@ -4404,7 +4404,7 @@ namespace AAEmu.DBViewer
                                         row.Cells[4].Value = z.npc_grade_id.ToString();
                                         row.Cells[5].Value = AADB.GetFactionName(z.faction_id, true);
 
-                                        var npc_spawner_npcs = GetNpcSpawnerNpcsByNpcId(z.id);
+                                        var npc_spawner_npcs = AADB.GetNpcSpawnerNpcsByNpcId(z.id);
 
                                         if (npc_spawner_npcs.Count > 0)
                                         {
@@ -4428,11 +4428,11 @@ namespace AAEmu.DBViewer
                                             loading.ShowInfo("Loading " + c.ToString() + "/" + npcList.Count.ToString() + " NPCs");
                                         }
 
-                                        map.AddPoI(npc.x, npc.y, npc.z, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow, 0f, "npc", npc.id);
+                                        map.AddPoI(npc.x, npc.y, npc.z, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow, 0f, "npc", npc.id, z);
                                     }
                                     else
                                     {
-                                        map.AddPoI(npc.x, npc.y, npc.z, "(" + npc.id.ToString() + ")", Color.Red, 0f, "npc", npc.id);
+                                        map.AddPoI(npc.x, npc.y, npc.z, "(" + npc.id.ToString() + ")", Color.Red, 0f, "npc", npc.id, z);
                                     }
                                 }
                                 tcViewer.SelectedTab = tpNPCs;
@@ -4449,17 +4449,6 @@ namespace AAEmu.DBViewer
                 }
             }
 
-        }
-
-        private List<GameNpcSpawnersNpc> GetNpcSpawnerNpcsByNpcId(long id)
-        {
-            var res = new List<GameNpcSpawnersNpc>();
-            foreach(var nsn in AADB.DB_Npc_Spawner_Npcs)
-            {
-                if ((nsn.Value.member_id == id) && (nsn.Value.member_type.ToLower() == "npc"))
-                    res.Add(nsn.Value);
-            }
-            return res;
         }
 
         private void btnFindQuestsInZone_Click(object sender, EventArgs e)
@@ -4883,7 +4872,7 @@ namespace AAEmu.DBViewer
                             continue;
                         if (AADB.DB_NPCs.TryGetValue(npc.id, out var z))
                         {
-                            map.AddPoI(npc.x, npc.y, npc.z, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow, 0f, "npc", npc.id);
+                            map.AddPoI(npc.x, npc.y, npc.z, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow, 0f, "npc", npc.id, z);
                         }
                     }
                 }
@@ -5721,7 +5710,7 @@ namespace AAEmu.DBViewer
                             continue;
                         if (AADB.DB_Doodad_Almighties.TryGetValue(doodad.id, out var z))
                         {
-                            map.AddPoI(doodad.x, doodad.y, doodad.z, z.nameLocalized + " (" + doodad.id.ToString() + ")", Color.Yellow, 0f, "doodad", doodad.id);
+                            map.AddPoI(doodad.x, doodad.y, doodad.z, z.nameLocalized + " (" + doodad.id.ToString() + ")", Color.Yellow, 0f, "doodad", doodad.id, z);
                         }
                     }
                 }
@@ -6082,7 +6071,7 @@ namespace AAEmu.DBViewer
                             //    continue;
                             if (AADB.DB_NPCs.TryGetValue(npc.id, out var z))
                             {
-                                map.AddPoI(npc.x, npc.y, npc.z, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow, 0f, "npc", npc.id);
+                                map.AddPoI(npc.x, npc.y, npc.z, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow, 0f, "npc", npc.id, z);
                                 foundCount++;
                             }
                         }
@@ -6241,11 +6230,11 @@ namespace AAEmu.DBViewer
                                             loading.ShowInfo("Loading " + c.ToString() + "/" + doodadList.Count.ToString() + " Doodads");
                                         }
 
-                                        map.AddPoI(doodad.x, doodad.y, doodad.z, z.nameLocalized + " (" + doodad.id.ToString() + ")", Color.Yellow, 0f, "doodad", doodad.id);
+                                        map.AddPoI(doodad.x, doodad.y, doodad.z, z.nameLocalized + " (" + doodad.id.ToString() + ")", Color.Yellow, 0f, "doodad", doodad.id, z);
                                     }
                                     else
                                     {
-                                        map.AddPoI(doodad.x, doodad.y, doodad.z, "(" + doodad.id.ToString() + ")", Color.Red, 0f, "doodad", doodad.id);
+                                        map.AddPoI(doodad.x, doodad.y, doodad.z, "(" + doodad.id.ToString() + ")", Color.Red, 0f, "doodad", doodad.id, z);
                                     }
                                 }
                                 tcViewer.SelectedTab = tpDoodads;
@@ -6298,6 +6287,7 @@ namespace AAEmu.DBViewer
                                     ni.Name = npc.nameLocalized;
                                     ni.PoIColor = Color.Yellow;
                                     ni.TypeId = npc.id;
+                                    ni.SourceObject = npc;
                                 }
                                 else
                                 if (isDoodads && AADB.DB_Doodad_Almighties.TryGetValue(spawner.UnitId, out var doodad))
@@ -6305,6 +6295,7 @@ namespace AAEmu.DBViewer
                                     ni.Name = doodad.nameLocalized;
                                     ni.PoIColor = Color.DarkGreen;
                                     ni.TypeId = doodad.id;
+                                    ni.SourceObject = doodad;
                                 }
                                 else
                                 if (isTransfers && AADB.DB_Transfers.TryGetValue(spawner.UnitId, out var transfer))
@@ -6312,6 +6303,7 @@ namespace AAEmu.DBViewer
                                     ni.Name = "Model: " + transfer.model_id.ToString();
                                     ni.PoIColor = Color.Navy;
                                     ni.TypeId = transfer.id;
+                                    ni.SourceObject = transfer;
                                 }
                                 else
                                 if (isDoodads || isNPCs || isTransfers)
@@ -6357,7 +6349,7 @@ namespace AAEmu.DBViewer
                         map.ClearPoI();
 
                 foreach (var p in allPoIs)
-                    map.AddPoI(p.Coord.X, p.Coord.Y, p.Coord.Z, p.Name, p.PoIColor, 0f, p.TypeName, p.TypeId);
+                    map.AddPoI(p.Coord.X, p.Coord.Y, p.Coord.Z, p.Name, p.PoIColor, 0f, p.TypeName, p.TypeId, p);
 
                 map.FocusAll(true, false, false);
                 map.tsbShowPoI.Checked = true;

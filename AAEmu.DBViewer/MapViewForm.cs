@@ -322,6 +322,7 @@ namespace AAEmu.DBViewer
                             s = s.Replace("{INSTANCE}", map.InstanceName);
                             s = s.Replace("{ZONEGROUP}", map.ZoneGroup.ToString());
                             s = s.Replace("{COORDS}", map.ZoneCoords.ToString());
+                            s = s.Replace("\\n", "\n");
                             var vals = s.Split(';');
                             if (vals.Length != 2)
                                 continue;
@@ -343,6 +344,7 @@ namespace AAEmu.DBViewer
                             var s = line;
                             s = s.Replace("{NAME}", path.PathName);
                             s = s.Replace("{ID}", path.TypeId.ToString());
+                            s = s.Replace("\\n", "\n");
                             var vals = s.Split(';');
                             if (vals.Length != 2)
                                 continue;
@@ -361,18 +363,42 @@ namespace AAEmu.DBViewer
                         var lines = File.ReadAllLines(fn).ToList();
                         foreach (var line in lines)
                         {
-                            var s = line;
-                            s = s.Replace("{NAME}", PoI.Name);
-                            s = s.Replace("{ID}", PoI.TypeId.ToString());
-                            s = s.Replace("{X}", PoI.Coord.X.ToString());
-                            s = s.Replace("{Y}", PoI.Coord.Y.ToString());
-                            s = s.Replace("{Z}", PoI.Coord.Z.ToString());
-                            s = s.Replace("{RADIUS}", PoI.Radius.ToString());
-                            var vals = s.Split(';');
-                            if (vals.Length != 2)
+                            if (string.IsNullOrWhiteSpace(line))
                                 continue;
+                            var spawnerEntries = new List<long>();
+                            spawnerEntries.Add(0);
 
-                            AddMenuItem(parent, vals[0], vals[1]);
+                            if ((line.Contains("{SPAWNER_ID}")) && (PoI.SourceObject is GameNPC npc))
+                            {
+                                var npc_spawner_npcs = AADB.GetNpcSpawnerNpcsByNpcId(npc.id);
+                                if (npc_spawner_npcs.Count > 0)
+                                {
+                                    spawnerEntries.Clear();
+                                    foreach (var spawner in npc_spawner_npcs)
+                                        spawnerEntries.Add(spawner.npc_spawner_id);
+                                }
+
+
+                            }
+                            foreach (var entry in spawnerEntries)
+                            {
+                                var s = line;
+                                s = s.Replace("{NAME}", PoI.Name);
+                                s = s.Replace("{ID}", PoI.TypeId.ToString());
+                                s = s.Replace("{X}", PoI.Coord.X.ToString());
+                                s = s.Replace("{Y}", PoI.Coord.Y.ToString());
+                                s = s.Replace("{Z}", PoI.Coord.Z.ToString());
+                                s = s.Replace("{RADIUS}", PoI.Radius.ToString());
+                                if (s.Contains("{SPAWNER_ID}") && (entry <= 0))
+                                    continue; // skip is this entry does not have a spawner
+                                s = s.Replace("{SPAWNER_ID}", entry.ToString());
+                                s = s.Replace("\\n", "\n");
+                                var vals = s.Split(';');
+                                if (vals.Length != 2)
+                                    continue;
+
+                                AddMenuItem(parent, vals[0], vals[1]);
+                            }
                         }
                         return true;
                     }
@@ -538,14 +564,21 @@ namespace AAEmu.DBViewer
             g.DrawLine(pen, ViewOffset.X + pos.X - crossSize, ViewOffset.Y + pos.Y, ViewOffset.X + pos.X + crossSize, ViewOffset.Y + pos.Y);
             if (name != string.Empty)
             {
-                var f = new Font(Font.FontFamily, 12f / viewScale);
-                var br = new SolidBrush(color);
-                try
+                var lines = name.Split('\n');
+                var lineYOff = 0;
+                foreach (var line in lines)
                 {
-                    g.DrawString(name, f, br, ViewOffset.X + pos.X + crossSize, ViewOffset.Y + pos.Y - crossSize);
-                } catch 
-                {
-                    g.DrawString("???", f, br, ViewOffset.X + pos.X + crossSize, ViewOffset.Y + pos.Y - crossSize);
+                    var f = new Font(Font.FontFamily, 12f / viewScale);
+                    var br = new SolidBrush(color);
+                    try
+                    {
+                        g.DrawString(line, f, br, ViewOffset.X + pos.X + crossSize, ViewOffset.Y + pos.Y - crossSize + lineYOff);
+                    }
+                    catch
+                    {
+                        g.DrawString("???", f, br, ViewOffset.X + pos.X + crossSize, ViewOffset.Y + pos.Y - crossSize + lineYOff);
+                    }
+                    lineYOff += (int)g.MeasureString(line, f).Height;
                 }
             }
         }
@@ -825,10 +858,31 @@ namespace AAEmu.DBViewer
                     foreach (var p in poi)
                     {
                         var col = (p == topMostPoI) ? Color.White : p.PoIColor;
+                        var label = "";
+                        if ((tsbNamesPoI.Checked) || p.Equals(topMostPoI))
+                        {
+                            label = p.Name;
+                            if (p.Equals(topMostPoI) && (p.SourceObject is GameNPC npc))
+                            {
+                                var npc_spawner_npcs = AADB.GetNpcSpawnerNpcsByNpcId(npc.id);
+
+                                if (npc_spawner_npcs.Count > 0)
+                                {
+                                    if (npc_spawner_npcs.Count == 1)
+                                        label = string.Format("{0}\nSpawner: {1}", label, npc_spawner_npcs[0].npc_spawner_id);
+                                    else
+                                    {
+                                        var ids = npc_spawner_npcs.Select(a => a.npc_spawner_id).ToList();
+                                        label = string.Format("{0}\nSpawners: {1}", label, string.Join(", ", ids));
+                                    }
+                                }
+                            }
+                        }
+
                         if (p.Radius <= 3f)
-                            DrawCross(g, p.Coord.X, p.Coord.Y, col, tsbNamesPoI.Checked ? p.Name : "");
+                            DrawCross(g, p.Coord.X, p.Coord.Y, col, label);
                         else
-                            DrawRadius(g, p.Coord.X, p.Coord.Y, col, tsbNamesPoI.Checked ? p.Name : "", p.Radius);
+                            DrawRadius(g, p.Coord.X, p.Coord.Y, col, label, p.Radius);
                     }
 
                 // Draw Quest Sign spheres
@@ -958,7 +1012,7 @@ namespace AAEmu.DBViewer
             updateStatusBar();
         }
 
-        public MapViewPoI AddPoI(float x, float y, float z, string name, Color col, float radius, string typeName, long typeId)
+        public MapViewPoI AddPoI(float x, float y, float z, string name, Color col, float radius, string typeName, long typeId, object sourceObject)
         {
             var newPoi = new MapViewPoI();
             newPoi.Coord = new Vector3(x, y, z);
@@ -967,6 +1021,7 @@ namespace AAEmu.DBViewer
             newPoi.Radius = radius;
             newPoi.TypeName = typeName;
             newPoi.TypeId = typeId;
+            newPoi.SourceObject = sourceObject;
             poi.Add(newPoi);
             return newPoi;
         }
@@ -1372,191 +1427,6 @@ namespace AAEmu.DBViewer
     }
 
 
-    public class MapViewPoI
-    {
-        public Vector3 Coord = Vector3.Zero;
-        public Color PoIColor = Color.Yellow;
-        public string Name = string.Empty;
-        public float Radius = 0f;
-        public string TypeName = string.Empty;
-        public long TypeId = 0;
-    }
-
-    public enum MapLevel : byte
-    {
-        None = 0,
-        WorldMap = 1,
-        Continent = 2,
-        Zone = 3,
-        City = 4
-    }
-
-    public class MapViewMap
-    {
-        public MapLevel MapLevel = MapLevel.None;
-        public RectangleF ZoneCoords = new RectangleF();
-        public RectangleF ImgCoords = new RectangleF();
-        public Color MapBorderColor = Color.Yellow;
-        public string Name = string.Empty;
-        public string InstanceName = string.Empty;
-        public string MapImageFile = string.Empty;
-        public Bitmap MapBitmapImage = null;
-
-        public string RoadImageFile = string.Empty;
-        public PointF RoadMapOffset = new PointF();
-        public RectangleF RoadMapCoords = new RectangleF();
-        public Bitmap RoadBitmapImage = null;
-
-        public long ZoneGroup = 0;
-    }
-
-    public class MapViewPath
-    {
-        public string PathName = string.Empty;
-        public Color Color = Color.White;
-        public long TypeId = 0;
-        public List<Vector3> allpoints { get; private set; } = new List<Vector3>();
-        // Helper data for drawing, not actually related to the data
-        public byte DrawStyle = 0;
-        public RectangleF BoundingBox { get; private set; } = new RectangleF();
-        public void AddPoint(Vector3 point)
-        {
-            // Add point to list
-            allpoints.Add(point);
-
-            if (allpoints.Count <= 1)
-            {
-                BoundingBox = new RectangleF(point.X, point.Y, 0, 0);
-                return;
-            }
-
-            // Adjust bounding box if needed
-            var x1 = BoundingBox.Left;
-            var y1 = BoundingBox.Top;
-            var x2 = BoundingBox.Right;
-            var y2 = BoundingBox.Bottom;
-
-            if (point.X < x1)
-                x1 = point.X;
-            if (point.Y < y1)
-                y1 = point.Y;
-            if (point.X > x2)
-                x2 = point.X;
-            if (point.Y > y2)
-                y2 = point.Y;
-
-            BoundingBox = new RectangleF(x1, y1, x2 - x1, y2 - y1);
-        }
-
-        private bool AreLinesIntersects(Vector2 v1Start, Vector2 v1End, Vector2 v2Start, Vector2 v2End)
-        {
-            float d1, d2;
-            float a1, a2, b1, b2, c1, c2;
-
-            // Convert vector 1 to a line (line 1) of infinite length.
-            // We want the line in linear equation standard form: A*x + B*y + C = 0
-            // See: http://en.wikipedia.org/wiki/Linear_equation
-            a1 = v1End.Y - v1Start.Y;
-            b1 = v1Start.X - v1End.X;
-            c1 = (v1End.X * v1Start.Y) - (v1Start.X * v1End.Y);
-
-            // Every point (x,y), that solves the equation above, is on the line,
-            // every point that does not solve it, is not. The equation will have a
-            // positive result if it is on one side of the line and a negative one 
-            // if is on the other side of it. We insert (x1,y1) and (x2,y2) of vector
-            // 2 into the equation above.
-            d1 = (a1 * v2Start.X) + (b1 * v2Start.Y) + c1;
-            d2 = (a1 * v2End.X) + (b1 * v2End.Y) + c1;
-
-            // If d1 and d2 both have the same sign, they are both on the same side
-            // of our line 1 and in that case no intersection is possible. Careful, 
-            // 0 is a special case, that's why we don't test ">=" and "<=", 
-            // but "<" and ">".
-            if (d1 > 0 && d2 > 0) return false;
-            if (d1 < 0 && d2 < 0) return false;
-
-            // The fact that vector 2 intersected the infinite line 1 above doesn't 
-            // mean it also intersects the vector 1. Vector 1 is only a subset of that
-            // infinite line 1, so it may have intersected that line before the vector
-            // started or after it ended. To know for sure, we have to repeat the
-            // the same test the other way round. We start by calculating the 
-            // infinite line 2 in linear equation standard form.
-            a2 = v2End.Y - v2Start.Y;
-            b2 = v2Start.X - v2End.X;
-            c2 = (v2End.X * v2Start.Y) - (v2Start.X * v2End.Y);
-
-            // Calculate d1 and d2 again, this time using points of vector 1.
-            d1 = (a2 * v1Start.X) + (b2 * v1Start.Y) + c2;
-            d2 = (a2 * v1End.X) + (b2 * v1End.Y) + c2;
-
-            // Again, if both have the same sign (and neither one is 0),
-            // no intersection is possible.
-            if (d1 > 0 && d2 > 0) return false;
-            if (d1 < 0 && d2 < 0) return false;
-
-            // If we get here, only two possibilities are left. Either the two
-            // vectors intersect in exactly one point or they are collinear, which
-            // means they intersect in any number of points from zero to infinite.
-            if ((a1 * b2) - (a2 * b1) == 0.0f) return false; // COLLINEAR;
-
-            // If they are not collinear, they must intersect in exactly one point.
-            return true;
-        }
-
-        public bool Contains(float x, float y)
-        {
-            // Info: https://stackoverflow.com/questions/217578/how-can-i-determine-whether-a-2d-point-is-within-a-polygon
-
-            // Very rough test for better speed
-            if (!BoundingBox.Contains(x, y))
-                return false;
-
-            // Test the ray against all sides
-            var intersections = 0;
-            for (var side = 0; side < allpoints.Count-1; side++)
-            {
-                var sideStart = new Vector2(allpoints[side].X, allpoints[side].Y);
-                var sideEnd = new Vector2(allpoints[side+1].X, allpoints[side+1].Y);
-                var rayStart = new Vector2(BoundingBox.X - 1f, BoundingBox.Y - 1f);
-                var rayEnd = new Vector2(x, y);
-
-                // Test if current side intersects with ray.
-                // If yes, intersections++;
-                if (AreLinesIntersects(rayStart, rayEnd, sideStart, sideEnd))
-                    intersections++;
-            }
-
-            return ((intersections & 1) == 1);
-        }
-
-        public bool Contains(Vector3 pos) => Contains(pos.X, pos.Y);
-        public bool Contains(Vector2 pos) => Contains(pos.X, pos.Y);
-        public bool Contains(Point pos) => Contains(pos.X, pos.Y);
-    }
-
-    public class MapViewWorldXMLZoneCellInfo
-    {
-        public int X = 0;
-        public int Y = 0;
-        public Rectangle bounds = new Rectangle();
-        public long zone_key = 0;
-    }
-
-    public class MapViewWorldXMLZoneInfo
-    {
-        public string name = string.Empty;
-        public long zone_key = 0;
-        public int originCellX = 0;
-        public int originCellY = 0;
-        public List<MapViewWorldXMLZoneCellInfo> Cells = new List<MapViewWorldXMLZoneCellInfo>();
-        public MapViewWorldXMLZoneCellInfo FindCell(int coordX, int coordY)
-        {
-            foreach (var cell in Cells)
-                if (cell.bounds.Contains(coordX, coordY))
-                    return cell;
-            return null;
-        }
-    }
 
     public class MapViewWorldXML
     {

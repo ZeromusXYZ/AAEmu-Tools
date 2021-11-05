@@ -846,6 +846,17 @@ namespace AAEmu.DBDefs
                     return z.Value;
             return null;
         }
-    }
 
+        public static List<GameNpcSpawnersNpc> GetNpcSpawnerNpcsByNpcId(long id)
+        {
+            var res = new List<GameNpcSpawnersNpc>();
+            foreach (var nsn in AADB.DB_Npc_Spawner_Npcs)
+            {
+                if ((nsn.Value.member_id == id) && (nsn.Value.member_type.ToLower() == "npc"))
+                    res.Add(nsn.Value);
+            }
+            return res;
+        }
+
+    }
 }

@@ -2,3 +2,4 @@
 TemplateId: {ID};{ID}
 Spawn Command;/spawn npc {ID}
 Pos: {X} {Y} {Z};{X} {Y} {Z}
+Spawner: {SPAWNER_ID};{SPAWNER_ID}

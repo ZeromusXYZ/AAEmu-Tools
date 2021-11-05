@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -746,4 +747,190 @@ namespace AAEmu.DBViewer
 
     }
 
+    public enum MapLevel : byte
+    {
+        None = 0,
+        WorldMap = 1,
+        Continent = 2,
+        Zone = 3,
+        City = 4
+    }
+
+    public class MapViewPoI
+    {
+        public Vector3 Coord = Vector3.Zero;
+        public Color PoIColor = Color.Yellow;
+        public string Name = string.Empty;
+        public float Radius = 0f;
+        public string TypeName = string.Empty;
+        public long TypeId = 0;
+        public object SourceObject = null;
+    }
+
+    public class MapViewMap
+    {
+        public MapLevel MapLevel = MapLevel.None;
+        public RectangleF ZoneCoords = new RectangleF();
+        public RectangleF ImgCoords = new RectangleF();
+        public Color MapBorderColor = Color.Yellow;
+        public string Name = string.Empty;
+        public string InstanceName = string.Empty;
+        public string MapImageFile = string.Empty;
+        public Bitmap MapBitmapImage = null;
+
+        public string RoadImageFile = string.Empty;
+        public PointF RoadMapOffset = new PointF();
+        public RectangleF RoadMapCoords = new RectangleF();
+        public Bitmap RoadBitmapImage = null;
+
+        public long ZoneGroup = 0;
+    }
+
+    public class MapViewPath
+    {
+        public string PathName = string.Empty;
+        public Color Color = Color.White;
+        public long TypeId = 0;
+        public List<Vector3> allpoints { get; private set; } = new List<Vector3>();
+        // Helper data for drawing, not actually related to the data
+        public byte DrawStyle = 0;
+        public RectangleF BoundingBox { get; private set; } = new RectangleF();
+        public void AddPoint(Vector3 point)
+        {
+            // Add point to list
+            allpoints.Add(point);
+
+            if (allpoints.Count <= 1)
+            {
+                BoundingBox = new RectangleF(point.X, point.Y, 0, 0);
+                return;
+            }
+
+            // Adjust bounding box if needed
+            var x1 = BoundingBox.Left;
+            var y1 = BoundingBox.Top;
+            var x2 = BoundingBox.Right;
+            var y2 = BoundingBox.Bottom;
+
+            if (point.X < x1)
+                x1 = point.X;
+            if (point.Y < y1)
+                y1 = point.Y;
+            if (point.X > x2)
+                x2 = point.X;
+            if (point.Y > y2)
+                y2 = point.Y;
+
+            BoundingBox = new RectangleF(x1, y1, x2 - x1, y2 - y1);
+        }
+
+        private bool AreLinesIntersects(Vector2 v1Start, Vector2 v1End, Vector2 v2Start, Vector2 v2End)
+        {
+            float d1, d2;
+            float a1, a2, b1, b2, c1, c2;
+
+            // Convert vector 1 to a line (line 1) of infinite length.
+            // We want the line in linear equation standard form: A*x + B*y + C = 0
+            // See: http://en.wikipedia.org/wiki/Linear_equation
+            a1 = v1End.Y - v1Start.Y;
+            b1 = v1Start.X - v1End.X;
+            c1 = (v1End.X * v1Start.Y) - (v1Start.X * v1End.Y);
+
+            // Every point (x,y), that solves the equation above, is on the line,
+            // every point that does not solve it, is not. The equation will have a
+            // positive result if it is on one side of the line and a negative one 
+            // if is on the other side of it. We insert (x1,y1) and (x2,y2) of vector
+            // 2 into the equation above.
+            d1 = (a1 * v2Start.X) + (b1 * v2Start.Y) + c1;
+            d2 = (a1 * v2End.X) + (b1 * v2End.Y) + c1;
+
+            // If d1 and d2 both have the same sign, they are both on the same side
+            // of our line 1 and in that case no intersection is possible. Careful, 
+            // 0 is a special case, that's why we don't test ">=" and "<=", 
+            // but "<" and ">".
+            if (d1 > 0 && d2 > 0) return false;
+            if (d1 < 0 && d2 < 0) return false;
+
+            // The fact that vector 2 intersected the infinite line 1 above doesn't 
+            // mean it also intersects the vector 1. Vector 1 is only a subset of that
+            // infinite line 1, so it may have intersected that line before the vector
+            // started or after it ended. To know for sure, we have to repeat the
+            // the same test the other way round. We start by calculating the 
+            // infinite line 2 in linear equation standard form.
+            a2 = v2End.Y - v2Start.Y;
+            b2 = v2Start.X - v2End.X;
+            c2 = (v2End.X * v2Start.Y) - (v2Start.X * v2End.Y);
+
+            // Calculate d1 and d2 again, this time using points of vector 1.
+            d1 = (a2 * v1Start.X) + (b2 * v1Start.Y) + c2;
+            d2 = (a2 * v1End.X) + (b2 * v1End.Y) + c2;
+
+            // Again, if both have the same sign (and neither one is 0),
+            // no intersection is possible.
+            if (d1 > 0 && d2 > 0) return false;
+            if (d1 < 0 && d2 < 0) return false;
+
+            // If we get here, only two possibilities are left. Either the two
+            // vectors intersect in exactly one point or they are collinear, which
+            // means they intersect in any number of points from zero to infinite.
+            if ((a1 * b2) - (a2 * b1) == 0.0f) return false; // COLLINEAR;
+
+            // If they are not collinear, they must intersect in exactly one point.
+            return true;
+        }
+
+        public bool Contains(float x, float y)
+        {
+            // Info: https://stackoverflow.com/questions/217578/how-can-i-determine-whether-a-2d-point-is-within-a-polygon
+
+            // Very rough test for better speed
+            if (!BoundingBox.Contains(x, y))
+                return false;
+
+            // Test the ray against all sides
+            var intersections = 0;
+            for (var side = 0; side < allpoints.Count - 1; side++)
+            {
+                var sideStart = new Vector2(allpoints[side].X, allpoints[side].Y);
+                var sideEnd = new Vector2(allpoints[side + 1].X, allpoints[side + 1].Y);
+                var rayStart = new Vector2(BoundingBox.X - 1f, BoundingBox.Y - 1f);
+                var rayEnd = new Vector2(x, y);
+
+                // Test if current side intersects with ray.
+                // If yes, intersections++;
+                if (AreLinesIntersects(rayStart, rayEnd, sideStart, sideEnd))
+                    intersections++;
+            }
+
+            return ((intersections & 1) == 1);
+        }
+
+        public bool Contains(Vector3 pos) => Contains(pos.X, pos.Y);
+        public bool Contains(Vector2 pos) => Contains(pos.X, pos.Y);
+        public bool Contains(Point pos) => Contains(pos.X, pos.Y);
+    }
+
+    public class MapViewWorldXMLZoneCellInfo
+    {
+        public int X = 0;
+        public int Y = 0;
+        public Rectangle bounds = new Rectangle();
+        public long zone_key = 0;
+    }
+
+    public class MapViewWorldXMLZoneInfo
+    {
+        public string name = string.Empty;
+        public long zone_key = 0;
+        public int originCellX = 0;
+        public int originCellY = 0;
+        public List<MapViewWorldXMLZoneCellInfo> Cells = new List<MapViewWorldXMLZoneCellInfo>();
+        public MapViewWorldXMLZoneCellInfo FindCell(int coordX, int coordY)
+        {
+            foreach (var cell in Cells)
+                if (cell.bounds.Contains(coordX, coordY))
+                    return cell;
+            return null;
+        }
+    }
 }
