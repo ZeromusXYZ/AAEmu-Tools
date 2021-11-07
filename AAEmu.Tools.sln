@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAEmu.ClientDataExporter", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GReader", "GReader\GReader.csproj", "{A625A164-0621-41CA-84C8-77F64EFF31FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAEmu.DBEditor", "AAEmu.DBEditor\AAEmu.DBEditor.csproj", "{0453661E-8C26-4472-B6C2-432A2FE3432A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{A625A164-0621-41CA-84C8-77F64EFF31FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A625A164-0621-41CA-84C8-77F64EFF31FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A625A164-0621-41CA-84C8-77F64EFF31FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0453661E-8C26-4472-B6C2-432A2FE3432A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0453661E-8C26-4472-B6C2-432A2FE3432A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0453661E-8C26-4472-B6C2-432A2FE3432A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0453661E-8C26-4472-B6C2-432A2FE3432A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,30 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AAEmu.DBEditor.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ClientPak" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ServerDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MySQLUser" Type="System.String" Scope="User">
+      <Value Profile="(Default)">root</Value>
+    </Setting>
+    <Setting Name="MySQLPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MySQLDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">127.0.0.1</Value>
+    </Setting>
+    <Setting Name="MySQLGame" Type="System.String" Scope="User">
+      <Value Profile="(Default)">aaemu_game</Value>
+    </Setting>
+    <Setting Name="MySQLLogin" Type="System.String" Scope="User">
+      <Value Profile="(Default)">aaemu_login</Value>
+    </Setting>
+    <Setting Name="ClientLanguage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">en_us</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
