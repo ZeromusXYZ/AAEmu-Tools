@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>AAEmu.DBViewer</RootNamespace>
     <AssemblyName>AAEmu.DBViewer</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>

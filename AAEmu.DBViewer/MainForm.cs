@@ -500,7 +500,7 @@ namespace AAEmu.DBViewer
                                 t.abox_show = false;
 
                             if (t.display_text != string.Empty)
-                                t.display_textLocalized = GetTranslationByID(t.id, "zones", "display_text", t.display_text);
+                                t.display_textLocalized = AADB.GetTranslationByID(t.id, "zones", "display_text", t.display_text);
                             else
                                 t.display_textLocalized = "";
                             t.SearchString = t.name + " " + t.display_text + " " + t.display_textLocalized;
@@ -553,7 +553,7 @@ namespace AAEmu.DBViewer
                             t.buff_id = GetInt64(reader, "buff_id");
 
                             if (t.display_text != string.Empty)
-                                t.display_textLocalized = GetTranslationByID(t.id, "zone_groups", "display_text", t.display_text);
+                                t.display_textLocalized = AADB.GetTranslationByID(t.id, "zone_groups", "display_text", t.display_text);
                             else
                                 t.display_textLocalized = "";
                             t.SearchString = t.name + " " + t.display_text + " " + t.display_textLocalized;
@@ -654,7 +654,7 @@ namespace AAEmu.DBViewer
                             t.id = GetInt64(reader, "id");
                             t.name = GetString(reader, "name");
 
-                            t.nameLocalized = GetTranslationByID(t.id, "item_categories", "name", t.name);
+                            t.nameLocalized = AADB.GetTranslationByID(t.id, "item_categories", "name", t.name);
 
                             AADB.DB_ItemsCategories.Add(t.id, t);
                         }
@@ -713,8 +713,8 @@ namespace AAEmu.DBViewer
                             t.fixed_grade = GetInt64(reader, "fixed_grade");
                             t.use_skill_id = GetInt64(reader, "use_skill_id");
 
-                            t.nameLocalized = GetTranslationByID(t.id, "items", "name", t.name);
-                            t.descriptionLocalized = GetTranslationByID(t.id, "items", "description", t.description);
+                            t.nameLocalized = AADB.GetTranslationByID(t.id, "items", "name", t.name);
+                            t.descriptionLocalized = AADB.GetTranslationByID(t.id, "items", "description", t.description);
 
                             t.SearchString = t.name + " " + t.description + " " + t.nameLocalized + " " + t.descriptionLocalized;
                             t.SearchString = t.SearchString.ToLower();
@@ -823,10 +823,10 @@ namespace AAEmu.DBViewer
                             t.first_reagent_only = GetBool(reader, "first_reagent_only");
                             t.plot_id = GetInt64(reader, "plot_id");
 
-                            t.nameLocalized = GetTranslationByID(t.id, "skills", "name", t.name);
-                            t.descriptionLocalized = GetTranslationByID(t.id, "skills", "desc", t.desc);
+                            t.nameLocalized = AADB.GetTranslationByID(t.id, "skills", "name", t.name);
+                            t.descriptionLocalized = AADB.GetTranslationByID(t.id, "skills", "desc", t.desc);
                             if (readWebDesc)
-                                t.webDescriptionLocalized = GetTranslationByID(t.id, "skills", "web_desc", t.web_desc);
+                                t.webDescriptionLocalized = AADB.GetTranslationByID(t.id, "skills", "web_desc", t.web_desc);
                             else
                                 t.webDescriptionLocalized = string.Empty;
 
@@ -1054,7 +1054,7 @@ namespace AAEmu.DBViewer
                             t.show_faction_tag = GetBool(reader, "show_faction_tag");
 
 
-                            t.nameLocalized = GetTranslationByID(t.id, "npcs", "name", t.name);
+                            t.nameLocalized = AADB.GetTranslationByID(t.id, "npcs", "name", t.name);
 
                             t.SearchString = t.name + " " + t.nameLocalized;
                             t.SearchString = t.SearchString.ToLower();
@@ -1066,28 +1066,32 @@ namespace AAEmu.DBViewer
 
             sql = "SELECT * FROM npc_spawner_npcs ORDER BY id ASC";
 
-            using (var connection = SQLite.CreateConnection())
+            AADB.DB_Npc_Spawner_Npcs.Clear();
+            if (allTableNames.Contains("npc_spawner_npcs"))
             {
-                using (var command = connection.CreateCommand())
+                using (var connection = SQLite.CreateConnection())
                 {
-                    command.CommandText = sql;
-                    command.Prepare();
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    using (var command = connection.CreateCommand())
                     {
-                        AADB.DB_Npc_Spawner_Npcs.Clear();
-
-                        var columnNames = reader.GetColumnNames();
-
-                        while (reader.Read())
+                        command.CommandText = sql;
+                        command.Prepare();
+                        using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                         {
-                            var t = new GameNpcSpawnerNpc();
-                            // Actual DB entries
-                            t.id = GetInt64(reader, "id");
-                            t.npc_spawner_id = GetInt64(reader, "npc_spawner_id");
-                            t.member_id = GetInt64(reader, "member_id");
-                            t.member_type = GetString(reader, "member_type");
-                            t.weight = GetFloat(reader, "weight");
-                            AADB.DB_Npc_Spawner_Npcs.Add(t.id, t);
+                            // AADB.DB_Npc_Spawner_Npcs.Clear();
+
+                            var columnNames = reader.GetColumnNames();
+
+                            while (reader.Read())
+                            {
+                                var t = new GameNpcSpawnerNpc();
+                                // Actual DB entries
+                                t.id = GetInt64(reader, "id");
+                                t.npc_spawner_id = GetInt64(reader, "npc_spawner_id");
+                                t.member_id = GetInt64(reader, "member_id");
+                                t.member_type = GetString(reader, "member_type");
+                                t.weight = GetFloat(reader, "weight");
+                                AADB.DB_Npc_Spawner_Npcs.Add(t.id, t);
+                            }
                         }
                     }
                 }
@@ -1096,40 +1100,44 @@ namespace AAEmu.DBViewer
 
             sql = "SELECT * FROM npc_spawners ORDER BY id ASC";
 
-            using (var connection = SQLite.CreateConnection())
+            AADB.DB_Npc_Spawners.Clear();
+            if (allTableNames.Contains("npc_spawners"))
             {
-                using (var command = connection.CreateCommand())
+                using (var connection = SQLite.CreateConnection())
                 {
-                    command.CommandText = sql;
-                    command.Prepare();
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    using (var command = connection.CreateCommand())
                     {
-                        AADB.DB_Npc_Spawners.Clear();
-
-                        var columnNames = reader.GetColumnNames();
-
-                        while (reader.Read())
+                        command.CommandText = sql;
+                        command.Prepare();
+                        using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                         {
-                            var t = new GameNpcSpawner();
-                            // Actual DB entries
-                            t.id = GetInt64(reader, "id");
-                            t.npc_spawner_category_id = GetInt64(reader, "npc_spawner_category_id");
-                            t.name = GetString(reader, "name");
-                            t.comment = GetString(reader, "comment");
-                            t.maxPopulation = GetInt64(reader, "maxPopulation");
-                            t.startTime = GetFloat(reader, "startTime");
-                            t.endTime = GetFloat(reader, "endTime");
-                            t.destroyTime = GetFloat(reader, "destroyTime");
-                            t.spawn_delay_min = GetFloat(reader, "spawn_delay_min");
-                            t.activation_state = GetBool(reader, "activation_state");
-                            t.save_indun = GetBool(reader, "save_indun");
-                            t.min_population = GetInt64(reader, "min_population");
-                            t.test_radius_npc = GetFloat(reader, "test_radius_npc");
-                            t.test_radius_pc = GetFloat(reader, "test_radius_pc");
-                            t.suspend_spawn_count = GetInt64(reader, "suspend_spawn_count");
-                            t.spawn_delay_max = GetFloat(reader, "spawn_delay_max");
+                            // AADB.DB_Npc_Spawners.Clear();
 
-                            AADB.DB_Npc_Spawners.Add(t.id, t);
+                            var columnNames = reader.GetColumnNames();
+
+                            while (reader.Read())
+                            {
+                                var t = new GameNpcSpawner();
+                                // Actual DB entries
+                                t.id = GetInt64(reader, "id");
+                                t.npc_spawner_category_id = GetInt64(reader, "npc_spawner_category_id");
+                                t.name = GetString(reader, "name");
+                                t.comment = GetString(reader, "comment");
+                                t.maxPopulation = GetInt64(reader, "maxPopulation");
+                                t.startTime = GetFloat(reader, "startTime");
+                                t.endTime = GetFloat(reader, "endTime");
+                                t.destroyTime = GetFloat(reader, "destroyTime");
+                                t.spawn_delay_min = GetFloat(reader, "spawn_delay_min");
+                                t.activation_state = GetBool(reader, "activation_state");
+                                t.save_indun = GetBool(reader, "save_indun");
+                                t.min_population = GetInt64(reader, "min_population");
+                                t.test_radius_npc = GetFloat(reader, "test_radius_npc");
+                                t.test_radius_pc = GetFloat(reader, "test_radius_pc");
+                                t.suspend_spawn_count = GetInt64(reader, "suspend_spawn_count");
+                                t.spawn_delay_max = GetFloat(reader, "spawn_delay_max");
+
+                                AADB.DB_Npc_Spawners.Add(t.id, t);
+                            }
                         }
                     }
                 }
@@ -1167,10 +1175,10 @@ namespace AAEmu.DBViewer
                             t.is_diplomacy_tgt = GetBool(reader, "is_diplomacy_tgt");
                             t.diplomacy_link_id = GetInt64(reader, "diplomacy_link_id");
 
-                            t.nameLocalized = GetTranslationByID(t.id, "system_factions", "name", t.name);
+                            t.nameLocalized = AADB.GetTranslationByID(t.id, "system_factions", "name", t.name);
                             // Actuall not even sure if owner_name can be localized, also not sure yet what owner_id points to
                             if (t.owner_name != string.Empty)
-                                t.owner_nameLocalized = GetTranslationByID(t.id, "system_factions", "name", t.owner_name);
+                                t.owner_nameLocalized = AADB.GetTranslationByID(t.id, "system_factions", "name", t.owner_name);
                             else
                                 t.owner_nameLocalized = "";
                             t.SearchString = t.name + " " + t.nameLocalized + " " + t.owner_nameLocalized;
@@ -1273,7 +1281,7 @@ namespace AAEmu.DBViewer
                                 t.translate = false;
 
                             // Helpers
-                            t.nameLocalized = GetTranslationByID(t.id, "doodad_almighties", "name", t.name);
+                            t.nameLocalized = AADB.GetTranslationByID(t.id, "doodad_almighties", "name", t.name);
                             t.SearchString = t.name + " " + t.nameLocalized;
                             t.SearchString = t.SearchString.ToLower();
                             AADB.DB_Doodad_Almighties.Add(t.id, t);
@@ -1312,7 +1320,7 @@ namespace AAEmu.DBViewer
                             t.removed_by_house = GetBool(reader, "removed_by_house");
 
                             // Helpers
-                            t.nameLocalized = GetTranslationByID(t.id, "doodad_groups", "name", t.name);
+                            t.nameLocalized = AADB.GetTranslationByID(t.id, "doodad_groups", "name", t.name);
                             t.SearchString = t.name + " " + t.nameLocalized;
                             t.SearchString = t.SearchString.ToLower();
                             AADB.DB_Doodad_Groups.Add(t.id, t);
@@ -1389,11 +1397,11 @@ namespace AAEmu.DBViewer
 
                             // Helpers
                             if (t.name != string.Empty)
-                                t.nameLocalized = GetTranslationByID(t.id, "doodad_func_groups", "name");
+                                t.nameLocalized = AADB.GetTranslationByID(t.id, "doodad_func_groups", "name");
                             else
                                 t.nameLocalized = "";
                             if (t.phase_msgLocalized != string.Empty)
-                                t.phase_msgLocalized = GetTranslationByID(t.id, "doodad_func_groups", "phase_msg");
+                                t.phase_msgLocalized = AADB.GetTranslationByID(t.id, "doodad_func_groups", "phase_msg");
                             else
                                 t.phase_msgLocalized = "";
                             t.SearchString = t.name + " " + t.phase_msg + " " + t.nameLocalized + " " + t.phase_msgLocalized + " " + t.comment;
@@ -1428,7 +1436,7 @@ namespace AAEmu.DBViewer
                             t.id = GetInt64(reader, "id");
                             t.name = GetString(reader, "name");
 
-                            t.nameLocalized = GetTranslationByID(t.id, "quest_categories", "name", t.name);
+                            t.nameLocalized = AADB.GetTranslationByID(t.id, "quest_categories", "name", t.name);
 
                             t.SearchString = t.name + " " + t.nameLocalized;
                             t.SearchString = t.SearchString.ToLower();
@@ -1478,7 +1486,7 @@ namespace AAEmu.DBViewer
                             t.grade_id = GetInt64(reader, "grade_id");
 
 
-                            t.nameLocalized = GetTranslationByID(t.id, "quest_contexts", "name", t.name);
+                            t.nameLocalized = AADB.GetTranslationByID(t.id, "quest_contexts", "name", t.name);
 
                             t.SearchString = t.name + " " + t.nameLocalized;
                             t.SearchString = t.SearchString.ToLower();
@@ -1592,8 +1600,8 @@ namespace AAEmu.DBViewer
                             if (hasDesc)
                                 t.desc = GetString(reader, "desc");
 
-                            t.nameLocalized = GetTranslationByID(t.id, "tags", "name", t.name);
-                            t.descLocalized = GetTranslationByID(t.id, "tags", "desc", t.desc);
+                            t.nameLocalized = AADB.GetTranslationByID(t.id, "tags", "name", t.name);
+                            t.descLocalized = AADB.GetTranslationByID(t.id, "tags", "desc", t.desc);
 
                             t.SearchString = t.name + " " + t.nameLocalized + " " + t.desc + " " + t.descLocalized;
                             t.SearchString = t.SearchString.ToLower();
@@ -1776,8 +1784,8 @@ namespace AAEmu.DBViewer
                             t.icon_id = GetInt64(reader, "icon_id");
                             t.duration = GetInt64(reader, "duration");
 
-                            t.nameLocalized = GetTranslationByID(t.id, "buffs", "name", t.name);
-                            t.descLocalized = GetTranslationByID(t.id, "buffs", "desc", t.desc);
+                            t.nameLocalized = AADB.GetTranslationByID(t.id, "buffs", "name", t.name);
+                            t.descLocalized = AADB.GetTranslationByID(t.id, "buffs", "desc", t.desc);
 
                             t.SearchString = t.name + " " + t.nameLocalized + " " + t.desc + " " + t.descLocalized;
                             t.SearchString = t.SearchString.ToLower();
@@ -1896,7 +1904,7 @@ namespace AAEmu.DBViewer
             {
                 using (var command = connection.CreateCommand())
                 {
-                    AADB.DB_TransferPaths.Clear();
+                    AADB.DB_Plots.Clear();
 
                     command.CommandText = sql;
                     command.Prepare();
@@ -1929,7 +1937,7 @@ namespace AAEmu.DBViewer
             {
                 using (var command = connection.CreateCommand())
                 {
-                    AADB.DB_TransferPaths.Clear();
+                    AADB.DB_Plot_Events.Clear();
 
                     command.CommandText = sql;
                     command.Prepare();
@@ -1975,7 +1983,7 @@ namespace AAEmu.DBViewer
             {
                 using (var command = connection.CreateCommand())
                 {
-                    AADB.DB_TransferPaths.Clear();
+                    AADB.DB_Plot_Next_Events.Clear();
 
                     command.CommandText = sql;
                     command.Prepare();
@@ -2010,7 +2018,7 @@ namespace AAEmu.DBViewer
             {
                 using (var command = connection.CreateCommand())
                 {
-                    AADB.DB_TransferPaths.Clear();
+                    AADB.DB_Plot_Event_Conditions.Clear();
 
                     command.CommandText = sql;
                     command.Prepare();
@@ -2127,26 +2135,6 @@ namespace AAEmu.DBViewer
             if (firstResult >= 0)
                 ShowDBItem(firstResult);
 
-        }
-
-        private string GetTranslationByID(long idx, string table, string field, string defaultValue = "$NODEFAULT")
-        {
-            string res = string.Empty;
-            string k = table + ":" + field + ":" + idx.ToString();
-            if (AADB.DB_Translations.TryGetValue(k, out GameTranslation val))
-                res = val.value;
-            // If no translation found ...
-            if (res == string.Empty)
-            {
-                if (defaultValue == "$NODEFAULT")
-                    return "<NT:" + table + ":" + field + ":" + idx.ToString() + ">";
-                else
-                    return defaultValue;
-            }
-            else
-            {
-                return res;
-            }
         }
 
         /// <summary>
@@ -2479,7 +2467,7 @@ namespace AAEmu.DBViewer
             {
                 lItemID.Text = idx.ToString();
                 lItemName.Text = item.nameLocalized;
-                lItemCategory.Text = GetTranslationByID(item.catgegory_id, "item_categories", "name") + " (" + item.catgegory_id.ToString() + ")";
+                lItemCategory.Text = AADB.GetTranslationByID(item.catgegory_id, "item_categories", "name") + " (" + item.catgegory_id.ToString() + ")";
                 FormattedTextToRichtEdit(item.descriptionLocalized, rtItemDesc);
                 lItemLevel.Text = item.level.ToString();
                 IconIDToLabel(item.icon_id, itemIcon);
@@ -2978,7 +2966,7 @@ namespace AAEmu.DBViewer
                                 row.Cells[0].Value = GetInt64(reader, "id").ToString();
                                 row.Cells[1].Value = GetInt64(reader, "loot_pack_id").ToString();
                                 row.Cells[2].Value = idx.ToString();
-                                row.Cells[3].Value = GetTranslationByID(idx, "items", "name");
+                                row.Cells[3].Value = AADB.GetTranslationByID(idx, "items", "name");
                                 row.Cells[4].Value = VisualizeDropRate(GetInt64(reader, "drop_rate"));
                                 row.Cells[5].Value = GetInt64(reader, "min_amount").ToString();
                                 row.Cells[6].Value = GetInt64(reader, "max_amount").ToString();
@@ -3025,7 +3013,7 @@ namespace AAEmu.DBViewer
                                 row.Cells[0].Value = GetInt64(reader, "id").ToString();
                                 row.Cells[1].Value = GetInt64(reader, "loot_pack_id").ToString();
                                 row.Cells[2].Value = itemid.ToString();
-                                row.Cells[3].Value = GetTranslationByID(itemid, "items", "name");
+                                row.Cells[3].Value = AADB.GetTranslationByID(itemid, "items", "name");
                                 row.Cells[4].Value = VisualizeDropRate(GetInt64(reader, "drop_rate"));
                                 row.Cells[5].Value = GetInt64(reader, "min_amount").ToString();
                                 row.Cells[6].Value = GetInt64(reader, "max_amount").ToString();
@@ -3294,9 +3282,63 @@ namespace AAEmu.DBViewer
                 LoadNPCs();
                 loading.ShowInfo("Loading: Quests");
                 LoadQuests();
+                loading.ShowInfo("Loading: Trades");
+                LoadTrades();
             }
 
             return true;
+        }
+
+        private void LoadTrades()
+        {
+            var sourceZones = new List<long>();
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                // Tag Names
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Specialities.Clear();
+
+                    command.CommandText = "SELECT * FROM specialties ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            GameSpecialties t = new GameSpecialties();
+                            t.id = GetInt64(reader, "id");
+                            t.row_zone_group_id = GetInt64(reader, "row_zone_group_id");
+                            t.col_zone_group_id = GetInt64(reader, "col_zone_group_id");
+                            t.ratio = GetInt64(reader, "ratio");
+                            t.profit = GetInt64(reader, "profit");
+                            t.vendor_exist = GetBool(reader, "vendor_exist");
+
+                            AADB.DB_Specialities.Add(t.id, t);
+
+                            if (!sourceZones.Contains(t.row_zone_group_id))
+                                sourceZones.Add(t.row_zone_group_id);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+
+            }
+
+            lbTradeSource.Sorted = true;
+            lbTradeDestination.Sorted = true;
+            lbTradeSource.Items.Clear();
+            foreach (var z in sourceZones)
+            {
+                if (AADB.DB_Zone_Groups.TryGetValue(z, out var zone))
+                    lbTradeSource.Items.Add(zone);
+            }
+
         }
 
         private void TItemSearch_TextChanged(object sender, EventArgs e)
@@ -3570,7 +3612,7 @@ namespace AAEmu.DBViewer
                                 var row = dgvCurrentData.Rows[line];
                                 row.Cells[0].Value = col;
                                 row.Cells[1].Value = reader.GetValue(col).ToString(); ;
-                                row.Cells[2].Value = GetTranslationByID(thisID, table, col, " ");
+                                row.Cells[2].Value = AADB.GetTranslationByID(thisID, table, col, " ");
                             }
                         }
                         Cursor = Cursors.Default;
@@ -6562,6 +6604,43 @@ namespace AAEmu.DBViewer
 
         private void label137_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void lbTradeSource_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            lbTradeDestination.Items.Clear();
+            if (!(lbTradeSource.SelectedItem is GameZone_Groups sourceZone))
+                return;
+                
+            foreach (var z in AADB.DB_Specialities)
+            {
+                if ((z.Value.vendor_exist) &&(z.Value.row_zone_group_id == sourceZone.id))
+                {
+                    if (AADB.DB_Zone_Groups.TryGetValue(z.Value.col_zone_group_id, out var destZone))
+                        lbTradeDestination.Items.Add(destZone);
+                }
+            }
+
+        }
+
+        private void lbTradeDestination_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!(lbTradeSource.SelectedItem is GameZone_Groups sourceZone))
+                return;
+            if (!(lbTradeDestination.SelectedItem is GameZone_Groups destZone))
+                return;
+
+            lTradeRoute.Text = "-";
+            foreach (var z in AADB.DB_Specialities)
+            {
+                if ((z.Value.vendor_exist) && (z.Value.row_zone_group_id == sourceZone.id) && (z.Value.col_zone_group_id == destZone.id))
+                {
+                    lTradeRoute.Text = sourceZone.ToString() + " => " + destZone.ToString();
+                    lTradeProfit.Text = z.Value.profit.ToString();
+                    lTradeRatio.Text = z.Value.ratio.ToString();
+                }
+            }
 
         }
     }

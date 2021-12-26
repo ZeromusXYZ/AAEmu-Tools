@@ -283,6 +283,11 @@ namespace AAEmu.DBDefs
         {
             return "game/worlds/" + instanceName + "/map_data/doodad_map/" + name + ".dat";
         }
+
+        public override string ToString()
+        {
+            return AADB.GetTranslationByID(id, "zone_groups", "display_text", name);
+        }
     }
 
     class GameWorld_Groups
@@ -674,6 +679,16 @@ namespace AAEmu.DBDefs
         public float spawn_delay_max = 0f;
     }
 
+    public class GameSpecialties
+    {
+        public long id = 0;
+        public long row_zone_group_id = 0;
+        public long col_zone_group_id = 0;
+        public long ratio = 0;
+        public long profit = 0;
+        public bool vendor_exist = false;
+    }
+
     static class AADB
     {
         static public Dictionary<string, GameTranslation> DB_Translations = new Dictionary<string, GameTranslation>();
@@ -714,6 +729,27 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GamePlotEventCondition> DB_Plot_Event_Conditions = new Dictionary<long, GamePlotEventCondition>();
         static public Dictionary<long, GameNpcSpawnerNpc> DB_Npc_Spawner_Npcs = new Dictionary<long, GameNpcSpawnerNpc>();
         static public Dictionary<long, GameNpcSpawner> DB_Npc_Spawners = new Dictionary<long, GameNpcSpawner>();
+        static public Dictionary<long, GameSpecialties> DB_Specialities = new Dictionary<long,GameSpecialties>();
+
+        static public string GetTranslationByID(long idx, string table, string field, string defaultValue = "$NODEFAULT")
+        {
+            string res = string.Empty;
+            string k = table + ":" + field + ":" + idx.ToString();
+            if ((DB_Translations != null) && (DB_Translations.TryGetValue(k, out GameTranslation val)))
+                res = val.value;
+            // If no translation found ...
+            if (res == string.Empty)
+            {
+                if (defaultValue == "$NODEFAULT")
+                    return "<NT:" + table + ":" + field + ":" + idx.ToString() + ">";
+                else
+                    return defaultValue;
+            }
+            else
+            {
+                return res;
+            }
+        }
 
         static public string GetFactionName(long faction_id, bool addID = false)
         {

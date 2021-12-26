@@ -396,6 +396,20 @@
             this.label13 = new System.Windows.Forms.Label();
             this.labelSkillReagents = new System.Windows.Forms.Label();
             this.tpSkillExecution = new System.Windows.Forms.TabPage();
+            this.gbSkillPlotEventInfo = new System.Windows.Forms.GroupBox();
+            this.lPlotEventTargetUpdate = new System.Windows.Forms.Label();
+            this.lPlotEventSourceUpdate = new System.Windows.Forms.Label();
+            this.lPlotEventAoE = new System.Windows.Forms.Label();
+            this.lPlotEventTickets = new System.Windows.Forms.Label();
+            this.lPlotEventP9 = new System.Windows.Forms.Label();
+            this.lPlotEventP8 = new System.Windows.Forms.Label();
+            this.lPlotEventP7 = new System.Windows.Forms.Label();
+            this.lPlotEventP6 = new System.Windows.Forms.Label();
+            this.lPlotEventP5 = new System.Windows.Forms.Label();
+            this.lPlotEventP4 = new System.Windows.Forms.Label();
+            this.lPlotEventP3 = new System.Windows.Forms.Label();
+            this.lPlotEventP2 = new System.Windows.Forms.Label();
+            this.lPlotEventP1 = new System.Windows.Forms.Label();
             this.tvSkill = new System.Windows.Forms.TreeView();
             this.ilMiniIcons = new System.Windows.Forms.ImageList(this.components);
             this.btnSkillSearch = new System.Windows.Forms.Button();
@@ -477,20 +491,16 @@
             this.ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             this.ofdJsonData = new System.Windows.Forms.OpenFileDialog();
             this.ilIcons = new System.Windows.Forms.ImageList(this.components);
-            this.gbSkillPlotEventInfo = new System.Windows.Forms.GroupBox();
-            this.lPlotEventP1 = new System.Windows.Forms.Label();
-            this.lPlotEventP2 = new System.Windows.Forms.Label();
-            this.lPlotEventP3 = new System.Windows.Forms.Label();
-            this.lPlotEventP4 = new System.Windows.Forms.Label();
-            this.lPlotEventP5 = new System.Windows.Forms.Label();
-            this.lPlotEventP6 = new System.Windows.Forms.Label();
-            this.lPlotEventP7 = new System.Windows.Forms.Label();
-            this.lPlotEventP8 = new System.Windows.Forms.Label();
-            this.lPlotEventP9 = new System.Windows.Forms.Label();
-            this.lPlotEventTickets = new System.Windows.Forms.Label();
-            this.lPlotEventAoE = new System.Windows.Forms.Label();
-            this.lPlotEventSourceUpdate = new System.Windows.Forms.Label();
-            this.lPlotEventTargetUpdate = new System.Windows.Forms.Label();
+            this.tpTrade = new System.Windows.Forms.TabPage();
+            this.lbTradeSource = new System.Windows.Forms.ListBox();
+            this.lbTradeDestination = new System.Windows.Forms.ListBox();
+            this.label121 = new System.Windows.Forms.Label();
+            this.label132 = new System.Windows.Forms.Label();
+            this.lTradeProfit = new System.Windows.Forms.Label();
+            this.lTradeRatio = new System.Windows.Forms.Label();
+            this.label133 = new System.Windows.Forms.Label();
+            this.label134 = new System.Windows.Forms.Label();
+            this.lTradeRoute = new System.Windows.Forms.Label();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -541,13 +551,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkillProducts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkillReagents)).BeginInit();
             this.tpSkillExecution.SuspendLayout();
+            this.gbSkillPlotEventInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkills)).BeginInit();
             this.tpZones.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).BeginInit();
-            this.gbSkillPlotEventInfo.SuspendLayout();
+            this.tpTrade.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbTableNames
@@ -577,6 +588,7 @@
             this.tcViewer.Controls.Add(this.tpQuests);
             this.tcViewer.Controls.Add(this.tpSkills);
             this.tcViewer.Controls.Add(this.tpZones);
+            this.tcViewer.Controls.Add(this.tpTrade);
             this.tcViewer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tcViewer.Location = new System.Drawing.Point(0, 0);
             this.tcViewer.Multiline = true;
@@ -3890,7 +3902,7 @@
             this.Column46.FillWeight = 75F;
             this.Column46.HeaderText = "Act Detail Type";
             this.Column46.Name = "Column46";
-            this.Column46.Width = 96;
+            this.Column46.Width = 97;
             // 
             // dgvQuestComponents
             // 
@@ -4432,6 +4444,148 @@
             this.tpSkillExecution.TabIndex = 2;
             this.tpSkillExecution.Text = "Execution";
             this.tpSkillExecution.UseVisualStyleBackColor = true;
+            // 
+            // gbSkillPlotEventInfo
+            // 
+            this.gbSkillPlotEventInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventTargetUpdate);
+            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventSourceUpdate);
+            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventAoE);
+            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventTickets);
+            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP9);
+            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP8);
+            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP7);
+            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP6);
+            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP5);
+            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP4);
+            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP3);
+            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP2);
+            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP1);
+            this.gbSkillPlotEventInfo.Location = new System.Drawing.Point(6, 307);
+            this.gbSkillPlotEventInfo.Name = "gbSkillPlotEventInfo";
+            this.gbSkillPlotEventInfo.Size = new System.Drawing.Size(341, 140);
+            this.gbSkillPlotEventInfo.TabIndex = 1;
+            this.gbSkillPlotEventInfo.TabStop = false;
+            this.gbSkillPlotEventInfo.Text = "Parameters";
+            // 
+            // lPlotEventTargetUpdate
+            // 
+            this.lPlotEventTargetUpdate.AutoSize = true;
+            this.lPlotEventTargetUpdate.Location = new System.Drawing.Point(6, 29);
+            this.lPlotEventTargetUpdate.Name = "lPlotEventTargetUpdate";
+            this.lPlotEventTargetUpdate.Size = new System.Drawing.Size(79, 13);
+            this.lPlotEventTargetUpdate.TabIndex = 12;
+            this.lPlotEventTargetUpdate.Text = "Target Update:";
+            // 
+            // lPlotEventSourceUpdate
+            // 
+            this.lPlotEventSourceUpdate.AutoSize = true;
+            this.lPlotEventSourceUpdate.Location = new System.Drawing.Point(6, 16);
+            this.lPlotEventSourceUpdate.Name = "lPlotEventSourceUpdate";
+            this.lPlotEventSourceUpdate.Size = new System.Drawing.Size(82, 13);
+            this.lPlotEventSourceUpdate.TabIndex = 11;
+            this.lPlotEventSourceUpdate.Text = "Source Update:";
+            // 
+            // lPlotEventAoE
+            // 
+            this.lPlotEventAoE.AutoSize = true;
+            this.lPlotEventAoE.Location = new System.Drawing.Point(124, 97);
+            this.lPlotEventAoE.Name = "lPlotEventAoE";
+            this.lPlotEventAoE.Size = new System.Drawing.Size(30, 13);
+            this.lPlotEventAoE.TabIndex = 10;
+            this.lPlotEventAoE.Text = "AoE:";
+            // 
+            // lPlotEventTickets
+            // 
+            this.lPlotEventTickets.AutoSize = true;
+            this.lPlotEventTickets.Location = new System.Drawing.Point(6, 97);
+            this.lPlotEventTickets.Name = "lPlotEventTickets";
+            this.lPlotEventTickets.Size = new System.Drawing.Size(45, 13);
+            this.lPlotEventTickets.TabIndex = 9;
+            this.lPlotEventTickets.Text = "Tickets:";
+            // 
+            // lPlotEventP9
+            // 
+            this.lPlotEventP9.AutoSize = true;
+            this.lPlotEventP9.Location = new System.Drawing.Point(233, 72);
+            this.lPlotEventP9.Name = "lPlotEventP9";
+            this.lPlotEventP9.Size = new System.Drawing.Size(16, 13);
+            this.lPlotEventP9.TabIndex = 8;
+            this.lPlotEventP9.Text = "9:";
+            // 
+            // lPlotEventP8
+            // 
+            this.lPlotEventP8.AutoSize = true;
+            this.lPlotEventP8.Location = new System.Drawing.Point(233, 59);
+            this.lPlotEventP8.Name = "lPlotEventP8";
+            this.lPlotEventP8.Size = new System.Drawing.Size(16, 13);
+            this.lPlotEventP8.TabIndex = 7;
+            this.lPlotEventP8.Text = "8:";
+            this.lPlotEventP8.Click += new System.EventHandler(this.label137_Click);
+            // 
+            // lPlotEventP7
+            // 
+            this.lPlotEventP7.AutoSize = true;
+            this.lPlotEventP7.Location = new System.Drawing.Point(233, 46);
+            this.lPlotEventP7.Name = "lPlotEventP7";
+            this.lPlotEventP7.Size = new System.Drawing.Size(16, 13);
+            this.lPlotEventP7.TabIndex = 6;
+            this.lPlotEventP7.Text = "7:";
+            // 
+            // lPlotEventP6
+            // 
+            this.lPlotEventP6.AutoSize = true;
+            this.lPlotEventP6.Location = new System.Drawing.Point(124, 72);
+            this.lPlotEventP6.Name = "lPlotEventP6";
+            this.lPlotEventP6.Size = new System.Drawing.Size(16, 13);
+            this.lPlotEventP6.TabIndex = 5;
+            this.lPlotEventP6.Text = "6:";
+            // 
+            // lPlotEventP5
+            // 
+            this.lPlotEventP5.AutoSize = true;
+            this.lPlotEventP5.Location = new System.Drawing.Point(124, 59);
+            this.lPlotEventP5.Name = "lPlotEventP5";
+            this.lPlotEventP5.Size = new System.Drawing.Size(16, 13);
+            this.lPlotEventP5.TabIndex = 4;
+            this.lPlotEventP5.Text = "5:";
+            // 
+            // lPlotEventP4
+            // 
+            this.lPlotEventP4.AutoSize = true;
+            this.lPlotEventP4.Location = new System.Drawing.Point(124, 46);
+            this.lPlotEventP4.Name = "lPlotEventP4";
+            this.lPlotEventP4.Size = new System.Drawing.Size(16, 13);
+            this.lPlotEventP4.TabIndex = 3;
+            this.lPlotEventP4.Text = "4:";
+            // 
+            // lPlotEventP3
+            // 
+            this.lPlotEventP3.AutoSize = true;
+            this.lPlotEventP3.Location = new System.Drawing.Point(6, 72);
+            this.lPlotEventP3.Name = "lPlotEventP3";
+            this.lPlotEventP3.Size = new System.Drawing.Size(16, 13);
+            this.lPlotEventP3.TabIndex = 2;
+            this.lPlotEventP3.Text = "3:";
+            // 
+            // lPlotEventP2
+            // 
+            this.lPlotEventP2.AutoSize = true;
+            this.lPlotEventP2.Location = new System.Drawing.Point(6, 59);
+            this.lPlotEventP2.Name = "lPlotEventP2";
+            this.lPlotEventP2.Size = new System.Drawing.Size(16, 13);
+            this.lPlotEventP2.TabIndex = 1;
+            this.lPlotEventP2.Text = "2:";
+            // 
+            // lPlotEventP1
+            // 
+            this.lPlotEventP1.AutoSize = true;
+            this.lPlotEventP1.Location = new System.Drawing.Point(6, 46);
+            this.lPlotEventP1.Name = "lPlotEventP1";
+            this.lPlotEventP1.Size = new System.Drawing.Size(16, 13);
+            this.lPlotEventP1.TabIndex = 0;
+            this.lPlotEventP1.Text = "1:";
             // 
             // tvSkill
             // 
@@ -5265,147 +5419,105 @@
             this.ilIcons.Images.SetKeyName(2, "icon_exclamation_green.png");
             this.ilIcons.Images.SetKeyName(3, "icon_exclamation_blue.png");
             // 
-            // gbSkillPlotEventInfo
+            // tpTrade
             // 
-            this.gbSkillPlotEventInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventTargetUpdate);
-            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventSourceUpdate);
-            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventAoE);
-            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventTickets);
-            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP9);
-            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP8);
-            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP7);
-            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP6);
-            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP5);
-            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP4);
-            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP3);
-            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP2);
-            this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP1);
-            this.gbSkillPlotEventInfo.Location = new System.Drawing.Point(6, 307);
-            this.gbSkillPlotEventInfo.Name = "gbSkillPlotEventInfo";
-            this.gbSkillPlotEventInfo.Size = new System.Drawing.Size(341, 140);
-            this.gbSkillPlotEventInfo.TabIndex = 1;
-            this.gbSkillPlotEventInfo.TabStop = false;
-            this.gbSkillPlotEventInfo.Text = "Parameters";
+            this.tpTrade.Controls.Add(this.lTradeRoute);
+            this.tpTrade.Controls.Add(this.label133);
+            this.tpTrade.Controls.Add(this.label134);
+            this.tpTrade.Controls.Add(this.lTradeRatio);
+            this.tpTrade.Controls.Add(this.lTradeProfit);
+            this.tpTrade.Controls.Add(this.label132);
+            this.tpTrade.Controls.Add(this.label121);
+            this.tpTrade.Controls.Add(this.lbTradeDestination);
+            this.tpTrade.Controls.Add(this.lbTradeSource);
+            this.tpTrade.Location = new System.Drawing.Point(4, 22);
+            this.tpTrade.Name = "tpTrade";
+            this.tpTrade.Padding = new System.Windows.Forms.Padding(3);
+            this.tpTrade.Size = new System.Drawing.Size(926, 485);
+            this.tpTrade.TabIndex = 14;
+            this.tpTrade.Text = "Trades";
+            this.tpTrade.UseVisualStyleBackColor = true;
             // 
-            // lPlotEventP1
+            // lbTradeSource
             // 
-            this.lPlotEventP1.AutoSize = true;
-            this.lPlotEventP1.Location = new System.Drawing.Point(6, 46);
-            this.lPlotEventP1.Name = "lPlotEventP1";
-            this.lPlotEventP1.Size = new System.Drawing.Size(16, 13);
-            this.lPlotEventP1.TabIndex = 0;
-            this.lPlotEventP1.Text = "1:";
+            this.lbTradeSource.FormattingEnabled = true;
+            this.lbTradeSource.Location = new System.Drawing.Point(8, 31);
+            this.lbTradeSource.Name = "lbTradeSource";
+            this.lbTradeSource.Size = new System.Drawing.Size(210, 329);
+            this.lbTradeSource.TabIndex = 0;
+            this.lbTradeSource.SelectedIndexChanged += new System.EventHandler(this.lbTradeSource_SelectedIndexChanged);
             // 
-            // lPlotEventP2
+            // lbTradeDestination
             // 
-            this.lPlotEventP2.AutoSize = true;
-            this.lPlotEventP2.Location = new System.Drawing.Point(6, 59);
-            this.lPlotEventP2.Name = "lPlotEventP2";
-            this.lPlotEventP2.Size = new System.Drawing.Size(16, 13);
-            this.lPlotEventP2.TabIndex = 1;
-            this.lPlotEventP2.Text = "2:";
+            this.lbTradeDestination.FormattingEnabled = true;
+            this.lbTradeDestination.Location = new System.Drawing.Point(224, 31);
+            this.lbTradeDestination.Name = "lbTradeDestination";
+            this.lbTradeDestination.Size = new System.Drawing.Size(210, 329);
+            this.lbTradeDestination.TabIndex = 1;
+            this.lbTradeDestination.SelectedIndexChanged += new System.EventHandler(this.lbTradeDestination_SelectedIndexChanged);
             // 
-            // lPlotEventP3
+            // label121
             // 
-            this.lPlotEventP3.AutoSize = true;
-            this.lPlotEventP3.Location = new System.Drawing.Point(6, 72);
-            this.lPlotEventP3.Name = "lPlotEventP3";
-            this.lPlotEventP3.Size = new System.Drawing.Size(16, 13);
-            this.lPlotEventP3.TabIndex = 2;
-            this.lPlotEventP3.Text = "3:";
+            this.label121.AutoSize = true;
+            this.label121.Location = new System.Drawing.Point(8, 15);
+            this.label121.Name = "label121";
+            this.label121.Size = new System.Drawing.Size(69, 13);
+            this.label121.TabIndex = 2;
+            this.label121.Text = "Source Pack";
             // 
-            // lPlotEventP4
+            // label132
             // 
-            this.lPlotEventP4.AutoSize = true;
-            this.lPlotEventP4.Location = new System.Drawing.Point(124, 46);
-            this.lPlotEventP4.Name = "lPlotEventP4";
-            this.lPlotEventP4.Size = new System.Drawing.Size(16, 13);
-            this.lPlotEventP4.TabIndex = 3;
-            this.lPlotEventP4.Text = "4:";
+            this.label132.AutoSize = true;
+            this.label132.Location = new System.Drawing.Point(221, 15);
+            this.label132.Name = "label132";
+            this.label132.Size = new System.Drawing.Size(60, 13);
+            this.label132.TabIndex = 3;
+            this.label132.Text = "Destination";
             // 
-            // lPlotEventP5
+            // lTradeProfit
             // 
-            this.lPlotEventP5.AutoSize = true;
-            this.lPlotEventP5.Location = new System.Drawing.Point(124, 59);
-            this.lPlotEventP5.Name = "lPlotEventP5";
-            this.lPlotEventP5.Size = new System.Drawing.Size(16, 13);
-            this.lPlotEventP5.TabIndex = 4;
-            this.lPlotEventP5.Text = "5:";
+            this.lTradeProfit.AutoSize = true;
+            this.lTradeProfit.Location = new System.Drawing.Point(480, 31);
+            this.lTradeProfit.Name = "lTradeProfit";
+            this.lTradeProfit.Size = new System.Drawing.Size(13, 13);
+            this.lTradeProfit.TabIndex = 4;
+            this.lTradeProfit.Text = "0";
             // 
-            // lPlotEventP6
+            // lTradeRatio
             // 
-            this.lPlotEventP6.AutoSize = true;
-            this.lPlotEventP6.Location = new System.Drawing.Point(124, 72);
-            this.lPlotEventP6.Name = "lPlotEventP6";
-            this.lPlotEventP6.Size = new System.Drawing.Size(16, 13);
-            this.lPlotEventP6.TabIndex = 5;
-            this.lPlotEventP6.Text = "6:";
+            this.lTradeRatio.AutoSize = true;
+            this.lTradeRatio.Location = new System.Drawing.Point(480, 55);
+            this.lTradeRatio.Name = "lTradeRatio";
+            this.lTradeRatio.Size = new System.Drawing.Size(13, 13);
+            this.lTradeRatio.TabIndex = 5;
+            this.lTradeRatio.Text = "0";
             // 
-            // lPlotEventP7
+            // label133
             // 
-            this.lPlotEventP7.AutoSize = true;
-            this.lPlotEventP7.Location = new System.Drawing.Point(233, 46);
-            this.lPlotEventP7.Name = "lPlotEventP7";
-            this.lPlotEventP7.Size = new System.Drawing.Size(16, 13);
-            this.lPlotEventP7.TabIndex = 6;
-            this.lPlotEventP7.Text = "7:";
+            this.label133.AutoSize = true;
+            this.label133.Location = new System.Drawing.Point(440, 55);
+            this.label133.Name = "label133";
+            this.label133.Size = new System.Drawing.Size(35, 13);
+            this.label133.TabIndex = 7;
+            this.label133.Text = "Ratio:";
             // 
-            // lPlotEventP8
+            // label134
             // 
-            this.lPlotEventP8.AutoSize = true;
-            this.lPlotEventP8.Location = new System.Drawing.Point(233, 59);
-            this.lPlotEventP8.Name = "lPlotEventP8";
-            this.lPlotEventP8.Size = new System.Drawing.Size(16, 13);
-            this.lPlotEventP8.TabIndex = 7;
-            this.lPlotEventP8.Text = "8:";
-            this.lPlotEventP8.Click += new System.EventHandler(this.label137_Click);
+            this.label134.AutoSize = true;
+            this.label134.Location = new System.Drawing.Point(440, 31);
+            this.label134.Name = "label134";
+            this.label134.Size = new System.Drawing.Size(34, 13);
+            this.label134.TabIndex = 6;
+            this.label134.Text = "Profit:";
             // 
-            // lPlotEventP9
+            // lTradeRoute
             // 
-            this.lPlotEventP9.AutoSize = true;
-            this.lPlotEventP9.Location = new System.Drawing.Point(233, 72);
-            this.lPlotEventP9.Name = "lPlotEventP9";
-            this.lPlotEventP9.Size = new System.Drawing.Size(16, 13);
-            this.lPlotEventP9.TabIndex = 8;
-            this.lPlotEventP9.Text = "9:";
-            // 
-            // lPlotEventTickets
-            // 
-            this.lPlotEventTickets.AutoSize = true;
-            this.lPlotEventTickets.Location = new System.Drawing.Point(6, 97);
-            this.lPlotEventTickets.Name = "lPlotEventTickets";
-            this.lPlotEventTickets.Size = new System.Drawing.Size(45, 13);
-            this.lPlotEventTickets.TabIndex = 9;
-            this.lPlotEventTickets.Text = "Tickets:";
-            // 
-            // lPlotEventAoE
-            // 
-            this.lPlotEventAoE.AutoSize = true;
-            this.lPlotEventAoE.Location = new System.Drawing.Point(124, 97);
-            this.lPlotEventAoE.Name = "lPlotEventAoE";
-            this.lPlotEventAoE.Size = new System.Drawing.Size(30, 13);
-            this.lPlotEventAoE.TabIndex = 10;
-            this.lPlotEventAoE.Text = "AoE:";
-            // 
-            // lPlotEventSourceUpdate
-            // 
-            this.lPlotEventSourceUpdate.AutoSize = true;
-            this.lPlotEventSourceUpdate.Location = new System.Drawing.Point(6, 16);
-            this.lPlotEventSourceUpdate.Name = "lPlotEventSourceUpdate";
-            this.lPlotEventSourceUpdate.Size = new System.Drawing.Size(82, 13);
-            this.lPlotEventSourceUpdate.TabIndex = 11;
-            this.lPlotEventSourceUpdate.Text = "Source Update:";
-            // 
-            // lPlotEventTargetUpdate
-            // 
-            this.lPlotEventTargetUpdate.AutoSize = true;
-            this.lPlotEventTargetUpdate.Location = new System.Drawing.Point(6, 29);
-            this.lPlotEventTargetUpdate.Name = "lPlotEventTargetUpdate";
-            this.lPlotEventTargetUpdate.Size = new System.Drawing.Size(79, 13);
-            this.lPlotEventTargetUpdate.TabIndex = 12;
-            this.lPlotEventTargetUpdate.Text = "Target Update:";
+            this.lTradeRoute.AutoSize = true;
+            this.lTradeRoute.Location = new System.Drawing.Point(440, 15);
+            this.lTradeRoute.Name = "lTradeRoute";
+            this.lTradeRoute.Size = new System.Drawing.Size(10, 13);
+            this.lTradeRoute.TabIndex = 8;
+            this.lTradeRoute.Text = "-";
             // 
             // MainForm
             // 
@@ -5493,6 +5605,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkillProducts)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkillReagents)).EndInit();
             this.tpSkillExecution.ResumeLayout(false);
+            this.gbSkillPlotEventInfo.ResumeLayout(false);
+            this.gbSkillPlotEventInfo.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkills)).EndInit();
             this.tpZones.ResumeLayout(false);
             this.tpZones.PerformLayout();
@@ -5503,8 +5617,8 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).EndInit();
-            this.gbSkillPlotEventInfo.ResumeLayout(false);
-            this.gbSkillPlotEventInfo.PerformLayout();
+            this.tpTrade.ResumeLayout(false);
+            this.tpTrade.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -5970,6 +6084,16 @@
         private System.Windows.Forms.Label lPlotEventTargetUpdate;
         private System.Windows.Forms.Label lPlotEventSourceUpdate;
         private System.Windows.Forms.Label lPlotEventAoE;
+        private System.Windows.Forms.TabPage tpTrade;
+        private System.Windows.Forms.Label label132;
+        private System.Windows.Forms.Label label121;
+        private System.Windows.Forms.ListBox lbTradeDestination;
+        private System.Windows.Forms.ListBox lbTradeSource;
+        private System.Windows.Forms.Label lTradeRatio;
+        private System.Windows.Forms.Label lTradeProfit;
+        private System.Windows.Forms.Label label133;
+        private System.Windows.Forms.Label label134;
+        private System.Windows.Forms.Label lTradeRoute;
     }
 }
 

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SQLitePCL;
 
-namespace AAEmu.DBEditor.data
+namespace AAEmu.DbEditor.data
 {
     static class Data
     {
@@ -14,7 +15,10 @@ namespace AAEmu.DBEditor.data
 
         static public void Initialize()
         {
-
+            Server = new ServerDB();
+            MySqlDb = new AAEmuDB();
+            Client = new ClientPak();
+            Client.Initialize();
         }
     }
 }

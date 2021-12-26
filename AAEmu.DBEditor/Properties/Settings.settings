@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="ClientPak" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">data\game_pak</Value>
     </Setting>
     <Setting Name="ServerDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">data\compact.sqlite3</Value>
     </Setting>
     <Setting Name="MySQLUser" Type="System.String" Scope="User">
       <Value Profile="(Default)">root</Value>
