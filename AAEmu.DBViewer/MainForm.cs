@@ -4432,6 +4432,7 @@ namespace AAEmu.DBViewer
             return res;
         }
 
+
         private void BtnFindNPCsInZone_Click(object sender, EventArgs e)
         {
             List<MapSpawnLocation> npcList = new List<MapSpawnLocation>();
@@ -5588,6 +5589,17 @@ namespace AAEmu.DBViewer
             public long Zone = 0;
         }
 
+        public class DoodadExportData
+        {
+            public long Id = 0;
+            public long UnitId = 0;
+            public string Title = string.Empty;
+            public NPCExportDataPosition Position = new NPCExportDataPosition();
+            public float Scale = 0f;
+            public long FuncGroupId = 0;
+            public long Zone = 0;
+        }
+
         private void btnExportNPCSpawnData_Click(object sender, EventArgs e)
         {
             PrepareWorldXML(false);
@@ -6642,6 +6654,55 @@ namespace AAEmu.DBViewer
                 }
             }
 
+        }
+
+        private void btnExportDoodadSpawnData_Click(object sender, EventArgs e)
+        {
+            PrepareWorldXML(false);
+
+            foreach (var inst in MapViewWorldXML.instances)
+            {
+                var DoodadList = new List<DoodadExportData>();
+                var i = 0;
+
+                var zoneGroups = new List<long>();
+                foreach (var z in inst.zones)
+                {
+                    var zone = AADB.GetZoneByKey(z.Value.zone_key);
+                    if (zone != null)
+                        if (!zoneGroups.Contains(zone.group_id))
+                            zoneGroups.Add(zone.group_id);
+                }
+
+                foreach (var zoneGroupId in zoneGroups)
+                {
+                    if (!AADB.DB_Zone_Groups.TryGetValue(zoneGroupId, out var zoneGroup))
+                        continue;
+
+                    var npcs = GetDoodadSpawnsInZoneGroup(zoneGroup.id, false, -1, inst.WorldName);
+                    foreach (var npc in npcs)
+                    {
+                        i++;
+                        var newDoodad = new DoodadExportData();
+                        newDoodad.Id = i;
+                        newDoodad.UnitId = npc.id;
+                        newDoodad.Position.X = npc.x;
+                        newDoodad.Position.Y = npc.y;
+                        newDoodad.Position.Z = npc.z;
+                        if (AADB.DB_Doodad_Almighties.TryGetValue(npc.id, out var vDoodad))
+                            newDoodad.Title = vDoodad.nameLocalized;
+                        newDoodad.FuncGroupId = 0;
+                        newDoodad.Zone = npc.zoneGroupId;
+
+                        DoodadList.Add(newDoodad);
+                    }
+                }
+                string json = JsonConvert.SerializeObject(DoodadList.ToArray(), Newtonsoft.Json.Formatting.Indented);
+                Directory.CreateDirectory(Path.Combine("export", "Data", "Worlds", inst.WorldName));
+                File.WriteAllText(Path.Combine("export", "Data", "Worlds", inst.WorldName, "doodad_spawns.json"), json);
+
+            }
+            MessageBox.Show("Done");
         }
     }
 }

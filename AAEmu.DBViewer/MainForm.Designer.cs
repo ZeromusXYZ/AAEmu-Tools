@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.lbTableNames = new System.Windows.Forms.ListBox();
             this.tcViewer = new System.Windows.Forms.TabControl();
@@ -485,22 +485,23 @@
             this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label10 = new System.Windows.Forms.Label();
             this.tZonesSearch = new System.Windows.Forms.TextBox();
+            this.tpTrade = new System.Windows.Forms.TabPage();
+            this.lTradeRoute = new System.Windows.Forms.Label();
+            this.label133 = new System.Windows.Forms.Label();
+            this.label134 = new System.Windows.Forms.Label();
+            this.lTradeRatio = new System.Windows.Forms.Label();
+            this.lTradeProfit = new System.Windows.Forms.Label();
+            this.label132 = new System.Windows.Forms.Label();
+            this.label121 = new System.Windows.Forms.Label();
+            this.lbTradeDestination = new System.Windows.Forms.ListBox();
+            this.lbTradeSource = new System.Windows.Forms.ListBox();
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             this.ofdJsonData = new System.Windows.Forms.OpenFileDialog();
             this.ilIcons = new System.Windows.Forms.ImageList(this.components);
-            this.tpTrade = new System.Windows.Forms.TabPage();
-            this.lbTradeSource = new System.Windows.Forms.ListBox();
-            this.lbTradeDestination = new System.Windows.Forms.ListBox();
-            this.label121 = new System.Windows.Forms.Label();
-            this.label132 = new System.Windows.Forms.Label();
-            this.lTradeProfit = new System.Windows.Forms.Label();
-            this.lTradeRatio = new System.Windows.Forms.Label();
-            this.label133 = new System.Windows.Forms.Label();
-            this.label134 = new System.Windows.Forms.Label();
-            this.lTradeRoute = new System.Windows.Forms.Label();
+            this.btnExportDoodadSpawnData = new System.Windows.Forms.Button();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -1058,6 +1059,7 @@
             // 
             // tpV1
             // 
+            this.tpV1.Controls.Add(this.btnExportDoodadSpawnData);
             this.tpV1.Controls.Add(this.btnExportNPCSpawnData);
             this.tpV1.Controls.Add(this.btnExportDataForVieweD);
             this.tpV1.Controls.Add(this.lSpace);
@@ -4599,10 +4601,10 @@
             this.tvSkill.ItemHeight = 24;
             this.tvSkill.Location = new System.Drawing.Point(6, 6);
             this.tvSkill.Name = "tvSkill";
-            treeNode1.Name = "SkillNode";
-            treeNode1.Text = "Skill";
+            treeNode2.Name = "SkillNode";
+            treeNode2.Text = "Skill";
             this.tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            treeNode2});
             this.tvSkill.SelectedImageIndex = 0;
             this.tvSkill.Size = new System.Drawing.Size(341, 295);
             this.tvSkill.TabIndex = 0;
@@ -5378,6 +5380,106 @@
             this.tZonesSearch.TextChanged += new System.EventHandler(this.TZonesSearch_TextChanged);
             this.tZonesSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TZonesSearch_KeyDown);
             // 
+            // tpTrade
+            // 
+            this.tpTrade.Controls.Add(this.lTradeRoute);
+            this.tpTrade.Controls.Add(this.label133);
+            this.tpTrade.Controls.Add(this.label134);
+            this.tpTrade.Controls.Add(this.lTradeRatio);
+            this.tpTrade.Controls.Add(this.lTradeProfit);
+            this.tpTrade.Controls.Add(this.label132);
+            this.tpTrade.Controls.Add(this.label121);
+            this.tpTrade.Controls.Add(this.lbTradeDestination);
+            this.tpTrade.Controls.Add(this.lbTradeSource);
+            this.tpTrade.Location = new System.Drawing.Point(4, 22);
+            this.tpTrade.Name = "tpTrade";
+            this.tpTrade.Padding = new System.Windows.Forms.Padding(3);
+            this.tpTrade.Size = new System.Drawing.Size(926, 485);
+            this.tpTrade.TabIndex = 14;
+            this.tpTrade.Text = "Trades";
+            this.tpTrade.UseVisualStyleBackColor = true;
+            // 
+            // lTradeRoute
+            // 
+            this.lTradeRoute.AutoSize = true;
+            this.lTradeRoute.Location = new System.Drawing.Point(440, 15);
+            this.lTradeRoute.Name = "lTradeRoute";
+            this.lTradeRoute.Size = new System.Drawing.Size(10, 13);
+            this.lTradeRoute.TabIndex = 8;
+            this.lTradeRoute.Text = "-";
+            // 
+            // label133
+            // 
+            this.label133.AutoSize = true;
+            this.label133.Location = new System.Drawing.Point(440, 55);
+            this.label133.Name = "label133";
+            this.label133.Size = new System.Drawing.Size(35, 13);
+            this.label133.TabIndex = 7;
+            this.label133.Text = "Ratio:";
+            // 
+            // label134
+            // 
+            this.label134.AutoSize = true;
+            this.label134.Location = new System.Drawing.Point(440, 31);
+            this.label134.Name = "label134";
+            this.label134.Size = new System.Drawing.Size(34, 13);
+            this.label134.TabIndex = 6;
+            this.label134.Text = "Profit:";
+            // 
+            // lTradeRatio
+            // 
+            this.lTradeRatio.AutoSize = true;
+            this.lTradeRatio.Location = new System.Drawing.Point(480, 55);
+            this.lTradeRatio.Name = "lTradeRatio";
+            this.lTradeRatio.Size = new System.Drawing.Size(13, 13);
+            this.lTradeRatio.TabIndex = 5;
+            this.lTradeRatio.Text = "0";
+            // 
+            // lTradeProfit
+            // 
+            this.lTradeProfit.AutoSize = true;
+            this.lTradeProfit.Location = new System.Drawing.Point(480, 31);
+            this.lTradeProfit.Name = "lTradeProfit";
+            this.lTradeProfit.Size = new System.Drawing.Size(13, 13);
+            this.lTradeProfit.TabIndex = 4;
+            this.lTradeProfit.Text = "0";
+            // 
+            // label132
+            // 
+            this.label132.AutoSize = true;
+            this.label132.Location = new System.Drawing.Point(221, 15);
+            this.label132.Name = "label132";
+            this.label132.Size = new System.Drawing.Size(60, 13);
+            this.label132.TabIndex = 3;
+            this.label132.Text = "Destination";
+            // 
+            // label121
+            // 
+            this.label121.AutoSize = true;
+            this.label121.Location = new System.Drawing.Point(8, 15);
+            this.label121.Name = "label121";
+            this.label121.Size = new System.Drawing.Size(69, 13);
+            this.label121.TabIndex = 2;
+            this.label121.Text = "Source Pack";
+            // 
+            // lbTradeDestination
+            // 
+            this.lbTradeDestination.FormattingEnabled = true;
+            this.lbTradeDestination.Location = new System.Drawing.Point(224, 31);
+            this.lbTradeDestination.Name = "lbTradeDestination";
+            this.lbTradeDestination.Size = new System.Drawing.Size(210, 329);
+            this.lbTradeDestination.TabIndex = 1;
+            this.lbTradeDestination.SelectedIndexChanged += new System.EventHandler(this.lbTradeDestination_SelectedIndexChanged);
+            // 
+            // lbTradeSource
+            // 
+            this.lbTradeSource.FormattingEnabled = true;
+            this.lbTradeSource.Location = new System.Drawing.Point(8, 31);
+            this.lbTradeSource.Name = "lbTradeSource";
+            this.lbTradeSource.Size = new System.Drawing.Size(210, 329);
+            this.lbTradeSource.TabIndex = 0;
+            this.lbTradeSource.SelectedIndexChanged += new System.EventHandler(this.lbTradeSource_SelectedIndexChanged);
+            // 
             // openDBDlg
             // 
             this.openDBDlg.DefaultExt = "sqlite3";
@@ -5419,105 +5521,16 @@
             this.ilIcons.Images.SetKeyName(2, "icon_exclamation_green.png");
             this.ilIcons.Images.SetKeyName(3, "icon_exclamation_blue.png");
             // 
-            // tpTrade
+            // btnExportDoodadSpawnData
             // 
-            this.tpTrade.Controls.Add(this.lTradeRoute);
-            this.tpTrade.Controls.Add(this.label133);
-            this.tpTrade.Controls.Add(this.label134);
-            this.tpTrade.Controls.Add(this.lTradeRatio);
-            this.tpTrade.Controls.Add(this.lTradeProfit);
-            this.tpTrade.Controls.Add(this.label132);
-            this.tpTrade.Controls.Add(this.label121);
-            this.tpTrade.Controls.Add(this.lbTradeDestination);
-            this.tpTrade.Controls.Add(this.lbTradeSource);
-            this.tpTrade.Location = new System.Drawing.Point(4, 22);
-            this.tpTrade.Name = "tpTrade";
-            this.tpTrade.Padding = new System.Windows.Forms.Padding(3);
-            this.tpTrade.Size = new System.Drawing.Size(926, 485);
-            this.tpTrade.TabIndex = 14;
-            this.tpTrade.Text = "Trades";
-            this.tpTrade.UseVisualStyleBackColor = true;
-            // 
-            // lbTradeSource
-            // 
-            this.lbTradeSource.FormattingEnabled = true;
-            this.lbTradeSource.Location = new System.Drawing.Point(8, 31);
-            this.lbTradeSource.Name = "lbTradeSource";
-            this.lbTradeSource.Size = new System.Drawing.Size(210, 329);
-            this.lbTradeSource.TabIndex = 0;
-            this.lbTradeSource.SelectedIndexChanged += new System.EventHandler(this.lbTradeSource_SelectedIndexChanged);
-            // 
-            // lbTradeDestination
-            // 
-            this.lbTradeDestination.FormattingEnabled = true;
-            this.lbTradeDestination.Location = new System.Drawing.Point(224, 31);
-            this.lbTradeDestination.Name = "lbTradeDestination";
-            this.lbTradeDestination.Size = new System.Drawing.Size(210, 329);
-            this.lbTradeDestination.TabIndex = 1;
-            this.lbTradeDestination.SelectedIndexChanged += new System.EventHandler(this.lbTradeDestination_SelectedIndexChanged);
-            // 
-            // label121
-            // 
-            this.label121.AutoSize = true;
-            this.label121.Location = new System.Drawing.Point(8, 15);
-            this.label121.Name = "label121";
-            this.label121.Size = new System.Drawing.Size(69, 13);
-            this.label121.TabIndex = 2;
-            this.label121.Text = "Source Pack";
-            // 
-            // label132
-            // 
-            this.label132.AutoSize = true;
-            this.label132.Location = new System.Drawing.Point(221, 15);
-            this.label132.Name = "label132";
-            this.label132.Size = new System.Drawing.Size(60, 13);
-            this.label132.TabIndex = 3;
-            this.label132.Text = "Destination";
-            // 
-            // lTradeProfit
-            // 
-            this.lTradeProfit.AutoSize = true;
-            this.lTradeProfit.Location = new System.Drawing.Point(480, 31);
-            this.lTradeProfit.Name = "lTradeProfit";
-            this.lTradeProfit.Size = new System.Drawing.Size(13, 13);
-            this.lTradeProfit.TabIndex = 4;
-            this.lTradeProfit.Text = "0";
-            // 
-            // lTradeRatio
-            // 
-            this.lTradeRatio.AutoSize = true;
-            this.lTradeRatio.Location = new System.Drawing.Point(480, 55);
-            this.lTradeRatio.Name = "lTradeRatio";
-            this.lTradeRatio.Size = new System.Drawing.Size(13, 13);
-            this.lTradeRatio.TabIndex = 5;
-            this.lTradeRatio.Text = "0";
-            // 
-            // label133
-            // 
-            this.label133.AutoSize = true;
-            this.label133.Location = new System.Drawing.Point(440, 55);
-            this.label133.Name = "label133";
-            this.label133.Size = new System.Drawing.Size(35, 13);
-            this.label133.TabIndex = 7;
-            this.label133.Text = "Ratio:";
-            // 
-            // label134
-            // 
-            this.label134.AutoSize = true;
-            this.label134.Location = new System.Drawing.Point(440, 31);
-            this.label134.Name = "label134";
-            this.label134.Size = new System.Drawing.Size(34, 13);
-            this.label134.TabIndex = 6;
-            this.label134.Text = "Profit:";
-            // 
-            // lTradeRoute
-            // 
-            this.lTradeRoute.AutoSize = true;
-            this.lTradeRoute.Location = new System.Drawing.Point(440, 15);
-            this.lTradeRoute.Name = "lTradeRoute";
-            this.lTradeRoute.Size = new System.Drawing.Size(10, 13);
-            this.lTradeRoute.TabIndex = 8;
-            this.lTradeRoute.Text = "-";
+            this.btnExportDoodadSpawnData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnExportDoodadSpawnData.Location = new System.Drawing.Point(8, 398);
+            this.btnExportDoodadSpawnData.Name = "btnExportDoodadSpawnData";
+            this.btnExportDoodadSpawnData.Size = new System.Drawing.Size(166, 23);
+            this.btnExportDoodadSpawnData.TabIndex = 4;
+            this.btnExportDoodadSpawnData.Text = "Export Doodad Spawn Data";
+            this.btnExportDoodadSpawnData.UseVisualStyleBackColor = true;
+            this.btnExportDoodadSpawnData.Click += new System.EventHandler(this.btnExportDoodadSpawnData_Click);
             // 
             // MainForm
             // 
@@ -6094,6 +6107,7 @@
         private System.Windows.Forms.Label label133;
         private System.Windows.Forms.Label label134;
         private System.Windows.Forms.Label lTradeRoute;
+        private System.Windows.Forms.Button btnExportDoodadSpawnData;
     }
 }
 
