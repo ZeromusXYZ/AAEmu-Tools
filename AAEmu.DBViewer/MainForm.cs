@@ -2221,7 +2221,7 @@ namespace AAEmu.DBViewer
             return color;
         }
 
-        private void FormattedTextToRichtEdit(string formattedText, RichTextBox rt)
+        private void FormattedTextToRichtEditOld(string formattedText, RichTextBox rt)
         {
             rt.Text = string.Empty;
             rt.SelectionColor = rt.ForeColor;
@@ -2230,6 +2230,7 @@ namespace AAEmu.DBViewer
             restText = restText.Replace("\r\n\r\n", "\r");
             restText = restText.Replace("\r\n", "\r");
             restText = restText.Replace("\n", "\r");
+            restText = restText.Replace("|nc;", "|cFFFFFFFF;");
             var colStartPos = -1;
             var colResetPos = -1;
             bool invalidPipe = false;
@@ -2345,6 +2346,115 @@ namespace AAEmu.DBViewer
                 }
             }
 
+        }
+
+        private void FormattedTextToRichtEdit(string formattedText, RichTextBox rt)
+        {
+            rt.Text = string.Empty;
+            rt.SelectionColor = rt.ForeColor;
+            rt.SelectionBackColor = rt.BackColor;
+            string restText = formattedText;
+            //restText = restText.Replace("\r\n\r\n", "\r");
+            restText = restText.Replace("\r\n", "\r");
+            restText = restText.Replace("\n", "\r");
+            var resetColor = rt.ForeColor;
+
+            while(restText.Length > 0)
+            {
+                var nextEndBracket = restText.IndexOf(")");
+                var nextEndAccolade = restText.IndexOf("}");
+                if (restText.StartsWith("\r")) // linefeed
+                {
+                    var currentCol = rt.SelectionColor;
+                    rt.AppendText("\r");
+                    rt.SelectionColor = currentCol;
+                    restText = restText.Substring(1);
+                }
+                else
+                if (restText.StartsWith("|r")) // reset color
+                {
+                    rt.SelectionColor = resetColor;
+                    restText = restText.Substring(2);
+                }
+                else
+                if (restText.StartsWith("[START_DESCRIPTION]")) // reset color
+                {
+                    resetColor = Color.LimeGreen;
+                    rt.SelectionColor = resetColor;
+                    restText = restText.Substring(19);
+                }
+                else if (restText.StartsWith("|nc;")) // named color ?
+                {
+                    rt.SelectionColor = Color.White;
+                    restText = restText.Substring(4);
+                }
+                else if (restText.StartsWith("|ni;")) // named color ?
+                {
+                    rt.SelectionColor = Color.GreenYellow;
+                    restText = restText.Substring(4);
+                }
+                else if (restText.StartsWith("|nd;")) // named color ?
+                {
+                    rt.SelectionColor = Color.OrangeRed;
+                    restText = restText.Substring(4);
+                }
+                else if (restText.StartsWith("|nr;")) // named color ?
+                {
+                    rt.SelectionColor = Color.Red;
+                    restText = restText.Substring(4);
+                }
+                else if (restText.StartsWith("|c")) // hexcode color
+                {
+                    rt.SelectionColor = HexStringToARGBColor(restText.Substring(2, 8));
+                    restText = restText.Substring(10);
+                }
+                else if (restText.StartsWith("@ITEM_NAME(") && (nextEndBracket > 11))
+                {
+                    rt.SelectionColor = Color.Yellow;
+                    var valueText = restText.Substring(11, nextEndBracket - 11);
+                    if (long.TryParse(valueText, out var value) && (AADB.DB_Items.TryGetValue(value, out var item)))
+                        rt.AppendText(item.nameLocalized);
+                    else
+                        rt.AppendText("@ITEM_NAME(" + valueText + ")");
+                    rt.SelectionColor = resetColor;
+                    restText = restText.Substring(nextEndBracket + 1);
+                }
+                else if (restText.StartsWith("@NPC_NAME(") && (nextEndBracket > 10))
+                {
+                    rt.SelectionColor = Color.Yellow;
+                    var valueText = restText.Substring(10, nextEndBracket - 10);
+                    if (long.TryParse(valueText, out var value) && (AADB.DB_NPCs.TryGetValue(value, out var npc)))
+                        rt.AppendText(npc.nameLocalized);
+                    else
+                        rt.AppendText("@NPC_NAME(" + valueText + ")");
+                    rt.SelectionColor = resetColor;
+                    restText = restText.Substring(nextEndBracket + 1);
+                }
+                else if (restText.StartsWith("@QUEST_NAME(") && (nextEndBracket > 12))
+                {
+                    rt.SelectionColor = Color.Yellow;
+                    var valueText = restText.Substring(12, nextEndBracket - 12);
+                    if (long.TryParse(valueText, out var value) && (AADB.DB_Quest_Contexts.TryGetValue(value, out var quest)))
+                        rt.AppendText(quest.nameLocalized);
+                    else
+                        rt.AppendText("@QUEST_NAME(" + valueText + ")");
+                    rt.SelectionColor = resetColor;
+                    restText = restText.Substring(nextEndBracket + 1);
+                }
+                else if (restText.StartsWith("#{") && (nextEndAccolade > 2))
+                {
+                    rt.SelectionColor = Color.Pink;
+                    var valueText = restText.Substring(2, nextEndAccolade - 2);
+                    rt.AppendText("#{" + valueText + "}");
+                    rt.SelectionColor = resetColor;
+                    restText = restText.Substring(nextEndAccolade + 1);
+                }
+                else
+                {
+                    rt.AppendText(restText.Substring(0, 1));
+                    restText = restText.Substring(1);
+                }
+            }
         }
 
         private void IconIDToLabel(long icon_id, Label iconImgLabel)
@@ -2503,7 +2613,14 @@ namespace AAEmu.DBViewer
                 lItemID.Text = idx.ToString();
                 lItemName.Text = item.nameLocalized;
                 lItemCategory.Text = AADB.GetTranslationByID(item.catgegory_id, "item_categories", "name") + " (" + item.catgegory_id.ToString() + ")";
-                FormattedTextToRichtEdit(item.descriptionLocalized, rtItemDesc);
+                var fullDescription = item.descriptionLocalized;
+                if (AADB.DB_Skills.TryGetValue(item.use_skill_id, out var useSkill))
+                {
+                    if (!string.IsNullOrWhiteSpace(fullDescription))
+                        fullDescription += "\r\r";
+                    fullDescription += "[START_DESCRIPTION]" + useSkill.descriptionLocalized;
+                }
+                FormattedTextToRichtEdit(fullDescription, rtItemDesc);
                 lItemLevel.Text = item.level.ToString();
                 IconIDToLabel(item.icon_id, itemIcon);
                 btnFindItemSkill.Enabled = true;// (item.use_skill_id > 0);
