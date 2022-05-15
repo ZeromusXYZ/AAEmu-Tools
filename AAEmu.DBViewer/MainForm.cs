@@ -4323,9 +4323,9 @@ namespace AAEmu.DBViewer
             return tableName;
         }
 
-        private Dictionary<string,string> GetCustomTableValues(string tableName, string indexName, string searchId)
+        private List<Dictionary<string,string>> GetCustomTableValues(string tableName, string indexName, string searchId)
         {
-            var res = new Dictionary<string, string>();
+            var res = new List<Dictionary<string, string>>();
 
             using (var connection = SQLite.CreateConnection())
             {
@@ -4333,7 +4333,7 @@ namespace AAEmu.DBViewer
                 {
                     try
                     {
-                        command.CommandText = "SELECT * FROM " + tableName + " WHERE " + indexName + "=" + searchId + " LIMIT 1";
+                        command.CommandText = "SELECT * FROM " + tableName + " WHERE " + indexName + "=" + searchId ;
                         command.Prepare();
                         using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                         {
@@ -4341,24 +4341,28 @@ namespace AAEmu.DBViewer
 
                             while (reader.Read())
                             {
+                                var resRow = new Dictionary<string, string>();
                                 int c = 0;
                                 foreach (var col in columnNames)
                                 {
                                     if (col != indexName) // skip the index field
                                     {
                                         if (reader.IsDBNull(col))
-                                            res.Add(col, "<null>");
+                                            resRow.Add(col, "<null>");
                                         else
-                                            res.Add(col, reader.GetValue(col).ToString());
+                                            resRow.Add(col, reader.GetValue(col).ToString());
                                     }
                                     c++;
                                 }
+                                res.Add(resRow);
                             }
                         }
                     }
                     catch (Exception ex)
                     {
-                        res.Add("Exception", ex.Message);
+                        var eRow = new Dictionary<string, string>();
+                        eRow.Add("Exception", ex.Message);
+                        res.Add(eRow);
                     }
                 }
             }
@@ -4463,47 +4467,55 @@ namespace AAEmu.DBViewer
                     if (dFuncGroup.doodad_almighty_id == doodad.id)
                     {
                         var groupNode = rootNode.Nodes.Add("Group: " + dFuncGroup.id.ToString() + " - Kind: " + dFuncGroup.doodad_func_group_kind_id.ToString());
-                        
+
+                        // doodad_funcs
+                        var funcFieldsList = GetCustomTableValues("doodad_funcs", "doodad_func_group_id", dFuncGroup.id.ToString());
+                        foreach (var funcFields in funcFieldsList)
+                        {
+                            var funcsNode = groupNode.Nodes.Add(funcFields.Count > 0 ? "Funcs: "+funcFields["actual_func_type"] + " ( " + funcFields["actual_func_id"] + " )" : "Funcs");
+                            foreach (var fl in funcFields)
+                            {
+                                if ((fl.Key == "actual_func_type") || (fl.Key == "actual_func_id"))
+                                    continue;
+
+                                if (cbDoodadWorkflowHideEmpty.Checked && (string.IsNullOrWhiteSpace(fl.Value) || (fl.Value == "0") || (fl.Value == "<null>") || (fl.Value == "f")))
+                                {
+                                    // ignore empty values
+                                }
+                                else
+                                {
+                                    funcsNode.Nodes.Add(fl.Key + ": " + fl.Value);
+                                }
+                            }
+                            if (funcsNode.Nodes.Count <= 0)
+                                groupNode.Nodes.Remove(funcsNode);
+                        }
+
                         // Phase Funcs
                         foreach (var dpf in AADB.DB_Doodad_Phase_Funcs)
                             if (dpf.Value.doodad_func_group_id == dFuncGroup.id)
                             {
-                                var phaseNode = groupNode.Nodes.Add(dpf.Value.actual_func_type + " ( " + dpf.Value.actual_func_id + " )");
-
+                                var phaseNode = groupNode.Nodes.Add("PhaseFuncs: " + dpf.Value.actual_func_type + " ( " + dpf.Value.actual_func_id + " )");
                                 var tableName = FunctionTypeToTableName(dpf.Value.actual_func_type);
-                                var fields = GetCustomTableValues(tableName, "id", dpf.Value.actual_func_id.ToString());
-
-                                foreach(var fl in fields)
+                                var fieldsList = GetCustomTableValues(tableName, "id", dpf.Value.actual_func_id.ToString());
+                                foreach (var fields in fieldsList)
                                 {
-                                    if (cbDoodadWorkflowHideEmpty.Checked && (string.IsNullOrWhiteSpace(fl.Value) || (fl.Value == "0") || (fl.Value == "<null>") || (fl.Value == "f")))
+                                    foreach (var fl in fields)
                                     {
-                                        // ignore empty values
-                                    }
-                                    else
-                                    {
-                                        phaseNode.Nodes.Add(fl.Key + ": " + fl.Value);
+                                        if (cbDoodadWorkflowHideEmpty.Checked && (string.IsNullOrWhiteSpace(fl.Value) || (fl.Value == "0") || (fl.Value == "<null>") || (fl.Value == "f")))
+                                        {
+                                            // ignore empty values
+                                        }
+                                        else
+                                        {
+                                            phaseNode.Nodes.Add(fl.Key + ": " + fl.Value);
+                                        }
                                     }
                                 }
 
                                 phaseNode.Collapse();
                             }
 
-                        //doodad_func_group_id = 10258
-                        var funcFields = GetCustomTableValues("doodad_funcs", "doodad_func_group_id", dFuncGroup.id.ToString());
-                        var funcsNode = groupNode.Nodes.Add(funcFields.Count > 0 ? funcFields["actual_func_type"] + " ( "+ funcFields["actual_func_id"] + " )" : "Unknown Funcs");
-                        foreach (var fl in funcFields)
-                        {
-                            if (cbDoodadWorkflowHideEmpty.Checked && (string.IsNullOrWhiteSpace(fl.Value) || (fl.Value == "0") || (fl.Value == "<null>") || (fl.Value == "f")))
-                            {
-                                // ignore empty values
-                            }
-                            else
-                            {
-                                funcsNode.Nodes.Add(fl.Key + ": " + fl.Value);
-                            }
-                        }
-                        if (funcsNode.Nodes.Count <= 0)
-                            groupNode.Nodes.Remove(funcsNode);
 
                         groupNode.Expand();
                     }
