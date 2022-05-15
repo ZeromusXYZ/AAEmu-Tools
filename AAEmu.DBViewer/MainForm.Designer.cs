@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.lbTableNames = new System.Windows.Forms.ListBox();
             this.tcViewer = new System.Windows.Forms.TabControl();
@@ -76,6 +76,7 @@
             this.btnFindAllTransferPaths = new System.Windows.Forms.Button();
             this.btnMap = new System.Windows.Forms.Button();
             this.tpV1 = new System.Windows.Forms.TabPage();
+            this.btnExportDoodadSpawnData = new System.Windows.Forms.Button();
             this.btnExportNPCSpawnData = new System.Windows.Forms.Button();
             this.btnExportDataForVieweD = new System.Windows.Forms.Button();
             this.lSpace = new System.Windows.Forms.Label();
@@ -208,9 +209,6 @@
             this.lDoodadFuncGroupName = new System.Windows.Forms.Label();
             this.label66 = new System.Windows.Forms.Label();
             this.dgvDoodadFuncGroups = new System.Windows.Forms.DataGridView();
-            this.Column27 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column32 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column33 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpDoodadTools = new System.Windows.Forms.TabPage();
             this.btnShowDoodadOnMap = new System.Windows.Forms.Button();
             this.btnSearchDoodads = new System.Windows.Forms.Button();
@@ -501,7 +499,13 @@
             this.ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             this.ofdJsonData = new System.Windows.Forms.OpenFileDialog();
             this.ilIcons = new System.Windows.Forms.ImageList(this.components);
-            this.btnExportDoodadSpawnData = new System.Windows.Forms.Button();
+            this.Column27 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column32 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column33 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column54 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lDoodadPhaseFuncsActualId = new System.Windows.Forms.Label();
+            this.label136 = new System.Windows.Forms.Label();
+            this.lDoodadPhaseFuncsActualType = new System.Windows.Forms.Label();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -1070,6 +1074,17 @@
             this.tpV1.TabIndex = 11;
             this.tpV1.Text = "|";
             this.tpV1.UseVisualStyleBackColor = true;
+            // 
+            // btnExportDoodadSpawnData
+            // 
+            this.btnExportDoodadSpawnData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnExportDoodadSpawnData.Location = new System.Drawing.Point(8, 398);
+            this.btnExportDoodadSpawnData.Name = "btnExportDoodadSpawnData";
+            this.btnExportDoodadSpawnData.Size = new System.Drawing.Size(166, 23);
+            this.btnExportDoodadSpawnData.TabIndex = 4;
+            this.btnExportDoodadSpawnData.Text = "Export Doodad Spawn Data";
+            this.btnExportDoodadSpawnData.UseVisualStyleBackColor = true;
+            this.btnExportDoodadSpawnData.Click += new System.EventHandler(this.btnExportDoodadSpawnData_Click);
             // 
             // btnExportNPCSpawnData
             // 
@@ -2233,6 +2248,9 @@
             // 
             // groupBox10
             // 
+            this.groupBox10.Controls.Add(this.lDoodadPhaseFuncsActualType);
+            this.groupBox10.Controls.Add(this.lDoodadPhaseFuncsActualId);
+            this.groupBox10.Controls.Add(this.label136);
             this.groupBox10.Controls.Add(this.lDoodadFuncGroupIsMsgToZone);
             this.groupBox10.Controls.Add(this.label111);
             this.groupBox10.Controls.Add(this.lDoodadFuncGroupSoundID);
@@ -2255,7 +2273,7 @@
             this.groupBox10.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox10.Location = new System.Drawing.Point(3, 3);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(328, 311);
+            this.groupBox10.Size = new System.Drawing.Size(328, 343);
             this.groupBox10.TabIndex = 0;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Doodad Function Groups";
@@ -2434,7 +2452,8 @@
             this.dgvDoodadFuncGroups.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column27,
             this.Column32,
-            this.Column33});
+            this.Column33,
+            this.Column54});
             this.dgvDoodadFuncGroups.Location = new System.Drawing.Point(6, 19);
             this.dgvDoodadFuncGroups.Name = "dgvDoodadFuncGroups";
             this.dgvDoodadFuncGroups.ReadOnly = true;
@@ -2443,26 +2462,6 @@
             this.dgvDoodadFuncGroups.Size = new System.Drawing.Size(316, 143);
             this.dgvDoodadFuncGroups.TabIndex = 8;
             this.dgvDoodadFuncGroups.SelectionChanged += new System.EventHandler(this.DgvDoodadFuncGroups_SelectionChanged);
-            // 
-            // Column27
-            // 
-            this.Column27.FillWeight = 35F;
-            this.Column27.HeaderText = "ID";
-            this.Column27.Name = "Column27";
-            this.Column27.ReadOnly = true;
-            // 
-            // Column32
-            // 
-            this.Column32.FillWeight = 25F;
-            this.Column32.HeaderText = "Kind";
-            this.Column32.Name = "Column32";
-            this.Column32.ReadOnly = true;
-            // 
-            // Column33
-            // 
-            this.Column33.HeaderText = "Name";
-            this.Column33.Name = "Column33";
-            this.Column33.ReadOnly = true;
             // 
             // tpDoodadTools
             // 
@@ -4601,10 +4600,10 @@
             this.tvSkill.ItemHeight = 24;
             this.tvSkill.Location = new System.Drawing.Point(6, 6);
             this.tvSkill.Name = "tvSkill";
-            treeNode2.Name = "SkillNode";
-            treeNode2.Text = "Skill";
+            treeNode1.Name = "SkillNode";
+            treeNode1.Text = "Skill";
             this.tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
+            treeNode1});
             this.tvSkill.SelectedImageIndex = 0;
             this.tvSkill.Size = new System.Drawing.Size(341, 295);
             this.tvSkill.TabIndex = 0;
@@ -5521,16 +5520,60 @@
             this.ilIcons.Images.SetKeyName(2, "icon_exclamation_green.png");
             this.ilIcons.Images.SetKeyName(3, "icon_exclamation_blue.png");
             // 
-            // btnExportDoodadSpawnData
+            // Column27
             // 
-            this.btnExportDoodadSpawnData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnExportDoodadSpawnData.Location = new System.Drawing.Point(8, 398);
-            this.btnExportDoodadSpawnData.Name = "btnExportDoodadSpawnData";
-            this.btnExportDoodadSpawnData.Size = new System.Drawing.Size(166, 23);
-            this.btnExportDoodadSpawnData.TabIndex = 4;
-            this.btnExportDoodadSpawnData.Text = "Export Doodad Spawn Data";
-            this.btnExportDoodadSpawnData.UseVisualStyleBackColor = true;
-            this.btnExportDoodadSpawnData.Click += new System.EventHandler(this.btnExportDoodadSpawnData_Click);
+            this.Column27.FillWeight = 25F;
+            this.Column27.HeaderText = "ID";
+            this.Column27.Name = "Column27";
+            this.Column27.ReadOnly = true;
+            // 
+            // Column32
+            // 
+            this.Column32.FillWeight = 15F;
+            this.Column32.HeaderText = "Kind";
+            this.Column32.Name = "Column32";
+            this.Column32.ReadOnly = true;
+            // 
+            // Column33
+            // 
+            this.Column33.FillWeight = 25F;
+            this.Column33.HeaderText = "ActualID";
+            this.Column33.Name = "Column33";
+            this.Column33.ReadOnly = true;
+            // 
+            // Column54
+            // 
+            this.Column54.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column54.HeaderText = "ActualType";
+            this.Column54.Name = "Column54";
+            this.Column54.ReadOnly = true;
+            // 
+            // lDoodadPhaseFuncsActualId
+            // 
+            this.lDoodadPhaseFuncsActualId.AutoSize = true;
+            this.lDoodadPhaseFuncsActualId.Location = new System.Drawing.Point(94, 315);
+            this.lDoodadPhaseFuncsActualId.Name = "lDoodadPhaseFuncsActualId";
+            this.lDoodadPhaseFuncsActualId.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadPhaseFuncsActualId.TabIndex = 58;
+            this.lDoodadPhaseFuncsActualId.Text = "0";
+            // 
+            // label136
+            // 
+            this.label136.AutoSize = true;
+            this.label136.Location = new System.Drawing.Point(6, 315);
+            this.label136.Name = "label136";
+            this.label136.Size = new System.Drawing.Size(49, 13);
+            this.label136.TabIndex = 57;
+            this.label136.Text = "Actual Id";
+            // 
+            // lDoodadPhaseFuncsActualType
+            // 
+            this.lDoodadPhaseFuncsActualType.AutoSize = true;
+            this.lDoodadPhaseFuncsActualType.Location = new System.Drawing.Point(155, 315);
+            this.lDoodadPhaseFuncsActualType.Name = "lDoodadPhaseFuncsActualType";
+            this.lDoodadPhaseFuncsActualType.Size = new System.Drawing.Size(31, 13);
+            this.lDoodadPhaseFuncsActualType.TabIndex = 59;
+            this.lDoodadPhaseFuncsActualType.Text = "none";
             // 
             // MainForm
             // 
@@ -5936,9 +5979,6 @@
         private System.Windows.Forms.Label label107;
         private System.Windows.Forms.Label lDoodadFuncGroupSoundTime;
         private System.Windows.Forms.Label label103;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column27;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column32;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column33;
         private System.Windows.Forms.Button btnFindNPCsInZone;
         private System.Windows.Forms.GroupBox groupBox11;
         private System.Windows.Forms.Label LLootGroupPackID;
@@ -6108,6 +6148,13 @@
         private System.Windows.Forms.Label label134;
         private System.Windows.Forms.Label lTradeRoute;
         private System.Windows.Forms.Button btnExportDoodadSpawnData;
+        private System.Windows.Forms.Label lDoodadPhaseFuncsActualType;
+        private System.Windows.Forms.Label lDoodadPhaseFuncsActualId;
+        private System.Windows.Forms.Label label136;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column27;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column32;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column33;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column54;
     }
 }
 

@@ -1413,6 +1413,32 @@ namespace AAEmu.DBViewer
                 }
             }
 
+            // doodad_phase_func
+            sql = "SELECT * FROM doodad_phase_funcs ORDER BY id ASC";
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        AADB.DB_Doodad_Phase_Funcs.Clear();
+
+                        while (reader.Read())
+                        {
+                            var t = new GameDoodadPhaseFunc();
+                            // Actual DB entries
+                            t.id = GetInt64(reader, "id");
+                            t.doodad_func_group_id = GetInt64(reader, "doodad_func_group_id");
+                            t.actual_func_id = GetInt64(reader, "actual_func_id");
+                            t.actual_func_type = GetString(reader, "actual_func_type");
+
+                            AADB.DB_Doodad_Phase_Funcs.Add(t.id, t);
+                        }
+                    }
+                }
+            }
         }
 
         private void LoadQuests()
@@ -2088,6 +2114,12 @@ namespace AAEmu.DBViewer
                 else
                 if (item.Value.SearchString.IndexOf(searchTextLower) >= 0)
                     addThis = true;
+
+                if (searchTextLower == "$")
+                {
+                    if (item.Key >= 8000000)
+                        addThis = true;
+                }
 
                 // Hardcode * as add all if armor slot is provided
                 if ((searchTextLower == "*") && ((cbItemSearchItemArmorSlotTypeList.SelectedIndex > 0) || (cbItemSearchItemCategoryTypeList.SelectedIndex > 0)))
@@ -4212,12 +4244,22 @@ namespace AAEmu.DBViewer
                     var dFuncGroup = f.Value;
                     if (dFuncGroup.doodad_almighty_id == doodad.id)
                     {
+                        GameDoodadPhaseFunc dPhaseFunc = null;
+                        foreach (var dpf in AADB.DB_Doodad_Phase_Funcs)
+                            if (dpf.Value.doodad_func_group_id == dFuncGroup.id)
+                            {
+                                dPhaseFunc = dpf.Value;
+                                break;
+                            }
+
+
                         var line = dgvDoodadFuncGroups.Rows.Add();
                         var row = dgvDoodadFuncGroups.Rows[line];
 
                         row.Cells[0].Value = dFuncGroup.id.ToString();
                         row.Cells[1].Value = dFuncGroup.doodad_func_group_kind_id.ToString();
-                        row.Cells[2].Value = dFuncGroup.nameLocalized;
+                        row.Cells[2].Value = dPhaseFunc?.actual_func_id.ToString() ?? "-";
+                        row.Cells[3].Value = dPhaseFunc?.actual_func_type ?? "none";
 
                         if (firstFuncGroup)
                         {
@@ -4293,6 +4335,18 @@ namespace AAEmu.DBViewer
                 lDoodadFuncGroupSoundTime.Text = MSToString(dfg.sound_time);
                 lDoodadFuncGroupComment.Text = dfg.comment;
                 lDoodadFuncGroupIsMsgToZone.Text = dfg.is_msg_to_zone.ToString();
+
+                //lDoodadPhaseFuncsId.Text = "";
+                lDoodadPhaseFuncsActualId.Text = "";
+                lDoodadPhaseFuncsActualType.Text = "";
+                foreach (var dpf in AADB.DB_Doodad_Phase_Funcs)
+                    if (dpf.Value.doodad_func_group_id == dfg.id)
+                    {
+                        //lDoodadPhaseFuncsId.Text = dpf.Value.id.ToString();
+                        lDoodadPhaseFuncsActualId.Text = dpf.Value.actual_func_id.ToString();
+                        lDoodadPhaseFuncsActualType.Text = dpf.Value.actual_func_type;
+                        break;
+                    }
             }
             else
             {
@@ -4306,6 +4360,10 @@ namespace AAEmu.DBViewer
                 lDoodadFuncGroupSoundTime.Text = "";
                 lDoodadFuncGroupComment.Text = "";
                 lDoodadFuncGroupIsMsgToZone.Text = "";
+
+                //lDoodadPhaseFuncsId.Text = "";
+                lDoodadPhaseFuncsActualId.Text = "";
+                lDoodadPhaseFuncsActualType.Text = "";
             }
         }
 

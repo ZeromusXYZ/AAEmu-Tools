@@ -82,7 +82,6 @@ namespace AAEmu.DBDefs
         public long slot_type_id = 0;
     }
 
-
     class GameSkills
     {
         // Actual DB entries
@@ -426,6 +425,15 @@ namespace AAEmu.DBDefs
         public string SearchString = string.Empty;
     }
 
+    class GameDoodadPhaseFunc
+    {
+        // TABLE doodad_phase_funcs
+        public long id = 0;
+        public long doodad_func_group_id = 0;
+        public long actual_func_id = 0;
+        public string actual_func_type = string.Empty;
+    }
+
     class GameQuestContexts
     {
         // TABLE quest_contexts
@@ -497,7 +505,6 @@ namespace AAEmu.DBDefs
         public long buff_id = 0;
     }
 
-
     public class GameTags
     {
         public long id = 0;
@@ -516,7 +523,6 @@ namespace AAEmu.DBDefs
         public long tag_id = 0;
         public long target_id = 0;
     }
-
 
     public class GameBuff
     {
@@ -709,6 +715,7 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameDoodadGroup> DB_Doodad_Groups = new Dictionary<long, GameDoodadGroup>();
         static public Dictionary<long, GameDoodadFunc> DB_Doodad_Funcs = new Dictionary<long, GameDoodadFunc>();
         static public Dictionary<long, GameDoodadFuncGroup> DB_Doodad_Func_Groups = new Dictionary<long, GameDoodadFuncGroup>();
+        static public Dictionary<long, GameDoodadPhaseFunc> DB_Doodad_Phase_Funcs = new Dictionary<long, GameDoodadPhaseFunc>();
         static public Dictionary<long, GameQuestCategory> DB_Quest_Categories = new Dictionary<long, GameQuestCategory>();
         static public Dictionary<long, GameQuestContexts> DB_Quest_Contexts = new Dictionary<long, GameQuestContexts>();
         static public Dictionary<long, GameQuestAct> DB_Quest_Acts = new Dictionary<long, GameQuestAct>();
