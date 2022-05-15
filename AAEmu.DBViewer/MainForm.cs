@@ -50,6 +50,7 @@ namespace AAEmu.DBViewer
             possibleLanguageIDs.Add("de");
             possibleLanguageIDs.Add("fr");
             possibleLanguageIDs.Add("ja");
+            cbItemSearchRange.SelectedIndex = 0;
 
             if (!LoadServerDB(false))
             {
@@ -2115,10 +2116,12 @@ namespace AAEmu.DBViewer
                 if (item.Value.SearchString.IndexOf(searchTextLower) >= 0)
                     addThis = true;
 
-                if (searchTextLower == "$")
+                if (cbItemSearchRange.SelectedIndex == 1)
                 {
                     if (item.Key >= 8000000)
                         addThis = true;
+                    else
+                        continue;
                 }
 
                 // Hardcode * as add all if armor slot is provided
@@ -6761,6 +6764,17 @@ namespace AAEmu.DBViewer
 
             }
             MessageBox.Show("Done");
+        }
+
+        private void cbItemSearchRange_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tItemSearch.Text.Replace("*", "") == string.Empty)
+            {
+                if (cbItemSearchRange.SelectedIndex == 1)
+                    tItemSearch.Text = "*";
+                else
+                    tItemSearch.Text = string.Empty;
+            }
         }
     }
 }

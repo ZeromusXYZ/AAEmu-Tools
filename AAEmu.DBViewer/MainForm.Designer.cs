@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.lbTableNames = new System.Windows.Forms.ListBox();
             this.tcViewer = new System.Windows.Forms.TabControl();
@@ -506,6 +506,8 @@
             this.lDoodadPhaseFuncsActualId = new System.Windows.Forms.Label();
             this.label136 = new System.Windows.Forms.Label();
             this.lDoodadPhaseFuncsActualType = new System.Windows.Forms.Label();
+            this.label135 = new System.Windows.Forms.Label();
+            this.cbItemSearchRange = new System.Windows.Forms.ComboBox();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -3037,6 +3039,8 @@
             // 
             // tpItems
             // 
+            this.tpItems.Controls.Add(this.cbItemSearchRange);
+            this.tpItems.Controls.Add(this.label135);
             this.tpItems.Controls.Add(this.label83);
             this.tpItems.Controls.Add(this.cbItemSearchItemCategoryTypeList);
             this.tpItems.Controls.Add(this.label51);
@@ -3059,7 +3063,7 @@
             // label83
             // 
             this.label83.AutoSize = true;
-            this.label83.Location = new System.Drawing.Point(136, 33);
+            this.label83.Location = new System.Drawing.Point(199, 33);
             this.label83.Name = "label83";
             this.label83.Size = new System.Drawing.Size(49, 13);
             this.label83.TabIndex = 17;
@@ -3071,7 +3075,7 @@
             this.cbItemSearchItemCategoryTypeList.FormattingEnabled = true;
             this.cbItemSearchItemCategoryTypeList.Items.AddRange(new object[] {
             "---"});
-            this.cbItemSearchItemCategoryTypeList.Location = new System.Drawing.Point(197, 30);
+            this.cbItemSearchItemCategoryTypeList.Location = new System.Drawing.Point(260, 30);
             this.cbItemSearchItemCategoryTypeList.Name = "cbItemSearchItemCategoryTypeList";
             this.cbItemSearchItemCategoryTypeList.Size = new System.Drawing.Size(137, 21);
             this.cbItemSearchItemCategoryTypeList.TabIndex = 16;
@@ -3080,7 +3084,7 @@
             // label51
             // 
             this.label51.AutoSize = true;
-            this.label51.Location = new System.Drawing.Point(343, 33);
+            this.label51.Location = new System.Drawing.Point(8, 33);
             this.label51.Name = "label51";
             this.label51.Size = new System.Drawing.Size(55, 13);
             this.label51.TabIndex = 15;
@@ -3123,7 +3127,7 @@
             "Beard (29)",
             "Backpack (30)",
             "Cosplay (31)"});
-            this.cbItemSearchItemArmorSlotTypeList.Location = new System.Drawing.Point(404, 30);
+            this.cbItemSearchItemArmorSlotTypeList.Location = new System.Drawing.Point(69, 30);
             this.cbItemSearchItemArmorSlotTypeList.Name = "cbItemSearchItemArmorSlotTypeList";
             this.cbItemSearchItemArmorSlotTypeList.Size = new System.Drawing.Size(124, 21);
             this.cbItemSearchItemArmorSlotTypeList.TabIndex = 14;
@@ -4600,10 +4604,10 @@
             this.tvSkill.ItemHeight = 24;
             this.tvSkill.Location = new System.Drawing.Point(6, 6);
             this.tvSkill.Name = "tvSkill";
-            treeNode1.Name = "SkillNode";
-            treeNode1.Text = "Skill";
+            treeNode2.Name = "SkillNode";
+            treeNode2.Text = "Skill";
             this.tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            treeNode2});
             this.tvSkill.SelectedImageIndex = 0;
             this.tvSkill.Size = new System.Drawing.Size(341, 295);
             this.tvSkill.TabIndex = 0;
@@ -5575,6 +5579,30 @@
             this.lDoodadPhaseFuncsActualType.TabIndex = 59;
             this.lDoodadPhaseFuncsActualType.Text = "none";
             // 
+            // label135
+            // 
+            this.label135.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label135.AutoSize = true;
+            this.label135.Location = new System.Drawing.Point(430, 33);
+            this.label135.Name = "label135";
+            this.label135.Size = new System.Drawing.Size(39, 13);
+            this.label135.TabIndex = 18;
+            this.label135.Text = "Range";
+            // 
+            // cbItemSearchRange
+            // 
+            this.cbItemSearchRange.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbItemSearchRange.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbItemSearchRange.FormattingEnabled = true;
+            this.cbItemSearchRange.Items.AddRange(new object[] {
+            "All",
+            "Region Specific"});
+            this.cbItemSearchRange.Location = new System.Drawing.Point(475, 30);
+            this.cbItemSearchRange.Name = "cbItemSearchRange";
+            this.cbItemSearchRange.Size = new System.Drawing.Size(137, 21);
+            this.cbItemSearchRange.TabIndex = 19;
+            this.cbItemSearchRange.SelectedIndexChanged += new System.EventHandler(this.cbItemSearchRange_SelectedIndexChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -6155,6 +6183,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column32;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column33;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column54;
+        private System.Windows.Forms.ComboBox cbItemSearchRange;
+        private System.Windows.Forms.Label label135;
     }
 }
 
