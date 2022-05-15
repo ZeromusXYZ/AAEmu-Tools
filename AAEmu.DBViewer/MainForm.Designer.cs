@@ -508,6 +508,9 @@
             this.lDoodadPhaseFuncsActualType = new System.Windows.Forms.Label();
             this.label135 = new System.Windows.Forms.Label();
             this.cbItemSearchRange = new System.Windows.Forms.ComboBox();
+            this.tpDoodadWorkflow = new System.Windows.Forms.TabPage();
+            this.tvDoodadDetails = new System.Windows.Forms.TreeView();
+            this.cbDoodadWorkflowHideEmpty = new System.Windows.Forms.CheckBox();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -566,6 +569,7 @@
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).BeginInit();
             this.tpTrade.SuspendLayout();
+            this.tpDoodadWorkflow.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbTableNames
@@ -1397,6 +1401,7 @@
             this.tcDoodads.Controls.Add(this.tpDoodadInfo);
             this.tcDoodads.Controls.Add(this.tpDoodadFunctions);
             this.tcDoodads.Controls.Add(this.tpDoodadTools);
+            this.tcDoodads.Controls.Add(this.tpDoodadWorkflow);
             this.tcDoodads.Dock = System.Windows.Forms.DockStyle.Right;
             this.tcDoodads.Location = new System.Drawing.Point(581, 3);
             this.tcDoodads.Multiline = true;
@@ -5603,6 +5608,39 @@
             this.cbItemSearchRange.TabIndex = 19;
             this.cbItemSearchRange.SelectedIndexChanged += new System.EventHandler(this.cbItemSearchRange_SelectedIndexChanged);
             // 
+            // tpDoodadWorkflow
+            // 
+            this.tpDoodadWorkflow.Controls.Add(this.cbDoodadWorkflowHideEmpty);
+            this.tpDoodadWorkflow.Controls.Add(this.tvDoodadDetails);
+            this.tpDoodadWorkflow.Location = new System.Drawing.Point(4, 4);
+            this.tpDoodadWorkflow.Name = "tpDoodadWorkflow";
+            this.tpDoodadWorkflow.Padding = new System.Windows.Forms.Padding(3);
+            this.tpDoodadWorkflow.Size = new System.Drawing.Size(334, 453);
+            this.tpDoodadWorkflow.TabIndex = 4;
+            this.tpDoodadWorkflow.Text = "Workflow";
+            this.tpDoodadWorkflow.UseVisualStyleBackColor = true;
+            // 
+            // tvDoodadDetails
+            // 
+            this.tvDoodadDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvDoodadDetails.Location = new System.Drawing.Point(6, 6);
+            this.tvDoodadDetails.Name = "tvDoodadDetails";
+            this.tvDoodadDetails.Size = new System.Drawing.Size(322, 420);
+            this.tvDoodadDetails.TabIndex = 0;
+            // 
+            // cbDoodadWorkflowHideEmpty
+            // 
+            this.cbDoodadWorkflowHideEmpty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbDoodadWorkflowHideEmpty.AutoSize = true;
+            this.cbDoodadWorkflowHideEmpty.Location = new System.Drawing.Point(6, 430);
+            this.cbDoodadWorkflowHideEmpty.Name = "cbDoodadWorkflowHideEmpty";
+            this.cbDoodadWorkflowHideEmpty.Size = new System.Drawing.Size(113, 17);
+            this.cbDoodadWorkflowHideEmpty.TabIndex = 1;
+            this.cbDoodadWorkflowHideEmpty.Text = "Hide empty values";
+            this.cbDoodadWorkflowHideEmpty.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5703,6 +5741,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).EndInit();
             this.tpTrade.ResumeLayout(false);
             this.tpTrade.PerformLayout();
+            this.tpDoodadWorkflow.ResumeLayout(false);
+            this.tpDoodadWorkflow.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -6185,6 +6225,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column54;
         private System.Windows.Forms.ComboBox cbItemSearchRange;
         private System.Windows.Forms.Label label135;
+        private System.Windows.Forms.TabPage tpDoodadWorkflow;
+        private System.Windows.Forms.TreeView tvDoodadDetails;
+        private System.Windows.Forms.CheckBox cbDoodadWorkflowHideEmpty;
     }
 }
 

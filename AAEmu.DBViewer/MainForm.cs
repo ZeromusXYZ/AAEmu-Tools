@@ -51,6 +51,7 @@ namespace AAEmu.DBViewer
             possibleLanguageIDs.Add("fr");
             possibleLanguageIDs.Add("ja");
             cbItemSearchRange.SelectedIndex = 0;
+            tcDoodads.SelectedTab = tpDoodadWorkflow;
 
             if (!LoadServerDB(false))
             {
@@ -4301,6 +4302,70 @@ namespace AAEmu.DBViewer
 
         }
 
+        private string FunctionTypeToTableName(string funcName)
+        {
+            var tableName = string.Empty;
+            var rest = funcName;
+            while(rest.Length > 0)
+            {
+                var c = rest.Substring(0, 1);
+                if (c != c.ToLower()) // decaptialize the name, and put a underscore in front
+                {
+                    tableName += "_" + c.ToLower();
+                }
+                else
+                {
+                    tableName += c;
+                }
+                rest = rest.Substring(1);
+            }
+            tableName = tableName.Trim('_') + "s"; // remove excess underscores and add a "s"
+            return tableName;
+        }
+
+        private Dictionary<string,string> GetCustomTableValues(string tableName, string indexName, string searchId)
+        {
+            var res = new Dictionary<string, string>();
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    try
+                    {
+                        command.CommandText = "SELECT * FROM " + tableName + " WHERE " + indexName + "=" + searchId + " LIMIT 1";
+                        command.Prepare();
+                        using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                        {
+                            var columnNames = reader.GetColumnNames();
+
+                            while (reader.Read())
+                            {
+                                int c = 0;
+                                foreach (var col in columnNames)
+                                {
+                                    if (col != indexName) // skip the index field
+                                    {
+                                        if (reader.IsDBNull(col))
+                                            res.Add(col, "<null>");
+                                        else
+                                            res.Add(col, reader.GetValue(col).ToString());
+                                    }
+                                    c++;
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        res.Add("Exception", ex.Message);
+                    }
+                }
+            }
+
+            return res;
+        }
+
         private void ShowDBDoodad(long id)
         {
             if (AADB.DB_Doodad_Almighties.TryGetValue(id, out var doodad))
@@ -4389,6 +4454,62 @@ namespace AAEmu.DBViewer
                     }
                 }
 
+                // Details Tab
+                tvDoodadDetails.Nodes.Clear();
+                var rootNode = tvDoodadDetails.Nodes.Add(doodad.nameLocalized + " ( " + doodad.id + " )");
+                foreach (var f in AADB.DB_Doodad_Func_Groups)
+                {
+                    var dFuncGroup = f.Value;
+                    if (dFuncGroup.doodad_almighty_id == doodad.id)
+                    {
+                        var groupNode = rootNode.Nodes.Add("Group: " + dFuncGroup.id.ToString() + " - Kind: " + dFuncGroup.doodad_func_group_kind_id.ToString());
+                        
+                        // Phase Funcs
+                        foreach (var dpf in AADB.DB_Doodad_Phase_Funcs)
+                            if (dpf.Value.doodad_func_group_id == dFuncGroup.id)
+                            {
+                                var phaseNode = groupNode.Nodes.Add(dpf.Value.actual_func_type + " ( " + dpf.Value.actual_func_id + " )");
+
+                                var tableName = FunctionTypeToTableName(dpf.Value.actual_func_type);
+                                var fields = GetCustomTableValues(tableName, "id", dpf.Value.actual_func_id.ToString());
+
+                                foreach(var fl in fields)
+                                {
+                                    if (cbDoodadWorkflowHideEmpty.Checked && (string.IsNullOrWhiteSpace(fl.Value) || (fl.Value == "0") || (fl.Value == "<null>") || (fl.Value == "f")))
+                                    {
+                                        // ignore empty values
+                                    }
+                                    else
+                                    {
+                                        phaseNode.Nodes.Add(fl.Key + ": " + fl.Value);
+                                    }
+                                }
+
+                                phaseNode.Collapse();
+                            }
+
+                        //doodad_func_group_id = 10258
+                        var funcFields = GetCustomTableValues("doodad_funcs", "doodad_func_group_id", dFuncGroup.id.ToString());
+                        var funcsNode = groupNode.Nodes.Add(funcFields.Count > 0 ? funcFields["actual_func_type"] + " ( "+ funcFields["actual_func_id"] + " )" : "Unknown Funcs");
+                        foreach (var fl in funcFields)
+                        {
+                            if (cbDoodadWorkflowHideEmpty.Checked && (string.IsNullOrWhiteSpace(fl.Value) || (fl.Value == "0") || (fl.Value == "<null>") || (fl.Value == "f")))
+                            {
+                                // ignore empty values
+                            }
+                            else
+                            {
+                                funcsNode.Nodes.Add(fl.Key + ": " + fl.Value);
+                            }
+                        }
+                        if (funcsNode.Nodes.Count <= 0)
+                            groupNode.Nodes.Remove(funcsNode);
+
+                        groupNode.Expand();
+                    }
+                }
+                rootNode.Expand();
+
             }
             else
             {
@@ -4437,6 +4558,8 @@ namespace AAEmu.DBViewer
                 btnShowDoodadOnMap.Tag = 0;
 
                 dgvDoodadFuncGroups.Rows.Clear();
+
+                tvDoodadDetails.Nodes.Clear();
             }
         }
 
