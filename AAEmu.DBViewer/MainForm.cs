@@ -4461,41 +4461,21 @@ namespace AAEmu.DBViewer
                 // Details Tab
                 tvDoodadDetails.Nodes.Clear();
                 var rootNode = tvDoodadDetails.Nodes.Add(doodad.nameLocalized + " ( " + doodad.id + " )");
+                rootNode.ForeColor = Color.White;
                 foreach (var f in AADB.DB_Doodad_Func_Groups)
                 {
                     var dFuncGroup = f.Value;
                     if (dFuncGroup.doodad_almighty_id == doodad.id)
                     {
                         var groupNode = rootNode.Nodes.Add("Group: " + dFuncGroup.id.ToString() + " - Kind: " + dFuncGroup.doodad_func_group_kind_id.ToString());
-
-                        // doodad_funcs
-                        var funcFieldsList = GetCustomTableValues("doodad_funcs", "doodad_func_group_id", dFuncGroup.id.ToString());
-                        foreach (var funcFields in funcFieldsList)
-                        {
-                            var funcsNode = groupNode.Nodes.Add(funcFields.Count > 0 ? "Funcs: "+funcFields["actual_func_type"] + " ( " + funcFields["actual_func_id"] + " )" : "Funcs");
-                            foreach (var fl in funcFields)
-                            {
-                                if ((fl.Key == "actual_func_type") || (fl.Key == "actual_func_id"))
-                                    continue;
-
-                                if (cbDoodadWorkflowHideEmpty.Checked && (string.IsNullOrWhiteSpace(fl.Value) || (fl.Value == "0") || (fl.Value == "<null>") || (fl.Value == "f")))
-                                {
-                                    // ignore empty values
-                                }
-                                else
-                                {
-                                    funcsNode.Nodes.Add(fl.Key + ": " + fl.Value);
-                                }
-                            }
-                            if (funcsNode.Nodes.Count <= 0)
-                                groupNode.Nodes.Remove(funcsNode);
-                        }
+                        groupNode.ForeColor = Color.LightCyan;
 
                         // Phase Funcs
                         foreach (var dpf in AADB.DB_Doodad_Phase_Funcs)
                             if (dpf.Value.doodad_func_group_id == dFuncGroup.id)
                             {
                                 var phaseNode = groupNode.Nodes.Add("PhaseFuncs: " + dpf.Value.actual_func_type + " ( " + dpf.Value.actual_func_id + " )");
+                                phaseNode.ForeColor = Color.Yellow;
                                 var tableName = FunctionTypeToTableName(dpf.Value.actual_func_type);
                                 var fieldsList = GetCustomTableValues(tableName, "id", dpf.Value.actual_func_id.ToString());
                                 foreach (var fields in fieldsList)
@@ -4516,6 +4496,49 @@ namespace AAEmu.DBViewer
                                 phaseNode.Collapse();
                             }
 
+                        // doodad_funcs
+                        var funcFieldsList = GetCustomTableValues("doodad_funcs", "doodad_func_group_id", dFuncGroup.id.ToString());
+                        foreach (var funcFields in funcFieldsList)
+                        {
+                            var funcsNode = groupNode.Nodes.Add(funcFields.Count > 0 ? "Funcs: " + funcFields["actual_func_type"] + " ( " + funcFields["actual_func_id"] + " )" : "Funcs");
+                            funcsNode.ForeColor = Color.LimeGreen;
+                            var tableName = FunctionTypeToTableName(funcFields["actual_func_type"]);
+                            var fieldsList = GetCustomTableValues(tableName, "id", funcFields["actual_func_id"]);
+                            foreach (var fl in funcFields)
+                            {
+                                if ((fl.Key == "actual_func_type") || (fl.Key == "actual_func_id"))
+                                    continue;
+
+                                if (cbDoodadWorkflowHideEmpty.Checked && (string.IsNullOrWhiteSpace(fl.Value) || (fl.Value == "0") || (fl.Value == "<null>") || (fl.Value == "f")))
+                                {
+                                    // ignore empty values
+                                }
+                                else
+                                {
+                                    funcsNode.Nodes.Add(fl.Key + ": " + fl.Value);
+                                }
+                            }
+
+                            funcsNode.Nodes.Add("<=== details ===>").ForeColor = Color.Gray;
+                            foreach (var fields in fieldsList)
+                            {
+                                foreach (var fl in fields)
+                                {
+                                    if (cbDoodadWorkflowHideEmpty.Checked && (string.IsNullOrWhiteSpace(fl.Value) || (fl.Value == "0") || (fl.Value == "<null>") || (fl.Value == "f")))
+                                    {
+                                        // ignore empty values
+                                    }
+                                    else
+                                    {
+                                        funcsNode.Nodes.Add(fl.Key + ": " + fl.Value);
+                                    }
+                                }
+                            }
+
+                            funcsNode.Collapse();
+                            if (funcsNode.Nodes.Count <= 0)
+                                groupNode.Nodes.Remove(funcsNode);
+                        }
 
                         groupNode.Expand();
                     }

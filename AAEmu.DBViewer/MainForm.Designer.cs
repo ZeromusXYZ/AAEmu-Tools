@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.lbTableNames = new System.Windows.Forms.ListBox();
             this.tcViewer = new System.Windows.Forms.TabControl();
@@ -190,6 +190,9 @@
             this.label60 = new System.Windows.Forms.Label();
             this.tpDoodadFunctions = new System.Windows.Forms.TabPage();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.lDoodadPhaseFuncsActualType = new System.Windows.Forms.Label();
+            this.lDoodadPhaseFuncsActualId = new System.Windows.Forms.Label();
+            this.label136 = new System.Windows.Forms.Label();
             this.lDoodadFuncGroupIsMsgToZone = new System.Windows.Forms.Label();
             this.label111 = new System.Windows.Forms.Label();
             this.lDoodadFuncGroupSoundID = new System.Windows.Forms.Label();
@@ -209,8 +212,15 @@
             this.lDoodadFuncGroupName = new System.Windows.Forms.Label();
             this.label66 = new System.Windows.Forms.Label();
             this.dgvDoodadFuncGroups = new System.Windows.Forms.DataGridView();
+            this.Column27 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column32 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column33 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column54 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpDoodadTools = new System.Windows.Forms.TabPage();
             this.btnShowDoodadOnMap = new System.Windows.Forms.Button();
+            this.tpDoodadWorkflow = new System.Windows.Forms.TabPage();
+            this.cbDoodadWorkflowHideEmpty = new System.Windows.Forms.CheckBox();
+            this.tvDoodadDetails = new System.Windows.Forms.TreeView();
             this.btnSearchDoodads = new System.Windows.Forms.Button();
             this.label46 = new System.Windows.Forms.Label();
             this.tSearchDoodads = new System.Windows.Forms.TextBox();
@@ -266,6 +276,8 @@
             this.Column24 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column29 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpItems = new System.Windows.Forms.TabPage();
+            this.cbItemSearchRange = new System.Windows.Forms.ComboBox();
+            this.label135 = new System.Windows.Forms.Label();
             this.label83 = new System.Windows.Forms.Label();
             this.cbItemSearchItemCategoryTypeList = new System.Windows.Forms.ComboBox();
             this.label51 = new System.Windows.Forms.Label();
@@ -499,18 +511,6 @@
             this.ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             this.ofdJsonData = new System.Windows.Forms.OpenFileDialog();
             this.ilIcons = new System.Windows.Forms.ImageList(this.components);
-            this.Column27 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column32 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column33 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column54 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lDoodadPhaseFuncsActualId = new System.Windows.Forms.Label();
-            this.label136 = new System.Windows.Forms.Label();
-            this.lDoodadPhaseFuncsActualType = new System.Windows.Forms.Label();
-            this.label135 = new System.Windows.Forms.Label();
-            this.cbItemSearchRange = new System.Windows.Forms.ComboBox();
-            this.tpDoodadWorkflow = new System.Windows.Forms.TabPage();
-            this.tvDoodadDetails = new System.Windows.Forms.TreeView();
-            this.cbDoodadWorkflowHideEmpty = new System.Windows.Forms.CheckBox();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -532,6 +532,7 @@
             this.groupBox10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDoodadFuncGroups)).BeginInit();
             this.tpDoodadTools.SuspendLayout();
+            this.tpDoodadWorkflow.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDoodads)).BeginInit();
             this.tbFactions.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -569,7 +570,6 @@
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).BeginInit();
             this.tpTrade.SuspendLayout();
-            this.tpDoodadWorkflow.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbTableNames
@@ -2285,6 +2285,33 @@
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Doodad Function Groups";
             // 
+            // lDoodadPhaseFuncsActualType
+            // 
+            this.lDoodadPhaseFuncsActualType.AutoSize = true;
+            this.lDoodadPhaseFuncsActualType.Location = new System.Drawing.Point(155, 315);
+            this.lDoodadPhaseFuncsActualType.Name = "lDoodadPhaseFuncsActualType";
+            this.lDoodadPhaseFuncsActualType.Size = new System.Drawing.Size(31, 13);
+            this.lDoodadPhaseFuncsActualType.TabIndex = 59;
+            this.lDoodadPhaseFuncsActualType.Text = "none";
+            // 
+            // lDoodadPhaseFuncsActualId
+            // 
+            this.lDoodadPhaseFuncsActualId.AutoSize = true;
+            this.lDoodadPhaseFuncsActualId.Location = new System.Drawing.Point(94, 315);
+            this.lDoodadPhaseFuncsActualId.Name = "lDoodadPhaseFuncsActualId";
+            this.lDoodadPhaseFuncsActualId.Size = new System.Drawing.Size(13, 13);
+            this.lDoodadPhaseFuncsActualId.TabIndex = 58;
+            this.lDoodadPhaseFuncsActualId.Text = "0";
+            // 
+            // label136
+            // 
+            this.label136.AutoSize = true;
+            this.label136.Location = new System.Drawing.Point(6, 315);
+            this.label136.Name = "label136";
+            this.label136.Size = new System.Drawing.Size(49, 13);
+            this.label136.TabIndex = 57;
+            this.label136.Text = "Actual Id";
+            // 
             // lDoodadFuncGroupIsMsgToZone
             // 
             this.lDoodadFuncGroupIsMsgToZone.AutoSize = true;
@@ -2470,6 +2497,34 @@
             this.dgvDoodadFuncGroups.TabIndex = 8;
             this.dgvDoodadFuncGroups.SelectionChanged += new System.EventHandler(this.DgvDoodadFuncGroups_SelectionChanged);
             // 
+            // Column27
+            // 
+            this.Column27.FillWeight = 25F;
+            this.Column27.HeaderText = "ID";
+            this.Column27.Name = "Column27";
+            this.Column27.ReadOnly = true;
+            // 
+            // Column32
+            // 
+            this.Column32.FillWeight = 15F;
+            this.Column32.HeaderText = "Kind";
+            this.Column32.Name = "Column32";
+            this.Column32.ReadOnly = true;
+            // 
+            // Column33
+            // 
+            this.Column33.FillWeight = 25F;
+            this.Column33.HeaderText = "ActualID";
+            this.Column33.Name = "Column33";
+            this.Column33.ReadOnly = true;
+            // 
+            // Column54
+            // 
+            this.Column54.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column54.HeaderText = "ActualType";
+            this.Column54.Name = "Column54";
+            this.Column54.ReadOnly = true;
+            // 
             // tpDoodadTools
             // 
             this.tpDoodadTools.Controls.Add(this.btnShowDoodadOnMap);
@@ -2493,6 +2548,42 @@
             this.btnShowDoodadOnMap.Text = "Find Selected";
             this.btnShowDoodadOnMap.UseVisualStyleBackColor = true;
             this.btnShowDoodadOnMap.Click += new System.EventHandler(this.btnShowDoodadOnMap_Click);
+            // 
+            // tpDoodadWorkflow
+            // 
+            this.tpDoodadWorkflow.Controls.Add(this.cbDoodadWorkflowHideEmpty);
+            this.tpDoodadWorkflow.Controls.Add(this.tvDoodadDetails);
+            this.tpDoodadWorkflow.Location = new System.Drawing.Point(4, 4);
+            this.tpDoodadWorkflow.Name = "tpDoodadWorkflow";
+            this.tpDoodadWorkflow.Padding = new System.Windows.Forms.Padding(3);
+            this.tpDoodadWorkflow.Size = new System.Drawing.Size(334, 453);
+            this.tpDoodadWorkflow.TabIndex = 4;
+            this.tpDoodadWorkflow.Text = "Workflow";
+            this.tpDoodadWorkflow.UseVisualStyleBackColor = true;
+            // 
+            // cbDoodadWorkflowHideEmpty
+            // 
+            this.cbDoodadWorkflowHideEmpty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbDoodadWorkflowHideEmpty.AutoSize = true;
+            this.cbDoodadWorkflowHideEmpty.Location = new System.Drawing.Point(6, 430);
+            this.cbDoodadWorkflowHideEmpty.Name = "cbDoodadWorkflowHideEmpty";
+            this.cbDoodadWorkflowHideEmpty.Size = new System.Drawing.Size(113, 17);
+            this.cbDoodadWorkflowHideEmpty.TabIndex = 1;
+            this.cbDoodadWorkflowHideEmpty.Text = "Hide empty values";
+            this.cbDoodadWorkflowHideEmpty.UseVisualStyleBackColor = true;
+            // 
+            // tvDoodadDetails
+            // 
+            this.tvDoodadDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvDoodadDetails.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.tvDoodadDetails.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
+            this.tvDoodadDetails.LineColor = System.Drawing.Color.LightGray;
+            this.tvDoodadDetails.Location = new System.Drawing.Point(6, 6);
+            this.tvDoodadDetails.Name = "tvDoodadDetails";
+            this.tvDoodadDetails.Size = new System.Drawing.Size(322, 420);
+            this.tvDoodadDetails.TabIndex = 0;
             // 
             // btnSearchDoodads
             // 
@@ -3064,6 +3155,30 @@
             this.tpItems.TabIndex = 1;
             this.tpItems.Text = "Items";
             this.tpItems.UseVisualStyleBackColor = true;
+            // 
+            // cbItemSearchRange
+            // 
+            this.cbItemSearchRange.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbItemSearchRange.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbItemSearchRange.FormattingEnabled = true;
+            this.cbItemSearchRange.Items.AddRange(new object[] {
+            "All",
+            "Region Specific"});
+            this.cbItemSearchRange.Location = new System.Drawing.Point(475, 30);
+            this.cbItemSearchRange.Name = "cbItemSearchRange";
+            this.cbItemSearchRange.Size = new System.Drawing.Size(137, 21);
+            this.cbItemSearchRange.TabIndex = 19;
+            this.cbItemSearchRange.SelectedIndexChanged += new System.EventHandler(this.cbItemSearchRange_SelectedIndexChanged);
+            // 
+            // label135
+            // 
+            this.label135.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label135.AutoSize = true;
+            this.label135.Location = new System.Drawing.Point(430, 33);
+            this.label135.Name = "label135";
+            this.label135.Size = new System.Drawing.Size(39, 13);
+            this.label135.TabIndex = 18;
+            this.label135.Text = "Range";
             // 
             // label83
             // 
@@ -4609,10 +4724,10 @@
             this.tvSkill.ItemHeight = 24;
             this.tvSkill.Location = new System.Drawing.Point(6, 6);
             this.tvSkill.Name = "tvSkill";
-            treeNode2.Name = "SkillNode";
-            treeNode2.Text = "Skill";
+            treeNode1.Name = "SkillNode";
+            treeNode1.Text = "Skill";
             this.tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
+            treeNode1});
             this.tvSkill.SelectedImageIndex = 0;
             this.tvSkill.Size = new System.Drawing.Size(341, 295);
             this.tvSkill.TabIndex = 0;
@@ -5529,118 +5644,6 @@
             this.ilIcons.Images.SetKeyName(2, "icon_exclamation_green.png");
             this.ilIcons.Images.SetKeyName(3, "icon_exclamation_blue.png");
             // 
-            // Column27
-            // 
-            this.Column27.FillWeight = 25F;
-            this.Column27.HeaderText = "ID";
-            this.Column27.Name = "Column27";
-            this.Column27.ReadOnly = true;
-            // 
-            // Column32
-            // 
-            this.Column32.FillWeight = 15F;
-            this.Column32.HeaderText = "Kind";
-            this.Column32.Name = "Column32";
-            this.Column32.ReadOnly = true;
-            // 
-            // Column33
-            // 
-            this.Column33.FillWeight = 25F;
-            this.Column33.HeaderText = "ActualID";
-            this.Column33.Name = "Column33";
-            this.Column33.ReadOnly = true;
-            // 
-            // Column54
-            // 
-            this.Column54.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column54.HeaderText = "ActualType";
-            this.Column54.Name = "Column54";
-            this.Column54.ReadOnly = true;
-            // 
-            // lDoodadPhaseFuncsActualId
-            // 
-            this.lDoodadPhaseFuncsActualId.AutoSize = true;
-            this.lDoodadPhaseFuncsActualId.Location = new System.Drawing.Point(94, 315);
-            this.lDoodadPhaseFuncsActualId.Name = "lDoodadPhaseFuncsActualId";
-            this.lDoodadPhaseFuncsActualId.Size = new System.Drawing.Size(13, 13);
-            this.lDoodadPhaseFuncsActualId.TabIndex = 58;
-            this.lDoodadPhaseFuncsActualId.Text = "0";
-            // 
-            // label136
-            // 
-            this.label136.AutoSize = true;
-            this.label136.Location = new System.Drawing.Point(6, 315);
-            this.label136.Name = "label136";
-            this.label136.Size = new System.Drawing.Size(49, 13);
-            this.label136.TabIndex = 57;
-            this.label136.Text = "Actual Id";
-            // 
-            // lDoodadPhaseFuncsActualType
-            // 
-            this.lDoodadPhaseFuncsActualType.AutoSize = true;
-            this.lDoodadPhaseFuncsActualType.Location = new System.Drawing.Point(155, 315);
-            this.lDoodadPhaseFuncsActualType.Name = "lDoodadPhaseFuncsActualType";
-            this.lDoodadPhaseFuncsActualType.Size = new System.Drawing.Size(31, 13);
-            this.lDoodadPhaseFuncsActualType.TabIndex = 59;
-            this.lDoodadPhaseFuncsActualType.Text = "none";
-            // 
-            // label135
-            // 
-            this.label135.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label135.AutoSize = true;
-            this.label135.Location = new System.Drawing.Point(430, 33);
-            this.label135.Name = "label135";
-            this.label135.Size = new System.Drawing.Size(39, 13);
-            this.label135.TabIndex = 18;
-            this.label135.Text = "Range";
-            // 
-            // cbItemSearchRange
-            // 
-            this.cbItemSearchRange.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbItemSearchRange.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbItemSearchRange.FormattingEnabled = true;
-            this.cbItemSearchRange.Items.AddRange(new object[] {
-            "All",
-            "Region Specific"});
-            this.cbItemSearchRange.Location = new System.Drawing.Point(475, 30);
-            this.cbItemSearchRange.Name = "cbItemSearchRange";
-            this.cbItemSearchRange.Size = new System.Drawing.Size(137, 21);
-            this.cbItemSearchRange.TabIndex = 19;
-            this.cbItemSearchRange.SelectedIndexChanged += new System.EventHandler(this.cbItemSearchRange_SelectedIndexChanged);
-            // 
-            // tpDoodadWorkflow
-            // 
-            this.tpDoodadWorkflow.Controls.Add(this.cbDoodadWorkflowHideEmpty);
-            this.tpDoodadWorkflow.Controls.Add(this.tvDoodadDetails);
-            this.tpDoodadWorkflow.Location = new System.Drawing.Point(4, 4);
-            this.tpDoodadWorkflow.Name = "tpDoodadWorkflow";
-            this.tpDoodadWorkflow.Padding = new System.Windows.Forms.Padding(3);
-            this.tpDoodadWorkflow.Size = new System.Drawing.Size(334, 453);
-            this.tpDoodadWorkflow.TabIndex = 4;
-            this.tpDoodadWorkflow.Text = "Workflow";
-            this.tpDoodadWorkflow.UseVisualStyleBackColor = true;
-            // 
-            // tvDoodadDetails
-            // 
-            this.tvDoodadDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tvDoodadDetails.Location = new System.Drawing.Point(6, 6);
-            this.tvDoodadDetails.Name = "tvDoodadDetails";
-            this.tvDoodadDetails.Size = new System.Drawing.Size(322, 420);
-            this.tvDoodadDetails.TabIndex = 0;
-            // 
-            // cbDoodadWorkflowHideEmpty
-            // 
-            this.cbDoodadWorkflowHideEmpty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cbDoodadWorkflowHideEmpty.AutoSize = true;
-            this.cbDoodadWorkflowHideEmpty.Location = new System.Drawing.Point(6, 430);
-            this.cbDoodadWorkflowHideEmpty.Name = "cbDoodadWorkflowHideEmpty";
-            this.cbDoodadWorkflowHideEmpty.Size = new System.Drawing.Size(113, 17);
-            this.cbDoodadWorkflowHideEmpty.TabIndex = 1;
-            this.cbDoodadWorkflowHideEmpty.Text = "Hide empty values";
-            this.cbDoodadWorkflowHideEmpty.UseVisualStyleBackColor = true;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5684,6 +5687,8 @@
             this.groupBox10.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDoodadFuncGroups)).EndInit();
             this.tpDoodadTools.ResumeLayout(false);
+            this.tpDoodadWorkflow.ResumeLayout(false);
+            this.tpDoodadWorkflow.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDoodads)).EndInit();
             this.tbFactions.ResumeLayout(false);
             this.tbFactions.PerformLayout();
@@ -5741,8 +5746,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).EndInit();
             this.tpTrade.ResumeLayout(false);
             this.tpTrade.PerformLayout();
-            this.tpDoodadWorkflow.ResumeLayout(false);
-            this.tpDoodadWorkflow.PerformLayout();
             this.ResumeLayout(false);
 
         }
