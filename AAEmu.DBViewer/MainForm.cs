@@ -40,6 +40,16 @@ namespace AAEmu.DBViewer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // Update settings if needed
+            if (!Properties.Settings.Default.IsUpdated)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.Save();
+                Properties.Settings.Default.Reload();
+                Properties.Settings.Default.IsUpdated = true;
+                Properties.Settings.Default.Save();
+            }
+
             defaultTitle = Text;
             possibleLanguageIDs.Clear();
             possibleLanguageIDs.Add("ko");
@@ -4304,6 +4314,8 @@ namespace AAEmu.DBViewer
 
         private string FunctionTypeToTableName(string funcName)
         {
+            if (funcName == "DoodadFuncNaviOpenMailbox")
+                return "doodad_func_navi_open_mailboxes";
             var tableName = string.Empty;
             var rest = funcName;
             while(rest.Length > 0)
@@ -4366,6 +4378,24 @@ namespace AAEmu.DBViewer
                     }
                 }
             }
+
+            return res;
+        }
+
+        private string AddDoodadPropertyInfo(string key, string value)
+        {
+            var res = key + ": " + value;
+            if (!long.TryParse(value, out var val))
+                return res;
+
+            if (key.EndsWith("skill_id") && (AADB.DB_Skills.TryGetValue(val, out var skill)))
+                res += " - " + skill.nameLocalized;
+
+            if (key.EndsWith("item_id") && (AADB.DB_Items.TryGetValue(val, out var item)))
+                res += " - " + item.nameLocalized;
+
+            if (key.EndsWith("item_category_id") && (AADB.DB_ItemsCategories.TryGetValue(val, out var itemCategory)))
+                res += " - " + itemCategory.nameLocalized;
 
             return res;
         }
@@ -4488,7 +4518,7 @@ namespace AAEmu.DBViewer
                                         }
                                         else
                                         {
-                                            phaseNode.Nodes.Add(fl.Key + ": " + fl.Value);
+                                            phaseNode.Nodes.Add(AddDoodadPropertyInfo(fl.Key, fl.Value));
                                         }
                                     }
                                 }
@@ -4515,7 +4545,7 @@ namespace AAEmu.DBViewer
                                 }
                                 else
                                 {
-                                    funcsNode.Nodes.Add(fl.Key + ": " + fl.Value);
+                                    funcsNode.Nodes.Add(AddDoodadPropertyInfo(fl.Key, fl.Value));
                                 }
                             }
 
@@ -4530,7 +4560,7 @@ namespace AAEmu.DBViewer
                                     }
                                     else
                                     {
-                                        funcsNode.Nodes.Add(fl.Key + ": " + fl.Value);
+                                        funcsNode.Nodes.Add(AddDoodadPropertyInfo(fl.Key, fl.Value));
                                     }
                                 }
                             }
