@@ -1608,6 +1608,68 @@ namespace AAEmu.DBViewer
                     }
                 }
 
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Quest_Component_Texts.Clear();
+
+                    command.CommandText = "SELECT * FROM quest_component_texts ORDER BY quest_component_id ASC, quest_component_text_kind_id ASC, id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            GameQuestComponentText t = new GameQuestComponentText();
+                            t.id = GetInt64(reader, "id");
+                            t.quest_component_text_kind_id = GetInt64(reader, "quest_component_text_kind_id");
+                            t.quest_component_id = GetInt64(reader, "quest_component_id");
+                            t.text = GetString(reader, "text");
+
+                            t.textLocalized = AADB.GetTranslationByID(t.id, "quest_component_texts", "text", t.text);
+
+                            AADB.DB_Quest_Component_Texts.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+
+                    }
+                }
+
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Quest_Context_Texts.Clear();
+
+                    command.CommandText = "SELECT * FROM quest_context_texts ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            GameQuestContextText t = new GameQuestContextText();
+                            t.id = GetInt64(reader, "id");
+                            t.quest_context_text_kind_id = GetInt64(reader, "quest_context_text_kind_id");
+                            t.quest_context_id = GetInt64(reader, "quest_context_id");
+                            t.text = GetString(reader, "text");
+
+                            t.textLocalized = AADB.GetTranslationByID(t.id, "quest_context_texts", "text", t.text);
+
+                            AADB.DB_Quest_Context_Texts.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+
+                    }
+                }
+
+
+
             }
 
         }
@@ -2430,6 +2492,17 @@ namespace AAEmu.DBViewer
                     rt.SelectionColor = resetColor;
                     restText = restText.Substring(nextEndBracket + 1);
                 }
+                else if (restText.StartsWith("@DOODAD_NAME(") && (nextEndBracket > 13))
+                {
+                    rt.SelectionColor = Color.Yellow;
+                    var valueText = restText.Substring(13, nextEndBracket - 13);
+                    if (long.TryParse(valueText, out var value) && (AADB.DB_Doodad_Almighties.TryGetValue(value, out var doodad)))
+                        rt.AppendText(doodad.nameLocalized);
+                    else
+                        rt.AppendText("@DOODAD_NAME(" + valueText + ")");
+                    rt.SelectionColor = resetColor;
+                    restText = restText.Substring(nextEndBracket + 1);
+                }
                 else if (restText.StartsWith("@NPC_NAME(") && (nextEndBracket > 10))
                 {
                     rt.SelectionColor = Color.Yellow;
@@ -3193,37 +3266,12 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private void ShowDBQuestComponent(long quest_component_id)
-        {
-            if (!AADB.DB_Quest_Components.TryGetValue(quest_component_id, out var c))
-            {
-                //dgvQuestActs.Rows.Clear();
-                return;
-            }
-            var acts = from a in AADB.DB_Quest_Acts
-                       where a.Value.quest_component_id == c.id
-                       select a.Value;
-
-            //dgvQuestActs.Rows.Clear();
-            foreach (var a in acts)
-            {
-                /*
-                int line = dgvQuestActs.Rows.Add();
-                var row = dgvQuestActs.Rows[line];
-
-                row.Cells[0].Value = a.id.ToString();
-                row.Cells[1].Value = a.act_detail_id.ToString();
-                row.Cells[2].Value = a.act_detail_type.ToString();
-                */
-            }
-        }
-
-
         private void ShowDBQuest(long quest_id)
         {
             tvQuestWorkflow.Nodes.Clear();
             if (!AADB.DB_Quest_Contexts.TryGetValue(quest_id, out var q))
             {
+                rtQuestText.Text = "";
                 btnQuestFindRelatedOnMap.Tag = 0;
                 return;
             }
@@ -3259,10 +3307,20 @@ namespace AAEmu.DBViewer
 
             //dgvQuestComponents.Rows.Clear();
             var comps = from c in AADB.DB_Quest_Components
-                        where c.Value.quest_context_id == quest_id
+                        where c.Value.quest_context_id == q.id
                         orderby c.Value.component_kind_id
                         select c.Value;
-            var first = true;
+
+            var questText = "";
+
+            var qTextQuery = from qt in AADB.DB_Quest_Context_Texts
+                        where qt.Value.quest_context_id == q.id
+                        orderby qt.Value.quest_context_text_kind_id
+                        select qt.Value.textLocalized;
+
+            foreach (var t in qTextQuery)
+                questText += t + "\r\r";
+
             foreach (var c in comps)
             {
                 // Component Info
@@ -3279,7 +3337,26 @@ namespace AAEmu.DBViewer
                     case 8: kindName = "Reward"; break;
                 }
                 kindName += " ( " + c.component_kind_id + " )";
+                
+                // Quest Component header
                 var componentNode = rootNode.Nodes.Add("Component " + c.id.ToString() + " - " + kindName);
+                questText += "|nc;" + kindName + "|r\r\r";
+
+                // Quest description text
+                var compTextRaw = from ct in AADB.DB_Quest_Component_Texts
+                                  where ct.Value.quest_component_id == c.id
+                                  // && ct.Value.quest_component_text_kind_id == c.component_kind_id
+                                  select ct.Value;
+                                   
+                if (compTextRaw != null)
+                {
+                    foreach (var ct in compTextRaw)
+                    {
+                        var compText = AADB.GetTranslationByID(ct.id, "quest_component_texts", "text", ct.text);
+                        questText += compText + "\r\r";
+                    }
+                }
+
                 componentNode.ForeColor = Color.Yellow;
                 var componentInfoNode = componentNode.Nodes.Add("Properties");
                 componentInfoNode.ForeColor = Color.Yellow;
@@ -3303,7 +3380,6 @@ namespace AAEmu.DBViewer
                            where a.Value.quest_component_id == c.id
                            select a.Value;
 
-                //dgvQuestActs.Rows.Clear();
                 foreach (var a in acts)
                 {
                     var actsNode = componentNode.Nodes.Add("Act " + a.id + " - " + a.act_detail_type + " ( " + a.act_detail_id + " )");
@@ -3314,47 +3390,25 @@ namespace AAEmu.DBViewer
                     {
                         foreach (var field in fields)
                         {
+                            if (field.Key == "quest_act_obj_alias_id")
+                            {
+                                if (long.TryParse(field.Value, out var aliasId) && (aliasId > 0))
+                                {
+                                    // no idea why this is the name field instead of text
+                                    var objAlias = AADB.GetTranslationByID(aliasId, "quest_act_obj_aliases", "name", field.Value);
+                                    questText += "|ni;QuestActObjAlias(" + field.Value + ")|r \r" + objAlias + "\r\r\r";
+                                }
+                            }
                             if (!cbQuestWorkflowHideEmpty.Checked || !IsCustomPropertyEmpty(field.Value))
                                 actsNode.Nodes.Add(AddCustomPropertyInfo(field.Key, field.Value));
                         }
                     }
                     actsNode.Expand();
-                    /*
-                    int line = dgvQuestActs.Rows.Add();
-                    var row = dgvQuestActs.Rows[line];
-
-                    row.Cells[0].Value = a.id.ToString();
-                    row.Cells[1].Value = a.act_detail_id.ToString();
-                    row.Cells[2].Value = a.act_detail_type.ToString();
-                    */
-                }
-                /*
-                int line = dgvQuestComponents.Rows.Add();
-                var row = dgvQuestComponents.Rows[line];
-
-                row.Cells[0].Value = c.id.ToString();
-                row.Cells[1].Value = c.component_kind_id.ToString();
-                row.Cells[2].Value = c.next_component.ToString();
-                if (AADB.DB_NPCs.TryGetValue(c.npc_id, out var npc))
-                    row.Cells[3].Value = npc.nameLocalized + " (" + c.npc_id + ")";
-                else
-                    row.Cells[3].Value = c.npc_id.ToString();
-                if (AADB.DB_Skills.TryGetValue(c.skill_id, out var skill))
-                    row.Cells[4].Value = skill.nameLocalized + " (" + c.skill_id.ToString() + ")";
-                else
-                    row.Cells[4].Value = c.skill_id.ToString();
-                row.Cells[5].Value = c.skill_self.ToString();
-                row.Cells[6].Value = c.npc_spawner_id.ToString();
-                row.Cells[7].Value = c.buff_id.ToString();
-                */
-                if (first)
-                {
-                    ShowDBQuestComponent(c.id);
-                    first = false;
                 }
             }
             rootNode.Expand();
             tvQuestWorkflow.SelectedNode = rootNode;
+            FormattedTextToRichtEdit(questText, rtQuestText);
             ShowSelectedData("quest_contexts", "id = " + q.id.ToString(), "id ASC");
         }
 

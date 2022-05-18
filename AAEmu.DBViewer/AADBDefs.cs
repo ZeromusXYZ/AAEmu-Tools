@@ -462,6 +462,17 @@ namespace AAEmu.DBDefs
         public string SearchString = string.Empty;
     }
 
+    class GameQuestContextText
+    {
+        // TABLE quest_context_texts
+        public long id = 0;
+        public long quest_context_text_kind_id = 0;
+        public long quest_context_id = 0;
+        public string text = string.Empty;
+
+        public string textLocalized = string.Empty;
+    }
+
     class GameQuestCategory
     {
         // TABLE quest_category
@@ -503,6 +514,17 @@ namespace AAEmu.DBDefs
         public long summary_voice_id = 0;
         public bool hide_quest_marker = false;
         public long buff_id = 0;
+    }
+
+    class GameQuestComponentText
+    {
+        // TABLE quest_component_texts
+        public long id = 0;
+        public long quest_component_id = 0;
+        public long quest_component_text_kind_id = 0;
+        public string text = string.Empty;
+
+        public string textLocalized = string.Empty;
     }
 
     public class GameTags
@@ -718,8 +740,10 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameDoodadPhaseFunc> DB_Doodad_Phase_Funcs = new Dictionary<long, GameDoodadPhaseFunc>();
         static public Dictionary<long, GameQuestCategory> DB_Quest_Categories = new Dictionary<long, GameQuestCategory>();
         static public Dictionary<long, GameQuestContexts> DB_Quest_Contexts = new Dictionary<long, GameQuestContexts>();
+        static public Dictionary<long, GameQuestContextText> DB_Quest_Context_Texts = new Dictionary<long, GameQuestContextText>();
         static public Dictionary<long, GameQuestAct> DB_Quest_Acts = new Dictionary<long, GameQuestAct>();
         static public Dictionary<long, GameQuestComponent> DB_Quest_Components = new Dictionary<long, GameQuestComponent>();
+        static public Dictionary<long, GameQuestComponentText> DB_Quest_Component_Texts = new Dictionary<long, GameQuestComponentText>();
         static public Dictionary<long, GameTags> DB_Tags = new Dictionary<long, GameTags>();
         static public Dictionary<long, GameTaggedValues> DB_Tagged_Buffs = new Dictionary<long, GameTaggedValues>();
         static public Dictionary<long, GameTaggedValues> DB_Tagged_Items = new Dictionary<long, GameTaggedValues>();

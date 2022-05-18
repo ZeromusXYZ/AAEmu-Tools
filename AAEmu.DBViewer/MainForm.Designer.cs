@@ -497,6 +497,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.tvQuestWorkflow = new System.Windows.Forms.TreeView();
             this.cbQuestWorkflowHideEmpty = new System.Windows.Forms.CheckBox();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.rtQuestText = new System.Windows.Forms.RichTextBox();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -556,6 +558,7 @@
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.groupBox12.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbTableNames
@@ -3949,8 +3952,7 @@
             // 
             this.dgvQuests.AllowUserToAddRows = false;
             this.dgvQuests.AllowUserToDeleteRows = false;
-            this.dgvQuests.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgvQuests.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvQuests.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvQuests.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
@@ -3966,7 +3968,7 @@
             this.dgvQuests.ReadOnly = true;
             this.dgvQuests.RowHeadersVisible = false;
             this.dgvQuests.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvQuests.Size = new System.Drawing.Size(324, 436);
+            this.dgvQuests.Size = new System.Drawing.Size(324, 176);
             this.dgvQuests.TabIndex = 8;
             this.dgvQuests.SelectionChanged += new System.EventHandler(this.dgvQuests_SelectionChanged);
             // 
@@ -5464,6 +5466,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.groupBox12);
             this.splitContainer1.Panel1.Controls.Add(this.dgvQuests);
             // 
             // splitContainer1.Panel2
@@ -5507,6 +5510,30 @@
             this.cbQuestWorkflowHideEmpty.TabIndex = 1;
             this.cbQuestWorkflowHideEmpty.Text = "Hide empty values";
             this.cbQuestWorkflowHideEmpty.UseVisualStyleBackColor = true;
+            // 
+            // groupBox12
+            // 
+            this.groupBox12.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox12.Controls.Add(this.rtQuestText);
+            this.groupBox12.Location = new System.Drawing.Point(3, 187);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(324, 256);
+            this.groupBox12.TabIndex = 9;
+            this.groupBox12.TabStop = false;
+            this.groupBox12.Text = "Quest Text";
+            // 
+            // rtQuestText
+            // 
+            this.rtQuestText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.rtQuestText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtQuestText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
+            this.rtQuestText.Location = new System.Drawing.Point(3, 16);
+            this.rtQuestText.Name = "rtQuestText";
+            this.rtQuestText.Size = new System.Drawing.Size(318, 237);
+            this.rtQuestText.TabIndex = 11;
+            this.rtQuestText.Text = "";
             // 
             // MainForm
             // 
@@ -5610,6 +5637,7 @@
             this.splitContainer1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.groupBox12.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -6081,6 +6109,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TreeView tvQuestWorkflow;
         private System.Windows.Forms.CheckBox cbQuestWorkflowHideEmpty;
+        private System.Windows.Forms.GroupBox groupBox12;
+        private System.Windows.Forms.RichTextBox rtQuestText;
     }
 }
 
