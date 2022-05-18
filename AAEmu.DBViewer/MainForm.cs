@@ -21,6 +21,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms.VisualStyles;
 using Newtonsoft.Json;
 using AAEmu.DBViewer.JsonData;
+using AAEmu.DBViewer.utils;
 
 namespace AAEmu.DBViewer
 {
@@ -3296,11 +3297,13 @@ namespace AAEmu.DBViewer
                             contextNode.Nodes.Add("Category: " + questCat.nameLocalized + " ( " + questCat.id + " )");
                         }
                         else
-                            contextNode.Nodes.Add(AddCustomPropertyInfo(contextField.Key, contextField.Value));
+                            AddCustomPropertyNode(contextField.Key, contextField.Value, false, contextNode);
+                            //contextNode.Nodes.Add(AddCustomPropertyInfo(contextField.Key, contextField.Value));
                     }
                     else
-                    if (!cbQuestWorkflowHideEmpty.Checked || !IsCustomPropertyEmpty(contextField.Value))
-                        contextNode.Nodes.Add(AddCustomPropertyInfo(contextField.Key, contextField.Value));
+                        AddCustomPropertyNode(contextField.Key, contextField.Value, cbQuestWorkflowHideEmpty.Checked, contextNode);
+                    //if (!cbQuestWorkflowHideEmpty.Checked || !IsCustomPropertyEmpty(contextField.Value))
+                    //    contextNode.Nodes.Add(AddCustomPropertyInfo(contextField.Key, contextField.Value));
                 }
             }
             contextNode.Expand();
@@ -3369,8 +3372,9 @@ namespace AAEmu.DBViewer
                             continue;
                         if (field.Key == "component_kind_id") // skip redundant info
                             continue;
-                        if (!cbQuestWorkflowHideEmpty.Checked || !IsCustomPropertyEmpty(field.Value))
-                            componentInfoNode.Nodes.Add(AddCustomPropertyInfo(field.Key, field.Value));
+                        //if (!cbQuestWorkflowHideEmpty.Checked || !IsCustomPropertyEmpty(field.Value))
+                        //    componentInfoNode.Nodes.Add(AddCustomPropertyInfo(field.Key, field.Value));
+                        AddCustomPropertyNode(field.Key, field.Value, cbQuestWorkflowHideEmpty.Checked, componentInfoNode);
                     }
                 }
                 componentInfoNode.Expand();
@@ -3399,8 +3403,9 @@ namespace AAEmu.DBViewer
                                     questText += "|ni;QuestActObjAlias(" + field.Value + ")|r \r" + objAlias + "\r\r\r";
                                 }
                             }
-                            if (!cbQuestWorkflowHideEmpty.Checked || !IsCustomPropertyEmpty(field.Value))
-                                actsNode.Nodes.Add(AddCustomPropertyInfo(field.Key, field.Value));
+                            //if (!cbQuestWorkflowHideEmpty.Checked || !IsCustomPropertyEmpty(field.Value))
+                            //    actsNode.Nodes.Add(AddCustomPropertyInfo(field.Key, field.Value));
+                            AddCustomPropertyNode(field.Key, field.Value, cbQuestWorkflowHideEmpty.Checked, actsNode);
                         }
                     }
                     actsNode.Expand();
@@ -4546,6 +4551,9 @@ namespace AAEmu.DBViewer
             if (key.EndsWith("item_id") && (AADB.DB_Items.TryGetValue(val, out var item)))
                 res += " - " + item.nameLocalized;
             else
+            if (key.EndsWith("doodad_id") && (AADB.DB_Doodad_Almighties.TryGetValue(val, out var doodad)))
+                res += " - " + doodad.nameLocalized;
+            else
             if (key.EndsWith("npc_id") && (AADB.DB_NPCs.TryGetValue(val, out var npc)))
                 res += " - " + npc.nameLocalized;
             else
@@ -4564,6 +4572,94 @@ namespace AAEmu.DBViewer
         private bool IsCustomPropertyEmpty(string value)
         {
             return (string.IsNullOrWhiteSpace(value) || (value == "0") || (value == "<null>") || (value == "f"));
+        }
+
+        private TreeNode AddCustomPropertyNode(string key, string value, bool hideNull, TreeNode rootNode)
+        {
+            if (hideNull && IsCustomPropertyEmpty(value))
+                return null;
+
+            var nodeText = key + ": " + value;
+            if (!long.TryParse(value, out var val))
+            {
+                return rootNode.Nodes.Add(nodeText);
+            }
+
+            var res = new TreeNodeWithInfo();
+
+            if (key.EndsWith("skill_id") && (AADB.DB_Skills.TryGetValue(val, out var skill)))
+            {
+                res.targetTabPage = tpSkills;
+                res.targetTextBox = tSkillSearch;
+                res.targetSearchText = skill.id.ToString();
+                res.targetSearchButton = btnSkillSearch;
+                res.ForeColor = Color.WhiteSmoke;
+                nodeText += " - " + skill.nameLocalized;
+            }
+            else
+            if (key.EndsWith("item_id") && (AADB.DB_Items.TryGetValue(val, out var item)))
+            {
+                res.targetTabPage = tpItems;
+                res.targetTextBox = tItemSearch;
+                res.targetSearchText = item.id.ToString();
+                res.targetSearchButton = btnItemSearch;
+                res.ForeColor = Color.WhiteSmoke;
+                nodeText += " - " + item.nameLocalized;
+            }
+            else
+            if (key.EndsWith("doodad_id") && (AADB.DB_Doodad_Almighties.TryGetValue(val, out var doodad)))
+            {
+                res.targetTabPage = tpDoodads;
+                res.targetTextBox = tSearchDoodads;
+                res.targetSearchText = doodad.id.ToString();
+                res.targetSearchButton = btnSearchDoodads;
+                res.ForeColor = Color.WhiteSmoke;
+                nodeText += " - " + doodad.nameLocalized;
+            }
+            else
+            if (key.EndsWith("npc_id") && (AADB.DB_NPCs.TryGetValue(val, out var npc)))
+            {
+                res.targetTabPage = tpNPCs;
+                res.targetTextBox = tSearchNPC;
+                res.targetSearchText = npc.id.ToString();
+                res.targetSearchButton = btnSearchNPC;
+                res.ForeColor = Color.WhiteSmoke;
+                nodeText += " - " + npc.nameLocalized;
+            }
+            else
+            if (key.EndsWith("buff_id") && (AADB.DB_Buffs.TryGetValue(val, out var buff)))
+            {
+                res.targetTabPage = tpBuffs;
+                res.targetTextBox = tSearchBuffs;
+                res.targetSearchText = buff.id.ToString();
+                res.targetSearchButton = btnSearchBuffs;
+                res.ForeColor = Color.WhiteSmoke;
+                nodeText += " - " + buff.nameLocalized;
+            }
+            else
+            if (key.EndsWith("zone_id") && (AADB.DB_Zones.TryGetValue(val, out var zone)))
+            {
+                res.targetTabPage = tpZones;
+                res.targetTextBox = tZonesSearch;
+                res.targetSearchText = zone.id.ToString();
+                res.targetSearchButton = btnSearchZones;
+                res.ForeColor = Color.WhiteSmoke;
+                nodeText += " - " + zone.display_textLocalized;
+            }
+            else
+            if (key.EndsWith("item_category_id") && (AADB.DB_ItemsCategories.TryGetValue(val, out var itemCategory)))
+            {
+                res.targetTabPage = tpItems;
+                res.targetTextBox = tItemSearch;
+                res.targetSearchText = itemCategory.id.ToString();
+                res.targetSearchButton = btnItemSearch;
+                res.ForeColor = Color.WhiteSmoke;
+                nodeText += " - " + itemCategory.nameLocalized;
+            }
+            res.Text = nodeText;
+
+            rootNode.Nodes.Add(res);
+            return res;
         }
 
         private void ShowDBDoodad(long id)
@@ -4678,6 +4774,8 @@ namespace AAEmu.DBViewer
                                 {
                                     foreach (var fl in fields)
                                     {
+                                        AddCustomPropertyNode(fl.Key, fl.Value, cbDoodadWorkflowHideEmpty.Checked, phaseNode);
+                                        /*
                                         if (cbDoodadWorkflowHideEmpty.Checked && (string.IsNullOrWhiteSpace(fl.Value) || (fl.Value == "0") || (fl.Value == "<null>") || (fl.Value == "f")))
                                         {
                                             // ignore empty values
@@ -4686,6 +4784,7 @@ namespace AAEmu.DBViewer
                                         {
                                             phaseNode.Nodes.Add(AddCustomPropertyInfo(fl.Key, fl.Value));
                                         }
+                                        */
                                     }
                                 }
 
@@ -4705,6 +4804,8 @@ namespace AAEmu.DBViewer
                                 if ((fl.Key == "actual_func_type") || (fl.Key == "actual_func_id"))
                                     continue;
 
+                                AddCustomPropertyNode(fl.Key, fl.Value, cbDoodadWorkflowHideEmpty.Checked, funcsNode);
+                                /*
                                 if (cbDoodadWorkflowHideEmpty.Checked && IsCustomPropertyEmpty(fl.Value))
                                 {
                                     // ignore empty values
@@ -4713,6 +4814,7 @@ namespace AAEmu.DBViewer
                                 {
                                     funcsNode.Nodes.Add(AddCustomPropertyInfo(fl.Key, fl.Value));
                                 }
+                                */
                             }
 
                             funcsNode.Nodes.Add("<=== details ===>").ForeColor = Color.Gray;
@@ -4720,6 +4822,8 @@ namespace AAEmu.DBViewer
                             {
                                 foreach (var fl in fields)
                                 {
+                                    AddCustomPropertyNode(fl.Key, fl.Value, cbDoodadWorkflowHideEmpty.Checked, funcsNode);
+                                    /*
                                     if (cbDoodadWorkflowHideEmpty.Checked && IsCustomPropertyEmpty(fl.Value))
                                     {
                                         // ignore empty values
@@ -4728,6 +4832,7 @@ namespace AAEmu.DBViewer
                                     {
                                         funcsNode.Nodes.Add(AddCustomPropertyInfo(fl.Key, fl.Value));
                                     }
+                                    */
                                 }
                             }
 
@@ -7248,6 +7353,32 @@ namespace AAEmu.DBViewer
                 else
                     tItemSearch.Text = string.Empty;
             }
+        }
+
+        private void ProcessNodeInfoDoubleClick(TreeNode node)
+        {
+            CopyToClipBoard(node.Text);
+            if (node is TreeNodeWithInfo info)
+            {
+                if (info.targetTabPage != null)
+                    tcViewer.SelectedTab = info.targetTabPage;
+                if (info.targetTextBox != null)
+                    info.targetTextBox.Text = info.targetSearchText;
+                if (info.targetSearchButton != null)
+                    info.targetSearchButton.PerformClick();
+            }
+        }
+
+        private void tvQuestWorkflow_DoubleClick(object sender, EventArgs e)
+        {
+            if ((sender is TreeView tv) && (tv.SelectedNode != null))
+                ProcessNodeInfoDoubleClick(tv.SelectedNode);
+        }
+
+        private void tvDoodadDetails_DoubleClick(object sender, EventArgs e)
+        {
+            if ((sender is TreeView tv) && (tv.SelectedNode != null))
+                ProcessNodeInfoDoubleClick(tv.SelectedNode);
         }
     }
 }

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.lbTableNames = new System.Windows.Forms.ListBox();
             this.tcViewer = new System.Windows.Forms.TabControl();
@@ -344,16 +344,22 @@
             this.Column21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column34 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpQuests = new System.Windows.Forms.TabPage();
-            this.btnQuestFindRelatedOnMap = new System.Windows.Forms.Button();
-            this.btnQuestsSearch = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.label89 = new System.Windows.Forms.Label();
             this.tQuestSearch = new System.Windows.Forms.TextBox();
+            this.btnQuestsSearch = new System.Windows.Forms.Button();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.rtQuestText = new System.Windows.Forms.RichTextBox();
             this.dgvQuests = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column35 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column36 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnQuestFindRelatedOnMap = new System.Windows.Forms.Button();
+            this.cbQuestWorkflowHideEmpty = new System.Windows.Forms.CheckBox();
+            this.tvQuestWorkflow = new System.Windows.Forms.TreeView();
             this.tpSkills = new System.Windows.Forms.TabPage();
             this.tcSkillInfo = new System.Windows.Forms.TabControl();
             this.tpSkillInfo = new System.Windows.Forms.TabPage();
@@ -493,12 +499,6 @@
             this.ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             this.ofdJsonData = new System.Windows.Forms.OpenFileDialog();
             this.ilIcons = new System.Windows.Forms.ImageList(this.components);
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.tvQuestWorkflow = new System.Windows.Forms.TreeView();
-            this.cbQuestWorkflowHideEmpty = new System.Windows.Forms.CheckBox();
-            this.groupBox12 = new System.Windows.Forms.GroupBox();
-            this.rtQuestText = new System.Windows.Forms.RichTextBox();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -536,6 +536,12 @@
             this.groupBox13.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNPCs)).BeginInit();
             this.tpQuests.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.groupBox12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvQuests)).BeginInit();
             this.tpSkills.SuspendLayout();
             this.tcSkillInfo.SuspendLayout();
@@ -553,12 +559,6 @@
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).BeginInit();
             this.tpTrade.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.groupBox12.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbTableNames
@@ -2573,6 +2573,7 @@
             this.tvDoodadDetails.Name = "tvDoodadDetails";
             this.tvDoodadDetails.Size = new System.Drawing.Size(322, 420);
             this.tvDoodadDetails.TabIndex = 0;
+            this.tvDoodadDetails.DoubleClick += new System.EventHandler(this.tvDoodadDetails_DoubleClick);
             // 
             // btnSearchDoodads
             // 
@@ -3904,29 +3905,16 @@
             this.tpQuests.Text = "Quests";
             this.tpQuests.UseVisualStyleBackColor = true;
             // 
-            // btnQuestFindRelatedOnMap
+            // panel1
             // 
-            this.btnQuestFindRelatedOnMap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            this.btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(383, 420);
-            this.btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
-            this.btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(198, 22);
-            this.btnQuestFindRelatedOnMap.TabIndex = 27;
-            this.btnQuestFindRelatedOnMap.Text = "Show related map points";
-            this.btnQuestFindRelatedOnMap.UseVisualStyleBackColor = true;
-            this.btnQuestFindRelatedOnMap.Click += new System.EventHandler(this.btnQuestFindRelatedOnMap_Click);
-            // 
-            // btnQuestsSearch
-            // 
-            this.btnQuestsSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnQuestsSearch.Enabled = false;
-            this.btnQuestsSearch.Location = new System.Drawing.Point(836, 4);
-            this.btnQuestsSearch.Name = "btnQuestsSearch";
-            this.btnQuestsSearch.Size = new System.Drawing.Size(79, 23);
-            this.btnQuestsSearch.TabIndex = 11;
-            this.btnQuestsSearch.Text = "Search";
-            this.btnQuestsSearch.UseVisualStyleBackColor = true;
-            this.btnQuestsSearch.Click += new System.EventHandler(this.btnQuestsSearch_Click);
+            this.panel1.Controls.Add(this.label89);
+            this.panel1.Controls.Add(this.tQuestSearch);
+            this.panel1.Controls.Add(this.btnQuestsSearch);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(920, 32);
+            this.panel1.TabIndex = 14;
             // 
             // label89
             // 
@@ -3947,6 +3935,65 @@
             this.tQuestSearch.TabIndex = 9;
             this.tQuestSearch.TextChanged += new System.EventHandler(this.tQuestSearch_TextChanged);
             this.tQuestSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tQuestSearch_KeyDown);
+            // 
+            // btnQuestsSearch
+            // 
+            this.btnQuestsSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnQuestsSearch.Enabled = false;
+            this.btnQuestsSearch.Location = new System.Drawing.Point(836, 4);
+            this.btnQuestsSearch.Name = "btnQuestsSearch";
+            this.btnQuestsSearch.Size = new System.Drawing.Size(79, 23);
+            this.btnQuestsSearch.TabIndex = 11;
+            this.btnQuestsSearch.Text = "Search";
+            this.btnQuestsSearch.UseVisualStyleBackColor = true;
+            this.btnQuestsSearch.Click += new System.EventHandler(this.btnQuestsSearch_Click);
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.Location = new System.Drawing.Point(3, 36);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.groupBox12);
+            this.splitContainer1.Panel1.Controls.Add(this.dgvQuests);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.btnQuestFindRelatedOnMap);
+            this.splitContainer1.Panel2.Controls.Add(this.cbQuestWorkflowHideEmpty);
+            this.splitContainer1.Panel2.Controls.Add(this.tvQuestWorkflow);
+            this.splitContainer1.Size = new System.Drawing.Size(920, 446);
+            this.splitContainer1.SplitterDistance = 330;
+            this.splitContainer1.TabIndex = 13;
+            // 
+            // groupBox12
+            // 
+            this.groupBox12.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox12.Controls.Add(this.rtQuestText);
+            this.groupBox12.Location = new System.Drawing.Point(3, 187);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(324, 256);
+            this.groupBox12.TabIndex = 9;
+            this.groupBox12.TabStop = false;
+            this.groupBox12.Text = "Quest Text";
+            // 
+            // rtQuestText
+            // 
+            this.rtQuestText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.rtQuestText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtQuestText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
+            this.rtQuestText.Location = new System.Drawing.Point(3, 16);
+            this.rtQuestText.Name = "rtQuestText";
+            this.rtQuestText.Size = new System.Drawing.Size(318, 237);
+            this.rtQuestText.TabIndex = 11;
+            this.rtQuestText.Text = "";
             // 
             // dgvQuests
             // 
@@ -4006,6 +4053,41 @@
             this.Column36.Name = "Column36";
             this.Column36.ReadOnly = true;
             this.Column36.Width = 74;
+            // 
+            // btnQuestFindRelatedOnMap
+            // 
+            this.btnQuestFindRelatedOnMap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
+            this.btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(383, 420);
+            this.btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
+            this.btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(198, 22);
+            this.btnQuestFindRelatedOnMap.TabIndex = 27;
+            this.btnQuestFindRelatedOnMap.Text = "Show related map points";
+            this.btnQuestFindRelatedOnMap.UseVisualStyleBackColor = true;
+            this.btnQuestFindRelatedOnMap.Click += new System.EventHandler(this.btnQuestFindRelatedOnMap_Click);
+            // 
+            // cbQuestWorkflowHideEmpty
+            // 
+            this.cbQuestWorkflowHideEmpty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbQuestWorkflowHideEmpty.AutoSize = true;
+            this.cbQuestWorkflowHideEmpty.Checked = true;
+            this.cbQuestWorkflowHideEmpty.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbQuestWorkflowHideEmpty.Location = new System.Drawing.Point(2, 424);
+            this.cbQuestWorkflowHideEmpty.Name = "cbQuestWorkflowHideEmpty";
+            this.cbQuestWorkflowHideEmpty.Size = new System.Drawing.Size(113, 17);
+            this.cbQuestWorkflowHideEmpty.TabIndex = 1;
+            this.cbQuestWorkflowHideEmpty.Text = "Hide empty values";
+            this.cbQuestWorkflowHideEmpty.UseVisualStyleBackColor = true;
+            // 
+            // tvQuestWorkflow
+            // 
+            this.tvQuestWorkflow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.tvQuestWorkflow.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
+            this.tvQuestWorkflow.Location = new System.Drawing.Point(3, 5);
+            this.tvQuestWorkflow.Name = "tvQuestWorkflow";
+            this.tvQuestWorkflow.Size = new System.Drawing.Size(578, 413);
+            this.tvQuestWorkflow.TabIndex = 0;
+            this.tvQuestWorkflow.DoubleClick += new System.EventHandler(this.tvQuestWorkflow_DoubleClick);
             // 
             // tpSkills
             // 
@@ -4535,10 +4617,10 @@
             this.tvSkill.ItemHeight = 24;
             this.tvSkill.Location = new System.Drawing.Point(6, 6);
             this.tvSkill.Name = "tvSkill";
-            treeNode1.Name = "SkillNode";
-            treeNode1.Text = "Skill";
+            treeNode2.Name = "SkillNode";
+            treeNode2.Text = "Skill";
             this.tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            treeNode2});
             this.tvSkill.SelectedImageIndex = 0;
             this.tvSkill.Size = new System.Drawing.Size(341, 295);
             this.tvSkill.TabIndex = 0;
@@ -5455,86 +5537,6 @@
             this.ilIcons.Images.SetKeyName(2, "icon_exclamation_green.png");
             this.ilIcons.Images.SetKeyName(3, "icon_exclamation_blue.png");
             // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 36);
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.groupBox12);
-            this.splitContainer1.Panel1.Controls.Add(this.dgvQuests);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.btnQuestFindRelatedOnMap);
-            this.splitContainer1.Panel2.Controls.Add(this.cbQuestWorkflowHideEmpty);
-            this.splitContainer1.Panel2.Controls.Add(this.tvQuestWorkflow);
-            this.splitContainer1.Size = new System.Drawing.Size(920, 446);
-            this.splitContainer1.SplitterDistance = 330;
-            this.splitContainer1.TabIndex = 13;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.label89);
-            this.panel1.Controls.Add(this.tQuestSearch);
-            this.panel1.Controls.Add(this.btnQuestsSearch);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(920, 32);
-            this.panel1.TabIndex = 14;
-            // 
-            // tvQuestWorkflow
-            // 
-            this.tvQuestWorkflow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
-            this.tvQuestWorkflow.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
-            this.tvQuestWorkflow.Location = new System.Drawing.Point(3, 5);
-            this.tvQuestWorkflow.Name = "tvQuestWorkflow";
-            this.tvQuestWorkflow.Size = new System.Drawing.Size(578, 413);
-            this.tvQuestWorkflow.TabIndex = 0;
-            // 
-            // cbQuestWorkflowHideEmpty
-            // 
-            this.cbQuestWorkflowHideEmpty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cbQuestWorkflowHideEmpty.AutoSize = true;
-            this.cbQuestWorkflowHideEmpty.Checked = true;
-            this.cbQuestWorkflowHideEmpty.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbQuestWorkflowHideEmpty.Location = new System.Drawing.Point(2, 424);
-            this.cbQuestWorkflowHideEmpty.Name = "cbQuestWorkflowHideEmpty";
-            this.cbQuestWorkflowHideEmpty.Size = new System.Drawing.Size(113, 17);
-            this.cbQuestWorkflowHideEmpty.TabIndex = 1;
-            this.cbQuestWorkflowHideEmpty.Text = "Hide empty values";
-            this.cbQuestWorkflowHideEmpty.UseVisualStyleBackColor = true;
-            // 
-            // groupBox12
-            // 
-            this.groupBox12.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox12.Controls.Add(this.rtQuestText);
-            this.groupBox12.Location = new System.Drawing.Point(3, 187);
-            this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(324, 256);
-            this.groupBox12.TabIndex = 9;
-            this.groupBox12.TabStop = false;
-            this.groupBox12.Text = "Quest Text";
-            // 
-            // rtQuestText
-            // 
-            this.rtQuestText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
-            this.rtQuestText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rtQuestText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
-            this.rtQuestText.Location = new System.Drawing.Point(3, 16);
-            this.rtQuestText.Name = "rtQuestText";
-            this.rtQuestText.Size = new System.Drawing.Size(318, 237);
-            this.rtQuestText.TabIndex = 11;
-            this.rtQuestText.Text = "";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5604,6 +5606,14 @@
             this.groupBox13.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNPCs)).EndInit();
             this.tpQuests.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.groupBox12.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvQuests)).EndInit();
             this.tpSkills.ResumeLayout(false);
             this.tpSkills.PerformLayout();
@@ -5630,14 +5640,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).EndInit();
             this.tpTrade.ResumeLayout(false);
             this.tpTrade.PerformLayout();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.groupBox12.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

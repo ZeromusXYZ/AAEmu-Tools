@@ -124,6 +124,7 @@
     <Compile Include="SubStream.cs" />
     <Compile Include="utils\db\SQLite.cs" />
     <Compile Include="utils\db\SQLiteWrapperReader.cs" />
+    <Compile Include="utils\TreeNodeWithInfo.cs" />
     <EmbeddedResource Include="LoadingForm.resx">
       <DependentUpon>LoadingForm.cs</DependentUpon>
     </EmbeddedResource>
