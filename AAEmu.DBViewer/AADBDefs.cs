@@ -598,6 +598,14 @@ namespace AAEmu.DBDefs
         public string SearchString = string.Empty;
     }
 
+    public class GameBuffTrigger
+    {
+        public long id = 0;
+        public long buff_id = 0;
+        public long event_id = 0;
+        public long effect_id = 0;
+    }
+
     public class GameZoneGroupBannedTags
     {
         /*
@@ -790,6 +798,7 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameTaggedValues> DB_Tagged_Skills = new Dictionary<long, GameTaggedValues>();
         static public Dictionary<long, GameZoneGroupBannedTags> DB_Zone_Group_Banned_Tags = new Dictionary<long, GameZoneGroupBannedTags>();
         static public Dictionary<long, GameBuff> DB_Buffs = new Dictionary<long, GameBuff>();
+        static public Dictionary<long, GameBuffTrigger> DB_BuffTriggers = new Dictionary<long, GameBuffTrigger>();
         static public Dictionary<long, GameTransfers> DB_Transfers = new Dictionary<long, GameTransfers>();
         static public List<GameTransferPaths> DB_TransferPaths = new List<GameTransferPaths>();
         static public List<QuestSphereEntry> PAK_QuestSignSpheres = new List<QuestSphereEntry>();
