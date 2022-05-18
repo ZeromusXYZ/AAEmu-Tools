@@ -2951,32 +2951,7 @@ namespace AAEmu.DBViewer
                         effectsRoot.Tag = 0;
                     }
 
-                    var effectTypeText = "???";
-                    if (AADB.DB_Effects.TryGetValue(skillEffect.effect_id, out var effect))
-                    {
-                        effectTypeText = effect.actual_type + " ( " + effect.actual_id.ToString() + " )";
-                    }
-                    var skillEffectNode = effectsRoot.Nodes.Add(skill.id + " => " + effectTypeText);
-                    skillEffectNode.Tag = 0;
-
-                    if (effect != null)
-                    {
-                        var effectsTableName = FunctionTypeToTableName(effect.actual_type);
-                        var effectValuesList = GetCustomTableValues(effectsTableName, "id", effect.actual_id.ToString());
-                        foreach (var effectValues in effectValuesList)
-                            foreach (var effectValue in effectValues)
-                            {
-                                var thisNode = AddCustomPropertyNode(effectValue.Key, effectValue.Value, true, skillEffectNode);
-                                if ((effectValue.Key == "buff_id") && (long.TryParse(effectValue.Value, out var buffId)) && (AADB.DB_Buffs.TryGetValue(buffId, out var thisBuff)))
-                                {
-                                    var iconIndex = IconIDToLabel(thisBuff.icon_id, null);
-                                    thisNode.ImageIndex = iconIndex;
-                                    thisNode.SelectedImageIndex = iconIndex;
-                                }
-
-                            }
-                    }
-
+                    CreateEffectNode(skillEffect.effect_id, effectsRoot);
                 }
             }
 
@@ -2998,6 +2973,36 @@ namespace AAEmu.DBViewer
             }
             tvSkill.ExpandAll();
             tvSkill.SelectedNode = rootNode;
+        }
+
+        private void CreateEffectNode(long effect_id, TreeNode effectsRoot)
+        {
+            var effectTypeText = "???";
+            if (AADB.DB_Effects.TryGetValue(effect_id, out var effect))
+            {
+                effectTypeText = effect.actual_type + " ( " + effect.actual_id.ToString() + " )";
+            }
+
+            var skillEffectNode = effectsRoot.Nodes.Add(effectTypeText);
+            skillEffectNode.Tag = 0;
+
+            if (effect != null)
+            {
+                var effectsTableName = FunctionTypeToTableName(effect.actual_type);
+                var effectValuesList = GetCustomTableValues(effectsTableName, "id", effect.actual_id.ToString());
+                foreach (var effectValues in effectValuesList)
+                foreach (var effectValue in effectValues)
+                {
+                    var thisNode = AddCustomPropertyNode(effectValue.Key, effectValue.Value, true, skillEffectNode);
+                    if ((effectValue.Key == "buff_id") && (long.TryParse(effectValue.Value, out var buffId)) &&
+                        (AADB.DB_Buffs.TryGetValue(buffId, out var thisBuff)))
+                    {
+                        var iconIndex = IconIDToLabel(thisBuff.icon_id, null);
+                        thisNode.ImageIndex = iconIndex;
+                        thisNode.SelectedImageIndex = iconIndex;
+                    }
+                }
+            }
         }
 
         private void ShowDBSkill(long idx)
@@ -3693,8 +3698,9 @@ namespace AAEmu.DBViewer
                 {
                     if (AADB.DB_Effects.TryGetValue(trigger.effect_id, out var effect))
                     {
-                        var triggerNode = new TreeNode($"{trigger.id} - Effect {trigger.effect_id} ({effect.actual_type} {effect.actual_id})");
-                        groupingNode.Nodes.Add(triggerNode);
+                        // var triggerNode = new TreeNode($"{trigger.id} - Effect {trigger.effect_id} ({effect.actual_type} {effect.actual_id})");
+                        // groupingNode.Nodes.Add(triggerNode);
+                        CreateEffectNode(effect.id, groupingNode);
                     }
                 }
             }
