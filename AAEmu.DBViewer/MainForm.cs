@@ -3197,45 +3197,138 @@ namespace AAEmu.DBViewer
         {
             if (!AADB.DB_Quest_Components.TryGetValue(quest_component_id, out var c))
             {
-                dgvQuestActs.Rows.Clear();
+                //dgvQuestActs.Rows.Clear();
                 return;
             }
             var acts = from a in AADB.DB_Quest_Acts
                        where a.Value.quest_component_id == c.id
                        select a.Value;
 
-            dgvQuestActs.Rows.Clear();
+            //dgvQuestActs.Rows.Clear();
             foreach (var a in acts)
             {
+                /*
                 int line = dgvQuestActs.Rows.Add();
                 var row = dgvQuestActs.Rows[line];
 
                 row.Cells[0].Value = a.id.ToString();
                 row.Cells[1].Value = a.act_detail_id.ToString();
                 row.Cells[2].Value = a.act_detail_type.ToString();
+                */
             }
         }
 
 
         private void ShowDBQuest(long quest_id)
         {
-
+            tvQuestWorkflow.Nodes.Clear();
             if (!AADB.DB_Quest_Contexts.TryGetValue(quest_id, out var q))
             {
-                lQuestId.Text = "0";
-                dgvQuestComponents.Rows.Clear();
                 btnQuestFindRelatedOnMap.Tag = 0;
                 return;
             }
             btnQuestFindRelatedOnMap.Tag = quest_id;
-            lQuestId.Text = q.id.ToString();
-            dgvQuestComponents.Rows.Clear();
+            var rootNode = tvQuestWorkflow.Nodes.Add(q.nameLocalized + " ( " + q.id + " )");
+            rootNode.ForeColor = Color.White;
+
+            var contextNode = rootNode.Nodes.Add("Context");
+            contextNode.ForeColor = Color.White;
+            var contextFieldsList = GetCustomTableValues("quest_contexts", "id", q.id.ToString());
+            foreach(var contextFields in contextFieldsList)
+            {
+                foreach(var contextField in contextFields)
+                {
+                    if (contextField.Key == "translate") // we can ignore this one
+                        continue;
+                    else
+                    if (contextField.Key == "category_id") // special hanlding for this one, as we can't use it's general name to autogenrate the name
+                    {
+                        if (AADB.DB_Quest_Categories.TryGetValue(q.category_id, out var questCat))
+                        {
+                            contextNode.Nodes.Add("Category: " + questCat.nameLocalized + " ( " + questCat.id + " )");
+                        }
+                        else
+                            contextNode.Nodes.Add(AddCustomPropertyInfo(contextField.Key, contextField.Value));
+                    }
+                    else
+                    if (!cbQuestWorkflowHideEmpty.Checked || !IsCustomPropertyEmpty(contextField.Value))
+                        contextNode.Nodes.Add(AddCustomPropertyInfo(contextField.Key, contextField.Value));
+                }
+            }
+            contextNode.Expand();
+
+            //dgvQuestComponents.Rows.Clear();
             var comps = from c in AADB.DB_Quest_Components
                         where c.Value.quest_context_id == quest_id
+                        orderby c.Value.component_kind_id
                         select c.Value;
             var first = true;
             foreach (var c in comps)
             {
+                // Component Info
+                var kindName = "";
+                switch(c.component_kind_id)
+                {
+                    case 1: kindName = "None"; break;
+                    case 2: kindName = "Start";break;
+                    case 3: kindName = "Supply";break;
+                    case 4: kindName = "Progress"; break;
+                    case 5: kindName = "Fail"; break;
+                    case 6: kindName = "Ready"; break;
+                    case 7: kindName = "Drop"; break;
+                    case 8: kindName = "Reward"; break;
+                }
+                kindName += " ( " + c.component_kind_id + " )";
+                var componentNode = rootNode.Nodes.Add("Component " + c.id.ToString() + " - " + kindName);
+                componentNode.ForeColor = Color.Yellow;
+                var componentInfoNode = componentNode.Nodes.Add("Properties");
+                componentInfoNode.ForeColor = Color.Yellow;
+                var fieldsList = GetCustomTableValues("quest_components", "id", c.id.ToString());
+                foreach (var fields in fieldsList)
+                {
+                    foreach (var field in fields)
+                    {
+                        if (field.Key == "quest_context_id") // skip redundant info
+                            continue;
+                        if (field.Key == "component_kind_id") // skip redundant info
+                            continue;
+                        if (!cbQuestWorkflowHideEmpty.Checked || !IsCustomPropertyEmpty(field.Value))
+                            componentInfoNode.Nodes.Add(AddCustomPropertyInfo(field.Key, field.Value));
+                    }
+                }
+                componentInfoNode.Expand();
+
+                // Acts Info
+                var acts = from a in AADB.DB_Quest_Acts
+                           where a.Value.quest_component_id == c.id
+                           select a.Value;
+
+                //dgvQuestActs.Rows.Clear();
+                foreach (var a in acts)
+                {
+                    var actsNode = componentNode.Nodes.Add("Act " + a.id + " - " + a.act_detail_type + " ( " + a.act_detail_id + " )");
+                    actsNode.ForeColor = Color.LimeGreen;
+                    var actDetailTableName = FunctionTypeToTableName(a.act_detail_type);
+                    var actsFieldsList = GetCustomTableValues(actDetailTableName, "id", a.act_detail_id.ToString());
+                    foreach (var fields in actsFieldsList)
+                    {
+                        foreach (var field in fields)
+                        {
+                            if (!cbQuestWorkflowHideEmpty.Checked || !IsCustomPropertyEmpty(field.Value))
+                                actsNode.Nodes.Add(AddCustomPropertyInfo(field.Key, field.Value));
+                        }
+                    }
+                    actsNode.Expand();
+                    /*
+                    int line = dgvQuestActs.Rows.Add();
+                    var row = dgvQuestActs.Rows[line];
+
+                    row.Cells[0].Value = a.id.ToString();
+                    row.Cells[1].Value = a.act_detail_id.ToString();
+                    row.Cells[2].Value = a.act_detail_type.ToString();
+                    */
+                }
+                /*
                 int line = dgvQuestComponents.Rows.Add();
                 var row = dgvQuestComponents.Rows[line];
 
@@ -3253,12 +3346,15 @@ namespace AAEmu.DBViewer
                 row.Cells[5].Value = c.skill_self.ToString();
                 row.Cells[6].Value = c.npc_spawner_id.ToString();
                 row.Cells[7].Value = c.buff_id.ToString();
+                */
                 if (first)
                 {
                     ShowDBQuestComponent(c.id);
                     first = false;
                 }
             }
+            rootNode.Expand();
+            tvQuestWorkflow.SelectedNode = rootNode;
             ShowSelectedData("quest_contexts", "id = " + q.id.ToString(), "id ASC");
         }
 
@@ -3897,6 +3993,8 @@ namespace AAEmu.DBViewer
 
         private void LbTableNames_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (lbTableNames.SelectedItem == null)
+                return;
             var tablename = lbTableNames.SelectedItem.ToString();
             tSimpleSQL.Text = "SELECT * FROM " + tablename + " LIMIT 0, 50";
 
@@ -4382,7 +4480,7 @@ namespace AAEmu.DBViewer
             return res;
         }
 
-        private string AddDoodadPropertyInfo(string key, string value)
+        private string AddCustomPropertyInfo(string key, string value)
         {
             var res = key + ": " + value;
             if (!long.TryParse(value, out var val))
@@ -4390,14 +4488,28 @@ namespace AAEmu.DBViewer
 
             if (key.EndsWith("skill_id") && (AADB.DB_Skills.TryGetValue(val, out var skill)))
                 res += " - " + skill.nameLocalized;
-
+            else
             if (key.EndsWith("item_id") && (AADB.DB_Items.TryGetValue(val, out var item)))
                 res += " - " + item.nameLocalized;
-
+            else
+            if (key.EndsWith("npc_id") && (AADB.DB_NPCs.TryGetValue(val, out var npc)))
+                res += " - " + npc.nameLocalized;
+            else
+            if (key.EndsWith("buff_id") && (AADB.DB_Buffs.TryGetValue(val, out var buff)))
+                res += " - " + buff.nameLocalized;
+            else
+            if (key.EndsWith("zone_id") && (AADB.DB_Zones.TryGetValue(val, out var zone)))
+                res += " - " + zone.display_textLocalized;
+            else
             if (key.EndsWith("item_category_id") && (AADB.DB_ItemsCategories.TryGetValue(val, out var itemCategory)))
                 res += " - " + itemCategory.nameLocalized;
 
             return res;
+        }
+
+        private bool IsCustomPropertyEmpty(string value)
+        {
+            return (string.IsNullOrWhiteSpace(value) || (value == "0") || (value == "<null>") || (value == "f"));
         }
 
         private void ShowDBDoodad(long id)
@@ -4518,7 +4630,7 @@ namespace AAEmu.DBViewer
                                         }
                                         else
                                         {
-                                            phaseNode.Nodes.Add(AddDoodadPropertyInfo(fl.Key, fl.Value));
+                                            phaseNode.Nodes.Add(AddCustomPropertyInfo(fl.Key, fl.Value));
                                         }
                                     }
                                 }
@@ -4539,13 +4651,13 @@ namespace AAEmu.DBViewer
                                 if ((fl.Key == "actual_func_type") || (fl.Key == "actual_func_id"))
                                     continue;
 
-                                if (cbDoodadWorkflowHideEmpty.Checked && (string.IsNullOrWhiteSpace(fl.Value) || (fl.Value == "0") || (fl.Value == "<null>") || (fl.Value == "f")))
+                                if (cbDoodadWorkflowHideEmpty.Checked && IsCustomPropertyEmpty(fl.Value))
                                 {
                                     // ignore empty values
                                 }
                                 else
                                 {
-                                    funcsNode.Nodes.Add(AddDoodadPropertyInfo(fl.Key, fl.Value));
+                                    funcsNode.Nodes.Add(AddCustomPropertyInfo(fl.Key, fl.Value));
                                 }
                             }
 
@@ -4554,13 +4666,13 @@ namespace AAEmu.DBViewer
                             {
                                 foreach (var fl in fields)
                                 {
-                                    if (cbDoodadWorkflowHideEmpty.Checked && (string.IsNullOrWhiteSpace(fl.Value) || (fl.Value == "0") || (fl.Value == "<null>") || (fl.Value == "f")))
+                                    if (cbDoodadWorkflowHideEmpty.Checked && IsCustomPropertyEmpty(fl.Value))
                                     {
                                         // ignore empty values
                                     }
                                     else
                                     {
-                                        funcsNode.Nodes.Add(AddDoodadPropertyInfo(fl.Key, fl.Value));
+                                        funcsNode.Nodes.Add(AddCustomPropertyInfo(fl.Key, fl.Value));
                                     }
                                 }
                             }
@@ -5069,6 +5181,7 @@ namespace AAEmu.DBViewer
 
         private void dgvQuestComponents_SelectionChanged(object sender, EventArgs e)
         {
+            /*
             if (dgvQuestComponents.SelectedRows.Count <= 0)
                 return;
             var row = dgvQuestComponents.SelectedRows[0];
@@ -5082,6 +5195,7 @@ namespace AAEmu.DBViewer
             var cid = long.Parse(val.ToString());
             ShowDBQuestComponent(cid);
             ShowSelectedData("quest_components", "id = " + cid.ToString(), "id ASC");
+            */
         }
 
         private void tSearchLocalized_TextChanged(object sender, EventArgs e)
