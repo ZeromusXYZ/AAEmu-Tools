@@ -2607,9 +2607,9 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private void IconIDToLabel(long icon_id, Label iconImgLabel)
+        private int IconIDToLabel(long icon_id, Label iconImgLabel)
         {
-
+            var cachedImageIndex = -1;
             if (pak.isOpen)
             {
                 if (AADB.DB_Icons.TryGetValue(icon_id, out var iconname))
@@ -2621,11 +2621,14 @@ namespace AAEmu.DBViewer
                         try
                         {
                             // Is it cached already ?
-                            var cachedImageIndex = ilIcons.Images.IndexOfKey(icon_id.ToString());
+                            cachedImageIndex = ilIcons.Images.IndexOfKey(icon_id.ToString());
                             if (cachedImageIndex >= 0)
                             {
-                                iconImgLabel.Image = ilIcons.Images[cachedImageIndex];
-                                iconImgLabel.Text = "";
+                                if (iconImgLabel != null)
+                                {
+                                    iconImgLabel.Image = ilIcons.Images[cachedImageIndex];
+                                    iconImgLabel.Text = "";
+                                }
                             }
                             else
                             {
@@ -2634,39 +2637,51 @@ namespace AAEmu.DBViewer
                                 var fif = FREE_IMAGE_FORMAT.FIF_DDS;
                                 FIBITMAP fiBitmap = FreeImage.LoadFromStream(fStream, ref fif);
                                 var bmp = FreeImage.GetBitmap(fiBitmap);
-                                iconImgLabel.Image = bmp;
 
-                                iconImgLabel.Text = "";
+                                if (iconImgLabel != null)
+                                {
+                                    iconImgLabel.Image = bmp;
+                                    iconImgLabel.Text = "";
+                                }
+
                                 // If not loaded into image list yet, do it now
-                                ilIcons.Images.Add(icon_id.ToString(), iconImgLabel.Image);
-                                ilMiniIcons.Images.Add(icon_id.ToString(), iconImgLabel.Image);
+                                ilIcons.Images.Add(icon_id.ToString(), bmp);
+                                ilMiniIcons.Images.Add(icon_id.ToString(), bmp);
+                                cachedImageIndex = ilIcons.Images.IndexOfKey(icon_id.ToString());
                             }
                             // itemIcon.Text = "[" + iconname + "]";
                         }
                         catch
                         {
-                            iconImgLabel.Image = null;
-                            iconImgLabel.Text = "ERROR - " + iconname;
+                            if (iconImgLabel != null)
+                            {
+                                iconImgLabel.Image = null;
+                                iconImgLabel.Text = "ERROR - " + iconname;
+                            }
                         }
                     }
                     else
+                    if (iconImgLabel != null)
                     {
                         iconImgLabel.Image = null;
                         iconImgLabel.Text = "NOT FOUND - " + iconname + " ?";
                     }
                 }
                 else
+                if (iconImgLabel != null)
                 {
                     iconImgLabel.Image = null;
                     iconImgLabel.Text = icon_id.ToString() + "?";
                 }
             }
             else
+            if (iconImgLabel != null)
             {
                 iconImgLabel.Image = null;
                 iconImgLabel.Text = icon_id.ToString();
             }
 
+            return cachedImageIndex;
         }
 
         private string MSToString(long msTime, bool dontShowMS = false)
@@ -2925,7 +2940,16 @@ namespace AAEmu.DBViewer
                         var effectValuesList = GetCustomTableValues(effectsTableName, "id", effect.actual_id.ToString());
                         foreach (var effectValues in effectValuesList)
                             foreach (var effectValue in effectValues)
-                                AddCustomPropertyNode(effectValue.Key, effectValue.Value, true, skillEffectNode);
+                            {
+                                var thisNode = AddCustomPropertyNode(effectValue.Key, effectValue.Value, true, skillEffectNode);
+                                if ((effectValue.Key == "buff_id") && (long.TryParse(effectValue.Value, out var buffId)) && (AADB.DB_Buffs.TryGetValue(buffId, out var thisBuff)))
+                                {
+                                    var iconIndex = IconIDToLabel(thisBuff.icon_id, null);
+                                    thisNode.ImageIndex = iconIndex;
+                                    thisNode.SelectedImageIndex = iconIndex;
+                                }
+
+                            }
                     }
 
                 }
@@ -4758,6 +4782,11 @@ namespace AAEmu.DBViewer
                 res.targetSearchButton = btnItemSearch;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + itemCategory.nameLocalized;
+            }
+            else
+            if (key.EndsWith("tag_id") && (AADB.DB_Tags.TryGetValue(val, out var tagId)))
+            {
+                nodeText += " - " + tagId.nameLocalized ;
             }
             res.Text = nodeText;
 
