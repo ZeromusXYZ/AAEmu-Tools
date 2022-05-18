@@ -3691,8 +3691,11 @@ namespace AAEmu.DBViewer
 
                 foreach (var trigger in triggerGrouping.Value)
                 {
-                    var triggerNode = new TreeNode($"{trigger.id} - Effect {trigger.effect_id}");
-                    groupingNode.Nodes.Add(triggerNode);
+                    if (AADB.DB_Effects.TryGetValue(trigger.effect_id, out var effect))
+                    {
+                        var triggerNode = new TreeNode($"{trigger.id} - Effect {trigger.effect_id} ({effect.actual_type} {effect.actual_id})");
+                        groupingNode.Nodes.Add(triggerNode);
+                    }
                 }
             }
             
