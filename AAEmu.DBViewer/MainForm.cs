@@ -784,13 +784,16 @@ namespace AAEmu.DBViewer
 
         private void LoadSkills()
         {
-            string sql = "SELECT * FROM skills ORDER BY id ASC";
-
             List<string> columnNames = null;
             bool readWebDesc = false;
 
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+
             using (var connection = SQLite.CreateConnection())
             {
+                // Skills base
+                string sql = "SELECT * FROM skills ORDER BY id ASC";
                 using (var command = connection.CreateCommand())
                 {
                     AADB.DB_Skills.Clear();
@@ -799,8 +802,6 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        Application.UseWaitCursor = true;
-                        Cursor = Cursors.WaitCursor;
 
                         if (columnNames == null)
                         {
@@ -849,13 +850,77 @@ namespace AAEmu.DBViewer
                             AADB.DB_Skills.Add(t.id, t);
                         }
 
-                        Cursor = Cursors.Default;
-                        Application.UseWaitCursor = false;
+                    }
+                }
+
+                // Skill Effects
+                sql = "SELECT * FROM skill_effects ORDER BY id ASC";
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Skill_Effects.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        while (reader.Read())
+                        {
+                            var t = new GameSkillEffects();
+                            t.id = GetInt64(reader, "id");
+                            t.skill_id = GetInt64(reader, "skill_id");
+                            t.effect_id = GetInt64(reader, "effect_id");
+                            t.weight = GetInt64(reader, "weight");
+                            t.start_level = GetInt64(reader, "start_level");
+                            t.end_level = GetInt64(reader, "end_level");
+                            t.friendly = GetBool(reader, "friendly");
+                            t.non_friendly = GetBool(reader, "non_friendly");
+                            t.target_buff_tag_id = GetInt64(reader, "target_buff_tag_id");
+                            t.target_nobuff_tag_id = GetInt64(reader, "target_nobuff_tag_id");
+                            t.source_buff_tag_id = GetInt64(reader, "source_buff_tag_id");
+                            t.source_nobuff_tag_id = GetInt64(reader, "source_nobuff_tag_id");
+                            t.chance = GetInt64(reader, "chance");
+                            t.front = GetBool(reader, "front");
+                            t.back = GetBool(reader, "back");
+                            t.target_npc_tag_id = GetInt64(reader, "target_npc_tag_id");
+                            t.application_method_id = GetInt64(reader, "application_method_id");
+                            t.synergy_text = GetBool(reader, "synergy_text");
+                            t.consume_source_item = GetBool(reader, "consume_source_item");
+                            t.consume_item_id = GetInt64(reader, "consume_item_id");
+                            t.consume_item_count = GetInt64(reader, "consume_item_count");
+                            t.always_hit = GetBool(reader, "always_hit");
+                            t.item_set_id = GetInt64(reader, "item_set_id");
+                            t.interaction_success_hit = GetBool(reader, "interaction_success_hit");
+                            AADB.DB_Skill_Effects.Add(t.id, t);
+                        }
+
+                    }
+                }
+
+                // Effects
+                sql = "SELECT * FROM effects ORDER BY id ASC";
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Effects.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        while (reader.Read())
+                        {
+                            var t = new GameEffects();
+                            t.id = GetInt64(reader, "id");
+                            t.actual_id = GetInt64(reader, "actual_id");
+                            t.actual_type = GetString(reader, "actual_type");
+                            AADB.DB_Effects.Add(t.id, t);
+                        }
 
                     }
                 }
             }
 
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
         }
 
         private void LoadSkillReagents()
@@ -2829,6 +2894,44 @@ namespace AAEmu.DBViewer
             var rootNode = new TreeNode(skill.nameLocalized, imgId, imgId);
             rootNode.Tag = 0;
             tvSkill.Nodes.Add(rootNode);
+
+            var skillEffectsList = from se in AADB.DB_Skill_Effects
+                                   where se.Value.skill_id == skill.id
+                                   select se.Value ;
+
+            TreeNode effectsRoot = null;
+
+            if (skillEffectsList != null)
+            {
+                foreach (var skillEffect in skillEffectsList)
+                {
+                    if (effectsRoot == null)
+                    {
+                        effectsRoot = tvSkill.Nodes.Add("Effects");
+                        effectsRoot.Tag = 0;
+                    }
+
+                    var effectTypeText = "???";
+                    if (AADB.DB_Effects.TryGetValue(skillEffect.effect_id, out var effect))
+                    {
+                        effectTypeText = effect.actual_type + " ( " + effect.actual_id.ToString() + " )";
+                    }
+                    var skillEffectNode = effectsRoot.Nodes.Add(skill.id + " => " + effectTypeText);
+                    skillEffectNode.Tag = 0;
+
+                    if (effect != null)
+                    {
+                        var effectsTableName = FunctionTypeToTableName(effect.actual_type);
+                        var effectValuesList = GetCustomTableValues(effectsTableName, "id", effect.actual_id.ToString());
+                        foreach (var effectValues in effectValuesList)
+                            foreach (var effectValue in effectValues)
+                                AddCustomPropertyNode(effectValue.Key, effectValue.Value, true, skillEffectNode);
+                    }
+
+                }
+            }
+
+            
             if (AADB.DB_Plots.TryGetValue(skill.plot_id, out var plot))
             {
                 var firstPlotNode = new TreeNode(plot.id.ToString() + " - " + plot.name);
@@ -7231,7 +7334,7 @@ namespace AAEmu.DBViewer
             lPlotEventAoE.Text = "AoE: ?";
 
 
-            if (e.Node == null)
+            if ((e.Node == null) || (e.Node.Tag == null))
                 return;
             if (!AADB.DB_Plot_Events.TryGetValue(long.Parse(e.Node.Tag.ToString()), out var plotEvent))
                 return;
@@ -7378,6 +7481,13 @@ namespace AAEmu.DBViewer
         private void tvDoodadDetails_DoubleClick(object sender, EventArgs e)
         {
             if ((sender is TreeView tv) && (tv.SelectedNode != null))
+                ProcessNodeInfoDoubleClick(tv.SelectedNode);
+        }
+
+        private void tvSkill_DoubleClick(object sender, EventArgs e)
+        {
+            // In properties the node tag is used internally, so only allow this node double-click if it's not set
+            if ((sender is TreeView tv) && (tv.SelectedNode != null) && (tv.SelectedNode.Tag == null))
                 ProcessNodeInfoDoubleClick(tv.SelectedNode);
         }
     }

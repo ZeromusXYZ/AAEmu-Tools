@@ -112,6 +112,43 @@ namespace AAEmu.DBDefs
         public string SearchString = string.Empty;
     }
 
+    class GameSkillEffects
+    {
+        // Actual DB entries skill_effects
+        public long id = 0;
+        public long skill_id = 0;
+        public long effect_id = 0;
+        public long weight = 0;
+        public long start_level = 0;
+        public long end_level = 0;
+        public bool friendly = false;
+        public bool non_friendly = false;
+        public long target_buff_tag_id = 0;
+        public long target_nobuff_tag_id = 0;
+        public long source_buff_tag_id = 0;
+        public long source_nobuff_tag_id = 0;
+        public long chance = 0;
+        public bool front = false;
+        public bool back = false;
+        public long target_npc_tag_id = 0;
+        public long application_method_id = 0;
+        public bool synergy_text = false;
+        public bool consume_source_item = false;
+        public long consume_item_id = 0;
+        public long consume_item_count = 0;
+        public bool always_hit = false;
+        public long item_set_id = 0;
+        public bool interaction_success_hit = false;
+    }
+
+    class GameEffects
+    {
+        // Actual DB entries effects
+        public long id = 0;
+        public long actual_id = 0;
+        public string actual_type = "";
+    }
+
     class GameNPC
     {
         // Actual DB entries
@@ -723,7 +760,9 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GameItemCategories> DB_ItemsCategories = new Dictionary<long, GameItemCategories>();
         static public Dictionary<long, GameItem> DB_Items = new Dictionary<long, GameItem>();
         static public Dictionary<long, GameItemArmors> DB_Item_Armors = new Dictionary<long, GameItemArmors>();
+        static public Dictionary<long, GameEffects> DB_Effects = new Dictionary<long, GameEffects>();
         static public Dictionary<long, GameSkills> DB_Skills = new Dictionary<long, GameSkills>();
+        static public Dictionary<long, GameSkillEffects> DB_Skill_Effects = new Dictionary<long, GameSkillEffects>();
         static public Dictionary<long, GameNPC> DB_NPCs = new Dictionary<long, GameNPC>();
         static public Dictionary<long, string> DB_Icons = new Dictionary<long, string>();
         static public Dictionary<long, GameSkillItems> DB_Skill_Reagents = new Dictionary<long, GameSkillItems>();
