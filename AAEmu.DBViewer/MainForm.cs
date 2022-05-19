@@ -1915,9 +1915,13 @@ namespace AAEmu.DBViewer
         private void LoadBuffs()
         {
             string sql = "SELECT * FROM buffs ORDER BY id ASC";
+            string triggerSql = "SELECT * FROM buff_triggers ORDER BY id ASC";
 
             using (var connection = SQLite.CreateConnection())
             {
+                Application.UseWaitCursor = true;
+                Cursor = Cursors.WaitCursor;
+                
                 using (var command = connection.CreateCommand())
                 {
                     AADB.DB_Buffs.Clear();
@@ -1978,11 +1982,32 @@ namespace AAEmu.DBViewer
 
                             AADB.DB_Buffs.Add(t.id, t);
                         }
-
-                        Cursor = Cursors.Default;
-                        Application.UseWaitCursor = false;
                     }
                 }
+
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_BuffTriggers.Clear();
+                    command.CommandText = triggerSql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+
+                        while (reader.Read())
+                        {
+                            GameBuffTrigger t = new GameBuffTrigger();
+                            t.id = GetInt64(reader, "id");
+                            t.buff_id = GetInt64(reader, "buff_id");
+                            t.event_id = GetInt64(reader, "event_id");
+                            t.effect_id = GetInt64(reader, "effect_id");
+                            
+                            AADB.DB_BuffTriggers.Add(t.id, t);
+                        }
+                    }
+                }
+                
+                Cursor = Cursors.Default;
+                Application.UseWaitCursor = false;
             }
 
         }
@@ -2926,32 +2951,7 @@ namespace AAEmu.DBViewer
                         effectsRoot.Tag = 0;
                     }
 
-                    var effectTypeText = "???";
-                    if (AADB.DB_Effects.TryGetValue(skillEffect.effect_id, out var effect))
-                    {
-                        effectTypeText = effect.actual_type + " ( " + effect.actual_id.ToString() + " )";
-                    }
-                    var skillEffectNode = effectsRoot.Nodes.Add(skill.id + " => " + effectTypeText);
-                    skillEffectNode.Tag = 0;
-
-                    if (effect != null)
-                    {
-                        var effectsTableName = FunctionTypeToTableName(effect.actual_type);
-                        var effectValuesList = GetCustomTableValues(effectsTableName, "id", effect.actual_id.ToString());
-                        foreach (var effectValues in effectValuesList)
-                            foreach (var effectValue in effectValues)
-                            {
-                                var thisNode = AddCustomPropertyNode(effectValue.Key, effectValue.Value, true, skillEffectNode);
-                                if ((effectValue.Key == "buff_id") && (long.TryParse(effectValue.Value, out var buffId)) && (AADB.DB_Buffs.TryGetValue(buffId, out var thisBuff)))
-                                {
-                                    var iconIndex = IconIDToLabel(thisBuff.icon_id, null);
-                                    thisNode.ImageIndex = iconIndex;
-                                    thisNode.SelectedImageIndex = iconIndex;
-                                }
-
-                            }
-                    }
-
+                    CreateEffectNode(skillEffect.effect_id, effectsRoot);
                 }
             }
 
@@ -2973,6 +2973,36 @@ namespace AAEmu.DBViewer
             }
             tvSkill.ExpandAll();
             tvSkill.SelectedNode = rootNode;
+        }
+
+        private void CreateEffectNode(long effect_id, TreeNode effectsRoot)
+        {
+            var effectTypeText = "???";
+            if (AADB.DB_Effects.TryGetValue(effect_id, out var effect))
+            {
+                effectTypeText = effect.actual_type + " ( " + effect.actual_id.ToString() + " )";
+            }
+
+            var skillEffectNode = effectsRoot.Nodes.Add(effectTypeText);
+            skillEffectNode.Tag = 0;
+
+            if (effect != null)
+            {
+                var effectsTableName = FunctionTypeToTableName(effect.actual_type);
+                var effectValuesList = GetCustomTableValues(effectsTableName, "id", effect.actual_id.ToString());
+                foreach (var effectValues in effectValuesList)
+                foreach (var effectValue in effectValues)
+                {
+                    var thisNode = AddCustomPropertyNode(effectValue.Key, effectValue.Value, true, skillEffectNode);
+                    if ((effectValue.Key == "buff_id") && (long.TryParse(effectValue.Value, out var buffId)) &&
+                        (AADB.DB_Buffs.TryGetValue(buffId, out var thisBuff)))
+                    {
+                        var iconIndex = IconIDToLabel(thisBuff.icon_id, null);
+                        thisNode.ImageIndex = iconIndex;
+                        thisNode.SelectedImageIndex = iconIndex;
+                    }
+                }
+            }
         }
 
         private void ShowDBSkill(long idx)
@@ -3620,6 +3650,62 @@ namespace AAEmu.DBViewer
             }
             lBuffAddGMCommand.Text = "/addbuff " + lBuffId.Text;
             ShowSelectedData("buffs", "id = " + b.id.ToString(), "id ASC");
+            
+            ShowDBBuffTriggers(buff_id);
+        }
+
+        private void ShowDBBuffTriggers(long buff_id)
+        {
+            string EventTypeName(long id)
+            {
+                switch (id)
+                {
+                    case 1: return "Attack (1)";
+                    case 2: return "Attacked (2)";
+                    case 3: return "Damage (3)";
+                    case 4: return "Damaged (4)";
+                    case 5: return "Dispelled (5)";
+                    case 6: return "Timeout (6)";
+                    case 7: return "DamagedMelee (7)";
+                    case 8: return "DamagedRanged (8)";
+                    case 9: return "DamagedSpell (9)";
+                    case 10: return "DamagedSiege (10)";
+                    case 11: return "Landing (11)";
+                    case 12: return "Started (12)";
+                    case 13: return "RemoveOnMove (13)";
+                    case 14: return "ChannelingCancel (14)";
+                    case 15: return "RemoveOnDamage (15)";
+                    case 16: return "Death (16)";
+                    case 17: return "Unmount (17)";
+                    case 18: return "Kill (18)";
+                    case 19: return "DamagedCollision (19)";
+                    case 20: return "Immotality (20)";
+                    case 21: return "Time (21)";
+                    case 22: return "KillAny (22)";
+                    default: return id.ToString();
+                }
+            }
+            
+            tvBuffTriggers.Nodes.Clear();
+            var triggers = AADB.DB_BuffTriggers.Values.Where(bt => bt.buff_id == buff_id).GroupBy(bt => bt.event_id, bt => bt).ToDictionary(bt => bt.Key, bt => bt.ToList());
+
+            foreach (var triggerGrouping in triggers)
+            {
+                var groupingNode = new TreeNode($"{EventTypeName(triggerGrouping.Key)}");
+                tvBuffTriggers.Nodes.Add(groupingNode);
+
+                foreach (var trigger in triggerGrouping.Value)
+                {
+                    if (AADB.DB_Effects.TryGetValue(trigger.effect_id, out var effect))
+                    {
+                        // var triggerNode = new TreeNode($"{trigger.id} - Effect {trigger.effect_id} ({effect.actual_type} {effect.actual_id})");
+                        // groupingNode.Nodes.Add(triggerNode);
+                        CreateEffectNode(effect.id, groupingNode);
+                    }
+                }
+            }
+            
+            tvBuffTriggers.ExpandAll();
         }
 
 
