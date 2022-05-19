@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.lbTableNames = new System.Windows.Forms.ListBox();
             this.tcViewer = new System.Windows.Forms.TabControl();
@@ -1272,6 +1272,7 @@
             this.flpBuff.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.flpBuff.AutoScroll = true;
             this.flpBuff.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.flpBuff.Location = new System.Drawing.Point(6, 24);
             this.flpBuff.Name = "flpBuff";
@@ -4620,10 +4621,10 @@
             this.tvSkill.ItemHeight = 24;
             this.tvSkill.Location = new System.Drawing.Point(6, 6);
             this.tvSkill.Name = "tvSkill";
-            treeNode1.Name = "SkillNode";
-            treeNode1.Text = "Skill";
+            treeNode2.Name = "SkillNode";
+            treeNode2.Text = "Skill";
             this.tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            treeNode2});
             this.tvSkill.SelectedImageIndex = 0;
             this.tvSkill.Size = new System.Drawing.Size(341, 295);
             this.tvSkill.TabIndex = 0;
