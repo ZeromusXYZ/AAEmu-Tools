@@ -2995,14 +2995,8 @@ namespace AAEmu.DBViewer
                         var thisNode = AddCustomPropertyNode(effectValue.Key, effectValue.Value, hideEmptyProperties, skillEffectNode);
                         if (thisNode == null)
                             continue;
-                        if ((effectValue.Key == "buff_id") && (long.TryParse(effectValue.Value, out var buffId)) &&
-                            (AADB.DB_Buffs.TryGetValue(buffId, out var thisBuff)))
-                        {
-                            var iconIndex = IconIDToLabel(thisBuff.icon_id, null);
-                            thisNode.ImageIndex = iconIndex;
-                            thisNode.SelectedImageIndex = iconIndex;
-                        }
-                        else
+
+                        if (thisNode.ImageIndex <= 0) // override default blank icon with blue !
                         {
                             thisNode.ImageIndex = 4;
                             thisNode.SelectedImageIndex = 4;
@@ -4791,6 +4785,7 @@ namespace AAEmu.DBViewer
                 res.targetSearchButton = btnSkillSearch;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + skill.nameLocalized;
+                setCustomIcon = IconIDToLabel(skill.icon_id, null); ;
             }
             else
             if (key.EndsWith("item_id") && (AADB.DB_Items.TryGetValue(val, out var item)))
@@ -4801,6 +4796,7 @@ namespace AAEmu.DBViewer
                 res.targetSearchButton = btnItemSearch;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + item.nameLocalized;
+                setCustomIcon = IconIDToLabel(item.icon_id, null); ;
             }
             else
             if (key.EndsWith("doodad_id") && (AADB.DB_Doodad_Almighties.TryGetValue(val, out var doodad)))
@@ -4878,7 +4874,8 @@ namespace AAEmu.DBViewer
             rootNode.Nodes.Add(res);
             if ((rootNode?.TreeView.ImageList != null) && (setCustomIcon >= 0))
             {
-
+                res.ImageIndex = setCustomIcon;
+                res.SelectedImageIndex = setCustomIcon;
             }
             return res;
         }
