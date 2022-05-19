@@ -2870,9 +2870,8 @@ namespace AAEmu.DBViewer
             if (depth > 16)
             {
                 var overflowNode = new TreeNode("Too many recursions !");
-                overflowNode.ImageIndex = 3;
-                overflowNode.SelectedImageIndex = 3;
-                overflowNode.StateImageIndex = 3;
+                overflowNode.ImageIndex = 4;
+                overflowNode.SelectedImageIndex = 4;
                 overflowNode.Tag = 0;
                 parent.Nodes.Add(overflowNode);
                 return;
@@ -2881,9 +2880,8 @@ namespace AAEmu.DBViewer
             if (child.tickets > 1)
                 nodeName = child.tickets.ToString() + " x " + nodeName;
             var eventNode = new TreeNode(nodeName);
-            eventNode.ImageIndex = 0;
-            eventNode.SelectedImageIndex = 0;
-            eventNode.StateImageIndex = 0;
+            eventNode.ImageIndex = 1;
+            eventNode.SelectedImageIndex = 1;
             eventNode.Tag = child.id;
 
             parent.Nodes.Add(eventNode);
@@ -2894,9 +2892,8 @@ namespace AAEmu.DBViewer
             {
                 var eventConditionName = ConditionTypeName(eventCondition.Value.condition_id);
                 var eventConditionNode = new TreeNode(eventConditionName);
-                eventConditionNode.ImageIndex = 2;
-                eventConditionNode.SelectedImageIndex = 2;
-                eventConditionNode.StateImageIndex = 2;
+                eventConditionNode.ImageIndex = 3;
+                eventConditionNode.SelectedImageIndex = 3;
                 eventConditionNode.Tag = 0;
                 eventNode.Nodes.Add(eventConditionNode);
             }
@@ -2917,9 +2914,8 @@ namespace AAEmu.DBViewer
                 else
                 {
                     var errorNode = new TreeNode("Unknown Next Event: " + n.Value.next_event_id.ToString());
-                    errorNode.ImageIndex = 3;
-                    errorNode.SelectedImageIndex = 3;
-                    errorNode.StateImageIndex = 3;
+                    errorNode.ImageIndex = 4;
+                    errorNode.SelectedImageIndex = 4;
                     errorNode.Tag = 0;
                     parent.Nodes.Add(errorNode);
                 }
@@ -2948,6 +2944,8 @@ namespace AAEmu.DBViewer
                     if (effectsRoot == null)
                     {
                         effectsRoot = tvSkill.Nodes.Add("Effects");
+                        effectsRoot.ImageIndex = 2;
+                        effectsRoot.SelectedImageIndex = 2;
                         effectsRoot.Tag = 0;
                     }
 
@@ -2959,9 +2957,8 @@ namespace AAEmu.DBViewer
             if (AADB.DB_Plots.TryGetValue(skill.plot_id, out var plot))
             {
                 var firstPlotNode = new TreeNode(plot.id.ToString() + " - " + plot.name);
-                firstPlotNode.ImageIndex = 1;
-                firstPlotNode.SelectedImageIndex = 1;
-                firstPlotNode.StateImageIndex = 1;
+                firstPlotNode.ImageIndex = 2;
+                firstPlotNode.SelectedImageIndex = 2;
                 firstPlotNode.Tag = plot.id;
                 tvSkill.Nodes.Add(firstPlotNode);
 
@@ -2984,6 +2981,8 @@ namespace AAEmu.DBViewer
             }
 
             var skillEffectNode = effectsRoot.Nodes.Add(effectTypeText);
+            skillEffectNode.ImageIndex = 2;
+            skillEffectNode.SelectedImageIndex = 2;
             skillEffectNode.Tag = 0;
 
             if (effect != null)
@@ -2991,17 +2990,24 @@ namespace AAEmu.DBViewer
                 var effectsTableName = FunctionTypeToTableName(effect.actual_type);
                 var effectValuesList = GetCustomTableValues(effectsTableName, "id", effect.actual_id.ToString());
                 foreach (var effectValues in effectValuesList)
-                foreach (var effectValue in effectValues)
-                {
-                    var thisNode = AddCustomPropertyNode(effectValue.Key, effectValue.Value, true, skillEffectNode);
-                    if ((effectValue.Key == "buff_id") && (long.TryParse(effectValue.Value, out var buffId)) &&
-                        (AADB.DB_Buffs.TryGetValue(buffId, out var thisBuff)))
+                    foreach (var effectValue in effectValues)
                     {
-                        var iconIndex = IconIDToLabel(thisBuff.icon_id, null);
-                        thisNode.ImageIndex = iconIndex;
-                        thisNode.SelectedImageIndex = iconIndex;
+                        var thisNode = AddCustomPropertyNode(effectValue.Key, effectValue.Value, true, skillEffectNode);
+                        if (thisNode == null)
+                            continue;
+                        if ((effectValue.Key == "buff_id") && (long.TryParse(effectValue.Value, out var buffId)) &&
+                            (AADB.DB_Buffs.TryGetValue(buffId, out var thisBuff)))
+                        {
+                            var iconIndex = IconIDToLabel(thisBuff.icon_id, null);
+                            thisNode.ImageIndex = iconIndex;
+                            thisNode.SelectedImageIndex = iconIndex;
+                        }
+                        else
+                        {
+                            thisNode.ImageIndex = 4;
+                            thisNode.SelectedImageIndex = 4;
+                        }
                     }
-                }
             }
         }
 
@@ -3635,6 +3641,7 @@ namespace AAEmu.DBViewer
                 lBuffTags.Text = "???";
                 ClearBuffTags();
                 rtBuffDesc.Clear();
+                tvBuffTriggers.Nodes.Clear();
                 return;
             }
             lBuffId.Text = b.id.ToString();
@@ -3691,8 +3698,9 @@ namespace AAEmu.DBViewer
 
             foreach (var triggerGrouping in triggers)
             {
-                var groupingNode = new TreeNode($"{EventTypeName(triggerGrouping.Key)}");
-                tvBuffTriggers.Nodes.Add(groupingNode);
+                var groupingNode = tvBuffTriggers.Nodes.Add(EventTypeName(triggerGrouping.Key));
+                groupingNode.ImageIndex = 1;
+                groupingNode.SelectedImageIndex = 1;
 
                 foreach (var trigger in triggerGrouping.Value)
                 {
@@ -3706,6 +3714,8 @@ namespace AAEmu.DBViewer
             }
             
             tvBuffTriggers.ExpandAll();
+            if (tvBuffTriggers.Nodes.Count > 0)
+                tvBuffTriggers.SelectedNode = tvBuffTriggers.Nodes[0];
         }
 
 
@@ -4752,35 +4762,6 @@ namespace AAEmu.DBViewer
             return res;
         }
 
-        private string AddCustomPropertyInfo(string key, string value)
-        {
-            var res = key + ": " + value;
-            if (!long.TryParse(value, out var val))
-                return res;
-
-            if (key.EndsWith("skill_id") && (AADB.DB_Skills.TryGetValue(val, out var skill)))
-                res += " - " + skill.nameLocalized;
-            else
-            if (key.EndsWith("item_id") && (AADB.DB_Items.TryGetValue(val, out var item)))
-                res += " - " + item.nameLocalized;
-            else
-            if (key.EndsWith("doodad_id") && (AADB.DB_Doodad_Almighties.TryGetValue(val, out var doodad)))
-                res += " - " + doodad.nameLocalized;
-            else
-            if (key.EndsWith("npc_id") && (AADB.DB_NPCs.TryGetValue(val, out var npc)))
-                res += " - " + npc.nameLocalized;
-            else
-            if (key.EndsWith("buff_id") && (AADB.DB_Buffs.TryGetValue(val, out var buff)))
-                res += " - " + buff.nameLocalized;
-            else
-            if (key.EndsWith("zone_id") && (AADB.DB_Zones.TryGetValue(val, out var zone)))
-                res += " - " + zone.display_textLocalized;
-            else
-            if (key.EndsWith("item_category_id") && (AADB.DB_ItemsCategories.TryGetValue(val, out var itemCategory)))
-                res += " - " + itemCategory.nameLocalized;
-
-            return res;
-        }
 
         private bool IsCustomPropertyEmpty(string value)
         {
@@ -4795,7 +4776,8 @@ namespace AAEmu.DBViewer
             var nodeText = key + ": " + value;
             if (!long.TryParse(value, out var val))
             {
-                return rootNode.Nodes.Add(nodeText);
+                var normalNode = rootNode.Nodes.Add(nodeText);
+                return normalNode;
             }
 
             var res = new TreeNodeWithInfo();
@@ -4873,6 +4855,21 @@ namespace AAEmu.DBViewer
             if (key.EndsWith("tag_id") && (AADB.DB_Tags.TryGetValue(val, out var tagId)))
             {
                 nodeText += " - " + tagId.nameLocalized ;
+                res.ForeColor = Color.LawnGreen;
+            }
+            else
+            if (key.EndsWith("special_effect_type_id"))
+            {
+                try
+                {
+                    nodeText += " - " + ((SpecialType)Enum.Parse(typeof(SpecialType), value)).ToString();
+                    res.ForeColor = Color.LawnGreen;
+                }
+                catch
+                {
+                    nodeText += " - ???";
+                    res.ForeColor = Color.Red;
+                }
             }
             res.Text = nodeText;
 
@@ -7602,6 +7599,12 @@ namespace AAEmu.DBViewer
         private void tvSkill_DoubleClick(object sender, EventArgs e)
         {
             // In properties the node tag is used internally, so only allow this node double-click if it's not set
+            if ((sender is TreeView tv) && (tv.SelectedNode != null) && (tv.SelectedNode.Tag == null))
+                ProcessNodeInfoDoubleClick(tv.SelectedNode);
+        }
+
+        private void tvBuffTriggers_DoubleClick(object sender, EventArgs e)
+        {
             if ((sender is TreeView tv) && (tv.SelectedNode != null) && (tv.SelectedNode.Tag == null))
                 ProcessNodeInfoDoubleClick(tv.SelectedNode);
         }

@@ -81,8 +81,6 @@
             this.btnExportDataForVieweD = new System.Windows.Forms.Button();
             this.lSpace = new System.Windows.Forms.Label();
             this.tpBuffs = new System.Windows.Forms.TabPage();
-            this.tcBuffs = new System.Windows.Forms.TabControl();
-            this.tcBuffs_Buffs = new System.Windows.Forms.TabPage();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
             this.lBuffAddGMCommand = new System.Windows.Forms.Label();
             this.lBuffTags = new System.Windows.Forms.Label();
@@ -98,8 +96,6 @@
             this.flpBuff = new System.Windows.Forms.FlowLayoutPanel();
             this.lBuffId = new System.Windows.Forms.Label();
             this.label113 = new System.Windows.Forms.Label();
-            this.tcBuffs_Triggers = new System.Windows.Forms.TabPage();
-            this.tvBuffTriggers = new System.Windows.Forms.TreeView();
             this.btnSearchBuffs = new System.Windows.Forms.Button();
             this.label115 = new System.Windows.Forms.Label();
             this.tSearchBuffs = new System.Windows.Forms.TextBox();
@@ -503,6 +499,9 @@
             this.ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             this.ofdJsonData = new System.Windows.Forms.OpenFileDialog();
             this.ilIcons = new System.Windows.Forms.ImageList(this.components);
+            this.tvBuffTriggers = new System.Windows.Forms.TreeView();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.label85 = new System.Windows.Forms.Label();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -513,10 +512,7 @@
             this.tpMap.SuspendLayout();
             this.tpV1.SuspendLayout();
             this.tpBuffs.SuspendLayout();
-            this.tcBuffs.SuspendLayout();
-            this.tcBuffs_Buffs.SuspendLayout();
             this.groupBox14.SuspendLayout();
-            this.tcBuffs_Triggers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBuffs)).BeginInit();
             this.tpDoodads.SuspendLayout();
             this.tcDoodads.SuspendLayout();
@@ -566,11 +562,16 @@
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).BeginInit();
             this.tpTrade.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbTableNames
             // 
-            this.lbTableNames.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left)));
+            this.lbTableNames.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.lbTableNames.FormattingEnabled = true;
             this.lbTableNames.Location = new System.Drawing.Point(6, 32);
             this.lbTableNames.Name = "lbTableNames";
@@ -660,7 +661,8 @@
             this.label41.Name = "label41";
             this.label41.Size = new System.Drawing.Size(493, 13);
             this.label41.TabIndex = 12;
-            this.label41.Text = "You can click a table to preview, or type a simple SQLite statement here. It is p" + "retty slow on large tables";
+            this.label41.Text = "You can click a table to preview, or type a simple SQLite statement here. It is p" +
+    "retty slow on large tables";
             // 
             // btnSimpleSQL
             // 
@@ -675,7 +677,8 @@
             // 
             // tSimpleSQL
             // 
-            this.tSimpleSQL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.tSimpleSQL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tSimpleSQL.Location = new System.Drawing.Point(282, 105);
             this.tSimpleSQL.Name = "tSimpleSQL";
             this.tSimpleSQL.Size = new System.Drawing.Size(554, 20);
@@ -687,7 +690,9 @@
             // 
             this.dgvSimple.AllowUserToAddRows = false;
             this.dgvSimple.AllowUserToDeleteRows = false;
-            this.dgvSimple.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvSimple.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvSimple.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvSimple.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvSimple.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
@@ -745,7 +750,15 @@
             this.cbItemSearchLanguage.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cbItemSearchLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbItemSearchLanguage.FormattingEnabled = true;
-            this.cbItemSearchLanguage.Items.AddRange(new object[] { "en_us", "ru", "ko", "zh_cn", "zh_tw", "de", "fr", "ja" });
+            this.cbItemSearchLanguage.Items.AddRange(new object[] {
+            "en_us",
+            "ru",
+            "ko",
+            "zh_cn",
+            "zh_tw",
+            "de",
+            "fr",
+            "ja"});
             this.cbItemSearchLanguage.Location = new System.Drawing.Point(842, 6);
             this.cbItemSearchLanguage.Name = "cbItemSearchLanguage";
             this.cbItemSearchLanguage.Size = new System.Drawing.Size(75, 21);
@@ -776,10 +789,15 @@
             // 
             this.dgvCurrentData.AllowUserToAddRows = false;
             this.dgvCurrentData.AllowUserToDeleteRows = false;
-            this.dgvCurrentData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvCurrentData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvCurrentData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvCurrentData.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dgvCurrentData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.dataGridViewTextBoxColumn4, this.dataGridViewTextBoxColumn5, this.Column12 });
+            this.dgvCurrentData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn4,
+            this.dataGridViewTextBoxColumn5,
+            this.Column12});
             this.dgvCurrentData.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dgvCurrentData.Location = new System.Drawing.Point(8, 26);
             this.dgvCurrentData.MultiSelect = false;
@@ -828,16 +846,23 @@
             this.label93.Name = "label93";
             this.label93.Size = new System.Drawing.Size(501, 13);
             this.label93.TabIndex = 12;
-            this.label93.Text = "Enter (partial) text here to search inside the localized texts. Enclose in =\'s fo" + "r exact search. Max 50 results";
+            this.label93.Text = "Enter (partial) text here to search inside the localized texts. Enclose in =\'s fo" +
+    "r exact search. Max 50 results";
             // 
             // dgvLocalized
             // 
             this.dgvLocalized.AllowUserToAddRows = false;
             this.dgvLocalized.AllowUserToDeleteRows = false;
-            this.dgvLocalized.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvLocalized.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvLocalized.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvLocalized.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dgvLocalized.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.Column48, this.Column49, this.Column51, this.Column50 });
+            this.dgvLocalized.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column48,
+            this.Column49,
+            this.Column51,
+            this.Column50});
             this.dgvLocalized.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.dgvLocalized.Location = new System.Drawing.Point(8, 55);
             this.dgvLocalized.MultiSelect = false;
@@ -873,7 +898,8 @@
             // 
             // tSearchLocalized
             // 
-            this.tSearchLocalized.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.tSearchLocalized.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tSearchLocalized.Location = new System.Drawing.Point(8, 29);
             this.tSearchLocalized.Name = "tSearchLocalized";
             this.tSearchLocalized.Size = new System.Drawing.Size(364, 20);
@@ -1095,7 +1121,7 @@
             // 
             // tpBuffs
             // 
-            this.tpBuffs.Controls.Add(this.tcBuffs);
+            this.tpBuffs.Controls.Add(this.groupBox14);
             this.tpBuffs.Controls.Add(this.btnSearchBuffs);
             this.tpBuffs.Controls.Add(this.label115);
             this.tpBuffs.Controls.Add(this.tSearchBuffs);
@@ -1107,32 +1133,13 @@
             this.tpBuffs.Text = "Buffs";
             this.tpBuffs.UseVisualStyleBackColor = true;
             // 
-            // tcBuffs
-            // 
-            this.tcBuffs.Alignment = System.Windows.Forms.TabAlignment.Bottom;
-            this.tcBuffs.Controls.Add(this.tcBuffs_Buffs);
-            this.tcBuffs.Controls.Add(this.tcBuffs_Triggers);
-            this.tcBuffs.Location = new System.Drawing.Point(382, 8);
-            this.tcBuffs.Name = "tcBuffs";
-            this.tcBuffs.SelectedIndex = 0;
-            this.tcBuffs.Size = new System.Drawing.Size(543, 468);
-            this.tcBuffs.TabIndex = 13;
-            // 
-            // tcBuffs_Buffs
-            // 
-            this.tcBuffs_Buffs.Controls.Add(this.groupBox14);
-            this.tcBuffs_Buffs.Location = new System.Drawing.Point(4, 4);
-            this.tcBuffs_Buffs.Name = "tcBuffs_Buffs";
-            this.tcBuffs_Buffs.Padding = new System.Windows.Forms.Padding(3);
-            this.tcBuffs_Buffs.Size = new System.Drawing.Size(535, 442);
-            this.tcBuffs_Buffs.TabIndex = 0;
-            this.tcBuffs_Buffs.Text = "Buff";
-            this.tcBuffs_Buffs.UseVisualStyleBackColor = true;
-            // 
             // groupBox14
             // 
-            this.groupBox14.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox14.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.groupBox14.Controls.Add(this.splitContainer2);
             this.groupBox14.Controls.Add(this.lBuffAddGMCommand);
             this.groupBox14.Controls.Add(this.lBuffTags);
             this.groupBox14.Controls.Add(this.label117);
@@ -1141,16 +1148,14 @@
             this.groupBox14.Controls.Add(this.label109);
             this.groupBox14.Controls.Add(this.rtBuffDesc);
             this.groupBox14.Controls.Add(this.buffIcon);
-            this.groupBox14.Controls.Add(this.label97);
             this.groupBox14.Controls.Add(this.lBuffName);
             this.groupBox14.Controls.Add(this.label105);
-            this.groupBox14.Controls.Add(this.flpBuff);
             this.groupBox14.Controls.Add(this.lBuffId);
             this.groupBox14.Controls.Add(this.label113);
             this.groupBox14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
-            this.groupBox14.Location = new System.Drawing.Point(0, 0);
+            this.groupBox14.Location = new System.Drawing.Point(324, 7);
             this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(533, 467);
+            this.groupBox14.Size = new System.Drawing.Size(593, 470);
             this.groupBox14.TabIndex = 12;
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Buff Info";
@@ -1159,7 +1164,7 @@
             // 
             this.lBuffAddGMCommand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lBuffAddGMCommand.AutoSize = true;
-            this.lBuffAddGMCommand.Location = new System.Drawing.Point(6, 447);
+            this.lBuffAddGMCommand.Location = new System.Drawing.Point(6, 450);
             this.lBuffAddGMCommand.Name = "lBuffAddGMCommand";
             this.lBuffAddGMCommand.Size = new System.Drawing.Size(71, 13);
             this.lBuffAddGMCommand.TabIndex = 19;
@@ -1169,7 +1174,7 @@
             // 
             this.lBuffTags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lBuffTags.AutoSize = true;
-            this.lBuffTags.Location = new System.Drawing.Point(54, 422);
+            this.lBuffTags.Location = new System.Drawing.Point(54, 425);
             this.lBuffTags.Name = "lBuffTags";
             this.lBuffTags.Size = new System.Drawing.Size(25, 13);
             this.lBuffTags.TabIndex = 18;
@@ -1179,7 +1184,7 @@
             // 
             this.label117.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label117.AutoSize = true;
-            this.label117.Location = new System.Drawing.Point(6, 422);
+            this.label117.Location = new System.Drawing.Point(6, 425);
             this.label117.Name = "label117";
             this.label117.Size = new System.Drawing.Size(31, 13);
             this.label117.TabIndex = 17;
@@ -1214,12 +1219,13 @@
             // 
             // rtBuffDesc
             // 
-            this.rtBuffDesc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtBuffDesc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.rtBuffDesc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
             this.rtBuffDesc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
             this.rtBuffDesc.Location = new System.Drawing.Point(9, 85);
             this.rtBuffDesc.Name = "rtBuffDesc";
-            this.rtBuffDesc.Size = new System.Drawing.Size(448, 64);
+            this.rtBuffDesc.Size = new System.Drawing.Size(578, 64);
             this.rtBuffDesc.TabIndex = 13;
             this.rtBuffDesc.Text = "";
             // 
@@ -1227,7 +1233,7 @@
             // 
             this.buffIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buffIcon.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.buffIcon.Location = new System.Drawing.Point(463, 85);
+            this.buffIcon.Location = new System.Drawing.Point(523, 16);
             this.buffIcon.Name = "buffIcon";
             this.buffIcon.Size = new System.Drawing.Size(64, 64);
             this.buffIcon.TabIndex = 12;
@@ -1237,7 +1243,7 @@
             // label97
             // 
             this.label97.AutoSize = true;
-            this.label97.Location = new System.Drawing.Point(6, 152);
+            this.label97.Location = new System.Drawing.Point(3, 8);
             this.label97.Name = "label97";
             this.label97.Size = new System.Drawing.Size(68, 13);
             this.label97.TabIndex = 5;
@@ -1263,11 +1269,13 @@
             // 
             // flpBuff
             // 
-            this.flpBuff.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.flpBuff.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.flpBuff.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.flpBuff.Location = new System.Drawing.Point(9, 168);
+            this.flpBuff.Location = new System.Drawing.Point(6, 24);
             this.flpBuff.Name = "flpBuff";
-            this.flpBuff.Size = new System.Drawing.Size(518, 251);
+            this.flpBuff.Size = new System.Drawing.Size(256, 240);
             this.flpBuff.TabIndex = 2;
             // 
             // lBuffId
@@ -1288,32 +1296,10 @@
             this.label113.TabIndex = 0;
             this.label113.Text = "Index";
             // 
-            // tcBuffs_Triggers
-            // 
-            this.tcBuffs_Triggers.Controls.Add(this.tvBuffTriggers);
-            this.tcBuffs_Triggers.Location = new System.Drawing.Point(4, 4);
-            this.tcBuffs_Triggers.Name = "tcBuffs_Triggers";
-            this.tcBuffs_Triggers.Padding = new System.Windows.Forms.Padding(3);
-            this.tcBuffs_Triggers.Size = new System.Drawing.Size(535, 442);
-            this.tcBuffs_Triggers.TabIndex = 1;
-            this.tcBuffs_Triggers.Text = "Triggers";
-            this.tcBuffs_Triggers.UseVisualStyleBackColor = true;
-            // 
-            // tvBuffTriggers
-            // 
-            this.tvBuffTriggers.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.tvBuffTriggers.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tvBuffTriggers.ItemHeight = 24;
-            this.tvBuffTriggers.Location = new System.Drawing.Point(0, 0);
-            this.tvBuffTriggers.Name = "tvBuffTriggers";
-            this.tvBuffTriggers.Size = new System.Drawing.Size(534, 441);
-            this.tvBuffTriggers.TabIndex = 0;
-            // 
             // btnSearchBuffs
             // 
-            this.btnSearchBuffs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSearchBuffs.Enabled = false;
-            this.btnSearchBuffs.Location = new System.Drawing.Point(298, 7);
+            this.btnSearchBuffs.Location = new System.Drawing.Point(239, 7);
             this.btnSearchBuffs.Name = "btnSearchBuffs";
             this.btnSearchBuffs.Size = new System.Drawing.Size(79, 23);
             this.btnSearchBuffs.TabIndex = 11;
@@ -1326,16 +1312,15 @@
             this.label115.AutoSize = true;
             this.label115.Location = new System.Drawing.Point(8, 12);
             this.label115.Name = "label115";
-            this.label115.Size = new System.Drawing.Size(120, 13);
+            this.label115.Size = new System.Drawing.Size(83, 13);
             this.label115.TabIndex = 10;
-            this.label115.Text = "Search Buff Name or ID";
+            this.label115.Text = "Buff Name or ID";
             // 
             // tSearchBuffs
             // 
-            this.tSearchBuffs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-            this.tSearchBuffs.Location = new System.Drawing.Point(134, 9);
+            this.tSearchBuffs.Location = new System.Drawing.Point(97, 9);
             this.tSearchBuffs.Name = "tSearchBuffs";
-            this.tSearchBuffs.Size = new System.Drawing.Size(158, 20);
+            this.tSearchBuffs.Size = new System.Drawing.Size(136, 20);
             this.tSearchBuffs.TabIndex = 9;
             this.tSearchBuffs.TextChanged += new System.EventHandler(this.tSearchBuffs_TextChanged);
             this.tSearchBuffs.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tSearchBuffs_KeyDown);
@@ -1344,17 +1329,21 @@
             // 
             this.dgvBuffs.AllowUserToAddRows = false;
             this.dgvBuffs.AllowUserToDeleteRows = false;
-            this.dgvBuffs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left)));
+            this.dgvBuffs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.dgvBuffs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvBuffs.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvBuffs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvBuffs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.dataGridViewTextBoxColumn21, this.dataGridViewTextBoxColumn24, this.Column52 });
+            this.dgvBuffs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn21,
+            this.dataGridViewTextBoxColumn24,
+            this.Column52});
             this.dgvBuffs.Location = new System.Drawing.Point(8, 40);
             this.dgvBuffs.Name = "dgvBuffs";
             this.dgvBuffs.ReadOnly = true;
             this.dgvBuffs.RowHeadersVisible = false;
             this.dgvBuffs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvBuffs.Size = new System.Drawing.Size(370, 437);
+            this.dgvBuffs.Size = new System.Drawing.Size(310, 437);
             this.dgvBuffs.TabIndex = 8;
             this.dgvBuffs.SelectionChanged += new System.EventHandler(this.dgvBuffs_SelectionChanged);
             // 
@@ -2481,11 +2470,16 @@
             // 
             this.dgvDoodadFuncGroups.AllowUserToAddRows = false;
             this.dgvDoodadFuncGroups.AllowUserToDeleteRows = false;
-            this.dgvDoodadFuncGroups.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvDoodadFuncGroups.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvDoodadFuncGroups.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvDoodadFuncGroups.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvDoodadFuncGroups.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvDoodadFuncGroups.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.Column27, this.Column32, this.Column33, this.Column54 });
+            this.dgvDoodadFuncGroups.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column27,
+            this.Column32,
+            this.Column33,
+            this.Column54});
             this.dgvDoodadFuncGroups.Location = new System.Drawing.Point(6, 19);
             this.dgvDoodadFuncGroups.Name = "dgvDoodadFuncGroups";
             this.dgvDoodadFuncGroups.ReadOnly = true;
@@ -2536,7 +2530,8 @@
             // 
             // btnShowDoodadOnMap
             // 
-            this.btnShowDoodadOnMap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnShowDoodadOnMap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnShowDoodadOnMap.ForeColor = System.Drawing.Color.Black;
             this.btnShowDoodadOnMap.Location = new System.Drawing.Point(6, 425);
             this.btnShowDoodadOnMap.Name = "btnShowDoodadOnMap";
@@ -2571,7 +2566,9 @@
             // 
             // tvDoodadDetails
             // 
-            this.tvDoodadDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvDoodadDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tvDoodadDetails.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
             this.tvDoodadDetails.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
             this.tvDoodadDetails.LineColor = System.Drawing.Color.LightGray;
@@ -2604,7 +2601,8 @@
             // 
             // tSearchDoodads
             // 
-            this.tSearchDoodads.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.tSearchDoodads.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tSearchDoodads.Location = new System.Drawing.Point(237, 10);
             this.tSearchDoodads.Name = "tSearchDoodads";
             this.tSearchDoodads.Size = new System.Drawing.Size(253, 20);
@@ -2616,11 +2614,22 @@
             // 
             this.dgvDoodads.AllowUserToAddRows = false;
             this.dgvDoodads.AllowUserToDeleteRows = false;
-            this.dgvDoodads.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvDoodads.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvDoodads.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvDoodads.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvDoodads.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvDoodads.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.dataGridViewTextBoxColumn18, this.dataGridViewTextBoxColumn19, this.Column23, this.Column28, this.Column25, this.Column26, this.Column31, this.Column22, this.Column53 });
+            this.dgvDoodads.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn18,
+            this.dataGridViewTextBoxColumn19,
+            this.Column23,
+            this.Column28,
+            this.Column25,
+            this.Column26,
+            this.Column31,
+            this.Column22,
+            this.Column53});
             this.dgvDoodads.Location = new System.Drawing.Point(8, 41);
             this.dgvDoodads.Name = "dgvDoodads";
             this.dgvDoodads.ReadOnly = true;
@@ -3048,7 +3057,8 @@
             // 
             // tSearchFaction
             // 
-            this.tSearchFaction.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.tSearchFaction.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tSearchFaction.Location = new System.Drawing.Point(221, 10);
             this.tSearchFaction.Name = "tSearchFaction";
             this.tSearchFaction.Size = new System.Drawing.Size(218, 20);
@@ -3060,11 +3070,18 @@
             // 
             this.dgvFactions.AllowUserToAddRows = false;
             this.dgvFactions.AllowUserToDeleteRows = false;
-            this.dgvFactions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvFactions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvFactions.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvFactions.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvFactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvFactions.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.dataGridViewTextBoxColumn15, this.dataGridViewTextBoxColumn16, this.Column30, this.Column24, this.Column29 });
+            this.dgvFactions.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn15,
+            this.dataGridViewTextBoxColumn16,
+            this.Column30,
+            this.Column24,
+            this.Column29});
             this.dgvFactions.Location = new System.Drawing.Point(8, 41);
             this.dgvFactions.Name = "dgvFactions";
             this.dgvFactions.ReadOnly = true;
@@ -3137,7 +3154,9 @@
             this.cbItemSearchRange.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbItemSearchRange.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbItemSearchRange.FormattingEnabled = true;
-            this.cbItemSearchRange.Items.AddRange(new object[] { "All", "Region Specific" });
+            this.cbItemSearchRange.Items.AddRange(new object[] {
+            "All",
+            "Region Specific"});
             this.cbItemSearchRange.Location = new System.Drawing.Point(475, 30);
             this.cbItemSearchRange.Name = "cbItemSearchRange";
             this.cbItemSearchRange.Size = new System.Drawing.Size(137, 21);
@@ -3167,7 +3186,8 @@
             // 
             this.cbItemSearchItemCategoryTypeList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbItemSearchItemCategoryTypeList.FormattingEnabled = true;
-            this.cbItemSearchItemCategoryTypeList.Items.AddRange(new object[] { "---" });
+            this.cbItemSearchItemCategoryTypeList.Items.AddRange(new object[] {
+            "---"});
             this.cbItemSearchItemCategoryTypeList.Location = new System.Drawing.Point(260, 30);
             this.cbItemSearchItemCategoryTypeList.Name = "cbItemSearchItemCategoryTypeList";
             this.cbItemSearchItemCategoryTypeList.Size = new System.Drawing.Size(137, 21);
@@ -3187,7 +3207,39 @@
             // 
             this.cbItemSearchItemArmorSlotTypeList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbItemSearchItemArmorSlotTypeList.FormattingEnabled = true;
-            this.cbItemSearchItemArmorSlotTypeList.Items.AddRange(new object[] { "Any", "Head (1)", "Neck (2)", "Chest (3)", "Waist (4)", "Legs (5)", "Hands (6)", "Feet (7)", "Arms (8)", "Back (9)", "Ear (10)", "Finger (11)", "Undershirt (12)", "Underpants (13)", "Mainhand (14)", "Offhand (15)", "TwoHanded (16)", "OneHanded (17)", "Ranged (18)", "Ammunition (19)", "Shield (20)", "Instrument (21)", "Bag (22)", "Face (23)", "Hair (24)", "Glasses (25)", "Reserved (26)", "Tail (27)", "Body (28)", "Beard (29)", "Backpack (30)", "Cosplay (31)" });
+            this.cbItemSearchItemArmorSlotTypeList.Items.AddRange(new object[] {
+            "Any",
+            "Head (1)",
+            "Neck (2)",
+            "Chest (3)",
+            "Waist (4)",
+            "Legs (5)",
+            "Hands (6)",
+            "Feet (7)",
+            "Arms (8)",
+            "Back (9)",
+            "Ear (10)",
+            "Finger (11)",
+            "Undershirt (12)",
+            "Underpants (13)",
+            "Mainhand (14)",
+            "Offhand (15)",
+            "TwoHanded (16)",
+            "OneHanded (17)",
+            "Ranged (18)",
+            "Ammunition (19)",
+            "Shield (20)",
+            "Instrument (21)",
+            "Bag (22)",
+            "Face (23)",
+            "Hair (24)",
+            "Glasses (25)",
+            "Reserved (26)",
+            "Tail (27)",
+            "Body (28)",
+            "Beard (29)",
+            "Backpack (30)",
+            "Cosplay (31)"});
             this.cbItemSearchItemArmorSlotTypeList.Location = new System.Drawing.Point(69, 30);
             this.cbItemSearchItemArmorSlotTypeList.Name = "cbItemSearchItemArmorSlotTypeList";
             this.cbItemSearchItemArmorSlotTypeList.Size = new System.Drawing.Size(124, 21);
@@ -3209,7 +3261,8 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
             this.groupBox1.Controls.Add(this.lItemTags);
             this.groupBox1.Controls.Add(this.label127);
@@ -3275,7 +3328,9 @@
             // 
             // rtItemDesc
             // 
-            this.rtItemDesc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtItemDesc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.rtItemDesc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
             this.rtItemDesc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
             this.rtItemDesc.Location = new System.Drawing.Point(9, 81);
@@ -3372,11 +3427,15 @@
             // 
             this.dgvItem.AllowUserToAddRows = false;
             this.dgvItem.AllowUserToDeleteRows = false;
-            this.dgvItem.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvItem.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvItem.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvItem.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvItem.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvItem.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.Item_ID, this.Item_Name_EN_US });
+            this.dgvItem.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Item_ID,
+            this.Item_Name_EN_US});
             this.dgvItem.Location = new System.Drawing.Point(11, 57);
             this.dgvItem.Name = "dgvItem";
             this.dgvItem.ReadOnly = true;
@@ -3425,7 +3484,8 @@
             // 
             // tItemSearch
             // 
-            this.tItemSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.tItemSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tItemSearch.Location = new System.Drawing.Point(197, 6);
             this.tItemSearch.Name = "tItemSearch";
             this.tItemSearch.Size = new System.Drawing.Size(330, 20);
@@ -3450,7 +3510,8 @@
             // 
             // groupBox11
             // 
-            this.groupBox11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
             this.groupBox11.Controls.Add(this.LLootPackGroupNumber);
             this.groupBox11.Controls.Add(this.label74);
@@ -3523,7 +3584,8 @@
             // 
             // tLootSearch
             // 
-            this.tLootSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.tLootSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tLootSearch.Location = new System.Drawing.Point(121, 11);
             this.tLootSearch.Name = "tLootSearch";
             this.tLootSearch.Size = new System.Drawing.Size(484, 20);
@@ -3535,11 +3597,23 @@
             // 
             this.dgvLoot.AllowUserToAddRows = false;
             this.dgvLoot.AllowUserToDeleteRows = false;
-            this.dgvLoot.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvLoot.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvLoot.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvLoot.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvLoot.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvLoot.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.dataGridViewTextBoxColumn1, this.Column2, this.Column1, this.Column9, this.Column3, this.Column4, this.Column5, this.Column6, this.Column7, this.Column8 });
+            this.dgvLoot.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.Column2,
+            this.Column1,
+            this.Column9,
+            this.Column3,
+            this.Column4,
+            this.Column5,
+            this.Column6,
+            this.Column7,
+            this.Column8});
             this.dgvLoot.Location = new System.Drawing.Point(8, 42);
             this.dgvLoot.Name = "dgvLoot";
             this.dgvLoot.ReadOnly = true;
@@ -3636,7 +3710,8 @@
             // 
             // groupBox13
             // 
-            this.groupBox13.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox13.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
             this.groupBox13.Controls.Add(this.btnShowNPCsOnMap);
             this.groupBox13.Controls.Add(this.lNPCTags);
@@ -3654,7 +3729,8 @@
             // 
             // btnShowNPCsOnMap
             // 
-            this.btnShowNPCsOnMap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnShowNPCsOnMap.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnShowNPCsOnMap.ForeColor = System.Drawing.Color.Black;
             this.btnShowNPCsOnMap.Location = new System.Drawing.Point(9, 439);
             this.btnShowNPCsOnMap.Name = "btnShowNPCsOnMap";
@@ -3735,7 +3811,8 @@
             // 
             // tSearchNPC
             // 
-            this.tSearchNPC.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.tSearchNPC.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tSearchNPC.Location = new System.Drawing.Point(186, 10);
             this.tSearchNPC.Name = "tSearchNPC";
             this.tSearchNPC.Size = new System.Drawing.Size(419, 20);
@@ -3747,11 +3824,20 @@
             // 
             this.dgvNPCs.AllowUserToAddRows = false;
             this.dgvNPCs.AllowUserToDeleteRows = false;
-            this.dgvNPCs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvNPCs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvNPCs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvNPCs.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvNPCs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvNPCs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.dataGridViewTextBoxColumn14, this.dataGridViewTextBoxColumn17, this.Column18, this.Column17, this.Column16, this.Column21, this.Column34 });
+            this.dgvNPCs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn14,
+            this.dataGridViewTextBoxColumn17,
+            this.Column18,
+            this.Column17,
+            this.Column16,
+            this.Column21,
+            this.Column34});
             this.dgvNPCs.Location = new System.Drawing.Point(8, 41);
             this.dgvNPCs.Name = "dgvNPCs";
             this.dgvNPCs.ReadOnly = true;
@@ -3844,7 +3930,8 @@
             // 
             // tQuestSearch
             // 
-            this.tQuestSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.tQuestSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tQuestSearch.Location = new System.Drawing.Point(140, 6);
             this.tQuestSearch.Name = "tQuestSearch";
             this.tQuestSearch.Size = new System.Drawing.Size(690, 20);
@@ -3866,7 +3953,9 @@
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.Location = new System.Drawing.Point(3, 36);
             this.splitContainer1.Name = "splitContainer1";
@@ -3887,7 +3976,9 @@
             // 
             // groupBox12
             // 
-            this.groupBox12.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox12.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox12.Controls.Add(this.rtQuestText);
             this.groupBox12.Location = new System.Drawing.Point(3, 187);
             this.groupBox12.Name = "groupBox12";
@@ -3911,11 +4002,17 @@
             // 
             this.dgvQuests.AllowUserToAddRows = false;
             this.dgvQuests.AllowUserToDeleteRows = false;
-            this.dgvQuests.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvQuests.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvQuests.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvQuests.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvQuests.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvQuests.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.dataGridViewTextBoxColumn20, this.Column35, this.Column19, this.Column20, this.Column36 });
+            this.dgvQuests.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn20,
+            this.Column35,
+            this.Column19,
+            this.Column20,
+            this.Column36});
             this.dgvQuests.Location = new System.Drawing.Point(3, 5);
             this.dgvQuests.Name = "dgvQuests";
             this.dgvQuests.ReadOnly = true;
@@ -4089,7 +4186,9 @@
             // 
             // rtSkillDescription
             // 
-            this.rtSkillDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtSkillDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.rtSkillDescription.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
             this.rtSkillDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
             this.rtSkillDescription.Location = new System.Drawing.Point(9, 120);
@@ -4253,11 +4352,15 @@
             // 
             this.dgvSkillProducts.AllowUserToAddRows = false;
             this.dgvSkillProducts.AllowUserToDeleteRows = false;
-            this.dgvSkillProducts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvSkillProducts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvSkillProducts.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvSkillProducts.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvSkillProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSkillProducts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.dataGridViewTextBoxColumn9, this.dataGridViewTextBoxColumn10, this.dataGridViewTextBoxColumn11 });
+            this.dgvSkillProducts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn9,
+            this.dataGridViewTextBoxColumn10,
+            this.dataGridViewTextBoxColumn11});
             this.dgvSkillProducts.Location = new System.Drawing.Point(8, 313);
             this.dgvSkillProducts.Name = "dgvSkillProducts";
             this.dgvSkillProducts.ReadOnly = true;
@@ -4292,11 +4395,16 @@
             // 
             this.dgvSkillReagents.AllowUserToAddRows = false;
             this.dgvSkillReagents.AllowUserToDeleteRows = false;
-            this.dgvSkillReagents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvSkillReagents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvSkillReagents.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvSkillReagents.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvSkillReagents.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSkillReagents.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.dataGridViewTextBoxColumn6, this.dataGridViewTextBoxColumn7, this.dataGridViewTextBoxColumn8 });
+            this.dgvSkillReagents.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn6,
+            this.dataGridViewTextBoxColumn7,
+            this.dataGridViewTextBoxColumn8});
             this.dgvSkillReagents.Location = new System.Drawing.Point(9, 26);
             this.dgvSkillReagents.Name = "dgvSkillReagents";
             this.dgvSkillReagents.ReadOnly = true;
@@ -4360,7 +4468,8 @@
             // 
             // gbSkillPlotEventInfo
             // 
-            this.gbSkillPlotEventInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbSkillPlotEventInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventTargetUpdate);
             this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventSourceUpdate);
             this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventAoE);
@@ -4501,7 +4610,9 @@
             // 
             // tvSkill
             // 
-            this.tvSkill.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvSkill.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tvSkill.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.tvSkill.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tvSkill.ImageIndex = 0;
@@ -4511,7 +4622,8 @@
             this.tvSkill.Name = "tvSkill";
             treeNode1.Name = "SkillNode";
             treeNode1.Text = "Skill";
-            this.tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
+            this.tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode1});
             this.tvSkill.SelectedImageIndex = 0;
             this.tvSkill.Size = new System.Drawing.Size(341, 295);
             this.tvSkill.TabIndex = 0;
@@ -4522,10 +4634,11 @@
             // 
             this.ilMiniIcons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilMiniIcons.ImageStream")));
             this.ilMiniIcons.TransparentColor = System.Drawing.Color.Transparent;
-            this.ilMiniIcons.Images.SetKeyName(0, "icon_question_yellow.png");
-            this.ilMiniIcons.Images.SetKeyName(1, "icon_exclamation_yellow.png");
-            this.ilMiniIcons.Images.SetKeyName(2, "icon_exclamation_green.png");
-            this.ilMiniIcons.Images.SetKeyName(3, "icon_exclamation_blue.png");
+            this.ilMiniIcons.Images.SetKeyName(0, "blank24.png");
+            this.ilMiniIcons.Images.SetKeyName(1, "icon_question_yellow.png");
+            this.ilMiniIcons.Images.SetKeyName(2, "icon_exclamation_yellow.png");
+            this.ilMiniIcons.Images.SetKeyName(3, "icon_exclamation_green.png");
+            this.ilMiniIcons.Images.SetKeyName(4, "icon_exclamation_blue.png");
             // 
             // btnSkillSearch
             // 
@@ -4543,11 +4656,16 @@
             // 
             this.dgvSkills.AllowUserToAddRows = false;
             this.dgvSkills.AllowUserToDeleteRows = false;
-            this.dgvSkills.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvSkills.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvSkills.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvSkills.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvSkills.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSkills.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.dataGridViewTextBoxColumn2, this.dataGridViewTextBoxColumn3, this.Column10 });
+            this.dgvSkills.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3,
+            this.Column10});
             this.dgvSkills.Location = new System.Drawing.Point(6, 32);
             this.dgvSkills.Name = "dgvSkills";
             this.dgvSkills.ReadOnly = true;
@@ -4590,7 +4708,8 @@
             // 
             // tSkillSearch
             // 
-            this.tSkillSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.tSkillSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tSkillSearch.Location = new System.Drawing.Point(201, 6);
             this.tSkillSearch.Name = "tSkillSearch";
             this.tSkillSearch.Size = new System.Drawing.Size(270, 20);
@@ -5200,11 +5319,19 @@
             // 
             this.dgvZones.AllowUserToAddRows = false;
             this.dgvZones.AllowUserToDeleteRows = false;
-            this.dgvZones.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvZones.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvZones.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvZones.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvZones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvZones.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { this.dataGridViewTextBoxColumn12, this.dataGridViewTextBoxColumn13, this.Column15, this.Column11, this.Column13, this.Column14 });
+            this.dgvZones.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn12,
+            this.dataGridViewTextBoxColumn13,
+            this.Column15,
+            this.Column11,
+            this.Column13,
+            this.Column14});
             this.dgvZones.Location = new System.Drawing.Point(11, 38);
             this.dgvZones.Name = "dgvZones";
             this.dgvZones.ReadOnly = true;
@@ -5265,7 +5392,8 @@
             // 
             // tZonesSearch
             // 
-            this.tZonesSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.tZonesSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tZonesSearch.Location = new System.Drawing.Point(175, 11);
             this.tZonesSearch.Name = "tZonesSearch";
             this.tZonesSearch.Size = new System.Drawing.Size(264, 20);
@@ -5409,10 +5537,59 @@
             // 
             this.ilIcons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilIcons.ImageStream")));
             this.ilIcons.TransparentColor = System.Drawing.Color.Transparent;
-            this.ilIcons.Images.SetKeyName(0, "icon_question_yellow.png");
-            this.ilIcons.Images.SetKeyName(1, "icon_exclamation_yellow.png");
-            this.ilIcons.Images.SetKeyName(2, "icon_exclamation_green.png");
-            this.ilIcons.Images.SetKeyName(3, "icon_exclamation_blue.png");
+            this.ilIcons.Images.SetKeyName(0, "blank24.png");
+            this.ilIcons.Images.SetKeyName(1, "icon_question_yellow.png");
+            this.ilIcons.Images.SetKeyName(2, "icon_exclamation_yellow.png");
+            this.ilIcons.Images.SetKeyName(3, "icon_exclamation_green.png");
+            this.ilIcons.Images.SetKeyName(4, "icon_exclamation_blue.png");
+            // 
+            // tvBuffTriggers
+            // 
+            this.tvBuffTriggers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvBuffTriggers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.tvBuffTriggers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
+            this.tvBuffTriggers.ImageIndex = 0;
+            this.tvBuffTriggers.ImageList = this.ilMiniIcons;
+            this.tvBuffTriggers.ItemHeight = 24;
+            this.tvBuffTriggers.Location = new System.Drawing.Point(3, 21);
+            this.tvBuffTriggers.Name = "tvBuffTriggers";
+            this.tvBuffTriggers.SelectedImageIndex = 0;
+            this.tvBuffTriggers.Size = new System.Drawing.Size(309, 243);
+            this.tvBuffTriggers.TabIndex = 20;
+            this.tvBuffTriggers.DoubleClick += new System.EventHandler(this.tvBuffTriggers_DoubleClick);
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer2.Location = new System.Drawing.Point(6, 155);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.label85);
+            this.splitContainer2.Panel1.Controls.Add(this.tvBuffTriggers);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.label97);
+            this.splitContainer2.Panel2.Controls.Add(this.flpBuff);
+            this.splitContainer2.Size = new System.Drawing.Size(581, 267);
+            this.splitContainer2.SplitterDistance = 315;
+            this.splitContainer2.TabIndex = 21;
+            // 
+            // label85
+            // 
+            this.label85.AutoSize = true;
+            this.label85.Location = new System.Drawing.Point(3, 5);
+            this.label85.Name = "label85";
+            this.label85.Size = new System.Drawing.Size(45, 13);
+            this.label85.TabIndex = 6;
+            this.label85.Text = "Triggers";
             // 
             // MainForm
             // 
@@ -5441,11 +5618,8 @@
             this.tpV1.PerformLayout();
             this.tpBuffs.ResumeLayout(false);
             this.tpBuffs.PerformLayout();
-            this.tcBuffs.ResumeLayout(false);
-            this.tcBuffs_Buffs.ResumeLayout(false);
             this.groupBox14.ResumeLayout(false);
             this.groupBox14.PerformLayout();
-            this.tcBuffs_Triggers.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvBuffs)).EndInit();
             this.tpDoodads.ResumeLayout(false);
             this.tpDoodads.PerformLayout();
@@ -5520,14 +5694,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).EndInit();
             this.tpTrade.ResumeLayout(false);
             this.tpTrade.PerformLayout();
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel1.PerformLayout();
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
-
-        private System.Windows.Forms.TreeView tvBuffTriggers;
-
-        private System.Windows.Forms.TabControl tcBuffs;
-        private System.Windows.Forms.TabPage tcBuffs_Buffs;
-        private System.Windows.Forms.TabPage tcBuffs_Triggers;
 
         #endregion
         private System.Windows.Forms.ListBox lbTableNames;
@@ -5998,6 +6173,9 @@
         private System.Windows.Forms.CheckBox cbQuestWorkflowHideEmpty;
         private System.Windows.Forms.GroupBox groupBox12;
         private System.Windows.Forms.RichTextBox rtQuestText;
+        private System.Windows.Forms.TreeView tvBuffTriggers;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.Label label85;
     }
 }
 
