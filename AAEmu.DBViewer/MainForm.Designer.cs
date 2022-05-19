@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.lbTableNames = new System.Windows.Forms.ListBox();
             this.tcViewer = new System.Windows.Forms.TabControl();
@@ -502,6 +502,7 @@
             this.tvBuffTriggers = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.label85 = new System.Windows.Forms.Label();
+            this.cbBuffsHideEmpty = new System.Windows.Forms.CheckBox();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -4621,10 +4622,10 @@
             this.tvSkill.ItemHeight = 24;
             this.tvSkill.Location = new System.Drawing.Point(6, 6);
             this.tvSkill.Name = "tvSkill";
-            treeNode2.Name = "SkillNode";
-            treeNode2.Text = "Skill";
+            treeNode1.Name = "SkillNode";
+            treeNode1.Text = "Skill";
             this.tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
+            treeNode1});
             this.tvSkill.SelectedImageIndex = 0;
             this.tvSkill.Size = new System.Drawing.Size(341, 295);
             this.tvSkill.TabIndex = 0;
@@ -5572,6 +5573,7 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.cbBuffsHideEmpty);
             this.splitContainer2.Panel1.Controls.Add(this.label85);
             this.splitContainer2.Panel1.Controls.Add(this.tvBuffTriggers);
             // 
@@ -5591,6 +5593,17 @@
             this.label85.Size = new System.Drawing.Size(45, 13);
             this.label85.TabIndex = 6;
             this.label85.Text = "Triggers";
+            // 
+            // cbBuffsHideEmpty
+            // 
+            this.cbBuffsHideEmpty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbBuffsHideEmpty.AutoSize = true;
+            this.cbBuffsHideEmpty.Location = new System.Drawing.Point(232, 4);
+            this.cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
+            this.cbBuffsHideEmpty.Size = new System.Drawing.Size(80, 17);
+            this.cbBuffsHideEmpty.TabIndex = 22;
+            this.cbBuffsHideEmpty.Text = "Hide Empty";
+            this.cbBuffsHideEmpty.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -6177,6 +6190,7 @@
         private System.Windows.Forms.TreeView tvBuffTriggers;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.Label label85;
+        private System.Windows.Forms.CheckBox cbBuffsHideEmpty;
     }
 }
 

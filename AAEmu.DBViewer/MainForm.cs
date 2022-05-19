@@ -2949,7 +2949,7 @@ namespace AAEmu.DBViewer
                         effectsRoot.Tag = 0;
                     }
 
-                    CreateEffectNode(skillEffect.effect_id, effectsRoot);
+                    CreateEffectNode(skillEffect.effect_id, effectsRoot, true);
                 }
             }
 
@@ -2972,7 +2972,7 @@ namespace AAEmu.DBViewer
             tvSkill.SelectedNode = rootNode;
         }
 
-        private void CreateEffectNode(long effect_id, TreeNode effectsRoot)
+        private void CreateEffectNode(long effect_id, TreeNode effectsRoot, bool hideEmptyProperties)
         {
             var effectTypeText = "???";
             if (AADB.DB_Effects.TryGetValue(effect_id, out var effect))
@@ -2992,7 +2992,7 @@ namespace AAEmu.DBViewer
                 foreach (var effectValues in effectValuesList)
                     foreach (var effectValue in effectValues)
                     {
-                        var thisNode = AddCustomPropertyNode(effectValue.Key, effectValue.Value, true, skillEffectNode);
+                        var thisNode = AddCustomPropertyNode(effectValue.Key, effectValue.Value, hideEmptyProperties, skillEffectNode);
                         if (thisNode == null)
                             continue;
                         if ((effectValue.Key == "buff_id") && (long.TryParse(effectValue.Value, out var buffId)) &&
@@ -3708,7 +3708,7 @@ namespace AAEmu.DBViewer
                     {
                         // var triggerNode = new TreeNode($"{trigger.id} - Effect {trigger.effect_id} ({effect.actual_type} {effect.actual_id})");
                         // groupingNode.Nodes.Add(triggerNode);
-                        CreateEffectNode(effect.id, groupingNode);
+                        CreateEffectNode(effect.id, groupingNode, cbBuffsHideEmpty.Checked);
                     }
                 }
             }
@@ -4781,6 +4781,7 @@ namespace AAEmu.DBViewer
             }
 
             var res = new TreeNodeWithInfo();
+            var setCustomIcon = -1;
 
             if (key.EndsWith("skill_id") && (AADB.DB_Skills.TryGetValue(val, out var skill)))
             {
@@ -4830,6 +4831,7 @@ namespace AAEmu.DBViewer
                 res.targetSearchButton = btnSearchBuffs;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + buff.nameLocalized;
+                setCustomIcon = IconIDToLabel(buff.icon_id, null);
             }
             else
             if (key.EndsWith("zone_id") && (AADB.DB_Zones.TryGetValue(val, out var zone)))
@@ -4874,6 +4876,10 @@ namespace AAEmu.DBViewer
             res.Text = nodeText;
 
             rootNode.Nodes.Add(res);
+            if ((rootNode?.TreeView.ImageList != null) && (setCustomIcon >= 0))
+            {
+
+            }
             return res;
         }
 
