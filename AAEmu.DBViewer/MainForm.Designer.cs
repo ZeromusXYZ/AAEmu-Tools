@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
             this.lbTableNames = new System.Windows.Forms.ListBox();
             this.tcViewer = new System.Windows.Forms.TabControl();
             this.tbTables = new System.Windows.Forms.TabPage();
@@ -82,6 +82,13 @@
             this.lSpace = new System.Windows.Forms.Label();
             this.tpBuffs = new System.Windows.Forms.TabPage();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.cbBuffsHideEmpty = new System.Windows.Forms.CheckBox();
+            this.label85 = new System.Windows.Forms.Label();
+            this.tvBuffTriggers = new System.Windows.Forms.TreeView();
+            this.ilMiniIcons = new System.Windows.Forms.ImageList(this.components);
+            this.label97 = new System.Windows.Forms.Label();
+            this.flpBuff = new System.Windows.Forms.FlowLayoutPanel();
             this.lBuffAddGMCommand = new System.Windows.Forms.Label();
             this.lBuffTags = new System.Windows.Forms.Label();
             this.label117 = new System.Windows.Forms.Label();
@@ -90,10 +97,8 @@
             this.label109 = new System.Windows.Forms.Label();
             this.rtBuffDesc = new System.Windows.Forms.RichTextBox();
             this.buffIcon = new System.Windows.Forms.Label();
-            this.label97 = new System.Windows.Forms.Label();
             this.lBuffName = new System.Windows.Forms.Label();
             this.label105 = new System.Windows.Forms.Label();
-            this.flpBuff = new System.Windows.Forms.FlowLayoutPanel();
             this.lBuffId = new System.Windows.Forms.Label();
             this.label113 = new System.Windows.Forms.Label();
             this.btnSearchBuffs = new System.Windows.Forms.Button();
@@ -409,7 +414,6 @@
             this.lPlotEventP2 = new System.Windows.Forms.Label();
             this.lPlotEventP1 = new System.Windows.Forms.Label();
             this.tvSkill = new System.Windows.Forms.TreeView();
-            this.ilMiniIcons = new System.Windows.Forms.ImageList(this.components);
             this.btnSkillSearch = new System.Windows.Forms.Button();
             this.dgvSkills = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -417,6 +421,23 @@
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label9 = new System.Windows.Forms.Label();
             this.tSkillSearch = new System.Windows.Forms.TextBox();
+            this.tpTags = new System.Windows.Forms.TabPage();
+            this.btnSearchTags = new System.Windows.Forms.Button();
+            this.dgvTags = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn23 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label137 = new System.Windows.Forms.Label();
+            this.tSearchTags = new System.Windows.Forms.TextBox();
+            this.tpTrade = new System.Windows.Forms.TabPage();
+            this.lTradeRoute = new System.Windows.Forms.Label();
+            this.label133 = new System.Windows.Forms.Label();
+            this.label134 = new System.Windows.Forms.Label();
+            this.lTradeRatio = new System.Windows.Forms.Label();
+            this.lTradeProfit = new System.Windows.Forms.Label();
+            this.label132 = new System.Windows.Forms.Label();
+            this.label121 = new System.Windows.Forms.Label();
+            this.lbTradeDestination = new System.Windows.Forms.ListBox();
+            this.lbTradeSource = new System.Windows.Forms.ListBox();
             this.tpZones = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label33 = new System.Windows.Forms.Label();
@@ -483,26 +504,14 @@
             this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label10 = new System.Windows.Forms.Label();
             this.tZonesSearch = new System.Windows.Forms.TextBox();
-            this.tpTrade = new System.Windows.Forms.TabPage();
-            this.lTradeRoute = new System.Windows.Forms.Label();
-            this.label133 = new System.Windows.Forms.Label();
-            this.label134 = new System.Windows.Forms.Label();
-            this.lTradeRatio = new System.Windows.Forms.Label();
-            this.lTradeProfit = new System.Windows.Forms.Label();
-            this.label132 = new System.Windows.Forms.Label();
-            this.label121 = new System.Windows.Forms.Label();
-            this.lbTradeDestination = new System.Windows.Forms.ListBox();
-            this.lbTradeSource = new System.Windows.Forms.ListBox();
             this.openDBDlg = new System.Windows.Forms.OpenFileDialog();
             this.openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.mainFormToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             this.ofdJsonData = new System.Windows.Forms.OpenFileDialog();
             this.ilIcons = new System.Windows.Forms.ImageList(this.components);
-            this.tvBuffTriggers = new System.Windows.Forms.TreeView();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.label85 = new System.Windows.Forms.Label();
-            this.cbBuffsHideEmpty = new System.Windows.Forms.CheckBox();
+            this.tvTagInfo = new System.Windows.Forms.TreeView();
+            this.label138 = new System.Windows.Forms.Label();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -514,6 +523,10 @@
             this.tpV1.SuspendLayout();
             this.tpBuffs.SuspendLayout();
             this.groupBox14.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBuffs)).BeginInit();
             this.tpDoodads.SuspendLayout();
             this.tcDoodads.SuspendLayout();
@@ -557,16 +570,14 @@
             this.tpSkillExecution.SuspendLayout();
             this.gbSkillPlotEventInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkills)).BeginInit();
+            this.tpTags.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTags)).BeginInit();
+            this.tpTrade.SuspendLayout();
             this.tpZones.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).BeginInit();
-            this.tpTrade.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbTableNames
@@ -595,8 +606,9 @@
             this.tcViewer.Controls.Add(this.tpNPCs);
             this.tcViewer.Controls.Add(this.tpQuests);
             this.tcViewer.Controls.Add(this.tpSkills);
-            this.tcViewer.Controls.Add(this.tpZones);
+            this.tcViewer.Controls.Add(this.tpTags);
             this.tcViewer.Controls.Add(this.tpTrade);
+            this.tcViewer.Controls.Add(this.tpZones);
             this.tcViewer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tcViewer.Location = new System.Drawing.Point(0, 0);
             this.tcViewer.Multiline = true;
@@ -1161,6 +1173,97 @@
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Buff Info";
             // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer2.Location = new System.Drawing.Point(6, 155);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.cbBuffsHideEmpty);
+            this.splitContainer2.Panel1.Controls.Add(this.label85);
+            this.splitContainer2.Panel1.Controls.Add(this.tvBuffTriggers);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.label97);
+            this.splitContainer2.Panel2.Controls.Add(this.flpBuff);
+            this.splitContainer2.Size = new System.Drawing.Size(581, 267);
+            this.splitContainer2.SplitterDistance = 315;
+            this.splitContainer2.TabIndex = 21;
+            // 
+            // cbBuffsHideEmpty
+            // 
+            this.cbBuffsHideEmpty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbBuffsHideEmpty.AutoSize = true;
+            this.cbBuffsHideEmpty.Location = new System.Drawing.Point(232, 4);
+            this.cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
+            this.cbBuffsHideEmpty.Size = new System.Drawing.Size(80, 17);
+            this.cbBuffsHideEmpty.TabIndex = 22;
+            this.cbBuffsHideEmpty.Text = "Hide Empty";
+            this.cbBuffsHideEmpty.UseVisualStyleBackColor = true;
+            // 
+            // label85
+            // 
+            this.label85.AutoSize = true;
+            this.label85.Location = new System.Drawing.Point(3, 5);
+            this.label85.Name = "label85";
+            this.label85.Size = new System.Drawing.Size(45, 13);
+            this.label85.TabIndex = 6;
+            this.label85.Text = "Triggers";
+            // 
+            // tvBuffTriggers
+            // 
+            this.tvBuffTriggers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvBuffTriggers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.tvBuffTriggers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
+            this.tvBuffTriggers.ImageIndex = 0;
+            this.tvBuffTriggers.ImageList = this.ilMiniIcons;
+            this.tvBuffTriggers.ItemHeight = 24;
+            this.tvBuffTriggers.Location = new System.Drawing.Point(3, 21);
+            this.tvBuffTriggers.Name = "tvBuffTriggers";
+            this.tvBuffTriggers.SelectedImageIndex = 0;
+            this.tvBuffTriggers.Size = new System.Drawing.Size(309, 243);
+            this.tvBuffTriggers.TabIndex = 20;
+            this.tvBuffTriggers.DoubleClick += new System.EventHandler(this.tvBuffTriggers_DoubleClick);
+            // 
+            // ilMiniIcons
+            // 
+            this.ilMiniIcons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilMiniIcons.ImageStream")));
+            this.ilMiniIcons.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilMiniIcons.Images.SetKeyName(0, "blank24.png");
+            this.ilMiniIcons.Images.SetKeyName(1, "icon_question_yellow.png");
+            this.ilMiniIcons.Images.SetKeyName(2, "icon_exclamation_yellow.png");
+            this.ilMiniIcons.Images.SetKeyName(3, "icon_exclamation_green.png");
+            this.ilMiniIcons.Images.SetKeyName(4, "icon_exclamation_blue.png");
+            // 
+            // label97
+            // 
+            this.label97.AutoSize = true;
+            this.label97.Location = new System.Drawing.Point(3, 8);
+            this.label97.Name = "label97";
+            this.label97.Size = new System.Drawing.Size(68, 13);
+            this.label97.TabIndex = 5;
+            this.label97.Text = "Other Values";
+            // 
+            // flpBuff
+            // 
+            this.flpBuff.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.flpBuff.AutoScroll = true;
+            this.flpBuff.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.flpBuff.Location = new System.Drawing.Point(6, 24);
+            this.flpBuff.Name = "flpBuff";
+            this.flpBuff.Size = new System.Drawing.Size(256, 240);
+            this.flpBuff.TabIndex = 2;
+            // 
             // lBuffAddGMCommand
             // 
             this.lBuffAddGMCommand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -1241,15 +1344,6 @@
             this.buffIcon.Text = "???";
             this.buffIcon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label97
-            // 
-            this.label97.AutoSize = true;
-            this.label97.Location = new System.Drawing.Point(3, 8);
-            this.label97.Name = "label97";
-            this.label97.Size = new System.Drawing.Size(68, 13);
-            this.label97.TabIndex = 5;
-            this.label97.Text = "Other Values";
-            // 
             // lBuffName
             // 
             this.lBuffName.AutoSize = true;
@@ -1267,18 +1361,6 @@
             this.label105.Size = new System.Drawing.Size(35, 13);
             this.label105.TabIndex = 3;
             this.label105.Text = "Name";
-            // 
-            // flpBuff
-            // 
-            this.flpBuff.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.flpBuff.AutoScroll = true;
-            this.flpBuff.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.flpBuff.Location = new System.Drawing.Point(6, 24);
-            this.flpBuff.Name = "flpBuff";
-            this.flpBuff.Size = new System.Drawing.Size(256, 240);
-            this.flpBuff.TabIndex = 2;
             // 
             // lBuffId
             // 
@@ -4632,16 +4714,6 @@
             this.tvSkill.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvSkill_AfterSelect);
             this.tvSkill.DoubleClick += new System.EventHandler(this.tvSkill_DoubleClick);
             // 
-            // ilMiniIcons
-            // 
-            this.ilMiniIcons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilMiniIcons.ImageStream")));
-            this.ilMiniIcons.TransparentColor = System.Drawing.Color.Transparent;
-            this.ilMiniIcons.Images.SetKeyName(0, "blank24.png");
-            this.ilMiniIcons.Images.SetKeyName(1, "icon_question_yellow.png");
-            this.ilMiniIcons.Images.SetKeyName(2, "icon_exclamation_yellow.png");
-            this.ilMiniIcons.Images.SetKeyName(3, "icon_exclamation_green.png");
-            this.ilMiniIcons.Images.SetKeyName(4, "icon_exclamation_blue.png");
-            // 
             // btnSkillSearch
             // 
             this.btnSkillSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -4718,6 +4790,186 @@
             this.tSkillSearch.TabIndex = 4;
             this.tSkillSearch.TextChanged += new System.EventHandler(this.TSkillSearch_TextChanged);
             this.tSkillSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSkillSearch_KeyDown);
+            // 
+            // tpTags
+            // 
+            this.tpTags.Controls.Add(this.label138);
+            this.tpTags.Controls.Add(this.tvTagInfo);
+            this.tpTags.Controls.Add(this.btnSearchTags);
+            this.tpTags.Controls.Add(this.dgvTags);
+            this.tpTags.Controls.Add(this.label137);
+            this.tpTags.Controls.Add(this.tSearchTags);
+            this.tpTags.Location = new System.Drawing.Point(4, 22);
+            this.tpTags.Name = "tpTags";
+            this.tpTags.Padding = new System.Windows.Forms.Padding(3);
+            this.tpTags.Size = new System.Drawing.Size(926, 485);
+            this.tpTags.TabIndex = 15;
+            this.tpTags.Text = "Tags";
+            this.tpTags.UseVisualStyleBackColor = true;
+            // 
+            // btnSearchTags
+            // 
+            this.btnSearchTags.Enabled = false;
+            this.btnSearchTags.Location = new System.Drawing.Point(310, 7);
+            this.btnSearchTags.Name = "btnSearchTags";
+            this.btnSearchTags.Size = new System.Drawing.Size(79, 23);
+            this.btnSearchTags.TabIndex = 11;
+            this.btnSearchTags.Text = "Search";
+            this.btnSearchTags.UseVisualStyleBackColor = true;
+            this.btnSearchTags.Click += new System.EventHandler(this.btnSearchTags_Click);
+            // 
+            // dgvTags
+            // 
+            this.dgvTags.AllowUserToAddRows = false;
+            this.dgvTags.AllowUserToDeleteRows = false;
+            this.dgvTags.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.dgvTags.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvTags.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvTags.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTags.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn22,
+            this.dataGridViewTextBoxColumn23});
+            this.dgvTags.Location = new System.Drawing.Point(11, 36);
+            this.dgvTags.Name = "dgvTags";
+            this.dgvTags.ReadOnly = true;
+            this.dgvTags.RowHeadersVisible = false;
+            this.dgvTags.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvTags.Size = new System.Drawing.Size(378, 441);
+            this.dgvTags.TabIndex = 10;
+            this.dgvTags.SelectionChanged += new System.EventHandler(this.dgvTags_SelectionChanged);
+            // 
+            // dataGridViewTextBoxColumn22
+            // 
+            this.dataGridViewTextBoxColumn22.FillWeight = 20F;
+            this.dataGridViewTextBoxColumn22.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn22.Name = "dataGridViewTextBoxColumn22";
+            this.dataGridViewTextBoxColumn22.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn23
+            // 
+            this.dataGridViewTextBoxColumn23.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn23.HeaderText = "Name";
+            this.dataGridViewTextBoxColumn23.Name = "dataGridViewTextBoxColumn23";
+            this.dataGridViewTextBoxColumn23.ReadOnly = true;
+            // 
+            // label137
+            // 
+            this.label137.AutoSize = true;
+            this.label137.Location = new System.Drawing.Point(8, 12);
+            this.label137.Name = "label137";
+            this.label137.Size = new System.Drawing.Size(98, 13);
+            this.label137.TabIndex = 9;
+            this.label137.Text = "Search ID or Name";
+            // 
+            // tSearchTags
+            // 
+            this.tSearchTags.Location = new System.Drawing.Point(112, 9);
+            this.tSearchTags.Name = "tSearchTags";
+            this.tSearchTags.Size = new System.Drawing.Size(192, 20);
+            this.tSearchTags.TabIndex = 8;
+            this.tSearchTags.TextChanged += new System.EventHandler(this.tSearchTags_TextChanged);
+            this.tSearchTags.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tSearchTags_KeyDown);
+            // 
+            // tpTrade
+            // 
+            this.tpTrade.Controls.Add(this.lTradeRoute);
+            this.tpTrade.Controls.Add(this.label133);
+            this.tpTrade.Controls.Add(this.label134);
+            this.tpTrade.Controls.Add(this.lTradeRatio);
+            this.tpTrade.Controls.Add(this.lTradeProfit);
+            this.tpTrade.Controls.Add(this.label132);
+            this.tpTrade.Controls.Add(this.label121);
+            this.tpTrade.Controls.Add(this.lbTradeDestination);
+            this.tpTrade.Controls.Add(this.lbTradeSource);
+            this.tpTrade.Location = new System.Drawing.Point(4, 22);
+            this.tpTrade.Name = "tpTrade";
+            this.tpTrade.Padding = new System.Windows.Forms.Padding(3);
+            this.tpTrade.Size = new System.Drawing.Size(926, 485);
+            this.tpTrade.TabIndex = 14;
+            this.tpTrade.Text = "Trades";
+            this.tpTrade.UseVisualStyleBackColor = true;
+            // 
+            // lTradeRoute
+            // 
+            this.lTradeRoute.AutoSize = true;
+            this.lTradeRoute.Location = new System.Drawing.Point(440, 15);
+            this.lTradeRoute.Name = "lTradeRoute";
+            this.lTradeRoute.Size = new System.Drawing.Size(10, 13);
+            this.lTradeRoute.TabIndex = 8;
+            this.lTradeRoute.Text = "-";
+            // 
+            // label133
+            // 
+            this.label133.AutoSize = true;
+            this.label133.Location = new System.Drawing.Point(440, 55);
+            this.label133.Name = "label133";
+            this.label133.Size = new System.Drawing.Size(35, 13);
+            this.label133.TabIndex = 7;
+            this.label133.Text = "Ratio:";
+            // 
+            // label134
+            // 
+            this.label134.AutoSize = true;
+            this.label134.Location = new System.Drawing.Point(440, 31);
+            this.label134.Name = "label134";
+            this.label134.Size = new System.Drawing.Size(34, 13);
+            this.label134.TabIndex = 6;
+            this.label134.Text = "Profit:";
+            // 
+            // lTradeRatio
+            // 
+            this.lTradeRatio.AutoSize = true;
+            this.lTradeRatio.Location = new System.Drawing.Point(480, 55);
+            this.lTradeRatio.Name = "lTradeRatio";
+            this.lTradeRatio.Size = new System.Drawing.Size(13, 13);
+            this.lTradeRatio.TabIndex = 5;
+            this.lTradeRatio.Text = "0";
+            // 
+            // lTradeProfit
+            // 
+            this.lTradeProfit.AutoSize = true;
+            this.lTradeProfit.Location = new System.Drawing.Point(480, 31);
+            this.lTradeProfit.Name = "lTradeProfit";
+            this.lTradeProfit.Size = new System.Drawing.Size(13, 13);
+            this.lTradeProfit.TabIndex = 4;
+            this.lTradeProfit.Text = "0";
+            // 
+            // label132
+            // 
+            this.label132.AutoSize = true;
+            this.label132.Location = new System.Drawing.Point(221, 15);
+            this.label132.Name = "label132";
+            this.label132.Size = new System.Drawing.Size(60, 13);
+            this.label132.TabIndex = 3;
+            this.label132.Text = "Destination";
+            // 
+            // label121
+            // 
+            this.label121.AutoSize = true;
+            this.label121.Location = new System.Drawing.Point(8, 15);
+            this.label121.Name = "label121";
+            this.label121.Size = new System.Drawing.Size(69, 13);
+            this.label121.TabIndex = 2;
+            this.label121.Text = "Source Pack";
+            // 
+            // lbTradeDestination
+            // 
+            this.lbTradeDestination.FormattingEnabled = true;
+            this.lbTradeDestination.Location = new System.Drawing.Point(224, 31);
+            this.lbTradeDestination.Name = "lbTradeDestination";
+            this.lbTradeDestination.Size = new System.Drawing.Size(210, 329);
+            this.lbTradeDestination.TabIndex = 1;
+            this.lbTradeDestination.SelectedIndexChanged += new System.EventHandler(this.lbTradeDestination_SelectedIndexChanged);
+            // 
+            // lbTradeSource
+            // 
+            this.lbTradeSource.FormattingEnabled = true;
+            this.lbTradeSource.Location = new System.Drawing.Point(8, 31);
+            this.lbTradeSource.Name = "lbTradeSource";
+            this.lbTradeSource.Size = new System.Drawing.Size(210, 329);
+            this.lbTradeSource.TabIndex = 0;
+            this.lbTradeSource.SelectedIndexChanged += new System.EventHandler(this.lbTradeSource_SelectedIndexChanged);
             // 
             // tpZones
             // 
@@ -5403,106 +5655,6 @@
             this.tZonesSearch.TextChanged += new System.EventHandler(this.TZonesSearch_TextChanged);
             this.tZonesSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TZonesSearch_KeyDown);
             // 
-            // tpTrade
-            // 
-            this.tpTrade.Controls.Add(this.lTradeRoute);
-            this.tpTrade.Controls.Add(this.label133);
-            this.tpTrade.Controls.Add(this.label134);
-            this.tpTrade.Controls.Add(this.lTradeRatio);
-            this.tpTrade.Controls.Add(this.lTradeProfit);
-            this.tpTrade.Controls.Add(this.label132);
-            this.tpTrade.Controls.Add(this.label121);
-            this.tpTrade.Controls.Add(this.lbTradeDestination);
-            this.tpTrade.Controls.Add(this.lbTradeSource);
-            this.tpTrade.Location = new System.Drawing.Point(4, 22);
-            this.tpTrade.Name = "tpTrade";
-            this.tpTrade.Padding = new System.Windows.Forms.Padding(3);
-            this.tpTrade.Size = new System.Drawing.Size(926, 485);
-            this.tpTrade.TabIndex = 14;
-            this.tpTrade.Text = "Trades";
-            this.tpTrade.UseVisualStyleBackColor = true;
-            // 
-            // lTradeRoute
-            // 
-            this.lTradeRoute.AutoSize = true;
-            this.lTradeRoute.Location = new System.Drawing.Point(440, 15);
-            this.lTradeRoute.Name = "lTradeRoute";
-            this.lTradeRoute.Size = new System.Drawing.Size(10, 13);
-            this.lTradeRoute.TabIndex = 8;
-            this.lTradeRoute.Text = "-";
-            // 
-            // label133
-            // 
-            this.label133.AutoSize = true;
-            this.label133.Location = new System.Drawing.Point(440, 55);
-            this.label133.Name = "label133";
-            this.label133.Size = new System.Drawing.Size(35, 13);
-            this.label133.TabIndex = 7;
-            this.label133.Text = "Ratio:";
-            // 
-            // label134
-            // 
-            this.label134.AutoSize = true;
-            this.label134.Location = new System.Drawing.Point(440, 31);
-            this.label134.Name = "label134";
-            this.label134.Size = new System.Drawing.Size(34, 13);
-            this.label134.TabIndex = 6;
-            this.label134.Text = "Profit:";
-            // 
-            // lTradeRatio
-            // 
-            this.lTradeRatio.AutoSize = true;
-            this.lTradeRatio.Location = new System.Drawing.Point(480, 55);
-            this.lTradeRatio.Name = "lTradeRatio";
-            this.lTradeRatio.Size = new System.Drawing.Size(13, 13);
-            this.lTradeRatio.TabIndex = 5;
-            this.lTradeRatio.Text = "0";
-            // 
-            // lTradeProfit
-            // 
-            this.lTradeProfit.AutoSize = true;
-            this.lTradeProfit.Location = new System.Drawing.Point(480, 31);
-            this.lTradeProfit.Name = "lTradeProfit";
-            this.lTradeProfit.Size = new System.Drawing.Size(13, 13);
-            this.lTradeProfit.TabIndex = 4;
-            this.lTradeProfit.Text = "0";
-            // 
-            // label132
-            // 
-            this.label132.AutoSize = true;
-            this.label132.Location = new System.Drawing.Point(221, 15);
-            this.label132.Name = "label132";
-            this.label132.Size = new System.Drawing.Size(60, 13);
-            this.label132.TabIndex = 3;
-            this.label132.Text = "Destination";
-            // 
-            // label121
-            // 
-            this.label121.AutoSize = true;
-            this.label121.Location = new System.Drawing.Point(8, 15);
-            this.label121.Name = "label121";
-            this.label121.Size = new System.Drawing.Size(69, 13);
-            this.label121.TabIndex = 2;
-            this.label121.Text = "Source Pack";
-            // 
-            // lbTradeDestination
-            // 
-            this.lbTradeDestination.FormattingEnabled = true;
-            this.lbTradeDestination.Location = new System.Drawing.Point(224, 31);
-            this.lbTradeDestination.Name = "lbTradeDestination";
-            this.lbTradeDestination.Size = new System.Drawing.Size(210, 329);
-            this.lbTradeDestination.TabIndex = 1;
-            this.lbTradeDestination.SelectedIndexChanged += new System.EventHandler(this.lbTradeDestination_SelectedIndexChanged);
-            // 
-            // lbTradeSource
-            // 
-            this.lbTradeSource.FormattingEnabled = true;
-            this.lbTradeSource.Location = new System.Drawing.Point(8, 31);
-            this.lbTradeSource.Name = "lbTradeSource";
-            this.lbTradeSource.Size = new System.Drawing.Size(210, 329);
-            this.lbTradeSource.TabIndex = 0;
-            this.lbTradeSource.SelectedIndexChanged += new System.EventHandler(this.lbTradeSource_SelectedIndexChanged);
-            // 
             // openDBDlg
             // 
             this.openDBDlg.DefaultExt = "sqlite3";
@@ -5545,65 +5697,31 @@
             this.ilIcons.Images.SetKeyName(3, "icon_exclamation_green.png");
             this.ilIcons.Images.SetKeyName(4, "icon_exclamation_blue.png");
             // 
-            // tvBuffTriggers
+            // tvTagInfo
             // 
-            this.tvBuffTriggers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tvTagInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tvBuffTriggers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
-            this.tvBuffTriggers.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
-            this.tvBuffTriggers.ImageIndex = 0;
-            this.tvBuffTriggers.ImageList = this.ilMiniIcons;
-            this.tvBuffTriggers.ItemHeight = 24;
-            this.tvBuffTriggers.Location = new System.Drawing.Point(3, 21);
-            this.tvBuffTriggers.Name = "tvBuffTriggers";
-            this.tvBuffTriggers.SelectedImageIndex = 0;
-            this.tvBuffTriggers.Size = new System.Drawing.Size(309, 243);
-            this.tvBuffTriggers.TabIndex = 20;
-            this.tvBuffTriggers.DoubleClick += new System.EventHandler(this.tvBuffTriggers_DoubleClick);
+            this.tvTagInfo.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.tvTagInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tvTagInfo.ImageIndex = 0;
+            this.tvTagInfo.ImageList = this.ilMiniIcons;
+            this.tvTagInfo.ItemHeight = 24;
+            this.tvTagInfo.Location = new System.Drawing.Point(395, 36);
+            this.tvTagInfo.Name = "tvTagInfo";
+            this.tvTagInfo.SelectedImageIndex = 0;
+            this.tvTagInfo.Size = new System.Drawing.Size(523, 441);
+            this.tvTagInfo.TabIndex = 12;
+            this.tvTagInfo.DoubleClick += new System.EventHandler(this.tvTagInfo_DoubleClick);
             // 
-            // splitContainer2
+            // label138
             // 
-            this.splitContainer2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer2.Location = new System.Drawing.Point(6, 155);
-            this.splitContainer2.Name = "splitContainer2";
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.cbBuffsHideEmpty);
-            this.splitContainer2.Panel1.Controls.Add(this.label85);
-            this.splitContainer2.Panel1.Controls.Add(this.tvBuffTriggers);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.label97);
-            this.splitContainer2.Panel2.Controls.Add(this.flpBuff);
-            this.splitContainer2.Size = new System.Drawing.Size(581, 267);
-            this.splitContainer2.SplitterDistance = 315;
-            this.splitContainer2.TabIndex = 21;
-            // 
-            // label85
-            // 
-            this.label85.AutoSize = true;
-            this.label85.Location = new System.Drawing.Point(3, 5);
-            this.label85.Name = "label85";
-            this.label85.Size = new System.Drawing.Size(45, 13);
-            this.label85.TabIndex = 6;
-            this.label85.Text = "Triggers";
-            // 
-            // cbBuffsHideEmpty
-            // 
-            this.cbBuffsHideEmpty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbBuffsHideEmpty.AutoSize = true;
-            this.cbBuffsHideEmpty.Location = new System.Drawing.Point(232, 4);
-            this.cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
-            this.cbBuffsHideEmpty.Size = new System.Drawing.Size(80, 17);
-            this.cbBuffsHideEmpty.TabIndex = 22;
-            this.cbBuffsHideEmpty.Text = "Hide Empty";
-            this.cbBuffsHideEmpty.UseVisualStyleBackColor = true;
+            this.label138.AutoSize = true;
+            this.label138.Location = new System.Drawing.Point(422, 20);
+            this.label138.Name = "label138";
+            this.label138.Size = new System.Drawing.Size(43, 13);
+            this.label138.TabIndex = 13;
+            this.label138.Text = "Used in";
             // 
             // MainForm
             // 
@@ -5634,6 +5752,12 @@
             this.tpBuffs.PerformLayout();
             this.groupBox14.ResumeLayout(false);
             this.groupBox14.PerformLayout();
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel1.PerformLayout();
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvBuffs)).EndInit();
             this.tpDoodads.ResumeLayout(false);
             this.tpDoodads.PerformLayout();
@@ -5697,6 +5821,11 @@
             this.gbSkillPlotEventInfo.ResumeLayout(false);
             this.gbSkillPlotEventInfo.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSkills)).EndInit();
+            this.tpTags.ResumeLayout(false);
+            this.tpTags.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTags)).EndInit();
+            this.tpTrade.ResumeLayout(false);
+            this.tpTrade.PerformLayout();
             this.tpZones.ResumeLayout(false);
             this.tpZones.PerformLayout();
             this.groupBox5.ResumeLayout(false);
@@ -5706,14 +5835,6 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).EndInit();
-            this.tpTrade.ResumeLayout(false);
-            this.tpTrade.PerformLayout();
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel1.PerformLayout();
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            this.splitContainer2.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -6191,6 +6312,15 @@
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.Label label85;
         private System.Windows.Forms.CheckBox cbBuffsHideEmpty;
+        private System.Windows.Forms.TabPage tpTags;
+        private System.Windows.Forms.Button btnSearchTags;
+        private System.Windows.Forms.DataGridView dgvTags;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn22;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn23;
+        private System.Windows.Forms.Label label137;
+        private System.Windows.Forms.TextBox tSearchTags;
+        private System.Windows.Forms.TreeView tvTagInfo;
+        private System.Windows.Forms.Label label138;
     }
 }
 

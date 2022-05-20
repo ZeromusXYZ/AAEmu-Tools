@@ -4781,7 +4781,7 @@ namespace AAEmu.DBViewer
             {
                 res.targetTabPage = tpSkills;
                 res.targetTextBox = tSkillSearch;
-                res.targetSearchText = skill.id.ToString();
+                res.targetSearchText = skill.nameLocalized;
                 res.targetSearchButton = btnSkillSearch;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + skill.nameLocalized;
@@ -4792,7 +4792,7 @@ namespace AAEmu.DBViewer
             {
                 res.targetTabPage = tpItems;
                 res.targetTextBox = tItemSearch;
-                res.targetSearchText = item.id.ToString();
+                res.targetSearchText = item.nameLocalized;
                 res.targetSearchButton = btnItemSearch;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + item.nameLocalized;
@@ -4803,7 +4803,7 @@ namespace AAEmu.DBViewer
             {
                 res.targetTabPage = tpDoodads;
                 res.targetTextBox = tSearchDoodads;
-                res.targetSearchText = doodad.id.ToString();
+                res.targetSearchText = doodad.nameLocalized;
                 res.targetSearchButton = btnSearchDoodads;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + doodad.nameLocalized;
@@ -4813,7 +4813,7 @@ namespace AAEmu.DBViewer
             {
                 res.targetTabPage = tpNPCs;
                 res.targetTextBox = tSearchNPC;
-                res.targetSearchText = npc.id.ToString();
+                res.targetSearchText = npc.nameLocalized;
                 res.targetSearchButton = btnSearchNPC;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + npc.nameLocalized;
@@ -4823,7 +4823,7 @@ namespace AAEmu.DBViewer
             {
                 res.targetTabPage = tpBuffs;
                 res.targetTextBox = tSearchBuffs;
-                res.targetSearchText = buff.id.ToString();
+                res.targetSearchText = buff.nameLocalized;
                 res.targetSearchButton = btnSearchBuffs;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + buff.nameLocalized;
@@ -4834,17 +4834,27 @@ namespace AAEmu.DBViewer
             {
                 res.targetTabPage = tpZones;
                 res.targetTextBox = tZonesSearch;
-                res.targetSearchText = zone.id.ToString();
+                res.targetSearchText = zone.display_textLocalized;
                 res.targetSearchButton = btnSearchZones;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + zone.display_textLocalized;
+            }
+            else
+            if (key.EndsWith("zone_group_id") && (AADB.DB_Zone_Groups.TryGetValue(val, out var zoneGroup)))
+            {
+                res.targetTabPage = tpZones;
+                res.targetTextBox = tZonesSearch;
+                res.targetSearchText = zoneGroup.display_textLocalized;
+                res.targetSearchButton = btnSearchZones;
+                res.ForeColor = Color.WhiteSmoke;
+                nodeText += " - " + zoneGroup.display_textLocalized;
             }
             else
             if (key.EndsWith("item_category_id") && (AADB.DB_ItemsCategories.TryGetValue(val, out var itemCategory)))
             {
                 res.targetTabPage = tpItems;
                 res.targetTextBox = tItemSearch;
-                res.targetSearchText = itemCategory.id.ToString();
+                res.targetSearchText = itemCategory.nameLocalized;
                 res.targetSearchButton = btnItemSearch;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + itemCategory.nameLocalized;
@@ -4852,8 +4862,12 @@ namespace AAEmu.DBViewer
             else
             if (key.EndsWith("tag_id") && (AADB.DB_Tags.TryGetValue(val, out var tagId)))
             {
+                res.targetTabPage = tpTags;
+                res.targetTextBox = tSearchTags;
+                res.targetSearchText = tagId.nameLocalized;
+                res.targetSearchButton = btnSearchTags;
+                res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + tagId.nameLocalized ;
-                res.ForeColor = Color.LawnGreen;
             }
             else
             if (key.EndsWith("special_effect_type_id"))
@@ -5522,9 +5536,10 @@ namespace AAEmu.DBViewer
 
         private void labelZoneGroupRestrictions_Click(object sender, EventArgs e)
         {
-            if (!(sender is Label))
+            if (!(sender is Label l) || (l == null))
                 return;
-            var zoneGroupId = (long)(sender as Label).Tag;
+
+            var zoneGroupId = (long)l.Tag;
             var bannedInfo = string.Empty; ;
             foreach (var b in AADB.DB_Zone_Group_Banned_Tags)
             {
@@ -7607,6 +7622,150 @@ namespace AAEmu.DBViewer
         }
 
         private void tvBuffTriggers_DoubleClick(object sender, EventArgs e)
+        {
+            if ((sender is TreeView tv) && (tv.SelectedNode != null) && (tv.SelectedNode.Tag == null))
+                ProcessNodeInfoDoubleClick(tv.SelectedNode);
+        }
+
+        private void ShowDBTag(long tag)
+        {
+            tvTagInfo.Nodes.Clear();
+            if (tag <= 0)
+                return;
+
+            ShowSelectedData("tags", "id = " + tag.ToString(), "id");
+            
+            TreeNode groupNode = null;
+
+            groupNode = null;
+            var buffs = from i in AADB.DB_Tagged_Buffs.Values
+                        where i.tag_id == tag
+                        select i;
+            foreach (var i in buffs)
+            {
+                if (groupNode == null)
+                    groupNode = tvTagInfo.Nodes.Add("Buffs");
+                AddCustomPropertyNode("buff_id", i.target_id.ToString(), false, groupNode);
+            }
+
+            groupNode = null;
+            var items = from i in AADB.DB_Tagged_Items.Values
+                        where i.tag_id == tag
+                        select i;
+            foreach (var i in items)
+            {
+                if (groupNode == null)
+                    groupNode = tvTagInfo.Nodes.Add("Items");
+                AddCustomPropertyNode("item_id", i.target_id.ToString(), false, groupNode);
+            }
+
+            groupNode = null;
+            var npcs = from i in AADB.DB_Tagged_NPCs.Values
+                        where i.tag_id == tag
+                        select i;
+            foreach (var i in npcs)
+            {
+                if (groupNode == null)
+                    groupNode = tvTagInfo.Nodes.Add("NPCs");
+                AddCustomPropertyNode("npc_id", i.target_id.ToString(), false, groupNode);
+            }
+
+            groupNode = null;
+            var skills = from i in AADB.DB_Tagged_Skills.Values
+                         where i.tag_id == tag
+                         select i;
+            foreach (var i in skills)
+            {
+                if (groupNode == null)
+                    groupNode = tvTagInfo.Nodes.Add("Skills");
+                AddCustomPropertyNode("skill_id", i.target_id.ToString(), false, groupNode);
+            }
+
+            groupNode = null;
+            var zones = from i in AADB.DB_Zone_Group_Banned_Tags.Values
+                         where i.tag_id == tag
+                         select i;
+            foreach (var i in zones)
+            {
+                if (groupNode == null)
+                    groupNode = tvTagInfo.Nodes.Add("Zone Groups (banned tags)");
+                AddCustomPropertyNode("zone_group_id", i.zone_group_id.ToString(), false, groupNode);
+            }
+
+            // expand if only one group is showing
+            if (tvTagInfo.Nodes.Count == 1)
+                tvTagInfo.ExpandAll();
+        }
+
+        private void btnSearchTags_Click(object sender, EventArgs e)
+        {
+            string searchText = tSearchTags.Text.ToLower();
+            if (searchText == string.Empty)
+                return;
+            long searchID;
+            if (!long.TryParse(searchText, out searchID))
+                searchID = -1;
+
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+            dgvTags.Rows.Clear();
+            int c = 0;
+            foreach (var t in AADB.DB_Tags)
+            {
+                var z = t.Value;
+                if ((z.id == searchID) || (z.SearchString.IndexOf(searchText) >= 0))
+                {
+                    var line = dgvTags.Rows.Add();
+                    var row = dgvTags.Rows[line];
+
+                    row.Cells[0].Value = z.id.ToString();
+                    row.Cells[1].Value = z.nameLocalized;
+
+                    if (c == 0)
+                    {
+                        ShowDBTag(z.id);
+                    }
+                    c++;
+                    if (c >= 250)
+                    {
+                        MessageBox.Show("The results were cut off at " + c.ToString() + " items, please refine your search !", "Too many entries", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        break;
+                    }
+                }
+
+            }
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+        }
+
+        private void tSearchTags_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnSearchTags_Click(null, null);
+            }
+        }
+
+        private void dgvTags_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvTags.SelectedRows.Count <= 0)
+                return;
+            var row = dgvTags.SelectedRows[0];
+            if (row.Cells.Count <= 0)
+                return;
+
+            var val = row.Cells[0].Value;
+            if (val == null)
+                return;
+            ShowDBTag(long.Parse(val.ToString()));
+        }
+
+        private void tSearchTags_TextChanged(object sender, EventArgs e)
+        {
+            btnSearchTags.Enabled = (tSearchTags.Text != "");
+        }
+
+        private void tvTagInfo_DoubleClick(object sender, EventArgs e)
         {
             if ((sender is TreeView tv) && (tv.SelectedNode != null) && (tv.SelectedNode.Tag == null))
                 ProcessNodeInfoDoubleClick(tv.SelectedNode);
