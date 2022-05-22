@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
             this.lbTableNames = new System.Windows.Forms.ListBox();
             this.tcViewer = new System.Windows.Forms.TabControl();
             this.tbTables = new System.Windows.Forms.TabPage();
@@ -1206,6 +1206,7 @@
             this.cbBuffsHideEmpty.TabIndex = 22;
             this.cbBuffsHideEmpty.Text = "Hide Empty";
             this.cbBuffsHideEmpty.UseVisualStyleBackColor = true;
+            this.cbBuffsHideEmpty.CheckedChanged += new System.EventHandler(this.cbBuffsHideEmpty_CheckedChanged);
             // 
             // label85
             // 
@@ -2647,6 +2648,7 @@
             this.cbDoodadWorkflowHideEmpty.TabIndex = 1;
             this.cbDoodadWorkflowHideEmpty.Text = "Hide empty values";
             this.cbDoodadWorkflowHideEmpty.UseVisualStyleBackColor = true;
+            this.cbDoodadWorkflowHideEmpty.CheckedChanged += new System.EventHandler(this.cbDoodadWorkflowHideEmpty_CheckedChanged);
             // 
             // tvDoodadDetails
             // 
@@ -4165,6 +4167,7 @@
             this.cbQuestWorkflowHideEmpty.TabIndex = 1;
             this.cbQuestWorkflowHideEmpty.Text = "Hide empty values";
             this.cbQuestWorkflowHideEmpty.UseVisualStyleBackColor = true;
+            this.cbQuestWorkflowHideEmpty.CheckedChanged += new System.EventHandler(this.cbQuestWorkflowHideEmpty_CheckedChanged);
             // 
             // tvQuestWorkflow
             // 
@@ -4707,10 +4710,10 @@
             this.tvSkill.ItemHeight = 24;
             this.tvSkill.Location = new System.Drawing.Point(6, 6);
             this.tvSkill.Name = "tvSkill";
-            treeNode2.Name = "SkillNode";
-            treeNode2.Text = "Skill";
+            treeNode1.Name = "SkillNode";
+            treeNode1.Text = "Skill";
             this.tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
+            treeNode1});
             this.tvSkill.SelectedImageIndex = 0;
             this.tvSkill.Size = new System.Drawing.Size(341, 295);
             this.tvSkill.TabIndex = 0;

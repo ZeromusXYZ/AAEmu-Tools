@@ -7770,5 +7770,26 @@ namespace AAEmu.DBViewer
             if ((sender is TreeView tv) && (tv.SelectedNode != null) && (tv.SelectedNode.Tag == null))
                 ProcessNodeInfoDoubleClick(tv.SelectedNode);
         }
+
+        private void cbBuffsHideEmpty_CheckedChanged(object sender, EventArgs e)
+        {
+            if (long.TryParse(lBuffId.Text, out var id))
+                ShowDBBuff(id);
+        }
+
+        private void cbDoodadWorkflowHideEmpty_CheckedChanged(object sender, EventArgs e)
+        {
+            if (long.TryParse(lDoodadID.Text, out var id))
+                ShowDBDoodad(id);
+        }
+
+        private void cbQuestWorkflowHideEmpty_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((dgvQuests.CurrentRow != null) && (dgvQuests.CurrentRow.Cells.Count > 0))
+            {
+                if (long.TryParse(dgvQuests.CurrentRow.Cells[0].Value.ToString(), out var id))
+                    ShowDBQuest(id);
+            }
+        }
     }
 }
