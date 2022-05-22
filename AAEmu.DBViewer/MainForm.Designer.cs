@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
             this.lbTableNames = new System.Windows.Forms.ListBox();
             this.tcViewer = new System.Windows.Forms.TabControl();
             this.tbTables = new System.Windows.Forms.TabPage();
@@ -422,6 +422,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.tSkillSearch = new System.Windows.Forms.TextBox();
             this.tpTags = new System.Windows.Forms.TabPage();
+            this.label138 = new System.Windows.Forms.Label();
+            this.tvTagInfo = new System.Windows.Forms.TreeView();
             this.btnSearchTags = new System.Windows.Forms.Button();
             this.dgvTags = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -510,8 +512,6 @@
             this.ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             this.ofdJsonData = new System.Windows.Forms.OpenFileDialog();
             this.ilIcons = new System.Windows.Forms.ImageList(this.components);
-            this.tvTagInfo = new System.Windows.Forms.TreeView();
-            this.label138 = new System.Windows.Forms.Label();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -4168,6 +4168,9 @@
             // 
             // tvQuestWorkflow
             // 
+            this.tvQuestWorkflow.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tvQuestWorkflow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
             this.tvQuestWorkflow.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
             this.tvQuestWorkflow.Location = new System.Drawing.Point(3, 5);
@@ -4704,10 +4707,10 @@
             this.tvSkill.ItemHeight = 24;
             this.tvSkill.Location = new System.Drawing.Point(6, 6);
             this.tvSkill.Name = "tvSkill";
-            treeNode1.Name = "SkillNode";
-            treeNode1.Text = "Skill";
+            treeNode2.Name = "SkillNode";
+            treeNode2.Text = "Skill";
             this.tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            treeNode2});
             this.tvSkill.SelectedImageIndex = 0;
             this.tvSkill.Size = new System.Drawing.Size(341, 295);
             this.tvSkill.TabIndex = 0;
@@ -4806,6 +4809,32 @@
             this.tpTags.TabIndex = 15;
             this.tpTags.Text = "Tags";
             this.tpTags.UseVisualStyleBackColor = true;
+            // 
+            // label138
+            // 
+            this.label138.AutoSize = true;
+            this.label138.Location = new System.Drawing.Point(422, 20);
+            this.label138.Name = "label138";
+            this.label138.Size = new System.Drawing.Size(43, 13);
+            this.label138.TabIndex = 13;
+            this.label138.Text = "Used in";
+            // 
+            // tvTagInfo
+            // 
+            this.tvTagInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvTagInfo.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.tvTagInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tvTagInfo.ImageIndex = 0;
+            this.tvTagInfo.ImageList = this.ilMiniIcons;
+            this.tvTagInfo.ItemHeight = 24;
+            this.tvTagInfo.Location = new System.Drawing.Point(395, 36);
+            this.tvTagInfo.Name = "tvTagInfo";
+            this.tvTagInfo.SelectedImageIndex = 0;
+            this.tvTagInfo.Size = new System.Drawing.Size(523, 441);
+            this.tvTagInfo.TabIndex = 12;
+            this.tvTagInfo.DoubleClick += new System.EventHandler(this.tvTagInfo_DoubleClick);
             // 
             // btnSearchTags
             // 
@@ -4955,19 +4984,23 @@
             // 
             // lbTradeDestination
             // 
+            this.lbTradeDestination.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.lbTradeDestination.FormattingEnabled = true;
             this.lbTradeDestination.Location = new System.Drawing.Point(224, 31);
             this.lbTradeDestination.Name = "lbTradeDestination";
-            this.lbTradeDestination.Size = new System.Drawing.Size(210, 329);
+            this.lbTradeDestination.Size = new System.Drawing.Size(210, 446);
             this.lbTradeDestination.TabIndex = 1;
             this.lbTradeDestination.SelectedIndexChanged += new System.EventHandler(this.lbTradeDestination_SelectedIndexChanged);
             // 
             // lbTradeSource
             // 
+            this.lbTradeSource.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.lbTradeSource.FormattingEnabled = true;
             this.lbTradeSource.Location = new System.Drawing.Point(8, 31);
             this.lbTradeSource.Name = "lbTradeSource";
-            this.lbTradeSource.Size = new System.Drawing.Size(210, 329);
+            this.lbTradeSource.Size = new System.Drawing.Size(210, 446);
             this.lbTradeSource.TabIndex = 0;
             this.lbTradeSource.SelectedIndexChanged += new System.EventHandler(this.lbTradeSource_SelectedIndexChanged);
             // 
@@ -5696,32 +5729,6 @@
             this.ilIcons.Images.SetKeyName(2, "icon_exclamation_yellow.png");
             this.ilIcons.Images.SetKeyName(3, "icon_exclamation_green.png");
             this.ilIcons.Images.SetKeyName(4, "icon_exclamation_blue.png");
-            // 
-            // tvTagInfo
-            // 
-            this.tvTagInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tvTagInfo.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.tvTagInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tvTagInfo.ImageIndex = 0;
-            this.tvTagInfo.ImageList = this.ilMiniIcons;
-            this.tvTagInfo.ItemHeight = 24;
-            this.tvTagInfo.Location = new System.Drawing.Point(395, 36);
-            this.tvTagInfo.Name = "tvTagInfo";
-            this.tvTagInfo.SelectedImageIndex = 0;
-            this.tvTagInfo.Size = new System.Drawing.Size(523, 441);
-            this.tvTagInfo.TabIndex = 12;
-            this.tvTagInfo.DoubleClick += new System.EventHandler(this.tvTagInfo_DoubleClick);
-            // 
-            // label138
-            // 
-            this.label138.AutoSize = true;
-            this.label138.Location = new System.Drawing.Point(422, 20);
-            this.label138.Name = "label138";
-            this.label138.Size = new System.Drawing.Size(43, 13);
-            this.label138.TabIndex = 13;
-            this.label138.Text = "Used in";
             // 
             // MainForm
             // 
