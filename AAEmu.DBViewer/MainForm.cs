@@ -7277,6 +7277,8 @@ namespace AAEmu.DBViewer
                                 if (isDoodads || isNPCs || isTransfers)
                                 {
                                     ni.PoIColor = Color.Red;
+                                    ni.Name = spawner.name;
+                                    ni.TypeId = spawner.UnitId; // when unknown, use Id
                                 }
 
                                 if (isTransfers)
@@ -7321,6 +7323,9 @@ namespace AAEmu.DBViewer
 
                 map.FocusAll(true, false, false);
                 map.tsbShowPoI.Checked = true;
+
+                if (allPoIs.Count > 10000)
+                    MessageBox.Show($"Done loading {allPoIs.Count} items");
             }
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
