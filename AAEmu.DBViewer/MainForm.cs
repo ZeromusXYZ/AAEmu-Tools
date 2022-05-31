@@ -380,7 +380,17 @@ namespace AAEmu.DBViewer
 
             List<string> columnNames = null;
 
-            using (var connection = SQLite.CreateConnection())
+            var overrideDb = "";
+
+            // TODO: If main DB doesn't have a localized_texts table, check if a external DB exists with the language name
+            if (!allTableNames.Contains("localized_texts"))
+            {
+                var localizedDb = Path.Combine(Path.GetDirectoryName(SQLite.SQLiteFileName), lng + Path.GetExtension(SQLite.SQLiteFileName));
+                if (File.Exists(localizedDb))
+                    overrideDb = localizedDb;
+            }
+
+            using (var connection = SQLite.CreateConnection(overrideDb))
             {
                 using (var command = connection.CreateCommand())
                 {
@@ -445,6 +455,7 @@ namespace AAEmu.DBViewer
                     }
                 }
             }
+
             if (columnNames != null)
             {
                 try
@@ -1792,11 +1803,14 @@ namespace AAEmu.DBViewer
                         Cursor = Cursors.WaitCursor;
                         while (reader.Read())
                         {
-                            GameTaggedValues t = new GameTaggedValues();
-                            t.id = GetInt64(reader, "id");
-                            t.tag_id = GetInt64(reader, "tag_id");
-                            t.target_id = GetInt64(reader, "buff_id");
-                            AADB.DB_Tagged_Buffs.Add(t.id, t);
+                            if (!reader.IsDBNull("id"))
+                            {
+                                GameTaggedValues t = new GameTaggedValues();
+                                t.id = GetInt64(reader, "id");
+                                t.tag_id = GetInt64(reader, "tag_id");
+                                t.target_id = GetInt64(reader, "buff_id");
+                                AADB.DB_Tagged_Buffs.Add(t.id, t);
+                            }
                         }
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
@@ -1815,11 +1829,14 @@ namespace AAEmu.DBViewer
                         Cursor = Cursors.WaitCursor;
                         while (reader.Read())
                         {
-                            GameTaggedValues t = new GameTaggedValues();
-                            t.id = GetInt64(reader, "id");
-                            t.tag_id = GetInt64(reader, "tag_id");
-                            t.target_id = GetInt64(reader, "item_id");
-                            AADB.DB_Tagged_Items.Add(t.id, t);
+                            if (!reader.IsDBNull("id"))
+                            {
+                                GameTaggedValues t = new GameTaggedValues();
+                                t.id = GetInt64(reader, "id");
+                                t.tag_id = GetInt64(reader, "tag_id");
+                                t.target_id = GetInt64(reader, "item_id");
+                                AADB.DB_Tagged_Items.Add(t.id, t);
+                            }
                         }
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
@@ -1838,11 +1855,14 @@ namespace AAEmu.DBViewer
                         Cursor = Cursors.WaitCursor;
                         while (reader.Read())
                         {
-                            GameTaggedValues t = new GameTaggedValues();
-                            t.id = GetInt64(reader, "id");
-                            t.tag_id = GetInt64(reader, "tag_id");
-                            t.target_id = GetInt64(reader, "npc_id");
-                            AADB.DB_Tagged_NPCs.Add(t.id, t);
+                            if (!reader.IsDBNull("id"))
+                            {
+                                GameTaggedValues t = new GameTaggedValues();
+                                t.id = GetInt64(reader, "id");
+                                t.tag_id = GetInt64(reader, "tag_id");
+                                t.target_id = GetInt64(reader, "npc_id");
+                                AADB.DB_Tagged_NPCs.Add(t.id, t);
+                            }
                         }
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
@@ -1861,11 +1881,14 @@ namespace AAEmu.DBViewer
                         Cursor = Cursors.WaitCursor;
                         while (reader.Read())
                         {
-                            GameTaggedValues t = new GameTaggedValues();
-                            t.id = GetInt64(reader, "id");
-                            t.tag_id = GetInt64(reader, "tag_id");
-                            t.target_id = GetInt64(reader, "skill_id");
-                            AADB.DB_Tagged_Skills.Add(t.id, t);
+                            if (!reader.IsDBNull("id"))
+                            {
+                                GameTaggedValues t = new GameTaggedValues();
+                                t.id = GetInt64(reader, "id");
+                                t.tag_id = GetInt64(reader, "tag_id");
+                                t.target_id = GetInt64(reader, "skill_id");
+                                AADB.DB_Tagged_Skills.Add(t.id, t);
+                            }
                         }
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
@@ -1892,16 +1915,29 @@ namespace AAEmu.DBViewer
                     {
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
+                        var colNames = reader.GetColumnNames();
 
                         while (reader.Read())
                         {
-                            GameZoneGroupBannedTags t = new GameZoneGroupBannedTags();
-                            t.id = GetInt64(reader, "id");
-                            t.zone_group_id = GetInt64(reader, "zone_group_id");
-                            t.tag_id = GetInt64(reader, "tag_id");
-                            t.banned_periods_id = GetInt64(reader, "banned_periods_id");
-                            t.usage = GetString(reader, "usage");
-                            AADB.DB_Zone_Group_Banned_Tags.Add(t.id, t);
+                            if (!reader.IsDBNull("id"))
+                            {
+                                GameZoneGroupBannedTags t = new GameZoneGroupBannedTags();
+                                t.id = GetInt64(reader, "id");
+                                t.zone_group_id = GetInt64(reader, "zone_group_id");
+                                t.tag_id = GetInt64(reader, "tag_id");
+                                if (colNames.Contains("banned_periods_id"))
+                                    t.banned_periods_id = GetInt64(reader, "banned_periods_id");
+                                else
+                                if (colNames.Contains("banned_periods"))
+                                    t.banned_periods_id = GetInt64(reader, "banned_periods");
+                                else
+                                    t.banned_periods_id = 0;
+                                if (colNames.Contains("usage"))
+                                    t.usage = GetString(reader, "usage");
+                                else
+                                    t.usage = String.Empty;
+                                AADB.DB_Zone_Group_Banned_Tags.Add(t.id, t);
+                            }
                         }
 
                         Cursor = Cursors.Default;
@@ -2266,67 +2302,95 @@ namespace AAEmu.DBViewer
             Application.UseWaitCursor = true;
             Cursor = Cursors.WaitCursor;
             dgvItem.Visible = false;
-            foreach (var item in AADB.DB_Items)
+
+            // Optimization
+            var oldResizeMode = dgvItem.RowHeadersWidthSizeMode;
+            var oldHeaderVisible = dgvItem.RowHeadersVisible;
+            dgvItem.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.EnableResizing;
+            dgvItem.RowHeadersVisible = false;
+
+            using (var loadform = new LoadingForm())
             {
-                bool addThis = false;
-                if (SearchByID)
+                loadform.Show();
+                loadform.ShowInfo($"Scanning {AADB.DB_Items.Count} items");
+                var i = 0;
+                foreach (var item in AADB.DB_Items)
                 {
-                    if (item.Key == searchID)
-                    {
-                        addThis = true;
-                    }
-                }
-                else
-                if (item.Value.SearchString.IndexOf(searchTextLower) >= 0)
-                    addThis = true;
-
-                if (cbItemSearchRange.SelectedIndex == 1)
-                {
-                    if (item.Key >= 8000000)
-                        addThis = true;
-                    else
+                    i++;
+                    if ((cbItemSearchRange.SelectedIndex == 1) && (item.Key < 8000000))
                         continue;
-                }
-
-                // Hardcode * as add all if armor slot is provided
-                if ((searchTextLower == "*") && ((cbItemSearchItemArmorSlotTypeList.SelectedIndex > 0) || (cbItemSearchItemCategoryTypeList.SelectedIndex > 0)))
-                    addThis = true;
-
-                if (addThis && (cbItemSearchItemCategoryTypeList.SelectedIndex > 0))
-                {
-                    if (long.TryParse(cbItemSearchItemCategoryTypeList.SelectedValue.ToString(), out var cId))
-                        if (cId != item.Value.catgegory_id)
-                            addThis = false;
-                }
-
-                if (addThis && (cbItemSearchItemArmorSlotTypeList.SelectedIndex > 0))
-                {
-                    if (item.Value.item_armors == null)
-                        addThis = false;
                     else
-                    if (cbItemSearchItemArmorSlotTypeList.SelectedIndex != item.Value.item_armors.slot_type_id)
+                    if ((cbItemSearchRange.SelectedIndex == 2) && (item.Key < 9000000))
+                        continue;
+
+                    bool addThis = false;
+                    if (SearchByID)
                     {
-                        addThis = false;
+                        if (item.Key == searchID)
+                        {
+                            addThis = true;
+                        }
+                    }
+                    else
+                    if (item.Value.SearchString.IndexOf(searchTextLower) >= 0)
+                        addThis = true;
+
+                    // Hardcode * as add all if armor slot is provided
+                    if ((searchTextLower == "*") && ((cbItemSearchItemArmorSlotTypeList.SelectedIndex > 0) || (cbItemSearchItemCategoryTypeList.SelectedIndex > 0) || (cbItemSearchRange.SelectedIndex > 0)))
+                        addThis = true;
+
+                    if (addThis && (cbItemSearchItemCategoryTypeList.SelectedIndex > 0))
+                    {
+                        if (long.TryParse(cbItemSearchItemCategoryTypeList.SelectedValue.ToString(), out var cId))
+                            if (cId != item.Value.catgegory_id)
+                                addThis = false;
+                    }
+
+                    if (addThis && (cbItemSearchItemArmorSlotTypeList.SelectedIndex > 0))
+                    {
+                        if (item.Value.item_armors == null)
+                            addThis = false;
+                        else
+                        if (cbItemSearchItemArmorSlotTypeList.SelectedIndex != item.Value.item_armors.slot_type_id)
+                        {
+                            addThis = false;
+                        }
+                    }
+
+                    if (addThis)
+                    {
+                        int line = dgvItem.Rows.Add();
+                        var row = dgvItem.Rows[line];
+                        long itemIdx = item.Value.id;
+                        if (firstResult < 0)
+                            firstResult = itemIdx;
+                        row.Cells[0].Value = itemIdx.ToString();
+                        row.Cells[1].Value = item.Value.nameLocalized;
+
+                        if (showFirst)
+                        {
+                            showFirst = false;
+                            ShowDBItem(itemIdx);
+                        }
+
+                        if ((dgvItem.Rows.Count % 25) == 0)
+                            loadform.ShowInfo($"Scanning {i}/{AADB.DB_Items.Count} items");
+
+                        if (dgvItem.Rows.Count > 500)
+                        {
+                            MessageBox.Show("Too many result items, list is cut off at 500. Try narrowing your search!");
+                            break;
+                        }
                     }
                 }
 
-                if (addThis)
-                {
-                    int line = dgvItem.Rows.Add();
-                    var row = dgvItem.Rows[line];
-                    long itemIdx = item.Value.id;
-                    if (firstResult < 0)
-                        firstResult = itemIdx;
-                    row.Cells[0].Value = itemIdx.ToString();
-                    row.Cells[1].Value = item.Value.nameLocalized;
 
-                    if (showFirst)
-                    {
-                        showFirst = false;
-                        ShowDBItem(itemIdx);
-                    }
-                }
             }
+
+            // Optimization
+            dgvItem.RowHeadersWidthSizeMode = oldResizeMode;
+            dgvItem.RowHeadersVisible = oldHeaderVisible;
+
             dgvItem.Visible = true;
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
@@ -3340,6 +3404,12 @@ namespace AAEmu.DBViewer
 
         private void ShowDBLootByItem(long idx)
         {
+            if (!allTableNames.Contains("loots"))
+            {
+                MessageBox.Show("No loot tables found in this DB");
+                return;
+            }
+
             using (var connection = SQLite.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
@@ -7324,6 +7394,8 @@ namespace AAEmu.DBViewer
                 map.FocusAll(true, false, false);
                 map.tsbShowPoI.Checked = true;
 
+                map.Refresh();
+
                 if (allPoIs.Count > 10000)
                     MessageBox.Show($"Done loading {allPoIs.Count} items");
             }
@@ -7586,7 +7658,7 @@ namespace AAEmu.DBViewer
         {
             if (tItemSearch.Text.Replace("*", "") == string.Empty)
             {
-                if (cbItemSearchRange.SelectedIndex == 1)
+                if (cbItemSearchRange.SelectedIndex > 0)
                     tItemSearch.Text = "*";
                 else
                     tItemSearch.Text = string.Empty;

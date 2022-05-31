@@ -7,9 +7,10 @@ namespace AAEmu.Game.Utils.DB
     {
         public static string SQLiteFileName = "data/compact.sqlite3";
 
-        public static SqliteConnection CreateConnection()
+        public static SqliteConnection CreateConnection(string overrideFileName = "")
         {
-            var connection = new SqliteConnection($"Data Source=file:{SQLiteFileName}; Mode=ReadOnly");
+            var fName = overrideFileName != "" ? overrideFileName : SQLiteFileName;
+            var connection = new SqliteConnection($"Data Source=file:{fName}; Mode=ReadOnly");
             try
             {
                 connection.Open();

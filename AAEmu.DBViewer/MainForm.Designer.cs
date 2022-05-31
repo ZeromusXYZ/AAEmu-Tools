@@ -3242,7 +3242,8 @@
             this.cbItemSearchRange.FormattingEnabled = true;
             this.cbItemSearchRange.Items.AddRange(new object[] {
             "All",
-            "Region Specific"});
+            "Region Specific",
+            "Extra"});
             this.cbItemSearchRange.Location = new System.Drawing.Point(475, 30);
             this.cbItemSearchRange.Name = "cbItemSearchRange";
             this.cbItemSearchRange.Size = new System.Drawing.Size(137, 21);
