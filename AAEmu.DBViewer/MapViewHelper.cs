@@ -1,5 +1,5 @@
 ﻿using AAEmu.DBDefs;
-using AAPakEditor;
+using AAPacker;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -469,7 +469,7 @@ namespace AAEmu.DBViewer
             AddMiniMapRef(MapLevel.City, 252, 100, "w_lilyut_meadow_west_ronbann_mine", 112, 52, 0, 0, 680, 436);
 
             // Read .g file data for roads
-            if ((MainForm.ThisForm.pak != null) && MainForm.ThisForm.pak.isOpen)
+            if ((MainForm.ThisForm.pak != null) && MainForm.ThisForm.pak.IsOpen)
             {
                 foreach (var zg in AADB.DB_Zone_Groups)
                 {
@@ -519,7 +519,7 @@ namespace AAEmu.DBViewer
 
         public static void LoadGFileFromPak(AAPak pak, string fileName)
         {
-            if ((pak == null) || (!pak.isOpen) || !pak.FileExists(fileName))
+            if ((pak == null) || (!pak.IsOpen) || !pak.FileExists(fileName))
                 return;
 
             var lines = new List<string>();

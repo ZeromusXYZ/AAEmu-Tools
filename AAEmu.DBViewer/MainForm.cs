@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using AAPakEditor;
+using AAPacker;
 using AAEmu.DBDefs;
 using AAEmu.Game.Utils.DB;
 using AAEmu.ClipboardHelper;
@@ -22,6 +22,7 @@ using System.Windows.Forms.VisualStyles;
 using Newtonsoft.Json;
 using AAEmu.DBViewer.JsonData;
 using AAEmu.DBViewer.utils;
+using System.Runtime;
 
 namespace AAEmu.DBViewer
 {
@@ -37,6 +38,35 @@ namespace AAEmu.DBViewer
         {
             InitializeComponent();
             ThisForm = this;
+        }
+
+        private void TryLoadPakKeys(string fileName)
+        {
+            try
+            {
+                var keyFile = fileName + ".key";
+                if (File.Exists(keyFile))
+                {
+                    var customKey = new byte[16];
+                    using (var fs = new FileStream(keyFile, FileMode.Open, FileAccess.Read))
+                    {
+                        if (fs.Length != 16)
+                        {
+                            fs.Dispose();
+                            return;
+                        }
+                        fs.Read(customKey, 0, 16);
+                    }
+                    pak.SetCustomKey(customKey);
+                }
+                else
+                    pak.SetDefaultKey();
+            }
+            catch
+            {
+                // Reset key
+                pak.SetDefaultKey();
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -78,6 +108,9 @@ namespace AAEmu.DBViewer
                 {
                     loading.Show();
                     loading.ShowInfo("Opening: " + Path.GetFileName(game_pakFileName));
+
+                    TryLoadPakKeys(game_pakFileName);
+
                     if (pak.OpenPak(game_pakFileName, true))
                     {
                         Properties.Settings.Default.GamePakFileName = game_pakFileName;
@@ -2699,7 +2732,7 @@ namespace AAEmu.DBViewer
         private int IconIDToLabel(long icon_id, Label iconImgLabel)
         {
             var cachedImageIndex = -1;
-            if (pak.isOpen)
+            if (pak.IsOpen)
             {
                 if (AADB.DB_Icons.TryGetValue(icon_id, out var iconname))
                 {
@@ -3209,7 +3242,7 @@ namespace AAEmu.DBViewer
                     lZoneGroupsDisplayName.Text = zg.display_textLocalized;
                     lZoneGroupsName.Text = zg.name;
                     string zoneNPCFile = zg.GamePakZoneNPCsDat();
-                    if ((pak.isOpen) && (pak.FileExists(zoneNPCFile)))
+                    if ((pak.IsOpen) && (pak.FileExists(zoneNPCFile)))
                     {
                         btnFindNPCsInZone.Tag = zg.id;
                         btnFindNPCsInZone.Enabled = true;
@@ -3220,7 +3253,7 @@ namespace AAEmu.DBViewer
                         btnFindNPCsInZone.Enabled = false;
                     }
                     string zoneDoodadFile = zg.GamePakZoneDoodadsDat();
-                    if ((pak.isOpen) && (pak.FileExists(zoneDoodadFile)))
+                    if ((pak.IsOpen) && (pak.FileExists(zoneDoodadFile)))
                     {
                         btnFindDoodadsInZone.Tag = zg.id;
                         btnFindDoodadsInZone.Enabled = true;
@@ -4169,22 +4202,39 @@ namespace AAEmu.DBViewer
         {
             if (openGamePakFileDialog.ShowDialog() == DialogResult.OK)
             {
-                pak.ClosePak();
-                if (pak.OpenPak(openGamePakFileDialog.FileName, true))
+                using (var loading = new LoadingForm())
                 {
-                    Properties.Settings.Default.GamePakFileName = openGamePakFileDialog.FileName;
-                    lCurrentPakFile.Text = Properties.Settings.Default.GamePakFileName;
-
-                    PrepareWorldXML(true);
-                    if (MapViewForm.ThisForm != null)
+                    loading.Show();
+                    if (pak.IsOpen)
                     {
-                        MapViewForm.ThisForm.Close();
-                        MapViewForm.ThisForm = null;
+                        loading.ShowInfo("Closing: " + pak._gpFilePath);
+                        pak.ClosePak();
+
+                        // TODO: HACK to try and free up as many memomry as possible - https://stackoverflow.com/questions/30622145/free-memory-of-byte
+                        GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                        GC.Collect();
                     }
-                }
-                else
-                {
-                    MessageBox.Show("Failed to load: " + openGamePakFileDialog.FileName);
+
+                    loading.ShowInfo("Opening: " + Path.GetFileName(openGamePakFileDialog.FileName));
+
+                    TryLoadPakKeys(openGamePakFileDialog.FileName);
+
+                    if (pak.OpenPak(openGamePakFileDialog.FileName, true))
+                    {
+                        Properties.Settings.Default.GamePakFileName = openGamePakFileDialog.FileName;
+                        lCurrentPakFile.Text = Properties.Settings.Default.GamePakFileName;
+
+                        PrepareWorldXML(true);
+                        if (MapViewForm.ThisForm != null)
+                        {
+                            MapViewForm.ThisForm.Close();
+                            MapViewForm.ThisForm = null;
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to load: " + openGamePakFileDialog.FileName);
+                    }
                 }
             }
         }
@@ -5329,7 +5379,7 @@ namespace AAEmu.DBViewer
         {
             List<MapSpawnLocation> res = new List<MapSpawnLocation>();
             var zg = GetZoneGroupByID(zoneGroupId);
-            if ((zg != null) && (pak.isOpen) && (pak.FileExists(zg.GamePakZoneNPCsDat(instanceName))))
+            if ((zg != null) && (pak.IsOpen) && (pak.FileExists(zg.GamePakZoneNPCsDat(instanceName))))
             {
                 // Open .dat file and read it's contents
                 using (var fs = pak.ExportFileAsStream(zg.GamePakZoneNPCsDat(instanceName)))
@@ -6085,7 +6135,7 @@ namespace AAEmu.DBViewer
                 if (worldOff == null)
                     return;
 
-                if (!pak.isOpen || !pak.FileExists(zone.GamePakZoneTransferPathXML))
+                if (!pak.IsOpen || !pak.FileExists(zone.GamePakZoneTransferPathXML))
                 {
                     // MessageBox.Show("No path file found for this zone");
                     return;
@@ -6227,7 +6277,7 @@ namespace AAEmu.DBViewer
                 if (worldOff == null)
                     return;
 
-                if (!pak.isOpen || !pak.FileExists(zone.GamePakSubZoneXML))
+                if (!pak.IsOpen || !pak.FileExists(zone.GamePakSubZoneXML))
                 {
                     // MessageBox.Show("No path file found for this zone");
                     return;
@@ -6374,7 +6424,7 @@ namespace AAEmu.DBViewer
                 if (worldOff == null)
                     return;
 
-                if (!pak.isOpen || !pak.FileExists(zone.GamePakZoneHousingXML))
+                if (!pak.IsOpen || !pak.FileExists(zone.GamePakZoneHousingXML))
                 {
                     // MessageBox.Show("No path file found for this zone");
                     return;
@@ -6626,7 +6676,7 @@ namespace AAEmu.DBViewer
         {
             if (overwrite || (MapViewWorldXML.instances == null) || (MapViewWorldXML.instances.Count < 0))
             {
-                if (!pak.isOpen)
+                if (!pak.IsOpen)
                 {
                     MessageBox.Show("Game pak file was not loaded !");
                     return;
@@ -6634,7 +6684,7 @@ namespace AAEmu.DBViewer
 
                 MapViewWorldXML.instances = new List<MapViewWorldXML>();
 
-                foreach (var pfi in pak.files)
+                foreach (var pfi in pak.Files)
                 {
                     if (pfi.name.EndsWith("/world.xml") && pfi.name.StartsWith("game/worlds/"))
                     {
@@ -6664,7 +6714,7 @@ namespace AAEmu.DBViewer
         {
             List<MapSpawnLocation> res = new List<MapSpawnLocation>();
             var zg = GetZoneGroupByID(zoneGroupId);
-            if ((zg != null) && (pak.isOpen) && (pak.FileExists(zg.GamePakZoneDoodadsDat(instanceName))))
+            if ((zg != null) && (pak.IsOpen) && (pak.FileExists(zg.GamePakZoneDoodadsDat(instanceName))))
             {
                 // Open .dat file and read it's contents
                 using (var fs = pak.ExportFileAsStream(zg.GamePakZoneDoodadsDat(instanceName)))
@@ -6764,7 +6814,7 @@ namespace AAEmu.DBViewer
 
         public void LoadQuestSpheres()
         {
-            if ((pak == null) || (!pak.isOpen))
+            if ((pak == null) || (!pak.IsOpen))
                 return;
 
             
@@ -6772,7 +6822,7 @@ namespace AAEmu.DBViewer
             var sl = new List<string>();
 
             // Find all related files and concat them into a giant stringlist
-            foreach (var pfi in pak.files)
+            foreach (var pfi in pak.Files)
             {
                 var lowername = pfi.name.ToLower();
                 if (lowername.EndsWith("quest_sign_sphere.g"))
@@ -7460,7 +7510,7 @@ namespace AAEmu.DBViewer
 
         private void btnShowEntityAreaShape_Click(object sender, EventArgs e)
         {
-            if (!pak.isOpen)
+            if (!pak.IsOpen)
                 return;
 
             var entityFiles = new List<string>();

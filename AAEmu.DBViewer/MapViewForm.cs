@@ -113,7 +113,7 @@ namespace AAEmu.DBViewer
                     if (iref != null)
                     {
                         level = iref.Level;
-                        if (MainForm.ThisForm.pak.isOpen)
+                        if (MainForm.ThisForm.pak.IsOpen)
                         {
                             var fList = iref.GetPossibleFileNames(locale);
                             // Here we only check if the name has a valid filename in the pak
@@ -949,7 +949,7 @@ namespace AAEmu.DBViewer
 
         private Bitmap PackedImageToBitmap(string packedFileFolder, string packedFileName)
         {
-            if (MainForm.ThisForm.pak.isOpen)
+            if (MainForm.ThisForm.pak.IsOpen)
             {
                 var fn = packedFileFolder + packedFileName;
 
@@ -964,7 +964,7 @@ namespace AAEmu.DBViewer
 
         private Bitmap PackedImageToBitmap(string fn)
         {
-            if (MainForm.ThisForm.pak.isOpen)
+            if (MainForm.ThisForm.pak.IsOpen)
             {
 
                 if (MainForm.ThisForm.pak.FileExists(fn))
@@ -1095,7 +1095,7 @@ namespace AAEmu.DBViewer
 
             // MainMap
             var fn = string.Empty;
-            if (MainForm.ThisForm.pak.isOpen)
+            if (MainForm.ThisForm.pak.IsOpen)
             {
                 var fList = MapViewImageRef.ListPossibleFileNames(fileName, Properties.Settings.Default.DefaultGameLanguage);
                 foreach (var fName in fList)
@@ -1128,7 +1128,7 @@ namespace AAEmu.DBViewer
             {
                 newMap.RoadMapOffset = roadRef.Offset;
                 newMap.RoadMapCoords = roadRef.Rect;
-                if (MainForm.ThisForm.pak.isOpen)
+                if (MainForm.ThisForm.pak.IsOpen)
                 {
                     var fList = roadRef.GetPossibleFileNames(Properties.Settings.Default.DefaultGameLanguage);
                     foreach (var fName in fList)
