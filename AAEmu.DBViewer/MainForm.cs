@@ -407,6 +407,21 @@ namespace AAEmu.DBViewer
             // End of Custom Translations
         }
 
+        private void GetLanguageSelectFromFiles(string mainDb)
+        {
+            cbItemSearchLanguage.Enabled = false;
+            cbItemSearchLanguage.Items.Clear();
+
+            foreach (var l in possibleLanguageIDs)
+            {
+                var localizedDb = Path.Combine(Path.GetDirectoryName(mainDb), l + Path.GetExtension(mainDb));
+                if (File.Exists(localizedDb))
+                {
+                    cbItemSearchLanguage.Items.Add(l);
+                }
+            }
+        }
+
         private void LoadTranslations(string lng)
         {
             string sql = "SELECT * FROM localized_texts ORDER BY tbl_name, tbl_column_name, idx";
@@ -418,6 +433,7 @@ namespace AAEmu.DBViewer
             // TODO: If main DB doesn't have a localized_texts table, check if a external DB exists with the language name
             if (!allTableNames.Contains("localized_texts"))
             {
+                GetLanguageSelectFromFiles(SQLite.SQLiteFileName);
                 var localizedDb = Path.Combine(Path.GetDirectoryName(SQLite.SQLiteFileName), lng + Path.GetExtension(SQLite.SQLiteFileName));
                 if (File.Exists(localizedDb))
                     overrideDb = localizedDb;
@@ -489,7 +505,7 @@ namespace AAEmu.DBViewer
                 }
             }
 
-            if (columnNames != null)
+            if ((columnNames != null) && (overrideDb == ""))
             {
                 try
                 {
@@ -510,11 +526,14 @@ namespace AAEmu.DBViewer
                             cbItemSearchLanguage.SelectedIndex = i;
                     }
                 }
-                finally
+                catch
                 {
-                    cbItemSearchLanguage.Enabled = true;
+                    // Do nothing
                 }
             }
+            if (cbItemSearchLanguage.Items.Contains(lng))
+                cbItemSearchLanguage.Text = lng;
+            cbItemSearchLanguage.Enabled = (cbItemSearchLanguage.Items.Count > 1);
             Properties.Settings.Default.DefaultGameLanguage = lng;
         }
 
