@@ -55,8 +55,10 @@ namespace AAEmu.DBViewer
                             fs.Dispose();
                             return;
                         }
+
                         fs.Read(customKey, 0, 16);
                     }
+
                     pak.SetCustomKey(customKey);
                 }
                 else
@@ -94,6 +96,12 @@ namespace AAEmu.DBViewer
             cbItemSearchRange.SelectedIndex = 0;
             tcDoodads.SelectedTab = tpDoodadWorkflow;
 
+            cbItemSearchType.Items.Clear();
+            cbItemSearchType.Items.Add("Any");
+            foreach (var implId in Enum.GetValues(typeof(GameItemImplId)))
+                cbItemSearchType.Items.Add(((int)implId).ToString() + " - " + implId.ToString());
+            cbItemSearchType.SelectedIndex = 0;
+
             if (!LoadServerDB(false))
             {
                 Close();
@@ -123,6 +131,7 @@ namespace AAEmu.DBViewer
                     }
                 }
             }
+
             tcViewer.SelectedTab = tpItems;
             AttachEventsToLabels();
         }
@@ -142,8 +151,8 @@ namespace AAEmu.DBViewer
         {
             var controls = control.Controls.Cast<Control>();
             return controls.SelectMany(ctrl => GetAll(ctrl, type))
-                                      .Concat(controls)
-                                      .Where(c => c.GetType() == type);
+                .Concat(controls)
+                .Where(c => c.GetType() == type);
         }
 
         public static void CopyToClipBoard(string cliptext)
@@ -290,6 +299,7 @@ namespace AAEmu.DBViewer
                     {
                         tl.Value.value = val;
                     }
+
                     return;
                 }
             }
@@ -374,7 +384,8 @@ namespace AAEmu.DBViewer
             AddCustomTranslation("doodad_groups", "name", 60, "[Housing Area Marker - General Residential Area]");
             AddCustomTranslation("doodad_groups", "name", 61, "[Housing Area Marker - Marine Residential Area]");
             AddCustomTranslation("doodad_groups", "name", 62, "[Housing Area Marker - Luxury Residential Area]");
-            AddCustomTranslation("doodad_groups", "name", 63, "[Housing Area Marker - Private Pumpkin Scarecrow Garden]");
+            AddCustomTranslation("doodad_groups", "name", 63,
+                "[Housing Area Marker - Private Pumpkin Scarecrow Garden]");
             AddCustomTranslation("doodad_groups", "name", 64, "[Housing Area Marker - Thatched Farmhouse Area]");
             AddCustomTranslation("doodad_groups", "name", 65, "[Fish]");
             AddCustomTranslation("doodad_groups", "name", 66, "[Workbench - Paper]");
@@ -434,7 +445,8 @@ namespace AAEmu.DBViewer
             if (!allTableNames.Contains("localized_texts"))
             {
                 GetLanguageSelectFromFiles(SQLite.SQLiteFileName);
-                var localizedDb = Path.Combine(Path.GetDirectoryName(SQLite.SQLiteFileName), lng + Path.GetExtension(SQLite.SQLiteFileName));
+                var localizedDb = Path.Combine(Path.GetDirectoryName(SQLite.SQLiteFileName),
+                    lng + Path.GetExtension(SQLite.SQLiteFileName));
                 if (File.Exists(localizedDb))
                     overrideDb = localizedDb;
             }
@@ -463,25 +475,27 @@ namespace AAEmu.DBViewer
 
                                     if (columnNames.IndexOf("en_us") >= 0)
                                     {
-                                        MessageBox.Show("The selected language \"" + lng + "\" was not found in localized_texts !\r\n" +
-                                            "Reverted to English",
+                                        MessageBox.Show("The selected language \"" + lng +
+                                                        "\" was not found in localized_texts !\r\n" +
+                                                        "Reverted to English",
                                             "Language not found",
                                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                                         lng = "en_us";
                                     }
-                                    else
-                                    if (columnNames.IndexOf("ko") >= 0)
+                                    else if (columnNames.IndexOf("ko") >= 0)
                                     {
-                                        MessageBox.Show("The selected language \"" + lng + "\" was not found in localized_texts !\r\n" +
-                                            "Reverted to Korean",
+                                        MessageBox.Show("The selected language \"" + lng +
+                                                        "\" was not found in localized_texts !\r\n" +
+                                                        "Reverted to Korean",
                                             "Language not found",
                                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                                         lng = "ko";
                                     }
                                     else
                                     {
-                                        MessageBox.Show("The selected language \"" + lng + "\" was not found in localized_texts !\r\n" +
-                                            "Also was not able to revert to English or Korean, functionality of this program is not guaranteed",
+                                        MessageBox.Show("The selected language \"" + lng +
+                                                        "\" was not found in localized_texts !\r\n" +
+                                                        "Also was not able to revert to English or Korean, functionality of this program is not guaranteed",
                                             "Language not found",
                                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     }
@@ -517,6 +531,7 @@ namespace AAEmu.DBViewer
                         if (columnNames.IndexOf(l) >= 0)
                             availableLng.Add(l);
                     }
+
                     cbItemSearchLanguage.Items.Clear();
                     for (int i = 0; i < availableLng.Count; i++)
                     {
@@ -531,6 +546,7 @@ namespace AAEmu.DBViewer
                     // Do nothing
                 }
             }
+
             if (cbItemSearchLanguage.Items.Contains(lng))
                 cbItemSearchLanguage.Text = lng;
             cbItemSearchLanguage.Enabled = (cbItemSearchLanguage.Items.Count > 1);
@@ -576,7 +592,8 @@ namespace AAEmu.DBViewer
                                 t.abox_show = false;
 
                             if (t.display_text != string.Empty)
-                                t.display_textLocalized = AADB.GetTranslationByID(t.id, "zones", "display_text", t.display_text);
+                                t.display_textLocalized =
+                                    AADB.GetTranslationByID(t.id, "zones", "display_text", t.display_text);
                             else
                                 t.display_textLocalized = "";
                             t.SearchString = t.name + " " + t.display_text + " " + t.display_textLocalized;
@@ -629,7 +646,8 @@ namespace AAEmu.DBViewer
                             t.buff_id = GetInt64(reader, "buff_id");
 
                             if (t.display_text != string.Empty)
-                                t.display_textLocalized = AADB.GetTranslationByID(t.id, "zone_groups", "display_text", t.display_text);
+                                t.display_textLocalized = AADB.GetTranslationByID(t.id, "zone_groups", "display_text",
+                                    t.display_text);
                             else
                                 t.display_textLocalized = "";
                             t.SearchString = t.name + " " + t.display_text + " " + t.display_textLocalized;
@@ -788,11 +806,14 @@ namespace AAEmu.DBViewer
                             t.sellable = GetBool(reader, "sellable");
                             t.fixed_grade = GetInt64(reader, "fixed_grade");
                             t.use_skill_id = GetInt64(reader, "use_skill_id");
+                            t.impl_id = GetInt64(reader, "impl_id");
 
                             t.nameLocalized = AADB.GetTranslationByID(t.id, "items", "name", t.name);
-                            t.descriptionLocalized = AADB.GetTranslationByID(t.id, "items", "description", t.description);
+                            t.descriptionLocalized =
+                                AADB.GetTranslationByID(t.id, "items", "description", t.description);
 
-                            t.SearchString = t.name + " " + t.description + " " + t.nameLocalized + " " + t.descriptionLocalized;
+                            t.SearchString = t.name + " " + t.description + " " + t.nameLocalized + " " +
+                                             t.descriptionLocalized;
                             t.SearchString = t.SearchString.ToLower();
 
                             AADB.DB_Items.Add(t.id, t);
@@ -895,7 +916,8 @@ namespace AAEmu.DBViewer
                             t.mana_cost = GetInt64(reader, "mana_cost");
                             t.timing_id = GetInt64(reader, "timing_id");
                             t.consume_lp = GetInt64(reader, "consume_lp");
-                            t.default_gcd = GetBool(reader, "default_gcd"); ;
+                            t.default_gcd = GetBool(reader, "default_gcd");
+                            ;
                             t.custom_gcd = GetInt64(reader, "custom_gcd");
                             t.first_reagent_only = GetBool(reader, "first_reagent_only");
                             t.plot_id = GetInt64(reader, "plot_id");
@@ -903,11 +925,13 @@ namespace AAEmu.DBViewer
                             t.nameLocalized = AADB.GetTranslationByID(t.id, "skills", "name", t.name);
                             t.descriptionLocalized = AADB.GetTranslationByID(t.id, "skills", "desc", t.desc);
                             if (readWebDesc)
-                                t.webDescriptionLocalized = AADB.GetTranslationByID(t.id, "skills", "web_desc", t.web_desc);
+                                t.webDescriptionLocalized =
+                                    AADB.GetTranslationByID(t.id, "skills", "web_desc", t.web_desc);
                             else
                                 t.webDescriptionLocalized = string.Empty;
 
-                            t.SearchString = t.name + " " + t.desc + " " + t.nameLocalized + " " + t.descriptionLocalized;
+                            t.SearchString = t.name + " " + t.desc + " " + t.nameLocalized + " " +
+                                             t.descriptionLocalized;
                             t.SearchString = t.SearchString.ToLower();
 
                             AADB.DB_Skills.Add(t.id, t);
@@ -1013,6 +1037,7 @@ namespace AAEmu.DBViewer
 
                             AADB.DB_Skill_Reagents.Add(t.id, t);
                         }
+
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
                     }
@@ -1048,6 +1073,7 @@ namespace AAEmu.DBViewer
 
                             AADB.DB_Skill_Products.Add(t.id, t);
                         }
+
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
                     }
@@ -1073,7 +1099,10 @@ namespace AAEmu.DBViewer
                         var columnNames = reader.GetColumnNames();
                         bool hasEquip_bodies_id = (columnNames.IndexOf("equip_bodies_id") > 0);
                         bool hasMileStoneID = (columnNames.IndexOf("milestone_id") > 0);
-                        bool hasComments = ((columnNames.IndexOf("comment1") > 0) && (columnNames.IndexOf("comment2") > 0) && (columnNames.IndexOf("comment3") > 0) && (columnNames.IndexOf("comment_wear") > 0));
+                        bool hasComments = ((columnNames.IndexOf("comment1") > 0) &&
+                                            (columnNames.IndexOf("comment2") > 0) &&
+                                            (columnNames.IndexOf("comment3") > 0) &&
+                                            (columnNames.IndexOf("comment_wear") > 0));
                         bool hasNpc_tendency_id = (columnNames.IndexOf("npc_tendency_id") > 0);
                         bool hasRecruiting_battle_field_id = (columnNames.IndexOf("recruiting_battle_field_id") > 0);
                         bool hasFX_scale = (columnNames.IndexOf("fx_scale") > 0);
@@ -1133,6 +1162,7 @@ namespace AAEmu.DBViewer
                                 t.comment3 = string.Empty;
                                 t.comment_wear = string.Empty;
                             }
+
                             t.sight_range_scale = GetFloat(reader, "sight_range_scale");
                             t.sight_fov_scale = GetFloat(reader, "sight_fov_scale");
                             if (hasMileStoneID)
@@ -1160,7 +1190,8 @@ namespace AAEmu.DBViewer
                             t.honor_point = GetInt64(reader, "honor_point");
                             t.trader = GetBool(reader, "trader");
                             t.aggro_link_special_guard = GetBool(reader, "aggro_link_special_guard");
-                            t.aggro_link_special_ignore_npc_attacker = GetBool(reader, "aggro_link_special_ignore_npc_attacker");
+                            t.aggro_link_special_ignore_npc_attacker =
+                                GetBool(reader, "aggro_link_special_ignore_npc_attacker");
                             t.absolute_return_distance = GetFloat(reader, "absolute_return_distance");
                             t.repairman = GetBool(reader, "repairman");
                             t.activate_ai_always = GetBool(reader, "activate_ai_always");
@@ -1319,7 +1350,8 @@ namespace AAEmu.DBViewer
                             t.nameLocalized = AADB.GetTranslationByID(t.id, "system_factions", "name", t.name);
                             // Actuall not even sure if owner_name can be localized, also not sure yet what owner_id points to
                             if (t.owner_name != string.Empty)
-                                t.owner_nameLocalized = AADB.GetTranslationByID(t.id, "system_factions", "name", t.owner_name);
+                                t.owner_nameLocalized =
+                                    AADB.GetTranslationByID(t.id, "system_factions", "name", t.owner_name);
                             else
                                 t.owner_nameLocalized = "";
                             t.SearchString = t.name + " " + t.nameLocalized + " " + t.owner_nameLocalized;
@@ -1545,7 +1577,8 @@ namespace AAEmu.DBViewer
                                 t.phase_msgLocalized = AADB.GetTranslationByID(t.id, "doodad_func_groups", "phase_msg");
                             else
                                 t.phase_msgLocalized = "";
-                            t.SearchString = t.name + " " + t.phase_msg + " " + t.nameLocalized + " " + t.phase_msgLocalized + " " + t.comment;
+                            t.SearchString = t.name + " " + t.phase_msg + " " + t.nameLocalized + " " +
+                                             t.phase_msgLocalized + " " + t.comment;
                             t.SearchString = t.SearchString.ToLower();
 
                             AADB.DB_Doodad_Func_Groups.Add(t.id, t);
@@ -1699,7 +1732,8 @@ namespace AAEmu.DBViewer
                 {
                     AADB.DB_Quest_Components.Clear();
 
-                    command.CommandText = "SELECT * FROM quest_components ORDER BY quest_context_id ASC, component_kind_id ASC, id ASC";
+                    command.CommandText =
+                        "SELECT * FROM quest_components ORDER BY quest_context_id ASC, component_kind_id ASC, id ASC";
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
@@ -1741,7 +1775,8 @@ namespace AAEmu.DBViewer
                 {
                     AADB.DB_Quest_Component_Texts.Clear();
 
-                    command.CommandText = "SELECT * FROM quest_component_texts ORDER BY quest_component_id ASC, quest_component_text_kind_id ASC, id ASC";
+                    command.CommandText =
+                        "SELECT * FROM quest_component_texts ORDER BY quest_component_id ASC, quest_component_text_kind_id ASC, id ASC";
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
@@ -1864,6 +1899,7 @@ namespace AAEmu.DBViewer
                                 AADB.DB_Tagged_Buffs.Add(t.id, t);
                             }
                         }
+
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
                     }
@@ -1890,6 +1926,7 @@ namespace AAEmu.DBViewer
                                 AADB.DB_Tagged_Items.Add(t.id, t);
                             }
                         }
+
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
                     }
@@ -1916,6 +1953,7 @@ namespace AAEmu.DBViewer
                                 AADB.DB_Tagged_NPCs.Add(t.id, t);
                             }
                         }
+
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
                     }
@@ -1942,6 +1980,7 @@ namespace AAEmu.DBViewer
                                 AADB.DB_Tagged_Skills.Add(t.id, t);
                             }
                         }
+
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
                     }
@@ -1979,8 +2018,7 @@ namespace AAEmu.DBViewer
                                 t.tag_id = GetInt64(reader, "tag_id");
                                 if (colNames.Contains("banned_periods_id"))
                                     t.banned_periods_id = GetInt64(reader, "banned_periods_id");
-                                else
-                                if (colNames.Contains("banned_periods"))
+                                else if (colNames.Contains("banned_periods"))
                                     t.banned_periods_id = GetInt64(reader, "banned_periods");
                                 else
                                     t.banned_periods_id = 0;
@@ -2009,7 +2047,7 @@ namespace AAEmu.DBViewer
             {
                 Application.UseWaitCursor = true;
                 Cursor = Cursors.WaitCursor;
-                
+
                 using (var command = connection.CreateCommand())
                 {
                     AADB.DB_Buffs.Clear();
@@ -2054,14 +2092,15 @@ namespace AAEmu.DBViewer
                                 if (!reader.IsDBNull(c))
                                 {
                                     var v = reader.GetString(c, string.Empty);
-                                    var isnumber = double.TryParse(v, NumberStyles.Float, CultureInfo.InvariantCulture, out var dVal);
+                                    var isnumber = double.TryParse(v, NumberStyles.Float, CultureInfo.InvariantCulture,
+                                        out var dVal);
                                     if (isnumber)
                                     {
                                         if (dVal != 0f)
                                             t._others.Add(c, v);
                                     }
-                                    else
-                                    if ((v != string.Empty) && (v != "0") && (v != "f") && (v != "NULL") && (v != "--- :null"))
+                                    else if ((v != string.Empty) && (v != "0") && (v != "f") && (v != "NULL") &&
+                                             (v != "--- :null"))
                                     {
                                         t._others.Add(c, v);
                                     }
@@ -2088,12 +2127,12 @@ namespace AAEmu.DBViewer
                             t.buff_id = GetInt64(reader, "buff_id");
                             t.event_id = GetInt64(reader, "event_id");
                             t.effect_id = GetInt64(reader, "effect_id");
-                            
+
                             AADB.DB_BuffTriggers.Add(t.id, t);
                         }
                     }
                 }
-                
+
                 Cursor = Cursors.Default;
                 Application.UseWaitCursor = false;
             }
@@ -2360,19 +2399,23 @@ namespace AAEmu.DBViewer
             var oldHeaderVisible = dgvItem.RowHeadersVisible;
             dgvItem.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.EnableResizing;
             dgvItem.RowHeadersVisible = false;
+            bool filterByType = cbItemSearchType.SelectedIndex > 0;
+            var filterType = cbItemSearchType.SelectedIndex - 1;
 
             using (var loadform = new LoadingForm())
             {
                 loadform.Show();
                 loadform.ShowInfo($"Scanning {AADB.DB_Items.Count} items");
                 var i = 0;
+
+                dgvItem.Hide();
+
                 foreach (var item in AADB.DB_Items)
                 {
                     i++;
                     if ((cbItemSearchRange.SelectedIndex == 1) && (item.Key < 8000000))
                         continue;
-                    else
-                    if ((cbItemSearchRange.SelectedIndex == 2) && (item.Key < 9000000))
+                    else if ((cbItemSearchRange.SelectedIndex == 2) && (item.Key < 9000000))
                         continue;
 
                     bool addThis = false;
@@ -2383,13 +2426,20 @@ namespace AAEmu.DBViewer
                             addThis = true;
                         }
                     }
-                    else
-                    if (item.Value.SearchString.IndexOf(searchTextLower) >= 0)
+                    else if (item.Value.SearchString.IndexOf(searchTextLower) >= 0)
                         addThis = true;
 
                     // Hardcode * as add all if armor slot is provided
-                    if ((searchTextLower == "*") && ((cbItemSearchItemArmorSlotTypeList.SelectedIndex > 0) || (cbItemSearchItemCategoryTypeList.SelectedIndex > 0) || (cbItemSearchRange.SelectedIndex > 0)))
+                    if ((searchTextLower == "*") && ((cbItemSearchItemArmorSlotTypeList.SelectedIndex > 0) ||
+                                                     (cbItemSearchItemCategoryTypeList.SelectedIndex > 0) ||
+                                                     (cbItemSearchRange.SelectedIndex > 0) || (filterByType)))
                         addThis = true;
+
+                    if (addThis && filterByType)
+                    {
+                        if (filterType != item.Value.impl_id)
+                            addThis = false;
+                    }
 
                     if (addThis && (cbItemSearchItemCategoryTypeList.SelectedIndex > 0))
                     {
@@ -2402,8 +2452,7 @@ namespace AAEmu.DBViewer
                     {
                         if (item.Value.item_armors == null)
                             addThis = false;
-                        else
-                        if (cbItemSearchItemArmorSlotTypeList.SelectedIndex != item.Value.item_armors.slot_type_id)
+                        else if (cbItemSearchItemArmorSlotTypeList.SelectedIndex != item.Value.item_armors.slot_type_id)
                         {
                             addThis = false;
                         }
@@ -2430,11 +2479,14 @@ namespace AAEmu.DBViewer
 
                         if (dgvItem.Rows.Count > 500)
                         {
-                            MessageBox.Show("Too many result items, list is cut off at 500. Try narrowing your search!");
+                            MessageBox.Show(
+                                "Too many result items, list is cut off at 500. Try narrowing your search!");
                             break;
                         }
                     }
                 }
+
+                dgvItem.Show();
 
 
             }
@@ -2469,8 +2521,7 @@ namespace AAEmu.DBViewer
                 g = hexARGB.Substring(4, 2);
                 b = hexARGB.Substring(6, 2);
             }
-            else
-            if (hexARGB.Length == 6)
+            else if (hexARGB.Length == 6)
             {
                 a = hexARGB.Substring(0, 2);
                 r = hexARGB.Substring(2, 2);
@@ -2483,6 +2534,7 @@ namespace AAEmu.DBViewer
                 //throw new ArgumentException("hexColor is not exactly 6 digits.");
                 return Color.Empty;
             }
+
             Color color = Color.Empty;
             try
             {
@@ -2498,6 +2550,7 @@ namespace AAEmu.DBViewer
                 //throw new ArgumentException("Conversion failed.");
                 return Color.Empty;
             }
+
             return color;
         }
 
@@ -2536,17 +2589,18 @@ namespace AAEmu.DBViewer
                         {
                             rt.AppendText(restText.Substring(0, atStart));
                             rt.SelectionColor = Color.Yellow;
-                            if ((fieldNameStr == "ITEM_NAME") && (AADB.DB_Items.TryGetValue(itemVal, out GameItem item)))
+                            if ((fieldNameStr == "ITEM_NAME") &&
+                                (AADB.DB_Items.TryGetValue(itemVal, out GameItem item)))
                             {
                                 rt.AppendText(item.nameLocalized);
                             }
-                            else
-                            if ((fieldNameStr == "NPC_NAME") && (AADB.DB_NPCs.TryGetValue(itemVal, out GameNPC npc)))
+                            else if ((fieldNameStr == "NPC_NAME") &&
+                                     (AADB.DB_NPCs.TryGetValue(itemVal, out GameNPC npc)))
                             {
                                 rt.AppendText(npc.nameLocalized);
                             }
-                            else
-                            if ((fieldNameStr == "QUEST_NAME") && (AADB.DB_Quest_Contexts.TryGetValue(itemVal, out GameQuestContexts quest)))
+                            else if ((fieldNameStr == "QUEST_NAME") &&
+                                     (AADB.DB_Quest_Contexts.TryGetValue(itemVal, out GameQuestContexts quest)))
                             {
                                 rt.AppendText(quest.nameLocalized);
                             }
@@ -2554,6 +2608,7 @@ namespace AAEmu.DBViewer
                             {
                                 rt.AppendText("@" + fieldNameStr + "(" + itemVal.ToString() + ")");
                             }
+
                             rt.SelectionColor = rt.ForeColor;
 
                             restText = restText.Substring(atEndBracket + 1);
@@ -2598,8 +2653,7 @@ namespace AAEmu.DBViewer
                     rt.AppendText("|");
                     restText = restText.Substring(pipeStart + 1);
                 }
-                else
-                if ((colStartPos >= 0) && (restText.Length >= colStartPos + 10))
+                else if ((colStartPos >= 0) && (restText.Length >= colStartPos + 10))
                 {
                     var colText = restText.Substring(colStartPos + 2, 8);
                     rt.AppendText(restText.Substring(0, colStartPos));
@@ -2607,15 +2661,13 @@ namespace AAEmu.DBViewer
                     rt.SelectionColor = newCol;
                     restText = restText.Substring(colStartPos + 10);
                 }
-                else
-                if ((colResetPos >= 0) && (restText.Length >= colResetPos + 2))
+                else if ((colResetPos >= 0) && (restText.Length >= colResetPos + 2))
                 {
                     rt.AppendText(restText.Substring(0, colResetPos));
                     rt.SelectionColor = rt.ForeColor;
                     restText = restText.Substring(colResetPos + 2);
                 }
-                else
-                if (atStart >= 0)
+                else if (atStart >= 0)
                 {
                     // already handled
                 }
@@ -2639,7 +2691,7 @@ namespace AAEmu.DBViewer
             restText = restText.Replace("\n", "\r");
             var resetColor = rt.ForeColor;
 
-            while(restText.Length > 0)
+            while (restText.Length > 0)
             {
                 var nextEndBracket = restText.IndexOf(")");
                 var nextEndAccolade = restText.IndexOf("}");
@@ -2650,14 +2702,12 @@ namespace AAEmu.DBViewer
                     rt.SelectionColor = currentCol;
                     restText = restText.Substring(1);
                 }
-                else
-                if (restText.StartsWith("|r")) // reset color
+                else if (restText.StartsWith("|r")) // reset color
                 {
                     rt.SelectionColor = resetColor;
                     restText = restText.Substring(2);
                 }
-                else
-                if (restText.StartsWith("[START_DESCRIPTION]")) // reset color
+                else if (restText.StartsWith("[START_DESCRIPTION]")) // reset color
                 {
                     resetColor = Color.LimeGreen;
                     rt.SelectionColor = resetColor;
@@ -2703,7 +2753,8 @@ namespace AAEmu.DBViewer
                 {
                     rt.SelectionColor = Color.Yellow;
                     var valueText = restText.Substring(13, nextEndBracket - 13);
-                    if (long.TryParse(valueText, out var value) && (AADB.DB_Doodad_Almighties.TryGetValue(value, out var doodad)))
+                    if (long.TryParse(valueText, out var value) &&
+                        (AADB.DB_Doodad_Almighties.TryGetValue(value, out var doodad)))
                         rt.AppendText(doodad.nameLocalized);
                     else
                         rt.AppendText("@DOODAD_NAME(" + valueText + ")");
@@ -2725,7 +2776,8 @@ namespace AAEmu.DBViewer
                 {
                     rt.SelectionColor = Color.Yellow;
                     var valueText = restText.Substring(12, nextEndBracket - 12);
-                    if (long.TryParse(valueText, out var value) && (AADB.DB_Quest_Contexts.TryGetValue(value, out var quest)))
+                    if (long.TryParse(valueText, out var value) &&
+                        (AADB.DB_Quest_Contexts.TryGetValue(value, out var quest)))
                         rt.AppendText(quest.nameLocalized);
                     else
                         rt.AppendText("@QUEST_NAME(" + valueText + ")");
@@ -2801,22 +2853,19 @@ namespace AAEmu.DBViewer
                             }
                         }
                     }
-                    else
-                    if (iconImgLabel != null)
+                    else if (iconImgLabel != null)
                     {
                         iconImgLabel.Image = null;
                         iconImgLabel.Text = "NOT FOUND - " + iconname + " ?";
                     }
                 }
-                else
-                if (iconImgLabel != null)
+                else if (iconImgLabel != null)
                 {
                     iconImgLabel.Image = null;
                     iconImgLabel.Text = icon_id.ToString() + "?";
                 }
             }
-            else
-            if (iconImgLabel != null)
+            else if (iconImgLabel != null)
             {
                 iconImgLabel.Image = null;
                 iconImgLabel.Text = icon_id.ToString();
@@ -2851,8 +2900,7 @@ namespace AAEmu.DBViewer
                 if (ms > 0)
                     res += ms.ToString() + "ms";
             }
-            else
-            if ((ss > 0) || (ms > 0))
+            else if ((ss > 0) || (ms > 0))
             {
                 float s = ss + (1f / 1000f * ms);
                 res += s.ToString() + "s";
@@ -2896,13 +2944,11 @@ namespace AAEmu.DBViewer
             {
                 return range.ToString("0") + " mm";
             }
-            else
-            if (Math.Abs(range) < 1000.0f)
+            else if (Math.Abs(range) < 1000.0f)
             {
                 return (range / 10).ToString("0") + " cm";
             }
-            else
-            if (Math.Abs(range) < 15000.0f)
+            else if (Math.Abs(range) < 15000.0f)
             {
                 return (range / 1000).ToString("0.0") + " m";
             }
@@ -2917,8 +2963,10 @@ namespace AAEmu.DBViewer
             if (AADB.DB_Items.TryGetValue(idx, out var item))
             {
                 lItemID.Text = idx.ToString();
+                lItemImplId.Text = ((GameItemImplId)item.impl_id).ToString() + " (" + item.impl_id.ToString() + ")";
                 lItemName.Text = item.nameLocalized;
-                lItemCategory.Text = AADB.GetTranslationByID(item.catgegory_id, "item_categories", "name") + " (" + item.catgegory_id.ToString() + ")";
+                lItemCategory.Text = AADB.GetTranslationByID(item.catgegory_id, "item_categories", "name") + " (" +
+                                     item.catgegory_id.ToString() + ")";
                 var fullDescription = item.descriptionLocalized;
                 if (AADB.DB_Skills.TryGetValue(item.use_skill_id, out var useSkill))
                 {
@@ -2926,10 +2974,11 @@ namespace AAEmu.DBViewer
                         fullDescription += "\r\r";
                     fullDescription += "[START_DESCRIPTION]" + useSkill.descriptionLocalized;
                 }
+
                 FormattedTextToRichtEdit(fullDescription, rtItemDesc);
                 lItemLevel.Text = item.level.ToString();
                 IconIDToLabel(item.icon_id, itemIcon);
-                btnFindItemSkill.Enabled = true;// (item.use_skill_id > 0);
+                btnFindItemSkill.Enabled = true; // (item.use_skill_id > 0);
                 var gmadditem = "/additem " + item.id.ToString();
                 gmadditem += " " + item.max_stack_size.ToString();
                 if (item.fixed_grade >= 0)
@@ -2942,6 +2991,7 @@ namespace AAEmu.DBViewer
             else
             {
                 lItemID.Text = idx.ToString();
+                lItemImplId.Text = "";
                 lItemName.Text = "<not found>";
                 lItemCategory.Text = "";
                 rtItemDesc.Clear();
@@ -2992,6 +3042,7 @@ namespace AAEmu.DBViewer
                 parent.Nodes.Add(overflowNode);
                 return;
             }
+
             var nodeName = child.id.ToString() + " - " + child.name;
             if (child.tickets > 1)
                 nodeName = child.tickets.ToString() + " x " + nodeName;
@@ -3003,7 +3054,8 @@ namespace AAEmu.DBViewer
             parent.Nodes.Add(eventNode);
 
             // Does it have conditions ?
-            var eventConditions = AADB.DB_Plot_Event_Conditions.Where(eventCondition => eventCondition.Value.event_id == child.id);
+            var eventConditions =
+                AADB.DB_Plot_Event_Conditions.Where(eventCondition => eventCondition.Value.event_id == child.id);
             foreach (var eventCondition in eventConditions)
             {
                 var eventConditionName = ConditionTypeName(eventCondition.Value.condition_id);
@@ -3048,8 +3100,8 @@ namespace AAEmu.DBViewer
             tvSkill.Nodes.Add(rootNode);
 
             var skillEffectsList = from se in AADB.DB_Skill_Effects
-                                   where se.Value.skill_id == skill.id
-                                   select se.Value ;
+                where se.Value.skill_id == skill.id
+                select se.Value;
 
             TreeNode effectsRoot = null;
 
@@ -3069,7 +3121,7 @@ namespace AAEmu.DBViewer
                 }
             }
 
-            
+
             if (AADB.DB_Plots.TryGetValue(skill.plot_id, out var plot))
             {
                 var firstPlotNode = new TreeNode(plot.id.ToString() + " - " + plot.name);
@@ -3078,12 +3130,14 @@ namespace AAEmu.DBViewer
                 firstPlotNode.Tag = plot.id;
                 tvSkill.Nodes.Add(firstPlotNode);
 
-                var events = AADB.DB_Plot_Events.Where(plotEvent => plotEvent.Value.plot_id == plot.id).OrderBy(plotEvent => plotEvent.Value.postion);
+                var events = AADB.DB_Plot_Events.Where(plotEvent => plotEvent.Value.plot_id == plot.id)
+                    .OrderBy(plotEvent => plotEvent.Value.postion);
                 foreach (var e in events)
                 {
                     AddPlotEventNode(firstPlotNode, e.Value);
                 }
             }
+
             tvSkill.ExpandAll();
             tvSkill.SelectedNode = rootNode;
         }
@@ -3106,18 +3160,19 @@ namespace AAEmu.DBViewer
                 var effectsTableName = FunctionTypeToTableName(effect.actual_type);
                 var effectValuesList = GetCustomTableValues(effectsTableName, "id", effect.actual_id.ToString());
                 foreach (var effectValues in effectValuesList)
-                    foreach (var effectValue in effectValues)
-                    {
-                        var thisNode = AddCustomPropertyNode(effectValue.Key, effectValue.Value, hideEmptyProperties, skillEffectNode);
-                        if (thisNode == null)
-                            continue;
+                foreach (var effectValue in effectValues)
+                {
+                    var thisNode = AddCustomPropertyNode(effectValue.Key, effectValue.Value, hideEmptyProperties,
+                        skillEffectNode);
+                    if (thisNode == null)
+                        continue;
 
-                        if (thisNode.ImageIndex <= 0) // override default blank icon with blue !
-                        {
-                            thisNode.ImageIndex = 4;
-                            thisNode.SelectedImageIndex = 4;
-                        }
+                    if (thisNode.ImageIndex <= 0) // override default blank icon with blue !
+                    {
+                        thisNode.ImageIndex = 4;
+                        thisNode.SelectedImageIndex = 4;
                     }
+                }
             }
         }
 
@@ -3135,13 +3190,11 @@ namespace AAEmu.DBViewer
                 {
                     lSkillGCD.Text = "Default";
                 }
-                else
-                if ((!skill.default_gcd) && (!skill.ignore_global_cooldown))
+                else if ((!skill.default_gcd) && (!skill.ignore_global_cooldown))
                 {
                     lSkillGCD.Text = MSToString(skill.custom_gcd);
                 }
-                else
-                if ((!skill.default_gcd) && (skill.ignore_global_cooldown))
+                else if ((!skill.default_gcd) && (skill.ignore_global_cooldown))
                 {
                     lSkillGCD.Text = "Ignored";
                 }
@@ -3149,6 +3202,7 @@ namespace AAEmu.DBViewer
                 {
                     lSkillGCD.Text = "Default";
                 }
+
                 // lSkillGCD.Text = skill.ignore_global_cooldown ? "Ignore" : "Normal";
                 FormattedTextToRichtEdit(skill.descriptionLocalized, rtSkillDescription);
                 IconIDToLabel(skill.icon_id, skillIcon);
@@ -3164,7 +3218,7 @@ namespace AAEmu.DBViewer
                 {
                     labelSkillReagents.Text = "Required items to use this skill";
                 }
-                
+
                 // Produces
                 dgvSkillProducts.Rows.Clear();
                 foreach (var p in AADB.DB_Skill_Products)
@@ -3182,6 +3236,7 @@ namespace AAEmu.DBViewer
                         {
                             row.Cells[1].Value = "???";
                         }
+
                         row.Cells[2].Value = p.Value.amount.ToString();
                     }
                 }
@@ -3203,6 +3258,7 @@ namespace AAEmu.DBViewer
                         {
                             row.Cells[1].Value = "???";
                         }
+
                         row.Cells[2].Value = p.Value.amount.ToString();
                     }
                 }
@@ -3271,6 +3327,7 @@ namespace AAEmu.DBViewer
                         btnFindNPCsInZone.Tag = null;
                         btnFindNPCsInZone.Enabled = false;
                     }
+
                     string zoneDoodadFile = zg.GamePakZoneDoodadsDat();
                     if ((pak.IsOpen) && (pak.FileExists(zoneDoodadFile)))
                     {
@@ -3283,7 +3340,10 @@ namespace AAEmu.DBViewer
                         btnFindDoodadsInZone.Enabled = false;
                     }
 
-                    lZoneGroupsSizePos.Text = "X:" + zg.PosAndSize.X.ToString("0.0") + " Y:" + zg.PosAndSize.Y.ToString("0.0") + "  W:" + zg.PosAndSize.Width.ToString("0.0") + " H:" + zg.PosAndSize.Height.ToString("0.0");
+                    lZoneGroupsSizePos.Text = "X:" + zg.PosAndSize.X.ToString("0.0") + " Y:" +
+                                              zg.PosAndSize.Y.ToString("0.0") + "  W:" +
+                                              zg.PosAndSize.Width.ToString("0.0") + " H:" +
+                                              zg.PosAndSize.Height.ToString("0.0");
                     lZoneGroupsImageMap.Text = zg.image_map.ToString();
                     lZoneGroupsSoundID.Text = zg.sound_id.ToString();
                     lZoneGroupsSoundPackID.Text = zg.sound_pack_id.ToString();
@@ -3301,6 +3361,7 @@ namespace AAEmu.DBViewer
                         btnZoneGroupsSaltWaterFish.Tag = 0;
                         btnZoneGroupsSaltWaterFish.Enabled = false;
                     }
+
                     if (zg.fishing_land_loot_pack_id > 0)
                     {
                         btnZoneGroupsFreshWaterFish.Tag = zg.fishing_land_loot_pack_id;
@@ -3311,6 +3372,7 @@ namespace AAEmu.DBViewer
                         btnZoneGroupsFreshWaterFish.Tag = 0;
                         btnZoneGroupsFreshWaterFish.Enabled = false;
                     }
+
                     var bannedTagsCount = 0;
                     var bannedInfo = string.Empty;
                     foreach (var b in AADB.DB_Zone_Group_Banned_Tags)
@@ -3328,6 +3390,7 @@ namespace AAEmu.DBViewer
                             }
                         }
                     }
+
                     if (bannedTagsCount <= 0)
                     {
                         labelZoneGroupRestrictions.Text = "(no restrictions)";
@@ -3349,8 +3412,14 @@ namespace AAEmu.DBViewer
                     if (AADB.DB_World_Groups.TryGetValue(zg.target_id, out var wg))
                     {
                         lWorldGroupName.Text = wg.name;
-                        lWorldGroupSizeAndPos.Text = "X:" + wg.PosAndSize.X.ToString() + " Y:" + wg.PosAndSize.Y.ToString() + "  W:" + wg.PosAndSize.Width.ToString() + " H:" + wg.PosAndSize.Height.ToString();
-                        lWorldGroupImageSizeAndPos.Text = "X:" + wg.Image_PosAndSize.X.ToString() + " Y:" + wg.Image_PosAndSize.Y.ToString() + "  W:" + wg.Image_PosAndSize.Width.ToString() + " H:" + wg.Image_PosAndSize.Height.ToString();
+                        lWorldGroupSizeAndPos.Text = "X:" + wg.PosAndSize.X.ToString() + " Y:" +
+                                                     wg.PosAndSize.Y.ToString() + "  W:" +
+                                                     wg.PosAndSize.Width.ToString() + " H:" +
+                                                     wg.PosAndSize.Height.ToString();
+                        lWorldGroupImageSizeAndPos.Text = "X:" + wg.Image_PosAndSize.X.ToString() + " Y:" +
+                                                          wg.Image_PosAndSize.Y.ToString() + "  W:" +
+                                                          wg.Image_PosAndSize.Width.ToString() + " H:" +
+                                                          wg.Image_PosAndSize.Height.ToString();
                         lWorldGroupImageMap.Text = wg.image_map.ToString();
                         lWorldGroupTargetID.Text = wg.target_id.ToString();
                     }
@@ -3538,6 +3607,7 @@ namespace AAEmu.DBViewer
                                 row.Cells[9].Value = GetInt64(reader, "group").ToString();
                             }
                         }
+
                         dgvLoot.Visible = true;
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
@@ -3555,6 +3625,7 @@ namespace AAEmu.DBViewer
                 btnQuestFindRelatedOnMap.Tag = 0;
                 return;
             }
+
             btnQuestFindRelatedOnMap.Tag = quest_id;
             var rootNode = tvQuestWorkflow.Nodes.Add(q.nameLocalized + " ( " + q.id + " )");
             rootNode.ForeColor = Color.White;
@@ -3562,14 +3633,15 @@ namespace AAEmu.DBViewer
             var contextNode = rootNode.Nodes.Add("Context");
             contextNode.ForeColor = Color.White;
             var contextFieldsList = GetCustomTableValues("quest_contexts", "id", q.id.ToString());
-            foreach(var contextFields in contextFieldsList)
+            foreach (var contextFields in contextFieldsList)
             {
-                foreach(var contextField in contextFields)
+                foreach (var contextField in contextFields)
                 {
                     if (contextField.Key == "translate") // we can ignore this one
                         continue;
-                    else
-                    if (contextField.Key == "category_id") // special hanlding for this one, as we can't use it's general name to autogenrate the name
+                    else if
+                        (contextField.Key ==
+                         "category_id") // special hanlding for this one, as we can't use it's general name to autogenrate the name
                     {
                         if (AADB.DB_Quest_Categories.TryGetValue(q.category_id, out var questCat))
                         {
@@ -3577,28 +3649,30 @@ namespace AAEmu.DBViewer
                         }
                         else
                             AddCustomPropertyNode(contextField.Key, contextField.Value, false, contextNode);
-                            //contextNode.Nodes.Add(AddCustomPropertyInfo(contextField.Key, contextField.Value));
+                        //contextNode.Nodes.Add(AddCustomPropertyInfo(contextField.Key, contextField.Value));
                     }
                     else
-                        AddCustomPropertyNode(contextField.Key, contextField.Value, cbQuestWorkflowHideEmpty.Checked, contextNode);
+                        AddCustomPropertyNode(contextField.Key, contextField.Value, cbQuestWorkflowHideEmpty.Checked,
+                            contextNode);
                     //if (!cbQuestWorkflowHideEmpty.Checked || !IsCustomPropertyEmpty(contextField.Value))
                     //    contextNode.Nodes.Add(AddCustomPropertyInfo(contextField.Key, contextField.Value));
                 }
             }
+
             contextNode.Expand();
 
             //dgvQuestComponents.Rows.Clear();
             var comps = from c in AADB.DB_Quest_Components
-                        where c.Value.quest_context_id == q.id
-                        orderby c.Value.component_kind_id
-                        select c.Value;
+                where c.Value.quest_context_id == q.id
+                orderby c.Value.component_kind_id
+                select c.Value;
 
             var questText = "";
 
             var qTextQuery = from qt in AADB.DB_Quest_Context_Texts
-                        where qt.Value.quest_context_id == q.id
-                        orderby qt.Value.quest_context_text_kind_id
-                        select qt.Value.textLocalized;
+                where qt.Value.quest_context_id == q.id
+                orderby qt.Value.quest_context_text_kind_id
+                select qt.Value.textLocalized;
 
             foreach (var t in qTextQuery)
                 questText += t + "\r\r";
@@ -3607,29 +3681,46 @@ namespace AAEmu.DBViewer
             {
                 // Component Info
                 var kindName = "";
-                switch(c.component_kind_id)
+                switch (c.component_kind_id)
                 {
-                    case 1: kindName = "None"; break;
-                    case 2: kindName = "Start";break;
-                    case 3: kindName = "Supply";break;
-                    case 4: kindName = "Progress"; break;
-                    case 5: kindName = "Fail"; break;
-                    case 6: kindName = "Ready"; break;
-                    case 7: kindName = "Drop"; break;
-                    case 8: kindName = "Reward"; break;
+                    case 1:
+                        kindName = "None";
+                        break;
+                    case 2:
+                        kindName = "Start";
+                        break;
+                    case 3:
+                        kindName = "Supply";
+                        break;
+                    case 4:
+                        kindName = "Progress";
+                        break;
+                    case 5:
+                        kindName = "Fail";
+                        break;
+                    case 6:
+                        kindName = "Ready";
+                        break;
+                    case 7:
+                        kindName = "Drop";
+                        break;
+                    case 8:
+                        kindName = "Reward";
+                        break;
                 }
+
                 kindName += " ( " + c.component_kind_id + " )";
-                
+
                 // Quest Component header
                 var componentNode = rootNode.Nodes.Add("Component " + c.id.ToString() + " - " + kindName);
                 questText += "|nc;" + kindName + "|r\r\r";
 
                 // Quest description text
                 var compTextRaw = from ct in AADB.DB_Quest_Component_Texts
-                                  where ct.Value.quest_component_id == c.id
-                                  // && ct.Value.quest_component_text_kind_id == c.component_kind_id
-                                  select ct.Value;
-                                   
+                    where ct.Value.quest_component_id == c.id
+                    // && ct.Value.quest_component_text_kind_id == c.component_kind_id
+                    select ct.Value;
+
                 if (compTextRaw != null)
                 {
                     foreach (var ct in compTextRaw)
@@ -3653,19 +3744,22 @@ namespace AAEmu.DBViewer
                             continue;
                         //if (!cbQuestWorkflowHideEmpty.Checked || !IsCustomPropertyEmpty(field.Value))
                         //    componentInfoNode.Nodes.Add(AddCustomPropertyInfo(field.Key, field.Value));
-                        AddCustomPropertyNode(field.Key, field.Value, cbQuestWorkflowHideEmpty.Checked, componentInfoNode);
+                        AddCustomPropertyNode(field.Key, field.Value, cbQuestWorkflowHideEmpty.Checked,
+                            componentInfoNode);
                     }
                 }
+
                 componentInfoNode.Expand();
 
                 // Acts Info
                 var acts = from a in AADB.DB_Quest_Acts
-                           where a.Value.quest_component_id == c.id
-                           select a.Value;
+                    where a.Value.quest_component_id == c.id
+                    select a.Value;
 
                 foreach (var a in acts)
                 {
-                    var actsNode = componentNode.Nodes.Add("Act " + a.id + " - " + a.act_detail_type + " ( " + a.act_detail_id + " )");
+                    var actsNode = componentNode.Nodes.Add("Act " + a.id + " - " + a.act_detail_type + " ( " +
+                                                           a.act_detail_id + " )");
                     actsNode.ForeColor = Color.LimeGreen;
                     var actDetailTableName = FunctionTypeToTableName(a.act_detail_type);
                     var actsFieldsList = GetCustomTableValues(actDetailTableName, "id", a.act_detail_id.ToString());
@@ -3678,18 +3772,22 @@ namespace AAEmu.DBViewer
                                 if (long.TryParse(field.Value, out var aliasId) && (aliasId > 0))
                                 {
                                     // no idea why this is the name field instead of text
-                                    var objAlias = AADB.GetTranslationByID(aliasId, "quest_act_obj_aliases", "name", field.Value);
+                                    var objAlias = AADB.GetTranslationByID(aliasId, "quest_act_obj_aliases", "name",
+                                        field.Value);
                                     questText += "|ni;QuestActObjAlias(" + field.Value + ")|r \r" + objAlias + "\r\r\r";
                                 }
                             }
+
                             //if (!cbQuestWorkflowHideEmpty.Checked || !IsCustomPropertyEmpty(field.Value))
                             //    actsNode.Nodes.Add(AddCustomPropertyInfo(field.Key, field.Value));
                             AddCustomPropertyNode(field.Key, field.Value, cbQuestWorkflowHideEmpty.Checked, actsNode);
                         }
                     }
+
                     actsNode.Expand();
                 }
             }
+
             rootNode.Expand();
             tvQuestWorkflow.SelectedNode = rootNode;
             FormattedTextToRichtEdit(questText, rtQuestText);
@@ -3732,8 +3830,8 @@ namespace AAEmu.DBViewer
         private string TagsAsString(long target_id, Dictionary<long, GameTaggedValues> lookupTable)
         {
             var tags = from t in lookupTable
-                       where t.Value.target_id == target_id
-                       select t.Value;
+                where t.Value.target_id == target_id
+                select t.Value;
             var s = string.Empty;
             foreach (var t in tags)
             {
@@ -3743,6 +3841,7 @@ namespace AAEmu.DBViewer
                     s += taglookup.nameLocalized + " ";
                 s += "(" + t.tag_id.ToString() + ")";
             }
+
             return s;
         }
 
@@ -3760,6 +3859,7 @@ namespace AAEmu.DBViewer
                 tvBuffTriggers.Nodes.Clear();
                 return;
             }
+
             lBuffId.Text = b.id.ToString();
             lBuffName.Text = b.nameLocalized;
             lBuffDuration.Text = MSToString(b.duration);
@@ -3771,9 +3871,10 @@ namespace AAEmu.DBViewer
             {
                 AddBuffTag(c.Key + " = " + c.Value);
             }
+
             lBuffAddGMCommand.Text = "/addbuff " + lBuffId.Text;
             ShowSelectedData("buffs", "id = " + b.id.ToString(), "id ASC");
-            
+
             ShowDBBuffTriggers(buff_id);
         }
 
@@ -3808,9 +3909,10 @@ namespace AAEmu.DBViewer
                     default: return id.ToString();
                 }
             }
-            
+
             tvBuffTriggers.Nodes.Clear();
-            var triggers = AADB.DB_BuffTriggers.Values.Where(bt => bt.buff_id == buff_id).GroupBy(bt => bt.event_id, bt => bt).ToDictionary(bt => bt.Key, bt => bt.ToList());
+            var triggers = AADB.DB_BuffTriggers.Values.Where(bt => bt.buff_id == buff_id)
+                .GroupBy(bt => bt.event_id, bt => bt).ToDictionary(bt => bt.Key, bt => bt.ToList());
 
             foreach (var triggerGrouping in triggers)
             {
@@ -3828,7 +3930,7 @@ namespace AAEmu.DBViewer
                     }
                 }
             }
-            
+
             tvBuffTriggers.ExpandAll();
             if (tvBuffTriggers.Nodes.Count > 0)
                 tvBuffTriggers.SelectedNode = tvBuffTriggers.Nodes[0];
@@ -3867,6 +3969,7 @@ namespace AAEmu.DBViewer
                 Properties.Settings.Default.DefaultGameLanguage = cbItemSearchLanguage.Text;
                 LoadServerDB(false);
             }
+
             cbItemSearchLanguage.Enabled = true;
         }
 
@@ -3905,6 +4008,7 @@ namespace AAEmu.DBViewer
                 Properties.Settings.Default.DBFileName = sqlfile;
                 Text = defaultTitle + " - " + sqlfile + " (" + Properties.Settings.Default.DefaultGameLanguage + ")";
                 // make sure translations are loaded first, other tables depend on it
+
                 loading.ShowInfo("Loading: Translation");
                 LoadTranslations(Properties.Settings.Default.DefaultGameLanguage);
                 loading.ShowInfo("Loading: Custom Translations");
@@ -4107,8 +4211,7 @@ namespace AAEmu.DBViewer
                         addThis = true;
                     }
                 }
-                else
-                if (skill.Value.SearchString.IndexOf(searchTextLower) >= 0)
+                else if (skill.Value.SearchString.IndexOf(searchTextLower) >= 0)
                     addThis = true;
 
                 if (addThis)
@@ -4130,6 +4233,7 @@ namespace AAEmu.DBViewer
                     }
                 }
             }
+
             dgvSkills.Visible = true;
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
@@ -4188,6 +4292,7 @@ namespace AAEmu.DBViewer
                     if (p.Value.item_id == id)
                         AddSkillLine(p.Value.skill_id);
                 }
+
                 foreach (var p in AADB.DB_Skill_Products)
                 {
                     if (p.Value.item_id == id)
@@ -4264,7 +4369,8 @@ namespace AAEmu.DBViewer
             {
                 using (var command = connection.CreateCommand())
                 {
-                    command.CommandText = "SELECT * FROM " + table + " WHERE " + whereStatement + " ORDER BY " + orderStatement + " LIMIT 1";
+                    command.CommandText = "SELECT * FROM " + table + " WHERE " + whereStatement + " ORDER BY " +
+                                          orderStatement + " LIMIT 1";
                     labelCurrentDataInfo.Text = command.CommandText;
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
@@ -4285,10 +4391,12 @@ namespace AAEmu.DBViewer
                                 int line = dgvCurrentData.Rows.Add();
                                 var row = dgvCurrentData.Rows[line];
                                 row.Cells[0].Value = col;
-                                row.Cells[1].Value = reader.GetValue(col).ToString(); ;
+                                row.Cells[1].Value = reader.GetValue(col).ToString();
+                                ;
                                 row.Cells[2].Value = AADB.GetTranslationByID(thisID, table, col, " ");
                             }
                         }
+
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
                     }
@@ -4311,7 +4419,8 @@ namespace AAEmu.DBViewer
             foreach (var t in AADB.DB_Zones)
             {
                 var z = t.Value;
-                if ((z.id == searchID) || (z.zone_key == searchID) || (z.group_id == searchID) || (z.SearchString.IndexOf(searchText) >= 0))
+                if ((z.id == searchID) || (z.zone_key == searchID) || (z.group_id == searchID) ||
+                    (z.SearchString.IndexOf(searchText) >= 0))
                 {
                     var line = dgvZones.Rows.Add();
                     var row = dgvZones.Rows[line];
@@ -4453,6 +4562,7 @@ namespace AAEmu.DBViewer
                                     c++;
                                 }
                             }
+
                             Cursor = Cursors.Default;
                             Application.UseWaitCursor = false;
                         }
@@ -4512,15 +4622,19 @@ namespace AAEmu.DBViewer
                     {
                         ShowDBNPCInfo(z.id);
                     }
+
                     c++;
                     if (c >= 250)
                     {
-                        MessageBox.Show("The results were cut off at " + c.ToString() + " items, please refine your search !", "Too many entries", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(
+                            "The results were cut off at " + c.ToString() + " items, please refine your search !",
+                            "Too many entries", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         break;
                     }
                 }
 
             }
+
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
         }
@@ -4551,6 +4665,7 @@ namespace AAEmu.DBViewer
                 lNPCTags.Text = "???";
                 btnShowNPCsOnMap.Tag = 0;
             }
+
             lGMNPCSpawn.Text = "/spawn npc " + lNPCTemplate.Text;
         }
 
@@ -4592,7 +4707,8 @@ namespace AAEmu.DBViewer
             foreach (var t in AADB.DB_GameSystem_Factions)
             {
                 var z = t.Value;
-                if ((z.id == searchID) || (z.owner_id == searchID) || (z.mother_id == searchID) || (z.SearchString.IndexOf(searchText) >= 0))
+                if ((z.id == searchID) || (z.owner_id == searchID) || (z.mother_id == searchID) ||
+                    (z.SearchString.IndexOf(searchText) >= 0))
                 {
                     var line = dgvFactions.Rows.Add();
                     var row = dgvFactions.Rows[line];
@@ -4607,6 +4723,7 @@ namespace AAEmu.DBViewer
                     {
                         row.Cells[2].Value = string.Empty;
                     }
+
                     if (z.owner_nameLocalized != string.Empty)
                         row.Cells[3].Value = z.owner_nameLocalized + " (" + z.owner_id.ToString() + ")";
                     else
@@ -4618,6 +4735,7 @@ namespace AAEmu.DBViewer
                     {
                         d += AADB.GetFactionName(z.diplomacy_link_id, true);
                     }
+
                     row.Cells[4].Value = d;
 
                     if (first)
@@ -4628,6 +4746,7 @@ namespace AAEmu.DBViewer
                 }
 
             }
+
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
         }
@@ -4660,6 +4779,7 @@ namespace AAEmu.DBViewer
                 {
                     row.Cells[2].Value = string.Empty;
                 }
+
                 if (z.owner_nameLocalized != string.Empty)
                     row.Cells[3].Value = z.owner_nameLocalized + " (" + z.owner_id.ToString() + ")";
                 else
@@ -4671,6 +4791,7 @@ namespace AAEmu.DBViewer
                 {
                     d += AADB.GetFactionName(z.diplomacy_link_id, true);
                 }
+
                 row.Cells[4].Value = d;
 
                 if (first)
@@ -4679,6 +4800,7 @@ namespace AAEmu.DBViewer
                     ShowDBFaction(z.id);
                 }
             }
+
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
         }
@@ -4782,6 +4904,7 @@ namespace AAEmu.DBViewer
                     {
                         row.Cells[3].Value = z.group_id.ToString();
                     }
+
                     row.Cells[4].Value = z.percent.ToString();
                     if (z.faction_id != 0)
                         row.Cells[5].Value = AADB.GetFactionName(z.faction_id, true);
@@ -4798,12 +4921,15 @@ namespace AAEmu.DBViewer
                     c++;
                     if (c >= 250)
                     {
-                        MessageBox.Show("The results were cut off at " + c.ToString() + " doodads, please refine your search !", "Too many entries", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(
+                            "The results were cut off at " + c.ToString() + " doodads, please refine your search !",
+                            "Too many entries", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         break;
                     }
                 }
 
             }
+
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
         }
@@ -4831,7 +4957,7 @@ namespace AAEmu.DBViewer
                 return "doodad_func_navi_open_mailboxes";
             var tableName = string.Empty;
             var rest = funcName;
-            while(rest.Length > 0)
+            while (rest.Length > 0)
             {
                 var c = rest.Substring(0, 1);
                 if (c != c.ToLower()) // decaptialize the name, and put a underscore in front
@@ -4842,13 +4968,16 @@ namespace AAEmu.DBViewer
                 {
                     tableName += c;
                 }
+
                 rest = rest.Substring(1);
             }
+
             tableName = tableName.Trim('_') + "s"; // remove excess underscores and add a "s"
             return tableName;
         }
 
-        private List<Dictionary<string,string>> GetCustomTableValues(string tableName, string indexName, string searchId)
+        private List<Dictionary<string, string>> GetCustomTableValues(string tableName, string indexName,
+            string searchId)
         {
             var res = new List<Dictionary<string, string>>();
 
@@ -4858,7 +4987,7 @@ namespace AAEmu.DBViewer
                 {
                     try
                     {
-                        command.CommandText = "SELECT * FROM " + tableName + " WHERE " + indexName + "=" + searchId ;
+                        command.CommandText = "SELECT * FROM " + tableName + " WHERE " + indexName + "=" + searchId;
                         command.Prepare();
                         using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                         {
@@ -4877,8 +5006,10 @@ namespace AAEmu.DBViewer
                                         else
                                             resRow.Add(col, reader.GetValue(col).ToString());
                                     }
+
                                     c++;
                                 }
+
                                 res.Add(resRow);
                             }
                         }
@@ -4924,10 +5055,10 @@ namespace AAEmu.DBViewer
                 res.targetSearchButton = btnSkillSearch;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + skill.nameLocalized;
-                setCustomIcon = IconIDToLabel(skill.icon_id, null); ;
+                setCustomIcon = IconIDToLabel(skill.icon_id, null);
+                ;
             }
-            else
-            if (key.EndsWith("item_id") && (AADB.DB_Items.TryGetValue(val, out var item)))
+            else if (key.EndsWith("item_id") && (AADB.DB_Items.TryGetValue(val, out var item)))
             {
                 res.targetTabPage = tpItems;
                 res.targetTextBox = tItemSearch;
@@ -4935,10 +5066,10 @@ namespace AAEmu.DBViewer
                 res.targetSearchButton = btnItemSearch;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + item.nameLocalized;
-                setCustomIcon = IconIDToLabel(item.icon_id, null); ;
+                setCustomIcon = IconIDToLabel(item.icon_id, null);
+                ;
             }
-            else
-            if (key.EndsWith("doodad_id") && (AADB.DB_Doodad_Almighties.TryGetValue(val, out var doodad)))
+            else if (key.EndsWith("doodad_id") && (AADB.DB_Doodad_Almighties.TryGetValue(val, out var doodad)))
             {
                 res.targetTabPage = tpDoodads;
                 res.targetTextBox = tSearchDoodads;
@@ -4947,8 +5078,7 @@ namespace AAEmu.DBViewer
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + doodad.nameLocalized;
             }
-            else
-            if (key.EndsWith("npc_id") && (AADB.DB_NPCs.TryGetValue(val, out var npc)))
+            else if (key.EndsWith("npc_id") && (AADB.DB_NPCs.TryGetValue(val, out var npc)))
             {
                 res.targetTabPage = tpNPCs;
                 res.targetTextBox = tSearchNPC;
@@ -4957,8 +5087,7 @@ namespace AAEmu.DBViewer
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + npc.nameLocalized;
             }
-            else
-            if (key.EndsWith("buff_id") && (AADB.DB_Buffs.TryGetValue(val, out var buff)))
+            else if (key.EndsWith("buff_id") && (AADB.DB_Buffs.TryGetValue(val, out var buff)))
             {
                 res.targetTabPage = tpBuffs;
                 res.targetTextBox = tSearchBuffs;
@@ -4968,8 +5097,7 @@ namespace AAEmu.DBViewer
                 nodeText += " - " + buff.nameLocalized;
                 setCustomIcon = IconIDToLabel(buff.icon_id, null);
             }
-            else
-            if (key.EndsWith("zone_id") && (AADB.DB_Zones.TryGetValue(val, out var zone)))
+            else if (key.EndsWith("zone_id") && (AADB.DB_Zones.TryGetValue(val, out var zone)))
             {
                 res.targetTabPage = tpZones;
                 res.targetTextBox = tZonesSearch;
@@ -4978,8 +5106,7 @@ namespace AAEmu.DBViewer
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + zone.display_textLocalized;
             }
-            else
-            if (key.EndsWith("zone_group_id") && (AADB.DB_Zone_Groups.TryGetValue(val, out var zoneGroup)))
+            else if (key.EndsWith("zone_group_id") && (AADB.DB_Zone_Groups.TryGetValue(val, out var zoneGroup)))
             {
                 res.targetTabPage = tpZones;
                 res.targetTextBox = tZonesSearch;
@@ -4988,8 +5115,8 @@ namespace AAEmu.DBViewer
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + zoneGroup.display_textLocalized;
             }
-            else
-            if (key.EndsWith("item_category_id") && (AADB.DB_ItemsCategories.TryGetValue(val, out var itemCategory)))
+            else if (key.EndsWith("item_category_id") &&
+                     (AADB.DB_ItemsCategories.TryGetValue(val, out var itemCategory)))
             {
                 res.targetTabPage = tpItems;
                 res.targetTextBox = tItemSearch;
@@ -4998,18 +5125,16 @@ namespace AAEmu.DBViewer
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + itemCategory.nameLocalized;
             }
-            else
-            if (key.EndsWith("tag_id") && (AADB.DB_Tags.TryGetValue(val, out var tagId)))
+            else if (key.EndsWith("tag_id") && (AADB.DB_Tags.TryGetValue(val, out var tagId)))
             {
                 res.targetTabPage = tpTags;
                 res.targetTextBox = tSearchTags;
                 res.targetSearchText = tagId.nameLocalized;
                 res.targetSearchButton = btnSearchTags;
                 res.ForeColor = Color.WhiteSmoke;
-                nodeText += " - " + tagId.nameLocalized ;
+                nodeText += " - " + tagId.nameLocalized;
             }
-            else
-            if (key.EndsWith("special_effect_type_id"))
+            else if (key.EndsWith("special_effect_type_id"))
             {
                 try
                 {
@@ -5022,6 +5147,7 @@ namespace AAEmu.DBViewer
                     res.ForeColor = Color.Red;
                 }
             }
+
             res.Text = nodeText;
 
             rootNode.Nodes.Add(res);
@@ -5030,6 +5156,7 @@ namespace AAEmu.DBViewer
                 res.ImageIndex = setCustomIcon;
                 res.SelectedImageIndex = setCustomIcon;
             }
+
             return res;
         }
 
@@ -5130,22 +5257,27 @@ namespace AAEmu.DBViewer
                     var dFuncGroup = f.Value;
                     if (dFuncGroup.doodad_almighty_id == doodad.id)
                     {
-                        var groupNode = rootNode.Nodes.Add("Group: " + dFuncGroup.id.ToString() + " - Kind: " + dFuncGroup.doodad_func_group_kind_id.ToString());
+                        var groupNode = rootNode.Nodes.Add("Group: " + dFuncGroup.id.ToString() + " - Kind: " +
+                                                           dFuncGroup.doodad_func_group_kind_id.ToString());
                         groupNode.ForeColor = Color.LightCyan;
 
                         // Phase Funcs
                         foreach (var dpf in AADB.DB_Doodad_Phase_Funcs)
                             if (dpf.Value.doodad_func_group_id == dFuncGroup.id)
                             {
-                                var phaseNode = groupNode.Nodes.Add("PhaseFuncs: " + dpf.Value.actual_func_type + " ( " + dpf.Value.actual_func_id + " )");
+                                var phaseNode = groupNode.Nodes.Add("PhaseFuncs: " + dpf.Value.actual_func_type +
+                                                                    " ( " +
+                                                                    dpf.Value.actual_func_id + " )");
                                 phaseNode.ForeColor = Color.Yellow;
                                 var tableName = FunctionTypeToTableName(dpf.Value.actual_func_type);
-                                var fieldsList = GetCustomTableValues(tableName, "id", dpf.Value.actual_func_id.ToString());
+                                var fieldsList = GetCustomTableValues(tableName, "id",
+                                    dpf.Value.actual_func_id.ToString());
                                 foreach (var fields in fieldsList)
                                 {
                                     foreach (var fl in fields)
                                     {
-                                        AddCustomPropertyNode(fl.Key, fl.Value, cbDoodadWorkflowHideEmpty.Checked, phaseNode);
+                                        AddCustomPropertyNode(fl.Key, fl.Value, cbDoodadWorkflowHideEmpty.Checked,
+                                            phaseNode);
                                         /*
                                         if (cbDoodadWorkflowHideEmpty.Checked && (string.IsNullOrWhiteSpace(fl.Value) || (fl.Value == "0") || (fl.Value == "<null>") || (fl.Value == "f")))
                                         {
@@ -5163,10 +5295,14 @@ namespace AAEmu.DBViewer
                             }
 
                         // doodad_funcs
-                        var funcFieldsList = GetCustomTableValues("doodad_funcs", "doodad_func_group_id", dFuncGroup.id.ToString());
+                        var funcFieldsList =
+                            GetCustomTableValues("doodad_funcs", "doodad_func_group_id", dFuncGroup.id.ToString());
                         foreach (var funcFields in funcFieldsList)
                         {
-                            var funcsNode = groupNode.Nodes.Add(funcFields.Count > 0 ? "Funcs: " + funcFields["actual_func_type"] + " ( " + funcFields["actual_func_id"] + " )" : "Funcs");
+                            var funcsNode = groupNode.Nodes.Add(funcFields.Count > 0
+                                ? "Funcs: " + funcFields["actual_func_type"] + " ( " + funcFields["actual_func_id"] +
+                                  " )"
+                                : "Funcs");
                             funcsNode.ForeColor = Color.LimeGreen;
                             var tableName = FunctionTypeToTableName(funcFields["actual_func_type"]);
                             var fieldsList = GetCustomTableValues(tableName, "id", funcFields["actual_func_id"]);
@@ -5193,7 +5329,8 @@ namespace AAEmu.DBViewer
                             {
                                 foreach (var fl in fields)
                                 {
-                                    AddCustomPropertyNode(fl.Key, fl.Value, cbDoodadWorkflowHideEmpty.Checked, funcsNode);
+                                    AddCustomPropertyNode(fl.Key, fl.Value, cbDoodadWorkflowHideEmpty.Checked,
+                                        funcsNode);
                                     /*
                                     if (cbDoodadWorkflowHideEmpty.Checked && IsCustomPropertyEmpty(fl.Value))
                                     {
@@ -5215,6 +5352,7 @@ namespace AAEmu.DBViewer
                         groupNode.Expand();
                     }
                 }
+
                 rootNode.Expand();
 
             }
@@ -5376,6 +5514,7 @@ namespace AAEmu.DBViewer
                     res += "W ";
                     fx *= -1f;
                 }
+
                 res += FloatToCoord(fx);
                 res += " , ";
                 // Y - Latitude
@@ -5388,13 +5527,15 @@ namespace AAEmu.DBViewer
                     res += "S ";
                     fy *= -1f;
                 }
+
                 res += FloatToCoord(fy);
 
                 return res;
             }
         }
 
-        private List<MapSpawnLocation> GetNPCSpawnsInZoneGroup(long zoneGroupId, bool uniqueOnly = false, List<long> filterByIDs = null, string instanceName = "main_world")
+        private List<MapSpawnLocation> GetNPCSpawnsInZoneGroup(long zoneGroupId, bool uniqueOnly = false,
+            List<long> filterByIDs = null, string instanceName = "main_world")
         {
             List<MapSpawnLocation> res = new List<MapSpawnLocation>();
             var zg = GetZoneGroupByID(zoneGroupId);
@@ -5437,6 +5578,7 @@ namespace AAEmu.DBViewer
                     }
                 }
             }
+
             return res;
         }
 
@@ -5465,7 +5607,8 @@ namespace AAEmu.DBViewer
                         map.Show();
 
                         if (map.GetPoICount() > 0)
-                            if (MessageBox.Show("Keep current PoI's on map ?", "Add NPC", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            if (MessageBox.Show("Keep current PoI's on map ?", "Add NPC", MessageBoxButtons.YesNo,
+                                    MessageBoxIcon.Question) == DialogResult.No)
                                 map.ClearPoI();
 
                         npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id, false));
@@ -5502,40 +5645,51 @@ namespace AAEmu.DBViewer
                                         if (npc_spawner_npcs.Count > 0)
                                         {
                                             if (npc_spawner_npcs.Count == 1)
-                                                row.Cells[6].Value = string.Format("Used by 1 spawner, {0}", npc_spawner_npcs[0].npc_spawner_id);
+                                                row.Cells[6].Value = string.Format("Used by 1 spawner, {0}",
+                                                    npc_spawner_npcs[0].npc_spawner_id);
                                             else
                                             {
                                                 var ids = npc_spawner_npcs.Select(a => a.npc_spawner_id).ToList();
-                                                row.Cells[6].Value = string.Format("Used by {0} spawners, {1}", ids.Count, string.Join(", ", ids));
+                                                row.Cells[6].Value = string.Format("Used by {0} spawners, {1}",
+                                                    ids.Count,
+                                                    string.Join(", ", ids));
                                             }
                                         }
-                                        else
-                                        if (npc.count == 1)
-                                            row.Cells[6].Value = string.Format("{0} , {1} = ({2})", npc.x, npc.y, npc.AsSextant());
+                                        else if (npc.count == 1)
+                                            row.Cells[6].Value = string.Format("{0} , {1} = ({2})", npc.x, npc.y,
+                                                npc.AsSextant());
                                         else
                                             row.Cells[6].Value = npc.count.ToString() + " instances in zone";
 
                                         c++;
                                         if ((c % 25) == 0)
                                         {
-                                            loading.ShowInfo("Loading " + c.ToString() + "/" + npcList.Count.ToString() + " NPCs");
+                                            loading.ShowInfo("Loading " + c.ToString() + "/" +
+                                                             npcList.Count.ToString() +
+                                                             " NPCs");
                                         }
 
-                                        map.AddPoI(npc.x, npc.y, npc.z, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow, 0f, "npc", npc.id, z);
+                                        map.AddPoI(npc.x, npc.y, npc.z,
+                                            z.nameLocalized + " (" + npc.id.ToString() + ")",
+                                            Color.Yellow, 0f, "npc", npc.id, z);
                                     }
                                     else
                                     {
-                                        map.AddPoI(npc.x, npc.y, npc.z, "(" + npc.id.ToString() + ")", Color.Red, 0f, "npc", npc.id, z);
+                                        map.AddPoI(npc.x, npc.y, npc.z, "(" + npc.id.ToString() + ")", Color.Red, 0f,
+                                            "npc",
+                                            npc.id, z);
                                     }
                                 }
+
                                 tcViewer.SelectedTab = tpNPCs;
                                 dgvNPCs.Show();
 
                             }
                         }
+
                         map.tsbShowPoI.Checked = true;
                         map.tsbNamesPoI.Checked = false; // Disable this when loading from zone
-                        map.FocusAll(true,false,false);
+                        map.FocusAll(true, false, false);
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
                     }
@@ -5584,12 +5738,14 @@ namespace AAEmu.DBViewer
                             }
                             else
                                 row.Cells[3].Value = q.zone_id.ToString();
+
                             if (AADB.DB_Quest_Categories.TryGetValue(q.category_id, out var qc))
                                 row.Cells[4].Value = qc.nameLocalized;
                             else
                                 row.Cells[4].Value = q.category_id.ToString();
                         }
                     }
+
                     dgvQuests.Show();
 
                     Application.UseWaitCursor = false;
@@ -5632,6 +5788,7 @@ namespace AAEmu.DBViewer
                     }
                     else
                         row.Cells[3].Value = q.zone_id.ToString();
+
                     if (AADB.DB_Quest_Categories.TryGetValue(q.category_id, out var qc))
                         row.Cells[4].Value = qc.nameLocalized;
                     else
@@ -5662,24 +5819,14 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private void cbItemSearchItemArmorSlotTypeList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tItemSearch.Text.Replace("*", "") == string.Empty)
-            {
-                if ((cbItemSearchItemArmorSlotTypeList.SelectedIndex > 0) || (cbItemSearchItemCategoryTypeList.SelectedIndex > 0))
-                    tItemSearch.Text = "*";
-                else
-                    tItemSearch.Text = string.Empty;
-            }
-        }
-
         private void labelZoneGroupRestrictions_Click(object sender, EventArgs e)
         {
             if (!(sender is Label l) || (l == null))
                 return;
 
             var zoneGroupId = (long)l.Tag;
-            var bannedInfo = string.Empty; ;
+            var bannedInfo = string.Empty;
+            ;
             foreach (var b in AADB.DB_Zone_Group_Banned_Tags)
             {
                 if (b.Value.zone_group_id == zoneGroupId)
@@ -5690,7 +5837,9 @@ namespace AAEmu.DBViewer
                     }
                 }
             }
-            MessageBox.Show(bannedInfo, "Restrictions for ZoneGroup " + zoneGroupId.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            MessageBox.Show(bannedInfo, "Restrictions for ZoneGroup " + zoneGroupId.ToString(), MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
 
         private void dgvQuests_SelectionChanged(object sender, EventArgs e)
@@ -5718,11 +5867,11 @@ namespace AAEmu.DBViewer
             var row = dgvQuestComponents.SelectedRows[0];
             if (row.Cells.Count <= 0)
                 return;
-
+    
             var val = row.Cells[0].Value;
             if (val == null)
                 return;
-
+    
             var cid = long.Parse(val.ToString());
             ShowDBQuestComponent(cid);
             ShowSelectedData("quest_components", "id = " + cid.ToString(), "id ASC");
@@ -5740,7 +5889,8 @@ namespace AAEmu.DBViewer
             foreach (var i in AADB.DB_Translations)
             {
                 var translation = i.Value;
-                var tSearchString = "=" + translation.table.ToLower() + "=" + translation.field.ToLower() + "=" + translation.idx.ToString() + "=" + translation.value.ToLower() + "=";
+                var tSearchString = "=" + translation.table.ToLower() + "=" + translation.field.ToLower() + "=" +
+                                    translation.idx.ToString() + "=" + translation.value.ToLower() + "=";
                 var searchOK = true;
                 foreach (var s in sTexts)
                     if (!tSearchString.Contains(s))
@@ -5748,6 +5898,7 @@ namespace AAEmu.DBViewer
                         searchOK = false;
                         break;
                     }
+
                 if (searchOK)
                 {
                     int line = dgvLocalized.Rows.Add();
@@ -5758,6 +5909,7 @@ namespace AAEmu.DBViewer
                     row.Cells[3].Value = translation.value;
                     count++;
                 }
+
                 if (count > 50)
                     break;
             }
@@ -5804,12 +5956,15 @@ namespace AAEmu.DBViewer
                     c++;
                     if (c >= 250)
                     {
-                        MessageBox.Show("The results were cut off at " + c.ToString() + " buffs, please refine your search !", "Too many entries", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(
+                            "The results were cut off at " + c.ToString() + " buffs, please refine your search !",
+                            "Too many entries", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         break;
                     }
                 }
 
             }
+
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
         }
@@ -5950,13 +6105,15 @@ namespace AAEmu.DBViewer
                     if (zg != null)
                     {
                         zoneCount++;
-                        loading.ShowInfo("Searching in zones: " + zoneCount.ToString() + "/" + AADB.DB_Zone_Groups.Count.ToString());
+                        loading.ShowInfo("Searching in zones: " + zoneCount.ToString() + "/" +
+                                         AADB.DB_Zone_Groups.Count.ToString());
                         npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id, false));
                     }
                 }
 
                 if ((map.GetPoICount() > 0) && (npcList.Count > 0))
-                    if (MessageBox.Show("Keep current PoI's ?", "Add NPC", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    if (MessageBox.Show("Keep current PoI's ?", "Add NPC", MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question) == DialogResult.No)
                         map.ClearPoI();
 
                 if (npcList.Count > 0)
@@ -5968,15 +6125,18 @@ namespace AAEmu.DBViewer
                             continue;
                         if (AADB.DB_NPCs.TryGetValue(npc.id, out var z))
                         {
-                            map.AddPoI(npc.x, npc.y, npc.z, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow, 0f, "npc", npc.id, z);
+                            map.AddPoI(npc.x, npc.y, npc.z, z.nameLocalized + " (" + npc.id.ToString() + ")",
+                                Color.Yellow,
+                                0f, "npc", npc.id, z);
                         }
                     }
                 }
 
             }
+
             map.tsbNamesPoI.Checked = true;
             map.cbFocus.Checked = true;
-            map.FocusAll(true,false, false);
+            map.FocusAll(true, false, false);
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
         }
@@ -5990,6 +6150,7 @@ namespace AAEmu.DBViewer
                 for (var i = 0; i < node.Attributes.Count; i++)
                     res.Add(node.Attributes.Item(i).Name.ToLower(), node.Attributes.Item(i).Value);
             }
+
             return res;
         }
 
@@ -6023,7 +6184,8 @@ namespace AAEmu.DBViewer
                         var map = MapViewForm.GetMap();
                         map.Show();
                         if (map.GetPathCount() > 0)
-                            if (MessageBox.Show("Append paths ?", "Add path to map", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                            if (MessageBox.Show("Append paths ?", "Add path to map", MessageBoxButtons.YesNo,
+                                    MessageBoxIcon.Question) != DialogResult.Yes)
                                 map.ClearPaths();
                         foreach (var p in allpaths)
                             map.AddPath(p);
@@ -6032,7 +6194,7 @@ namespace AAEmu.DBViewer
                     }
 
                 }
-            } 
+            }
         }
 
         private Vector3 ReadXmlPos(string posStringBase)
@@ -6044,22 +6206,24 @@ namespace AAEmu.DBViewer
                 MessageBox.Show("Invalid number of values inside Pos: " + posStringBase);
             }
             else
-            try
-            {
-                baseVec = new Vector3(
-                    float.Parse(posVals[0], CultureInfo.InvariantCulture),
-                    float.Parse(posVals[1], CultureInfo.InvariantCulture),
-                    float.Parse(posVals[2], CultureInfo.InvariantCulture)
+                try
+                {
+                    baseVec = new Vector3(
+                        float.Parse(posVals[0], CultureInfo.InvariantCulture),
+                        float.Parse(posVals[1], CultureInfo.InvariantCulture),
+                        float.Parse(posVals[2], CultureInfo.InvariantCulture)
                     );
-            }
-            catch
-            {
-                MessageBox.Show("Invalid float inside Pos: " + posStringBase);
-            }
+                }
+                catch
+                {
+                    MessageBox.Show("Invalid float inside Pos: " + posStringBase);
+                }
+
             return baseVec;
         }
 
-        private void AddCustomPath(ref List<MapViewPath> allpaths, Stream fileStream, string rootNodeName = "/Objects/Entity", string PointsNodeName = "Points/Point")
+        private void AddCustomPath(ref List<MapViewPath> allpaths, Stream fileStream,
+            string rootNodeName = "/Objects/Entity", string PointsNodeName = "Points/Point")
         {
             try
             {
@@ -6088,13 +6252,14 @@ namespace AAEmu.DBViewer
                                 MessageBox.Show("Invalid number of values inside Pos: " + posStringBase);
                                 continue;
                             }
+
                             try
                             {
                                 baseVec = new Vector3(
                                     float.Parse(posVals[0], CultureInfo.InvariantCulture),
                                     float.Parse(posVals[1], CultureInfo.InvariantCulture),
                                     float.Parse(posVals[2], CultureInfo.InvariantCulture)
-                                    );
+                                );
                             }
                             catch
                             {
@@ -6117,13 +6282,14 @@ namespace AAEmu.DBViewer
                                     MessageBox.Show("Invalid number of values inside Pos: " + posString);
                                     continue;
                                 }
+
                                 try
                                 {
                                     var vec = new Vector3(
                                         float.Parse(posVals[0], CultureInfo.InvariantCulture),
                                         float.Parse(posVals[1], CultureInfo.InvariantCulture),
                                         float.Parse(posVals[2], CultureInfo.InvariantCulture)
-                                        ) + baseVec;
+                                    ) + baseVec;
                                     newPath.AddPoint(vec);
                                 }
                                 catch
@@ -6133,6 +6299,7 @@ namespace AAEmu.DBViewer
 
                             }
                         }
+
                         allpaths.Add(newPath);
 
                     }
@@ -6189,6 +6356,7 @@ namespace AAEmu.DBViewer
                             {
                                 model = transfer.model_id;
                             }
+
                             bool knownType = true;
                             switch (model)
                             {
@@ -6218,16 +6386,19 @@ namespace AAEmu.DBViewer
                                     knownType = false;
                                     break;
                             }
+
                             if (!knownType)
-                                newPath.PathName = blockName + "(t:" + newPath.TypeId.ToString() + " m:" + model.ToString() + " z:"+zone.zone_key.ToString()+")";
+                                newPath.PathName = blockName + "(t:" + newPath.TypeId.ToString() + " m:" +
+                                                   model.ToString() + " z:" + zone.zone_key.ToString() + ")";
                             else
-                                newPath.PathName = blockName + "(t:" + newPath.TypeId.ToString() + " z:" + zone.zone_key.ToString() + ")";
+                                newPath.PathName = blockName + "(t:" + newPath.TypeId.ToString() + " z:" +
+                                                   zone.zone_key.ToString() + ")";
 
                             // We don't need the cellX/Y values here
                             /*
                             int cellXOffset = 0;
                             int cellYOffset = 0;
-
+    
                             if (attribs.TryGetValue("cellx",out var cellXOffsetString))
                                 try { cellXOffset = int.Parse(cellXOffsetString); }
                                 catch { cellXOffset = 0; }
@@ -6236,7 +6407,8 @@ namespace AAEmu.DBViewer
                                 catch { cellYOffset = 0; }
                             */
 
-                            PointF cellOffset = new PointF((worldOff.originCellX * 1024f), (worldOff.originCellY * 1024f));
+                            PointF cellOffset = new PointF((worldOff.originCellX * 1024f),
+                                (worldOff.originCellY * 1024f));
                             pathsFound++;
 
                             var pointsxml = block.SelectNodes("Points/Point");
@@ -6252,13 +6424,14 @@ namespace AAEmu.DBViewer
                                         MessageBox.Show("Invalid number of values inside Pos: " + posString);
                                         continue;
                                     }
+
                                     try
                                     {
                                         var vec = new Vector3(
                                             float.Parse(posVals[0], CultureInfo.InvariantCulture) + cellOffset.X,
                                             float.Parse(posVals[1], CultureInfo.InvariantCulture) + cellOffset.Y,
                                             float.Parse(posVals[2], CultureInfo.InvariantCulture)
-                                            );
+                                        );
                                         newPath.AddPoint(vec);
                                     }
                                     catch
@@ -6268,6 +6441,7 @@ namespace AAEmu.DBViewer
 
                                 }
                             }
+
                             allpaths.Add(newPath);
 
                         }
@@ -6323,11 +6497,24 @@ namespace AAEmu.DBViewer
                             int cellYOffset = 0;
 
                             if (entityAttribs.TryGetValue("cellx", out var cellXOffsetString))
-                                try { cellXOffset = int.Parse(cellXOffsetString); }
-                                catch { cellXOffset = 0; }
+                                try
+                                {
+                                    cellXOffset = int.Parse(cellXOffsetString);
+                                }
+                                catch
+                                {
+                                    cellXOffset = 0;
+                                }
+
                             if (entityAttribs.TryGetValue("celly", out var cellYOffsetString))
-                                try { cellYOffset = int.Parse(cellYOffsetString); }
-                                catch { cellYOffset = 0; }
+                                try
+                                {
+                                    cellYOffset = int.Parse(cellYOffsetString);
+                                }
+                                catch
+                                {
+                                    cellYOffset = 0;
+                                }
 
 
                             var areaNodes = block.SelectNodes("Area");
@@ -6349,7 +6536,8 @@ namespace AAEmu.DBViewer
                                 if (newArea.TypeId <= 0)
                                     newArea.Color = Color.Orange;
 
-                                newArea.PathName = blockName + "(v:" + newArea.TypeId.ToString() + " z:" + zone.zone_key.ToString() + ")";
+                                newArea.PathName = blockName + "(v:" + newArea.TypeId.ToString() + " z:" +
+                                                   zone.zone_key.ToString() + ")";
 
                                 if (entityAttribs.TryGetValue("pos", out var valPos))
                                 {
@@ -6359,13 +6547,14 @@ namespace AAEmu.DBViewer
                                         MessageBox.Show("Invalid number of values inside Pos: " + valPos);
                                         continue;
                                     }
+
                                     try
                                     {
                                         startVector = new Vector3(
                                             float.Parse(posVals[0], CultureInfo.InvariantCulture),
                                             float.Parse(posVals[1], CultureInfo.InvariantCulture),
                                             float.Parse(posVals[2], CultureInfo.InvariantCulture)
-                                            );
+                                        );
                                     }
                                     catch
                                     {
@@ -6374,7 +6563,8 @@ namespace AAEmu.DBViewer
                                 }
 
 
-                                PointF cellOffset = new PointF(((worldOff.originCellX + cellXOffset) * 1024f), ((worldOff.originCellY + cellYOffset) * 1024f));
+                                PointF cellOffset = new PointF(((worldOff.originCellX + cellXOffset) * 1024f),
+                                    ((worldOff.originCellY + cellYOffset) * 1024f));
                                 areasFound++;
 
                                 Vector3 firstVector = Vector3.Zero;
@@ -6392,13 +6582,14 @@ namespace AAEmu.DBViewer
                                             MessageBox.Show("Invalid number of values inside Pos: " + posString);
                                             continue;
                                         }
+
                                         try
                                         {
                                             var vec = new Vector3(
                                                 float.Parse(posVals[0], CultureInfo.InvariantCulture) + cellOffset.X,
                                                 float.Parse(posVals[1], CultureInfo.InvariantCulture) + cellOffset.Y,
                                                 float.Parse(posVals[2], CultureInfo.InvariantCulture)
-                                                ) + startVector;
+                                            ) + startVector;
                                             if (firstVector == Vector3.Zero)
                                                 firstVector = vec;
                                             newArea.AddPoint(vec);
@@ -6410,6 +6601,7 @@ namespace AAEmu.DBViewer
 
                                     }
                                 }
+
                                 // Close the loop
                                 if (firstVector != Vector3.Zero)
                                     newArea.AddPoint(firstVector);
@@ -6470,11 +6662,24 @@ namespace AAEmu.DBViewer
                             int cellYOffset = 0;
 
                             if (entityAttribs.TryGetValue("cellx", out var cellXOffsetString))
-                                try { cellXOffset = int.Parse(cellXOffsetString); }
-                                catch { cellXOffset = 0; }
+                                try
+                                {
+                                    cellXOffset = int.Parse(cellXOffsetString);
+                                }
+                                catch
+                                {
+                                    cellXOffset = 0;
+                                }
+
                             if (entityAttribs.TryGetValue("celly", out var cellYOffsetString))
-                                try { cellYOffset = int.Parse(cellYOffsetString); }
-                                catch { cellYOffset = 0; }
+                                try
+                                {
+                                    cellYOffset = int.Parse(cellYOffsetString);
+                                }
+                                catch
+                                {
+                                    cellYOffset = 0;
+                                }
 
 
                             var areaNodes = block.SelectNodes("Area");
@@ -6496,7 +6701,8 @@ namespace AAEmu.DBViewer
                                 if (newArea.TypeId <= 0)
                                     newArea.Color = Color.DarkGray;
 
-                                newArea.PathName = blockName + "(v:" + newArea.TypeId.ToString() + " z:" + zone.zone_key.ToString() + ")";
+                                newArea.PathName = blockName + "(v:" + newArea.TypeId.ToString() + " z:" +
+                                                   zone.zone_key.ToString() + ")";
 
                                 if (entityAttribs.TryGetValue("pos", out var valPos))
                                 {
@@ -6506,13 +6712,14 @@ namespace AAEmu.DBViewer
                                         MessageBox.Show("Invalid number of values inside Pos: " + valPos);
                                         continue;
                                     }
+
                                     try
                                     {
                                         startVector = new Vector3(
                                             float.Parse(posVals[0], CultureInfo.InvariantCulture),
                                             float.Parse(posVals[1], CultureInfo.InvariantCulture),
                                             float.Parse(posVals[2], CultureInfo.InvariantCulture)
-                                            );
+                                        );
                                     }
                                     catch
                                     {
@@ -6520,7 +6727,8 @@ namespace AAEmu.DBViewer
                                     }
                                 }
 
-                                PointF cellOffset = new PointF(((worldOff.originCellX + cellXOffset) * 1024f), ((worldOff.originCellY + cellYOffset) * 1024f));
+                                PointF cellOffset = new PointF(((worldOff.originCellX + cellXOffset) * 1024f),
+                                    ((worldOff.originCellY + cellYOffset) * 1024f));
                                 areasFound++;
 
                                 Vector3 firstVector = Vector3.Zero;
@@ -6538,13 +6746,14 @@ namespace AAEmu.DBViewer
                                             MessageBox.Show("Invalid number of values inside Pos: " + posString);
                                             continue;
                                         }
+
                                         try
                                         {
                                             var vec = new Vector3(
                                                 float.Parse(posVals[0], CultureInfo.InvariantCulture) + cellOffset.X,
                                                 float.Parse(posVals[1], CultureInfo.InvariantCulture) + cellOffset.Y,
                                                 float.Parse(posVals[2], CultureInfo.InvariantCulture)
-                                                ) + startVector;
+                                            ) + startVector;
                                             if (firstVector == Vector3.Zero)
                                                 firstVector = vec;
                                             newArea.AddPoint(vec);
@@ -6556,6 +6765,7 @@ namespace AAEmu.DBViewer
 
                                     }
                                 }
+
                                 // Close the loop
                                 if (firstVector != Vector3.Zero)
                                     newArea.AddPoint(firstVector);
@@ -6621,7 +6831,7 @@ namespace AAEmu.DBViewer
                 var i = 0;
 
                 var zoneGroups = new List<long>();
-                foreach(var z in inst.zones)
+                foreach (var z in inst.zones)
                 {
                     var zone = AADB.GetZoneByKey(z.Value.zone_key);
                     if (zone != null)
@@ -6634,7 +6844,7 @@ namespace AAEmu.DBViewer
                     if (!AADB.DB_Zone_Groups.TryGetValue(zoneGroupId, out var zoneGroup))
                         continue;
 
-                    var npcs = GetNPCSpawnsInZoneGroup(zoneGroup.id,false,null,inst.WorldName);
+                    var npcs = GetNPCSpawnsInZoneGroup(zoneGroup.id, false, null, inst.WorldName);
                     foreach (var npc in npcs)
                     {
                         i++;
@@ -6652,11 +6862,13 @@ namespace AAEmu.DBViewer
                         NPCList.Add(newNPC);
                     }
                 }
+
                 string json = JsonConvert.SerializeObject(NPCList.ToArray(), Newtonsoft.Json.Formatting.Indented);
                 Directory.CreateDirectory(Path.Combine("export", "Data", "Worlds", inst.WorldName));
                 File.WriteAllText(Path.Combine("export", "Data", "Worlds", inst.WorldName, "npc_spawns.json"), json);
 
             }
+
             MessageBox.Show("Done");
         }
 
@@ -6677,9 +6889,10 @@ namespace AAEmu.DBViewer
             {
                 var map = MapViewForm.GetMap();
                 map.Show();
-                
+
                 if (map.GetPathCount() > 0)
-                    if (MessageBox.Show("Keep current paths ?", "Add Transfers", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    if (MessageBox.Show("Keep current paths ?", "Add Transfers", MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question) == DialogResult.No)
                         map.ClearPaths();
 
                 foreach (var p in allpaths)
@@ -6687,6 +6900,7 @@ namespace AAEmu.DBViewer
 
                 map.tsbShowPath.Checked = true;
             }
+
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
         }
@@ -6713,7 +6927,8 @@ namespace AAEmu.DBViewer
                         var thisInstanceName = splitName[2];
 
                         var inst = new MapViewWorldXML();
-                        if (inst.LoadFromStream(pak.ExportFileAsStream("game/worlds/" + thisInstanceName + "/world.xml")))
+                        if (inst.LoadFromStream(
+                                pak.ExportFileAsStream("game/worlds/" + thisInstanceName + "/world.xml")))
                         {
                             MapViewWorldXML.instances.Add(inst);
                             if (thisInstanceName == "main_world")
@@ -6729,7 +6944,8 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private List<MapSpawnLocation> GetDoodadSpawnsInZoneGroup(long zoneGroupId, bool uniqueOnly = false, long filterByID = -1, string instanceName = "main_world")
+        private List<MapSpawnLocation> GetDoodadSpawnsInZoneGroup(long zoneGroupId, bool uniqueOnly = false,
+            long filterByID = -1, string instanceName = "main_world")
         {
             List<MapSpawnLocation> res = new List<MapSpawnLocation>();
             var zg = GetZoneGroupByID(zoneGroupId);
@@ -6772,6 +6988,7 @@ namespace AAEmu.DBViewer
                     }
                 }
             }
+
             return res;
         }
 
@@ -6803,7 +7020,8 @@ namespace AAEmu.DBViewer
                     if (zg != null)
                     {
                         zoneCount++;
-                        loading.ShowInfo("Searching in zones: " + zoneCount.ToString() + "/" + AADB.DB_Zone_Groups.Count.ToString());
+                        loading.ShowInfo("Searching in zones: " + zoneCount.ToString() + "/" +
+                                         AADB.DB_Zone_Groups.Count.ToString());
                         doodadList.AddRange(GetDoodadSpawnsInZoneGroup(zg.id, false));
                     }
                 }
@@ -6817,12 +7035,15 @@ namespace AAEmu.DBViewer
                             continue;
                         if (AADB.DB_Doodad_Almighties.TryGetValue(doodad.id, out var z))
                         {
-                            map.AddPoI(doodad.x, doodad.y, doodad.z, z.nameLocalized + " (" + doodad.id.ToString() + ")", Color.Yellow, 0f, "doodad", doodad.id, z);
+                            map.AddPoI(doodad.x, doodad.y, doodad.z,
+                                z.nameLocalized + " (" + doodad.id.ToString() + ")",
+                                Color.Yellow, 0f, "doodad", doodad.id, z);
                         }
                     }
                 }
 
             }
+
             map.tsbNamesPoI.Checked = true;
             map.cbFocus.Checked = true;
             map.FocusAll(true, false, false);
@@ -6836,7 +7057,7 @@ namespace AAEmu.DBViewer
             if ((pak == null) || (!pak.IsOpen))
                 return;
 
-            
+
             AADB.PAK_QuestSignSpheres = new List<QuestSphereEntry>();
             var sl = new List<string>();
 
@@ -6856,6 +7077,7 @@ namespace AAEmu.DBViewer
                             sl.Add(rs.ReadLine().Trim(' ').Trim('\t').ToLower());
                         }
                     }
+
                     var worldname = "";
                     var zone = 0;
 
@@ -6866,7 +7088,7 @@ namespace AAEmu.DBViewer
                             (namesplited[3] == "level_design") &&
                             (namesplited[4] == "zone") &&
                             (namesplited[6] == "client")
-                            )
+                           )
                         {
                             worldname = namesplited[2];
                             zone = int.Parse(namesplited[5]);
@@ -6912,7 +7134,8 @@ namespace AAEmu.DBViewer
                         var l4 = sl[i + 4]; // radius
 
 
-                        if (l0.StartsWith("area") && l1.StartsWith("qtype") && l2.StartsWith("ctype") && l3.StartsWith("pos") && l4.StartsWith("radius"))
+                        if (l0.StartsWith("area") && l1.StartsWith("qtype") && l2.StartsWith("ctype") &&
+                            l3.StartsWith("pos") && l4.StartsWith("radius"))
                         {
                             try
                             {
@@ -6924,24 +7147,30 @@ namespace AAEmu.DBViewer
 
                                 qse.componentID = int.Parse(l2.Substring(6));
 
-                                var subline = l3.Substring(4).Replace("(", "").Replace(")", "").Replace("x", "").Replace("y", "").Replace("z", "").Replace(" ", "");
+                                var subline = l3.Substring(4).Replace("(", "").Replace(")", "").Replace("x", "")
+                                    .Replace("y", "").Replace("z", "").Replace(" ", "");
                                 var posstring = subline.Split(',');
                                 if (posstring.Length == 3)
                                 {
                                     // Parse the floats with NumberStyles.Float and CultureInfo.InvariantCulture or we get all sorts of 
                                     // weird stuff with the decimal points depending on the user's language settings
-                                    qse.X = zoneOffX + float.Parse(posstring[0], NumberStyles.Float, CultureInfo.InvariantCulture);
-                                    qse.Y = zoneOffY + float.Parse(posstring[1], NumberStyles.Float, CultureInfo.InvariantCulture);
+                                    qse.X = zoneOffX + float.Parse(posstring[0], NumberStyles.Float,
+                                        CultureInfo.InvariantCulture);
+                                    qse.Y = zoneOffY + float.Parse(posstring[1], NumberStyles.Float,
+                                        CultureInfo.InvariantCulture);
                                     qse.Z = float.Parse(posstring[2], NumberStyles.Float, CultureInfo.InvariantCulture);
                                 }
-                                qse.radius = float.Parse(l4.Substring(7), NumberStyles.Float, CultureInfo.InvariantCulture);
+
+                                qse.radius = float.Parse(l4.Substring(7), NumberStyles.Float,
+                                    CultureInfo.InvariantCulture);
 
                                 AADB.PAK_QuestSignSpheres.Add(qse);
                                 i += 5;
                             }
                             catch (Exception x)
                             {
-                                MessageBox.Show("Exception: " + x.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show("Exception: " + x.Message, "Error", MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
                                 return;
                             }
                         }
@@ -6963,7 +7192,8 @@ namespace AAEmu.DBViewer
             map.Show();
 
             if (map.GetQuestSphereCount() > 0)
-                if (MessageBox.Show("Keep current Quest Spheres ?", "Add Spheres", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                if (MessageBox.Show("Keep current Quest Spheres ?", "Add Spheres", MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) == DialogResult.No)
                     map.ClearQuestSpheres();
 
             foreach (var p in AADB.PAK_QuestSignSpheres)
@@ -6975,7 +7205,8 @@ namespace AAEmu.DBViewer
                 Color col = Color.LightCyan;
 
                 var isFilteredVal = false;
-                if ((eQuestSignSphereSearch.Text != string.Empty) && name.ToLower().Contains(eQuestSignSphereSearch.Text.ToLower()))
+                if ((eQuestSignSphereSearch.Text != string.Empty) &&
+                    name.ToLower().Contains(eQuestSignSphereSearch.Text.ToLower()))
                     isFilteredVal = true;
                 if (isFilteredVal)
                     col = Color.Red;
@@ -6984,12 +7215,13 @@ namespace AAEmu.DBViewer
                 {
                     map.AddQuestSphere(p.X, p.Y, p.Z, name, col, p.radius, p.componentID);
                 }
-                else
-                if (isFilteredVal)
+                else if (isFilteredVal)
                     map.AddQuestSphere(p.X, p.Y, p.Z, name, col, p.radius, p.componentID);
             }
+
             map.tsbShowQuestSphere.Checked = true;
-            map.tsbNamesQuestSphere.Checked = (!cbQuestSignSphereSearchShowAll.Checked && (eQuestSignSphereSearch.Text != string.Empty));
+            map.tsbNamesQuestSphere.Checked =
+                (!cbQuestSignSphereSearchShowAll.Checked && (eQuestSignSphereSearch.Text != string.Empty));
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
         }
@@ -7016,12 +7248,13 @@ namespace AAEmu.DBViewer
                 //if (map.GetHousingCount() > 0)
                 //    if (MessageBox.Show("Keep current housing areas ?", "Add Housing", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 map.ClearHousing();
-                
+
                 foreach (var p in allareas)
                     map.AddHousing(p);
 
                 map.tsbShowHousing.Checked = true;
             }
+
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
 
@@ -7049,7 +7282,7 @@ namespace AAEmu.DBViewer
                 //if (map.GetHousingCount() > 0)
                 //    if (MessageBox.Show("Keep current housing areas ?", "Add Housing", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 map.ClearSubZone();
-                
+
                 foreach (var p in allareas)
                 {
                     map.AddSubZone(p);
@@ -7058,9 +7291,10 @@ namespace AAEmu.DBViewer
 
                 map.tsbShowSubzone.Checked = true;
             }
+
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
-            
+
 
         }
 
@@ -7082,7 +7316,8 @@ namespace AAEmu.DBViewer
             var foundCount = 0;
 
             if ((map.GetQuestSphereCount() > 0) || (map.GetPoICount() > 0))
-                if (MessageBox.Show("Keep current NPC and Quest Spheres ?", "Add Quest Info", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                if (MessageBox.Show("Keep current NPC and Quest Spheres ?", "Add Quest Info", MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) == DialogResult.No)
                 {
                     map.ClearPoI();
                     map.ClearQuestSpheres();
@@ -7108,22 +7343,23 @@ namespace AAEmu.DBViewer
             // TODO: NPCs (start/end/progress)
             // TODO: Monsters (single, group, zone)
             var comps = from c in AADB.DB_Quest_Components
-                        where c.Value.quest_context_id == searchId
-                        select c.Value;
+                where c.Value.quest_context_id == searchId
+                select c.Value;
             foreach (var c in comps)
             {
                 if ((c.npc_id > 0) && (!NPCsToShow.Contains(c.npc_id)))
                     NPCsToShow.Add(c.npc_id);
 
                 var acts = from a in AADB.DB_Quest_Acts
-                           where a.Value.quest_component_id == c.id
-                           select a.Value;
+                    where a.Value.quest_component_id == c.id
+                    select a.Value;
 
                 foreach (var a in acts)
                 {
                     if (a.act_detail_type == "QuestActObjMonsterHunt")
                     {
-                        string sql = "SELECT * FROM quest_act_obj_monster_hunts WHERE id = " + a.act_detail_id.ToString();
+                        string sql = "SELECT * FROM quest_act_obj_monster_hunts WHERE id = " +
+                                     a.act_detail_id.ToString();
                         using (var connection = SQLite.CreateConnection())
                         {
                             using (var command = connection.CreateCommand())
@@ -7164,7 +7400,8 @@ namespace AAEmu.DBViewer
                         if (zg != null)
                         {
                             zoneCount++;
-                            loading.ShowInfo("Searching in zones: " + zoneCount.ToString() + "/" + AADB.DB_Zone_Groups.Count.ToString());
+                            loading.ShowInfo("Searching in zones: " + zoneCount.ToString() + "/" +
+                                             AADB.DB_Zone_Groups.Count.ToString());
                             npcList.AddRange(GetNPCSpawnsInZoneGroup(zg.id, false, NPCsToShow));
                         }
                     }
@@ -7178,7 +7415,8 @@ namespace AAEmu.DBViewer
                             //    continue;
                             if (AADB.DB_NPCs.TryGetValue(npc.id, out var z))
                             {
-                                map.AddPoI(npc.x, npc.y, npc.z, z.nameLocalized + " (" + npc.id.ToString() + ")", Color.Yellow, 0f, "npc", npc.id, z);
+                                map.AddPoI(npc.x, npc.y, npc.z, z.nameLocalized + " (" + npc.id.ToString() + ")",
+                                    Color.Yellow, 0f, "npc", npc.id, z);
                                 foundCount++;
                             }
                         }
@@ -7239,7 +7477,7 @@ namespace AAEmu.DBViewer
             {
                 using (var fs = new FileStream(ofdCustomPaths.FileName, FileMode.Open, FileAccess.Read))
                 {
-                    AddCustomPath(ref allareas, fs,"/Objects/Entity","Area/Points/Point");
+                    AddCustomPath(ref allareas, fs, "/Objects/Entity", "Area/Points/Point");
                 }
             }
             else
@@ -7255,7 +7493,8 @@ namespace AAEmu.DBViewer
                 var map = MapViewForm.GetMap();
                 map.Show();
                 if (map.GetPathCount() > 0)
-                    if (MessageBox.Show("Keep current paths ?", "Add Custom Path", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    if (MessageBox.Show("Keep current paths ?", "Add Custom Path", MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question) == DialogResult.No)
                         map.ClearPaths();
 
                 foreach (var p in allareas)
@@ -7264,6 +7503,7 @@ namespace AAEmu.DBViewer
                 map.FocusAll(false, true, false);
                 map.tsbShowPath.Checked = true;
             }
+
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
 
@@ -7293,7 +7533,8 @@ namespace AAEmu.DBViewer
                         map.Show();
 
                         if (map.GetPoICount() > 0)
-                            if (MessageBox.Show("Keep current PoI's on map ?", "Add Doodad", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                            if (MessageBox.Show("Keep current PoI's on map ?", "Add Doodad", MessageBoxButtons.YesNo,
+                                    MessageBoxIcon.Question) == DialogResult.No)
                                 map.ClearPoI();
 
                         doodadList.AddRange(GetDoodadSpawnsInZoneGroup(zg.id));
@@ -7327,28 +7568,37 @@ namespace AAEmu.DBViewer
                                         row.Cells[6].Value = z.model_kind_id.ToString();
                                         row.Cells[7].Value = z.model.ToString();
                                         if (doodad.count == 1)
-                                            row.Cells[8].Value = string.Format("{0} , {1} = ({2})", doodad.x, doodad.y, doodad.AsSextant());
+                                            row.Cells[8].Value = string.Format("{0} , {1} = ({2})", doodad.x, doodad.y,
+                                                doodad.AsSextant());
                                         else
                                             row.Cells[8].Value = doodad.count.ToString() + " instances in zone";
 
                                         c++;
                                         if ((c % 25) == 0)
                                         {
-                                            loading.ShowInfo("Loading " + c.ToString() + "/" + doodadList.Count.ToString() + " Doodads");
+                                            loading.ShowInfo("Loading " + c.ToString() + "/" +
+                                                             doodadList.Count.ToString() +
+                                                             " Doodads");
                                         }
 
-                                        map.AddPoI(doodad.x, doodad.y, doodad.z, z.nameLocalized + " (" + doodad.id.ToString() + ")", Color.Yellow, 0f, "doodad", doodad.id, z);
+                                        map.AddPoI(doodad.x, doodad.y, doodad.z,
+                                            z.nameLocalized + " (" + doodad.id.ToString() + ")", Color.Yellow, 0f,
+                                            "doodad",
+                                            doodad.id, z);
                                     }
                                     else
                                     {
-                                        map.AddPoI(doodad.x, doodad.y, doodad.z, "(" + doodad.id.ToString() + ")", Color.Red, 0f, "doodad", doodad.id, z);
+                                        map.AddPoI(doodad.x, doodad.y, doodad.z, "(" + doodad.id.ToString() + ")",
+                                            Color.Red, 0f, "doodad", doodad.id, z);
                                     }
                                 }
+
                                 tcViewer.SelectedTab = tpDoodads;
                                 dgvDoodads.Show();
 
                             }
                         }
+
                         map.tsbShowPoI.Checked = true;
                         map.tsbNamesPoI.Checked = false; // Disable this when loading from zone
                         map.FocusAll(true, false, false);
@@ -7372,8 +7622,10 @@ namespace AAEmu.DBViewer
             {
                 var jsonFileName = ofdJsonData.FileName;
                 var isDoodads = jsonFileName.ToLower().Contains("doodad");
-                var isNPCs = jsonFileName.ToLower().Contains("npc"); ;
-                var isTransfers = jsonFileName.ToLower().Contains("transfer"); ;
+                var isNPCs = jsonFileName.ToLower().Contains("npc");
+                ;
+                var isTransfers = jsonFileName.ToLower().Contains("transfer");
+                ;
                 var contents = File.ReadAllText(jsonFileName);
                 if (string.IsNullOrWhiteSpace(contents))
                     MessageBox.Show("File " + jsonFileName + " is empty.");
@@ -7396,24 +7648,22 @@ namespace AAEmu.DBViewer
                                     ni.TypeId = npc.id;
                                     ni.SourceObject = npc;
                                 }
-                                else
-                                if (isDoodads && AADB.DB_Doodad_Almighties.TryGetValue(spawner.UnitId, out var doodad))
+                                else if (isDoodads &&
+                                         AADB.DB_Doodad_Almighties.TryGetValue(spawner.UnitId, out var doodad))
                                 {
                                     ni.Name = doodad.nameLocalized;
                                     ni.PoIColor = Color.DarkGreen;
                                     ni.TypeId = doodad.id;
                                     ni.SourceObject = doodad;
                                 }
-                                else
-                                if (isTransfers && AADB.DB_Transfers.TryGetValue(spawner.UnitId, out var transfer))
+                                else if (isTransfers && AADB.DB_Transfers.TryGetValue(spawner.UnitId, out var transfer))
                                 {
                                     ni.Name = "Model: " + transfer.model_id.ToString();
                                     ni.PoIColor = Color.Navy;
                                     ni.TypeId = transfer.id;
                                     ni.SourceObject = transfer;
                                 }
-                                else
-                                if (isDoodads || isNPCs || isTransfers)
+                                else if (isDoodads || isNPCs || isTransfers)
                                 {
                                     ni.PoIColor = Color.Red;
                                     ni.Name = spawner.name;
@@ -7454,7 +7704,8 @@ namespace AAEmu.DBViewer
                 var map = MapViewForm.GetMap();
                 map.Show();
                 if (map.GetPoICount() > 0)
-                    if (MessageBox.Show("Keep current PoI ?", "Add Custom Json data", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    if (MessageBox.Show("Keep current PoI ?", "Add Custom Json data", MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question) == DialogResult.No)
                         map.ClearPoI();
 
                 foreach (var p in allPoIs)
@@ -7468,6 +7719,7 @@ namespace AAEmu.DBViewer
                 if (allPoIs.Count > 10000)
                     MessageBox.Show($"Done loading {allPoIs.Count} items");
             }
+
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
 
@@ -7497,7 +7749,7 @@ namespace AAEmu.DBViewer
                         var areaPos = ReadXmlPos(posString);
 
                         var mapPath = new MapViewPath();
-                        mapPath.PathName = areaName + " (" + entityId +")";
+                        mapPath.PathName = areaName + " (" + entityId + ")";
 
                         var areaBlock = block.SelectSingleNode("Area");
                         if (areaBlock == null)
@@ -7509,7 +7761,7 @@ namespace AAEmu.DBViewer
                         var pointBlocks = areaBlock.SelectNodes("Points/Point");
 
                         var firstPos = Vector3.Zero;
-                        for(var p = 0; p < pointBlocks.Count;p++)
+                        for (var p = 0; p < pointBlocks.Count; p++)
                         {
                             var pointAttribs = ReadNodeAttributes(pointBlocks[p]);
                             var pointPos = ReadXmlPos(pointAttribs["pos"]);
@@ -7518,8 +7770,17 @@ namespace AAEmu.DBViewer
                             if (p == 0)
                                 firstPos = pos;
                         }
+
                         if (pointBlocks.Count > 2)
                             mapPath.AddPoint(firstPos);
+                        if (areaName.ToLower().Contains("_lake"))
+                            mapPath.Color = Color.Aqua;
+                        if (areaName.ToLower().Contains("_pond"))
+                            mapPath.Color = Color.CornflowerBlue;
+                        if (areaName.ToLower().Contains("_water"))
+                            mapPath.Color = Color.DarkBlue;
+                        if (areaName.ToLower().Contains("_river"))
+                            mapPath.Color = Color.Blue;
 
                         allAreaShapes.Add(mapPath);
                     }
@@ -7545,21 +7806,22 @@ namespace AAEmu.DBViewer
                 var worldXml = MapViewWorldXML.GetInstanceByName(worldName);
 
                 for (var y = 0; y <= worldXml.CellCount.Y; y++)
-                    for (var x = 0; x <= worldXml.CellCount.X; x++)
+                for (var x = 0; x <= worldXml.CellCount.X; x++)
+                {
+                    var cellName = x.ToString().PadLeft(3, '0') + "_" + y.ToString().PadLeft(3, '0');
+                    var fn = "game/worlds/" + worldName + "/cells/" + cellName + "/client/entities.xml";
+                    if (pak.FileExists(fn))
                     {
-                        var cellName = x.ToString().PadLeft(3, '0') + "_" + y.ToString().PadLeft(3, '0');
-                        var fn = "game/worlds/"+ worldName + "/cells/" + cellName + "/client/entities.xml";
-                        if (pak.FileExists(fn))
-                        {
-                            AddAreaShapes(fn, x, y, ref allAreaShapes);
-                        }
+                        AddAreaShapes(fn, x, y, ref allAreaShapes);
                     }
+                }
 
 
                 var map = MapViewForm.GetMap();
                 map.Show();
                 if (map.GetPathCount() > 0)
-                    if (MessageBox.Show("Keep current Paths ?", "Add AreaShapes", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    if (MessageBox.Show("Keep current Paths ?", "Add AreaShapes", MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question) == DialogResult.No)
                         map.ClearPaths();
 
                 loading.ShowInfo("Adding " + allAreaShapes.Count.ToString() + " areas");
@@ -7615,8 +7877,10 @@ namespace AAEmu.DBViewer
             if (!AADB.DB_Plot_Events.TryGetValue(long.Parse(e.Node.Tag.ToString()), out var plotEvent))
                 return;
 
-            lPlotEventSourceUpdate.Text = "Source Update Method: " + PlotUpdateMethode(plotEvent.source_update_method_id);
-            lPlotEventTargetUpdate.Text = "Target Update Method: " + PlotUpdateMethode(plotEvent.target_update_method_id);
+            lPlotEventSourceUpdate.Text =
+                "Source Update Method: " + PlotUpdateMethode(plotEvent.source_update_method_id);
+            lPlotEventTargetUpdate.Text =
+                "Target Update Method: " + PlotUpdateMethode(plotEvent.target_update_method_id);
             lPlotEventP1.Text = "1: " + plotEvent.target_update_method_param1.ToString();
             lPlotEventP2.Text = "2: " + plotEvent.target_update_method_param2.ToString();
             lPlotEventP3.Text = "3: " + plotEvent.target_update_method_param3.ToString();
@@ -7642,10 +7906,10 @@ namespace AAEmu.DBViewer
             lbTradeDestination.Items.Clear();
             if (!(lbTradeSource.SelectedItem is GameZone_Groups sourceZone))
                 return;
-                
+
             foreach (var z in AADB.DB_Specialities)
             {
-                if ((z.Value.vendor_exist) &&(z.Value.row_zone_group_id == sourceZone.id))
+                if ((z.Value.vendor_exist) && (z.Value.row_zone_group_id == sourceZone.id))
                 {
                     if (AADB.DB_Zone_Groups.TryGetValue(z.Value.col_zone_group_id, out var destZone))
                         lbTradeDestination.Items.Add(destZone);
@@ -7664,7 +7928,8 @@ namespace AAEmu.DBViewer
             lTradeRoute.Text = "-";
             foreach (var z in AADB.DB_Specialities)
             {
-                if ((z.Value.vendor_exist) && (z.Value.row_zone_group_id == sourceZone.id) && (z.Value.col_zone_group_id == destZone.id))
+                if ((z.Value.vendor_exist) && (z.Value.row_zone_group_id == sourceZone.id) &&
+                    (z.Value.col_zone_group_id == destZone.id))
                 {
                     lTradeRoute.Text = sourceZone.ToString() + " => " + destZone.ToString();
                     lTradeProfit.Text = z.Value.profit.ToString();
@@ -7715,19 +7980,25 @@ namespace AAEmu.DBViewer
                         DoodadList.Add(newDoodad);
                     }
                 }
+
                 string json = JsonConvert.SerializeObject(DoodadList.ToArray(), Newtonsoft.Json.Formatting.Indented);
                 Directory.CreateDirectory(Path.Combine("export", "Data", "Worlds", inst.WorldName));
                 File.WriteAllText(Path.Combine("export", "Data", "Worlds", inst.WorldName, "doodad_spawns.json"), json);
 
             }
+
             MessageBox.Show("Done");
         }
 
-        private void cbItemSearchRange_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbItemSearchFilterChanged(object sender, EventArgs e)
         {
             if (tItemSearch.Text.Replace("*", "") == string.Empty)
             {
-                if (cbItemSearchRange.SelectedIndex > 0)
+
+                if ((cbItemSearchItemArmorSlotTypeList.SelectedIndex > 0) ||
+                    (cbItemSearchItemCategoryTypeList.SelectedIndex > 0) ||
+                    (cbItemSearchRange.SelectedIndex > 0) ||
+                    (cbItemSearchType.SelectedIndex > 0))
                     tItemSearch.Text = "*";
                 else
                     tItemSearch.Text = string.Empty;
@@ -7780,13 +8051,13 @@ namespace AAEmu.DBViewer
                 return;
 
             ShowSelectedData("tags", "id = " + tag.ToString(), "id");
-            
+
             TreeNode groupNode = null;
 
             groupNode = null;
             var buffs = from i in AADB.DB_Tagged_Buffs.Values
-                        where i.tag_id == tag
-                        select i;
+                where i.tag_id == tag
+                select i;
             foreach (var i in buffs)
             {
                 if (groupNode == null)
@@ -7796,8 +8067,8 @@ namespace AAEmu.DBViewer
 
             groupNode = null;
             var items = from i in AADB.DB_Tagged_Items.Values
-                        where i.tag_id == tag
-                        select i;
+                where i.tag_id == tag
+                select i;
             foreach (var i in items)
             {
                 if (groupNode == null)
@@ -7807,8 +8078,8 @@ namespace AAEmu.DBViewer
 
             groupNode = null;
             var npcs = from i in AADB.DB_Tagged_NPCs.Values
-                        where i.tag_id == tag
-                        select i;
+                where i.tag_id == tag
+                select i;
             foreach (var i in npcs)
             {
                 if (groupNode == null)
@@ -7818,8 +8089,8 @@ namespace AAEmu.DBViewer
 
             groupNode = null;
             var skills = from i in AADB.DB_Tagged_Skills.Values
-                         where i.tag_id == tag
-                         select i;
+                where i.tag_id == tag
+                select i;
             foreach (var i in skills)
             {
                 if (groupNode == null)
@@ -7829,8 +8100,8 @@ namespace AAEmu.DBViewer
 
             groupNode = null;
             var zones = from i in AADB.DB_Zone_Group_Banned_Tags.Values
-                         where i.tag_id == tag
-                         select i;
+                where i.tag_id == tag
+                select i;
             foreach (var i in zones)
             {
                 if (groupNode == null)
@@ -7871,15 +8142,19 @@ namespace AAEmu.DBViewer
                     {
                         ShowDBTag(z.id);
                     }
+
                     c++;
                     if (c >= 250)
                     {
-                        MessageBox.Show("The results were cut off at " + c.ToString() + " items, please refine your search !", "Too many entries", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(
+                            "The results were cut off at " + c.ToString() + " items, please refine your search !",
+                            "Too many entries", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         break;
                     }
                 }
 
             }
+
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
         }

@@ -26,7 +26,7 @@ namespace AAEmu.DBViewer
         {
             lInfo.Text = info;
             Refresh();
-            System.Threading.Thread.Sleep(10);
+            System.Threading.Thread.Sleep(1);
         }
     }
 }

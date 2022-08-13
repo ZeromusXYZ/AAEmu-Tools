@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
             this.lbTableNames = new System.Windows.Forms.ListBox();
             this.tcViewer = new System.Windows.Forms.TabControl();
             this.tbTables = new System.Windows.Forms.TabPage();
@@ -281,6 +281,8 @@
             this.Column24 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column29 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpItems = new System.Windows.Forms.TabPage();
+            this.label139 = new System.Windows.Forms.Label();
+            this.cbItemSearchType = new System.Windows.Forms.ComboBox();
             this.cbItemSearchRange = new System.Windows.Forms.ComboBox();
             this.label135 = new System.Windows.Forms.Label();
             this.label83 = new System.Windows.Forms.Label();
@@ -289,6 +291,8 @@
             this.cbItemSearchItemArmorSlotTypeList = new System.Windows.Forms.ComboBox();
             this.btnFindItemSkill = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lItemImplId = new System.Windows.Forms.Label();
+            this.label140 = new System.Windows.Forms.Label();
             this.lItemTags = new System.Windows.Forms.Label();
             this.label127 = new System.Windows.Forms.Label();
             this.lItemAddGMCommand = new System.Windows.Forms.Label();
@@ -3214,6 +3218,8 @@
             // 
             // tpItems
             // 
+            this.tpItems.Controls.Add(this.label139);
+            this.tpItems.Controls.Add(this.cbItemSearchType);
             this.tpItems.Controls.Add(this.cbItemSearchRange);
             this.tpItems.Controls.Add(this.label135);
             this.tpItems.Controls.Add(this.label83);
@@ -3235,6 +3241,58 @@
             this.tpItems.Text = "Items";
             this.tpItems.UseVisualStyleBackColor = true;
             // 
+            // label139
+            // 
+            this.label139.AutoSize = true;
+            this.label139.Location = new System.Drawing.Point(8, 33);
+            this.label139.Name = "label139";
+            this.label139.Size = new System.Drawing.Size(31, 13);
+            this.label139.TabIndex = 21;
+            this.label139.Text = "Type";
+            // 
+            // cbItemSearchType
+            // 
+            this.cbItemSearchType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbItemSearchType.FormattingEnabled = true;
+            this.cbItemSearchType.Items.AddRange(new object[] {
+            "Any",
+            "Head (1)",
+            "Neck (2)",
+            "Chest (3)",
+            "Waist (4)",
+            "Legs (5)",
+            "Hands (6)",
+            "Feet (7)",
+            "Arms (8)",
+            "Back (9)",
+            "Ear (10)",
+            "Finger (11)",
+            "Undershirt (12)",
+            "Underpants (13)",
+            "Mainhand (14)",
+            "Offhand (15)",
+            "TwoHanded (16)",
+            "OneHanded (17)",
+            "Ranged (18)",
+            "Ammunition (19)",
+            "Shield (20)",
+            "Instrument (21)",
+            "Bag (22)",
+            "Face (23)",
+            "Hair (24)",
+            "Glasses (25)",
+            "Reserved (26)",
+            "Tail (27)",
+            "Body (28)",
+            "Beard (29)",
+            "Backpack (30)",
+            "Cosplay (31)"});
+            this.cbItemSearchType.Location = new System.Drawing.Point(45, 30);
+            this.cbItemSearchType.Name = "cbItemSearchType";
+            this.cbItemSearchType.Size = new System.Drawing.Size(143, 21);
+            this.cbItemSearchType.TabIndex = 20;
+            this.cbItemSearchType.SelectedIndexChanged += new System.EventHandler(this.cbItemSearchFilterChanged);
+            // 
             // cbItemSearchRange
             // 
             this.cbItemSearchRange.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -3248,7 +3306,7 @@
             this.cbItemSearchRange.Name = "cbItemSearchRange";
             this.cbItemSearchRange.Size = new System.Drawing.Size(137, 21);
             this.cbItemSearchRange.TabIndex = 19;
-            this.cbItemSearchRange.SelectedIndexChanged += new System.EventHandler(this.cbItemSearchRange_SelectedIndexChanged);
+            this.cbItemSearchRange.SelectedIndexChanged += new System.EventHandler(this.cbItemSearchFilterChanged);
             // 
             // label135
             // 
@@ -3263,7 +3321,7 @@
             // label83
             // 
             this.label83.AutoSize = true;
-            this.label83.Location = new System.Drawing.Point(199, 33);
+            this.label83.Location = new System.Drawing.Point(8, 57);
             this.label83.Name = "label83";
             this.label83.Size = new System.Drawing.Size(49, 13);
             this.label83.TabIndex = 17;
@@ -3275,20 +3333,20 @@
             this.cbItemSearchItemCategoryTypeList.FormattingEnabled = true;
             this.cbItemSearchItemCategoryTypeList.Items.AddRange(new object[] {
             "---"});
-            this.cbItemSearchItemCategoryTypeList.Location = new System.Drawing.Point(260, 30);
+            this.cbItemSearchItemCategoryTypeList.Location = new System.Drawing.Point(69, 54);
             this.cbItemSearchItemCategoryTypeList.Name = "cbItemSearchItemCategoryTypeList";
-            this.cbItemSearchItemCategoryTypeList.Size = new System.Drawing.Size(137, 21);
+            this.cbItemSearchItemCategoryTypeList.Size = new System.Drawing.Size(119, 21);
             this.cbItemSearchItemCategoryTypeList.TabIndex = 16;
-            this.cbItemSearchItemCategoryTypeList.SelectedIndexChanged += new System.EventHandler(this.cbItemSearchItemArmorSlotTypeList_SelectedIndexChanged);
+            this.cbItemSearchItemCategoryTypeList.SelectedIndexChanged += new System.EventHandler(this.cbItemSearchFilterChanged);
             // 
             // label51
             // 
             this.label51.AutoSize = true;
-            this.label51.Location = new System.Drawing.Point(8, 33);
+            this.label51.Location = new System.Drawing.Point(194, 33);
             this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(55, 13);
+            this.label51.Size = new System.Drawing.Size(51, 13);
             this.label51.TabIndex = 15;
-            this.label51.Text = "Armor Slot";
+            this.label51.Text = "Gear Slot";
             // 
             // cbItemSearchItemArmorSlotTypeList
             // 
@@ -3327,11 +3385,11 @@
             "Beard (29)",
             "Backpack (30)",
             "Cosplay (31)"});
-            this.cbItemSearchItemArmorSlotTypeList.Location = new System.Drawing.Point(69, 30);
+            this.cbItemSearchItemArmorSlotTypeList.Location = new System.Drawing.Point(251, 30);
             this.cbItemSearchItemArmorSlotTypeList.Name = "cbItemSearchItemArmorSlotTypeList";
-            this.cbItemSearchItemArmorSlotTypeList.Size = new System.Drawing.Size(124, 21);
+            this.cbItemSearchItemArmorSlotTypeList.Size = new System.Drawing.Size(132, 21);
             this.cbItemSearchItemArmorSlotTypeList.TabIndex = 14;
-            this.cbItemSearchItemArmorSlotTypeList.SelectedIndexChanged += new System.EventHandler(this.cbItemSearchItemArmorSlotTypeList_SelectedIndexChanged);
+            this.cbItemSearchItemArmorSlotTypeList.SelectedIndexChanged += new System.EventHandler(this.cbItemSearchFilterChanged);
             // 
             // btnFindItemSkill
             // 
@@ -3351,6 +3409,8 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.groupBox1.Controls.Add(this.lItemImplId);
+            this.groupBox1.Controls.Add(this.label140);
             this.groupBox1.Controls.Add(this.lItemTags);
             this.groupBox1.Controls.Add(this.label127);
             this.groupBox1.Controls.Add(this.lItemAddGMCommand);
@@ -3372,11 +3432,29 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Item Info";
             // 
+            // lItemImplId
+            // 
+            this.lItemImplId.AutoSize = true;
+            this.lItemImplId.Location = new System.Drawing.Point(58, 29);
+            this.lItemImplId.Name = "lItemImplId";
+            this.lItemImplId.Size = new System.Drawing.Size(13, 13);
+            this.lItemImplId.TabIndex = 27;
+            this.lItemImplId.Text = "0";
+            // 
+            // label140
+            // 
+            this.label140.AutoSize = true;
+            this.label140.Location = new System.Drawing.Point(6, 29);
+            this.label140.Name = "label140";
+            this.label140.Size = new System.Drawing.Size(31, 13);
+            this.label140.TabIndex = 26;
+            this.label140.Text = "Type";
+            // 
             // lItemTags
             // 
             this.lItemTags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lItemTags.AutoSize = true;
-            this.lItemTags.Location = new System.Drawing.Point(6, 431);
+            this.lItemTags.Location = new System.Drawing.Point(6, 402);
             this.lItemTags.Name = "lItemTags";
             this.lItemTags.Size = new System.Drawing.Size(25, 13);
             this.lItemTags.TabIndex = 25;
@@ -3386,7 +3464,7 @@
             // 
             this.label127.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label127.AutoSize = true;
-            this.label127.Location = new System.Drawing.Point(6, 418);
+            this.label127.Location = new System.Drawing.Point(6, 389);
             this.label127.Name = "label127";
             this.label127.Size = new System.Drawing.Size(31, 13);
             this.label127.TabIndex = 24;
@@ -3420,16 +3498,16 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtItemDesc.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
             this.rtItemDesc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
-            this.rtItemDesc.Location = new System.Drawing.Point(9, 81);
+            this.rtItemDesc.Location = new System.Drawing.Point(9, 98);
             this.rtItemDesc.Name = "rtItemDesc";
-            this.rtItemDesc.Size = new System.Drawing.Size(287, 334);
+            this.rtItemDesc.Size = new System.Drawing.Size(287, 288);
             this.rtItemDesc.TabIndex = 10;
             this.rtItemDesc.Text = "";
             // 
             // lItemLevel
             // 
             this.lItemLevel.AutoSize = true;
-            this.lItemLevel.Location = new System.Drawing.Point(58, 65);
+            this.lItemLevel.Location = new System.Drawing.Point(58, 78);
             this.lItemLevel.Name = "lItemLevel";
             this.lItemLevel.Size = new System.Drawing.Size(31, 13);
             this.lItemLevel.TabIndex = 8;
@@ -3438,7 +3516,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 65);
+            this.label6.Location = new System.Drawing.Point(6, 78);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(33, 13);
             this.label6.TabIndex = 7;
@@ -3447,7 +3525,7 @@
             // lItemCategory
             // 
             this.lItemCategory.AutoSize = true;
-            this.lItemCategory.Location = new System.Drawing.Point(58, 42);
+            this.lItemCategory.Location = new System.Drawing.Point(58, 65);
             this.lItemCategory.Name = "lItemCategory";
             this.lItemCategory.Size = new System.Drawing.Size(13, 13);
             this.lItemCategory.TabIndex = 5;
@@ -3456,7 +3534,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 42);
+            this.label5.Location = new System.Drawing.Point(6, 65);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(49, 13);
             this.label5.TabIndex = 4;
@@ -3465,7 +3543,7 @@
             // lItemName
             // 
             this.lItemName.AutoSize = true;
-            this.lItemName.Location = new System.Drawing.Point(58, 29);
+            this.lItemName.Location = new System.Drawing.Point(58, 48);
             this.lItemName.Name = "lItemName";
             this.lItemName.Size = new System.Drawing.Size(43, 13);
             this.lItemName.TabIndex = 3;
@@ -3474,7 +3552,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 29);
+            this.label4.Location = new System.Drawing.Point(6, 48);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(35, 13);
             this.label4.TabIndex = 2;
@@ -3523,12 +3601,12 @@
             this.dgvItem.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Item_ID,
             this.Item_Name_EN_US});
-            this.dgvItem.Location = new System.Drawing.Point(11, 57);
+            this.dgvItem.Location = new System.Drawing.Point(11, 107);
             this.dgvItem.Name = "dgvItem";
             this.dgvItem.ReadOnly = true;
             this.dgvItem.RowHeadersVisible = false;
             this.dgvItem.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvItem.Size = new System.Drawing.Size(601, 385);
+            this.dgvItem.Size = new System.Drawing.Size(601, 335);
             this.dgvItem.TabIndex = 2;
             this.dgvItem.SelectionChanged += new System.EventHandler(this.DgvItemSearch_SelectionChanged);
             // 
@@ -4711,10 +4789,10 @@
             this.tvSkill.ItemHeight = 24;
             this.tvSkill.Location = new System.Drawing.Point(6, 6);
             this.tvSkill.Name = "tvSkill";
-            treeNode1.Name = "SkillNode";
-            treeNode1.Text = "Skill";
+            treeNode2.Name = "SkillNode";
+            treeNode2.Text = "Skill";
             this.tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            treeNode2});
             this.tvSkill.SelectedImageIndex = 0;
             this.tvSkill.Size = new System.Drawing.Size(341, 295);
             this.tvSkill.TabIndex = 0;
@@ -6332,6 +6410,10 @@
         private System.Windows.Forms.TextBox tSearchTags;
         private System.Windows.Forms.TreeView tvTagInfo;
         private System.Windows.Forms.Label label138;
+        private System.Windows.Forms.Label lItemImplId;
+        private System.Windows.Forms.Label label140;
+        private System.Windows.Forms.Label label139;
+        private System.Windows.Forms.ComboBox cbItemSearchType;
     }
 }
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using AAPakEditor;
+using AAPacker;
 using FreeImageAPI;
 
 namespace AAEmu.DbEditor.data
@@ -27,7 +27,7 @@ namespace AAEmu.DbEditor.data
 
         public bool Open(string fileName)
         {
-            if ((Pak != null) && (Pak.isOpen))
+            if ((Pak != null) && (Pak.IsOpen))
             {
                 MainForm.Self.UpdateProgress("Closing Client Pak ...");
                 Pak.ClosePak();
@@ -43,15 +43,15 @@ namespace AAEmu.DbEditor.data
             Icons.Images.Clear();
             GetIconIndexByName(DefaultPakIcon);
 
-            if (Pak.isOpen)
+            if (Pak.IsOpen)
                 FileName = Pak._gpFilePath;
 
-            return (Pak != null) && (Pak.isOpen);
+            return (Pak != null) && (Pak.IsOpen);
         }
 
         private Bitmap PackedImageToBitmap(string fn)
         {
-            if (Pak.isOpen)
+            if (Pak.IsOpen)
             {
 
                 if (Pak.FileExists(fn))

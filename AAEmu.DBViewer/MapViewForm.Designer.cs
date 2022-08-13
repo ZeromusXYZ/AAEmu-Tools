@@ -557,7 +557,7 @@
             this.pView.TabIndex = 0;
             this.pView.TabStop = false;
             this.pView.Click += new System.EventHandler(this.pView_Click);
-            this.pView.Paint += new System.Windows.Forms.PaintEventHandler(this.OnViewPaint);
+            this.pView.Paint += new System.Windows.Forms.PaintEventHandler(this.pBox_Paint);
             this.pView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnViewMouseDown);
             this.pView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.OnViewMouseMove);
             this.pView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.OnViewMouseUp);

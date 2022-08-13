@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlTypes;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace AAEmu.DbEditor
     public partial class MainForm : Form
     {
         public static MainForm Self;
+        public Task ValidateFilesTask;
 
         public MainForm()
         {
@@ -35,8 +37,21 @@ namespace AAEmu.DbEditor
             for (var i = OwnedForms.Length - 1; i >= 0; i--)
                 OwnedForms[i].Close();
 
+            if (ValidateFilesTask != null)
+            {
+                MessageBox.Show("Already busy loading data, cannot reload yet!", "Reload", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            var res = false;
+            ValidateFilesTask = new Task(new Action(delegate
+            {
+                res = ValidateFiles();
+            }));
+            ValidateFilesTask.Start();
+
             // Reload the DB stuff
-            return ValidateFiles();
+            return res;
         }
 
         private void MMFileReload_Click(object sender, EventArgs e)
@@ -44,30 +59,30 @@ namespace AAEmu.DbEditor
             DoReload();
         }
 
-        private bool ValidateFiles()
+        private bool OpenServerDbTask()
         {
-            UpdateProgress("Loading data ...");
-            lServerDB.Text = "Loading ...";
-            lClientPak.Text = "Loading ...";
-            lMySQLServer.Text = "Loading ...";
-
             var res = true;
             if (!Data.Server.OpenDB(AAEmu.DbEditor.Properties.Settings.Default.ServerDB))
             {
                 MainForm.Self.UpdateProgress("Opening ServerDB failed ...");
                 res = false;
-                lServerDB.Text = AAEmu.DbEditor.Properties.Settings.Default.ServerDB + " <failed to load>";
+                UpdateLabel(lServerDB, AAEmu.DbEditor.Properties.Settings.Default.ServerDB + " <failed to load>");
             }
             else
             {
                 MainForm.Self.UpdateProgress("ServerDB loaded ...");
-                lServerDB.Text = Data.Server.FileName + " <" + Data.Server.TableNames.Count.ToString() + " tables>";
+                UpdateLabel(lServerDB, Data.Server.FileName + " <" + Data.Server.TableNames.Count.ToString() + " tables>");
             }
+            return res;
+        }
 
+        private bool OpenClientPakTask()
+        {
+            var res = true;
             MainForm.Self.UpdateProgress("Loading Client Pak File ...");
             if (string.IsNullOrWhiteSpace(AAEmu.DbEditor.Properties.Settings.Default.ClientPak) || !File.Exists(AAEmu.DbEditor.Properties.Settings.Default.ClientPak))
             {
-                lClientPak.Text = "<not defined>";
+                UpdateLabel(lClientPak, "<not defined>");
                 TestPanel.BackgroundImage = null;
             }
             else
@@ -75,22 +90,53 @@ namespace AAEmu.DbEditor
             {
                 MainForm.Self.UpdateProgress("Loading Client Pak File failed ...");
                 res = false;
-                lClientPak.Text = Data.Client.FileName + " <failed to load>";
+                UpdateLabel(lClientPak, Data.Client.FileName + " <failed to load>");
                 TestPanel.BackgroundImage = null;
             }
             else
             {
                 MainForm.Self.UpdateProgress("Loaded Client Pak ...");
-                lClientPak.Text = Data.Client.FileName;
+                UpdateLabel(lClientPak, Data.Client.FileName);
                 TestPanel.BackgroundImage = Data.Client.GetIconByName(ClientPak.DefaultPakIcon);
             }
 
+            return res;
+        }
+
+        private bool OpenMySQlTask()
+        {
             MainForm.Self.UpdateProgress("Opening MySQL server ...");
-            lMySQLServer.Text = AAEmu.DbEditor.Properties.Settings.Default.MySQLDB;
+            UpdateLabel(lMySQLServer, AAEmu.DbEditor.Properties.Settings.Default.MySQLDB);
+            return true;
+        }
+
+        private bool ValidateFiles()
+        {
+            UpdateProgress("Loading data ...");
+            UpdateLabel(lServerDB, "Loading ...");
+            UpdateLabel(lClientPak, "Loading ...");
+            UpdateLabel(lMySQLServer, "Loading ...");
+
+            var res = true;
+
+
+            var mySqlTask = OpenMySQlTask();
+            var serverDbTask = OpenServerDbTask();
+            var clientPakTask = OpenClientPakTask();
+
+            if (!serverDbTask)
+                res = false;
+            if (!clientPakTask)
+                res = false;
+            if (!mySqlTask)
+                res = false;
+
             if (res)
                 UpdateProgress("Done");
             else
                 UpdateProgress("Loading failed");
+
+            ValidateFilesTask = null;
             return res;
         }
 
@@ -107,7 +153,11 @@ namespace AAEmu.DbEditor
         {
             MainForm.Self = this;
             Data.Initialize();
-            ValidateFiles();
+            ValidateFilesTask = new Task(new Action(delegate
+            {
+                ValidateFiles();
+            }));
+            ValidateFilesTask.Start();
         }
 
         private void MMFileOpenServer_Click(object sender, EventArgs e)
@@ -151,11 +201,23 @@ namespace AAEmu.DbEditor
         public void UpdateProgress(string Name, int pos = 0, int max = 0)
         {
             var percent = (int)Math.Round((double)pos / (double)max * 100f);
-            if (max > 0)
-                sbL1.Text = Name + " " + percent.ToString() + "%";
-            else
-                sbL1.Text = Name;
-            sbL1.Invalidate();
+            Invoke(new Action(delegate
+            {
+                if (max > 0)
+                    sbL1.Text = Name + " " + percent.ToString() + "%";
+                else
+                    sbL1.Text = Name;
+                sbL1.Invalidate();
+            }));
+        }
+
+        public void UpdateLabel(Label label, string text)
+        {
+            Invoke(new Action(delegate
+            {
+                label.Text = text;
+                label.Invalidate();
+            }));
         }
     }
 }

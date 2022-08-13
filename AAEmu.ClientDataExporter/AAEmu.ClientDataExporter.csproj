@@ -50,11 +50,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AAEmu.DBViewer\AAPak.cs">
-      <Link>AAPak.cs</Link>
+    <Compile Include="..\AAEmu.DBViewer\AAPak\AAPak.cs">
+      <Link>AAPak\AAPak.cs</Link>
     </Compile>
-    <Compile Include="..\AAEmu.DBViewer\SubStream.cs">
-      <Link>SubStream.cs</Link>
+    <Compile Include="..\AAEmu.DBViewer\AAPak\AAPakFileHeader.cs">
+      <Link>AAPak\AAPakFileHeader.cs</Link>
+    </Compile>
+    <Compile Include="..\AAEmu.DBViewer\AAPak\AAPakFileInfo.cs">
+      <Link>AAPak\AAPakFileInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\AAEmu.DBViewer\AAPak\PakFileType.cs">
+      <Link>AAPak\PakFileType.cs</Link>
+    </Compile>
+    <Compile Include="..\AAEmu.DBViewer\AAPak\SubStream.cs">
+      <Link>AAPak\SubStream.cs</Link>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -91,5 +100,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

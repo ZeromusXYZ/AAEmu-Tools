@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
-using AAPakEditor;
+using AAPacker;
 using System.Globalization;
 using Newtonsoft.Json;
 
@@ -60,7 +60,7 @@ namespace AAEmu.ClientDataExporter
                 if (pak != null)
                     pak.ClosePak();
                 pak = new AAPak(clientFolderDlg.SelectedPath + Path.DirectorySeparatorChar + "game_pak", true, false);
-                btnQuestSphere.Enabled = (pak.isOpen);
+                btnQuestSphere.Enabled = (pak.IsOpen);
                 LClientLocation.Text = clientFolderDlg.SelectedPath;
             }
             Application.UseWaitCursor = false;
@@ -68,7 +68,7 @@ namespace AAEmu.ClientDataExporter
 
         private void BtnQuestSphere_Click(object sender, EventArgs e)
         {
-            if ((pak == null) || (!pak.isOpen))
+            if ((pak == null) || (!pak.IsOpen))
                 return;
 
             var qsd = new List<QuestSphereEntry>();
@@ -78,7 +78,7 @@ namespace AAEmu.ClientDataExporter
             LQuestSphereData.Update();
 
             // Find all related files and concat them into a giant stringlist
-            foreach (var pfi in pak.files)
+            foreach (var pfi in pak.Files)
             {
                 var lowername = pfi.name.ToLower();
                 if (lowername.EndsWith("quest_sign_sphere.g"))
@@ -159,7 +159,7 @@ namespace AAEmu.ClientDataExporter
                 }
             }
 
-            string json = JsonConvert.SerializeObject(qsd.ToArray(), Formatting.Indented);
+            var json = JsonConvert.SerializeObject(qsd.ToArray(), Formatting.Indented);
             LQuestSphereData.Text = "<added " + qsd.Count.ToString() + " entries>";
             LQuestSphereData.Update();
 
@@ -171,17 +171,17 @@ namespace AAEmu.ClientDataExporter
         private void btnMissionXml_Click(object sender, EventArgs e)
         {
             // example: game/worlds/main_world/zone/139/mission_mission0.xml
-            if ((pak == null) || (!pak.isOpen))
+            if ((pak == null) || (!pak.IsOpen))
                 return;
 
             lMissionXml.Text = "<searching for data>";
             lMissionXml.Update();
 
             // Find all related files and concat them into a giant stringlist
-            foreach (var pfi in pak.files)
+            foreach (var pfi in pak.Files)
             {
-                var lowername = pfi.name.ToLower();
-                if (lowername.EndsWith("mission_mission0.xml"))
+                var lowerName = pfi.name.ToLower();
+                if (lowerName.EndsWith("mission_mission0.xml"))
                 {
                     // Read/Parse XML data here
                 }

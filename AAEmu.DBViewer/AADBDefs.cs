@@ -17,6 +17,42 @@ namespace AAEmu.DBDefs
         public string value = string.Empty;
     }
 
+    enum GameItemImplId
+    {
+        Misc = 0,
+        Weapon = 1,
+        Armor = 2,
+        Body = 3,
+        Bag = 4,
+        Housing = 5,
+        HousingDecoration = 6,
+        Tool = 7,
+        SummonSlave = 8,
+        SpawnDoodad = 9,
+        AcceptQuest = 10,
+        SummonMate = 11,
+        Recipe = 12,
+        Crafting = 13,
+        Portal = 14,
+        EnchantingGem = 15,
+        ReportCrime = 16,
+        LogicDoodad = 17,
+        HasUcc = 18,
+        OpenEmblemUi = 19,
+        Shipyard = 20,
+        Socket = 21,
+        Backpack = 22,
+        OpenPaper = 23,
+        Accessory = 24,
+        Treasure = 25,
+        MusicSheet = 26,
+        Dyeing = 27,
+        SlaveEquipment = 28,
+        GradeEnchantingSupport = 29,
+        MateArmor = 30,
+        Location = 31,
+    }
+
     class GameItem
     {
         // Actual DB entries
@@ -32,6 +68,7 @@ namespace AAEmu.DBDefs
         public bool sellable = false;
         public long fixed_grade = -1;
         public long use_skill_id = 0;
+        public long impl_id = 0;
 
         // Linked
         public GameItemArmors item_armors = null;
