@@ -101,6 +101,7 @@ namespace AAEmu.DBViewer
             foreach (var implId in Enum.GetValues(typeof(GameItemImplId)))
                 cbItemSearchType.Items.Add(((int)implId).ToString() + " - " + implId.ToString());
             cbItemSearchType.SelectedIndex = 0;
+            cbNewGM.Checked = Properties.Settings.Default.NewGMCommands;
 
             if (!LoadServerDB(false))
             {
@@ -2979,7 +2980,8 @@ namespace AAEmu.DBViewer
                 lItemLevel.Text = item.level.ToString();
                 IconIDToLabel(item.icon_id, itemIcon);
                 btnFindItemSkill.Enabled = true; // (item.use_skill_id > 0);
-                var gmadditem = "/additem " + item.id.ToString();
+                var gmadditem = cbNewGM.Checked ? "/item add self " : "/additem ";
+                gmadditem += item.id.ToString();
                 gmadditem += " " + item.max_stack_size.ToString();
                 if (item.fixed_grade >= 0)
                     gmadditem += " " + item.fixed_grade.ToString();
@@ -2999,7 +3001,7 @@ namespace AAEmu.DBViewer
                 itemIcon.Text = "???";
                 btnFindItemSkill.Enabled = false;
                 lItemTags.Text = "???";
-                lItemAddGMCommand.Text = "/additem ???";
+                lItemAddGMCommand.Text = cbNewGM.Checked ? "/item add self ???" : "/additem ???";
             }
         }
 
@@ -5036,6 +5038,36 @@ namespace AAEmu.DBViewer
         {
             if (hideNull && IsCustomPropertyEmpty(value))
                 return null;
+
+            // First try to detect localizable entries
+            var rootSplit = rootNode.Text.Split(' ');
+            var rootTypeName = string.Empty;
+            long rootTypeKey = 0;
+            if ((rootSplit.Length == 4) && (rootSplit[1] == "(") && (rootSplit[3] == ")")) // name ( id )
+            {
+                rootTypeName = FunctionTypeToTableName(rootSplit[0]);
+                if (long.TryParse(rootSplit[2], out var v))
+                    rootTypeKey = v;
+            }
+
+            var localizedValue = value;
+            if (!string.IsNullOrWhiteSpace(rootTypeName) && (rootTypeKey > 0))
+            {
+                localizedValue = AADB.GetTranslationByID(rootTypeKey, rootTypeName, key, "");
+            }
+
+            if (!string.IsNullOrWhiteSpace(localizedValue) && (localizedValue != value))
+            {
+                var localizedNode = new TreeNodeWithInfo();
+                localizedNode.targetTabPage = tbLocalizer;
+                localizedNode.targetTextBox = tSearchLocalized;
+                localizedNode.targetSearchText = rootTypeName + " " + key + " =" + rootTypeKey + "=";
+                localizedNode.targetSearchButton = null;
+                localizedNode.Text = key + ": " + localizedValue;
+                localizedNode.ForeColor = Color.LightYellow;
+                rootNode.Nodes.Add(localizedNode);
+                return localizedNode;
+            }
 
             var nodeText = key + ": " + value;
             if (!long.TryParse(value, out var val))
@@ -8211,6 +8243,30 @@ namespace AAEmu.DBViewer
                 if (long.TryParse(dgvQuests.CurrentRow.Cells[0].Value.ToString(), out var id))
                     ShowDBQuest(id);
             }
+        }
+
+        private void cbNewGM_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.NewGMCommands = cbNewGM.Checked;
+        }
+
+        private string TreeViewToString(TreeNodeCollection treeView, int depth = 0)
+        {
+            var res = string.Empty;
+            foreach (TreeNode node in treeView)
+            {
+                var spacer = string.Empty.PadRight(depth * 2, ' ');
+                if (depth > 0)
+                    spacer += (depth % 2 == 0) ? "- " : "* ";
+                res += spacer + $"{node.Text}\r\n";
+                res += TreeViewToString(node.Nodes, depth+1);
+            }
+            return res;
+        }
+
+        private void btnCopySkillExecutionTree_Click(object sender, EventArgs e)
+        {
+            CopyToClipBoard($"Skill: {lSkillID.Text} - " + TreeViewToString(tvSkill.Nodes, 0));
         }
     }
 }

@@ -516,6 +516,9 @@
             this.ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             this.ofdJsonData = new System.Windows.Forms.OpenFileDialog();
             this.ilIcons = new System.Windows.Forms.ImageList(this.components);
+            this.cbNewGM = new System.Windows.Forms.CheckBox();
+            this.btnCopySkillExecutionTree = new System.Windows.Forms.Button();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -582,6 +585,10 @@
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbTableNames
@@ -624,6 +631,7 @@
             // tbTables
             // 
             this.tbTables.BackColor = System.Drawing.Color.Transparent;
+            this.tbTables.Controls.Add(this.cbNewGM);
             this.tbTables.Controls.Add(this.label29);
             this.tbTables.Controls.Add(this.tFilterTables);
             this.tbTables.Controls.Add(this.lCurrentPakFile);
@@ -4263,11 +4271,7 @@
             // 
             // tpSkills
             // 
-            this.tpSkills.Controls.Add(this.tcSkillInfo);
-            this.tpSkills.Controls.Add(this.btnSkillSearch);
-            this.tpSkills.Controls.Add(this.dgvSkills);
-            this.tpSkills.Controls.Add(this.label9);
-            this.tpSkills.Controls.Add(this.tSkillSearch);
+            this.tpSkills.Controls.Add(this.splitContainer3);
             this.tpSkills.Location = new System.Drawing.Point(4, 22);
             this.tpSkills.Name = "tpSkills";
             this.tpSkills.Padding = new System.Windows.Forms.Padding(3);
@@ -4283,12 +4287,12 @@
             this.tcSkillInfo.Controls.Add(this.tpSkillInfo);
             this.tcSkillInfo.Controls.Add(this.tpSkillItems);
             this.tcSkillInfo.Controls.Add(this.tpSkillExecution);
-            this.tcSkillInfo.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tcSkillInfo.Location = new System.Drawing.Point(562, 3);
+            this.tcSkillInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tcSkillInfo.Location = new System.Drawing.Point(0, 0);
             this.tcSkillInfo.Multiline = true;
             this.tcSkillInfo.Name = "tcSkillInfo";
             this.tcSkillInfo.SelectedIndex = 0;
-            this.tcSkillInfo.Size = new System.Drawing.Size(361, 479);
+            this.tcSkillInfo.Size = new System.Drawing.Size(513, 479);
             this.tcSkillInfo.TabIndex = 9;
             // 
             // tpSkillInfo
@@ -4299,7 +4303,7 @@
             this.tpSkillInfo.Location = new System.Drawing.Point(4, 4);
             this.tpSkillInfo.Name = "tpSkillInfo";
             this.tpSkillInfo.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSkillInfo.Size = new System.Drawing.Size(353, 453);
+            this.tpSkillInfo.Size = new System.Drawing.Size(505, 453);
             this.tpSkillInfo.TabIndex = 0;
             this.tpSkillInfo.Text = "Skill";
             // 
@@ -4328,7 +4332,7 @@
             this.groupBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
             this.groupBox2.Location = new System.Drawing.Point(3, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(347, 447);
+            this.groupBox2.Size = new System.Drawing.Size(499, 447);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Skill Info";
@@ -4362,7 +4366,7 @@
             this.rtSkillDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
             this.rtSkillDescription.Location = new System.Drawing.Point(9, 120);
             this.rtSkillDescription.Name = "rtSkillDescription";
-            this.rtSkillDescription.Size = new System.Drawing.Size(332, 290);
+            this.rtSkillDescription.Size = new System.Drawing.Size(484, 290);
             this.rtSkillDescription.TabIndex = 10;
             this.rtSkillDescription.Text = "";
             // 
@@ -4460,7 +4464,7 @@
             // 
             this.skillIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.skillIcon.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.skillIcon.Location = new System.Drawing.Point(277, 51);
+            this.skillIcon.Location = new System.Drawing.Point(429, 51);
             this.skillIcon.Name = "skillIcon";
             this.skillIcon.Size = new System.Drawing.Size(64, 64);
             this.skillIcon.TabIndex = 11;
@@ -4625,6 +4629,7 @@
             // 
             // tpSkillExecution
             // 
+            this.tpSkillExecution.Controls.Add(this.btnCopySkillExecutionTree);
             this.tpSkillExecution.Controls.Add(this.gbSkillPlotEventInfo);
             this.tpSkillExecution.Controls.Add(this.tvSkill);
             this.tpSkillExecution.Location = new System.Drawing.Point(4, 4);
@@ -4652,9 +4657,9 @@
             this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP3);
             this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP2);
             this.gbSkillPlotEventInfo.Controls.Add(this.lPlotEventP1);
-            this.gbSkillPlotEventInfo.Location = new System.Drawing.Point(6, 307);
+            this.gbSkillPlotEventInfo.Location = new System.Drawing.Point(6, 329);
             this.gbSkillPlotEventInfo.Name = "gbSkillPlotEventInfo";
-            this.gbSkillPlotEventInfo.Size = new System.Drawing.Size(341, 140);
+            this.gbSkillPlotEventInfo.Size = new System.Drawing.Size(341, 118);
             this.gbSkillPlotEventInfo.TabIndex = 1;
             this.gbSkillPlotEventInfo.TabStop = false;
             this.gbSkillPlotEventInfo.Text = "Parameters";
@@ -4794,7 +4799,7 @@
             this.tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode2});
             this.tvSkill.SelectedImageIndex = 0;
-            this.tvSkill.Size = new System.Drawing.Size(341, 295);
+            this.tvSkill.Size = new System.Drawing.Size(341, 281);
             this.tvSkill.TabIndex = 0;
             this.tvSkill.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvSkill_AfterSelect);
             this.tvSkill.DoubleClick += new System.EventHandler(this.tvSkill_DoubleClick);
@@ -4803,7 +4808,7 @@
             // 
             this.btnSkillSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSkillSearch.Enabled = false;
-            this.btnSkillSearch.Location = new System.Drawing.Point(477, 4);
+            this.btnSkillSearch.Location = new System.Drawing.Point(321, 2);
             this.btnSkillSearch.Name = "btnSkillSearch";
             this.btnSkillSearch.Size = new System.Drawing.Size(79, 23);
             this.btnSkillSearch.TabIndex = 7;
@@ -4825,12 +4830,12 @@
             this.dataGridViewTextBoxColumn2,
             this.dataGridViewTextBoxColumn3,
             this.Column10});
-            this.dgvSkills.Location = new System.Drawing.Point(6, 32);
+            this.dgvSkills.Location = new System.Drawing.Point(0, 30);
             this.dgvSkills.Name = "dgvSkills";
             this.dgvSkills.ReadOnly = true;
             this.dgvSkills.RowHeadersVisible = false;
             this.dgvSkills.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSkills.Size = new System.Drawing.Size(550, 447);
+            this.dgvSkills.Size = new System.Drawing.Size(400, 444);
             this.dgvSkills.TabIndex = 6;
             this.dgvSkills.SelectionChanged += new System.EventHandler(this.DgvSkills_SelectionChanged);
             // 
@@ -4859,19 +4864,19 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(8, 9);
+            this.label9.Location = new System.Drawing.Point(3, 7);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(188, 13);
+            this.label9.Size = new System.Drawing.Size(115, 13);
             this.label9.TabIndex = 5;
-            this.label9.Text = "Search in Skill ID, Name or description";
+            this.label9.Text = "Skill ID, Name or desc.";
             // 
             // tSkillSearch
             // 
             this.tSkillSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tSkillSearch.Location = new System.Drawing.Point(201, 6);
+            this.tSkillSearch.Location = new System.Drawing.Point(124, 4);
             this.tSkillSearch.Name = "tSkillSearch";
-            this.tSkillSearch.Size = new System.Drawing.Size(270, 20);
+            this.tSkillSearch.Size = new System.Drawing.Size(191, 20);
             this.tSkillSearch.TabIndex = 4;
             this.tSkillSearch.TextChanged += new System.EventHandler(this.TSkillSearch_TextChanged);
             this.tSkillSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TSkillSearch_KeyDown);
@@ -5812,6 +5817,50 @@
             this.ilIcons.Images.SetKeyName(3, "icon_exclamation_green.png");
             this.ilIcons.Images.SetKeyName(4, "icon_exclamation_blue.png");
             // 
+            // cbNewGM
+            // 
+            this.cbNewGM.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbNewGM.AutoSize = true;
+            this.cbNewGM.Location = new System.Drawing.Point(795, 39);
+            this.cbNewGM.Name = "cbNewGM";
+            this.cbNewGM.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.cbNewGM.Size = new System.Drawing.Size(122, 17);
+            this.cbNewGM.TabIndex = 16;
+            this.cbNewGM.Text = "New GM commands";
+            this.cbNewGM.UseVisualStyleBackColor = true;
+            this.cbNewGM.CheckedChanged += new System.EventHandler(this.cbNewGM_CheckedChanged);
+            // 
+            // btnCopySkillExecutionTree
+            // 
+            this.btnCopySkillExecutionTree.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCopySkillExecutionTree.Location = new System.Drawing.Point(272, 300);
+            this.btnCopySkillExecutionTree.Name = "btnCopySkillExecutionTree";
+            this.btnCopySkillExecutionTree.Size = new System.Drawing.Size(75, 23);
+            this.btnCopySkillExecutionTree.TabIndex = 2;
+            this.btnCopySkillExecutionTree.Text = "Copy Tree";
+            this.btnCopySkillExecutionTree.UseVisualStyleBackColor = true;
+            this.btnCopySkillExecutionTree.Click += new System.EventHandler(this.btnCopySkillExecutionTree_Click);
+            // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer3.Name = "splitContainer3";
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.label9);
+            this.splitContainer3.Panel1.Controls.Add(this.btnSkillSearch);
+            this.splitContainer3.Panel1.Controls.Add(this.tSkillSearch);
+            this.splitContainer3.Panel1.Controls.Add(this.dgvSkills);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.tcSkillInfo);
+            this.splitContainer3.Size = new System.Drawing.Size(920, 479);
+            this.splitContainer3.SplitterDistance = 403;
+            this.splitContainer3.TabIndex = 10;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5897,7 +5946,6 @@
             this.groupBox12.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvQuests)).EndInit();
             this.tpSkills.ResumeLayout(false);
-            this.tpSkills.PerformLayout();
             this.tcSkillInfo.ResumeLayout(false);
             this.tpSkillInfo.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
@@ -5924,6 +5972,11 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvZones)).EndInit();
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel1.PerformLayout();
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -6414,6 +6467,9 @@
         private System.Windows.Forms.Label label140;
         private System.Windows.Forms.Label label139;
         private System.Windows.Forms.ComboBox cbItemSearchType;
+        private System.Windows.Forms.CheckBox cbNewGM;
+        private System.Windows.Forms.Button btnCopySkillExecutionTree;
+        private System.Windows.Forms.SplitContainer splitContainer3;
     }
 }
 
