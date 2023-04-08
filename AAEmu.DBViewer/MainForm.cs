@@ -5166,6 +5166,19 @@ namespace AAEmu.DBViewer
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + tagId.nameLocalized;
             }
+            else if (key.EndsWith("wi_id"))
+            {
+                try
+                {
+                    res.ForeColor = Color.LawnGreen;
+                    nodeText += " - " + ((WorldInteractionType)Enum.Parse(typeof(WorldInteractionType), value)).ToString();
+                }
+                catch
+                {
+                    nodeText += " - ???";
+                    res.ForeColor = Color.Red;
+                }
+            }
             else if (key.EndsWith("special_effect_type_id"))
             {
                 try

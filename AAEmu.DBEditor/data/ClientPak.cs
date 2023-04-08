@@ -10,7 +10,7 @@ using FreeImageAPI;
 
 namespace AAEmu.DbEditor.data
 {
-    class ClientPak
+    internal class ClientPak
     {
         public string FileName { get; private set; }
         public AAPak Pak { get; private set; }
@@ -20,8 +20,15 @@ namespace AAEmu.DbEditor.data
 
         public bool Initialize()
         {
-            Icons = new ImageList();
-            Icons.ImageSize = new Size(48, 48);
+            Icons = new ImageList
+            {
+                Site = null,
+                ColorDepth = ColorDepth.Depth32Bit,
+                ImageSize = new Size(48, 48),
+                ImageStream = null,
+                Tag = null,
+                TransparentColor = default
+            };
             return true;
         }
 
@@ -35,16 +42,22 @@ namespace AAEmu.DbEditor.data
 
             MainForm.Self.UpdateProgress("Loading Client Pak "+fileName+"...");
             if (Pak == null)
-                Pak = new AAPak(fileName, true, false);
-            else
-                Pak.OpenPak(fileName, true);
+                Pak = new AAPak();
+
+            if (!Pak.OpenPak(fileName, true))
+            {
+                MainForm.Self.UpdateProgress("Loading Client Pak failed to open " + fileName);
+                Pak.ClosePak();
+                Pak = null;
+                FileName = string.Empty;
+                return false;
+            }
 
             MainForm.Self.UpdateProgress("Loading default icon ...");
             Icons.Images.Clear();
             GetIconIndexByName(DefaultPakIcon);
 
-            if (Pak.IsOpen)
-                FileName = Pak._gpFilePath;
+            FileName = Pak.GpFilePath;
 
             return (Pak != null) && (Pak.IsOpen);
         }
@@ -80,30 +93,29 @@ namespace AAEmu.DbEditor.data
             }
         }
 
-        public int GetIconIndexByName(string IconName)
+        public int GetIconIndexByName(string iconName)
         {
-            var idx = Icons.Images.IndexOfKey(IconName);
+            var idx = Icons.Images.IndexOfKey(iconName);
             if (idx >= 0)
                 return idx;
 
-            var fn = "game/ui/icon/" + IconName;
+            var fn = "game/ui/icon/" + iconName;
 
-            if (Pak.FileExists(fn))
-            {
-                var bmp = PackedImageToBitmap(fn);
-                if (bmp != null)
-                    Icons.Images.Add(IconName, bmp);
-            }
+            if (!Pak.FileExists(fn))
+                return -1;
 
-            return -1;
+            var bmp = PackedImageToBitmap(fn);
+            if (bmp == null) 
+                return -1;
+
+            Icons.Images.Add(iconName, bmp);
+            return Icons.Images.Count - 1;
         }
 
-        public Image GetIconByName(string IconName)
+        public Image GetIconByName(string iconName)
         {
-            var idx = GetIconIndexByName(IconName);
-            if (idx < 0)
-                return null;
-            return Icons.Images[idx];
+            var idx = GetIconIndexByName(iconName);
+            return idx < 0 ? null : Icons.Images[idx];
         }
     }
 }

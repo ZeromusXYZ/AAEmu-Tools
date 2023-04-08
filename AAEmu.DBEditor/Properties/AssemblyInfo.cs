@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("AAEmu.DBEditor")]
-[assembly: AssemblyCopyright("Copyright ©  2021 - No Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright ©  2021-2022 - No Rights Reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

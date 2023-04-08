@@ -23,8 +23,8 @@ namespace AAEmu.DbEditor.data
             fileName = Path.GetFullPath(fileName);
             if (File.Exists(fileName))
             {
-                SQLite.SQLiteFileName = fileName;
-                string sql = "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name ASC";
+                SQLite.SqLiteFileName = fileName;
+                var sql = "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name ASC";
 
                 using (var connection = SQLite.CreateConnection())
                 {
