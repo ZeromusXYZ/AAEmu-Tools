@@ -2331,7 +2331,7 @@ namespace AAEmu.DBViewer
                 }
             }
 
-            // events condition
+            // plot events condition
             sql = "SELECT * FROM plot_event_conditions";
             using (var connection = SQLite.CreateConnection())
             {
@@ -2351,7 +2351,7 @@ namespace AAEmu.DBViewer
 
                             var t = new GamePlotEventCondition();
                             t.id = GetInt64(reader, "id");
-                            t.event_id = GetInt64(reader, "id");
+                            t.event_id = GetInt64(reader, "event_id");
                             t.postion = GetInt64(reader, "position");
                             t.condition_id = GetInt64(reader, "condition_id");
                             t.source_id = GetInt64(reader, "source_id");
@@ -2367,7 +2367,74 @@ namespace AAEmu.DBViewer
                 }
             }
 
+            // plot condition
+            sql = "SELECT * FROM plot_conditions";
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Plot_Conditions.Clear();
 
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GamePlotCondition();
+                            t.id = GetInt64(reader, "id");
+                            t.not_condition = GetBool(reader, "not_condition");
+                            t.kind_id = GetInt64(reader, "kind_id");
+                            t.param1 = GetInt64(reader, "param1");
+                            t.param2 = GetInt64(reader, "param2");
+                            t.param3 = GetInt64(reader, "param3");
+
+                            AADB.DB_Plot_Conditions.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
+
+            // plot effects
+            sql = "SELECT * FROM plot_effects";
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Plot_Effects.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GamePlotEffect();
+                            t.id = GetInt64(reader, "id");
+                            t.event_id = GetInt64(reader, "event_id");
+                            t.position = GetInt64(reader, "position");
+                            t.source_id = GetInt64(reader, "source_id");
+                            t.target_id = GetInt64(reader, "target_id");
+                            t.actual_id = GetInt64(reader, "actual_id");
+                            t.actual_type = GetString(reader, "actual_type");
+
+                            AADB.DB_Plot_Effects.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
 
         }
 
@@ -3005,35 +3072,33 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private void AddPlotEventNode(TreeNode parent, GamePlotEvent child, int depth = 0)
+        private string ConditionTypeName(long id)
         {
-
-            string ConditionTypeName(long id)
+            switch (id)
             {
-                switch (id)
-                {
-                    case 1: return "Level (1)";
-                    case 2: return "Relation (2)";
-                    case 3: return "Direction (3)";
-                    case 4: return "Unk4 (4)";
-                    case 5: return "BuffTag (5)";
-                    case 6: return "WeaponEquipStatus (6)";
-                    case 7: return "Chance (7)";
-                    case 8: return "Dead (8)";
-                    case 9: return "CombatDiceResult (9)";
-                    case 10: return "InstrumentType (10)";
-                    case 11: return "Range (11)";
-                    case 12: return "Variable (12)";
-                    case 13: return "UnitAttrib (13)";
-                    case 14: return "Actability (14)";
-                    case 15: return "Stealth (15)";
-                    case 16: return "Visible (16)";
-                    case 17: return "ABLevel (17)";
-                    default: return id.ToString();
-                }
-
+                case 1: return "Level (1)";
+                case 2: return "Relation (2)";
+                case 3: return "Direction (3)";
+                case 4: return "Unk4 (4)";
+                case 5: return "BuffTag (5)";
+                case 6: return "WeaponEquipStatus (6)";
+                case 7: return "Chance (7)";
+                case 8: return "Dead (8)";
+                case 9: return "CombatDiceResult (9)";
+                case 10: return "InstrumentType (10)";
+                case 11: return "Range (11)";
+                case 12: return "Variable (12)";
+                case 13: return "UnitAttrib (13)";
+                case 14: return "Actability (14)";
+                case 15: return "Stealth (15)";
+                case 16: return "Visible (16)";
+                case 17: return "ABLevel (17)";
+                default: return id.ToString();
             }
+        }
 
+        private void AddPlotEventNode(TreeNode parent, GamePlotEvent child, int depth = 0, string nodeNamePrefix = "")
+        {
             depth++;
             if (depth > 16)
             {
@@ -3045,7 +3110,7 @@ namespace AAEmu.DBViewer
                 return;
             }
 
-            var nodeName = child.id.ToString() + " - " + child.name;
+            var nodeName = nodeNamePrefix + child.id.ToString() + " - " + child.name;
             if (child.tickets > 1)
                 nodeName = child.tickets.ToString() + " x " + nodeName;
             var eventNode = new TreeNode(nodeName);
@@ -3056,25 +3121,55 @@ namespace AAEmu.DBViewer
             parent.Nodes.Add(eventNode);
 
             // Does it have conditions ?
-            var eventConditions =
-                AADB.DB_Plot_Event_Conditions.Where(eventCondition => eventCondition.Value.event_id == child.id);
-            foreach (var eventCondition in eventConditions)
+            var plotEventConditions = AADB.DB_Plot_Event_Conditions.Where(pec => pec.Value.event_id == child.id);
+            foreach (var plotEventCondition in plotEventConditions)
             {
-                var eventConditionName = ConditionTypeName(eventCondition.Value.condition_id);
+                var eventConditionName = $"Event Condition ({plotEventCondition.Value.condition_id})";
                 var eventConditionNode = new TreeNode(eventConditionName);
                 eventConditionNode.ImageIndex = 3;
                 eventConditionNode.SelectedImageIndex = 3;
                 eventConditionNode.Tag = 0;
                 eventNode.Nodes.Add(eventConditionNode);
+                eventConditionNode.Nodes.Add("Source: " + PlotUpdateMethode(plotEventCondition.Value.source_id));
+                eventConditionNode.Nodes.Add("Target: " + PlotUpdateMethode(plotEventCondition.Value.target_id));
+                eventConditionNode.Nodes.Add("Notify Failure: " + plotEventCondition.Value.notify_failure);
+                if (AADB.DB_Plot_Conditions.TryGetValue(plotEventCondition.Value.condition_id, out var condition))
+                {
+                    eventConditionNode.Text += (condition.not_condition ? " NOT " : " ") + ConditionTypeName(condition.kind_id);
+                    // eventConditionNode.Nodes.Add("Condition: " + (condition.not_condition ? "NOT " : "") + ConditionTypeName(condition.kind_id));
+                    if (condition.param1 != 0)
+                        eventConditionNode.Nodes.Add("Param1: " + condition.param1);
+                    if (condition.param2 != 0)
+                        eventConditionNode.Nodes.Add("Param2: " + condition.param2);
+                    if (condition.param3 != 0)
+                        eventConditionNode.Nodes.Add("Param3: " + condition.param3);
+                }
             }
 
+            // Plot Effects
+            var plotEventEffects = AADB.DB_Plot_Effects.Where(pec => pec.Value.event_id == child.id).OrderBy(pec => pec.Value.position);
+            foreach (var plotEffect in plotEventEffects)
+            {
+                var eventConditionName = $"Plot Effect ({plotEffect.Value.id})";
+                var effectNode = new TreeNode(eventConditionName);
+                effectNode.ImageIndex = 2;
+                effectNode.SelectedImageIndex = 2;
+                effectNode.Tag = 0;
+                eventNode.Nodes.Add(effectNode);
+                effectNode.Nodes.Add("Pos: " + plotEffect.Value.position);
+                effectNode.Nodes.Add("Source: " + PlotUpdateMethode(plotEffect.Value.source_id));
+                effectNode.Nodes.Add("Target: " + PlotUpdateMethode(plotEffect.Value.target_id));
+                // var actualEffectNode = effectNode.Nodes.Add("Actual Effect: " + plotEffect.Value.actual_type + " (" +plotEffect.Value.actual_id + ")");
+
+                CreatePlotEffectNode(plotEffect.Value.actual_type, plotEffect.Value.actual_id, effectNode, true);
+            }
 
             var nextEvents = AADB.DB_Plot_Next_Events.Where(nextEvent => nextEvent.Value.event_id == child.id);
             foreach (var n in nextEvents)
             {
                 if (AADB.DB_Plot_Events.TryGetValue(n.Value.next_event_id, out var next))
                 {
-                    AddPlotEventNode(eventNode, next, depth);
+                    AddPlotEventNode(eventNode, next, depth, "Next Plot Event: ");
                     /*
                     var nextNode = new TreeNode(next.id.ToString() + " - " + next.name);
                     nextNode.Tag = next.id;
@@ -3119,7 +3214,7 @@ namespace AAEmu.DBViewer
                         effectsRoot.Tag = 0;
                     }
 
-                    CreateEffectNode(skillEffect.effect_id, effectsRoot, true);
+                    CreateSkillEffectNode(skillEffect.effect_id, effectsRoot, true);
                 }
             }
 
@@ -3144,7 +3239,7 @@ namespace AAEmu.DBViewer
             tvSkill.SelectedNode = rootNode;
         }
 
-        private void CreateEffectNode(long effect_id, TreeNode effectsRoot, bool hideEmptyProperties)
+        private void CreateSkillEffectNode(long effect_id, TreeNode effectsRoot, bool hideEmptyProperties)
         {
             var effectTypeText = "???";
             if (AADB.DB_Effects.TryGetValue(effect_id, out var effect))
@@ -3174,6 +3269,33 @@ namespace AAEmu.DBViewer
                         thisNode.ImageIndex = 4;
                         thisNode.SelectedImageIndex = 4;
                     }
+                }
+            }
+        }
+
+        private void CreatePlotEffectNode(string actualType, long id, TreeNode effectsRoot, bool hideEmptyProperties)
+        {
+            var effectTypeText =  actualType + " ( " + id.ToString() + " )";
+
+            var skillEffectNode = effectsRoot.Nodes.Add(effectTypeText);
+            skillEffectNode.ImageIndex = 3;
+            skillEffectNode.SelectedImageIndex = 3;
+            skillEffectNode.Tag = 0;
+
+            var effectsTableName = FunctionTypeToTableName(actualType);
+            var effectValuesList = GetCustomTableValues(effectsTableName, "id", id.ToString());
+            foreach (var effectValues in effectValuesList)
+            foreach (var effectValue in effectValues)
+            {
+                var thisNode = AddCustomPropertyNode(effectValue.Key, effectValue.Value, hideEmptyProperties,
+                    skillEffectNode);
+                if (thisNode == null)
+                    continue;
+
+                if (thisNode.ImageIndex <= 0) // override default blank icon with blue !
+                {
+                    thisNode.ImageIndex = 4;
+                    thisNode.SelectedImageIndex = 4;
                 }
             }
         }
@@ -3928,7 +4050,7 @@ namespace AAEmu.DBViewer
                     {
                         // var triggerNode = new TreeNode($"{trigger.id} - Effect {trigger.effect_id} ({effect.actual_type} {effect.actual_id})");
                         // groupingNode.Nodes.Add(triggerNode);
-                        CreateEffectNode(effect.id, groupingNode, cbBuffsHideEmpty.Checked);
+                        CreateSkillEffectNode(effect.id, groupingNode, cbBuffsHideEmpty.Checked);
                     }
                 }
             }
@@ -7884,23 +8006,24 @@ namespace AAEmu.DBViewer
         {
 
         }
+        private string PlotUpdateMethode(long id)
+        {
+            switch (id)
+            {
+                case 1: return "OriginalSource (1)";
+                case 2: return "OriginalTarget (2)";
+                case 3: return "PreviousSource (3)";
+                case 4: return "PreviousTarget (4)";
+                case 5: return "Area (5)";
+                case 6: return "RandomUnit (6)";
+                case 7: return "RandomArea (7)";
+                default: return id.ToString();
+            }
+        }
+
 
         private void tvSkill_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            string PlotUpdateMethode(long id)
-            {
-                switch (id)
-                {
-                    case 1: return "OriginalSource (1)";
-                    case 2: return "OriginalTarget (2)";
-                    case 3: return "PreviousSource (3)";
-                    case 4: return "PreviousTarget (4)";
-                    case 5: return "Area (5)";
-                    case 6: return "RandomUnit (6)";
-                    case 7: return "RandomArea (7)";
-                    default: return id.ToString();
-                }
-            }
 
             lPlotEventSourceUpdate.Text = "Source Update: ?";
             lPlotEventTargetUpdate.Text = "Target Update: ?";
@@ -8280,6 +8403,15 @@ namespace AAEmu.DBViewer
         private void btnCopySkillExecutionTree_Click(object sender, EventArgs e)
         {
             CopyToClipBoard($"Skill: {lSkillID.Text} - " + TreeViewToString(tvSkill.Nodes, 0));
+        }
+
+        private void btnSkillTreeCollapse_Click(object sender, EventArgs e)
+        {
+            tvSkill.CollapseAll();
+            foreach (TreeNode node in tvSkill.Nodes)
+            {
+                node.Expand();
+            }
         }
     }
 }

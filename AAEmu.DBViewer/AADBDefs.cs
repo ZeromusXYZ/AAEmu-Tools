@@ -162,7 +162,6 @@ namespace AAEmu.DBDefs
         SellBackpack = 105
     }
 
-
     class GameItem
     {
         // Actual DB entries
@@ -870,6 +869,27 @@ namespace AAEmu.DBDefs
         public bool notify_failure = false;
     }
 
+    public class GamePlotEffect
+    {
+        public long id = 0;
+        public long event_id = 0;
+        public long position = 0;
+        public long source_id = 0;
+        public long target_id = 0;
+        public long actual_id = 0;
+        public string actual_type = "";
+    }
+
+    public class GamePlotCondition
+    {
+        public long id = 0;
+        public bool not_condition = false;
+        public long kind_id = 0;
+        public long param1 = 0;
+        public long param2 = 0;
+        public long param3 = 0;
+    }
+
     public class GameNpcSpawnerNpc
     {
         public long id = 0;
@@ -953,6 +973,8 @@ namespace AAEmu.DBDefs
         static public Dictionary<long, GamePlotEvent> DB_Plot_Events = new Dictionary<long, GamePlotEvent>();
         static public Dictionary<long, GamePlotNextEvent> DB_Plot_Next_Events = new Dictionary<long, GamePlotNextEvent>();
         static public Dictionary<long, GamePlotEventCondition> DB_Plot_Event_Conditions = new Dictionary<long, GamePlotEventCondition>();
+        static public Dictionary<long, GamePlotEffect> DB_Plot_Effects = new Dictionary<long, GamePlotEffect>();
+        static public Dictionary<long, GamePlotCondition> DB_Plot_Conditions = new Dictionary<long, GamePlotCondition>();
         static public Dictionary<long, GameNpcSpawnerNpc> DB_Npc_Spawner_Npcs = new Dictionary<long, GameNpcSpawnerNpc>();
         static public Dictionary<long, GameNpcSpawner> DB_Npc_Spawners = new Dictionary<long, GameNpcSpawner>();
         static public Dictionary<long, GameSpecialties> DB_Specialities = new Dictionary<long,GameSpecialties>();
