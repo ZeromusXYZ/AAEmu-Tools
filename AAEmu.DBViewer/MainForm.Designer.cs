@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
             this.lbTableNames = new System.Windows.Forms.ListBox();
             this.tcViewer = new System.Windows.Forms.TabControl();
             this.tbTables = new System.Windows.Forms.TabPage();
@@ -324,16 +324,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.tLootSearch = new System.Windows.Forms.TextBox();
             this.dgvLoot = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpNPCs = new System.Windows.Forms.TabPage();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
             this.btnShowNPCsOnMap = new System.Windows.Forms.Button();
@@ -412,6 +402,7 @@
             this.label13 = new System.Windows.Forms.Label();
             this.labelSkillReagents = new System.Windows.Forms.Label();
             this.tpSkillExecution = new System.Windows.Forms.TabPage();
+            this.btnSkillTreeCollapse = new System.Windows.Forms.Button();
             this.btnCopySkillExecutionTree = new System.Windows.Forms.Button();
             this.gbSkillPlotEventInfo = new System.Windows.Forms.GroupBox();
             this.lPlotEventTargetUpdate = new System.Windows.Forms.Label();
@@ -519,7 +510,18 @@
             this.ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             this.ofdJsonData = new System.Windows.Forms.OpenFileDialog();
             this.ilIcons = new System.Windows.Forms.ImageList(this.components);
-            this.btnSkillTreeCollapse = new System.Windows.Forms.Button();
+            this.btnShowNpcLoot = new System.Windows.Forms.Button();
+            this.btnFindLootNpc = new System.Windows.Forms.Button();
+            this.label141 = new System.Windows.Forms.Label();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tcViewer.SuspendLayout();
             this.tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimple)).BeginInit();
@@ -3682,6 +3684,7 @@
             // 
             // tpLoot
             // 
+            this.tpLoot.Controls.Add(this.label141);
             this.tpLoot.Controls.Add(this.groupBox11);
             this.tpLoot.Controls.Add(this.btnLootSearch);
             this.tpLoot.Controls.Add(this.label7);
@@ -3697,17 +3700,18 @@
             // 
             // groupBox11
             // 
-            this.groupBox11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.groupBox11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.groupBox11.Controls.Add(this.btnFindLootNpc);
             this.groupBox11.Controls.Add(this.LLootPackGroupNumber);
             this.groupBox11.Controls.Add(this.label74);
             this.groupBox11.Controls.Add(this.LLootGroupPackID);
             this.groupBox11.Controls.Add(this.label101);
             this.groupBox11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(192)))), ((int)(((byte)(171)))));
-            this.groupBox11.Location = new System.Drawing.Point(696, 11);
+            this.groupBox11.Location = new System.Drawing.Point(8, 416);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(221, 467);
+            this.groupBox11.Size = new System.Drawing.Size(910, 62);
             this.groupBox11.TabIndex = 7;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Loot Pack Info";
@@ -3752,7 +3756,7 @@
             // 
             this.btnLootSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLootSearch.Enabled = false;
-            this.btnLootSearch.Location = new System.Drawing.Point(611, 11);
+            this.btnLootSearch.Location = new System.Drawing.Point(839, 9);
             this.btnLootSearch.Name = "btnLootSearch";
             this.btnLootSearch.Size = new System.Drawing.Size(79, 23);
             this.btnLootSearch.TabIndex = 6;
@@ -3775,7 +3779,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tLootSearch.Location = new System.Drawing.Point(121, 11);
             this.tLootSearch.Name = "tLootSearch";
-            this.tLootSearch.Size = new System.Drawing.Size(484, 20);
+            this.tLootSearch.Size = new System.Drawing.Size(712, 20);
             this.tLootSearch.TabIndex = 4;
             this.tLootSearch.TextChanged += new System.EventHandler(this.TLootSearch_TextChanged);
             this.tLootSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TLootSearch_KeyDown);
@@ -3797,7 +3801,6 @@
             this.Column9,
             this.Column3,
             this.Column4,
-            this.Column5,
             this.Column6,
             this.Column7,
             this.Column8});
@@ -3806,79 +3809,9 @@
             this.dgvLoot.ReadOnly = true;
             this.dgvLoot.RowHeadersVisible = false;
             this.dgvLoot.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvLoot.Size = new System.Drawing.Size(682, 437);
+            this.dgvLoot.Size = new System.Drawing.Size(910, 355);
             this.dgvLoot.TabIndex = 3;
             this.dgvLoot.SelectionChanged += new System.EventHandler(this.DgvLoot_SelectionChanged);
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "ID";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dataGridViewTextBoxColumn1.Width = 43;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Loot Pack ID";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Width = 95;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Item ID";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Width = 66;
-            // 
-            // Column9
-            // 
-            this.Column9.HeaderText = "Name";
-            this.Column9.Name = "Column9";
-            this.Column9.ReadOnly = true;
-            this.Column9.Width = 60;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Drop Rate";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            this.Column3.Width = 81;
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "Min";
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
-            this.Column4.Width = 49;
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "Max";
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
-            this.Column5.Width = 52;
-            // 
-            // Column6
-            // 
-            this.Column6.HeaderText = "Grade ID";
-            this.Column6.Name = "Column6";
-            this.Column6.ReadOnly = true;
-            this.Column6.Width = 75;
-            // 
-            // Column7
-            // 
-            this.Column7.HeaderText = "Always Drop";
-            this.Column7.Name = "Column7";
-            this.Column7.ReadOnly = true;
-            this.Column7.Width = 91;
-            // 
-            // Column8
-            // 
-            this.Column8.HeaderText = "Group";
-            this.Column8.Name = "Column8";
-            this.Column8.ReadOnly = true;
-            this.Column8.Width = 61;
             // 
             // tpNPCs
             // 
@@ -3900,6 +3833,7 @@
             this.groupBox13.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(60)))), ((int)(((byte)(40)))));
+            this.groupBox13.Controls.Add(this.btnShowNpcLoot);
             this.groupBox13.Controls.Add(this.btnShowNPCsOnMap);
             this.groupBox13.Controls.Add(this.lNPCTags);
             this.groupBox13.Controls.Add(this.label125);
@@ -3931,7 +3865,7 @@
             // 
             this.lNPCTags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lNPCTags.AutoSize = true;
-            this.lNPCTags.Location = new System.Drawing.Point(6, 356);
+            this.lNPCTags.Location = new System.Drawing.Point(6, 323);
             this.lNPCTags.Name = "lNPCTags";
             this.lNPCTags.Size = new System.Drawing.Size(25, 13);
             this.lNPCTags.TabIndex = 25;
@@ -3941,7 +3875,7 @@
             // 
             this.label125.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label125.AutoSize = true;
-            this.label125.Location = new System.Drawing.Point(6, 333);
+            this.label125.Location = new System.Drawing.Point(6, 300);
             this.label125.Name = "label125";
             this.label125.Size = new System.Drawing.Size(31, 13);
             this.label125.TabIndex = 24;
@@ -3951,7 +3885,7 @@
             // 
             this.lGMNPCSpawn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lGMNPCSpawn.AutoSize = true;
-            this.lGMNPCSpawn.Location = new System.Drawing.Point(6, 407);
+            this.lGMNPCSpawn.Location = new System.Drawing.Point(6, 374);
             this.lGMNPCSpawn.Name = "lGMNPCSpawn";
             this.lGMNPCSpawn.Size = new System.Drawing.Size(43, 13);
             this.lGMNPCSpawn.TabIndex = 13;
@@ -4752,6 +4686,17 @@
             this.tpSkillExecution.Text = "Execution";
             this.tpSkillExecution.UseVisualStyleBackColor = true;
             // 
+            // btnSkillTreeCollapse
+            // 
+            this.btnSkillTreeCollapse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnSkillTreeCollapse.Location = new System.Drawing.Point(6, 300);
+            this.btnSkillTreeCollapse.Name = "btnSkillTreeCollapse";
+            this.btnSkillTreeCollapse.Size = new System.Drawing.Size(38, 23);
+            this.btnSkillTreeCollapse.TabIndex = 3;
+            this.btnSkillTreeCollapse.Text = "[+]";
+            this.btnSkillTreeCollapse.UseVisualStyleBackColor = true;
+            this.btnSkillTreeCollapse.Click += new System.EventHandler(this.btnSkillTreeCollapse_Click);
+            // 
             // btnCopySkillExecutionTree
             // 
             this.btnCopySkillExecutionTree.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -4917,10 +4862,10 @@
             this.tvSkill.ItemHeight = 24;
             this.tvSkill.Location = new System.Drawing.Point(6, 6);
             this.tvSkill.Name = "tvSkill";
-            treeNode1.Name = "SkillNode";
-            treeNode1.Text = "Skill";
+            treeNode2.Name = "SkillNode";
+            treeNode2.Text = "Skill";
             this.tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            treeNode2});
             this.tvSkill.SelectedImageIndex = 0;
             this.tvSkill.Size = new System.Drawing.Size(493, 281);
             this.tvSkill.TabIndex = 0;
@@ -5863,16 +5808,105 @@
             this.ilIcons.Images.SetKeyName(3, "icon_exclamation_green.png");
             this.ilIcons.Images.SetKeyName(4, "icon_exclamation_blue.png");
             // 
-            // btnSkillTreeCollapse
+            // btnShowNpcLoot
             // 
-            this.btnSkillTreeCollapse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSkillTreeCollapse.Location = new System.Drawing.Point(6, 300);
-            this.btnSkillTreeCollapse.Name = "btnSkillTreeCollapse";
-            this.btnSkillTreeCollapse.Size = new System.Drawing.Size(38, 23);
-            this.btnSkillTreeCollapse.TabIndex = 3;
-            this.btnSkillTreeCollapse.Text = "[+]";
-            this.btnSkillTreeCollapse.UseVisualStyleBackColor = true;
-            this.btnSkillTreeCollapse.Click += new System.EventHandler(this.btnSkillTreeCollapse_Click);
+            this.btnShowNpcLoot.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnShowNpcLoot.Enabled = false;
+            this.btnShowNpcLoot.ForeColor = System.Drawing.Color.Black;
+            this.btnShowNpcLoot.Location = new System.Drawing.Point(9, 411);
+            this.btnShowNpcLoot.Name = "btnShowNpcLoot";
+            this.btnShowNpcLoot.Size = new System.Drawing.Size(206, 22);
+            this.btnShowNpcLoot.TabIndex = 27;
+            this.btnShowNpcLoot.Text = "Find Loot";
+            this.btnShowNpcLoot.UseVisualStyleBackColor = true;
+            this.btnShowNpcLoot.Click += new System.EventHandler(this.btnShowNpcLoot_Click);
+            // 
+            // btnFindLootNpc
+            // 
+            this.btnFindLootNpc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnFindLootNpc.Enabled = false;
+            this.btnFindLootNpc.ForeColor = System.Drawing.Color.Black;
+            this.btnFindLootNpc.Location = new System.Drawing.Point(724, 11);
+            this.btnFindLootNpc.Name = "btnFindLootNpc";
+            this.btnFindLootNpc.Size = new System.Drawing.Size(180, 23);
+            this.btnFindLootNpc.TabIndex = 28;
+            this.btnFindLootNpc.Text = "What NPC Drops This ?";
+            this.btnFindLootNpc.UseVisualStyleBackColor = true;
+            this.btnFindLootNpc.Click += new System.EventHandler(this.btnFindLootNpc_Click);
+            // 
+            // label141
+            // 
+            this.label141.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label141.AutoSize = true;
+            this.label141.Location = new System.Drawing.Point(8, 400);
+            this.label141.Name = "label141";
+            this.label141.Size = new System.Drawing.Size(376, 13);
+            this.label141.TabIndex = 8;
+            this.label141.Text = "* Drop-rates displayed are experimental and may not represent intended values";
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Width = 43;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Loot Pack ID";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            this.Column2.Width = 95;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Item ID";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
+            this.Column1.Width = 66;
+            // 
+            // Column9
+            // 
+            this.Column9.HeaderText = "Name";
+            this.Column9.Name = "Column9";
+            this.Column9.ReadOnly = true;
+            this.Column9.Width = 60;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Drop Rate";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            this.Column3.Width = 81;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "Amount";
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
+            this.Column4.Width = 68;
+            // 
+            // Column6
+            // 
+            this.Column6.HeaderText = "Grade ID";
+            this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
+            this.Column6.Width = 75;
+            // 
+            // Column7
+            // 
+            this.Column7.HeaderText = "Always Drop";
+            this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
+            this.Column7.Width = 91;
+            // 
+            // Column8
+            // 
+            this.Column8.HeaderText = "Group";
+            this.Column8.Name = "Column8";
+            this.Column8.ReadOnly = true;
+            this.Column8.Width = 61;
             // 
             // MainForm
             // 
@@ -6298,16 +6332,6 @@
         private System.Windows.Forms.GroupBox groupBox11;
         private System.Windows.Forms.Label LLootGroupPackID;
         private System.Windows.Forms.Label label101;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.Label LLootPackGroupNumber;
         private System.Windows.Forms.Label label74;
         private System.Windows.Forms.Button btnFindQuestsInZone;
@@ -6484,6 +6508,18 @@
         private System.Windows.Forms.Button btnCopySkillExecutionTree;
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.Button btnSkillTreeCollapse;
+        private System.Windows.Forms.Button btnShowNpcLoot;
+        private System.Windows.Forms.Button btnFindLootNpc;
+        private System.Windows.Forms.Label label141;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
     }
 }
 

@@ -197,7 +197,7 @@ namespace AAEmu.DBDefs
         // Helpers
         public string nameLocalized = "None";
 
-        override public string ToString()
+        public override string ToString()
         {
             return nameLocalized + " ("+id.ToString()+")";
         }
@@ -396,7 +396,7 @@ namespace AAEmu.DBDefs
 
     class GameZone
     {
-        static private string main_world = "main_world";
+        private static string main_world = "main_world";
 
         public long id = 0;
         public string name = string.Empty;
@@ -436,7 +436,7 @@ namespace AAEmu.DBDefs
 
     class GameZone_Groups
     {
-        static private string main_world = "main_world";
+        private static string main_world = "main_world";
 
         public long id = 0;
         public string name = string.Empty;
@@ -929,57 +929,90 @@ namespace AAEmu.DBDefs
         public bool vendor_exist = false;
     }
 
+    public class GameLoot
+    {
+        public long id = 0;
+        public long group = 0;
+        public long item_id = 0;
+        public long drop_rate = 0;
+        public long min_amount = 1;
+        public long max_amount = 1;
+        public long loot_pack_id = 0;
+        public long grade_id = 0;
+        public bool always_drop = false;
+    }
+
+    public class GameLootPackDroppingNpc
+    {
+        public long id = 0;
+        public long npc_id = 0;
+        public long loot_pack_id = 0;
+        public bool default_pack = false;
+    }
+
+    public class GameLootActAbilityGroup
+    {
+        public long id = 0;
+        public long loot_pack_id = 0;
+        public long loot_group_id = 0;
+        public long max_dice = 0;
+        public long min_dice = 0;
+    }
+
     static class AADB
     {
-        static public Dictionary<string, GameTranslation> DB_Translations = new Dictionary<string, GameTranslation>();
-        static public Dictionary<long, GameItemCategories> DB_ItemsCategories = new Dictionary<long, GameItemCategories>();
-        static public Dictionary<long, GameItem> DB_Items = new Dictionary<long, GameItem>();
-        static public Dictionary<long, GameItemArmors> DB_Item_Armors = new Dictionary<long, GameItemArmors>();
-        static public Dictionary<long, GameEffects> DB_Effects = new Dictionary<long, GameEffects>();
-        static public Dictionary<long, GameSkills> DB_Skills = new Dictionary<long, GameSkills>();
-        static public Dictionary<long, GameSkillEffects> DB_Skill_Effects = new Dictionary<long, GameSkillEffects>();
-        static public Dictionary<long, GameNPC> DB_NPCs = new Dictionary<long, GameNPC>();
-        static public Dictionary<long, string> DB_Icons = new Dictionary<long, string>();
-        static public Dictionary<long, GameSkillItems> DB_Skill_Reagents = new Dictionary<long, GameSkillItems>();
-        static public Dictionary<long, GameSkillItems> DB_Skill_Products = new Dictionary<long, GameSkillItems>();
-        static public Dictionary<long, GameZone> DB_Zones = new Dictionary<long, GameZone>();
-        static public Dictionary<long, GameZone_Groups> DB_Zone_Groups = new Dictionary<long, GameZone_Groups>();
-        static public Dictionary<long, GameWorld_Groups> DB_World_Groups = new Dictionary<long, GameWorld_Groups>();
-        static public Dictionary<long, GameSystemFaction> DB_GameSystem_Factions = new Dictionary<long, GameSystemFaction>();
-        static public Dictionary<long, GameSystemFactionRelation> DB_GameSystem_Faction_Relations = new Dictionary<long, GameSystemFactionRelation>();
-        static public Dictionary<long, GameDoodad> DB_Doodad_Almighties = new Dictionary<long, GameDoodad>();
-        static public Dictionary<long, GameDoodadGroup> DB_Doodad_Groups = new Dictionary<long, GameDoodadGroup>();
-        static public Dictionary<long, GameDoodadFunc> DB_Doodad_Funcs = new Dictionary<long, GameDoodadFunc>();
-        static public Dictionary<long, GameDoodadFuncGroup> DB_Doodad_Func_Groups = new Dictionary<long, GameDoodadFuncGroup>();
-        static public Dictionary<long, GameDoodadPhaseFunc> DB_Doodad_Phase_Funcs = new Dictionary<long, GameDoodadPhaseFunc>();
-        static public Dictionary<long, GameQuestCategory> DB_Quest_Categories = new Dictionary<long, GameQuestCategory>();
-        static public Dictionary<long, GameQuestContexts> DB_Quest_Contexts = new Dictionary<long, GameQuestContexts>();
-        static public Dictionary<long, GameQuestContextText> DB_Quest_Context_Texts = new Dictionary<long, GameQuestContextText>();
-        static public Dictionary<long, GameQuestAct> DB_Quest_Acts = new Dictionary<long, GameQuestAct>();
-        static public Dictionary<long, GameQuestComponent> DB_Quest_Components = new Dictionary<long, GameQuestComponent>();
-        static public Dictionary<long, GameQuestComponentText> DB_Quest_Component_Texts = new Dictionary<long, GameQuestComponentText>();
-        static public Dictionary<long, GameTags> DB_Tags = new Dictionary<long, GameTags>();
-        static public Dictionary<long, GameTaggedValues> DB_Tagged_Buffs = new Dictionary<long, GameTaggedValues>();
-        static public Dictionary<long, GameTaggedValues> DB_Tagged_Items = new Dictionary<long, GameTaggedValues>();
-        static public Dictionary<long, GameTaggedValues> DB_Tagged_NPCs = new Dictionary<long, GameTaggedValues>();
-        static public Dictionary<long, GameTaggedValues> DB_Tagged_Skills = new Dictionary<long, GameTaggedValues>();
-        static public Dictionary<long, GameZoneGroupBannedTags> DB_Zone_Group_Banned_Tags = new Dictionary<long, GameZoneGroupBannedTags>();
-        static public Dictionary<long, GameBuff> DB_Buffs = new Dictionary<long, GameBuff>();
-        static public Dictionary<long, GameBuffTrigger> DB_BuffTriggers = new Dictionary<long, GameBuffTrigger>();
-        static public Dictionary<long, GameTransfers> DB_Transfers = new Dictionary<long, GameTransfers>();
-        static public List<GameTransferPaths> DB_TransferPaths = new List<GameTransferPaths>();
-        static public List<QuestSphereEntry> PAK_QuestSignSpheres = new List<QuestSphereEntry>();
-        static public Dictionary<long, GamePlot> DB_Plots = new Dictionary<long, GamePlot>();
-        static public Dictionary<long, GamePlotEvent> DB_Plot_Events = new Dictionary<long, GamePlotEvent>();
-        static public Dictionary<long, GamePlotNextEvent> DB_Plot_Next_Events = new Dictionary<long, GamePlotNextEvent>();
-        static public Dictionary<long, GamePlotEventCondition> DB_Plot_Event_Conditions = new Dictionary<long, GamePlotEventCondition>();
-        static public Dictionary<long, GamePlotEffect> DB_Plot_Effects = new Dictionary<long, GamePlotEffect>();
-        static public Dictionary<long, GamePlotCondition> DB_Plot_Conditions = new Dictionary<long, GamePlotCondition>();
-        static public Dictionary<long, GameNpcSpawnerNpc> DB_Npc_Spawner_Npcs = new Dictionary<long, GameNpcSpawnerNpc>();
-        static public Dictionary<long, GameNpcSpawner> DB_Npc_Spawners = new Dictionary<long, GameNpcSpawner>();
-        static public Dictionary<long, GameSpecialties> DB_Specialities = new Dictionary<long,GameSpecialties>();
+        public static Dictionary<string, GameTranslation> DB_Translations = new Dictionary<string, GameTranslation>();
+        public static Dictionary<long, GameItemCategories> DB_ItemsCategories = new Dictionary<long, GameItemCategories>();
+        public static Dictionary<long, GameItem> DB_Items = new Dictionary<long, GameItem>();
+        public static Dictionary<long, GameItemArmors> DB_Item_Armors = new Dictionary<long, GameItemArmors>();
+        public static Dictionary<long, GameEffects> DB_Effects = new Dictionary<long, GameEffects>();
+        public static Dictionary<long, GameSkills> DB_Skills = new Dictionary<long, GameSkills>();
+        public static Dictionary<long, GameSkillEffects> DB_Skill_Effects = new Dictionary<long, GameSkillEffects>();
+        public static Dictionary<long, GameNPC> DB_NPCs = new Dictionary<long, GameNPC>();
+        public static Dictionary<long, string> DB_Icons = new Dictionary<long, string>();
+        public static Dictionary<long, GameSkillItems> DB_Skill_Reagents = new Dictionary<long, GameSkillItems>();
+        public static Dictionary<long, GameSkillItems> DB_Skill_Products = new Dictionary<long, GameSkillItems>();
+        public static Dictionary<long, GameZone> DB_Zones = new Dictionary<long, GameZone>();
+        public static Dictionary<long, GameZone_Groups> DB_Zone_Groups = new Dictionary<long, GameZone_Groups>();
+        public static Dictionary<long, GameWorld_Groups> DB_World_Groups = new Dictionary<long, GameWorld_Groups>();
+        public static Dictionary<long, GameSystemFaction> DB_GameSystem_Factions = new Dictionary<long, GameSystemFaction>();
+        public static Dictionary<long, GameSystemFactionRelation> DB_GameSystem_Faction_Relations = new Dictionary<long, GameSystemFactionRelation>();
+        public static Dictionary<long, GameDoodad> DB_Doodad_Almighties = new Dictionary<long, GameDoodad>();
+        public static Dictionary<long, GameDoodadGroup> DB_Doodad_Groups = new Dictionary<long, GameDoodadGroup>();
+        public static Dictionary<long, GameDoodadFunc> DB_Doodad_Funcs = new Dictionary<long, GameDoodadFunc>();
+        public static Dictionary<long, GameDoodadFuncGroup> DB_Doodad_Func_Groups = new Dictionary<long, GameDoodadFuncGroup>();
+        public static Dictionary<long, GameDoodadPhaseFunc> DB_Doodad_Phase_Funcs = new Dictionary<long, GameDoodadPhaseFunc>();
+        public static Dictionary<long, GameQuestCategory> DB_Quest_Categories = new Dictionary<long, GameQuestCategory>();
+        public static Dictionary<long, GameQuestContexts> DB_Quest_Contexts = new Dictionary<long, GameQuestContexts>();
+        public static Dictionary<long, GameQuestContextText> DB_Quest_Context_Texts = new Dictionary<long, GameQuestContextText>();
+        public static Dictionary<long, GameQuestAct> DB_Quest_Acts = new Dictionary<long, GameQuestAct>();
+        public static Dictionary<long, GameQuestComponent> DB_Quest_Components = new Dictionary<long, GameQuestComponent>();
+        public static Dictionary<long, GameQuestComponentText> DB_Quest_Component_Texts = new Dictionary<long, GameQuestComponentText>();
+        public static Dictionary<long, GameTags> DB_Tags = new Dictionary<long, GameTags>();
+        public static Dictionary<long, GameTaggedValues> DB_Tagged_Buffs = new Dictionary<long, GameTaggedValues>();
+        public static Dictionary<long, GameTaggedValues> DB_Tagged_Items = new Dictionary<long, GameTaggedValues>();
+        public static Dictionary<long, GameTaggedValues> DB_Tagged_NPCs = new Dictionary<long, GameTaggedValues>();
+        public static Dictionary<long, GameTaggedValues> DB_Tagged_Skills = new Dictionary<long, GameTaggedValues>();
+        public static Dictionary<long, GameZoneGroupBannedTags> DB_Zone_Group_Banned_Tags = new Dictionary<long, GameZoneGroupBannedTags>();
+        public static Dictionary<long, GameBuff> DB_Buffs = new Dictionary<long, GameBuff>();
+        public static Dictionary<long, GameBuffTrigger> DB_BuffTriggers = new Dictionary<long, GameBuffTrigger>();
+        public static Dictionary<long, GameTransfers> DB_Transfers = new Dictionary<long, GameTransfers>();
+        public static List<GameTransferPaths> DB_TransferPaths = new List<GameTransferPaths>();
+        public static List<QuestSphereEntry> PAK_QuestSignSpheres = new List<QuestSphereEntry>();
+        public static Dictionary<long, GamePlot> DB_Plots = new Dictionary<long, GamePlot>();
+        public static Dictionary<long, GamePlotEvent> DB_Plot_Events = new Dictionary<long, GamePlotEvent>();
+        public static Dictionary<long, GamePlotNextEvent> DB_Plot_Next_Events = new Dictionary<long, GamePlotNextEvent>();
+        public static Dictionary<long, GamePlotEventCondition> DB_Plot_Event_Conditions = new Dictionary<long, GamePlotEventCondition>();
+        public static Dictionary<long, GamePlotEffect> DB_Plot_Effects = new Dictionary<long, GamePlotEffect>();
+        public static Dictionary<long, GamePlotCondition> DB_Plot_Conditions = new Dictionary<long, GamePlotCondition>();
+        public static Dictionary<long, GameNpcSpawnerNpc> DB_Npc_Spawner_Npcs = new Dictionary<long, GameNpcSpawnerNpc>();
+        public static Dictionary<long, GameNpcSpawner> DB_Npc_Spawners = new Dictionary<long, GameNpcSpawner>();
+        public static Dictionary<long, GameSpecialties> DB_Specialities = new Dictionary<long, GameSpecialties>();
+        public static Dictionary<long, GameLoot> DB_Loots = new Dictionary<long, GameLoot>();
+        public static Dictionary<long, GameLootPackDroppingNpc> DB_Loot_Pack_Dropping_Npc = new Dictionary<long, GameLootPackDroppingNpc>();
+        public static Dictionary<long, GameLootActAbilityGroup> DB_Loot_ActAbility_Groups = new Dictionary<long, GameLootActAbilityGroup>();
 
-        static public string GetTranslationByID(long idx, string table, string field, string defaultValue = "$NODEFAULT")
+        public static string GetTranslationByID(long idx, string table, string field, string defaultValue = "$NODEFAULT")
         {
             string res = string.Empty;
             string k = table + ":" + field + ":" + idx.ToString();
@@ -999,7 +1032,7 @@ namespace AAEmu.DBDefs
             }
         }
 
-        static public string GetFactionName(long faction_id, bool addID = false)
+        public static string GetFactionName(long faction_id, bool addID = false)
         {
             if (DB_GameSystem_Factions.TryGetValue(faction_id, out var faction))
             {
@@ -1025,7 +1058,7 @@ namespace AAEmu.DBDefs
             }
         }
 
-        static public long GetFactionHostility(long f1, long f2)
+        public static long GetFactionHostility(long f1, long f2)
         {
             foreach (var fr in DB_GameSystem_Faction_Relations)
             {
@@ -1041,7 +1074,7 @@ namespace AAEmu.DBDefs
             return 0;
         }
 
-        static public string GetFactionHostileName(long f)
+        public static string GetFactionHostileName(long f)
         {
             switch (f)
             {
@@ -1054,7 +1087,7 @@ namespace AAEmu.DBDefs
             }
         }
 
-        static public void SetFactionRelationLabel(GameSystemFaction thisFaction, long targetFactionID, ref Label targetLabel)
+        public static void SetFactionRelationLabel(GameSystemFaction thisFaction, long targetFactionID, ref Label targetLabel)
         {
             var n = GetFactionHostility(thisFaction.id, targetFactionID);
             if ((n == 0) && (thisFaction.mother_id != 0))
@@ -1088,7 +1121,7 @@ namespace AAEmu.DBDefs
         }
 
 
-        static private string FloatToCoord(double f)
+        private static string FloatToCoord(double f)
         {
             var f1 = Math.Floor(f);
             f -= f1;
@@ -1101,7 +1134,7 @@ namespace AAEmu.DBDefs
             return f1.ToString("0") + "°" + f2.ToString("00") + "'" + f3.ToString("00") + "\"";
         }
 
-        static public string CoordToSextant(float x, float y)
+        public static string CoordToSextant(float x, float y)
         {
             var res = string.Empty;
             // https://www.reddit.com/r/archeage/comments/3dak17/datamining_every_location_of_everything_in/
@@ -1137,14 +1170,14 @@ namespace AAEmu.DBDefs
             return res;
         }
 
-        static public PointF SextantToCoord(float longitude, float latitude)
+        public static PointF SextantToCoord(float longitude, float latitude)
         {
             var ux = ((longitude + 21f) / 0.00097657363894522145695357130138029f);
             var uy = ((latitude + 28f) / 0.00097657363894522145695357130138029f);
             return new PointF(ux, uy);
         }
 
-        static public GameZone GetZoneByKey(long zone_key)
+        public static GameZone GetZoneByKey(long zone_key)
         {
             foreach (var z in DB_Zones)
                 if (z.Value.zone_key == zone_key)

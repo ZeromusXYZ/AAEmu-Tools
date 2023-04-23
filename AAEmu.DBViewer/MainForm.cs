@@ -23,6 +23,7 @@ using Newtonsoft.Json;
 using AAEmu.DBViewer.JsonData;
 using AAEmu.DBViewer.utils;
 using System.Runtime;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 
 namespace AAEmu.DBViewer
 {
@@ -3636,107 +3637,180 @@ namespace AAEmu.DBViewer
         }
 
 
-        private string VisualizeDropRate(long droprate)
+        private string VisualizeDropRate(long dropRate, long dropRateMax, bool alwaysDrop, double diceRate = 1.0, double packRate = 1.0)
         {
-            if (droprate == 1)
-                return "Special";
-            return droprate.ToString();
-            /*
-            double d = droprate / 100000;
-            return d.ToString("0.00") + " %";
-            */
+            if (alwaysDrop)
+                return "Always";
+
+            var res = string.Empty;
+            var rate = ((double)dropRate / (double)dropRateMax * 100.0);
+            var totalRate = rate * diceRate * packRate;
+
+            if (dropRateMax == 0)
+                res += totalRate.ToString("F3", CultureInfo.InvariantCulture) + "% (raw:" + dropRate;
+            else
+                res += totalRate.ToString("F3", CultureInfo.InvariantCulture) + "% (raw:" + dropRate + "/" + dropRateMax;
+            
+            if (packRate < 1.0)
+                res += " ,pack:"+ (packRate * 100.0).ToString("F3", CultureInfo.InvariantCulture) + "%";
+
+            if (diceRate < 1.0)
+                res += " ,dice:" + (diceRate * 100.0).ToString("F3", CultureInfo.InvariantCulture) + "%";
+
+            res += ")";
+            return res;
         }
 
-        private void ShowDBLootByItem(long idx)
+        private void ShowDBLootByItem(long itemId)
         {
-            if (!allTableNames.Contains("loots"))
+            if (AADB.DB_Loots.Count <= 0)
             {
-                MessageBox.Show("No loot tables found in this DB");
+                MessageBox.Show($"Unable to search for Item {itemId} because no loot data has been loaded");
                 return;
             }
+            var groupWeights = new Dictionary<long, long>();
 
-            using (var connection = SQLite.CreateConnection())
+            var itemLoots = AADB.DB_Loots.Where(l => l.Value.item_id == itemId);
+
+            dgvLoot.Rows.Clear();
+            foreach (var itemLoot in itemLoots)
             {
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = "SELECT * FROM loots WHERE (item_id = @tidx) ORDER BY id ASC";
-                    command.Prepare();
-                    command.Parameters.AddWithValue("@tidx", idx.ToString());
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
-                    {
-                        dgvLoot.Rows.Clear();
-                        while (reader.Read())
-                        {
-                            if (GetInt64(reader, "item_id") == idx)
-                            {
-                                int line = dgvLoot.Rows.Add();
-                                var row = dgvLoot.Rows[line];
 
-                                row.Cells[0].Value = GetInt64(reader, "id").ToString();
-                                row.Cells[1].Value = GetInt64(reader, "loot_pack_id").ToString();
-                                row.Cells[2].Value = idx.ToString();
-                                row.Cells[3].Value = AADB.GetTranslationByID(idx, "items", "name");
-                                row.Cells[4].Value = VisualizeDropRate(GetInt64(reader, "drop_rate"));
-                                row.Cells[5].Value = GetInt64(reader, "min_amount").ToString();
-                                row.Cells[6].Value = GetInt64(reader, "max_amount").ToString();
-                                row.Cells[7].Value = GetInt64(reader, "grade_id").ToString();
-                                row.Cells[8].Value = GetString(reader, "always_drop").ToString();
-                                row.Cells[9].Value = GetInt64(reader, "group").ToString();
-                            }
-                        }
-                    }
-                }
+                var loots = AADB.DB_Loots.Where(l => (l.Value.loot_pack_id == itemLoot.Value.loot_pack_id) && (l.Value.group == itemLoot.Value.group));
+                // Get Loot weights
+
+                long dropRateTotal = 0;
+                foreach (var loot in loots)
+                    dropRateTotal += loot.Value.drop_rate;
+
+                int line = dgvLoot.Rows.Add();
+                var row = dgvLoot.Rows[line];
+
+                row.Cells[0].Value = itemLoot.Value.id.ToString();
+                row.Cells[1].Value = itemLoot.Value.loot_pack_id.ToString();
+                row.Cells[2].Value = itemLoot.Value.item_id.ToString();
+                row.Cells[3].Value = AADB.GetTranslationByID(itemLoot.Value.item_id, "items", "name");
+                row.Cells[4].Value = VisualizeDropRate(itemLoot.Value.drop_rate, dropRateTotal, itemLoot.Value.always_drop);
+                row.Cells[5].Value = itemLoot.Value.max_amount == itemLoot.Value.min_amount ? itemLoot.Value.min_amount.ToString() : itemLoot.Value.min_amount.ToString() + "~" + itemLoot.Value.max_amount.ToString();
+                row.Cells[6].Value = itemLoot.Value.grade_id.ToString();
+                row.Cells[7].Value = itemLoot.Value.always_drop.ToString();
+                row.Cells[8].Value = itemLoot.Value.group.ToString();
+                /*
+                row.Cells[5].Value = itemLoot.Value.min_amount.ToString();
+                row.Cells[6].Value = itemLoot.Value.max_amount.ToString();
+                row.Cells[7].Value = itemLoot.Value.grade_id.ToString();
+                row.Cells[8].Value = itemLoot.Value.always_drop.ToString();
+                row.Cells[9].Value = itemLoot.Value.group.ToString();
+                */
             }
+
+
         }
 
         private void ShowLootGroupData(long loots_pack_id, long loots_group)
         {
             LLootGroupPackID.Text = loots_pack_id.ToString();
             LLootPackGroupNumber.Text = loots_group.ToString();
+            if (AADB.DB_Loot_Pack_Dropping_Npc.Any(lp => lp.Value.loot_pack_id == loots_pack_id))
+                btnFindLootNpc.Tag = (long)loots_pack_id;
+            else
+                btnFindLootNpc.Tag = (long)0;
         }
 
-        private void ShowDBLootByID(long loot_id)
+        private void ShowDBLootByID(long loot_id, bool isFirstResult, bool isAltLine, bool isDefaultPack = true, int numberOfNonDefaultPacks = 1)
         {
-            using (var connection = SQLite.CreateConnection())
+            if (AADB.DB_Loots.Count <= 0)
             {
-                using (var command = connection.CreateCommand())
+                MessageBox.Show($"Unable to search for loot pack {loot_id} because no loot data has been loaded");
+                return;
+            }
+
+            if (numberOfNonDefaultPacks <= 1)
+                isDefaultPack = true;
+
+            var packRate = isDefaultPack ? 1.0 : 1.0 / (double)numberOfNonDefaultPacks;
+
+            var groupWeights = new Dictionary<long, long>();
+
+            var loots = AADB.DB_Loots.Where(l => l.Value.loot_pack_id == loot_id).OrderBy(l => l.Value.group);
+
+            // Get Loot weights
+            foreach (var loot in loots)
+            {
+                long newVal = 0;
+                if (groupWeights.TryGetValue(loot.Value.group, out var weight))
                 {
-                    // command.CommandText = "SELECT * FROM loots as t1 LEFT JOIN loot_groups as t2 ON t1.loot_pack_id = t2.pack_id AND [t1].[group] = t2.group_no WHERE (t1.loot_pack_id = @tpackid) ORDER BY id ASC";
-                    command.CommandText = "SELECT * FROM loots WHERE (loot_pack_id = @tpackid) ORDER BY id ASC";
-                    command.Prepare();
-                    command.Parameters.AddWithValue("@tpackid", loot_id.ToString());
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
-                    {
-                        dgvLoot.Rows.Clear();
-                        Application.UseWaitCursor = true;
-                        Cursor = Cursors.WaitCursor;
-                        dgvLoot.Visible = false;
-                        while (reader.Read())
-                        {
-                            if (GetInt64(reader, "loot_pack_id") == loot_id)
-                            {
-                                int line = dgvLoot.Rows.Add();
-                                var row = dgvLoot.Rows[line];
-
-                                var itemid = GetInt64(reader, "item_id");
-                                row.Cells[0].Value = GetInt64(reader, "id").ToString();
-                                row.Cells[1].Value = GetInt64(reader, "loot_pack_id").ToString();
-                                row.Cells[2].Value = itemid.ToString();
-                                row.Cells[3].Value = AADB.GetTranslationByID(itemid, "items", "name");
-                                row.Cells[4].Value = VisualizeDropRate(GetInt64(reader, "drop_rate"));
-                                row.Cells[5].Value = GetInt64(reader, "min_amount").ToString();
-                                row.Cells[6].Value = GetInt64(reader, "max_amount").ToString();
-                                row.Cells[7].Value = GetInt64(reader, "grade_id").ToString();
-                                row.Cells[8].Value = GetString(reader, "always_drop").ToString();
-                                row.Cells[9].Value = GetInt64(reader, "group").ToString();
-                            }
-                        }
-
-                        dgvLoot.Visible = true;
-                        Cursor = Cursors.Default;
-                        Application.UseWaitCursor = false;
-                    }
+                    newVal = weight;
+                    groupWeights.Remove(loot.Value.group);
                 }
+
+                newVal += loot.Value.drop_rate;
+                groupWeights.Add(loot.Value.group, newVal);
+            }
+
+            // List results
+            if (isFirstResult)
+                dgvLoot.Rows.Clear();
+
+            long lastGroup = -1;
+            var groupCount = 0;
+            foreach (var lootKV in loots)
+            {
+                var loot = lootKV.Value;
+                int line = dgvLoot.Rows.Add();
+                var row = dgvLoot.Rows[line];
+                if (!groupWeights.TryGetValue(loot.group, out var dropRateTotal))
+                    dropRateTotal = 1;
+
+                if (dropRateTotal == 0)
+                    dropRateTotal = 1;
+
+                if (lastGroup != loot.group)
+                {
+                    lastGroup = loot.group;
+                    groupCount++;
+                }
+
+                if (isAltLine == false)
+                {
+                    if ((groupCount % 2) == 0)
+                        row.DefaultCellStyle.BackColor = SystemColors.ControlLight;
+                    else
+                        row.DefaultCellStyle.BackColor = SystemColors.Window;
+                }
+                else
+                {
+                    if ((groupCount % 2) == 0)
+                        row.DefaultCellStyle.BackColor = SystemColors.ControlLightLight;
+                    else
+                        row.DefaultCellStyle.BackColor = SystemColors.ControlDark;
+                }
+
+                var diceRate = 1.0;
+                var dices = AADB.DB_Loot_ActAbility_Groups.Where(l =>
+                    (l.Value.loot_pack_id == loot.loot_pack_id) && (l.Value.loot_group_id == loot.group));
+                foreach (var dice in dices)
+                {
+                    var diceAverage = (dice.Value.min_dice + dice.Value.max_dice) / 2;
+                    diceRate = diceAverage / 10000.0;
+                }
+
+                row.Cells[0].Value = loot.id.ToString();
+                row.Cells[1].Value = loot.loot_pack_id.ToString();
+                row.Cells[2].Value = loot.item_id.ToString();
+                row.Cells[3].Value = AADB.GetTranslationByID(loot.item_id, "items", "name");
+                row.Cells[4].Value = VisualizeDropRate(loot.drop_rate, dropRateTotal, loot.always_drop, diceRate, packRate);
+                row.Cells[5].Value = loot.max_amount == loot.min_amount ? loot.min_amount.ToString() : loot.min_amount.ToString() + "~" + loot.max_amount.ToString();
+                row.Cells[6].Value = loot.grade_id.ToString();
+                row.Cells[7].Value = loot.always_drop.ToString();
+                row.Cells[8].Value = loot.group.ToString();
+                /*
+                row.Cells[5].Value = loot.min_amount.ToString();
+                row.Cells[6].Value = loot.max_amount.ToString();
+                row.Cells[7].Value = loot.grade_id.ToString();
+                row.Cells[8].Value = loot.always_drop.ToString();
+                row.Cells[9].Value = loot.group.ToString();
+                */
             }
         }
 
@@ -4169,9 +4243,111 @@ namespace AAEmu.DBViewer
                 LoadQuests();
                 loading.ShowInfo("Loading: Trades");
                 LoadTrades();
+                loading.ShowInfo("Loading: Loot");
+                LoadLoots();
             }
 
             return true;
+        }
+
+        private void LoadLoots()
+        {
+            AADB.DB_Loots.Clear();
+            AADB.DB_Loot_Pack_Dropping_Npc.Clear();
+            AADB.DB_Loot_ActAbility_Groups.Clear();
+
+            if (!allTableNames.Contains("loots"))
+                return;
+
+            string sql = "SELECT * FROM loots ORDER BY id ASC";
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameLoot();
+                            t.id = GetInt64(reader, "id");
+                            t.group = GetInt64(reader, "group");
+                            t.drop_rate = GetInt64(reader, "drop_rate");
+                            t.grade_id = GetInt64(reader, "grade_id");
+                            t.item_id = GetInt64(reader, "item_id");
+                            t.loot_pack_id = GetInt64(reader, "loot_pack_id");
+                            t.min_amount = GetInt64(reader, "min_amount");
+                            t.max_amount = GetInt64(reader, "max_amount");
+                            t.always_drop = GetBool(reader, "always_drop");
+
+                            AADB.DB_Loots.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+
+                    }
+                }
+
+                // NPC Loot References
+                sql = "SELECT * FROM loot_pack_dropping_npcs ORDER BY id ASC";
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameLootPackDroppingNpc();
+                            t.id = GetInt64(reader, "id");
+                            t.npc_id = GetInt64(reader, "npc_id");
+                            t.loot_pack_id = GetInt64(reader, "loot_pack_id");
+                            t.default_pack = GetBool(reader, "default_pack");
+
+                            AADB.DB_Loot_Pack_Dropping_Npc.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+
+                sql = "SELECT * FROM loot_actability_groups ORDER BY id ASC";
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameLootActAbilityGroup();
+                            t.id = GetInt64(reader, "id");
+                            t.loot_pack_id = GetInt64(reader, "loot_pack_id");
+                            t.loot_group_id = GetInt64(reader, "loot_group_id");
+                            t.max_dice = GetInt64(reader, "max_dice");
+                            t.min_dice = GetInt64(reader, "min_dice");
+
+                            AADB.DB_Loot_ActAbility_Groups.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
         }
 
         private void LoadTrades()
@@ -4261,7 +4437,7 @@ namespace AAEmu.DBViewer
                 return;
 
             var val = row.Cells[1].Value;
-            var valgroup = row.Cells[9].Value;
+            var valgroup = row.Cells[8].Value;
             var id = row.Cells[0].Value;
             if (val == null)
                 return;
@@ -4269,6 +4445,9 @@ namespace AAEmu.DBViewer
 
             if ((val != null) && (valgroup != null))
                 ShowLootGroupData(long.Parse(val.ToString()), long.Parse(valgroup.ToString()));
+            else
+                btnFindLootNpc.Tag = (long)0;
+            btnFindLootNpc.Enabled = (long)(btnFindLootNpc.Tag) != 0;
 
             //"SELECT * FROM loots WHERE (loot_pack_id = @tpackid) ORDER BY id ASC";
             if (id != null)
@@ -4284,7 +4463,7 @@ namespace AAEmu.DBViewer
             if (!long.TryParse(searchText, out searchID))
                 return;
 
-            ShowDBLootByID(searchID);
+            ShowDBLootByID(searchID, true, false);
         }
 
         private void TLootSearch_KeyDown(object sender, KeyEventArgs e)
@@ -4632,7 +4811,7 @@ namespace AAEmu.DBViewer
 
                     if (LootID > 0)
                     {
-                        ShowDBLootByID(LootID);
+                        ShowDBLootByID(LootID, true, false);
                         tcViewer.SelectedTab = tpLoot;
                     }
                 }
@@ -4684,6 +4863,12 @@ namespace AAEmu.DBViewer
                                 {
                                     row.Cells[c].Value = reader.GetValue(col).ToString();
                                     c++;
+                                }
+
+                                if (((line % 100) == 0) && (line > 0))
+                                {
+                                    if (MessageBox.Show($"Already added {line} records, continue?", "SQL Query", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                                        break;
                                 }
                             }
 
@@ -4782,12 +4967,16 @@ namespace AAEmu.DBViewer
                 lNPCTags.Text = TagsAsString(id, AADB.DB_Tagged_NPCs);
                 ShowSelectedData("npcs", "(id = " + id.ToString() + ")", "id ASC");
                 btnShowNPCsOnMap.Tag = npc.id;
+                btnShowNpcLoot.Tag = npc.id;
+                btnShowNpcLoot.Enabled = AADB.DB_Loot_Pack_Dropping_Npc.Any(pl => pl.Value.npc_id == npc.id);
             }
             else
             {
                 lNPCTemplate.Text = "???";
                 lNPCTags.Text = "???";
                 btnShowNPCsOnMap.Tag = 0;
+                btnShowNpcLoot.Tag = 0;
+                btnShowNpcLoot.Enabled = false;
             }
 
             lGMNPCSpawn.Text = "/spawn npc " + lNPCTemplate.Text;
@@ -8412,6 +8601,79 @@ namespace AAEmu.DBViewer
             {
                 node.Expand();
             }
+        }
+
+        private void btnShowNpcLoot_Click(object sender, EventArgs e)
+        {
+            var searchId = (long)(sender as Button).Tag;
+            if (searchId <= 0)
+                return;
+
+            var packs = AADB.DB_Loot_Pack_Dropping_Npc.Where(lp => lp.Value.npc_id == searchId).ToList();
+
+            var nonDefaultPackCount = packs.Count(p => p.Value.default_pack == false);
+
+            for (var c = 0; c < packs.Count; c++)
+                ShowDBLootByID(
+                    packs[c].Value.loot_pack_id,
+                    (c == 0),
+                    (c % 2) != 0,
+                    packs[c].Value.default_pack,
+                    nonDefaultPackCount);
+            if (packs.Count > 0)
+                tcViewer.SelectedTab = tpLoot;
+        }
+
+        private void btnFindLootNpc_Click(object sender, EventArgs e)
+        {
+            var searchId = (long)(sender as Button).Tag;
+            if (searchId <= 0)
+                return;
+
+            var packs = AADB.DB_Loot_Pack_Dropping_Npc.Where(lp => lp.Value.loot_pack_id == searchId).ToList();
+
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+            dgvNPCs.Rows.Clear();
+            int c = 0;
+            foreach (var t in packs)
+            {
+                if (!AADB.DB_NPCs.TryGetValue(t.Value.npc_id, out var z))
+                    continue;
+
+                var line = dgvNPCs.Rows.Add();
+                var row = dgvNPCs.Rows[line];
+
+                row.Cells[0].Value = z.id.ToString();
+                row.Cells[1].Value = z.nameLocalized;
+                row.Cells[2].Value = z.level.ToString();
+                row.Cells[3].Value = z.npc_kind_id.ToString();
+                row.Cells[4].Value = z.npc_grade_id.ToString();
+                row.Cells[5].Value = AADB.GetFactionName(z.faction_id, true);
+                row.Cells[6].Value = "???";
+
+                if (c == 0)
+                {
+                    ShowDBNPCInfo(z.id);
+                }
+
+                c++;
+                if (c >= 250)
+                {
+                    MessageBox.Show(
+                        "The results were cut off at " + c.ToString() + " items, please refine your search !",
+                        "Too many entries", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    break;
+                }
+            }
+
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+
+            if (packs.Count > 0)
+                tcViewer.SelectedTab = tpNPCs;
+            else
+                MessageBox.Show("No NPCs found");
         }
     }
 }
