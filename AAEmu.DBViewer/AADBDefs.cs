@@ -195,7 +195,7 @@ namespace AAEmu.DBDefs
 
         public override string ToString()
         {
-            return nameLocalized + " ("+id.ToString()+")";
+            return nameLocalized + " (" + id.ToString() + ")";
         }
 
         public string DisplayListName
@@ -761,7 +761,7 @@ namespace AAEmu.DBDefs
         public long zone_group_id = 0;
         public long tag_id = 0;
         public long banned_periods_id = 0;
-        public string usage = string.Empty ;
+        public string usage = string.Empty;
     }
 
     public class GameTransfers
@@ -1031,7 +1031,7 @@ namespace AAEmu.DBDefs
             if (DB_GameSystem_Factions.TryGetValue(faction_id, out var faction))
             {
                 if (addID)
-                    return faction.nameLocalized + " ("+ faction_id + ")";
+                    return faction.nameLocalized + " (" + faction_id + ")";
                 else
                     return faction.nameLocalized;
             }

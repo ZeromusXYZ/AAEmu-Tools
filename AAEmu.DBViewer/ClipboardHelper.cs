@@ -65,7 +65,7 @@ namespace AAEmu.ClipboardHelper
                     catch
                     {
                         // ex from first exception
-                        System.Windows.Forms.MessageBox.Show(ex.Message,"Copy to Clipboard",System.Windows.Forms.MessageBoxButtons.OK,System.Windows.Forms.MessageBoxIcon.Error);
+                        System.Windows.Forms.MessageBox.Show(ex.Message, "Copy to Clipboard", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
                         // LogAndShowMessage(ex);
                     }
                 }

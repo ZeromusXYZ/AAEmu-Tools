@@ -45,15 +45,15 @@ namespace GReader
                     for (var i = 0; i < words.Count; i++)
                         words[i] = words[i].Trim();
                     var containedValues = string.Empty;
-                    var remainderString = string.Join(" ", words.GetRange(1, words.Count - 1)).Replace(',',' ').Split(' ').ToList();
+                    var remainderString = string.Join(" ", words.GetRange(1, words.Count - 1)).Replace(',', ' ').Split(' ').ToList();
                     for (var i = 0; i < remainderString.Count; i++)
-                        remainderString[i] = remainderString[i].Replace(',',' ').Trim();
+                        remainderString[i] = remainderString[i].Replace(',', ' ').Trim();
                     var remainder = new List<string>();
                     foreach (var s in remainderString)
                         if (s.Trim() != string.Empty)
                             remainder.Add(s.Trim());
                     var para = new List<string>();
-                    if ((remainder.Count > 2) && (remainder[1] == "(") && (remainder[remainder.Count-1] == ")"))
+                    if ((remainder.Count > 2) && (remainder[1] == "(") && (remainder[remainder.Count - 1] == ")"))
                     {
                         for (var i = 2; i < remainder.Count - 1; i++)
                             para.Add(remainder[i]);
@@ -87,7 +87,7 @@ namespace GReader
                             }
                             break;
                         default:
-                            Console.Error.WriteLine("Unknown variable name "+varName+" for "+ currentObjectName);
+                            Console.Error.WriteLine("Unknown variable name " + varName + " for " + currentObjectName);
                             break;
                     }
                 }

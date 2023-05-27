@@ -34,7 +34,7 @@ namespace AAEmu.DbEditor.data
                 Pak.ClosePak();
             }
 
-            MainForm.Self.UpdateProgress("Loading Client Pak "+fileName+"...");
+            MainForm.Self.UpdateProgress("Loading Client Pak " + fileName + "...");
             if (Pak == null)
                 Pak = new AAPak();
 

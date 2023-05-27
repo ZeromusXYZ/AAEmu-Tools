@@ -24,7 +24,7 @@ namespace AAEmu.DBViewer
             newRef.Level = level;
             newRef.Id = id;
             newRef.ImageId = image_map;
-            newRef.BaseFileName = baseFileName ;
+            newRef.BaseFileName = baseFileName;
             newRef.MapRect = new RectangleF();
 
             MapRefs.Add(newRef);
@@ -35,10 +35,10 @@ namespace AAEmu.DBViewer
             var newRef = new MapViewMiniMapRef();
             newRef.Level = level;
             newRef.ZoneGroup = zoneGroupId;
-            newRef.Scale = mapScale ;
+            newRef.Scale = mapScale;
             newRef.BaseFileName = baseMapFileName; // + "_road_" + mapScale.ToString() + ".dds";
             newRef.Offset = new PointF(offsetX, offsetY);
-            newRef.Rect = new RectangleF(imgX,imgY,imgW,imgH);
+            newRef.Rect = new RectangleF(imgX, imgY, imgW, imgH);
             MiniMapRefs.Add(newRef);
         }
 
@@ -471,7 +471,7 @@ namespace AAEmu.DBViewer
             {
                 foreach (var zg in AADB.DB_Zone_Groups)
                 {
-                    var refs = MapViewMiniMapRef.ListPossibleFileNames(zg.Value.name, 100, Properties.Settings.Default.DefaultGameLanguage,".g");
+                    var refs = MapViewMiniMapRef.ListPossibleFileNames(zg.Value.name, 100, Properties.Settings.Default.DefaultGameLanguage, ".g");
                     foreach (var r in refs)
                         if (MainForm.ThisForm.pak.FileExists(r))
                             LoadGFileFromPak(MainForm.ThisForm.pak, r);
@@ -510,7 +510,7 @@ namespace AAEmu.DBViewer
         public static int GFileValInt(string key)
         {
             var s = GFileValString(key);
-            if (int.TryParse(s,NumberStyles.Integer , CultureInfo.InvariantCulture, out int i))
+            if (int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out int i))
                 return i;
             return 0;
         }
@@ -542,7 +542,7 @@ namespace AAEmu.DBViewer
         {
             var res = new Dictionary<string, string>();
             var currentObjectName = string.Empty;
-            var areaName = string.Empty ;
+            var areaName = string.Empty;
 
             foreach (var l in lines)
             {
@@ -676,7 +676,7 @@ namespace AAEmu.DBViewer
 
         public List<string> GetPossibleFileNames(string locale)
         {
-            return ListPossibleFileNames(BaseFileName,locale);
+            return ListPossibleFileNames(BaseFileName, locale);
         }
 
         public static List<string> ListPossibleFileNames(string baseFileName, string locale)

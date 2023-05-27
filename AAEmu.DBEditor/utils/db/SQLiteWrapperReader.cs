@@ -79,7 +79,7 @@ namespace AAEmu.DbEditor.Utils.DB
             return _reader.GetInt16(GetOrdinal(column));
         }
 
-        public ushort GetUInt16(string column) => (ushort) GetInt16(column);
+        public ushort GetUInt16(string column) => (ushort)GetInt16(column);
 
         public int GetInt32(string column)
         {
@@ -94,14 +94,14 @@ namespace AAEmu.DbEditor.Utils.DB
             return _reader.GetInt32(ordinal);
         }
 
-        public uint GetUInt32(string column) => (uint) GetInt32(column);
+        public uint GetUInt32(string column) => (uint)GetInt32(column);
 
         public uint GetUInt32(string column, uint defaultValue)
         {
             var ordinal = GetOrdinal(column);
             if (_reader.IsDBNull(ordinal))
                 return defaultValue;
-            return (uint) GetInt32(column);
+            return (uint)GetInt32(column);
         }
 
         public long GetInt64(string column)
@@ -109,7 +109,7 @@ namespace AAEmu.DbEditor.Utils.DB
             return _reader.GetInt64(GetOrdinal(column));
         }
 
-        public ulong GetUInt64(string column) => (ulong) GetInt64(column);
+        public ulong GetUInt64(string column) => (ulong)GetInt64(column);
 
         public float GetFloat(string column)
         {
@@ -170,7 +170,7 @@ namespace AAEmu.DbEditor.Utils.DB
         public List<string> GetColumnNames()
         {
             List<string> res = new List<string>();
-            for(int i = 0; i < _reader.FieldCount; i++)
+            for (int i = 0; i < _reader.FieldCount; i++)
                 res.Add(_reader.GetName(i));
             return res;
         }
