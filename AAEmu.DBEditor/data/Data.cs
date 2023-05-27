@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SQLitePCL;
-
-namespace AAEmu.DbEditor.data
+﻿namespace AAEmu.DbEditor.data
 {
     static class Data
     {

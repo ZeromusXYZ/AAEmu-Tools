@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 using System.Security.Cryptography;
 
 namespace AAEmu.PassGen
@@ -50,7 +47,7 @@ namespace AAEmu.PassGen
                 Console.WriteLine();
             }
             byte[] passBytes = Encoding.UTF8.GetBytes(pass);
-            using (var sha = new SHA256Managed())
+            using (var sha = SHA256.Create())
             {
                 var hash = sha.ComputeHash(passBytes);
                 var passHash = Convert.ToBase64String(hash);

@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Data.Sqlite;
 
 namespace AAEmu.Game.Utils.DB

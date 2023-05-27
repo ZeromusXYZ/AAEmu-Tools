@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using System.Windows.Forms;
 using AAPacker;
-using FreeImageAPI;
 
 namespace AAEmu.DbEditor.data
 {
@@ -72,25 +66,15 @@ namespace AAEmu.DbEditor.data
                     try
                     {
                         var fStream = Pak.ExportFileAsStream(fn);
-                        var fif = FREE_IMAGE_FORMAT.FIF_DDS;
-                        FIBITMAP fiBitmap = FreeImage.LoadFromStream(fStream, ref fif);
-                        var bmp = FreeImage.GetBitmap(fiBitmap);
-                        return bmp;
+                        return BitmapUtil.BitmapUtil.ReadDDSFromStream(fStream);
                     }
                     catch
                     {
-                        return null;
                     }
                 }
-                else
-                {
-                    return null;
-                }
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public int GetIconIndexByName(string iconName)
@@ -105,7 +89,7 @@ namespace AAEmu.DbEditor.data
                 return -1;
 
             var bmp = PackedImageToBitmap(fn);
-            if (bmp == null) 
+            if (bmp == null)
                 return -1;
 
             Icons.Images.Add(iconName, bmp);

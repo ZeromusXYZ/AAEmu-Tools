@@ -1,24 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using AAPacker;
 using AAEmu.DBDefs;
 using AAEmu.Game.Utils.DB;
 using AAEmu.ClipboardHelper;
-using FreeImageAPI;
-using System.Threading;
 using System.Globalization;
 using System.Xml;
 using System.Numerics;
-using System.Security.Cryptography.X509Certificates;
-using System.Windows.Forms.VisualStyles;
 using Newtonsoft.Json;
 using AAEmu.DBViewer.JsonData;
 using AAEmu.DBViewer.utils;
@@ -729,7 +722,7 @@ namespace AAEmu.DBViewer
               item_group_id INT,
               use_or_equipment_sound_id INT,
               secure NUM
-            )             
+            )
             */
             using (var connection = SQLite.CreateConnection())
             {
@@ -2457,7 +2450,7 @@ namespace AAEmu.DBViewer
             string searchTextLower = searchText.ToLower();
 
             // More Complex syntax with category names
-            // SELECT t1.idx, t1.ru, t1.ru_ver, t2.ID, t2.category_id, t3.name, t4.en_us FROM localized_texts as t1 LEFT JOIN items as t2 ON (t1.idx = t2.ID) LEFT JOIN item_categories as t3 ON (t2.category_id = t3.ID) LEFT JOIN localized_texts as t4 ON ((t4.idx = t3.ID) AND (t4.tbl_name = 'item_categories') AND (t4.tbl_column_name = 'name') ) WHERE (t1.tbl_name = 'items') AND (t1.tbl_column_name = 'name') AND (t1.ru LIKE '%Камень%') ORDER BY t1.ru ASC 
+            // SELECT t1.idx, t1.ru, t1.ru_ver, t2.ID, t2.category_id, t3.name, t4.en_us FROM localized_texts as t1 LEFT JOIN items as t2 ON (t1.idx = t2.ID) LEFT JOIN item_categories as t3 ON (t2.category_id = t3.ID) LEFT JOIN localized_texts as t4 ON ((t4.idx = t3.ID) AND (t4.tbl_name = 'item_categories') AND (t4.tbl_column_name = 'name') ) WHERE (t1.tbl_name = 'items') AND (t1.tbl_column_name = 'name') AND (t1.ru LIKE '%Камень%') ORDER BY t1.ru ASC
 
             Application.UseWaitCursor = true;
             Cursor = Cursors.WaitCursor;
@@ -2896,9 +2889,7 @@ namespace AAEmu.DBViewer
                             {
                                 // Load from pak if not cached
                                 var fStream = pak.ExportFileAsStream(fn);
-                                var fif = FREE_IMAGE_FORMAT.FIF_DDS;
-                                FIBITMAP fiBitmap = FreeImage.LoadFromStream(fStream, ref fif);
-                                var bmp = FreeImage.GetBitmap(fiBitmap);
+                                var bmp = BitmapUtil.BitmapUtil.ReadDDSFromStream(fStream);
 
                                 if (iconImgLabel != null)
                                 {
@@ -4499,7 +4490,7 @@ namespace AAEmu.DBViewer
             string searchTextLower = searchText.ToLower();
 
             // More Complex syntax with category names
-            // SELECT t1.idx, t1.ru, t1.ru_ver, t2.ID, t2.category_id, t3.name, t4.en_us FROM localized_texts as t1 LEFT JOIN items as t2 ON (t1.idx = t2.ID) LEFT JOIN item_categories as t3 ON (t2.category_id = t3.ID) LEFT JOIN localized_texts as t4 ON ((t4.idx = t3.ID) AND (t4.tbl_name = 'item_categories') AND (t4.tbl_column_name = 'name') ) WHERE (t1.tbl_name = 'items') AND (t1.tbl_column_name = 'name') AND (t1.ru LIKE '%Камень%') ORDER BY t1.ru ASC 
+            // SELECT t1.idx, t1.ru, t1.ru_ver, t2.ID, t2.category_id, t3.name, t4.en_us FROM localized_texts as t1 LEFT JOIN items as t2 ON (t1.idx = t2.ID) LEFT JOIN item_categories as t3 ON (t2.category_id = t3.ID) LEFT JOIN localized_texts as t4 ON ((t4.idx = t3.ID) AND (t4.tbl_name = 'item_categories') AND (t4.tbl_column_name = 'name') ) WHERE (t1.tbl_name = 'items') AND (t1.tbl_column_name = 'name') AND (t1.ru LIKE '%Камень%') ORDER BY t1.ru ASC
 
             Application.UseWaitCursor = true;
             Cursor = Cursors.WaitCursor;
@@ -4634,7 +4625,7 @@ namespace AAEmu.DBViewer
                     loading.Show();
                     if (pak.IsOpen)
                     {
-                        loading.ShowInfo("Closing: " + pak._gpFilePath);
+                        loading.ShowInfo("Closing: " + pak.GpFilePath);
                         pak.ClosePak();
 
                         // TODO: HACK to try and free up as many memomry as possible - https://stackoverflow.com/questions/30622145/free-memory-of-byte
@@ -6223,11 +6214,11 @@ namespace AAEmu.DBViewer
             var row = dgvQuestComponents.SelectedRows[0];
             if (row.Cells.Count <= 0)
                 return;
-    
+
             var val = row.Cells[0].Value;
             if (val == null)
                 return;
-    
+
             var cid = long.Parse(val.ToString());
             ShowDBQuestComponent(cid);
             ShowSelectedData("quest_components", "id = " + cid.ToString(), "id ASC");
@@ -6754,7 +6745,7 @@ namespace AAEmu.DBViewer
                             /*
                             int cellXOffset = 0;
                             int cellYOffset = 0;
-    
+
                             if (attribs.TryGetValue("cellx",out var cellXOffsetString))
                                 try { cellXOffset = int.Parse(cellXOffsetString); }
                                 catch { cellXOffset = 0; }
@@ -7275,9 +7266,9 @@ namespace AAEmu.DBViewer
 
                 foreach (var pfi in pak.Files)
                 {
-                    if (pfi.name.EndsWith("/world.xml") && pfi.name.StartsWith("game/worlds/"))
+                    if (pfi.Name.EndsWith("/world.xml") && pfi.Name.StartsWith("game/worlds/"))
                     {
-                        var splitName = pfi.name.ToLower().Split('/');
+                        var splitName = pfi.Name.ToLower().Split('/');
                         if (splitName.Count() != 4)
                             continue;
                         var thisInstanceName = splitName[2];
@@ -7420,7 +7411,7 @@ namespace AAEmu.DBViewer
             // Find all related files and concat them into a giant stringlist
             foreach (var pfi in pak.Files)
             {
-                var lowername = pfi.name.ToLower();
+                var lowername = pfi.Name.ToLower();
                 if (lowername.EndsWith("quest_sign_sphere.g"))
                 {
                     var namesplited = lowername.Split('/');
@@ -7508,7 +7499,7 @@ namespace AAEmu.DBViewer
                                 var posstring = subline.Split(',');
                                 if (posstring.Length == 3)
                                 {
-                                    // Parse the floats with NumberStyles.Float and CultureInfo.InvariantCulture or we get all sorts of 
+                                    // Parse the floats with NumberStyles.Float and CultureInfo.InvariantCulture or we get all sorts of
                                     // weird stuff with the decimal points depending on the user's language settings
                                     qse.X = zoneOffX + float.Parse(posstring[0], NumberStyles.Float,
                                         CultureInfo.InvariantCulture);

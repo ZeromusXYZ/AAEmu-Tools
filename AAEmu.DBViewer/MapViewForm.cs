@@ -1,17 +1,11 @@
 ﻿using AAEmu.DBDefs;
-using FreeImageAPI;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Management.Instrumentation;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -941,8 +935,8 @@ namespace AAEmu.DBViewer
                     g.DrawLine(pen, ViewOffset.X + lpos.X, ViewOffset.Y + lpos.Y, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y);
                 }
             }
-            catch 
-            { 
+            catch
+            {
             }
             updateStatusBar();
         }
@@ -966,32 +960,20 @@ namespace AAEmu.DBViewer
         {
             if (MainForm.ThisForm.pak.IsOpen)
             {
-
                 if (MainForm.ThisForm.pak.FileExists(fn))
                 {
                     try
                     {
                         var fStream = MainForm.ThisForm.pak.ExportFileAsStream(fn);
-                        var fif = FREE_IMAGE_FORMAT.FIF_DDS;
-                        FIBITMAP fiBitmap = FreeImage.LoadFromStream(fStream, ref fif);
-                        var bmp = FreeImage.GetBitmap(fiBitmap);
-                        return bmp;
+                        return BitmapUtil.BitmapUtil.ReadDDSFromStream(fStream);
                     }
                     catch
                     {
-                        return null;
                     }
                 }
-                else
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
             }
 
+            return null;
         }
 
         private void OnViewMouseMove(object sender, MouseEventArgs e)
@@ -1177,7 +1159,7 @@ namespace AAEmu.DBViewer
             housing.Add(path);
         }
 
-        
+
         public void AddSubZone(MapViewPath path)
         {
             subzone.Add(path);
