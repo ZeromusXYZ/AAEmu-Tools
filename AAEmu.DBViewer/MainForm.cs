@@ -2888,7 +2888,7 @@ namespace AAEmu.DBViewer
                             {
                                 // Load from pak if not cached
                                 var fStream = pak.ExportFileAsStream(fn);
-                                var bmp = BitmapUtil.BitmapUtil.ReadDDSFromStream(fStream);
+                                var bmp = AAEmu.Tools.BitmapUtil.ReadDDSFromStream(fStream);
 
                                 if (iconImgLabel != null)
                                 {

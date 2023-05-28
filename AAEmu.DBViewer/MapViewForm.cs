@@ -965,7 +965,7 @@ namespace AAEmu.DBViewer
                     try
                     {
                         var fStream = MainForm.ThisForm.pak.ExportFileAsStream(fn);
-                        return BitmapUtil.BitmapUtil.ReadDDSFromStream(fStream);
+                        return AAEmu.Tools.BitmapUtil.ReadDDSFromStream(fStream);
                     }
                     catch
                     {

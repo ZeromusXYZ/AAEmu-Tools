@@ -1,7 +1,8 @@
-﻿using System.Drawing.Imaging;
+﻿using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace BitmapUtil;
+namespace AAEmu.Tools;
 public class BitmapUtil
 {
     public static Bitmap? ReadDDSFromStream(Stream stream)
@@ -20,9 +21,18 @@ public class BitmapUtil
             };
 
             var pointer = Marshal.UnsafeAddrOfPinnedArrayElement(image.Data, 0);
-            var bitmap = new Bitmap(image.Width, image.Height, image.Stride, format, pointer);
+            using (var bitmap = new Bitmap(image.Width, image.Height, image.Stride, format, pointer))
+            {
+                var clone = new Bitmap(image.Width, image.Height, format);
 
-            return bitmap.Clone(new Rectangle(0, 0, bitmap.Width, bitmap.Height), bitmap.PixelFormat) as Bitmap;
+                using (var g = Graphics.FromImage(clone))
+                {
+                    g.CompositingMode = CompositingMode.SourceCopy;
+                    g.DrawImage(bitmap, 0, 0);
+                }
+
+                return clone;
+            }
         }
     }
 }

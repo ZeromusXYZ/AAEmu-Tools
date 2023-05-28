@@ -66,7 +66,7 @@ namespace AAEmu.DbEditor.data
                     try
                     {
                         var fStream = Pak.ExportFileAsStream(fn);
-                        return BitmapUtil.BitmapUtil.ReadDDSFromStream(fStream);
+                        return AAEmu.Tools.BitmapUtil.ReadDDSFromStream(fStream);
                     }
                     catch
                     {
