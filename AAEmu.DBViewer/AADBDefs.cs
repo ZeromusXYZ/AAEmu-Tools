@@ -1132,11 +1132,9 @@ namespace AAEmu.DBDefs
         {
             var res = string.Empty;
             // https://www.reddit.com/r/archeage/comments/3dak17/datamining_every_location_of_everything_in/
-            // (0.00097657363894522145695357130138029 * (X - Coordinate)) - 21 = (Longitude in degrees)
-            // (0.00097657363894522145695357130138029 * (Y - Coordinate)) - 28 = (Latitude in degrees)
 
-            var fx = (0.00097657363894522145695357130138029f * x) - 21f;
-            var fy = (0.00097657363894522145695357130138029f * y) - 28f;
+            var fx = (x / 1024f) - 21f;
+            var fy = (y / 1024f) - 28f;
             // X - Longitude
             if (fx >= 0f)
             {
@@ -1166,8 +1164,8 @@ namespace AAEmu.DBDefs
 
         public static PointF SextantToCoord(float longitude, float latitude)
         {
-            var ux = ((longitude + 21f) / 0.00097657363894522145695357130138029f);
-            var uy = ((latitude + 28f) / 0.00097657363894522145695357130138029f);
+            var ux = (longitude + 21f) * 1024f;
+            var uy = (latitude + 28f) * 1024f;
             return new PointF(ux, uy);
         }
 
@@ -1189,6 +1187,5 @@ namespace AAEmu.DBDefs
             }
             return res;
         }
-
     }
 }
