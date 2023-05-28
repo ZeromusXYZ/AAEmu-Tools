@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using AAEmu.Game.Utils.DB;
 
 namespace AAEmu.DBDefs
 {
@@ -199,7 +195,7 @@ namespace AAEmu.DBDefs
 
         public override string ToString()
         {
-            return nameLocalized + " ("+id.ToString()+")";
+            return nameLocalized + " (" + id.ToString() + ")";
         }
 
         public string DisplayListName
@@ -436,8 +432,6 @@ namespace AAEmu.DBDefs
 
     class GameZone_Groups
     {
-        private static string main_world = "main_world";
-
         public long id = 0;
         public string name = string.Empty;
         public RectangleF PosAndSize = new RectangleF();
@@ -526,7 +520,7 @@ namespace AAEmu.DBDefs
         public string nameLocalized = string.Empty;
         public string SearchString = string.Empty;
     }
-    
+
     class GameDoodad
     {
         // TABLE doodad_almighties
@@ -767,7 +761,7 @@ namespace AAEmu.DBDefs
         public long zone_group_id = 0;
         public long tag_id = 0;
         public long banned_periods_id = 0;
-        public string usage = string.Empty ;
+        public string usage = string.Empty;
     }
 
     public class GameTransfers
@@ -1037,7 +1031,7 @@ namespace AAEmu.DBDefs
             if (DB_GameSystem_Factions.TryGetValue(faction_id, out var faction))
             {
                 if (addID)
-                    return faction.nameLocalized + " ("+ faction_id + ")";
+                    return faction.nameLocalized + " (" + faction_id + ")";
                 else
                     return faction.nameLocalized;
             }

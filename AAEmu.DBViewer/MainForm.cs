@@ -1,29 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using AAPacker;
 using AAEmu.DBDefs;
 using AAEmu.Game.Utils.DB;
 using AAEmu.ClipboardHelper;
-using FreeImageAPI;
-using System.Threading;
 using System.Globalization;
 using System.Xml;
 using System.Numerics;
-using System.Security.Cryptography.X509Certificates;
-using System.Windows.Forms.VisualStyles;
 using Newtonsoft.Json;
 using AAEmu.DBViewer.JsonData;
 using AAEmu.DBViewer.utils;
 using System.Runtime;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 
 namespace AAEmu.DBViewer
 {
@@ -729,7 +721,7 @@ namespace AAEmu.DBViewer
               item_group_id INT,
               use_or_equipment_sound_id INT,
               secure NUM
-            )             
+            )
             */
             using (var connection = SQLite.CreateConnection())
             {
@@ -2457,7 +2449,7 @@ namespace AAEmu.DBViewer
             string searchTextLower = searchText.ToLower();
 
             // More Complex syntax with category names
-            // SELECT t1.idx, t1.ru, t1.ru_ver, t2.ID, t2.category_id, t3.name, t4.en_us FROM localized_texts as t1 LEFT JOIN items as t2 ON (t1.idx = t2.ID) LEFT JOIN item_categories as t3 ON (t2.category_id = t3.ID) LEFT JOIN localized_texts as t4 ON ((t4.idx = t3.ID) AND (t4.tbl_name = 'item_categories') AND (t4.tbl_column_name = 'name') ) WHERE (t1.tbl_name = 'items') AND (t1.tbl_column_name = 'name') AND (t1.ru LIKE '%Камень%') ORDER BY t1.ru ASC 
+            // SELECT t1.idx, t1.ru, t1.ru_ver, t2.ID, t2.category_id, t3.name, t4.en_us FROM localized_texts as t1 LEFT JOIN items as t2 ON (t1.idx = t2.ID) LEFT JOIN item_categories as t3 ON (t2.category_id = t3.ID) LEFT JOIN localized_texts as t4 ON ((t4.idx = t3.ID) AND (t4.tbl_name = 'item_categories') AND (t4.tbl_column_name = 'name') ) WHERE (t1.tbl_name = 'items') AND (t1.tbl_column_name = 'name') AND (t1.ru LIKE '%Камень%') ORDER BY t1.ru ASC
 
             Application.UseWaitCursor = true;
             Cursor = Cursors.WaitCursor;
@@ -2896,9 +2888,7 @@ namespace AAEmu.DBViewer
                             {
                                 // Load from pak if not cached
                                 var fStream = pak.ExportFileAsStream(fn);
-                                var fif = FREE_IMAGE_FORMAT.FIF_DDS;
-                                FIBITMAP fiBitmap = FreeImage.LoadFromStream(fStream, ref fif);
-                                var bmp = FreeImage.GetBitmap(fiBitmap);
+                                var bmp = AAEmu.Tools.BitmapUtil.ReadDDSFromStream(fStream);
 
                                 if (iconImgLabel != null)
                                 {
@@ -3198,8 +3188,8 @@ namespace AAEmu.DBViewer
             tvSkill.Nodes.Add(rootNode);
 
             var skillEffectsList = from se in AADB.DB_Skill_Effects
-                where se.Value.skill_id == skill.id
-                select se.Value;
+                                   where se.Value.skill_id == skill.id
+                                   select se.Value;
 
             TreeNode effectsRoot = null;
 
@@ -3258,6 +3248,34 @@ namespace AAEmu.DBViewer
                 var effectsTableName = FunctionTypeToTableName(effect.actual_type);
                 var effectValuesList = GetCustomTableValues(effectsTableName, "id", effect.actual_id.ToString());
                 foreach (var effectValues in effectValuesList)
+                    foreach (var effectValue in effectValues)
+                    {
+                        var thisNode = AddCustomPropertyNode(effectValue.Key, effectValue.Value, hideEmptyProperties,
+                            skillEffectNode);
+                        if (thisNode == null)
+                            continue;
+
+                        if (thisNode.ImageIndex <= 0) // override default blank icon with blue !
+                        {
+                            thisNode.ImageIndex = 4;
+                            thisNode.SelectedImageIndex = 4;
+                        }
+                    }
+            }
+        }
+
+        private void CreatePlotEffectNode(string actualType, long id, TreeNode effectsRoot, bool hideEmptyProperties)
+        {
+            var effectTypeText = actualType + " ( " + id.ToString() + " )";
+
+            var skillEffectNode = effectsRoot.Nodes.Add(effectTypeText);
+            skillEffectNode.ImageIndex = 3;
+            skillEffectNode.SelectedImageIndex = 3;
+            skillEffectNode.Tag = 0;
+
+            var effectsTableName = FunctionTypeToTableName(actualType);
+            var effectValuesList = GetCustomTableValues(effectsTableName, "id", id.ToString());
+            foreach (var effectValues in effectValuesList)
                 foreach (var effectValue in effectValues)
                 {
                     var thisNode = AddCustomPropertyNode(effectValue.Key, effectValue.Value, hideEmptyProperties,
@@ -3271,34 +3289,6 @@ namespace AAEmu.DBViewer
                         thisNode.SelectedImageIndex = 4;
                     }
                 }
-            }
-        }
-
-        private void CreatePlotEffectNode(string actualType, long id, TreeNode effectsRoot, bool hideEmptyProperties)
-        {
-            var effectTypeText =  actualType + " ( " + id.ToString() + " )";
-
-            var skillEffectNode = effectsRoot.Nodes.Add(effectTypeText);
-            skillEffectNode.ImageIndex = 3;
-            skillEffectNode.SelectedImageIndex = 3;
-            skillEffectNode.Tag = 0;
-
-            var effectsTableName = FunctionTypeToTableName(actualType);
-            var effectValuesList = GetCustomTableValues(effectsTableName, "id", id.ToString());
-            foreach (var effectValues in effectValuesList)
-            foreach (var effectValue in effectValues)
-            {
-                var thisNode = AddCustomPropertyNode(effectValue.Key, effectValue.Value, hideEmptyProperties,
-                    skillEffectNode);
-                if (thisNode == null)
-                    continue;
-
-                if (thisNode.ImageIndex <= 0) // override default blank icon with blue !
-                {
-                    thisNode.ImageIndex = 4;
-                    thisNode.SelectedImageIndex = 4;
-                }
-            }
         }
 
         private void ShowDBSkill(long idx)
@@ -3650,9 +3640,9 @@ namespace AAEmu.DBViewer
                 res += totalRate.ToString("F3", CultureInfo.InvariantCulture) + "% (raw:" + dropRate;
             else
                 res += totalRate.ToString("F3", CultureInfo.InvariantCulture) + "% (raw:" + dropRate + "/" + dropRateMax;
-            
+
             if (packRate < 1.0)
-                res += " ,pack:"+ (packRate * 100.0).ToString("F3", CultureInfo.InvariantCulture) + "%";
+                res += " ,pack:" + (packRate * 100.0).ToString("F3", CultureInfo.InvariantCulture) + "%";
 
             if (diceRate < 1.0)
                 res += " ,dice:" + (diceRate * 100.0).ToString("F3", CultureInfo.InvariantCulture) + "%";
@@ -3861,16 +3851,16 @@ namespace AAEmu.DBViewer
 
             //dgvQuestComponents.Rows.Clear();
             var comps = from c in AADB.DB_Quest_Components
-                where c.Value.quest_context_id == q.id
-                orderby c.Value.component_kind_id
-                select c.Value;
+                        where c.Value.quest_context_id == q.id
+                        orderby c.Value.component_kind_id
+                        select c.Value;
 
             var questText = "";
 
             var qTextQuery = from qt in AADB.DB_Quest_Context_Texts
-                where qt.Value.quest_context_id == q.id
-                orderby qt.Value.quest_context_text_kind_id
-                select qt.Value.textLocalized;
+                             where qt.Value.quest_context_id == q.id
+                             orderby qt.Value.quest_context_text_kind_id
+                             select qt.Value.textLocalized;
 
             foreach (var t in qTextQuery)
                 questText += t + "\r\r";
@@ -3915,9 +3905,9 @@ namespace AAEmu.DBViewer
 
                 // Quest description text
                 var compTextRaw = from ct in AADB.DB_Quest_Component_Texts
-                    where ct.Value.quest_component_id == c.id
-                    // && ct.Value.quest_component_text_kind_id == c.component_kind_id
-                    select ct.Value;
+                                  where ct.Value.quest_component_id == c.id
+                                  // && ct.Value.quest_component_text_kind_id == c.component_kind_id
+                                  select ct.Value;
 
                 if (compTextRaw != null)
                 {
@@ -3951,8 +3941,8 @@ namespace AAEmu.DBViewer
 
                 // Acts Info
                 var acts = from a in AADB.DB_Quest_Acts
-                    where a.Value.quest_component_id == c.id
-                    select a.Value;
+                           where a.Value.quest_component_id == c.id
+                           select a.Value;
 
                 foreach (var a in acts)
                 {
@@ -4028,8 +4018,8 @@ namespace AAEmu.DBViewer
         private string TagsAsString(long target_id, Dictionary<long, GameTaggedValues> lookupTable)
         {
             var tags = from t in lookupTable
-                where t.Value.target_id == target_id
-                select t.Value;
+                       where t.Value.target_id == target_id
+                       select t.Value;
             var s = string.Empty;
             foreach (var t in tags)
             {
@@ -4499,7 +4489,7 @@ namespace AAEmu.DBViewer
             string searchTextLower = searchText.ToLower();
 
             // More Complex syntax with category names
-            // SELECT t1.idx, t1.ru, t1.ru_ver, t2.ID, t2.category_id, t3.name, t4.en_us FROM localized_texts as t1 LEFT JOIN items as t2 ON (t1.idx = t2.ID) LEFT JOIN item_categories as t3 ON (t2.category_id = t3.ID) LEFT JOIN localized_texts as t4 ON ((t4.idx = t3.ID) AND (t4.tbl_name = 'item_categories') AND (t4.tbl_column_name = 'name') ) WHERE (t1.tbl_name = 'items') AND (t1.tbl_column_name = 'name') AND (t1.ru LIKE '%Камень%') ORDER BY t1.ru ASC 
+            // SELECT t1.idx, t1.ru, t1.ru_ver, t2.ID, t2.category_id, t3.name, t4.en_us FROM localized_texts as t1 LEFT JOIN items as t2 ON (t1.idx = t2.ID) LEFT JOIN item_categories as t3 ON (t2.category_id = t3.ID) LEFT JOIN localized_texts as t4 ON ((t4.idx = t3.ID) AND (t4.tbl_name = 'item_categories') AND (t4.tbl_column_name = 'name') ) WHERE (t1.tbl_name = 'items') AND (t1.tbl_column_name = 'name') AND (t1.ru LIKE '%Камень%') ORDER BY t1.ru ASC
 
             Application.UseWaitCursor = true;
             Cursor = Cursors.WaitCursor;
@@ -4634,7 +4624,7 @@ namespace AAEmu.DBViewer
                     loading.Show();
                     if (pak.IsOpen)
                     {
-                        loading.ShowInfo("Closing: " + pak._gpFilePath);
+                        loading.ShowInfo("Closing: " + pak.GpFilePath);
                         pak.ClosePak();
 
                         // TODO: HACK to try and free up as many memomry as possible - https://stackoverflow.com/questions/30622145/free-memory-of-byte
@@ -6223,11 +6213,11 @@ namespace AAEmu.DBViewer
             var row = dgvQuestComponents.SelectedRows[0];
             if (row.Cells.Count <= 0)
                 return;
-    
+
             var val = row.Cells[0].Value;
             if (val == null)
                 return;
-    
+
             var cid = long.Parse(val.ToString());
             ShowDBQuestComponent(cid);
             ShowSelectedData("quest_components", "id = " + cid.ToString(), "id ASC");
@@ -6754,7 +6744,7 @@ namespace AAEmu.DBViewer
                             /*
                             int cellXOffset = 0;
                             int cellYOffset = 0;
-    
+
                             if (attribs.TryGetValue("cellx",out var cellXOffsetString))
                                 try { cellXOffset = int.Parse(cellXOffsetString); }
                                 catch { cellXOffset = 0; }
@@ -7275,9 +7265,9 @@ namespace AAEmu.DBViewer
 
                 foreach (var pfi in pak.Files)
                 {
-                    if (pfi.name.EndsWith("/world.xml") && pfi.name.StartsWith("game/worlds/"))
+                    if (pfi.Name.EndsWith("/world.xml") && pfi.Name.StartsWith("game/worlds/"))
                     {
-                        var splitName = pfi.name.ToLower().Split('/');
+                        var splitName = pfi.Name.ToLower().Split('/');
                         if (splitName.Count() != 4)
                             continue;
                         var thisInstanceName = splitName[2];
@@ -7420,7 +7410,7 @@ namespace AAEmu.DBViewer
             // Find all related files and concat them into a giant stringlist
             foreach (var pfi in pak.Files)
             {
-                var lowername = pfi.name.ToLower();
+                var lowername = pfi.Name.ToLower();
                 if (lowername.EndsWith("quest_sign_sphere.g"))
                 {
                     var namesplited = lowername.Split('/');
@@ -7508,7 +7498,7 @@ namespace AAEmu.DBViewer
                                 var posstring = subline.Split(',');
                                 if (posstring.Length == 3)
                                 {
-                                    // Parse the floats with NumberStyles.Float and CultureInfo.InvariantCulture or we get all sorts of 
+                                    // Parse the floats with NumberStyles.Float and CultureInfo.InvariantCulture or we get all sorts of
                                     // weird stuff with the decimal points depending on the user's language settings
                                     qse.X = zoneOffX + float.Parse(posstring[0], NumberStyles.Float,
                                         CultureInfo.InvariantCulture);
@@ -7699,16 +7689,16 @@ namespace AAEmu.DBViewer
             // TODO: NPCs (start/end/progress)
             // TODO: Monsters (single, group, zone)
             var comps = from c in AADB.DB_Quest_Components
-                where c.Value.quest_context_id == searchId
-                select c.Value;
+                        where c.Value.quest_context_id == searchId
+                        select c.Value;
             foreach (var c in comps)
             {
                 if ((c.npc_id > 0) && (!NPCsToShow.Contains(c.npc_id)))
                     NPCsToShow.Add(c.npc_id);
 
                 var acts = from a in AADB.DB_Quest_Acts
-                    where a.Value.quest_component_id == c.id
-                    select a.Value;
+                           where a.Value.quest_component_id == c.id
+                           select a.Value;
 
                 foreach (var a in acts)
                 {
@@ -8162,15 +8152,15 @@ namespace AAEmu.DBViewer
                 var worldXml = MapViewWorldXML.GetInstanceByName(worldName);
 
                 for (var y = 0; y <= worldXml.CellCount.Y; y++)
-                for (var x = 0; x <= worldXml.CellCount.X; x++)
-                {
-                    var cellName = x.ToString().PadLeft(3, '0') + "_" + y.ToString().PadLeft(3, '0');
-                    var fn = "game/worlds/" + worldName + "/cells/" + cellName + "/client/entities.xml";
-                    if (pak.FileExists(fn))
+                    for (var x = 0; x <= worldXml.CellCount.X; x++)
                     {
-                        AddAreaShapes(fn, x, y, ref allAreaShapes);
+                        var cellName = x.ToString().PadLeft(3, '0') + "_" + y.ToString().PadLeft(3, '0');
+                        var fn = "game/worlds/" + worldName + "/cells/" + cellName + "/client/entities.xml";
+                        if (pak.FileExists(fn))
+                        {
+                            AddAreaShapes(fn, x, y, ref allAreaShapes);
+                        }
                     }
-                }
 
 
                 var map = MapViewForm.GetMap();
@@ -8413,8 +8403,8 @@ namespace AAEmu.DBViewer
 
             groupNode = null;
             var buffs = from i in AADB.DB_Tagged_Buffs.Values
-                where i.tag_id == tag
-                select i;
+                        where i.tag_id == tag
+                        select i;
             foreach (var i in buffs)
             {
                 if (groupNode == null)
@@ -8424,8 +8414,8 @@ namespace AAEmu.DBViewer
 
             groupNode = null;
             var items = from i in AADB.DB_Tagged_Items.Values
-                where i.tag_id == tag
-                select i;
+                        where i.tag_id == tag
+                        select i;
             foreach (var i in items)
             {
                 if (groupNode == null)
@@ -8435,8 +8425,8 @@ namespace AAEmu.DBViewer
 
             groupNode = null;
             var npcs = from i in AADB.DB_Tagged_NPCs.Values
-                where i.tag_id == tag
-                select i;
+                       where i.tag_id == tag
+                       select i;
             foreach (var i in npcs)
             {
                 if (groupNode == null)
@@ -8446,8 +8436,8 @@ namespace AAEmu.DBViewer
 
             groupNode = null;
             var skills = from i in AADB.DB_Tagged_Skills.Values
-                where i.tag_id == tag
-                select i;
+                         where i.tag_id == tag
+                         select i;
             foreach (var i in skills)
             {
                 if (groupNode == null)
@@ -8457,8 +8447,8 @@ namespace AAEmu.DBViewer
 
             groupNode = null;
             var zones = from i in AADB.DB_Zone_Group_Banned_Tags.Values
-                where i.tag_id == tag
-                select i;
+                        where i.tag_id == tag
+                        select i;
             foreach (var i in zones)
             {
                 if (groupNode == null)
@@ -8584,7 +8574,7 @@ namespace AAEmu.DBViewer
                 if (depth > 0)
                     spacer += (depth % 2 == 0) ? "- " : "* ";
                 res += spacer + $"{node.Text}\r\n";
-                res += TreeViewToString(node.Nodes, depth+1);
+                res += TreeViewToString(node.Nodes, depth + 1);
             }
             return res;
         }

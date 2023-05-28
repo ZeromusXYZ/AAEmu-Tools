@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
 using AAPacker;
@@ -80,14 +74,14 @@ namespace AAEmu.ClientDataExporter
             // Find all related files and concat them into a giant stringlist
             foreach (var pfi in pak.Files)
             {
-                var lowername = pfi.name.ToLower();
+                var lowername = pfi.Name.ToLower();
                 if (lowername.EndsWith("quest_sign_sphere.g"))
                 {
                     var namesplited = lowername.Split('/');
                     var thisStream = pak.ExportFileAsStream(pfi);
                     using (var rs = new StreamReader(thisStream))
                     {
-                        LQuestSphereData.Text = pfi.name;
+                        LQuestSphereData.Text = pfi.Name;
                         LQuestSphereData.Update();
                         sl.Clear();
                         while (!rs.EndOfStream)
@@ -137,7 +131,7 @@ namespace AAEmu.ClientDataExporter
                                 var posstring = subline.Split(',');
                                 if (posstring.Length == 3)
                                 {
-                                    // Parse the floats with NumberStyles.Float and CultureInfo.InvariantCulture or we get all sorts of 
+                                    // Parse the floats with NumberStyles.Float and CultureInfo.InvariantCulture or we get all sorts of
                                     // weird stuff with the decimal points depending on the user's language settings
                                     qse.X = double.Parse(posstring[0], NumberStyles.Float, CultureInfo.InvariantCulture);
                                     qse.Y = double.Parse(posstring[1], NumberStyles.Float, CultureInfo.InvariantCulture);
@@ -180,7 +174,7 @@ namespace AAEmu.ClientDataExporter
             // Find all related files and concat them into a giant stringlist
             foreach (var pfi in pak.Files)
             {
-                var lowerName = pfi.name.ToLower();
+                var lowerName = pfi.Name.ToLower();
                 if (lowerName.EndsWith("mission_mission0.xml"))
                 {
                     // Read/Parse XML data here

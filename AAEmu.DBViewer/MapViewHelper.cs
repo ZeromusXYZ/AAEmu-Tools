@@ -7,8 +7,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace AAEmu.DBViewer
@@ -26,7 +24,7 @@ namespace AAEmu.DBViewer
             newRef.Level = level;
             newRef.Id = id;
             newRef.ImageId = image_map;
-            newRef.BaseFileName = baseFileName ;
+            newRef.BaseFileName = baseFileName;
             newRef.MapRect = new RectangleF();
 
             MapRefs.Add(newRef);
@@ -37,10 +35,10 @@ namespace AAEmu.DBViewer
             var newRef = new MapViewMiniMapRef();
             newRef.Level = level;
             newRef.ZoneGroup = zoneGroupId;
-            newRef.Scale = mapScale ;
+            newRef.Scale = mapScale;
             newRef.BaseFileName = baseMapFileName; // + "_road_" + mapScale.ToString() + ".dds";
             newRef.Offset = new PointF(offsetX, offsetY);
-            newRef.Rect = new RectangleF(imgX,imgY,imgW,imgH);
+            newRef.Rect = new RectangleF(imgX, imgY, imgW, imgH);
             MiniMapRefs.Add(newRef);
         }
 
@@ -473,7 +471,7 @@ namespace AAEmu.DBViewer
             {
                 foreach (var zg in AADB.DB_Zone_Groups)
                 {
-                    var refs = MapViewMiniMapRef.ListPossibleFileNames(zg.Value.name, 100, Properties.Settings.Default.DefaultGameLanguage,".g");
+                    var refs = MapViewMiniMapRef.ListPossibleFileNames(zg.Value.name, 100, Properties.Settings.Default.DefaultGameLanguage, ".g");
                     foreach (var r in refs)
                         if (MainForm.ThisForm.pak.FileExists(r))
                             LoadGFileFromPak(MainForm.ThisForm.pak, r);
@@ -512,7 +510,7 @@ namespace AAEmu.DBViewer
         public static int GFileValInt(string key)
         {
             var s = GFileValString(key);
-            if (int.TryParse(s,NumberStyles.Integer , CultureInfo.InvariantCulture, out int i))
+            if (int.TryParse(s, NumberStyles.Integer, CultureInfo.InvariantCulture, out int i))
                 return i;
             return 0;
         }
@@ -544,7 +542,7 @@ namespace AAEmu.DBViewer
         {
             var res = new Dictionary<string, string>();
             var currentObjectName = string.Empty;
-            var areaName = string.Empty ;
+            var areaName = string.Empty;
 
             foreach (var l in lines)
             {
@@ -582,7 +580,7 @@ namespace AAEmu.DBViewer
                         case "qtype":
                             // qtype is always the first entry in the block, increment a number here to prevent duplicates
                             // We want unique identifiers here so we can add it to a dictionary
-                            GFileAreaIdCounter++; 
+                            GFileAreaIdCounter++;
                             areaName = GFileAreaIdCounter.ToString() + ".";
                             res.Add(currentObjectName + "." + areaName + "?", "area");
                             res.Add(currentObjectName + "." + areaName + varName, para[0]);
@@ -678,7 +676,7 @@ namespace AAEmu.DBViewer
 
         public List<string> GetPossibleFileNames(string locale)
         {
-            return ListPossibleFileNames(BaseFileName,locale);
+            return ListPossibleFileNames(BaseFileName, locale);
         }
 
         public static List<string> ListPossibleFileNames(string baseFileName, string locale)
@@ -733,7 +731,7 @@ namespace AAEmu.DBViewer
             }
             catch
             {
-                
+
             }
         }
 
@@ -838,24 +836,24 @@ namespace AAEmu.DBViewer
 
             // Every point (x,y), that solves the equation above, is on the line,
             // every point that does not solve it, is not. The equation will have a
-            // positive result if it is on one side of the line and a negative one 
+            // positive result if it is on one side of the line and a negative one
             // if is on the other side of it. We insert (x1,y1) and (x2,y2) of vector
             // 2 into the equation above.
             d1 = (a1 * v2Start.X) + (b1 * v2Start.Y) + c1;
             d2 = (a1 * v2End.X) + (b1 * v2End.Y) + c1;
 
             // If d1 and d2 both have the same sign, they are both on the same side
-            // of our line 1 and in that case no intersection is possible. Careful, 
-            // 0 is a special case, that's why we don't test ">=" and "<=", 
+            // of our line 1 and in that case no intersection is possible. Careful,
+            // 0 is a special case, that's why we don't test ">=" and "<=",
             // but "<" and ">".
             if (d1 > 0 && d2 > 0) return false;
             if (d1 < 0 && d2 < 0) return false;
 
-            // The fact that vector 2 intersected the infinite line 1 above doesn't 
+            // The fact that vector 2 intersected the infinite line 1 above doesn't
             // mean it also intersects the vector 1. Vector 1 is only a subset of that
             // infinite line 1, so it may have intersected that line before the vector
             // started or after it ended. To know for sure, we have to repeat the
-            // the same test the other way round. We start by calculating the 
+            // the same test the other way round. We start by calculating the
             // infinite line 2 in linear equation standard form.
             a2 = v2End.Y - v2Start.Y;
             b2 = v2Start.X - v2End.X;

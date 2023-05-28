@@ -1,17 +1,11 @@
 ﻿using AAEmu.DBDefs;
-using FreeImageAPI;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Management.Instrumentation;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -448,7 +442,7 @@ namespace AAEmu.DBViewer
             {
                 var cursorLevel = cursorInstance.GetZoneByKey(cursorCell.zone_key);
                 if (cursorLevel != null)
-                    cellCursorText = "[" + cursorLevel.name + "] => X: " + (cursorCoords.X - (cursorLevel.originCellX * 1024)).ToString()+" Y: "+ (cursorCoords.Y - (cursorLevel.originCellY * 1024)).ToString();
+                    cellCursorText = "[" + cursorLevel.name + "] => X: " + (cursorCoords.X - (cursorLevel.originCellX * 1024)).ToString() + " Y: " + (cursorCoords.Y - (cursorLevel.originCellY * 1024)).ToString();
             }
 
             if ((rulerCoords.X != 0) && (rulerCoords.Y != 0))
@@ -711,7 +705,7 @@ namespace AAEmu.DBViewer
             var br = new System.Drawing.SolidBrush(Color.White);
             var smallGridSize = 1024; // Cell size (resolution in heightmap is actualy 2m instead of 1m, so here we use 1024 instead of 512)
 
-            if (int.TryParse(cbUnitSize.Text,out int intSize))
+            if (int.TryParse(cbUnitSize.Text, out int intSize))
             {
                 smallGridSize = intSize;
             }
@@ -941,8 +935,8 @@ namespace AAEmu.DBViewer
                     g.DrawLine(pen, ViewOffset.X + lpos.X, ViewOffset.Y + lpos.Y, ViewOffset.X + pos.X, ViewOffset.Y + pos.Y);
                 }
             }
-            catch 
-            { 
+            catch
+            {
             }
             updateStatusBar();
         }
@@ -966,32 +960,20 @@ namespace AAEmu.DBViewer
         {
             if (MainForm.ThisForm.pak.IsOpen)
             {
-
                 if (MainForm.ThisForm.pak.FileExists(fn))
                 {
                     try
                     {
                         var fStream = MainForm.ThisForm.pak.ExportFileAsStream(fn);
-                        var fif = FREE_IMAGE_FORMAT.FIF_DDS;
-                        FIBITMAP fiBitmap = FreeImage.LoadFromStream(fStream, ref fif);
-                        var bmp = FreeImage.GetBitmap(fiBitmap);
-                        return bmp;
+                        return AAEmu.Tools.BitmapUtil.ReadDDSFromStream(fStream);
                     }
                     catch
                     {
-                        return null;
                     }
                 }
-                else
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
             }
 
+            return null;
         }
 
         private void OnViewMouseMove(object sender, MouseEventArgs e)
@@ -1177,7 +1159,7 @@ namespace AAEmu.DBViewer
             housing.Add(path);
         }
 
-        
+
         public void AddSubZone(MapViewPath path)
         {
             subzone.Add(path);
@@ -1505,14 +1487,14 @@ namespace AAEmu.DBViewer
                     }
 
                     var zoneCells = n.SelectNodes("cellList/cell");
-                    for(var zc = 0; zc < zoneCells.Count; zc++)
+                    for (var zc = 0; zc < zoneCells.Count; zc++)
                     {
                         var cellAttribs = MainForm.ReadNodeAttributes(zoneCells[zc]);
                         var zcX = 0;
                         var zcY = 0;
-                        foreach(var cellAttrib in cellAttribs)
+                        foreach (var cellAttrib in cellAttribs)
                         {
-                            switch( cellAttrib.Key)
+                            switch (cellAttrib.Key)
                             {
                                 case "x":
                                     zcX = int.Parse(cellAttrib.Value);
@@ -1572,7 +1554,7 @@ namespace AAEmu.DBViewer
 
         static public MapViewWorldXML FindInstanceByZoneGroup(long zone_group_id)
         {
-            foreach(var zone in AADB.DB_Zones)
+            foreach (var zone in AADB.DB_Zones)
             {
                 if (zone.Value.group_id == zone_group_id)
                 {
@@ -1586,7 +1568,7 @@ namespace AAEmu.DBViewer
 
         public MapViewWorldXMLZoneCellInfo GetCellByPosition(int x, int y)
         {
-            foreach(var zone in zones)
+            foreach (var zone in zones)
             {
                 var cell = zone.Value.FindCell(x, y);
                 if (cell != null)
