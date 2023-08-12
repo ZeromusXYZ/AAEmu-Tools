@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using AAEmu.DBViewer.JsonData;
 using AAEmu.DBViewer.utils;
 using System.Runtime;
+using AAEmu.Game.Models.Game.World;
 
 namespace AAEmu.DBViewer
 {
@@ -8664,6 +8665,85 @@ namespace AAEmu.DBViewer
                 tcViewer.SelectedTab = tpNPCs;
             else
                 MessageBox.Show("No NPCs found");
+        }
+
+        private void btnLoadAAEmuWater_Click(object sender, EventArgs e)
+        {
+            List<MapViewPath> allPaths = new List<MapViewPath>();
+
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+
+
+            if (ofdJsonData.ShowDialog() == DialogResult.OK)
+            {
+                var jsonFileName = ofdJsonData.FileName;
+                WaterBodies.Load(jsonFileName, out var water);
+                if (water.Areas.Count > 0)
+                {
+                    try
+                    {
+                        foreach (var w in water.Areas)
+                        {
+                            var mvp = new MapViewPath();
+                            mvp.PathName = $"{w.Name} ({w.Id})";
+                            if (w.AreaType == WaterBodyAreaType.Polygon)
+                            {
+                                mvp.Color = Color.Blue;
+                            }
+                            if (w.AreaType == WaterBodyAreaType.LineArray)
+                            {
+                                if (allPaths.Count % 2 == 0)
+                                    mvp.Color = Color.Cyan;
+                                else
+                                    mvp.Color = Color.LightCyan;
+                            }
+
+                            mvp.allpoints.AddRange(w.Points);
+
+                            if ((w.AreaType == WaterBodyAreaType.LineArray) && (mvp.allpoints.Count > 2) && (mvp.allpoints[^1].Equals(mvp.allpoints[0])))
+                                mvp.allpoints.RemoveAt(mvp.allpoints.Count-1);
+                            allPaths.Add(mvp);
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No water data found !");
+                    return;
+                }
+            }
+            else
+            {
+                return;
+            }
+
+            if (allPaths.Count <= 0)
+                MessageBox.Show("Nothing to show ?");
+            else
+            {
+                var map = MapViewForm.GetMap();
+                map.Show();
+                if (map.GetPathCount() > 0)
+                    if (MessageBox.Show("Keep current Paths ?", "Add Json water data", MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question) == DialogResult.No)
+                        map.ClearPaths();
+
+                    foreach (var p in allPaths)
+                        map.AddPath(p);
+
+                map.FocusAll(false, true, false);
+                map.tsbShowPath.Checked = true;
+
+                map.Refresh();
+            }
+
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
         }
     }
 }
