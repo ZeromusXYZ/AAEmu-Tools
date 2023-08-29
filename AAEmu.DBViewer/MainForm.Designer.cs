@@ -30,7 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
             lbTableNames = new System.Windows.Forms.ListBox();
             tcViewer = new System.Windows.Forms.TabControl();
             tbTables = new System.Windows.Forms.TabPage();
@@ -327,15 +327,6 @@
             label7 = new System.Windows.Forms.Label();
             tLootSearch = new System.Windows.Forms.TextBox();
             dgvLoot = new System.Windows.Forms.DataGridView();
-            dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tpNPCs = new System.Windows.Forms.TabPage();
             groupBox13 = new System.Windows.Forms.GroupBox();
             btnShowNpcLoot = new System.Windows.Forms.Button();
@@ -523,6 +514,16 @@
             ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             ofdJsonData = new System.Windows.Forms.OpenFileDialog();
             ilIcons = new System.Windows.Forms.ImageList(components);
+            dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            LootGroupRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tcViewer.SuspendLayout();
             tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSimple).BeginInit();
@@ -1252,7 +1253,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(678, 329);
-            splitContainer2.SplitterDistance = 410;
+            splitContainer2.SplitterDistance = 409;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1260,7 +1261,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(319, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(318, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1291,7 +1292,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(402, 298);
+            tvBuffTriggers.Size = new System.Drawing.Size(401, 298);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += tvBuffTriggers_DoubleClick;
             // 
@@ -3957,7 +3958,7 @@
             dgvLoot.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             dgvLoot.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             dgvLoot.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvLoot.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { dataGridViewTextBoxColumn1, Column2, Column1, Column9, Column3, Column4, Column6, Column7, Column8 });
+            dgvLoot.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { dataGridViewTextBoxColumn1, Column2, Column1, Column9, Column3, Column4, Column6, Column7, Column8, LootGroupRate });
             dgvLoot.Location = new System.Drawing.Point(9, 52);
             dgvLoot.Margin = new System.Windows.Forms.Padding(4);
             dgvLoot.Name = "dgvLoot";
@@ -3967,69 +3968,6 @@
             dgvLoot.Size = new System.Drawing.Size(1062, 437);
             dgvLoot.TabIndex = 3;
             dgvLoot.SelectionChanged += DgvLoot_SelectionChanged;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            dataGridViewTextBoxColumn1.HeaderText = "ID";
-            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            dataGridViewTextBoxColumn1.ReadOnly = true;
-            dataGridViewTextBoxColumn1.Width = 43;
-            // 
-            // Column2
-            // 
-            Column2.HeaderText = "Loot Pack ID";
-            Column2.Name = "Column2";
-            Column2.ReadOnly = true;
-            Column2.Width = 98;
-            // 
-            // Column1
-            // 
-            Column1.HeaderText = "Item ID";
-            Column1.Name = "Column1";
-            Column1.ReadOnly = true;
-            Column1.Width = 69;
-            // 
-            // Column9
-            // 
-            Column9.HeaderText = "Name";
-            Column9.Name = "Column9";
-            Column9.ReadOnly = true;
-            Column9.Width = 63;
-            // 
-            // Column3
-            // 
-            Column3.HeaderText = "Drop Rate";
-            Column3.Name = "Column3";
-            Column3.ReadOnly = true;
-            Column3.Width = 84;
-            // 
-            // Column4
-            // 
-            Column4.HeaderText = "Amount";
-            Column4.Name = "Column4";
-            Column4.ReadOnly = true;
-            Column4.Width = 75;
-            // 
-            // Column6
-            // 
-            Column6.HeaderText = "Grade ID";
-            Column6.Name = "Column6";
-            Column6.ReadOnly = true;
-            Column6.Width = 77;
-            // 
-            // Column7
-            // 
-            Column7.HeaderText = "Always Drop";
-            Column7.Name = "Column7";
-            Column7.ReadOnly = true;
-            Column7.Width = 98;
-            // 
-            // Column8
-            // 
-            Column8.HeaderText = "Group";
-            Column8.Name = "Column8";
-            Column8.ReadOnly = true;
-            Column8.Width = 65;
             // 
             // tpNPCs
             // 
@@ -4415,7 +4353,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(500, 517);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(499, 517);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4447,7 +4385,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(727, 507);
+            tvQuestWorkflow.Size = new System.Drawing.Size(726, 507);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += tvQuestWorkflow_DoubleClick;
             // 
@@ -5129,9 +5067,9 @@
             tvSkill.Location = new System.Drawing.Point(7, 7);
             tvSkill.Margin = new System.Windows.Forms.Padding(4);
             tvSkill.Name = "tvSkill";
-            treeNode1.Name = "SkillNode";
-            treeNode1.Text = "Skill";
-            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
+            treeNode2.Name = "SkillNode";
+            treeNode2.Text = "Skill";
+            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
             tvSkill.SelectedImageIndex = 0;
             tvSkill.Size = new System.Drawing.Size(575, 343);
             tvSkill.TabIndex = 0;
@@ -6141,6 +6079,76 @@
             ilIcons.Images.SetKeyName(3, "icon_exclamation_green.png");
             ilIcons.Images.SetKeyName(4, "icon_exclamation_blue.png");
             // 
+            // dataGridViewTextBoxColumn1
+            // 
+            dataGridViewTextBoxColumn1.HeaderText = "ID";
+            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            dataGridViewTextBoxColumn1.ReadOnly = true;
+            dataGridViewTextBoxColumn1.Width = 43;
+            // 
+            // Column2
+            // 
+            Column2.HeaderText = "Loot Pack ID";
+            Column2.Name = "Column2";
+            Column2.ReadOnly = true;
+            Column2.Width = 98;
+            // 
+            // Column1
+            // 
+            Column1.HeaderText = "Item ID";
+            Column1.Name = "Column1";
+            Column1.ReadOnly = true;
+            Column1.Width = 69;
+            // 
+            // Column9
+            // 
+            Column9.HeaderText = "Name";
+            Column9.Name = "Column9";
+            Column9.ReadOnly = true;
+            Column9.Width = 63;
+            // 
+            // Column3
+            // 
+            Column3.HeaderText = "Drop Rate";
+            Column3.Name = "Column3";
+            Column3.ReadOnly = true;
+            Column3.Width = 84;
+            // 
+            // Column4
+            // 
+            Column4.HeaderText = "Amount";
+            Column4.Name = "Column4";
+            Column4.ReadOnly = true;
+            Column4.Width = 75;
+            // 
+            // Column6
+            // 
+            Column6.HeaderText = "Grade ID";
+            Column6.Name = "Column6";
+            Column6.ReadOnly = true;
+            Column6.Width = 77;
+            // 
+            // Column7
+            // 
+            Column7.HeaderText = "Always Drop";
+            Column7.Name = "Column7";
+            Column7.ReadOnly = true;
+            Column7.Width = 98;
+            // 
+            // Column8
+            // 
+            Column8.HeaderText = "Group";
+            Column8.Name = "Column8";
+            Column8.ReadOnly = true;
+            Column8.Width = 65;
+            // 
+            // LootGroupRate
+            // 
+            LootGroupRate.HeaderText = "(Loot Group Drop Rate)";
+            LootGroupRate.Name = "LootGroupRate";
+            LootGroupRate.ReadOnly = true;
+            LootGroupRate.Width = 117;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -6744,6 +6752,7 @@
         private System.Windows.Forms.Button btnShowNpcLoot;
         private System.Windows.Forms.Button btnFindLootNpc;
         private System.Windows.Forms.Label label141;
+        private System.Windows.Forms.Button btnLoadAAEmuWater;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
@@ -6753,7 +6762,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
-        private System.Windows.Forms.Button btnLoadAAEmuWater;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LootGroupRate;
     }
 }
 

@@ -17,6 +17,7 @@ using AAEmu.DBViewer.JsonData;
 using AAEmu.DBViewer.utils;
 using System.Runtime;
 using AAEmu.Game.Models.Game.World;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 
 namespace AAEmu.DBViewer
 {
@@ -3651,6 +3652,48 @@ namespace AAEmu.DBViewer
             res += ")";
             return res;
         }
+        
+        private string CopperToValuta(long copper)
+        {
+            var res = "";
+            if (copper > 10000)
+            {
+                var gold = copper / 10000;
+                res += gold.ToString() + "g ";
+                copper -= gold * 10000;
+            }
+            if (copper > 100)
+            {
+                var silver = copper / 100;
+                res += silver.ToString() + "s ";
+                copper -= silver * 100;
+            }
+            if (copper > 0)
+            {
+                res += copper.ToString() + "c";
+            }
+            else
+            {
+                if (copper < 0)
+                {
+                    res = copper.ToString();
+                }
+            }
+            return res.Trim();
+        }
+
+        private string VisualizeAmounts(long amountMin, long amountMax, long itemId)
+        {
+            var res = string.Empty;
+            if (itemId != 500)
+            {
+                res = amountMin != amountMax ? amountMin.ToString() + "~" + amountMax : amountMin.ToString();
+                return res;
+            }
+            res = amountMin != amountMax ? CopperToValuta(amountMin) + " ~ " + CopperToValuta(amountMax) : CopperToValuta(amountMin);
+            return res;
+        }
+
 
         private void ShowDBLootByItem(long itemId)
         {
@@ -3682,7 +3725,7 @@ namespace AAEmu.DBViewer
                 row.Cells[2].Value = itemLoot.Value.item_id.ToString();
                 row.Cells[3].Value = AADB.GetTranslationByID(itemLoot.Value.item_id, "items", "name");
                 row.Cells[4].Value = VisualizeDropRate(itemLoot.Value.drop_rate, dropRateTotal, itemLoot.Value.always_drop);
-                row.Cells[5].Value = itemLoot.Value.max_amount == itemLoot.Value.min_amount ? itemLoot.Value.min_amount.ToString() : itemLoot.Value.min_amount.ToString() + "~" + itemLoot.Value.max_amount.ToString();
+                row.Cells[5].Value = VisualizeAmounts(itemLoot.Value.min_amount, itemLoot.Value.max_amount, itemLoot.Value.item_id);
                 row.Cells[6].Value = itemLoot.Value.grade_id.ToString();
                 row.Cells[7].Value = itemLoot.Value.always_drop.ToString();
                 row.Cells[8].Value = itemLoot.Value.group.ToString();
@@ -3719,24 +3762,31 @@ namespace AAEmu.DBViewer
             if (numberOfNonDefaultPacks <= 1)
                 isDefaultPack = true;
 
-            var packRate = isDefaultPack ? 1.0 : 1.0 / (double)numberOfNonDefaultPacks;
+            // var packRate = isDefaultPack ? 1.0 : 1.0 / (double)numberOfNonDefaultPacks;
 
-            var groupWeights = new Dictionary<long, long>();
+            var inGroupWeights = new Dictionary<long, long>();
 
             var loots = AADB.DB_Loots.Where(l => l.Value.loot_pack_id == loot_id).OrderBy(l => l.Value.group);
+            var lootgroups = AADB.DB_Loot_Groups.Where(l => l.Value.pack_id == loot_id).OrderBy(l => l.Value.group_no);
+
+            var withVal = lootgroups.Where(g => g.Value.drop_rate > 1);
+            var groupsDropRateTotal = withVal.Sum(g => g.Value.drop_rate);
+            //var groupsDropRateTotal = lootgroups.Sum(g => g.Value.drop_rate);
+            if (groupsDropRateTotal <= 0)
+                groupsDropRateTotal = 0;
 
             // Get Loot weights
             foreach (var loot in loots)
             {
                 long newVal = 0;
-                if (groupWeights.TryGetValue(loot.Value.group, out var weight))
+                if (inGroupWeights.TryGetValue(loot.Value.group, out var weight))
                 {
                     newVal = weight;
-                    groupWeights.Remove(loot.Value.group);
+                    inGroupWeights.Remove(loot.Value.group);
                 }
 
                 newVal += loot.Value.drop_rate;
-                groupWeights.Add(loot.Value.group, newVal);
+                inGroupWeights.Add(loot.Value.group, newVal);
             }
 
             // List results
@@ -3750,7 +3800,7 @@ namespace AAEmu.DBViewer
                 var loot = lootKV.Value;
                 int line = dgvLoot.Rows.Add();
                 var row = dgvLoot.Rows[line];
-                if (!groupWeights.TryGetValue(loot.group, out var dropRateTotal))
+                if (!inGroupWeights.TryGetValue(loot.group, out var dropRateTotal))
                     dropRateTotal = 1;
 
                 if (dropRateTotal == 0)
@@ -3786,22 +3836,21 @@ namespace AAEmu.DBViewer
                     diceRate = diceAverage / 10000.0;
                 }
 
+                var groupsDropRate = lootgroups.FirstOrDefault(g => g.Value.group_no == loot.group).Value?.drop_rate ?? 0;
+                var packRate = isDefaultPack || (groupsDropRate <= 1) ? 1.0 : groupsDropRate / groupsDropRateTotal;
+                // TODO: Fix me
+
                 row.Cells[0].Value = loot.id.ToString();
                 row.Cells[1].Value = loot.loot_pack_id.ToString();
                 row.Cells[2].Value = loot.item_id.ToString();
                 row.Cells[3].Value = AADB.GetTranslationByID(loot.item_id, "items", "name");
                 row.Cells[4].Value = VisualizeDropRate(loot.drop_rate, dropRateTotal, loot.always_drop, diceRate, packRate);
-                row.Cells[5].Value = loot.max_amount == loot.min_amount ? loot.min_amount.ToString() : loot.min_amount.ToString() + "~" + loot.max_amount.ToString();
+                row.Cells[5].Value = VisualizeAmounts(loot.min_amount, loot.max_amount, loot.item_id);
+                // row.Cells[5].Value = loot.max_amount == loot.min_amount ? loot.min_amount.ToString() : loot.min_amount.ToString() + "~" + loot.max_amount.ToString();
                 row.Cells[6].Value = loot.grade_id.ToString();
                 row.Cells[7].Value = loot.always_drop.ToString();
                 row.Cells[8].Value = loot.group.ToString();
-                /*
-                row.Cells[5].Value = loot.min_amount.ToString();
-                row.Cells[6].Value = loot.max_amount.ToString();
-                row.Cells[7].Value = loot.grade_id.ToString();
-                row.Cells[8].Value = loot.always_drop.ToString();
-                row.Cells[9].Value = loot.group.ToString();
-                */
+                row.Cells[9].Value = groupsDropRate.ToString() + " / " + groupsDropRateTotal.ToString();
             }
         }
 
@@ -4243,6 +4292,7 @@ namespace AAEmu.DBViewer
 
         private void LoadLoots()
         {
+            AADB.DB_Loot_Groups.Clear();
             AADB.DB_Loots.Clear();
             AADB.DB_Loot_Pack_Dropping_Npc.Clear();
             AADB.DB_Loot_ActAbility_Groups.Clear();
@@ -4250,9 +4300,38 @@ namespace AAEmu.DBViewer
             if (!allTableNames.Contains("loots"))
                 return;
 
-            string sql = "SELECT * FROM loots ORDER BY id ASC";
             using (var connection = SQLite.CreateConnection())
             {
+                string sql = "SELECT * FROM loot_groups ORDER BY id ASC";
+                using (var command = connection.CreateCommand())
+                {
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameLootGroup();
+                            t.id = GetInt64(reader, "id");
+                            t.pack_id = GetInt64(reader, "pack_id");
+                            t.group_no = GetInt64(reader, "group_no");
+                            t.drop_rate = GetInt64(reader, "drop_rate");
+                            t.item_grade_distribution_id = GetInt64(reader, "item_grade_distribution_id");
+
+                            AADB.DB_Loot_Groups.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+
+                    }
+                }
+
+                sql = "SELECT * FROM loots ORDER BY id ASC";
                 using (var command = connection.CreateCommand())
                 {
 
@@ -8702,7 +8781,7 @@ namespace AAEmu.DBViewer
                             mvp.allpoints.AddRange(w.Points);
 
                             if ((w.AreaType == WaterBodyAreaType.LineArray) && (mvp.allpoints.Count > 2) && (mvp.allpoints[^1].Equals(mvp.allpoints[0])))
-                                mvp.allpoints.RemoveAt(mvp.allpoints.Count-1);
+                                mvp.allpoints.RemoveAt(mvp.allpoints.Count - 1);
                             allPaths.Add(mvp);
                         }
                     }
@@ -8733,8 +8812,8 @@ namespace AAEmu.DBViewer
                             MessageBoxIcon.Question) == DialogResult.No)
                         map.ClearPaths();
 
-                    foreach (var p in allPaths)
-                        map.AddPath(p);
+                foreach (var p in allPaths)
+                    map.AddPath(p);
 
                 map.FocusAll(false, true, false);
                 map.tsbShowPath.Checked = true;

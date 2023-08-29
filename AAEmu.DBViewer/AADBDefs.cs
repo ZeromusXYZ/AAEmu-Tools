@@ -936,6 +936,16 @@ namespace AAEmu.DBDefs
         public bool always_drop = false;
     }
 
+    public class GameLootGroup
+    {
+        public long id = 0;
+        public long pack_id = 0;
+        public long group_no = 0;
+        public long drop_rate = 0;
+        public long item_grade_distribution_id = 0;
+    }
+
+
     public class GameLootPackDroppingNpc
     {
         public long id = 0;
@@ -1003,6 +1013,7 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameNpcSpawner> DB_Npc_Spawners = new Dictionary<long, GameNpcSpawner>();
         public static Dictionary<long, GameSpecialties> DB_Specialities = new Dictionary<long, GameSpecialties>();
         public static Dictionary<long, GameLoot> DB_Loots = new Dictionary<long, GameLoot>();
+        public static Dictionary<long, GameLootGroup> DB_Loot_Groups = new Dictionary<long, GameLootGroup>();
         public static Dictionary<long, GameLootPackDroppingNpc> DB_Loot_Pack_Dropping_Npc = new Dictionary<long, GameLootPackDroppingNpc>();
         public static Dictionary<long, GameLootActAbilityGroup> DB_Loot_ActAbility_Groups = new Dictionary<long, GameLootActAbilityGroup>();
 
