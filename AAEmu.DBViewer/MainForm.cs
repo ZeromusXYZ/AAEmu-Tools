@@ -5460,7 +5460,14 @@ namespace AAEmu.DBViewer
             var res = new TreeNodeWithInfo();
             var setCustomIcon = -1;
 
-            if (key.EndsWith("skill_id") && (AADB.DB_Skills.TryGetValue(val, out var skill)))
+            if (key.EndsWith("next_phase") && (AADB.DB_Doodad_Func_Groups.TryGetValue(val, out var nextPhase)))
+            {
+                var s = string.IsNullOrWhiteSpace(nextPhase.nameLocalized) ? nextPhase.name : nextPhase.nameLocalized;
+                if (!string.IsNullOrEmpty(s))
+                    nodeText += " - " + s;
+                res.ForeColor = Color.WhiteSmoke;
+            }
+            else if (key.EndsWith("skill_id") && (AADB.DB_Skills.TryGetValue(val, out var skill)))
             {
                 res.targetTabPage = tpSkills;
                 res.targetTextBox = tSkillSearch;
@@ -5469,7 +5476,6 @@ namespace AAEmu.DBViewer
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + skill.nameLocalized;
                 setCustomIcon = IconIDToLabel(skill.icon_id, null);
-                ;
             }
             else if (key.EndsWith("item_id") && (AADB.DB_Items.TryGetValue(val, out var item)))
             {
@@ -5480,7 +5486,6 @@ namespace AAEmu.DBViewer
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + item.nameLocalized;
                 setCustomIcon = IconIDToLabel(item.icon_id, null);
-                ;
             }
             else if (key.EndsWith("doodad_id") && (AADB.DB_Doodad_Almighties.TryGetValue(val, out var doodad)))
             {
@@ -5683,8 +5688,8 @@ namespace AAEmu.DBViewer
                     var dFuncGroup = f.Value;
                     if (dFuncGroup.doodad_almighty_id == doodad.id)
                     {
-                        var groupNode = rootNode.Nodes.Add("Group: " + dFuncGroup.id.ToString() + " - Kind: " +
-                                                           dFuncGroup.doodad_func_group_kind_id.ToString());
+                        var doodadGroupName = "Group: " + dFuncGroup.id.ToString() + " - Kind: " + dFuncGroup.doodad_func_group_kind_id.ToString() + " - " + dFuncGroup.nameLocalized ;
+                        var groupNode = rootNode.Nodes.Add(doodadGroupName);
                         groupNode.ForeColor = Color.LightCyan;
 
                         // Phase Funcs
