@@ -5460,7 +5460,15 @@ namespace AAEmu.DBViewer
             var res = new TreeNodeWithInfo();
             var setCustomIcon = -1;
 
-            if (key.EndsWith("next_phase") && (AADB.DB_Doodad_Func_Groups.TryGetValue(val, out var nextPhase)))
+            if (key.EndsWith("delay") || key.EndsWith("_time") || key.EndsWith("duration"))
+            {
+                if (long.TryParse(value, out var delayVal))
+                {
+                    nodeText += " - " + MSToString(delayVal);
+                    res.ForeColor = Color.LightSeaGreen;
+                }
+            }
+            else if (key.EndsWith("next_phase") && (AADB.DB_Doodad_Func_Groups.TryGetValue(val, out var nextPhase)))
             {
                 var s = string.IsNullOrWhiteSpace(nextPhase.nameLocalized) ? nextPhase.name : nextPhase.nameLocalized;
                 if (!string.IsNullOrEmpty(s))
