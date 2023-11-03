@@ -1311,6 +1311,33 @@ namespace AAEmu.DBViewer
                 }
             }
 
+            sql = "SELECT * FROM quest_monster_groups ORDER BY id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        AADB.DB_Quest_Monster_Groups.Clear();
+
+                        while (reader.Read())
+                        {
+                            var t = new GameQuestMonsterGroups();
+                            // Actual DB entries
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+                            t.category_id = GetInt64(reader, "category_id");
+                            t.nameLocalized = AADB.GetTranslationByID(t.id, "quest_monster_groups", "name", t.name);
+                            
+                            AADB.DB_Quest_Monster_Groups.Add(t.id, t);
+                        }
+                    }
+                }
+            }
+
 
         }
 
@@ -2832,6 +2859,17 @@ namespace AAEmu.DBViewer
                         rt.AppendText(npc.nameLocalized);
                     else
                         rt.AppendText("@NPC_NAME(" + valueText + ")");
+                    rt.SelectionColor = resetColor;
+                    restText = restText.Substring(nextEndBracket + 1);
+                }
+                else if (restText.StartsWith("@NPC_GROUP_NAME(") && (nextEndBracket > 17))
+                {
+                    rt.SelectionColor = Color.Yellow;
+                    var valueText = restText.Substring(17, nextEndBracket - 17);
+                    if (long.TryParse(valueText, out var value) && (AADB.DB_Quest_Monster_Groups.TryGetValue(value, out var npcGroup)))
+                        rt.AppendText(npcGroup.nameLocalized);
+                    else
+                        rt.AppendText("@NPC_GROUP_NAME(" + valueText + ")");
                     rt.SelectionColor = resetColor;
                     restText = restText.Substring(nextEndBracket + 1);
                 }
