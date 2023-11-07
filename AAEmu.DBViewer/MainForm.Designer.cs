@@ -327,6 +327,16 @@
             label7 = new System.Windows.Forms.Label();
             tLootSearch = new System.Windows.Forms.TextBox();
             dgvLoot = new System.Windows.Forms.DataGridView();
+            dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            LootGroupRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tpNPCs = new System.Windows.Forms.TabPage();
             groupBox13 = new System.Windows.Forms.GroupBox();
             btnShowNpcLoot = new System.Windows.Forms.Button();
@@ -364,6 +374,20 @@
             btnQuestFindRelatedOnMap = new System.Windows.Forms.Button();
             cbQuestWorkflowHideEmpty = new System.Windows.Forms.CheckBox();
             tvQuestWorkflow = new System.Windows.Forms.TreeView();
+            tpSlaves = new System.Windows.Forms.TabPage();
+            groupBox15 = new System.Windows.Forms.GroupBox();
+            lSlaveTemplate = new System.Windows.Forms.Label();
+            label146 = new System.Windows.Forms.Label();
+            btnSearchSlave = new System.Windows.Forms.Button();
+            label147 = new System.Windows.Forms.Label();
+            tSearchSlave = new System.Windows.Forms.TextBox();
+            dgvSlaves = new System.Windows.Forms.DataGridView();
+            dataGridViewTextBoxColumn25 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn26 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn27 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column37 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column38 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tpSkills = new System.Windows.Forms.TabPage();
             splitContainer3 = new System.Windows.Forms.SplitContainer();
             label9 = new System.Windows.Forms.Label();
@@ -514,16 +538,8 @@
             ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             ofdJsonData = new System.Windows.Forms.OpenFileDialog();
             ilIcons = new System.Windows.Forms.ImageList(components);
-            dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            LootGroupRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            lSlaveName = new System.Windows.Forms.Label();
+            label143 = new System.Windows.Forms.Label();
             tcViewer.SuspendLayout();
             tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSimple).BeginInit();
@@ -572,6 +588,9 @@
             splitContainer1.SuspendLayout();
             groupBox12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvQuests).BeginInit();
+            tpSlaves.SuspendLayout();
+            groupBox15.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvSlaves).BeginInit();
             tpSkills.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer3).BeginInit();
             splitContainer3.Panel1.SuspendLayout();
@@ -622,6 +641,7 @@
             tcViewer.Controls.Add(tpLoot);
             tcViewer.Controls.Add(tpNPCs);
             tcViewer.Controls.Add(tpQuests);
+            tcViewer.Controls.Add(tpSlaves);
             tcViewer.Controls.Add(tpSkills);
             tcViewer.Controls.Add(tpTags);
             tcViewer.Controls.Add(tpTrade);
@@ -1253,7 +1273,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(678, 329);
-            splitContainer2.SplitterDistance = 409;
+            splitContainer2.SplitterDistance = 402;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1261,7 +1281,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(318, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(311, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1292,7 +1312,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(401, 298);
+            tvBuffTriggers.Size = new System.Drawing.Size(394, 298);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += tvBuffTriggers_DoubleClick;
             // 
@@ -3969,6 +3989,76 @@
             dgvLoot.TabIndex = 3;
             dgvLoot.SelectionChanged += DgvLoot_SelectionChanged;
             // 
+            // dataGridViewTextBoxColumn1
+            // 
+            dataGridViewTextBoxColumn1.HeaderText = "ID";
+            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            dataGridViewTextBoxColumn1.ReadOnly = true;
+            dataGridViewTextBoxColumn1.Width = 43;
+            // 
+            // Column2
+            // 
+            Column2.HeaderText = "Loot Pack ID";
+            Column2.Name = "Column2";
+            Column2.ReadOnly = true;
+            Column2.Width = 80;
+            // 
+            // Column1
+            // 
+            Column1.HeaderText = "Item ID";
+            Column1.Name = "Column1";
+            Column1.ReadOnly = true;
+            Column1.Width = 64;
+            // 
+            // Column9
+            // 
+            Column9.HeaderText = "Name";
+            Column9.Name = "Column9";
+            Column9.ReadOnly = true;
+            Column9.Width = 63;
+            // 
+            // Column3
+            // 
+            Column3.HeaderText = "Drop Rate";
+            Column3.Name = "Column3";
+            Column3.ReadOnly = true;
+            Column3.Width = 78;
+            // 
+            // Column4
+            // 
+            Column4.HeaderText = "Amount";
+            Column4.Name = "Column4";
+            Column4.ReadOnly = true;
+            Column4.Width = 75;
+            // 
+            // Column6
+            // 
+            Column6.HeaderText = "Grade ID";
+            Column6.Name = "Column6";
+            Column6.ReadOnly = true;
+            Column6.Width = 71;
+            // 
+            // Column7
+            // 
+            Column7.HeaderText = "Always Drop";
+            Column7.Name = "Column7";
+            Column7.ReadOnly = true;
+            Column7.Width = 90;
+            // 
+            // Column8
+            // 
+            Column8.HeaderText = "Group";
+            Column8.Name = "Column8";
+            Column8.ReadOnly = true;
+            Column8.Width = 65;
+            // 
+            // LootGroupRate
+            // 
+            LootGroupRate.HeaderText = "(Loot Group Drop Rate)";
+            LootGroupRate.Name = "LootGroupRate";
+            LootGroupRate.ReadOnly = true;
+            LootGroupRate.Width = 117;
+            // 
             // tpNPCs
             // 
             tpNPCs.Controls.Add(groupBox13);
@@ -4353,7 +4443,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(499, 517);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(492, 517);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4385,9 +4475,160 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(726, 507);
+            tvQuestWorkflow.Size = new System.Drawing.Size(719, 507);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += tvQuestWorkflow_DoubleClick;
+            // 
+            // tpSlaves
+            // 
+            tpSlaves.Controls.Add(groupBox15);
+            tpSlaves.Controls.Add(btnSearchSlave);
+            tpSlaves.Controls.Add(label147);
+            tpSlaves.Controls.Add(tSearchSlave);
+            tpSlaves.Controls.Add(dgvSlaves);
+            tpSlaves.Location = new System.Drawing.Point(4, 25);
+            tpSlaves.Name = "tpSlaves";
+            tpSlaves.Padding = new System.Windows.Forms.Padding(3);
+            tpSlaves.Size = new System.Drawing.Size(1082, 600);
+            tpSlaves.TabIndex = 16;
+            tpSlaves.Text = "Vehicles";
+            tpSlaves.UseVisualStyleBackColor = true;
+            // 
+            // groupBox15
+            // 
+            groupBox15.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            groupBox15.BackColor = System.Drawing.Color.FromArgb(70, 60, 40);
+            groupBox15.Controls.Add(lSlaveName);
+            groupBox15.Controls.Add(label143);
+            groupBox15.Controls.Add(lSlaveTemplate);
+            groupBox15.Controls.Add(label146);
+            groupBox15.ForeColor = System.Drawing.Color.FromArgb(208, 192, 171);
+            groupBox15.Location = new System.Drawing.Point(814, 13);
+            groupBox15.Margin = new System.Windows.Forms.Padding(4);
+            groupBox15.Name = "groupBox15";
+            groupBox15.Padding = new System.Windows.Forms.Padding(4);
+            groupBox15.Size = new System.Drawing.Size(258, 576);
+            groupBox15.TabIndex = 18;
+            groupBox15.TabStop = false;
+            groupBox15.Text = "Vehicle Info";
+            // 
+            // lSlaveTemplate
+            // 
+            lSlaveTemplate.AutoSize = true;
+            lSlaveTemplate.Location = new System.Drawing.Point(69, 21);
+            lSlaveTemplate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lSlaveTemplate.Name = "lSlaveTemplate";
+            lSlaveTemplate.Size = new System.Drawing.Size(13, 16);
+            lSlaveTemplate.TabIndex = 1;
+            lSlaveTemplate.Text = "0";
+            // 
+            // label146
+            // 
+            label146.AutoSize = true;
+            label146.Location = new System.Drawing.Point(8, 21);
+            label146.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label146.Name = "label146";
+            label146.Size = new System.Drawing.Size(54, 16);
+            label146.TabIndex = 0;
+            label146.Text = "Template";
+            // 
+            // btnSearchSlave
+            // 
+            btnSearchSlave.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            btnSearchSlave.Enabled = false;
+            btnSearchSlave.Location = new System.Drawing.Point(715, 11);
+            btnSearchSlave.Margin = new System.Windows.Forms.Padding(4);
+            btnSearchSlave.Name = "btnSearchSlave";
+            btnSearchSlave.Size = new System.Drawing.Size(92, 28);
+            btnSearchSlave.TabIndex = 17;
+            btnSearchSlave.Text = "Search";
+            btnSearchSlave.UseVisualStyleBackColor = true;
+            btnSearchSlave.Click += btnSearchSlave_Click;
+            // 
+            // label147
+            // 
+            label147.AutoSize = true;
+            label147.Location = new System.Drawing.Point(11, 17);
+            label147.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label147.Name = "label147";
+            label147.Size = new System.Drawing.Size(188, 16);
+            label147.TabIndex = 16;
+            label147.Text = "Search Slave ID, Name or Model ID";
+            // 
+            // tSearchSlave
+            // 
+            tSearchSlave.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            tSearchSlave.Location = new System.Drawing.Point(219, 13);
+            tSearchSlave.Margin = new System.Windows.Forms.Padding(4);
+            tSearchSlave.Name = "tSearchSlave";
+            tSearchSlave.Size = new System.Drawing.Size(488, 23);
+            tSearchSlave.TabIndex = 15;
+            tSearchSlave.TextChanged += tSearchSlave_TextChanged;
+            tSearchSlave.KeyDown += tSearchSlave_KeyDown;
+            // 
+            // dgvSlaves
+            // 
+            dgvSlaves.AllowUserToAddRows = false;
+            dgvSlaves.AllowUserToDeleteRows = false;
+            dgvSlaves.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            dgvSlaves.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvSlaves.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            dgvSlaves.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvSlaves.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { dataGridViewTextBoxColumn25, dataGridViewTextBoxColumn26, dataGridViewTextBoxColumn27, Column37, Column5, Column38 });
+            dgvSlaves.Location = new System.Drawing.Point(11, 51);
+            dgvSlaves.Margin = new System.Windows.Forms.Padding(4);
+            dgvSlaves.Name = "dgvSlaves";
+            dgvSlaves.ReadOnly = true;
+            dgvSlaves.RowHeadersVisible = false;
+            dgvSlaves.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            dgvSlaves.Size = new System.Drawing.Size(796, 538);
+            dgvSlaves.TabIndex = 14;
+            // 
+            // dataGridViewTextBoxColumn25
+            // 
+            dataGridViewTextBoxColumn25.FillWeight = 10F;
+            dataGridViewTextBoxColumn25.HeaderText = "ID";
+            dataGridViewTextBoxColumn25.Name = "dataGridViewTextBoxColumn25";
+            dataGridViewTextBoxColumn25.ReadOnly = true;
+            dataGridViewTextBoxColumn25.Width = 43;
+            // 
+            // dataGridViewTextBoxColumn26
+            // 
+            dataGridViewTextBoxColumn26.HeaderText = "Name";
+            dataGridViewTextBoxColumn26.Name = "dataGridViewTextBoxColumn26";
+            dataGridViewTextBoxColumn26.ReadOnly = true;
+            dataGridViewTextBoxColumn26.Width = 63;
+            // 
+            // dataGridViewTextBoxColumn27
+            // 
+            dataGridViewTextBoxColumn27.FillWeight = 10F;
+            dataGridViewTextBoxColumn27.HeaderText = "Model";
+            dataGridViewTextBoxColumn27.Name = "dataGridViewTextBoxColumn27";
+            dataGridViewTextBoxColumn27.ReadOnly = true;
+            dataGridViewTextBoxColumn27.Width = 66;
+            // 
+            // Column37
+            // 
+            Column37.HeaderText = "Level";
+            Column37.Name = "Column37";
+            Column37.ReadOnly = true;
+            Column37.Width = 59;
+            // 
+            // Column5
+            // 
+            Column5.FillWeight = 10F;
+            Column5.HeaderText = "Faction";
+            Column5.Name = "Column5";
+            Column5.ReadOnly = true;
+            Column5.Width = 71;
+            // 
+            // Column38
+            // 
+            Column38.FillWeight = 15F;
+            Column38.HeaderText = "Model Details";
+            Column38.Name = "Column38";
+            Column38.ReadOnly = true;
+            Column38.Width = 104;
             // 
             // tpSkills
             // 
@@ -6079,75 +6320,25 @@
             ilIcons.Images.SetKeyName(3, "icon_exclamation_green.png");
             ilIcons.Images.SetKeyName(4, "icon_exclamation_blue.png");
             // 
-            // dataGridViewTextBoxColumn1
+            // lSlaveName
             // 
-            dataGridViewTextBoxColumn1.HeaderText = "ID";
-            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            dataGridViewTextBoxColumn1.ReadOnly = true;
-            dataGridViewTextBoxColumn1.Width = 43;
+            lSlaveName.AutoSize = true;
+            lSlaveName.Location = new System.Drawing.Point(69, 38);
+            lSlaveName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lSlaveName.Name = "lSlaveName";
+            lSlaveName.Size = new System.Drawing.Size(22, 16);
+            lSlaveName.TabIndex = 3;
+            lSlaveName.Text = "???";
             // 
-            // Column2
+            // label143
             // 
-            Column2.HeaderText = "Loot Pack ID";
-            Column2.Name = "Column2";
-            Column2.ReadOnly = true;
-            Column2.Width = 98;
-            // 
-            // Column1
-            // 
-            Column1.HeaderText = "Item ID";
-            Column1.Name = "Column1";
-            Column1.ReadOnly = true;
-            Column1.Width = 69;
-            // 
-            // Column9
-            // 
-            Column9.HeaderText = "Name";
-            Column9.Name = "Column9";
-            Column9.ReadOnly = true;
-            Column9.Width = 63;
-            // 
-            // Column3
-            // 
-            Column3.HeaderText = "Drop Rate";
-            Column3.Name = "Column3";
-            Column3.ReadOnly = true;
-            Column3.Width = 84;
-            // 
-            // Column4
-            // 
-            Column4.HeaderText = "Amount";
-            Column4.Name = "Column4";
-            Column4.ReadOnly = true;
-            Column4.Width = 75;
-            // 
-            // Column6
-            // 
-            Column6.HeaderText = "Grade ID";
-            Column6.Name = "Column6";
-            Column6.ReadOnly = true;
-            Column6.Width = 77;
-            // 
-            // Column7
-            // 
-            Column7.HeaderText = "Always Drop";
-            Column7.Name = "Column7";
-            Column7.ReadOnly = true;
-            Column7.Width = 98;
-            // 
-            // Column8
-            // 
-            Column8.HeaderText = "Group";
-            Column8.Name = "Column8";
-            Column8.ReadOnly = true;
-            Column8.Width = 65;
-            // 
-            // LootGroupRate
-            // 
-            LootGroupRate.HeaderText = "(Loot Group Drop Rate)";
-            LootGroupRate.Name = "LootGroupRate";
-            LootGroupRate.ReadOnly = true;
-            LootGroupRate.Width = 117;
+            label143.AutoSize = true;
+            label143.Location = new System.Drawing.Point(8, 38);
+            label143.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label143.Name = "label143";
+            label143.Size = new System.Drawing.Size(38, 16);
+            label143.TabIndex = 2;
+            label143.Text = "Name";
             // 
             // MainForm
             // 
@@ -6234,6 +6425,11 @@
             splitContainer1.ResumeLayout(false);
             groupBox12.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvQuests).EndInit();
+            tpSlaves.ResumeLayout(false);
+            tpSlaves.PerformLayout();
+            groupBox15.ResumeLayout(false);
+            groupBox15.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvSlaves).EndInit();
             tpSkills.ResumeLayout(false);
             splitContainer3.Panel1.ResumeLayout(false);
             splitContainer3.Panel1.PerformLayout();
@@ -6763,6 +6959,22 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.DataGridViewTextBoxColumn LootGroupRate;
+        private System.Windows.Forms.TabPage tpSlaves;
+        private System.Windows.Forms.GroupBox groupBox15;
+        private System.Windows.Forms.Label lSlaveTemplate;
+        private System.Windows.Forms.Label label146;
+        private System.Windows.Forms.Button btnSearchSlave;
+        private System.Windows.Forms.Label label147;
+        private System.Windows.Forms.TextBox tSearchSlave;
+        private System.Windows.Forms.DataGridView dgvSlaves;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn25;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn26;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn27;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column37;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column38;
+        private System.Windows.Forms.Label lSlaveName;
+        private System.Windows.Forms.Label label143;
     }
 }
 
