@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace AAEmu.DBDefs
 {
@@ -971,6 +972,68 @@ namespace AAEmu.DBDefs
         public long min_dice = 0;
     }
 
+    public class GameSlaves
+    {
+        public long id = 0;
+        public string name = string.Empty;
+        public long model_id = 0;
+        public bool mountable = false;
+        public float offset_x = 0f;
+        public float offset_y = 0f;
+        public float offset_z = 0f;
+        public float obb_pos_x = 0f;
+        public float obb_pos_y = 0f;
+        public float obb_pos_z = 0f;
+        public float obb_size_x = 0f;
+        public float obb_size_y = 0f;
+        public float obb_size_z = 0f;
+        public long portal_spawn_fx_id = 0;
+        public float portal_scale = 0f;
+        public float portal_time = 0f;
+        public long portal_despawn_fx_id = 0;
+        public long hp25_doodad_count = 0;
+        public long hp50_doodad_count = 0;
+        public long hp75_doodad_count = 0;
+        public float spawn_x_offset = 0f;
+        public float spawn_y_offset = 0f;
+        public long faction_id = 0;
+        public long level = 0;
+        public long cost = 0;
+        public long slave_kind_id = 0;
+        public long spawn_valid_area_range = 0;
+        public long slave_initial_item_pack_id = 0;
+        public long slave_customizing_id = 0;
+        public bool customizable = false;
+
+        public string nameLocalized = string.Empty;
+        public string searchText = string.Empty;
+    }
+
+    public class GameModel
+    {
+        public long id = 0;
+        public string comment = string.Empty;
+        public long sub_id = 0;
+        public string sub_type = string.Empty;
+        public float dying_time = 0f;
+        public long sound_material_id = 0;
+        public bool big = false;
+        public float target_decal_size = 0f;
+        public bool use_target_decal = false;
+        public bool use_target_silhouette = false;
+        public bool use_target_highlight = false;
+        public string name = string.Empty;
+        public float camera_distance = 0f;
+        public bool show_name_tag = false;
+        public float name_tag_offset = 0f;
+        public long sound_pack_id = 0;
+        public bool despawn_doodad_on_collision = false;
+        public bool play_mount_animation = false;
+        public bool selectable = false;
+        public long mount_pose_id = 0;
+        public float camera_distance_for_wide_angle = 0f;
+    }
+
     static class AADB
     {
         public static Dictionary<string, GameTranslation> DB_Translations = new Dictionary<string, GameTranslation>();
@@ -1025,6 +1088,8 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameLootGroup> DB_Loot_Groups = new Dictionary<long, GameLootGroup>();
         public static Dictionary<long, GameLootPackDroppingNpc> DB_Loot_Pack_Dropping_Npc = new Dictionary<long, GameLootPackDroppingNpc>();
         public static Dictionary<long, GameLootActAbilityGroup> DB_Loot_ActAbility_Groups = new Dictionary<long, GameLootActAbilityGroup>();
+        public static Dictionary<long, GameSlaves> DB_Slaves = new Dictionary<long, GameSlaves>();
+        public static Dictionary<long, GameModel> DB_Models = new Dictionary<long, GameModel>();
 
         public static string GetTranslationByID(long idx, string table, string field, string defaultValue = "$NODEFAULT")
         {

@@ -18,6 +18,7 @@ using AAEmu.DBViewer.utils;
 using System.Runtime;
 using AAEmu.Game.Models.Game.World;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
+using System.Xml.Linq;
 
 namespace AAEmu.DBViewer
 {
@@ -2338,7 +2339,7 @@ namespace AAEmu.DBViewer
 
                             var t = new GamePlotNextEvent();
                             t.id = GetInt64(reader, "id");
-                            t.event_id = GetInt64(reader, "id");
+                            t.event_id = GetInt64(reader, "event_id");
                             t.postion = GetInt64(reader, "position");
                             t.next_event_id = GetInt64(reader, "next_event_id");
                             t.delay = GetInt64(reader, "delay");
@@ -3195,17 +3196,25 @@ namespace AAEmu.DBViewer
                 CreatePlotEffectNode(plotEffect.Value.actual_type, plotEffect.Value.actual_id, effectNode, true);
             }
 
-            var nextEvents = AADB.DB_Plot_Next_Events.Where(nextEvent => nextEvent.Value.event_id == child.id);
+            var nextEvents = AADB.DB_Plot_Next_Events.Where(nextEvent => nextEvent.Value.event_id == child.id).OrderBy(p => p.Value.postion);
             foreach (var n in nextEvents)
             {
+                if (n.Value.next_event_id == n.Value.event_id)
+                {
+                    var rNode = eventNode.Nodes.Add("Repeats itself with Delay: " + n.Value.delay + ", Speed: " + n.Value.speed);
+                    rNode.ImageIndex = 3;
+                    rNode.SelectedImageIndex = rNode.ImageIndex;
+                }
+                else
                 if (AADB.DB_Plot_Events.TryGetValue(n.Value.next_event_id, out var next))
                 {
-                    AddPlotEventNode(eventNode, next, depth, "Next Plot Event: ");
-                    /*
-                    var nextNode = new TreeNode(next.id.ToString() + " - " + next.name);
+                    //AddPlotEventNode(eventNode, next, depth, "Next Plot Event: ");
+                    
+                    var nextNode = new TreeNode("Next Event Node: " + next.id.ToString() + " - " + next.name);
                     nextNode.Tag = next.id;
-                    parent.Nodes.Add(nextNode);
-                    */
+                    nextNode.ImageIndex = 2;
+                    nextNode.SelectedImageIndex = nextNode.ImageIndex ;
+                    eventNode.Nodes.Add(nextNode);                    
                 }
                 else
                 {
@@ -3213,7 +3222,7 @@ namespace AAEmu.DBViewer
                     errorNode.ImageIndex = 4;
                     errorNode.SelectedImageIndex = 4;
                     errorNode.Tag = 0;
-                    parent.Nodes.Add(errorNode);
+                    eventNode.Nodes.Add(errorNode);
                 }
 
             }
@@ -3690,7 +3699,7 @@ namespace AAEmu.DBViewer
             res += ")";
             return res;
         }
-        
+
         private string CopperToValuta(long copper)
         {
             var res = "";
@@ -4315,8 +4324,12 @@ namespace AAEmu.DBViewer
                 LoadSkills();
                 LoadSkillReagents();
                 LoadSkillProducts();
+                loading.ShowInfo("Loading: Models");
+                LoadModels();
                 loading.ShowInfo("Loading: NPCs");
                 LoadNPCs();
+                loading.ShowInfo("Loading: Vehicles");
+                LoadSlaves();
                 loading.ShowInfo("Loading: Quests");
                 LoadQuests();
                 loading.ShowInfo("Loading: Trades");
@@ -4506,6 +4519,122 @@ namespace AAEmu.DBViewer
             {
                 if (AADB.DB_Zone_Groups.TryGetValue(z, out var zone))
                     lbTradeSource.Items.Add(zone);
+            }
+
+        }
+
+        private void LoadSlaves()
+        {
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Slaves.Clear();
+
+                    command.CommandText = "SELECT * FROM slaves ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameSlaves();
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+                            t.model_id = GetInt64(reader, "model_id");
+                            t.mountable = GetBool(reader, "mountable");
+                            t.offset_x = GetFloat(reader, "offset_x");
+                            t.offset_y = GetFloat(reader, "offset_y");
+                            t.offset_z = GetFloat(reader, "offset_z");
+                            t.obb_pos_x = GetFloat(reader, "obb_pos_x");
+                            t.obb_pos_y = GetFloat(reader, "obb_pos_y");
+                            t.obb_pos_z = GetFloat(reader, "obb_pos_z");
+                            t.obb_size_x = GetFloat(reader, "obb_size_x");
+                            t.obb_size_y = GetFloat(reader, "obb_size_y");
+                            t.obb_size_z = GetFloat(reader, "obb_size_z");
+                            t.portal_spawn_fx_id = GetInt64(reader, "portal_spawn_fx_id");
+                            t.portal_scale = GetFloat(reader, "portal_scale");
+                            t.portal_time = GetFloat(reader, "portal_time");
+                            t.portal_despawn_fx_id = GetInt64(reader, "portal_despawn_fx_id");
+                            t.hp25_doodad_count = GetInt64(reader, "hp25_doodad_count");
+                            t.hp50_doodad_count = GetInt64(reader, "hp50_doodad_count");
+                            t.hp75_doodad_count = GetInt64(reader, "hp75_doodad_count");
+                            t.spawn_x_offset = GetFloat(reader, "spawn_x_offset");
+                            t.spawn_y_offset = GetFloat(reader, "spawn_y_offset");
+                            t.faction_id = GetInt64(reader, "faction_id");
+                            t.level = GetInt64(reader, "level");
+                            t.cost = GetInt64(reader, "cost");
+                            t.slave_kind_id = GetInt64(reader, "slave_kind_id");
+                            t.spawn_valid_area_range = GetInt64(reader, "spawn_valid_area_range");
+                            t.slave_initial_item_pack_id = GetInt64(reader, "slave_initial_item_pack_id");
+                            t.slave_customizing_id = GetInt64(reader, "slave_customizing_id");
+                            t.customizable = GetBool(reader, "customizable");
+
+                            t.nameLocalized = AADB.GetTranslationByID(t.id, "slaves", "name", t.name);
+                            t.searchText = t.name.ToLower() + " " + t.nameLocalized.ToLower();
+
+                            AADB.DB_Slaves.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+
+            }
+
+        }
+
+        private void LoadModels()
+        {
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Models.Clear();
+
+                    command.CommandText = "SELECT * FROM models ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameModel();
+
+                            t.id = GetInt64(reader, "id");
+                            t.comment = GetString(reader, "comment");
+                            t.sub_id = GetInt64(reader, "sub_id");
+                            t.sub_type = GetString(reader, "sub_type");
+                            t.dying_time = GetFloat(reader, "dying_time");
+                            t.sound_material_id = GetInt64(reader, "sound_material_id");
+                            t.big = GetBool(reader, "big");
+                            t.target_decal_size = GetFloat(reader, "target_decal_size");
+                            t.use_target_decal = GetBool(reader, "use_target_decal");
+                            t.use_target_silhouette = GetBool(reader, "use_target_silhouette");
+                            t.use_target_highlight = GetBool(reader, "use_target_highlight");
+                            t.name = GetString(reader, "name");
+                            t.camera_distance = GetFloat(reader, "camera_distance");
+                            t.show_name_tag = GetBool(reader, "show_name_tag");
+                            t.name_tag_offset = GetFloat(reader, "name_tag_offset");
+                            t.sound_pack_id = GetInt64(reader, "sound_pack_id");
+                            t.despawn_doodad_on_collision = GetBool(reader, "despawn_doodad_on_collision");
+                            t.play_mount_animation = GetBool(reader, "play_mount_animation");
+                            t.selectable = GetBool(reader, "selectable");
+                            t.mount_pose_id = GetInt64(reader, "mount_pose_id");
+                            t.camera_distance_for_wide_angle = GetFloat(reader, "camera_distance_for_wide_angle");
+                            AADB.DB_Models.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+
             }
 
         }
@@ -5734,7 +5863,7 @@ namespace AAEmu.DBViewer
                     var dFuncGroup = f.Value;
                     if (dFuncGroup.doodad_almighty_id == doodad.id)
                     {
-                        var doodadGroupName = "Group: " + dFuncGroup.id.ToString() + " - Kind: " + dFuncGroup.doodad_func_group_kind_id.ToString() + " - " + dFuncGroup.nameLocalized ;
+                        var doodadGroupName = "Group: " + dFuncGroup.id.ToString() + " - Kind: " + dFuncGroup.doodad_func_group_kind_id.ToString() + " - " + dFuncGroup.nameLocalized;
                         var groupNode = rootNode.Nodes.Add(doodadGroupName);
                         groupNode.ForeColor = Color.LightCyan;
 
@@ -8875,5 +9004,84 @@ namespace AAEmu.DBViewer
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
         }
+
+        private void btnSearchSlave_Click(object sender, EventArgs e)
+        {
+            string searchText = tSearchSlave.Text.ToLower();
+            if (searchText == string.Empty)
+                return;
+            long searchID;
+            if (!long.TryParse(searchText, out searchID))
+                searchID = -1;
+
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+            dgvSlaves.Rows.Clear();
+            int c = 0;
+            foreach (var t in AADB.DB_Slaves)
+            {
+                var z = t.Value;
+                if ((z.id == searchID) || (z.model_id == searchID) || (z.searchText.IndexOf(searchText) >= 0))
+                {
+                    var line = dgvSlaves.Rows.Add();
+                    var row = dgvSlaves.Rows[line];
+
+                    row.Cells[0].Value = z.id.ToString();
+                    row.Cells[1].Value = z.nameLocalized;
+                    row.Cells[2].Value = z.model_id.ToString();
+                    row.Cells[3].Value = z.level.ToString();
+                    row.Cells[4].Value = AADB.GetFactionName(z.faction_id, true);
+                    var modelDetails = string.Empty;
+                    if (AADB.DB_Models.TryGetValue(z.model_id, out var model))
+                        modelDetails = model.sub_type + " " + model.sub_id.ToString() + " - " + model.name;
+                    row.Cells[5].Value = modelDetails;
+
+                    if (c == 0)
+                    {
+                        ShowDBSlaveInfo(z.id);
+                    }
+
+                    c++;
+                    if (c >= 250)
+                    {
+                        MessageBox.Show(
+                            "The results were cut off at " + c.ToString() + " items, please refine your search !",
+                            "Too many entries", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        break;
+                    }
+                }
+
+            }
+
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+        }
+
+        private void tSearchSlave_TextChanged(object sender, EventArgs e)
+        {
+            btnSearchSlave.Enabled = !string.IsNullOrEmpty(tSearchSlave.Text);
+        }
+
+        private void tSearchSlave_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) && (btnSearchSlave.Enabled))
+                btnSearchSlave_Click(null, null);
+        }
+
+        private void ShowDBSlaveInfo(long id)
+        {
+            if (AADB.DB_Slaves.TryGetValue(id, out var slave))
+            {
+                lSlaveTemplate.Text = slave.id.ToString();
+                lSlaveName.Text = slave.nameLocalized;
+                ShowSelectedData("slaves", "(id = " + id.ToString() + ")", "id ASC");
+            }
+            else
+            {
+                lSlaveTemplate.Text = "???";
+                lSlaveName.Text = "???";
+            }
+        }
+
     }
 }

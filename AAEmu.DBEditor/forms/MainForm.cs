@@ -36,14 +36,20 @@ namespace AAEmu.DbEditor
                 return false;
             }
 
+            Application.UseWaitCursor = true;
+
+            /*
             var res = false;
             ValidateFilesTask = new Task(new Action(delegate
             {
                 res = ValidateFiles();
             }));
             ValidateFilesTask.Start();
+            */
+            var res = ValidateFiles();
 
             // Reload the DB stuff
+            Application.UseWaitCursor = false;
             return res;
         }
 
