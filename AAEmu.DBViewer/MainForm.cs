@@ -18,6 +18,7 @@ using AAEmu.DBViewer.utils;
 using System.Runtime;
 using AAEmu.Game.Models.Game.World;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
+using System.Xml.Linq;
 
 namespace AAEmu.DBViewer
 {
@@ -2311,7 +2312,7 @@ namespace AAEmu.DBViewer
 
                             var t = new GamePlotNextEvent();
                             t.id = GetInt64(reader, "id");
-                            t.event_id = GetInt64(reader, "id");
+                            t.event_id = GetInt64(reader, "event_id");
                             t.postion = GetInt64(reader, "position");
                             t.next_event_id = GetInt64(reader, "next_event_id");
                             t.delay = GetInt64(reader, "delay");
@@ -3157,17 +3158,25 @@ namespace AAEmu.DBViewer
                 CreatePlotEffectNode(plotEffect.Value.actual_type, plotEffect.Value.actual_id, effectNode, true);
             }
 
-            var nextEvents = AADB.DB_Plot_Next_Events.Where(nextEvent => nextEvent.Value.event_id == child.id);
+            var nextEvents = AADB.DB_Plot_Next_Events.Where(nextEvent => nextEvent.Value.event_id == child.id).OrderBy(p => p.Value.postion);
             foreach (var n in nextEvents)
             {
+                if (n.Value.next_event_id == n.Value.event_id)
+                {
+                    var rNode = eventNode.Nodes.Add("Repeats itself with Delay: " + n.Value.delay + ", Speed: " + n.Value.speed);
+                    rNode.ImageIndex = 3;
+                    rNode.SelectedImageIndex = rNode.ImageIndex;
+                }
+                else
                 if (AADB.DB_Plot_Events.TryGetValue(n.Value.next_event_id, out var next))
                 {
-                    AddPlotEventNode(eventNode, next, depth, "Next Plot Event: ");
-                    /*
-                    var nextNode = new TreeNode(next.id.ToString() + " - " + next.name);
+                    //AddPlotEventNode(eventNode, next, depth, "Next Plot Event: ");
+                    
+                    var nextNode = new TreeNode("Next Event Node: " + next.id.ToString() + " - " + next.name);
                     nextNode.Tag = next.id;
-                    parent.Nodes.Add(nextNode);
-                    */
+                    nextNode.ImageIndex = 2;
+                    nextNode.SelectedImageIndex = nextNode.ImageIndex ;
+                    eventNode.Nodes.Add(nextNode);                    
                 }
                 else
                 {
@@ -3175,7 +3184,7 @@ namespace AAEmu.DBViewer
                     errorNode.ImageIndex = 4;
                     errorNode.SelectedImageIndex = 4;
                     errorNode.Tag = 0;
-                    parent.Nodes.Add(errorNode);
+                    eventNode.Nodes.Add(errorNode);
                 }
 
             }
