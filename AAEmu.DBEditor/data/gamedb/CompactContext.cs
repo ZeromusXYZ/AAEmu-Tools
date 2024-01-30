@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace AAEmu.DBEditor.data.gamedb;
@@ -1370,8 +1371,11 @@ public partial class CompactContext : DbContext
     public virtual DbSet<ZoneGroupBannedTag> ZoneGroupBannedTags { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlite("data source=data/gamedb/compact.sqlite3");
+    {
+        var conString = new SqliteConnectionStringBuilder();
+        conString.DataSource = AAEmu.DBEditor.Properties.Settings.Default.ServerDB;
+        optionsBuilder.UseSqlite(conString.ConnectionString);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

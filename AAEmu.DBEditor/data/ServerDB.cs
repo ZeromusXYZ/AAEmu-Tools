@@ -1,6 +1,8 @@
 ﻿using AAEmu.DbEditor.Utils.DB;
+using AAEmu.DBEditor.data.gamedb;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace AAEmu.DbEditor.data
 {
@@ -9,9 +11,19 @@ namespace AAEmu.DbEditor.data
         private string fileName;
 
         public string FileName { get { return fileName; } }
+
+        public CompactContext CompactSqlite { get; set; }
+
         public List<string> TableNames { get; set; } = new();
 
-        public Dictionary<(string, string), string> LocalizedText { get; set; } = new();
+        public Dictionary<(string, string, long?), string> LocalizedText { get; set; } = new();
+
+        public string GetText(string tableName, string columnName, long index, string defaultText)
+        {
+            if (LocalizedText.TryGetValue((tableName, columnName, index), out var v))
+                return v ?? defaultText;
+            return defaultText;
+        }
 
         public bool OpenDB(string fileName)
         {
@@ -54,9 +66,19 @@ namespace AAEmu.DbEditor.data
                 if (TableNames.Count > 0)
                     this.fileName = fileName;
 
-                return TableNames.Count > 0;
+                CompactSqlite = new CompactContext();
+                try
+                {
+                    var locals = CompactSqlite.LocalizedTexts.ToList();
+                    foreach(var localize in locals)
+                        LocalizedText.Add(new(localize.TblName, localize.TblColumnName, localize.Idx), localize.EnUs);
+                }
+                catch
+                {
+                    return false;
+                }
             }
-            return false;
+            return TableNames.Count > 0;
         }
 
     }

@@ -45,6 +45,8 @@
             pbCharacter = new System.Windows.Forms.PictureBox();
             lCharacterName = new System.Windows.Forms.Label();
             lLevel = new System.Windows.Forms.Label();
+            lClass = new System.Windows.Forms.Label();
+            lMoney = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)dgvUsers).BeginInit();
             ((System.ComponentModel.ISupportInitialize)usersBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)charactersBindingSource).BeginInit();
@@ -115,11 +117,11 @@
             // 
             // lvCharacters
             // 
-            lvCharacters.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            lvCharacters.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lvCharacters.LargeImageList = ilRaces;
             lvCharacters.Location = new System.Drawing.Point(12, 163);
             lvCharacters.Name = "lvCharacters";
-            lvCharacters.Size = new System.Drawing.Size(293, 269);
+            lvCharacters.Size = new System.Drawing.Size(250, 269);
             lvCharacters.TabIndex = 1;
             lvCharacters.UseCompatibleStateImageBehavior = false;
             lvCharacters.SelectedIndexChanged += lvCharacters_SelectedIndexChanged;
@@ -155,7 +157,7 @@
             // pbCharacter
             // 
             pbCharacter.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            pbCharacter.Location = new System.Drawing.Point(311, 163);
+            pbCharacter.Location = new System.Drawing.Point(268, 163);
             pbCharacter.Name = "pbCharacter";
             pbCharacter.Size = new System.Drawing.Size(64, 64);
             pbCharacter.TabIndex = 2;
@@ -164,26 +166,47 @@
             // lCharacterName
             // 
             lCharacterName.AutoSize = true;
-            lCharacterName.Location = new System.Drawing.Point(381, 163);
+            lCharacterName.Font = new System.Drawing.Font("Segoe UI Variable Text", 9F, System.Drawing.FontStyle.Bold);
+            lCharacterName.Location = new System.Drawing.Point(338, 163);
             lCharacterName.Name = "lCharacterName";
-            lCharacterName.Size = new System.Drawing.Size(52, 16);
+            lCharacterName.Size = new System.Drawing.Size(53, 16);
             lCharacterName.TabIndex = 3;
             lCharacterName.Text = "<name>";
             // 
             // lLevel
             // 
             lLevel.AutoSize = true;
-            lLevel.Location = new System.Drawing.Point(381, 179);
+            lLevel.Location = new System.Drawing.Point(338, 179);
             lLevel.Name = "lLevel";
             lLevel.Size = new System.Drawing.Size(116, 16);
             lLevel.TabIndex = 4;
             lLevel.Text = "<level/race/gender>";
+            // 
+            // lClass
+            // 
+            lClass.AutoSize = true;
+            lClass.Location = new System.Drawing.Point(338, 195);
+            lClass.Name = "lClass";
+            lClass.Size = new System.Drawing.Size(48, 16);
+            lClass.TabIndex = 5;
+            lClass.Text = "<class>";
+            // 
+            // lMoney
+            // 
+            lMoney.AutoSize = true;
+            lMoney.Location = new System.Drawing.Point(338, 211);
+            lMoney.Name = "lMoney";
+            lMoney.Size = new System.Drawing.Size(59, 16);
+            lMoney.TabIndex = 6;
+            lMoney.Text = "<money>";
             // 
             // AccountsForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(742, 444);
+            Controls.Add(lMoney);
+            Controls.Add(lClass);
             Controls.Add(lLevel);
             Controls.Add(lCharacterName);
             Controls.Add(pbCharacter);
@@ -220,5 +243,7 @@
         private System.Windows.Forms.PictureBox pbCharacter;
         private System.Windows.Forms.Label lCharacterName;
         private System.Windows.Forms.Label lLevel;
+        private System.Windows.Forms.Label lClass;
+        private System.Windows.Forms.Label lMoney;
     }
 }
