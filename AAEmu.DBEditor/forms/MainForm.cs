@@ -1,4 +1,5 @@
 ﻿using AAEmu.DbEditor.data;
+using AAEmu.DBEditor.forms;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -118,7 +119,6 @@ namespace AAEmu.DbEditor
 
             var res = true;
 
-
             var mySqlTask = OpenMySQlTask();
             var serverDbTask = OpenServerDbTask();
             var clientPakTask = OpenClientPakTask();
@@ -217,6 +217,21 @@ namespace AAEmu.DbEditor
                 label.Text = text;
                 label.Invalidate();
             }));
+        }
+
+        private void MMClientMap_Click(object sender, EventArgs e)
+        {
+            MapForm.Instance.Show();
+        }
+
+        private void MMClient_DropDownOpened(object sender, EventArgs e)
+        {
+            MMClientMap.Enabled = Data.Client?.Pak?.IsOpen ?? false;
+        }
+
+        private void serverToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
+        {
+            MMServerICS.Enabled = Data.MySqlDb.IsValid;
         }
     }
 }

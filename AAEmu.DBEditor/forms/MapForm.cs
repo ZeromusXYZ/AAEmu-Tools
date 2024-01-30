@@ -12,9 +12,9 @@ namespace AAEmu.DBEditor.forms
 {
     public partial class MapForm : Form
     {
-        private MapForm _instance;
+        private static MapForm _instance;
 
-        public MapForm Instance
+        public static MapForm Instance
         {
             get { return _instance ??= new MapForm(); }
         }

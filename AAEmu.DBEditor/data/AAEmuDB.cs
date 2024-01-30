@@ -2,6 +2,12 @@
 {
     public class AAEmuDB
     {
+        public bool IsValid { get; set; }
+
+        public AAEmuDB()
+        {
+        }
+
 
     }
 }
