@@ -9,16 +9,20 @@ namespace AAEmu.DbEditor.data
         private string fileName;
 
         public string FileName { get { return fileName; } }
-        public List<string> TableNames { get; set; } = new List<string>();
+        public List<string> TableNames { get; set; } = new();
+
+        public Dictionary<(string, string), string> LocalizedText { get; set; } = new();
 
         public bool OpenDB(string fileName)
         {
             MainForm.Self.UpdateProgress("Opening ServerDB ...");
 
             TableNames.Clear();
+            LocalizedText.Clear();
             fileName = Path.GetFullPath(fileName);
             if (File.Exists(fileName))
             {
+                // Read Table Names
                 SQLite.SqLiteFileName = fileName;
                 var sql = "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name ASC";
 
@@ -49,6 +53,7 @@ namespace AAEmu.DbEditor.data
                 }
                 if (TableNames.Count > 0)
                     this.fileName = fileName;
+
                 return TableNames.Count > 0;
             }
             return false;

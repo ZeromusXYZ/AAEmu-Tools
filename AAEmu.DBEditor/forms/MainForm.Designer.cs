@@ -54,7 +54,6 @@ namespace AAEmu.DbEditor
             MMClientLoot = new System.Windows.Forms.ToolStripMenuItem();
             MMServer = new System.Windows.Forms.ToolStripMenuItem();
             MMServerAccounts = new System.Windows.Forms.ToolStripMenuItem();
-            MMServerCharacters = new System.Windows.Forms.ToolStripMenuItem();
             MMServerGuilds = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             MMServerICS = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,6 +70,7 @@ namespace AAEmu.DbEditor
             TestPanel = new System.Windows.Forms.Panel();
             statusStrip1 = new System.Windows.Forms.StatusStrip();
             sbL1 = new System.Windows.Forms.ToolStripStatusLabel();
+            MMServerCharacters = new System.Windows.Forms.ToolStripMenuItem();
             MM.SuspendLayout();
             statusStrip1.SuspendLayout();
             SuspendLayout();
@@ -108,10 +108,10 @@ namespace AAEmu.DbEditor
             // 
             // MMFileOpenMySQL
             // 
-            MMFileOpenMySQL.Enabled = false;
             MMFileOpenMySQL.Name = "MMFileOpenMySQL";
             MMFileOpenMySQL.Size = new System.Drawing.Size(181, 22);
             MMFileOpenMySQL.Text = "Open MySQL DB ...";
+            MMFileOpenMySQL.Click += MMFileOpenMySQL_Click;
             // 
             // MMFileS1
             // 
@@ -162,76 +162,76 @@ namespace AAEmu.DbEditor
             // 
             MMClientMap.Enabled = false;
             MMClientMap.Name = "MMClientMap";
-            MMClientMap.Size = new System.Drawing.Size(180, 22);
+            MMClientMap.Size = new System.Drawing.Size(121, 22);
             MMClientMap.Text = "Map";
             MMClientMap.Click += MMClientMap_Click;
             // 
             // MMClientS1
             // 
             MMClientS1.Name = "MMClientS1";
-            MMClientS1.Size = new System.Drawing.Size(177, 6);
+            MMClientS1.Size = new System.Drawing.Size(118, 6);
             // 
             // MMClientItems
             // 
             MMClientItems.Enabled = false;
             MMClientItems.Name = "MMClientItems";
-            MMClientItems.Size = new System.Drawing.Size(180, 22);
+            MMClientItems.Size = new System.Drawing.Size(121, 22);
             MMClientItems.Text = "Items";
             // 
             // MMClientDoodads
             // 
             MMClientDoodads.Enabled = false;
             MMClientDoodads.Name = "MMClientDoodads";
-            MMClientDoodads.Size = new System.Drawing.Size(180, 22);
+            MMClientDoodads.Size = new System.Drawing.Size(121, 22);
             MMClientDoodads.Text = "Doodads";
             // 
             // MMClientNPCs
             // 
             MMClientNPCs.Enabled = false;
             MMClientNPCs.Name = "MMClientNPCs";
-            MMClientNPCs.Size = new System.Drawing.Size(180, 22);
+            MMClientNPCs.Size = new System.Drawing.Size(121, 22);
             MMClientNPCs.Text = "NPCs";
             // 
             // MMClientSkills
             // 
             MMClientSkills.Enabled = false;
             MMClientSkills.Name = "MMClientSkills";
-            MMClientSkills.Size = new System.Drawing.Size(180, 22);
+            MMClientSkills.Size = new System.Drawing.Size(121, 22);
             MMClientSkills.Text = "Skills";
             // 
             // MMClientZones
             // 
             MMClientZones.Enabled = false;
             MMClientZones.Name = "MMClientZones";
-            MMClientZones.Size = new System.Drawing.Size(180, 22);
+            MMClientZones.Size = new System.Drawing.Size(121, 22);
             MMClientZones.Text = "Zones";
             // 
             // MMClientBuffs
             // 
             MMClientBuffs.Enabled = false;
             MMClientBuffs.Name = "MMClientBuffs";
-            MMClientBuffs.Size = new System.Drawing.Size(180, 22);
+            MMClientBuffs.Size = new System.Drawing.Size(121, 22);
             MMClientBuffs.Text = "Buffs";
             // 
             // MMClientFactions
             // 
             MMClientFactions.Enabled = false;
             MMClientFactions.Name = "MMClientFactions";
-            MMClientFactions.Size = new System.Drawing.Size(180, 22);
+            MMClientFactions.Size = new System.Drawing.Size(121, 22);
             MMClientFactions.Text = "Factions";
             // 
             // MMClientQuests
             // 
             MMClientQuests.Enabled = false;
             MMClientQuests.Name = "MMClientQuests";
-            MMClientQuests.Size = new System.Drawing.Size(180, 22);
+            MMClientQuests.Size = new System.Drawing.Size(121, 22);
             MMClientQuests.Text = "Quests";
             // 
             // MMClientLoot
             // 
             MMClientLoot.Enabled = false;
             MMClientLoot.Name = "MMClientLoot";
-            MMClientLoot.Size = new System.Drawing.Size(180, 22);
+            MMClientLoot.Size = new System.Drawing.Size(121, 22);
             MMClientLoot.Text = "Loot";
             // 
             // MMServer
@@ -248,13 +248,7 @@ namespace AAEmu.DbEditor
             MMServerAccounts.Name = "MMServerAccounts";
             MMServerAccounts.Size = new System.Drawing.Size(180, 22);
             MMServerAccounts.Text = "Accounts";
-            // 
-            // MMServerCharacters
-            // 
-            MMServerCharacters.Enabled = false;
-            MMServerCharacters.Name = "MMServerCharacters";
-            MMServerCharacters.Size = new System.Drawing.Size(180, 22);
-            MMServerCharacters.Text = "Characters";
+            MMServerAccounts.Click += MMServerAccounts_Click;
             // 
             // MMServerGuilds
             // 
@@ -397,6 +391,13 @@ namespace AAEmu.DbEditor
             sbL1.Size = new System.Drawing.Size(28, 17);
             sbL1.Text = "Info";
             // 
+            // MMServerCharacters
+            // 
+            MMServerCharacters.Enabled = false;
+            MMServerCharacters.Name = "MMServerCharacters";
+            MMServerCharacters.Size = new System.Drawing.Size(180, 22);
+            MMServerCharacters.Text = "Characters";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -451,7 +452,6 @@ namespace AAEmu.DbEditor
         private System.Windows.Forms.ToolStripMenuItem MMClientLoot;
         private System.Windows.Forms.ToolStripMenuItem MMServer;
         private System.Windows.Forms.ToolStripMenuItem MMServerAccounts;
-        private System.Windows.Forms.ToolStripMenuItem MMServerCharacters;
         private System.Windows.Forms.ToolStripMenuItem MMServerGuilds;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem MMServerICS;
@@ -470,6 +470,7 @@ namespace AAEmu.DbEditor
         private System.Windows.Forms.Panel TestPanel;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel sbL1;
+        private System.Windows.Forms.ToolStripMenuItem MMServerCharacters;
     }
 }
 

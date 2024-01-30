@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AAEmu.DbEditor;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,7 +27,7 @@ namespace AAEmu.DBEditor.forms
 
         private void MapForm_Load(object sender, EventArgs e)
         {
-
+            MainForm.Self.AddOwnedForm(this);
         }
 
         private void ViewPort_Paint(object sender, PaintEventArgs e)
