@@ -38,10 +38,10 @@ namespace AAEmu.DBEditor.data.aaemu.game
         {
             var s = DbEditor.data.Data.Server.GetText("ui_texts", "text", 1110 + this.Ability1, "<" + this.Ability1 + ">");
             if (this.Ability2 != 11)
-                s += " " + DbEditor.data.Data.Server.GetText("ui_texts", "text", 1110 + this.Ability2, "<" + this.Ability2 + ">");
+                s += "  " + DbEditor.data.Data.Server.GetText("ui_texts", "text", 1110 + this.Ability2, "<" + this.Ability2 + ">");
 
             if (this.Ability3 != 11)
-                s += " " + DbEditor.data.Data.Server.GetText("ui_texts", "text", 1110 + this.Ability3, "<" + this.Ability3 + ">");
+                s += "  " + DbEditor.data.Data.Server.GetText("ui_texts", "text", 1110 + this.Ability3, "<" + this.Ability3 + ">");
 
             return s;
         }

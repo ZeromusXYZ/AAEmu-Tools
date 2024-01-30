@@ -25,12 +25,41 @@ namespace AAEmu.DbEditor.data
             return defaultText;
         }
 
+        public bool ReloadLocale()
+        {
+            LocalizedText.Clear();
+            try
+            {
+                var locals = CompactSqlite.LocalizedTexts.ToList();
+                foreach (var localize in locals)
+                {
+                    var s = localize.Ko;
+                    switch (AAEmu.DBEditor.Properties.Settings.Default.ClientLanguage.ToLower())
+                    {
+                        case "ko": s = localize.Ko; break;
+                        case "en_us": s = localize.EnUs; break;
+                        case "ru": s = localize.Ru; break;
+                        case "de": s = localize.De; break;
+                        case "fr": s = localize.Fr; break;
+                        case "zh_cn": s = localize.ZhCn; break;
+                        case "zh_tw": s = localize.ZhTw; break;
+                        case "ja": s = localize.Ja; break;
+                    }
+                    LocalizedText.Add(new(localize.TblName, localize.TblColumnName, localize.Idx), s);
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+
         public bool OpenDB(string fileName)
         {
             MainForm.Self.UpdateProgress("Opening ServerDB ...");
 
             TableNames.Clear();
-            LocalizedText.Clear();
             fileName = Path.GetFullPath(fileName);
             if (File.Exists(fileName))
             {
@@ -70,8 +99,25 @@ namespace AAEmu.DbEditor.data
                 try
                 {
                     var locals = CompactSqlite.LocalizedTexts.ToList();
-                    foreach(var localize in locals)
-                        LocalizedText.Add(new(localize.TblName, localize.TblColumnName, localize.Idx), localize.EnUs);
+                    foreach (var localize in locals)
+                    {
+                        var s = localize.Ko;
+                        switch(AAEmu.DBEditor.Properties.Settings.Default.ClientLanguage.ToLower())
+                        {
+                            case "ko": s = localize.Ko; break;
+                            case "en_us": s = localize.EnUs; break;
+                            case "ru": s = localize.Ru; break;
+                            case "de": s = localize.De; break;
+                            case "fr": s = localize.Fr; break;
+                            case "zh_cn": s = localize.ZhCn; break;
+                            case "zh_tw": s = localize.ZhTw; break;
+                            case "ja": s = localize.Ja; break;
+                        }
+                        LocalizedText.Add(new(localize.TblName, localize.TblColumnName, localize.Idx), s);
+                    }
+
+                    if (!ReloadLocale())
+                        return false;
                 }
                 catch
                 {

@@ -63,6 +63,7 @@
             dgvUsers.Location = new System.Drawing.Point(12, 12);
             dgvUsers.MultiSelect = false;
             dgvUsers.Name = "dgvUsers";
+            dgvUsers.ReadOnly = true;
             dgvUsers.Size = new System.Drawing.Size(718, 145);
             dgvUsers.TabIndex = 0;
             dgvUsers.SelectionChanged += dgvUsers_SelectionChanged;
@@ -72,6 +73,7 @@
             idDataGridViewTextBoxColumn.DataPropertyName = "Id";
             idDataGridViewTextBoxColumn.HeaderText = "Id";
             idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            idDataGridViewTextBoxColumn.ReadOnly = true;
             idDataGridViewTextBoxColumn.Width = 50;
             // 
             // usernameDataGridViewTextBoxColumn
@@ -79,24 +81,28 @@
             usernameDataGridViewTextBoxColumn.DataPropertyName = "Username";
             usernameDataGridViewTextBoxColumn.HeaderText = "Username";
             usernameDataGridViewTextBoxColumn.Name = "usernameDataGridViewTextBoxColumn";
+            usernameDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // emailDataGridViewTextBoxColumn
             // 
             emailDataGridViewTextBoxColumn.DataPropertyName = "Email";
             emailDataGridViewTextBoxColumn.HeaderText = "Email";
             emailDataGridViewTextBoxColumn.Name = "emailDataGridViewTextBoxColumn";
+            emailDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // lastLoginDataGridViewTextBoxColumn
             // 
             lastLoginDataGridViewTextBoxColumn.DataPropertyName = "LastLogin";
             lastLoginDataGridViewTextBoxColumn.HeaderText = "LastLogin";
             lastLoginDataGridViewTextBoxColumn.Name = "lastLoginDataGridViewTextBoxColumn";
+            lastLoginDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // lastIpDataGridViewTextBoxColumn
             // 
             lastIpDataGridViewTextBoxColumn.DataPropertyName = "LastIp";
             lastIpDataGridViewTextBoxColumn.HeaderText = "LastIp";
             lastIpDataGridViewTextBoxColumn.Name = "lastIpDataGridViewTextBoxColumn";
+            lastIpDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // createdAtDataGridViewTextBoxColumn
             // 
@@ -110,6 +116,7 @@
             updatedAtDataGridViewTextBoxColumn.DataPropertyName = "UpdatedAt";
             updatedAtDataGridViewTextBoxColumn.HeaderText = "UpdatedAt";
             updatedAtDataGridViewTextBoxColumn.Name = "updatedAtDataGridViewTextBoxColumn";
+            updatedAtDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // usersBindingSource
             // 

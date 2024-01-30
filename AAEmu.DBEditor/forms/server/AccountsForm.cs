@@ -95,7 +95,7 @@ namespace AAEmu.DBEditor.forms.server
 
             pbCharacter.Image = ilRaces.Images[iconId];
             lCharacterName.Text = c.Name;
-            lLevel.Text = $"Level {c.Level}  {c.GetRaceName()} {c.GetGenderName()}" ;
+            lLevel.Text = $"{Data.Server.GetText("ui_texts", "text", 1097, "<level>")} {c.Level}  {c.GetRaceName()} {c.GetGenderName()}" ;
             lMoney.Text = $"{c.GetMoney(c.Money)} on player, {c.GetMoney(c.Money2)} in warehouse";
             lClass.Text = c.GetClassName();
         }
