@@ -58,6 +58,7 @@ namespace AAEmu.DbEditor
             MMServerGuilds = new System.Windows.Forms.ToolStripMenuItem();
             toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             MMServerICS = new System.Windows.Forms.ToolStripMenuItem();
+            MMVersion = new System.Windows.Forms.ToolStripMenuItem();
             label3 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
@@ -78,7 +79,6 @@ namespace AAEmu.DbEditor
             rbLocaleRu = new System.Windows.Forms.RadioButton();
             rbLocaleKo = new System.Windows.Forms.RadioButton();
             rbLocaleEnUs = new System.Windows.Forms.RadioButton();
-            MMVersion = new System.Windows.Forms.ToolStripMenuItem();
             MM.SuspendLayout();
             statusStrip1.SuspendLayout();
             gbLocale.SuspendLayout();
@@ -255,7 +255,7 @@ namespace AAEmu.DbEditor
             // 
             MMServerAccounts.Enabled = false;
             MMServerAccounts.Name = "MMServerAccounts";
-            MMServerAccounts.Size = new System.Drawing.Size(129, 22);
+            MMServerAccounts.Size = new System.Drawing.Size(180, 22);
             MMServerAccounts.Text = "Accounts";
             MMServerAccounts.Click += MMServerAccounts_Click;
             // 
@@ -263,27 +263,35 @@ namespace AAEmu.DbEditor
             // 
             MMServerCharacters.Enabled = false;
             MMServerCharacters.Name = "MMServerCharacters";
-            MMServerCharacters.Size = new System.Drawing.Size(129, 22);
+            MMServerCharacters.Size = new System.Drawing.Size(180, 22);
             MMServerCharacters.Text = "Characters";
             // 
             // MMServerGuilds
             // 
             MMServerGuilds.Enabled = false;
             MMServerGuilds.Name = "MMServerGuilds";
-            MMServerGuilds.Size = new System.Drawing.Size(129, 22);
+            MMServerGuilds.Size = new System.Drawing.Size(180, 22);
             MMServerGuilds.Text = "Guilds";
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new System.Drawing.Size(126, 6);
+            toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
             // 
             // MMServerICS
             // 
             MMServerICS.Enabled = false;
             MMServerICS.Name = "MMServerICS";
-            MMServerICS.Size = new System.Drawing.Size(129, 22);
+            MMServerICS.Size = new System.Drawing.Size(180, 22);
             MMServerICS.Text = "Cash Shop";
+            MMServerICS.Click += MMServerICS_Click;
+            // 
+            // MMVersion
+            // 
+            MMVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            MMVersion.Name = "MMVersion";
+            MMVersion.Size = new System.Drawing.Size(57, 20);
+            MMVersion.Text = "Version";
             // 
             // label3
             // 
@@ -500,13 +508,6 @@ namespace AAEmu.DbEditor
             rbLocaleEnUs.Text = "en_us";
             rbLocaleEnUs.UseVisualStyleBackColor = true;
             rbLocaleEnUs.CheckedChanged += rbLocale_CheckedChanged;
-            // 
-            // MMVersion
-            // 
-            MMVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            MMVersion.Name = "MMVersion";
-            MMVersion.Size = new System.Drawing.Size(57, 20);
-            MMVersion.Text = "Version";
             // 
             // MainForm
             // 

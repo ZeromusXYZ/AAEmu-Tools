@@ -1,5 +1,7 @@
 ﻿using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
+using AAEmu.DbEditor.Properties;
 using AAPacker;
 
 namespace AAEmu.DbEditor.data
@@ -23,6 +25,7 @@ namespace AAEmu.DbEditor.data
                 Tag = null,
                 TransparentColor = default
             };
+            Icons.Images.Add("noicon", (Image)Resources.ResourceManager.GetObject("noicon"));
             return true;
         }
 
@@ -100,6 +103,21 @@ namespace AAEmu.DbEditor.data
         {
             var idx = GetIconIndexByName(iconName);
             return idx < 0 ? null : Icons.Images[idx];
+        }
+
+        public int GetIconIndexByItemTemplateId(long itemTemplateId)
+        {
+            var itemEntry = Data.Server.CompactSqlite.Items.FirstOrDefault(x => x.Id == itemTemplateId);
+            if (itemEntry != null)
+            {
+                var iconEntry = Data.Server.CompactSqlite.Icons.FirstOrDefault(x => x.Id == itemEntry.IconId);
+                if (iconEntry != null)
+                {
+                    return Data.Client.GetIconIndexByName(iconEntry.Filename);
+                }
+            }
+
+            return -1;
         }
     }
 }

@@ -307,5 +307,11 @@ namespace AAEmu.DbEditor
                     UpdateProgress($"Failed to update locale to {rbLocale.Text}!");
             }
         }
+
+        private void MMServerICS_Click(object sender, EventArgs e)
+        {
+            var icsForm = new ICSForm();
+            icsForm.Show();
+        }
     }
 }
