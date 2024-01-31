@@ -78,6 +78,7 @@ namespace AAEmu.DbEditor
             rbLocaleRu = new System.Windows.Forms.RadioButton();
             rbLocaleKo = new System.Windows.Forms.RadioButton();
             rbLocaleEnUs = new System.Windows.Forms.RadioButton();
+            MMVersion = new System.Windows.Forms.ToolStripMenuItem();
             MM.SuspendLayout();
             statusStrip1.SuspendLayout();
             gbLocale.SuspendLayout();
@@ -85,7 +86,7 @@ namespace AAEmu.DbEditor
             // 
             // MM
             // 
-            MM.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { MMFile, MMClient, MMServer });
+            MM.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { MMFile, MMClient, MMServer, MMVersion });
             MM.Location = new System.Drawing.Point(0, 0);
             MM.Name = "MM";
             MM.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
@@ -500,6 +501,13 @@ namespace AAEmu.DbEditor
             rbLocaleEnUs.UseVisualStyleBackColor = true;
             rbLocaleEnUs.CheckedChanged += rbLocale_CheckedChanged;
             // 
+            // MMVersion
+            // 
+            MMVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            MMVersion.Name = "MMVersion";
+            MMVersion.Size = new System.Drawing.Size(57, 20);
+            MMVersion.Text = "Version";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -581,6 +589,7 @@ namespace AAEmu.DbEditor
         private System.Windows.Forms.RadioButton rbLocaleJa;
         private System.Windows.Forms.RadioButton rbLocaleZhTw;
         private System.Windows.Forms.RadioButton rbLocaleZhCn;
+        private System.Windows.Forms.ToolStripMenuItem MMVersion;
     }
 }
 

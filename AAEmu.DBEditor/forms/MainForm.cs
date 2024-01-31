@@ -4,6 +4,7 @@ using AAEmu.DBEditor.forms.server;
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -181,6 +182,7 @@ namespace AAEmu.DbEditor
         private void MainForm_Load(object sender, EventArgs e)
         {
             MainForm.Self = this;
+            MMVersion.Text = "Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Data.Initialize();
             ValidateFilesTask = new Task(new Action(delegate
             {

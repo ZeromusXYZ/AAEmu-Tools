@@ -98,24 +98,6 @@ namespace AAEmu.DbEditor.data
                 CompactSqlite = new CompactContext();
                 try
                 {
-                    var locals = CompactSqlite.LocalizedTexts.ToList();
-                    foreach (var localize in locals)
-                    {
-                        var s = localize.Ko;
-                        switch(AAEmu.DBEditor.Properties.Settings.Default.ClientLanguage.ToLower())
-                        {
-                            case "ko": s = localize.Ko; break;
-                            case "en_us": s = localize.EnUs; break;
-                            case "ru": s = localize.Ru; break;
-                            case "de": s = localize.De; break;
-                            case "fr": s = localize.Fr; break;
-                            case "zh_cn": s = localize.ZhCn; break;
-                            case "zh_tw": s = localize.ZhTw; break;
-                            case "ja": s = localize.Ja; break;
-                        }
-                        LocalizedText.Add(new(localize.TblName, localize.TblColumnName, localize.Idx), s);
-                    }
-
                     if (!ReloadLocale())
                         return false;
                 }
