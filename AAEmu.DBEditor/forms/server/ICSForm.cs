@@ -17,6 +17,7 @@ namespace AAEmu.DBEditor.forms.server
     public partial class ICSForm : Form
     {
         private IcsSkus SelectedSKU { get; set; }
+        private IcsShopItems SelectedShopItems { get; set; }
 
         public ICSForm()
         {
@@ -27,6 +28,7 @@ namespace AAEmu.DBEditor.forms.server
         {
             MainForm.Self.AddOwnedForm(this);
             SelectedSKU = null;
+            SelectedShopItems = null;
             FillSKUList();
             FillShopItemList();
             FillShopTabs();
@@ -332,6 +334,60 @@ namespace AAEmu.DBEditor.forms.server
             Data.MySqlDb.Game.IcsSkus.Add(newSku);
             SelectedSKU = newSku;
             btnSKUUpdate_Click(null, null); // Call our regular update function to fill in the rest.
+        }
+
+        private void tvShopItems_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if ((tvShopItems.SelectedNode?.Tag is IcsSkus) && (tvShopItems.SelectedNode?.Parent?.Tag is IcsShopItems icsParent))
+            {
+                SelectedShopItems = icsParent;
+            }
+            else if (tvShopItems.SelectedNode?.Tag is not IcsShopItems ics)
+            {
+                return;
+            }
+            else
+            {
+                SelectedShopItems = ics;
+            }
+
+            // Nothing (valid) selected
+            if (SelectedShopItems == null)
+                return;
+
+            tShopItemShopId.Text = SelectedShopItems.ShopId.ToString();
+            tShopItemDisplayItemId.Text = SelectedShopItems.DisplayItemId.ToString();
+            tShopItemName.Text = SelectedShopItems.Name?.ToString() ?? string.Empty;
+
+            // Shop Buttons
+            cbShopItemAllowCart.Checked = (SelectedShopItems.ShopButtons & 0x1) == 0;
+            cbShopItemAllowGift.Checked = (SelectedShopItems.ShopButtons & 0x2) == 0;
+
+            cbShopItemIsHidden.Checked = (SelectedShopItems.IsHidden != 0);
+
+            cbShopItemLimitedType.Checked = (SelectedShopItems.LimitedType > 0);
+            tShopItemLimitedStockMax.Text = SelectedShopItems.LimitedStockMax.ToString();
+            tShopItemRemaining.Text = SelectedShopItems.Remaining.ToString();
+            tShopItemMinLevel.Text = SelectedShopItems.LevelMin.ToString();
+            tShopItemMaxLevel.Text = SelectedShopItems.LevelMax.ToString();
+
+            rbShopItemRestrictNone.Checked = SelectedShopItems.BuyRestrictType == 0;
+            rbShopItemRestrictLevel.Checked = SelectedShopItems.BuyRestrictType == 1;
+            rbShopItemRestrictQuest.Checked = SelectedShopItems.BuyRestrictType == 2;
+            tShopItemBuyRestrictId.Text = SelectedShopItems.BuyRestrictId.ToString();
+
+            tShopItemIsSale.Text = SelectedShopItems.IsSale.ToString();
+
+
+            if ((SelectedShopItems.SaleStart == null) || (SelectedShopItems.SaleStart <= DateTime.MinValue))
+                dtpShopItemEventStart.Value = DateTime.Today;
+            else
+                dtpShopItemEventStart.Value = SelectedShopItems.SaleStart ?? DateTime.MinValue;
+
+            if ((SelectedShopItems.SaleEnd == null) || (SelectedShopItems.SaleEnd <= DateTime.MinValue))
+                dtpShopItemEventEnd.Value = DateTime.Today.AddDays(14);
+            else
+                dtpShopItemEventEnd.Value = SelectedShopItems.SaleEnd ?? DateTime.MinValue;            
         }
     }
 }

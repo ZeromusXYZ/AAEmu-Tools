@@ -74,6 +74,41 @@
             tpShopEntries = new System.Windows.Forms.TabPage();
             splitContainer2 = new System.Windows.Forms.SplitContainer();
             tvShopItems = new System.Windows.Forms.TreeView();
+            groupBox4 = new System.Windows.Forms.GroupBox();
+            cbShopItemAllowCart = new System.Windows.Forms.CheckBox();
+            cbShopItemAllowGift = new System.Windows.Forms.CheckBox();
+            label12 = new System.Windows.Forms.Label();
+            tShopItemShopId = new System.Windows.Forms.TextBox();
+            btnNewShopItemId = new System.Windows.Forms.Button();
+            cbShopItemIsHidden = new System.Windows.Forms.CheckBox();
+            label13 = new System.Windows.Forms.Label();
+            tShopItemDisplayItemId = new System.Windows.Forms.TextBox();
+            tShopItemName = new System.Windows.Forms.TextBox();
+            label14 = new System.Windows.Forms.Label();
+            groupBox3 = new System.Windows.Forms.GroupBox();
+            label19 = new System.Windows.Forms.Label();
+            tShopItemIsSale = new System.Windows.Forms.TextBox();
+            label22 = new System.Windows.Forms.Label();
+            dtpShopItemEventEnd = new System.Windows.Forms.DateTimePicker();
+            label21 = new System.Windows.Forms.Label();
+            dtpShopItemEventStart = new System.Windows.Forms.DateTimePicker();
+            groupBox2 = new System.Windows.Forms.GroupBox();
+            cbShopItemLimitedType = new System.Windows.Forms.CheckBox();
+            label23 = new System.Windows.Forms.Label();
+            tShopItemLimitedStockMax = new System.Windows.Forms.TextBox();
+            tShopItemRemaining = new System.Windows.Forms.TextBox();
+            label15 = new System.Windows.Forms.Label();
+            groupBox1 = new System.Windows.Forms.GroupBox();
+            label20 = new System.Windows.Forms.Label();
+            label18 = new System.Windows.Forms.Label();
+            tShopItemBuyRestrictId = new System.Windows.Forms.TextBox();
+            rbShopItemRestrictQuest = new System.Windows.Forms.RadioButton();
+            rbShopItemRestrictLevel = new System.Windows.Forms.RadioButton();
+            rbShopItemRestrictNone = new System.Windows.Forms.RadioButton();
+            label16 = new System.Windows.Forms.Label();
+            label17 = new System.Windows.Forms.Label();
+            tShopItemMinLevel = new System.Windows.Forms.TextBox();
+            tShopItemMaxLevel = new System.Windows.Forms.TextBox();
             tpShopTabs = new System.Windows.Forms.TabPage();
             tcICS.SuspendLayout();
             tpInfo.SuspendLayout();
@@ -85,7 +120,12 @@
             tpShopEntries.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
             splitContainer2.Panel1.SuspendLayout();
+            splitContainer2.Panel2.SuspendLayout();
             splitContainer2.SuspendLayout();
+            groupBox4.SuspendLayout();
+            groupBox3.SuspendLayout();
+            groupBox2.SuspendLayout();
+            groupBox1.SuspendLayout();
             SuspendLayout();
             // 
             // tcICS
@@ -98,7 +138,7 @@
             tcICS.Location = new System.Drawing.Point(0, 0);
             tcICS.Name = "tcICS";
             tcICS.SelectedIndex = 0;
-            tcICS.Size = new System.Drawing.Size(710, 436);
+            tcICS.Size = new System.Drawing.Size(710, 537);
             tcICS.TabIndex = 0;
             // 
             // tpInfo
@@ -107,7 +147,7 @@
             tpInfo.Location = new System.Drawing.Point(4, 25);
             tpInfo.Name = "tpInfo";
             tpInfo.Padding = new System.Windows.Forms.Padding(3);
-            tpInfo.Size = new System.Drawing.Size(702, 407);
+            tpInfo.Size = new System.Drawing.Size(702, 508);
             tpInfo.TabIndex = 3;
             tpInfo.Text = "Information";
             tpInfo.UseVisualStyleBackColor = true;
@@ -119,7 +159,7 @@
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
             textBox1.ReadOnly = true;
-            textBox1.Size = new System.Drawing.Size(696, 401);
+            textBox1.Size = new System.Drawing.Size(696, 502);
             textBox1.TabIndex = 0;
             textBox1.Text = resources.GetString("textBox1.Text");
             // 
@@ -129,7 +169,7 @@
             tpSKUs.Location = new System.Drawing.Point(4, 25);
             tpSKUs.Name = "tpSKUs";
             tpSKUs.Padding = new System.Windows.Forms.Padding(3);
-            tpSKUs.Size = new System.Drawing.Size(702, 407);
+            tpSKUs.Size = new System.Drawing.Size(702, 508);
             tpSKUs.TabIndex = 0;
             tpSKUs.Text = "SKUs";
             tpSKUs.UseVisualStyleBackColor = true;
@@ -179,7 +219,7 @@
             splitContainer1.Panel2.Controls.Add(label4);
             splitContainer1.Panel2.Controls.Add(label3);
             splitContainer1.Panel2.Controls.Add(label1);
-            splitContainer1.Size = new System.Drawing.Size(696, 401);
+            splitContainer1.Size = new System.Drawing.Size(696, 502);
             splitContainer1.SplitterDistance = 360;
             splitContainer1.TabIndex = 1;
             // 
@@ -191,7 +231,7 @@
             lvSKUs.Location = new System.Drawing.Point(0, 0);
             lvSKUs.MultiSelect = false;
             lvSKUs.Name = "lvSKUs";
-            lvSKUs.Size = new System.Drawing.Size(360, 401);
+            lvSKUs.Size = new System.Drawing.Size(360, 502);
             lvSKUs.TabIndex = 0;
             lvSKUs.UseCompatibleStateImageBehavior = false;
             lvSKUs.View = System.Windows.Forms.View.Details;
@@ -232,8 +272,9 @@
             // 
             // btnSKUNew
             // 
+            btnSKUNew.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnSKUNew.Enabled = false;
-            btnSKUNew.Location = new System.Drawing.Point(223, 358);
+            btnSKUNew.Location = new System.Drawing.Point(223, 474);
             btnSKUNew.Name = "btnSKUNew";
             btnSKUNew.Size = new System.Drawing.Size(104, 23);
             btnSKUNew.TabIndex = 34;
@@ -243,8 +284,9 @@
             // 
             // btnSKUUpdate
             // 
+            btnSKUUpdate.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             btnSKUUpdate.Enabled = false;
-            btnSKUUpdate.Location = new System.Drawing.Point(3, 358);
+            btnSKUUpdate.Location = new System.Drawing.Point(3, 474);
             btnSKUUpdate.Name = "btnSKUUpdate";
             btnSKUUpdate.Size = new System.Drawing.Size(83, 23);
             btnSKUUpdate.TabIndex = 33;
@@ -536,7 +578,7 @@
             tpShopEntries.Location = new System.Drawing.Point(4, 25);
             tpShopEntries.Name = "tpShopEntries";
             tpShopEntries.Padding = new System.Windows.Forms.Padding(3);
-            tpShopEntries.Size = new System.Drawing.Size(702, 407);
+            tpShopEntries.Size = new System.Drawing.Size(702, 508);
             tpShopEntries.TabIndex = 1;
             tpShopEntries.Text = "Shop Items";
             tpShopEntries.UseVisualStyleBackColor = true;
@@ -550,7 +592,14 @@
             // splitContainer2.Panel1
             // 
             splitContainer2.Panel1.Controls.Add(tvShopItems);
-            splitContainer2.Size = new System.Drawing.Size(696, 401);
+            // 
+            // splitContainer2.Panel2
+            // 
+            splitContainer2.Panel2.Controls.Add(groupBox4);
+            splitContainer2.Panel2.Controls.Add(groupBox3);
+            splitContainer2.Panel2.Controls.Add(groupBox2);
+            splitContainer2.Panel2.Controls.Add(groupBox1);
+            splitContainer2.Size = new System.Drawing.Size(696, 502);
             splitContainer2.SplitterDistance = 300;
             splitContainer2.TabIndex = 0;
             // 
@@ -560,16 +609,368 @@
             tvShopItems.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
             tvShopItems.Location = new System.Drawing.Point(0, 0);
             tvShopItems.Name = "tvShopItems";
-            tvShopItems.Size = new System.Drawing.Size(300, 401);
+            tvShopItems.Size = new System.Drawing.Size(300, 502);
             tvShopItems.TabIndex = 0;
             tvShopItems.DrawNode += tvShopItems_DrawNode;
+            tvShopItems.AfterSelect += tvShopItems_AfterSelect;
+            // 
+            // groupBox4
+            // 
+            groupBox4.Controls.Add(cbShopItemAllowCart);
+            groupBox4.Controls.Add(cbShopItemAllowGift);
+            groupBox4.Controls.Add(label12);
+            groupBox4.Controls.Add(tShopItemShopId);
+            groupBox4.Controls.Add(btnNewShopItemId);
+            groupBox4.Controls.Add(cbShopItemIsHidden);
+            groupBox4.Controls.Add(label13);
+            groupBox4.Controls.Add(tShopItemDisplayItemId);
+            groupBox4.Controls.Add(tShopItemName);
+            groupBox4.Controls.Add(label14);
+            groupBox4.Location = new System.Drawing.Point(3, 3);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Size = new System.Drawing.Size(383, 130);
+            groupBox4.TabIndex = 48;
+            groupBox4.TabStop = false;
+            groupBox4.Text = "Shop Settings";
+            // 
+            // cbShopItemAllowCart
+            // 
+            cbShopItemAllowCart.AutoSize = true;
+            cbShopItemAllowCart.Location = new System.Drawing.Point(6, 102);
+            cbShopItemAllowCart.Name = "cbShopItemAllowCart";
+            cbShopItemAllowCart.Size = new System.Drawing.Size(132, 20);
+            cbShopItemAllowCart.TabIndex = 40;
+            cbShopItemAllowCart.Text = "Allow shopping cart";
+            cbShopItemAllowCart.UseVisualStyleBackColor = true;
+            // 
+            // cbShopItemAllowGift
+            // 
+            cbShopItemAllowGift.AutoSize = true;
+            cbShopItemAllowGift.Location = new System.Drawing.Point(144, 102);
+            cbShopItemAllowGift.Name = "cbShopItemAllowGift";
+            cbShopItemAllowGift.Size = new System.Drawing.Size(94, 20);
+            cbShopItemAllowGift.TabIndex = 39;
+            cbShopItemAllowGift.Text = "Allow gifting";
+            cbShopItemAllowGift.UseVisualStyleBackColor = true;
+            // 
+            // label12
+            // 
+            label12.AutoSize = true;
+            label12.Location = new System.Drawing.Point(6, 19);
+            label12.Name = "label12";
+            label12.Size = new System.Drawing.Size(73, 16);
+            label12.TabIndex = 0;
+            label12.Text = "Shop Item Id";
+            // 
+            // tShopItemShopId
+            // 
+            tShopItemShopId.Enabled = false;
+            tShopItemShopId.Location = new System.Drawing.Point(158, 16);
+            tShopItemShopId.Name = "tShopItemShopId";
+            tShopItemShopId.Size = new System.Drawing.Size(148, 23);
+            tShopItemShopId.TabIndex = 1;
+            // 
+            // btnNewShopItemId
+            // 
+            btnNewShopItemId.Location = new System.Drawing.Point(312, 16);
+            btnNewShopItemId.Name = "btnNewShopItemId";
+            btnNewShopItemId.Size = new System.Drawing.Size(51, 23);
+            btnNewShopItemId.TabIndex = 2;
+            btnNewShopItemId.Text = "New";
+            btnNewShopItemId.UseVisualStyleBackColor = true;
+            // 
+            // cbShopItemIsHidden
+            // 
+            cbShopItemIsHidden.AutoSize = true;
+            cbShopItemIsHidden.Location = new System.Drawing.Point(257, 102);
+            cbShopItemIsHidden.Name = "cbShopItemIsHidden";
+            cbShopItemIsHidden.Size = new System.Drawing.Size(76, 20);
+            cbShopItemIsHidden.TabIndex = 38;
+            cbShopItemIsHidden.Text = "Is Hidden";
+            cbShopItemIsHidden.UseVisualStyleBackColor = true;
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new System.Drawing.Point(6, 49);
+            label13.Name = "label13";
+            label13.Size = new System.Drawing.Size(130, 16);
+            label13.TabIndex = 24;
+            label13.Text = "Override Display ItemID";
+            // 
+            // tShopItemDisplayItemId
+            // 
+            tShopItemDisplayItemId.Location = new System.Drawing.Point(158, 45);
+            tShopItemDisplayItemId.Name = "tShopItemDisplayItemId";
+            tShopItemDisplayItemId.PlaceholderText = "overrides item displayed";
+            tShopItemDisplayItemId.Size = new System.Drawing.Size(96, 23);
+            tShopItemDisplayItemId.TabIndex = 25;
+            tShopItemDisplayItemId.Text = "0";
+            // 
+            // tShopItemName
+            // 
+            tShopItemName.Location = new System.Drawing.Point(158, 74);
+            tShopItemName.Name = "tShopItemName";
+            tShopItemName.PlaceholderText = "overrides item name displayed";
+            tShopItemName.Size = new System.Drawing.Size(205, 23);
+            tShopItemName.TabIndex = 27;
+            // 
+            // label14
+            // 
+            label14.AutoSize = true;
+            label14.Location = new System.Drawing.Point(6, 78);
+            label14.Name = "label14";
+            label14.Size = new System.Drawing.Size(140, 16);
+            label14.TabIndex = 26;
+            label14.Text = "Override Displayed Name";
+            // 
+            // groupBox3
+            // 
+            groupBox3.Controls.Add(label19);
+            groupBox3.Controls.Add(tShopItemIsSale);
+            groupBox3.Controls.Add(label22);
+            groupBox3.Controls.Add(dtpShopItemEventEnd);
+            groupBox3.Controls.Add(label21);
+            groupBox3.Controls.Add(dtpShopItemEventStart);
+            groupBox3.Location = new System.Drawing.Point(2, 350);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new System.Drawing.Size(383, 79);
+            groupBox3.TabIndex = 47;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "Event Settings";
+            // 
+            // label19
+            // 
+            label19.AutoSize = true;
+            label19.Location = new System.Drawing.Point(7, 19);
+            label19.Name = "label19";
+            label19.Size = new System.Drawing.Size(39, 16);
+            label19.TabIndex = 36;
+            label19.Text = "Is Sale";
+            // 
+            // tShopItemIsSale
+            // 
+            tShopItemIsSale.Location = new System.Drawing.Point(53, 15);
+            tShopItemIsSale.Name = "tShopItemIsSale";
+            tShopItemIsSale.Size = new System.Drawing.Size(59, 23);
+            tShopItemIsSale.TabIndex = 37;
+            tShopItemIsSale.Text = "0";
+            // 
+            // label22
+            // 
+            label22.AutoSize = true;
+            label22.Location = new System.Drawing.Point(135, 54);
+            label22.Name = "label22";
+            label22.Size = new System.Drawing.Size(18, 16);
+            label22.TabIndex = 42;
+            label22.Text = "to";
+            // 
+            // dtpShopItemEventEnd
+            // 
+            dtpShopItemEventEnd.Location = new System.Drawing.Point(159, 49);
+            dtpShopItemEventEnd.Name = "dtpShopItemEventEnd";
+            dtpShopItemEventEnd.Size = new System.Drawing.Size(200, 23);
+            dtpShopItemEventEnd.TabIndex = 39;
+            // 
+            // label21
+            // 
+            label21.AutoSize = true;
+            label21.Location = new System.Drawing.Point(123, 19);
+            label21.Name = "label21";
+            label21.Size = new System.Drawing.Size(32, 16);
+            label21.TabIndex = 41;
+            label21.Text = "from";
+            // 
+            // dtpShopItemEventStart
+            // 
+            dtpShopItemEventStart.Location = new System.Drawing.Point(159, 15);
+            dtpShopItemEventStart.Name = "dtpShopItemEventStart";
+            dtpShopItemEventStart.Size = new System.Drawing.Size(200, 23);
+            dtpShopItemEventStart.TabIndex = 40;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(cbShopItemLimitedType);
+            groupBox2.Controls.Add(label23);
+            groupBox2.Controls.Add(tShopItemLimitedStockMax);
+            groupBox2.Controls.Add(tShopItemRemaining);
+            groupBox2.Controls.Add(label15);
+            groupBox2.Location = new System.Drawing.Point(3, 135);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new System.Drawing.Size(383, 86);
+            groupBox2.TabIndex = 46;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Limited Sales";
+            // 
+            // cbShopItemLimitedType
+            // 
+            cbShopItemLimitedType.AutoSize = true;
+            cbShopItemLimitedType.Location = new System.Drawing.Point(6, 22);
+            cbShopItemLimitedType.Name = "cbShopItemLimitedType";
+            cbShopItemLimitedType.Size = new System.Drawing.Size(134, 20);
+            cbShopItemLimitedType.TabIndex = 28;
+            cbShopItemLimitedType.Text = "Is Limited Stock Item";
+            cbShopItemLimitedType.UseVisualStyleBackColor = true;
+            // 
+            // label23
+            // 
+            label23.AutoSize = true;
+            label23.Location = new System.Drawing.Point(263, 52);
+            label23.Name = "label23";
+            label23.Size = new System.Drawing.Size(101, 16);
+            label23.TabIndex = 45;
+            label23.Text = "remaining for sale";
+            // 
+            // tShopItemLimitedStockMax
+            // 
+            tShopItemLimitedStockMax.Location = new System.Drawing.Point(158, 20);
+            tShopItemLimitedStockMax.Name = "tShopItemLimitedStockMax";
+            tShopItemLimitedStockMax.PlaceholderText = "number of total items for sale";
+            tShopItemLimitedStockMax.Size = new System.Drawing.Size(99, 23);
+            tShopItemLimitedStockMax.TabIndex = 29;
+            tShopItemLimitedStockMax.Text = "100";
+            // 
+            // tShopItemRemaining
+            // 
+            tShopItemRemaining.Location = new System.Drawing.Point(158, 49);
+            tShopItemRemaining.Name = "tShopItemRemaining";
+            tShopItemRemaining.Size = new System.Drawing.Size(99, 23);
+            tShopItemRemaining.TabIndex = 44;
+            tShopItemRemaining.Text = "-1";
+            // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Location = new System.Drawing.Point(263, 23);
+            label15.Name = "label15";
+            label15.Size = new System.Drawing.Size(116, 16);
+            label15.TabIndex = 30;
+            label15.Text = "total amount for sale";
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(label20);
+            groupBox1.Controls.Add(label18);
+            groupBox1.Controls.Add(tShopItemBuyRestrictId);
+            groupBox1.Controls.Add(rbShopItemRestrictQuest);
+            groupBox1.Controls.Add(rbShopItemRestrictLevel);
+            groupBox1.Controls.Add(rbShopItemRestrictNone);
+            groupBox1.Controls.Add(label16);
+            groupBox1.Controls.Add(label17);
+            groupBox1.Controls.Add(tShopItemMinLevel);
+            groupBox1.Controls.Add(tShopItemMaxLevel);
+            groupBox1.Location = new System.Drawing.Point(3, 227);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new System.Drawing.Size(383, 117);
+            groupBox1.TabIndex = 35;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Restrictions";
+            // 
+            // label20
+            // 
+            label20.AutoSize = true;
+            label20.Enabled = false;
+            label20.Location = new System.Drawing.Point(24, 89);
+            label20.Name = "label20";
+            label20.Size = new System.Drawing.Size(353, 16);
+            label20.TabIndex = 40;
+            label20.Text = "If above level/quest restriction is not met, it will show as unknown";
+            // 
+            // label18
+            // 
+            label18.AutoSize = true;
+            label18.Enabled = false;
+            label18.Location = new System.Drawing.Point(24, 73);
+            label18.Name = "label18";
+            label18.Size = new System.Drawing.Size(309, 16);
+            label18.TabIndex = 39;
+            label18.Text = "(*) Level restriction is different from min/max level setting";
+            // 
+            // tShopItemBuyRestrictId
+            // 
+            tShopItemBuyRestrictId.Location = new System.Drawing.Point(298, 49);
+            tShopItemBuyRestrictId.Name = "tShopItemBuyRestrictId";
+            tShopItemBuyRestrictId.Size = new System.Drawing.Size(79, 23);
+            tShopItemBuyRestrictId.TabIndex = 38;
+            tShopItemBuyRestrictId.Text = "0";
+            // 
+            // rbShopItemRestrictQuest
+            // 
+            rbShopItemRestrictQuest.AutoSize = true;
+            rbShopItemRestrictQuest.Location = new System.Drawing.Point(188, 50);
+            rbShopItemRestrictQuest.Name = "rbShopItemRestrictQuest";
+            rbShopItemRestrictQuest.Size = new System.Drawing.Size(104, 20);
+            rbShopItemRestrictQuest.TabIndex = 37;
+            rbShopItemRestrictQuest.Tag = "2";
+            rbShopItemRestrictQuest.Text = "Requires Quest";
+            rbShopItemRestrictQuest.UseVisualStyleBackColor = true;
+            // 
+            // rbShopItemRestrictLevel
+            // 
+            rbShopItemRestrictLevel.AutoSize = true;
+            rbShopItemRestrictLevel.Location = new System.Drawing.Point(66, 50);
+            rbShopItemRestrictLevel.Name = "rbShopItemRestrictLevel";
+            rbShopItemRestrictLevel.Size = new System.Drawing.Size(116, 20);
+            rbShopItemRestrictLevel.TabIndex = 36;
+            rbShopItemRestrictLevel.Tag = "1";
+            rbShopItemRestrictLevel.Text = "Requires Level (*)";
+            rbShopItemRestrictLevel.UseVisualStyleBackColor = true;
+            // 
+            // rbShopItemRestrictNone
+            // 
+            rbShopItemRestrictNone.AutoSize = true;
+            rbShopItemRestrictNone.Checked = true;
+            rbShopItemRestrictNone.Location = new System.Drawing.Point(6, 50);
+            rbShopItemRestrictNone.Name = "rbShopItemRestrictNone";
+            rbShopItemRestrictNone.Size = new System.Drawing.Size(54, 20);
+            rbShopItemRestrictNone.TabIndex = 35;
+            rbShopItemRestrictNone.TabStop = true;
+            rbShopItemRestrictNone.Tag = "0";
+            rbShopItemRestrictNone.Text = "None";
+            rbShopItemRestrictNone.UseVisualStyleBackColor = true;
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Location = new System.Drawing.Point(6, 19);
+            label16.Name = "label16";
+            label16.Size = new System.Drawing.Size(120, 16);
+            label16.TabIndex = 31;
+            label16.Text = "Required Level Range";
+            // 
+            // label17
+            // 
+            label17.AutoSize = true;
+            label17.Location = new System.Drawing.Point(213, 22);
+            label17.Name = "label17";
+            label17.Size = new System.Drawing.Size(15, 16);
+            label17.TabIndex = 34;
+            label17.Text = "~";
+            // 
+            // tShopItemMinLevel
+            // 
+            tShopItemMinLevel.Location = new System.Drawing.Point(158, 19);
+            tShopItemMinLevel.Name = "tShopItemMinLevel";
+            tShopItemMinLevel.PlaceholderText = "minimum level";
+            tShopItemMinLevel.Size = new System.Drawing.Size(49, 23);
+            tShopItemMinLevel.TabIndex = 32;
+            tShopItemMinLevel.Text = "0";
+            // 
+            // tShopItemMaxLevel
+            // 
+            tShopItemMaxLevel.Location = new System.Drawing.Point(234, 19);
+            tShopItemMaxLevel.Name = "tShopItemMaxLevel";
+            tShopItemMaxLevel.PlaceholderText = "maximum level";
+            tShopItemMaxLevel.Size = new System.Drawing.Size(49, 23);
+            tShopItemMaxLevel.TabIndex = 33;
+            tShopItemMaxLevel.Text = "0";
             // 
             // tpShopTabs
             // 
             tpShopTabs.Location = new System.Drawing.Point(4, 25);
             tpShopTabs.Name = "tpShopTabs";
             tpShopTabs.Padding = new System.Windows.Forms.Padding(3);
-            tpShopTabs.Size = new System.Drawing.Size(702, 407);
+            tpShopTabs.Size = new System.Drawing.Size(702, 508);
             tpShopTabs.TabIndex = 2;
             tpShopTabs.Text = "Shop Tab Settings";
             tpShopTabs.UseVisualStyleBackColor = true;
@@ -578,7 +979,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(710, 436);
+            ClientSize = new System.Drawing.Size(710, 537);
             Controls.Add(tcICS);
             Name = "ICSForm";
             Text = "ICSForm";
@@ -594,8 +995,17 @@
             splitContainer1.ResumeLayout(false);
             tpShopEntries.ResumeLayout(false);
             splitContainer2.Panel1.ResumeLayout(false);
+            splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
             splitContainer2.ResumeLayout(false);
+            groupBox4.ResumeLayout(false);
+            groupBox4.PerformLayout();
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -647,5 +1057,40 @@
         private System.Windows.Forms.Button btnSKUGetNewId;
         private System.Windows.Forms.TabPage tpInfo;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tShopItemDisplayItemId;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button btnNewShopItemId;
+        private System.Windows.Forms.TextBox tShopItemShopId;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox tShopItemLimitedStockMax;
+        private System.Windows.Forms.CheckBox cbShopItemLimitedType;
+        private System.Windows.Forms.TextBox tShopItemName;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox tShopItemMaxLevel;
+        private System.Windows.Forms.TextBox tShopItemMinLevel;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox tShopItemBuyRestrictId;
+        private System.Windows.Forms.RadioButton rbShopItemRestrictQuest;
+        private System.Windows.Forms.RadioButton rbShopItemRestrictLevel;
+        private System.Windows.Forms.RadioButton rbShopItemRestrictNone;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox tShopItemIsSale;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.CheckBox cbShopItemIsHidden;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.DateTimePicker dtpShopItemEventStart;
+        private System.Windows.Forms.DateTimePicker dtpShopItemEventEnd;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TextBox tShopItemRemaining;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.CheckBox cbShopItemAllowCart;
+        private System.Windows.Forms.CheckBox cbShopItemAllowGift;
     }
 }
