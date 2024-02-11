@@ -1,5 +1,5 @@
 ﻿
-namespace AAEmu.DbEditor
+namespace AAEmu.DBEditor
 {
     partial class MainForm
     {

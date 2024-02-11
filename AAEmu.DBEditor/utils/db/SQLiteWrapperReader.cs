@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Data.Sqlite;
 
-namespace AAEmu.DbEditor.Utils.DB
+namespace AAEmu.DBEditor.Utils.DB
 {
     public class SQLiteWrapperReader : IDisposable
     {

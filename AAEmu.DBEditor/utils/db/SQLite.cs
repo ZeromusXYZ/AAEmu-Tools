@@ -1,6 +1,6 @@
 using Microsoft.Data.Sqlite;
 
-namespace AAEmu.DbEditor.Utils.DB
+namespace AAEmu.DBEditor.Utils.DB
 {
     public static class SQLite
     {

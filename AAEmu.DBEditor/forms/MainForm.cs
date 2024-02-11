@@ -1,4 +1,4 @@
-﻿using AAEmu.DbEditor.data;
+﻿using AAEmu.DBEditor.data;
 using AAEmu.DBEditor.forms;
 using AAEmu.DBEditor.forms.server;
 using System;
@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace AAEmu.DbEditor
+namespace AAEmu.DBEditor
 {
     public partial class MainForm : Form
     {

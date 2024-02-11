@@ -1,5 +1,5 @@
-﻿using AAEmu.DbEditor;
-using AAEmu.DbEditor.data;
+﻿using AAEmu.DBEditor;
+using AAEmu.DBEditor.data;
 using AAEmu.DBEditor.data.aaemu.game;
 using System;
 using System.Collections.Generic;

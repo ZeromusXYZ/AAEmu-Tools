@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace AAEmu.DbEditor
+namespace AAEmu.DBEditor
 {
     static class Program
     {

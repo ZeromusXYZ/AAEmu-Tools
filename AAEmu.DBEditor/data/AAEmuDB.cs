@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace AAEmu.DbEditor.data
+namespace AAEmu.DBEditor.data
 {
     public class AAEmuDB
     {

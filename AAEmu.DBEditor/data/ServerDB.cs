@@ -1,10 +1,10 @@
-﻿using AAEmu.DbEditor.Utils.DB;
+﻿using AAEmu.DBEditor.Utils.DB;
 using AAEmu.DBEditor.data.gamedb;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AAEmu.DbEditor.data
+namespace AAEmu.DBEditor.data
 {
     public class ServerDB
     {

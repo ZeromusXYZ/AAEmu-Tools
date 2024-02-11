@@ -1,4 +1,4 @@
-﻿namespace AAEmu.DbEditor.data
+﻿namespace AAEmu.DBEditor.data
 {
     static class Data
     {

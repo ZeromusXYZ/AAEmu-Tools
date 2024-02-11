@@ -12,12 +12,12 @@ namespace AAEmu.DBEditor.data.aaemu.game
         {
             switch (this.Race)
             {
-                case 1: return DbEditor.data.Data.Server.GetText("ui_texts", "text", 1105, "<Nuian>");
-                case 2: return DbEditor.data.Data.Server.GetText("ui_texts", "text", 2490, "<Fairy>");
+                case 1: return DBEditor.data.Data.Server.GetText("ui_texts", "text", 1105, "<Nuian>");
+                case 2: return DBEditor.data.Data.Server.GetText("ui_texts", "text", 2490, "<Fairy>");
                 case 3: return "<Dwarf>";
-                case 4: return DbEditor.data.Data.Server.GetText("ui_texts", "text", 1107, "<Elf>");
-                case 5: return DbEditor.data.Data.Server.GetText("ui_texts","text", 2178, "<Harani>");
-                case 6: return DbEditor.data.Data.Server.GetText("ui_texts", "text", 1106, "<Firran>");
+                case 4: return DBEditor.data.Data.Server.GetText("ui_texts", "text", 1107, "<Elf>");
+                case 5: return DBEditor.data.Data.Server.GetText("ui_texts","text", 2178, "<Harani>");
+                case 6: return DBEditor.data.Data.Server.GetText("ui_texts", "text", 1106, "<Firran>");
                 case 7: return "<Returned>";
                 case 8: return "<Warborn>";
                 default: return "Unknown Race";
@@ -28,20 +28,20 @@ namespace AAEmu.DBEditor.data.aaemu.game
         {
             switch (this.Gender)
             {
-                case 1: return DbEditor.data.Data.Server.GetText("ui_texts", "text", 1108, "<Male>");
-                case 2: return DbEditor.data.Data.Server.GetText("ui_texts", "text", 1109, "<Female>");
+                case 1: return DBEditor.data.Data.Server.GetText("ui_texts", "text", 1108, "<Male>");
+                case 2: return DBEditor.data.Data.Server.GetText("ui_texts", "text", 1109, "<Female>");
                 default: return "<No Gender>";
             }
         }
 
         public string GetClassName()
         {
-            var s = DbEditor.data.Data.Server.GetText("ui_texts", "text", 1110 + this.Ability1, "<" + this.Ability1 + ">");
+            var s = DBEditor.data.Data.Server.GetText("ui_texts", "text", 1110 + this.Ability1, "<" + this.Ability1 + ">");
             if (this.Ability2 != 11)
-                s += "  " + DbEditor.data.Data.Server.GetText("ui_texts", "text", 1110 + this.Ability2, "<" + this.Ability2 + ">");
+                s += "  " + DBEditor.data.Data.Server.GetText("ui_texts", "text", 1110 + this.Ability2, "<" + this.Ability2 + ">");
 
             if (this.Ability3 != 11)
-                s += "  " + DbEditor.data.Data.Server.GetText("ui_texts", "text", 1110 + this.Ability3, "<" + this.Ability3 + ">");
+                s += "  " + DBEditor.data.Data.Server.GetText("ui_texts", "text", 1110 + this.Ability3, "<" + this.Ability3 + ">");
 
             return s;
         }

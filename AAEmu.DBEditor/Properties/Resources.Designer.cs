@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AAEmu.DbEditor.Properties {
+namespace AAEmu.DBEditor.Properties {
     using System;
     
     

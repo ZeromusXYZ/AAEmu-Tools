@@ -1,4 +1,4 @@
-﻿using AAEmu.DbEditor;
+﻿using AAEmu.DBEditor;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

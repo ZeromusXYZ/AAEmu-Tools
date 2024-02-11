@@ -1,10 +1,10 @@
 ﻿using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using AAEmu.DbEditor.Properties;
+using AAEmu.DBEditor.Properties;
 using AAPacker;
 
-namespace AAEmu.DbEditor.data
+namespace AAEmu.DBEditor.data
 {
     internal class ClientPak
     {
