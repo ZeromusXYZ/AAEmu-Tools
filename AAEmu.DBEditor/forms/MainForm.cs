@@ -135,7 +135,7 @@ namespace AAEmu.DbEditor
             Data.MySqlDb.Initialize();
             if (Data.MySqlDb.IsValid)
             {
-                UpdateLabel(lMySQLServer, AAEmu.DBEditor.Properties.Settings.Default.MySQLDB);
+                UpdateLabel(lMySQLServer, AAEmu.DBEditor.Properties.Settings.Default.MySQLDB + " - " + AAEmu.DBEditor.Properties.Settings.Default.MySQLLogin + " - " + AAEmu.DBEditor.Properties.Settings.Default.MySQLGame);
                 AAEmu.DBEditor.Properties.Settings.Default.Save();
                 UpdateProgress("MySQL loaded");
             }

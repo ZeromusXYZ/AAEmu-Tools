@@ -28,12 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ICSForm));
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Item Description", 0);
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Item Description", 0);
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Item Description", 0);
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("Item Description", 0);
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("Item Description", 0);
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("Item Description", 0);
+            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("Item Description", 0);
+            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("Item Description", 0);
+            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("Item Description", 0);
+            System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem("Item Description", 0);
+            System.Windows.Forms.ListViewItem listViewItem11 = new System.Windows.Forms.ListViewItem("Item Description", 0);
+            System.Windows.Forms.ListViewItem listViewItem12 = new System.Windows.Forms.ListViewItem("Item Description", 0);
+            System.Windows.Forms.ListViewItem listViewItem13 = new System.Windows.Forms.ListViewItem("Item Description", 0);
+            System.Windows.Forms.ListViewItem listViewItem14 = new System.Windows.Forms.ListViewItem("Item Description", 0);
+            System.Windows.Forms.ListViewItem listViewItem15 = new System.Windows.Forms.ListViewItem("Item Description", 0);
+            System.Windows.Forms.ListViewItem listViewItem16 = new System.Windows.Forms.ListViewItem("Item Description", 0);
             tcICS = new System.Windows.Forms.TabControl();
             tpInfo = new System.Windows.Forms.TabPage();
             textBox1 = new System.Windows.Forms.TextBox();
             tpSKUs = new System.Windows.Forms.TabPage();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
+            tFilterSku = new System.Windows.Forms.TextBox();
             lvSKUs = new System.Windows.Forms.ListView();
             columnHeader1 = new System.Windows.Forms.ColumnHeader();
             columnHeader2 = new System.Windows.Forms.ColumnHeader();
@@ -73,7 +91,10 @@
             label1 = new System.Windows.Forms.Label();
             tpShopEntries = new System.Windows.Forms.TabPage();
             splitContainer2 = new System.Windows.Forms.SplitContainer();
+            tFilterShopItem = new System.Windows.Forms.TextBox();
             tvShopItems = new System.Windows.Forms.TreeView();
+            btnShopItemNew = new System.Windows.Forms.Button();
+            btnShopItemUpdate = new System.Windows.Forms.Button();
             groupBox4 = new System.Windows.Forms.GroupBox();
             cbShopItemAllowCart = new System.Windows.Forms.CheckBox();
             cbShopItemAllowGift = new System.Windows.Forms.CheckBox();
@@ -89,9 +110,9 @@
             label19 = new System.Windows.Forms.Label();
             tShopItemIsSale = new System.Windows.Forms.TextBox();
             label22 = new System.Windows.Forms.Label();
-            dtpShopItemEventEnd = new System.Windows.Forms.DateTimePicker();
+            dtpShopItemSaleEnd = new System.Windows.Forms.DateTimePicker();
             label21 = new System.Windows.Forms.Label();
-            dtpShopItemEventStart = new System.Windows.Forms.DateTimePicker();
+            dtpShopItemSaleStart = new System.Windows.Forms.DateTimePicker();
             groupBox2 = new System.Windows.Forms.GroupBox();
             cbShopItemLimitedType = new System.Windows.Forms.CheckBox();
             label23 = new System.Windows.Forms.Label();
@@ -110,6 +131,13 @@
             tShopItemMinLevel = new System.Windows.Forms.TextBox();
             tShopItemMaxLevel = new System.Windows.Forms.TextBox();
             tpShopTabs = new System.Windows.Forms.TabPage();
+            panel1 = new System.Windows.Forms.Panel();
+            textBox2 = new System.Windows.Forms.TextBox();
+            listView2 = new System.Windows.Forms.ListView();
+            imageList1 = new System.Windows.Forms.ImageList(components);
+            cbSubMenu = new System.Windows.Forms.ComboBox();
+            cbMainMenu = new System.Windows.Forms.ComboBox();
+            lvMenuItemsTab = new System.Windows.Forms.ListView();
             tcICS.SuspendLayout();
             tpInfo.SuspendLayout();
             tpSKUs.SuspendLayout();
@@ -126,6 +154,8 @@
             groupBox3.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox1.SuspendLayout();
+            tpShopTabs.SuspendLayout();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // tcICS
@@ -138,7 +168,7 @@
             tcICS.Location = new System.Drawing.Point(0, 0);
             tcICS.Name = "tcICS";
             tcICS.SelectedIndex = 0;
-            tcICS.Size = new System.Drawing.Size(710, 537);
+            tcICS.Size = new System.Drawing.Size(887, 546);
             tcICS.TabIndex = 0;
             // 
             // tpInfo
@@ -147,7 +177,7 @@
             tpInfo.Location = new System.Drawing.Point(4, 25);
             tpInfo.Name = "tpInfo";
             tpInfo.Padding = new System.Windows.Forms.Padding(3);
-            tpInfo.Size = new System.Drawing.Size(702, 508);
+            tpInfo.Size = new System.Drawing.Size(879, 517);
             tpInfo.TabIndex = 3;
             tpInfo.Text = "Information";
             tpInfo.UseVisualStyleBackColor = true;
@@ -159,7 +189,7 @@
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
             textBox1.ReadOnly = true;
-            textBox1.Size = new System.Drawing.Size(696, 502);
+            textBox1.Size = new System.Drawing.Size(873, 511);
             textBox1.TabIndex = 0;
             textBox1.Text = resources.GetString("textBox1.Text");
             // 
@@ -169,7 +199,7 @@
             tpSKUs.Location = new System.Drawing.Point(4, 25);
             tpSKUs.Name = "tpSKUs";
             tpSKUs.Padding = new System.Windows.Forms.Padding(3);
-            tpSKUs.Size = new System.Drawing.Size(702, 508);
+            tpSKUs.Size = new System.Drawing.Size(879, 517);
             tpSKUs.TabIndex = 0;
             tpSKUs.Text = "SKUs";
             tpSKUs.UseVisualStyleBackColor = true;
@@ -182,6 +212,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.Controls.Add(tFilterSku);
             splitContainer1.Panel1.Controls.Add(lvSKUs);
             // 
             // splitContainer1.Panel2
@@ -219,19 +250,29 @@
             splitContainer1.Panel2.Controls.Add(label4);
             splitContainer1.Panel2.Controls.Add(label3);
             splitContainer1.Panel2.Controls.Add(label1);
-            splitContainer1.Size = new System.Drawing.Size(696, 502);
-            splitContainer1.SplitterDistance = 360;
+            splitContainer1.Size = new System.Drawing.Size(873, 511);
+            splitContainer1.SplitterDistance = 451;
             splitContainer1.TabIndex = 1;
+            // 
+            // tFilterSku
+            // 
+            tFilterSku.Dock = System.Windows.Forms.DockStyle.Top;
+            tFilterSku.Location = new System.Drawing.Point(0, 0);
+            tFilterSku.Name = "tFilterSku";
+            tFilterSku.PlaceholderText = "<enter text here to filter skus>";
+            tFilterSku.Size = new System.Drawing.Size(451, 23);
+            tFilterSku.TabIndex = 1;
+            tFilterSku.TextChanged += tFilterSku_TextChanged;
             // 
             // lvSKUs
             // 
+            lvSKUs.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             lvSKUs.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3 });
-            lvSKUs.Dock = System.Windows.Forms.DockStyle.Fill;
             lvSKUs.FullRowSelect = true;
-            lvSKUs.Location = new System.Drawing.Point(0, 0);
+            lvSKUs.Location = new System.Drawing.Point(0, 29);
             lvSKUs.MultiSelect = false;
             lvSKUs.Name = "lvSKUs";
-            lvSKUs.Size = new System.Drawing.Size(360, 502);
+            lvSKUs.Size = new System.Drawing.Size(451, 482);
             lvSKUs.TabIndex = 0;
             lvSKUs.UseCompatibleStateImageBehavior = false;
             lvSKUs.View = System.Windows.Forms.View.Details;
@@ -274,7 +315,7 @@
             // 
             btnSKUNew.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnSKUNew.Enabled = false;
-            btnSKUNew.Location = new System.Drawing.Point(223, 474);
+            btnSKUNew.Location = new System.Drawing.Point(309, 483);
             btnSKUNew.Name = "btnSKUNew";
             btnSKUNew.Size = new System.Drawing.Size(104, 23);
             btnSKUNew.TabIndex = 34;
@@ -286,7 +327,7 @@
             // 
             btnSKUUpdate.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             btnSKUUpdate.Enabled = false;
-            btnSKUUpdate.Location = new System.Drawing.Point(3, 474);
+            btnSKUUpdate.Location = new System.Drawing.Point(3, 483);
             btnSKUUpdate.Name = "btnSKUUpdate";
             btnSKUUpdate.Size = new System.Drawing.Size(83, 23);
             btnSKUUpdate.TabIndex = 33;
@@ -578,7 +619,7 @@
             tpShopEntries.Location = new System.Drawing.Point(4, 25);
             tpShopEntries.Name = "tpShopEntries";
             tpShopEntries.Padding = new System.Windows.Forms.Padding(3);
-            tpShopEntries.Size = new System.Drawing.Size(702, 508);
+            tpShopEntries.Size = new System.Drawing.Size(879, 517);
             tpShopEntries.TabIndex = 1;
             tpShopEntries.Text = "Shop Items";
             tpShopEntries.UseVisualStyleBackColor = true;
@@ -591,28 +632,65 @@
             // 
             // splitContainer2.Panel1
             // 
+            splitContainer2.Panel1.Controls.Add(tFilterShopItem);
             splitContainer2.Panel1.Controls.Add(tvShopItems);
             // 
             // splitContainer2.Panel2
             // 
+            splitContainer2.Panel2.Controls.Add(btnShopItemNew);
+            splitContainer2.Panel2.Controls.Add(btnShopItemUpdate);
             splitContainer2.Panel2.Controls.Add(groupBox4);
             splitContainer2.Panel2.Controls.Add(groupBox3);
             splitContainer2.Panel2.Controls.Add(groupBox2);
             splitContainer2.Panel2.Controls.Add(groupBox1);
-            splitContainer2.Size = new System.Drawing.Size(696, 502);
-            splitContainer2.SplitterDistance = 300;
+            splitContainer2.Size = new System.Drawing.Size(873, 511);
+            splitContainer2.SplitterDistance = 376;
             splitContainer2.TabIndex = 0;
+            // 
+            // tFilterShopItem
+            // 
+            tFilterShopItem.Dock = System.Windows.Forms.DockStyle.Top;
+            tFilterShopItem.Location = new System.Drawing.Point(0, 0);
+            tFilterShopItem.Name = "tFilterShopItem";
+            tFilterShopItem.PlaceholderText = "<enter text here to filter shop items>";
+            tFilterShopItem.Size = new System.Drawing.Size(376, 23);
+            tFilterShopItem.TabIndex = 1;
+            tFilterShopItem.TextChanged += tFilterShopItem_TextChanged;
             // 
             // tvShopItems
             // 
-            tvShopItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            tvShopItems.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             tvShopItems.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
-            tvShopItems.Location = new System.Drawing.Point(0, 0);
+            tvShopItems.Location = new System.Drawing.Point(0, 29);
             tvShopItems.Name = "tvShopItems";
-            tvShopItems.Size = new System.Drawing.Size(300, 502);
+            tvShopItems.Size = new System.Drawing.Size(376, 482);
             tvShopItems.TabIndex = 0;
             tvShopItems.DrawNode += tvShopItems_DrawNode;
             tvShopItems.AfterSelect += tvShopItems_AfterSelect;
+            // 
+            // btnShopItemNew
+            // 
+            btnShopItemNew.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            btnShopItemNew.Enabled = false;
+            btnShopItemNew.Location = new System.Drawing.Point(386, 483);
+            btnShopItemNew.Name = "btnShopItemNew";
+            btnShopItemNew.Size = new System.Drawing.Size(104, 23);
+            btnShopItemNew.TabIndex = 50;
+            btnShopItemNew.Text = "Add as new";
+            btnShopItemNew.UseVisualStyleBackColor = true;
+            btnShopItemNew.Click += btnShopItemNew_Click;
+            // 
+            // btnShopItemUpdate
+            // 
+            btnShopItemUpdate.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            btnShopItemUpdate.Enabled = false;
+            btnShopItemUpdate.Location = new System.Drawing.Point(9, 483);
+            btnShopItemUpdate.Name = "btnShopItemUpdate";
+            btnShopItemUpdate.Size = new System.Drawing.Size(83, 23);
+            btnShopItemUpdate.TabIndex = 49;
+            btnShopItemUpdate.Text = "Save";
+            btnShopItemUpdate.UseVisualStyleBackColor = true;
+            btnShopItemUpdate.Click += btnShopItemUpdate_Click;
             // 
             // groupBox4
             // 
@@ -642,6 +720,7 @@
             cbShopItemAllowCart.TabIndex = 40;
             cbShopItemAllowCart.Text = "Allow shopping cart";
             cbShopItemAllowCart.UseVisualStyleBackColor = true;
+            cbShopItemAllowCart.CheckedChanged += tShopItems_Changed;
             // 
             // cbShopItemAllowGift
             // 
@@ -652,6 +731,7 @@
             cbShopItemAllowGift.TabIndex = 39;
             cbShopItemAllowGift.Text = "Allow gifting";
             cbShopItemAllowGift.UseVisualStyleBackColor = true;
+            cbShopItemAllowGift.CheckedChanged += tShopItems_Changed;
             // 
             // label12
             // 
@@ -664,11 +744,13 @@
             // 
             // tShopItemShopId
             // 
-            tShopItemShopId.Enabled = false;
             tShopItemShopId.Location = new System.Drawing.Point(158, 16);
             tShopItemShopId.Name = "tShopItemShopId";
+            tShopItemShopId.ReadOnly = true;
             tShopItemShopId.Size = new System.Drawing.Size(148, 23);
             tShopItemShopId.TabIndex = 1;
+            tShopItemShopId.Text = "<new shop item id>";
+            tShopItemShopId.TextChanged += tShopItems_Changed;
             // 
             // btnNewShopItemId
             // 
@@ -678,6 +760,7 @@
             btnNewShopItemId.TabIndex = 2;
             btnNewShopItemId.Text = "New";
             btnNewShopItemId.UseVisualStyleBackColor = true;
+            btnNewShopItemId.Click += btnNewShopItemId_Click;
             // 
             // cbShopItemIsHidden
             // 
@@ -688,6 +771,7 @@
             cbShopItemIsHidden.TabIndex = 38;
             cbShopItemIsHidden.Text = "Is Hidden";
             cbShopItemIsHidden.UseVisualStyleBackColor = true;
+            cbShopItemIsHidden.CheckedChanged += tShopItems_Changed;
             // 
             // label13
             // 
@@ -706,6 +790,7 @@
             tShopItemDisplayItemId.Size = new System.Drawing.Size(96, 23);
             tShopItemDisplayItemId.TabIndex = 25;
             tShopItemDisplayItemId.Text = "0";
+            tShopItemDisplayItemId.TextChanged += tShopItems_Changed;
             // 
             // tShopItemName
             // 
@@ -714,6 +799,7 @@
             tShopItemName.PlaceholderText = "overrides item name displayed";
             tShopItemName.Size = new System.Drawing.Size(205, 23);
             tShopItemName.TabIndex = 27;
+            tShopItemName.TextChanged += tShopItems_Changed;
             // 
             // label14
             // 
@@ -729,10 +815,10 @@
             groupBox3.Controls.Add(label19);
             groupBox3.Controls.Add(tShopItemIsSale);
             groupBox3.Controls.Add(label22);
-            groupBox3.Controls.Add(dtpShopItemEventEnd);
+            groupBox3.Controls.Add(dtpShopItemSaleEnd);
             groupBox3.Controls.Add(label21);
-            groupBox3.Controls.Add(dtpShopItemEventStart);
-            groupBox3.Location = new System.Drawing.Point(2, 350);
+            groupBox3.Controls.Add(dtpShopItemSaleStart);
+            groupBox3.Location = new System.Drawing.Point(3, 354);
             groupBox3.Name = "groupBox3";
             groupBox3.Size = new System.Drawing.Size(383, 79);
             groupBox3.TabIndex = 47;
@@ -755,6 +841,7 @@
             tShopItemIsSale.Size = new System.Drawing.Size(59, 23);
             tShopItemIsSale.TabIndex = 37;
             tShopItemIsSale.Text = "0";
+            tShopItemIsSale.TextChanged += tShopItems_Changed;
             // 
             // label22
             // 
@@ -765,12 +852,13 @@
             label22.TabIndex = 42;
             label22.Text = "to";
             // 
-            // dtpShopItemEventEnd
+            // dtpShopItemSaleEnd
             // 
-            dtpShopItemEventEnd.Location = new System.Drawing.Point(159, 49);
-            dtpShopItemEventEnd.Name = "dtpShopItemEventEnd";
-            dtpShopItemEventEnd.Size = new System.Drawing.Size(200, 23);
-            dtpShopItemEventEnd.TabIndex = 39;
+            dtpShopItemSaleEnd.Location = new System.Drawing.Point(159, 49);
+            dtpShopItemSaleEnd.Name = "dtpShopItemSaleEnd";
+            dtpShopItemSaleEnd.Size = new System.Drawing.Size(200, 23);
+            dtpShopItemSaleEnd.TabIndex = 39;
+            dtpShopItemSaleEnd.ValueChanged += tShopItems_Changed;
             // 
             // label21
             // 
@@ -781,12 +869,13 @@
             label21.TabIndex = 41;
             label21.Text = "from";
             // 
-            // dtpShopItemEventStart
+            // dtpShopItemSaleStart
             // 
-            dtpShopItemEventStart.Location = new System.Drawing.Point(159, 15);
-            dtpShopItemEventStart.Name = "dtpShopItemEventStart";
-            dtpShopItemEventStart.Size = new System.Drawing.Size(200, 23);
-            dtpShopItemEventStart.TabIndex = 40;
+            dtpShopItemSaleStart.Location = new System.Drawing.Point(159, 15);
+            dtpShopItemSaleStart.Name = "dtpShopItemSaleStart";
+            dtpShopItemSaleStart.Size = new System.Drawing.Size(200, 23);
+            dtpShopItemSaleStart.TabIndex = 40;
+            dtpShopItemSaleStart.ValueChanged += tShopItems_Changed;
             // 
             // groupBox2
             // 
@@ -795,7 +884,7 @@
             groupBox2.Controls.Add(tShopItemLimitedStockMax);
             groupBox2.Controls.Add(tShopItemRemaining);
             groupBox2.Controls.Add(label15);
-            groupBox2.Location = new System.Drawing.Point(3, 135);
+            groupBox2.Location = new System.Drawing.Point(3, 139);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new System.Drawing.Size(383, 86);
             groupBox2.TabIndex = 46;
@@ -811,6 +900,7 @@
             cbShopItemLimitedType.TabIndex = 28;
             cbShopItemLimitedType.Text = "Is Limited Stock Item";
             cbShopItemLimitedType.UseVisualStyleBackColor = true;
+            cbShopItemLimitedType.CheckedChanged += tShopItems_Changed;
             // 
             // label23
             // 
@@ -829,6 +919,7 @@
             tShopItemLimitedStockMax.Size = new System.Drawing.Size(99, 23);
             tShopItemLimitedStockMax.TabIndex = 29;
             tShopItemLimitedStockMax.Text = "100";
+            tShopItemLimitedStockMax.TextChanged += tShopItems_Changed;
             // 
             // tShopItemRemaining
             // 
@@ -837,6 +928,7 @@
             tShopItemRemaining.Size = new System.Drawing.Size(99, 23);
             tShopItemRemaining.TabIndex = 44;
             tShopItemRemaining.Text = "-1";
+            tShopItemRemaining.TextChanged += tShopItems_Changed;
             // 
             // label15
             // 
@@ -859,7 +951,7 @@
             groupBox1.Controls.Add(label17);
             groupBox1.Controls.Add(tShopItemMinLevel);
             groupBox1.Controls.Add(tShopItemMaxLevel);
-            groupBox1.Location = new System.Drawing.Point(3, 227);
+            groupBox1.Location = new System.Drawing.Point(3, 231);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new System.Drawing.Size(383, 117);
             groupBox1.TabIndex = 35;
@@ -893,6 +985,7 @@
             tShopItemBuyRestrictId.Size = new System.Drawing.Size(79, 23);
             tShopItemBuyRestrictId.TabIndex = 38;
             tShopItemBuyRestrictId.Text = "0";
+            tShopItemBuyRestrictId.TextChanged += tShopItems_Changed;
             // 
             // rbShopItemRestrictQuest
             // 
@@ -904,6 +997,7 @@
             rbShopItemRestrictQuest.Tag = "2";
             rbShopItemRestrictQuest.Text = "Requires Quest";
             rbShopItemRestrictQuest.UseVisualStyleBackColor = true;
+            rbShopItemRestrictQuest.CheckedChanged += tShopItems_Changed;
             // 
             // rbShopItemRestrictLevel
             // 
@@ -915,6 +1009,7 @@
             rbShopItemRestrictLevel.Tag = "1";
             rbShopItemRestrictLevel.Text = "Requires Level (*)";
             rbShopItemRestrictLevel.UseVisualStyleBackColor = true;
+            rbShopItemRestrictLevel.CheckedChanged += tShopItems_Changed;
             // 
             // rbShopItemRestrictNone
             // 
@@ -928,6 +1023,7 @@
             rbShopItemRestrictNone.Tag = "0";
             rbShopItemRestrictNone.Text = "None";
             rbShopItemRestrictNone.UseVisualStyleBackColor = true;
+            rbShopItemRestrictNone.CheckedChanged += tShopItems_Changed;
             // 
             // label16
             // 
@@ -955,6 +1051,7 @@
             tShopItemMinLevel.Size = new System.Drawing.Size(49, 23);
             tShopItemMinLevel.TabIndex = 32;
             tShopItemMinLevel.Text = "0";
+            tShopItemMinLevel.TextChanged += tShopItems_Changed;
             // 
             // tShopItemMaxLevel
             // 
@@ -964,22 +1061,103 @@
             tShopItemMaxLevel.Size = new System.Drawing.Size(49, 23);
             tShopItemMaxLevel.TabIndex = 33;
             tShopItemMaxLevel.Text = "0";
+            tShopItemMaxLevel.TextChanged += tShopItems_Changed;
             // 
             // tpShopTabs
             // 
+            tpShopTabs.Controls.Add(panel1);
             tpShopTabs.Location = new System.Drawing.Point(4, 25);
             tpShopTabs.Name = "tpShopTabs";
             tpShopTabs.Padding = new System.Windows.Forms.Padding(3);
-            tpShopTabs.Size = new System.Drawing.Size(702, 508);
+            tpShopTabs.Size = new System.Drawing.Size(879, 517);
             tpShopTabs.TabIndex = 2;
             tpShopTabs.Text = "Shop Tab Settings";
             tpShopTabs.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            panel1.BackgroundImage = (System.Drawing.Image)resources.GetObject("panel1.BackgroundImage");
+            panel1.Controls.Add(textBox2);
+            panel1.Controls.Add(listView2);
+            panel1.Controls.Add(cbSubMenu);
+            panel1.Controls.Add(cbMainMenu);
+            panel1.Controls.Add(lvMenuItemsTab);
+            panel1.Location = new System.Drawing.Point(8, 8);
+            panel1.Name = "panel1";
+            panel1.Size = new System.Drawing.Size(660, 500);
+            panel1.TabIndex = 0;
+            // 
+            // textBox2
+            // 
+            textBox2.Location = new System.Drawing.Point(22, 45);
+            textBox2.Name = "textBox2";
+            textBox2.PlaceholderText = "<enter filter by shop item text>";
+            textBox2.Size = new System.Drawing.Size(188, 23);
+            textBox2.TabIndex = 6;
+            // 
+            // listView2
+            // 
+            listView2.AllowDrop = true;
+            listView2.BackColor = System.Drawing.Color.FromArgb(245, 245, 235);
+            listView2.Items.AddRange(new System.Windows.Forms.ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7, listViewItem8 });
+            listView2.LargeImageList = imageList1;
+            listView2.Location = new System.Drawing.Point(22, 75);
+            listView2.MultiSelect = false;
+            listView2.Name = "listView2";
+            listView2.Size = new System.Drawing.Size(188, 342);
+            listView2.SmallImageList = imageList1;
+            listView2.TabIndex = 5;
+            listView2.TileSize = new System.Drawing.Size(255, 64);
+            listView2.UseCompatibleStateImageBehavior = false;
+            listView2.View = System.Windows.Forms.View.SmallIcon;
+            // 
+            // imageList1
+            // 
+            imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            imageList1.ImageStream = (System.Windows.Forms.ImageListStreamer)resources.GetObject("imageList1.ImageStream");
+            imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            imageList1.Images.SetKeyName(0, "none.png");
+            // 
+            // cbSubMenu
+            // 
+            cbSubMenu.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cbSubMenu.FormattingEnabled = true;
+            cbSubMenu.Items.AddRange(new object[] { "Sub Menu 1-1", "Sub Menu 1-2", "Sub Menu 1-3", "Sub Menu 1-4", "Sub Menu 1-5", "Sub Menu 1-6", "Sub Menu 1-7" });
+            cbSubMenu.Location = new System.Drawing.Point(452, 45);
+            cbSubMenu.Name = "cbSubMenu";
+            cbSubMenu.Size = new System.Drawing.Size(165, 24);
+            cbSubMenu.TabIndex = 4;
+            // 
+            // cbMainMenu
+            // 
+            cbMainMenu.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cbMainMenu.FormattingEnabled = true;
+            cbMainMenu.Items.AddRange(new object[] { "Main Menu 1", "Main Menu 2", "Main Menu 3", "Main Menu 4", "Main Menu 5", "Main Menu 6" });
+            cbMainMenu.Location = new System.Drawing.Point(252, 45);
+            cbMainMenu.Name = "cbMainMenu";
+            cbMainMenu.Size = new System.Drawing.Size(165, 24);
+            cbMainMenu.TabIndex = 3;
+            // 
+            // lvMenuItemsTab
+            // 
+            lvMenuItemsTab.AllowDrop = true;
+            lvMenuItemsTab.BackColor = System.Drawing.Color.FromArgb(245, 245, 235);
+            lvMenuItemsTab.Items.AddRange(new System.Windows.Forms.ListViewItem[] { listViewItem9, listViewItem10, listViewItem11, listViewItem12, listViewItem13, listViewItem14, listViewItem15, listViewItem16 });
+            lvMenuItemsTab.LargeImageList = imageList1;
+            lvMenuItemsTab.Location = new System.Drawing.Point(252, 75);
+            lvMenuItemsTab.MultiSelect = false;
+            lvMenuItemsTab.Name = "lvMenuItemsTab";
+            lvMenuItemsTab.Size = new System.Drawing.Size(365, 342);
+            lvMenuItemsTab.SmallImageList = imageList1;
+            lvMenuItemsTab.TabIndex = 1;
+            lvMenuItemsTab.TileSize = new System.Drawing.Size(255, 64);
+            lvMenuItemsTab.UseCompatibleStateImageBehavior = false;
             // 
             // ICSForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(710, 537);
+            ClientSize = new System.Drawing.Size(887, 546);
             Controls.Add(tcICS);
             Name = "ICSForm";
             Text = "ICSForm";
@@ -989,12 +1167,14 @@
             tpInfo.PerformLayout();
             tpSKUs.ResumeLayout(false);
             splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel1.PerformLayout();
             splitContainer1.Panel2.ResumeLayout(false);
             splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
             tpShopEntries.ResumeLayout(false);
             splitContainer2.Panel1.ResumeLayout(false);
+            splitContainer2.Panel1.PerformLayout();
             splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
             splitContainer2.ResumeLayout(false);
@@ -1006,6 +1186,9 @@
             groupBox2.PerformLayout();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            tpShopTabs.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -1083,8 +1266,8 @@
         private System.Windows.Forms.CheckBox cbShopItemIsHidden;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.DateTimePicker dtpShopItemEventStart;
-        private System.Windows.Forms.DateTimePicker dtpShopItemEventEnd;
+        private System.Windows.Forms.DateTimePicker dtpShopItemSaleStart;
+        private System.Windows.Forms.DateTimePicker dtpShopItemSaleEnd;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TextBox tShopItemRemaining;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -1092,5 +1275,18 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox cbShopItemAllowCart;
         private System.Windows.Forms.CheckBox cbShopItemAllowGift;
+        private System.Windows.Forms.Button btnShopItemNew;
+        private System.Windows.Forms.Button btnShopItemUpdate;
+        private System.Windows.Forms.TextBox tFilterSku;
+        private System.Windows.Forms.TextBox tFilterShopItem;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ListView lvMenuItemsTab;
+        private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox cbMainMenu;
+        private System.Windows.Forms.ComboBox cbSubMenu;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.ListView listView2;
     }
 }
