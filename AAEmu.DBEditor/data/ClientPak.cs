@@ -11,7 +11,13 @@ namespace AAEmu.DBEditor.data
         public string FileName { get; private set; }
         public AAPak Pak { get; private set; }
 
+        /// <summary>
+        /// Default Icons Set 64x64
+        /// </summary>
         public ImageList Icons { get; private set; }
+        public ImageList Icons16 { get; private set; }
+        public ImageList Icons32 { get; private set; }
+        public ImageList Icons128 { get; private set; }
         public static string DefaultPakIcon = "charge_package.dds";
 
         public bool Initialize()
@@ -20,12 +26,46 @@ namespace AAEmu.DBEditor.data
             {
                 Site = null,
                 ColorDepth = ColorDepth.Depth32Bit,
-                ImageSize = new Size(48, 48),
+                ImageSize = new Size(64, 64),
                 ImageStream = null,
                 Tag = null,
                 TransparentColor = default
             };
             Icons.Images.Add("noicon", (Image)Resources.ResourceManager.GetObject("noicon"));
+
+            Icons16 = new ImageList
+            {
+                Site = null,
+                ColorDepth = ColorDepth.Depth32Bit,
+                ImageSize = new Size(16, 16),
+                ImageStream = null,
+                Tag = null,
+                TransparentColor = default
+            };
+            Icons16.Images.Add("noicon", (Image)Resources.ResourceManager.GetObject("noicon"));
+
+            Icons32 = new ImageList
+            {
+                Site = null,
+                ColorDepth = ColorDepth.Depth32Bit,
+                ImageSize = new Size(32, 32),
+                ImageStream = null,
+                Tag = null,
+                TransparentColor = default
+            };
+            Icons32.Images.Add("noicon", (Image)Resources.ResourceManager.GetObject("noicon"));
+
+            Icons128 = new ImageList
+            {
+                Site = null,
+                ColorDepth = ColorDepth.Depth32Bit,
+                ImageSize = new Size(128, 128),
+                ImageStream = null,
+                Tag = null,
+                TransparentColor = default
+            };
+            Icons128.Images.Add("noicon", (Image)Resources.ResourceManager.GetObject("noicon"));
+
             return true;
         }
 
@@ -52,6 +92,9 @@ namespace AAEmu.DBEditor.data
 
             MainForm.Self.UpdateProgress("Loading default icon ...");
             Icons.Images.Clear();
+            Icons16.Images.Clear();
+            Icons32.Images.Clear();
+            Icons128.Images.Clear();
             GetIconIndexByName(DefaultPakIcon);
 
             FileName = Pak.GpFilePath;
@@ -96,6 +139,9 @@ namespace AAEmu.DBEditor.data
                 return -1;
 
             Icons.Images.Add(iconName, bmp);
+            Icons16.Images.Add(iconName, bmp);
+            Icons32.Images.Add(iconName, bmp);
+            Icons128.Images.Add(iconName, bmp);
             return Icons.Images.Count - 1;
         }
 

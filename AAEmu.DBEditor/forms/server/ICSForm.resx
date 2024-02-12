@@ -132,7 +132,8 @@ You can use this to offer items in bulk at a discount. If you want to sell somth
 You can attach multiple SKUs to one shop item if wanted. Here you decide if this entry is giftable or not.
 
 3) Setup the Marketplace Shop Tab items
-You can define which shop items appear on which tabs. It's possible to put one Shop Item on more than one tab without having to create a seperate entry for it. This ensures that prices are consistent across all tabs.</value>
+You can define which shop items appear on which tabs. It's possible to put one Shop Item on more than one tab without having to create a seperate entry for it. This ensures that prices are consistent across all tabs.
+You can simply drag-and-drop items into place.</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="panel1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -144,7 +145,7 @@ You can define which shop items appear on which tabs. It's possible to put one S
         ybWFe4U7UrYj+dp0kVOK1xTb2YL1c0/1wvCiMzWpdJntjDDKOBPomBRYJkueqKyOKB4J2Y9X8LcF/glx
         meJaxhLHECvYGIEf9Qe/u/XSPbFiUjgONU++/9YJtVvwten7n4e+/3UEVY9w4ZT8KwfQ/y76Zknr2Iem
         dTi7LGnmNpxvQOtDznCNQKqSqaXT8Hoi3zQDLddQP1fs7Wef4ztISldjV7C7B10ZyZ6v8O668t7+PBP0
-        R/wbt1Bywh7TunYAAAAJcEhZcwAACw8AAAsPAZL5A6UAAAAHdElNRQfoAgsTBTdAqKtNAAAAGXRFWHRD
+        R/wbt1Bywh7TunYAAAAJcEhZcwAACwwAAAsMAT9AIsgAAAAHdElNRQfoAgsTBTdAqKtNAAAAGXRFWHRD
         b21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAA/fxJREFUeF6M/febV0eWp4vOH3KfOXNnpnu6qrtK
         5atkEN6DDPJCWAmB8N57Eu9dkkA6SO+9hyQzIb333nsLSKrqPndm+nPfFd9MRFXX3HN/WE/EDr9j7x3x
         xgqz/9PK9/+5d8V7//w/v1r6z//+1dKfa/mSn//v5Ut+9u9T8uWSn2m5ub8mhPvfhP9fyKT58/9JPEvj
@@ -6823,8 +6824,8 @@ You can define which shop items appear on which tabs. It's possible to put one S
         AAEAAAD/////AQAAAAAAAAAMAgAAAEZTeXN0ZW0uV2luZG93cy5Gb3JtcywgQ3VsdHVyZT1uZXV0cmFs
         LCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5BQEAAAAmU3lzdGVtLldpbmRvd3MuRm9ybXMu
         SW1hZ2VMaXN0U3RyZWFtZXIBAAAABERhdGEHAgIAAAAJAwAAAA8DAAAAAD4AAAJNU0Z0AUkBTAMBAQAB
-        MAEAATABAAFAAQABQAEAA/8BAAEhAQAI/wFCAU0BNgcAATYDAAEoBAABAQIAAUADAAEBAQABIAcAAQH/
-        AP8A/wD/AP8A/wD/AP8AUQAD3QH/hAADnAHu/wD/AP8AbwAD1AH/AYsBhQF9Af8BfQFdATMB/wGLAYUB
+        oAEAAaABAAFAAQABQAEAA/8BAAEhAQAI/wFCAU0BNgcAATYDAAEoBAABAQIAAUADAAEBAQABIAcAAQH/
+        AP8A/wD/AP8A/wD/AP8AUQAD3QH/hAADbAHu/wD/AP8AbwAD1AH/AYsBhQF9Af8BfQFdATMB/wGLAYUB
         fQH/A9EB/3QAA8kB/wGGAX0BcgH/AX8BaAFJAf8BsgGxAa8B//8A/wD/AGcAA84B/wF2AWcBUwH/AagB
         YQEHAf8B2gGHAS0B/wGsAWUBCwH/AXUBXwFEAf8DyAH/bAADvgH/AXYBWAExAf8BugFvARUB/wHPAX8B
         JQH/AXkBWAEsAf8BqAGmAaMB//8A/wD/AF8AA84B/wF1AWYBUQH/AakBYgEIAf8B6AGSATgC/wGkAUoB
@@ -6884,45 +6885,45 @@ You can define which shop items appear on which tabs. It's possible to put one S
         PAL/AaYBSwL/AaoBUgL/Aa4BWwH/AfQBpQFUAf8BvAFuARAB/wF4AV4BQwH/A8gB/wQAA78B/wF9AVsB
         MgH/AcgBegEdAf8B+wGtAV0C/wGtAVgC/wGpAVAC/wGjAUYC/wGZATUC/wGYATMC/wGXATIC/wGXATEC
         /wGXATEC/wGXATEC/wGXATEC/wGXATEC/wGXATEC/wGXATEC/wGXATEC/wGXATIC/wGYATMC/wGZATUC
-        /wGdATsC/wGoAU4C/wGtAVgB/wH9AbABYAH/Ac4BfwEmAf8BfwFbAS4B/wO8Af//AP8A/wAfAAOcAe4B
+        /wGdATsC/wGoAU4C/wGtAVgB/wH9AbABYAH/Ac4BfwEmAf8BfwFbAS4B/wO8Af//AP8A/wAfAANsAe4B
         nAGXAZAB/wGCAVwBLAH/AeIBlgFBAv8BsAFgAv8BrAFXAv8BqAFQAv8BngFAAv8BmQE1Av8BmAE0Av8B
         lwEyAv8BlwEyAv8BlwEyAv8BlwEyAv8BlwEyAv8BlwEyAv8BlwEyAv8BlwEyAv8BlwEyAv8BlwEzAv8B
         mAE0Av8BnQE9Av8BpwFMAv8BqwFUAv8BrgFcAf8B9AGnAVYB/wG9AW8BEAH/AXcBXgFCAf8DnQH/AX4B
         XAEyAf8ByQF6AR8B/wH7Aa4BXwL/Aa0BWQL/AaoBUgL/AaMBRwL/AZkBNgL/AZgBNAL/AZcBMwL/AZcB
         MgL/AZcBMgL/AZcBMgL/AZcBMgL/AZcBMgL/AZcBMgL/AZcBMgL/AZcBMgL/AZcBMwL/AZgBNAL/AZkB
-        NgL/AZ0BPAL/AagBTgL/AawBWQH/Af0BsAFhAf8BzwGAASYB/wF/AVsBLgH/A7wB//8A/wD/ACcAA5wB
+        NgL/AZ0BPAL/AagBTgL/AawBWQH/Af0BsAFhAf8BzwGAASYB/wF/AVsBLgH/A7wB//8A/wD/ACcAA2wB
         7gGcAZcBkQH/AYMBXAEtAf8B4wGWAUIC/wGzAWMC/wGuAVoC/wGqAVMC/wGfAUAC/wGaATcC/wGZATYC
         /wGYATQC/wGYATQC/wGYATQC/wGYATQC/wGYATQC/wGYATQC/wGYATQC/wGYATQC/wGYATQC/wGYATUC
         /wGZATYC/wGeAT8C/wGpAVAC/wGsAVgC/wGxAV8B/wH1AacBVwH/Ab8BcAERAf8BfwFcATIB/wHKAXoB
         HwH/AfsBrwFfAv8BrwFcAv8BrAFWAv8BpgFLAv8BmgE4Av8BmQE2Av8BmAE1Av8BmAE0Av8BmAE0Av8B
         mAE0Av8BmAE0Av8BmAE0Av8BmAE0Av8BmAE0Av8BmAE0Av8BmAE1Av8BmQE2Av8BmgE4Av8BnAE+Av8B
-        qQFRAv8BrwFcAf8B/QGxAWQB/wHQAYIBKQH/AYABXAEwAf8DvAH//wD/AP8ALwADnAHuAZwBlwGRAf8B
+        qQFRAv8BrwFcAf8B/QGxAWQB/wHQAYIBKQH/AYABXAEwAf8DvAH//wD/AP8ALwADbAHuAZwBlwGRAf8B
         hQFcAS0B/wHjAZkBRQL/AbUBaQL/AbEBYAL/Aa0BVwL/AaABQAL/AZsBOQL/AZoBOAL/AZkBNgL/AZkB
         NgL/AZkBNgL/AZkBNgL/AZkBNgL/AZkBNgL/AZkBNgL/AZkBNgL/AZkBNgL/AZkBNwL/AZoBOAL/AZ8B
         QwL/AawBVQL/Aa8BWwL/AbEBYAH/AfUBpgFUAf8B0QGAASQB/wH7Aa4BXgL/AbEBXwL/Aa4BWQL/AakB
         UQL/AZ0BPAL/AZoBOAL/AZkBNwL/AZkBNgL/AZkBNgL/AZkBNgL/AZkBNgL/AZkBNgL/AZkBNgL/AZkB
         NgL/AZkBNgL/AZkBNwL/AZoBOAL/AZsBOgL/AZ0BPgL/AaoBVAL/AbIBYgH/Af0BtAFoAf8B0gGDASoB
-        /wGDAVwBMAH/A7wB//8A/wD/ADcAA5wB7gGcAZcBkQH/AYYBXQEtAf8B5QGaAUcC/wG3AWwC/wGzAWMC
+        /wGDAVwBMAH/A7wB//8A/wD/ADcAA2wB7gGcAZcBkQH/AYYBXQEtAf8B5QGaAUcC/wG3AWwC/wGzAWMC
         /wGuAVkC/wGfAUEC/wGcAToC/wGbATkC/wGaATcC/wGaATcC/wGaATcC/wGaATcC/wGaATcC/wGaATcC
         /wGaATcC/wGaATcC/wGaATcC/wGaATgC/wGbATkC/wGiAUQC/wGuAVcC/wGvAVoC/wGwAV0C/wGxAV4C
         /wGwAVwC/wGuAVkC/wGrAVIC/wGeAT0C/wGbATkC/wGaATgC/wGaATcC/wGaATcC/wGaATcC/wGaATcC
         /wGaATcC/wGaATcC/wGaATcC/wGaATcC/wGaATgC/wGbATkC/wGcATsC/wGeAT8C/wGsAVYC/wG0AWUB
-        /wH9AbYBawH/AdMBhAErAf8BhAFcATAB/wO8Af//AP8A/wA/AAOcAe4BnAGXAZEB/wGHAV0BLQH/AecB
+        /wH9AbYBawH/AdMBhAErAf8BhAFcATAB/wO8Af//AP8A/wA/AANsAe4BnAGXAZEB/wGHAV0BLQH/AecB
         nAFLAv8BuQFvAv8BtQFmAv8BsAFcAv8BoAFBAv8BnQE8Av8BnAE7Av8BmwE5Av8BmwE5Av8BmwE5Av8B
         mwE5Av8BmwE5Av8BmwE5Av8BmwE5Av8BmwE5Av8BmwE5Av8BmwE6Av8BnAE7Av8BowFFAv8BrwFYAv8B
         sAFaAv8BsAFaAv8BrwFZAv8BrAFUAv8BnwE+Av8BnAE7Av8BmwE6Av8BmwE5Av8BmwE5Av8BmwE5Av8B
         mwE5Av8BmwE5Av8BmwE5Av8BmwE5Av8BmwE5Av8BmwE6Av8BnAE7Av8BnQE9Av8BnwFBAv8BrAFXAv8B
-        tgFpAf8B/QG4AW8B/wHUAYUBLQH/AYQBXQEwAf8DvAH//wD/AP8ARwADnAHuAZwBlwGRAf8BhwFeAS0B
+        tgFpAf8B/QG4AW8B/wHUAYUBLQH/AYQBXQEwAf8DvAH//wD/AP8ARwADbAHuAZwBlwGRAf8BhwFeAS0B
         /wHoAZ0BTAL/AbsBcgL/AbcBagL/AbEBXgL/AZ8BQwL/AZ4BPgL/AZ0BPQL/AZwBOwL/AZwBOwL/AZwB
         OwL/AZwBOwL/AZwBOwL/AZwBOwL/AZwBOwL/AZwBOwL/AZwBOwL/AZwBPAL/AZ0BPQL/AaMBRwL/AbAB
         WQL/AbABWgL/Aa0BVgL/AZ8BQQL/AZwBPAL/AZwBPAL/AZwBOwL/AZwBOwL/AZwBOwL/AZwBOwL/AZwB
         OwL/AZwBOwL/AZwBOwL/AZwBOwL/AZwBPAL/AZ0BPQL/AZ4BPwL/AaABQwL/Aa0BWQL/AbgBbQH/Af4B
-        ugFzAf8B1QGIAS4B/wGEAV0BMAH/A7wB//8A/wD/AE8AA5wB7gGdAZcBkQH/AYcBXgEtAf8B6AGeAU8C
+        ugFzAf8B1QGIAS4B/wGEAV0BMAH/A7wB//8A/wD/AE8AA2wB7gGdAZcBkQH/AYcBXgEtAf8B6AGeAU8C
         /wG8AXYC/wG5AW4C/wGxAV4C/wGgAUMC/wGfAUAC/wGeAT8C/wGdAT0C/wGdAT0C/wGdAT0C/wGdAT0C
         /wGdAT0C/wGdAT0C/wGdAT0C/wGdAT0C/wGdAT0C/wGdAT0C/wGdAT0C/wGjAUgC/wGuAVkC/wGfAUIC
         /wGdAT0C/wGdAT0C/wGdAT0C/wGdAT0C/wGdAT0C/wGdAT0C/wGdAT0C/wGdAT0C/wGdAT0C/wGdAT0C
         /wGdAT4C/wGeAT8C/wGfAUEC/wGhAUUC/wGtAVkC/wG6AXAB/wH+AbsBdgH/AdcBiAEvAf8BhQFdATAB
-        /wO8Af//AP8A/wBXAAOcAe4BnQGXAZEB/wGIAV4BLwH/AekBoAFPAv8BvgF5Av8BugFyAv8BsAFeAv8B
+        /wO8Af//AP8A/wBXAANsAe4BnQGXAZEB/wGIAV4BLwH/AekBoAFPAv8BvgF5Av8BugFyAv8BsAFeAv8B
         oAFEAv8BnwFBAv8BngFAAv8BnQE+Av8BnQE+Av8BnQE+Av8BnQE+Av8BnQE+Av8BnQE+Av8BnQE+Av8B
         nQE+Av8BnQE+Av8BnQE+Av8BnQE+Av8BnQFAAv8BnQE+Av8BnQE+Av8BnQE+Av8BnQE+Av8BnQE+Av8B
         nQE+Av8BnQE+Av8BnQE+Av8BnQE+Av8BnQE+Av8BnQE/Av8BngFAAv8BnwFCAv8BoQFGAv8BrAFaAv8B

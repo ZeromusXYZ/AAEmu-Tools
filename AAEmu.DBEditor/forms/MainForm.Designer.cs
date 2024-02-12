@@ -255,7 +255,7 @@ namespace AAEmu.DBEditor
             // 
             MMServerAccounts.Enabled = false;
             MMServerAccounts.Name = "MMServerAccounts";
-            MMServerAccounts.Size = new System.Drawing.Size(180, 22);
+            MMServerAccounts.Size = new System.Drawing.Size(129, 22);
             MMServerAccounts.Text = "Accounts";
             MMServerAccounts.Click += MMServerAccounts_Click;
             // 
@@ -263,26 +263,26 @@ namespace AAEmu.DBEditor
             // 
             MMServerCharacters.Enabled = false;
             MMServerCharacters.Name = "MMServerCharacters";
-            MMServerCharacters.Size = new System.Drawing.Size(180, 22);
+            MMServerCharacters.Size = new System.Drawing.Size(129, 22);
             MMServerCharacters.Text = "Characters";
             // 
             // MMServerGuilds
             // 
             MMServerGuilds.Enabled = false;
             MMServerGuilds.Name = "MMServerGuilds";
-            MMServerGuilds.Size = new System.Drawing.Size(180, 22);
+            MMServerGuilds.Size = new System.Drawing.Size(129, 22);
             MMServerGuilds.Text = "Guilds";
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
+            toolStripMenuItem2.Size = new System.Drawing.Size(126, 6);
             // 
             // MMServerICS
             // 
             MMServerICS.Enabled = false;
             MMServerICS.Name = "MMServerICS";
-            MMServerICS.Size = new System.Drawing.Size(180, 22);
+            MMServerICS.Size = new System.Drawing.Size(129, 22);
             MMServerICS.Text = "Cash Shop";
             MMServerICS.Click += MMServerICS_Click;
             // 
@@ -296,7 +296,7 @@ namespace AAEmu.DBEditor
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(80, 33);
+            label3.Location = new System.Drawing.Point(86, 33);
             label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label3.Name = "label3";
             label3.Size = new System.Drawing.Size(60, 16);
@@ -306,7 +306,7 @@ namespace AAEmu.DBEditor
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(80, 60);
+            label2.Location = new System.Drawing.Point(86, 60);
             label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(64, 16);
@@ -316,7 +316,7 @@ namespace AAEmu.DBEditor
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new System.Drawing.Point(80, 87);
+            label4.Location = new System.Drawing.Point(86, 87);
             label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label4.Name = "label4";
             label4.Size = new System.Drawing.Size(48, 16);
@@ -376,7 +376,7 @@ namespace AAEmu.DBEditor
             TestPanel.Location = new System.Drawing.Point(14, 33);
             TestPanel.Margin = new System.Windows.Forms.Padding(4);
             TestPanel.Name = "TestPanel";
-            TestPanel.Size = new System.Drawing.Size(59, 62);
+            TestPanel.Size = new System.Drawing.Size(64, 64);
             TestPanel.TabIndex = 11;
             // 
             // statusStrip1

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace AAEmu.DBEditor.forms.server
 {
@@ -28,20 +29,41 @@ namespace AAEmu.DBEditor.forms.server
             MainForm.Self.AddOwnedForm(this);
             SelectedSKU = null;
             SelectedShopItem = null;
+            // Populate Menu Dropdowns
+
+            // Main Menu Names (4905 -> 4910)
+            cbMainMenu.Items.Clear();
+            for (var m = 1; m <= 6; m++)
+                cbMainMenu.Items.Add(Data.Server.GetText("ui_texts", "text", 4904 + m, "main_menu_" + m.ToString()));
+            cbMainMenu.SelectedIndex = 0;
+
+            // Sub menu for main menu 1 (4911->4917)
+            cbSubMenu.Items.Clear();
+            for (var s = 1; s <= 7; s++)
+            {
+                var t = Data.Server.GetText("ui_texts", "text", 4910 + s, string.Empty);
+                if (string.IsNullOrWhiteSpace(t))
+                    t = "sub_menu_1_" + s.ToString();
+                cbSubMenu.Items.Add(t);
+            }
+
+            cbSubMenu.SelectedIndex = 0;
+            lvMenuItemsTab.ListViewItemSorter = new CompareMenuTabItemsByIndex(lvMenuItemsTab);
             FillSKUList();
             FillShopItemList();
-            FillShopTabs();
+            FillShopTabsPickList();
+            FillShopTabsPage();
         }
 
         private void FillSKUList()
         {
             var skus = Data.MySqlDb.Game.IcsSkus.ToList();
             lvSKUs.Items.Clear();
-            lvSKUs.SmallImageList = Data.Client.Icons;
+            lvSKUs.SmallImageList = Data.Client.Icons32;
             SelectedSKU = null;
             foreach (var skuItem in skus)
             {
-                if (IsSkuFilteredOut(skuItem))
+                if (IsSkuFilteredOut(tFilterSku.Text, skuItem))
                     continue;
 
                 var skuIcon = lvSKUs.Items.Add(skuItem.Sku.ToString());
@@ -64,9 +86,9 @@ namespace AAEmu.DBEditor.forms.server
             }
         }
 
-        private bool IsSkuFilteredOut(IcsSkus skuItem)
+        private bool IsSkuFilteredOut(string rawFilter, IcsSkus skuItem)
         {
-            var filterWords = tFilterSku.Text.ToLower().Split(" ").ToList();
+            var filterWords = rawFilter.ToLower().Split(" ").ToList();
             if (filterWords.Count == 0)
                 return false;
 
@@ -93,13 +115,13 @@ namespace AAEmu.DBEditor.forms.server
         {
             var shopItems = Data.MySqlDb.Game.IcsShopItems.ToList();
             tvShopItems.Nodes.Clear();
-            tvShopItems.ImageList = Data.Client.Icons;
+            tvShopItems.ImageList = Data.Client.Icons32;
             cbSKUShopEntryId.Items.Clear();
             cbSKUShopEntryId.Items.Add("0");
             foreach (var shopItem in shopItems)
             {
                 var subSKUs = Data.MySqlDb.Game.IcsSkus.Where(x => x.ShopId == shopItem.ShopId).OrderBy(x => x.Position);
-                if (IsShopItemFilteredOut(shopItem, subSKUs))
+                if (IsShopItemFilteredOut(tFilterShopItem.Text, shopItem, subSKUs))
                     continue;
 
                 cbSKUShopEntryId.Items.Add(shopItem.ShopId);
@@ -155,9 +177,9 @@ namespace AAEmu.DBEditor.forms.server
             }
         }
 
-        private bool IsShopItemFilteredOut(IcsShopItems shopItem, IOrderedQueryable<IcsSkus> subSKUs)
+        private bool IsShopItemFilteredOut(string rawFilter, IcsShopItems shopItem, IOrderedQueryable<IcsSkus> subSKUs)
         {
-            var filterWords = tFilterShopItem.Text.ToLower().Split(" ").ToList();
+            var filterWords = rawFilter.ToLower().Split(" ").ToList();
             if (filterWords.Count == 0)
                 return false;
 
@@ -203,9 +225,108 @@ namespace AAEmu.DBEditor.forms.server
             return false;
         }
 
-        private void FillShopTabs()
+        private void FillShopTabsPickList()
         {
-            // Do nothing
+            // Filter Left Side
+            var shopItems = Data.MySqlDb.Game.IcsShopItems.ToList();
+            lvMenuShopItemList.Items.Clear();
+            lvMenuShopItemList.SmallImageList = Data.Client.Icons32;
+            lvMenuShopItemList.LargeImageList = Data.Client.Icons32;
+            foreach (var shopItem in shopItems)
+            {
+                var subSKUs = Data.MySqlDb.Game.IcsSkus.Where(x => x.ShopId == shopItem.ShopId).OrderBy(x => x.Position);
+                if (IsShopItemFilteredOut(tFilterMenuShopItemList.Text, shopItem, subSKUs))
+                    continue;
+
+                var itemNode = lvMenuShopItemList.Items.Add(shopItem.Name);
+                itemNode.Tag = shopItem;
+                long displayIconItemId = shopItem.DisplayItemId;
+                var displayName = shopItem.Name;
+
+                foreach (var subSku in subSKUs)
+                {
+                    var itemEntry = Data.Server.CompactSqlite.Items.FirstOrDefault(x => x.Id == subSku.ItemId);
+                    var subItemName = "<item:" + subSku.ItemId.ToString() + ">";
+                    if (itemEntry != null)
+                        subItemName = Data.Server.GetText("items", "name", (long)subSku.ItemId, itemEntry.Name);
+
+                    if ((displayIconItemId <= 0) && (subSku.ItemId > 0))
+                        displayIconItemId = (long)subSku.ItemId;
+
+                    if (string.IsNullOrWhiteSpace(displayName))
+                    {
+                        displayName = subItemName;
+                        break;
+                    }
+                }
+
+                itemNode.Text = displayName;
+                itemNode.ImageIndex = Data.Client.GetIconIndexByItemTemplateId(displayIconItemId);
+            }
+        }
+
+        private void FillShopTabsPage()
+        {
+            // Fill Tab's page
+            var mainMenu = cbMainMenu.SelectedIndex;
+            var subMenu = cbSubMenu.SelectedIndex;
+            lvMenuItemsTab.Items.Clear();
+            lvMenuItemsTab.LargeImageList = Data.Client.Icons;
+            lvMenuItemsTab.SmallImageList = Data.Client.Icons;
+
+            if (mainMenu < 0 || subMenu < 0)
+                return;
+
+            var itemPerPage = (mainMenu == 1 || subMenu == 1) ? 4 : 8;
+
+            // Add one because of how it's used in the game and DB
+            mainMenu++;
+            subMenu++;
+
+            // Grab tab's contents
+            var tabItems = Data.MySqlDb.Game.IcsMenu.Where(x => (x.MainTab == mainMenu) && (x.SubTab == subMenu)).OrderBy(x => x.TabPos).ToList();
+            lPageCount.Text = Math.Ceiling(tabItems.Count * 1f / itemPerPage).ToString() + " page(s)";
+            foreach (var menuItem in tabItems)
+            {
+                // Grab the entry's shopItem
+                var shopItem = Data.MySqlDb.Game.IcsShopItems.FirstOrDefault(x => x.ShopId == menuItem.ShopId);
+                if (shopItem == null)
+                    continue; // Not found? Ignore!
+
+                var subSKUs = Data.MySqlDb.Game.IcsSkus.Where(x => x.ShopId == shopItem.ShopId).OrderBy(x => x.Position).ToList();
+
+                var displayName = shopItem.Name;
+                var displayItemId = shopItem.DisplayItemId;
+
+                // Grab name to display
+                if (string.IsNullOrEmpty(displayName))
+                    foreach (var skuItem in subSKUs)
+                    {
+                        if (skuItem.ItemId <= 0)
+                            continue;
+
+                        displayName = Data.Server.GetText("items", "name", (long)skuItem.ItemId, string.Empty);
+
+                        if (!string.IsNullOrEmpty(displayName))
+                            break;
+                    }
+
+                // Grab itemId of what we want to use as a icon
+                if (displayItemId <= 0)
+                    foreach (var sku in subSKUs)
+                    {
+                        if (sku.ItemId <= 0)
+                            continue;
+                        displayItemId = (uint)sku.ItemId;
+                        break;
+                    }
+
+                var newItem = new ListViewItem();
+                newItem.Tag = menuItem;
+                newItem.Text = displayName;
+                newItem.ImageIndex = Data.Client.GetIconIndexByItemTemplateId(displayItemId);
+                lvMenuItemsTab.Items.Add(newItem);
+            }
         }
 
         private void lvSKUs_SelectedIndexChanged(object sender, EventArgs e)
@@ -395,7 +516,8 @@ namespace AAEmu.DBEditor.forms.server
                 }
                 FillSKUList();
                 FillShopItemList();
-                FillShopTabs();
+                FillShopTabsPickList();
+                FillShopTabsPage();
             }
             catch (Exception ex)
             {
@@ -601,7 +723,8 @@ namespace AAEmu.DBEditor.forms.server
                 }
                 FillSKUList();
                 FillShopItemList();
-                FillShopTabs();
+                FillShopTabsPickList();
+                FillShopTabsPage();
             }
             catch (Exception ex)
             {
@@ -630,9 +753,87 @@ namespace AAEmu.DBEditor.forms.server
             FillShopItemList();
         }
 
-        private void lvMenuItemsTab_ItemDrag(object sender, ItemDragEventArgs e)
+        private void lvMenuShopItemList_MouseDown(object sender, MouseEventArgs e)
         {
-            
+            var underCursor = lvMenuShopItemList.GetItemAt(e.X, e.Y);
+            if (underCursor == null)
+                return;
+            underCursor.Selected = true;
+            if (underCursor.Tag is IcsShopItems shopItem)
+                lvMenuShopItemList.DoDragDrop(shopItem, DragDropEffects.Link);
+        }
+
+        private void tFilterMenuShopItemList_TextChanged(object sender, EventArgs e)
+        {
+            FillShopTabsPickList();
+        }
+
+        private void lvMenuItemsTab_DragEnter(object sender, DragEventArgs e)
+        {
+            var shopItem = e.Data.GetData(typeof(IcsShopItems)) as IcsShopItems;
+            if (shopItem != null)
+            {
+                e.Effect = DragDropEffects.Link;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void lvMenuItemsTab_DragLeave(object sender, EventArgs e)
+        {
+            // Nothing to do
+        }
+
+        private void lvMenuItemsTab_DragDrop(object sender, DragEventArgs e)
+        {
+            var shopItem = e.Data.GetData(typeof(IcsShopItems)) as IcsShopItems;
+            if (shopItem == null)
+            {
+                e.Effect = DragDropEffects.None;
+                return;
+            }
+
+            var targetPoint = lvMenuItemsTab.PointToClient(new Point(e.X, e.Y));
+            var newItem = new ListViewItem();
+            newItem.Text = shopItem.ShopId.ToString();
+
+            var targetItemIndex = lvMenuItemsTab.InsertionMark.NearestIndex(targetPoint);
+            if (targetItemIndex >= 0)
+            {
+                lvMenuItemsTab.Items.Insert(targetItemIndex, newItem);
+            }
+            else
+            {
+                lvMenuItemsTab.Items.Add(newItem);
+            }
+            //lvMenuItemsTab.Sort();
+        }
+
+        private void cbMenuTab_Changed(object sender, EventArgs e)
+        {
+            FillShopTabsPage();
+        }
+
+        private void cbMainMenu_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Update sub menu names
+            // Sub menu for main menu X (4911-> )
+            // cbSubMenu.Items.Clear();
+            for (var s = 1; s <= 7; s++)
+            {
+                var t = Data.Server.GetText("ui_texts", "text", 4910 + s + (cbMainMenu.SelectedIndex * 7), string.Empty);
+                if (string.IsNullOrWhiteSpace(t))
+                    t = "sub_menu_" + (cbMainMenu.SelectedIndex + 1).ToString() + "_" + s.ToString();
+                cbSubMenu.Items[s - 1] = t;
+            }
+            FillShopTabsPage();
+        }
+
+        private void cbSubMenu_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FillShopTabsPage();
         }
     }
 }

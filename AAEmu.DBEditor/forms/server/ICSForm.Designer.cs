@@ -132,8 +132,9 @@
             tShopItemMaxLevel = new System.Windows.Forms.TextBox();
             tpShopTabs = new System.Windows.Forms.TabPage();
             panel1 = new System.Windows.Forms.Panel();
-            textBox2 = new System.Windows.Forms.TextBox();
-            listView2 = new System.Windows.Forms.ListView();
+            lPageCount = new System.Windows.Forms.Label();
+            tFilterMenuShopItemList = new System.Windows.Forms.TextBox();
+            lvMenuShopItemList = new System.Windows.Forms.ListView();
             imageList1 = new System.Windows.Forms.ImageList(components);
             cbSubMenu = new System.Windows.Forms.ComboBox();
             cbMainMenu = new System.Windows.Forms.ComboBox();
@@ -1077,8 +1078,9 @@
             // panel1
             // 
             panel1.BackgroundImage = (System.Drawing.Image)resources.GetObject("panel1.BackgroundImage");
-            panel1.Controls.Add(textBox2);
-            panel1.Controls.Add(listView2);
+            panel1.Controls.Add(lPageCount);
+            panel1.Controls.Add(tFilterMenuShopItemList);
+            panel1.Controls.Add(lvMenuShopItemList);
             panel1.Controls.Add(cbSubMenu);
             panel1.Controls.Add(cbMainMenu);
             panel1.Controls.Add(lvMenuItemsTab);
@@ -1087,29 +1089,40 @@
             panel1.Size = new System.Drawing.Size(660, 500);
             panel1.TabIndex = 0;
             // 
-            // textBox2
+            // lPageCount
             // 
-            textBox2.Location = new System.Drawing.Point(22, 45);
-            textBox2.Name = "textBox2";
-            textBox2.PlaceholderText = "<enter filter by shop item text>";
-            textBox2.Size = new System.Drawing.Size(188, 23);
-            textBox2.TabIndex = 6;
+            lPageCount.AutoSize = true;
+            lPageCount.Location = new System.Drawing.Point(252, 420);
+            lPageCount.Name = "lPageCount";
+            lPageCount.Size = new System.Drawing.Size(41, 16);
+            lPageCount.TabIndex = 7;
+            lPageCount.Text = "1 page";
             // 
-            // listView2
+            // tFilterMenuShopItemList
             // 
-            listView2.AllowDrop = true;
-            listView2.BackColor = System.Drawing.Color.FromArgb(245, 245, 235);
-            listView2.Items.AddRange(new System.Windows.Forms.ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7, listViewItem8 });
-            listView2.LargeImageList = imageList1;
-            listView2.Location = new System.Drawing.Point(22, 75);
-            listView2.MultiSelect = false;
-            listView2.Name = "listView2";
-            listView2.Size = new System.Drawing.Size(188, 342);
-            listView2.SmallImageList = imageList1;
-            listView2.TabIndex = 5;
-            listView2.TileSize = new System.Drawing.Size(255, 64);
-            listView2.UseCompatibleStateImageBehavior = false;
-            listView2.View = System.Windows.Forms.View.SmallIcon;
+            tFilterMenuShopItemList.Location = new System.Drawing.Point(22, 45);
+            tFilterMenuShopItemList.Name = "tFilterMenuShopItemList";
+            tFilterMenuShopItemList.PlaceholderText = "<enter filter by shop item text>";
+            tFilterMenuShopItemList.Size = new System.Drawing.Size(188, 23);
+            tFilterMenuShopItemList.TabIndex = 6;
+            tFilterMenuShopItemList.TextChanged += tFilterMenuShopItemList_TextChanged;
+            // 
+            // lvMenuShopItemList
+            // 
+            lvMenuShopItemList.AllowDrop = true;
+            lvMenuShopItemList.BackColor = System.Drawing.Color.FromArgb(245, 245, 235);
+            lvMenuShopItemList.Items.AddRange(new System.Windows.Forms.ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7, listViewItem8 });
+            lvMenuShopItemList.LargeImageList = imageList1;
+            lvMenuShopItemList.Location = new System.Drawing.Point(22, 75);
+            lvMenuShopItemList.MultiSelect = false;
+            lvMenuShopItemList.Name = "lvMenuShopItemList";
+            lvMenuShopItemList.Size = new System.Drawing.Size(188, 342);
+            lvMenuShopItemList.SmallImageList = imageList1;
+            lvMenuShopItemList.TabIndex = 5;
+            lvMenuShopItemList.TileSize = new System.Drawing.Size(255, 64);
+            lvMenuShopItemList.UseCompatibleStateImageBehavior = false;
+            lvMenuShopItemList.View = System.Windows.Forms.View.SmallIcon;
+            lvMenuShopItemList.MouseDown += lvMenuShopItemList_MouseDown;
             // 
             // imageList1
             // 
@@ -1127,6 +1140,7 @@
             cbSubMenu.Name = "cbSubMenu";
             cbSubMenu.Size = new System.Drawing.Size(165, 24);
             cbSubMenu.TabIndex = 4;
+            cbSubMenu.SelectedIndexChanged += cbSubMenu_SelectedIndexChanged;
             // 
             // cbMainMenu
             // 
@@ -1137,6 +1151,7 @@
             cbMainMenu.Name = "cbMainMenu";
             cbMainMenu.Size = new System.Drawing.Size(165, 24);
             cbMainMenu.TabIndex = 3;
+            cbMainMenu.SelectedIndexChanged += cbMainMenu_SelectedIndexChanged;
             // 
             // lvMenuItemsTab
             // 
@@ -1152,6 +1167,9 @@
             lvMenuItemsTab.TabIndex = 1;
             lvMenuItemsTab.TileSize = new System.Drawing.Size(255, 64);
             lvMenuItemsTab.UseCompatibleStateImageBehavior = false;
+            lvMenuItemsTab.DragDrop += lvMenuItemsTab_DragDrop;
+            lvMenuItemsTab.DragEnter += lvMenuItemsTab_DragEnter;
+            lvMenuItemsTab.DragLeave += lvMenuItemsTab_DragLeave;
             // 
             // ICSForm
             // 
@@ -1286,7 +1304,8 @@
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.ComboBox cbMainMenu;
         private System.Windows.Forms.ComboBox cbSubMenu;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.TextBox tFilterMenuShopItemList;
+        private System.Windows.Forms.ListView lvMenuShopItemList;
+        private System.Windows.Forms.Label lPageCount;
     }
 }
