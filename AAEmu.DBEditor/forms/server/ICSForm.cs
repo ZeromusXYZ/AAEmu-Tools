@@ -65,7 +65,8 @@ namespace AAEmu.DBEditor.forms.server
 
         private void FillSKUList()
         {
-            var skus = Data.MySqlDb.Game.IcsSkus.ToList();
+            var skus = Data.MySqlDb.Game.IcsSkus.OrderByDescending(x => x.Sku).ToList();
+            lvSKUs.BeginUpdate();
             lvSKUs.Items.Clear();
             lvSKUs.SmallImageList = Data.Client.Icons32;
             SelectedSKU = null;
@@ -92,6 +93,7 @@ namespace AAEmu.DBEditor.forms.server
                 }
                 skuIcon.SubItems.Add(skuItem.ItemCount.ToString());
             }
+            lvSKUs.EndUpdate();
         }
 
         private bool IsSkuFilteredOut(string rawFilter, IcsSkus skuItem)
@@ -121,7 +123,8 @@ namespace AAEmu.DBEditor.forms.server
 
         private void FillShopItemList()
         {
-            var shopItems = Data.MySqlDb.Game.IcsShopItems.ToList();
+            var shopItems = Data.MySqlDb.Game.IcsShopItems.OrderByDescending(x => x.ShopId).ToList();
+            tvShopItems.BeginUpdate();
             tvShopItems.Nodes.Clear();
             tvShopItems.ImageList = Data.Client.Icons32;
             cbSKUShopEntryId.Items.Clear();
@@ -178,11 +181,19 @@ namespace AAEmu.DBEditor.forms.server
                 if (string.IsNullOrEmpty(shopItem.Name) && (!string.IsNullOrEmpty(displayName)))
                     itemNode.Text = displayName;
 
-                itemNode.Text += Environment.NewLine + $"Price: {minPrice} ~ {maxPrice} {currencyName}";
+                if (minPrice != maxPrice)
+                {
+                    itemNode.Text += Environment.NewLine + $"Price: {minPrice} ~ {maxPrice} {currencyName}";
+                }
+                else
+                {
+                    itemNode.Text += Environment.NewLine + $"Price: {minPrice} {currencyName}";
+                }
 
                 itemNode.ImageIndex = Data.Client.GetIconIndexByItemTemplateId(shopItem.DisplayItemId > 0 ? shopItem.DisplayItemId : displayIconItemId);
                 itemNode.SelectedImageIndex = itemNode.ImageIndex;
             }
+            tvShopItems.EndUpdate();
         }
 
         private bool IsShopItemFilteredOut(string rawFilter, IcsShopItems shopItem, List<IcsSkus> subSKUs)
@@ -236,7 +247,8 @@ namespace AAEmu.DBEditor.forms.server
         private void FillShopTabsPickList()
         {
             // Filter Left Side
-            var shopItems = Data.MySqlDb.Game.IcsShopItems.ToList();
+            var shopItems = Data.MySqlDb.Game.IcsShopItems.OrderByDescending(x => x.ShopId).ToList();
+            lvMenuShopItemList.BeginUpdate();
             lvMenuShopItemList.Items.Clear();
             lvMenuShopItemList.SmallImageList = Data.Client.Icons32;
             lvMenuShopItemList.LargeImageList = Data.Client.Icons32;
@@ -271,6 +283,7 @@ namespace AAEmu.DBEditor.forms.server
                 itemNode.Text = displayName;
                 itemNode.ImageIndex = Data.Client.GetIconIndexByItemTemplateId(displayIconItemId);
             }
+            lvMenuShopItemList.EndUpdate();
         }
 
         private void RePageTabPage()
@@ -300,6 +313,7 @@ namespace AAEmu.DBEditor.forms.server
             // Fill Tab's page
             var mainMenu = cbMainMenu.SelectedIndex;
             var subMenu = cbSubMenu.SelectedIndex;
+            lvMenuItemsTab.BeginUpdate();
             lvMenuItemsTab.Items.Clear();
             lvMenuItemsTab.Groups.Clear();
             lvMenuItemsTab.LargeImageList = Data.Client.Icons;
@@ -369,6 +383,7 @@ namespace AAEmu.DBEditor.forms.server
                     newItem.Selected = true;
                 }
             }
+            lvMenuItemsTab.EndUpdate();
             RePageTabPage();
             btnAutoCreateAllItemsTab.Enabled = ((mainMenu != 1) && (subMenu == 1)) || ((mainMenu == 1) && (subMenu == 4));
         }
@@ -1060,8 +1075,18 @@ namespace AAEmu.DBEditor.forms.server
             var subMenu = (byte)(cbSubMenu.SelectedIndex + 1);
 
             // Delete all items on this sub menu
-            Data.MySqlDb.Game.IcsMenu.Where(x => (x.MainTab == mainMenu) && (x.SubTab == subMenu)).ExecuteDelete();
-            Data.MySqlDb.Game.SaveChanges();
+            try
+            {
+                if (lvMenuItemsTab.Items.Count > 0)
+                {
+                    Data.MySqlDb.Game.IcsMenu.Where(x => (x.MainTab == mainMenu) && (x.SubTab == subMenu)).ExecuteDelete();
+                    Data.MySqlDb.Game.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to delete old data: " + ex.Message, "", MessageBoxButtons.OK);
+            }
             var allItemsOfThisMenu = Data.MySqlDb.Game.IcsMenu.Where(x => (x.MainTab == mainMenu)).OrderBy(x => x.SubTab).ThenBy(x => x.TabPos).ToList();
             var newPos = 0;
             foreach(var item in allItemsOfThisMenu)
@@ -1075,7 +1100,14 @@ namespace AAEmu.DBEditor.forms.server
                 Data.MySqlDb.Game.IcsMenu.Add(newItem);
                 newPos++;
             }
-            Data.MySqlDb.Game.SaveChanges();
+            try
+            {
+                Data.MySqlDb.Game.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to save new data: " + ex.Message, "", MessageBoxButtons.OK);
+            }
             FillShopTabsPage();
         }
     }
