@@ -10,6 +10,8 @@ namespace AAEmu.DBEditor.data.aaemu.game;
 /// </summary>
 public partial class IcsMenu
 {
+    public int Id { get; set; }
+
     /// <summary>
     /// Which main tab to display on
     /// </summary>

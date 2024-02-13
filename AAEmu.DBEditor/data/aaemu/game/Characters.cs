@@ -20,7 +20,7 @@ public partial class Characters
 
     public sbyte Race { get; set; }
 
-    public byte Gender { get; set; }
+    public sbyte Gender { get; set; }
 
     public byte[] UnitModelParams { get; set; }
 

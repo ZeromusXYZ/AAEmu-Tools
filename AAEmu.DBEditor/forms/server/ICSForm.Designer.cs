@@ -28,24 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ICSForm));
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Item Description", 0);
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Item Description", 0);
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Item Description", 0);
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("Item Description", 0);
-            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("Item Description", 0);
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("Item Description", 0);
-            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("Item Description", 0);
-            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("Item Description", 0);
-            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("Item Description", 0);
-            System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem("Item Description", 0);
-            System.Windows.Forms.ListViewItem listViewItem11 = new System.Windows.Forms.ListViewItem("Item Description", 0);
-            System.Windows.Forms.ListViewItem listViewItem12 = new System.Windows.Forms.ListViewItem("Item Description", 0);
-            System.Windows.Forms.ListViewItem listViewItem13 = new System.Windows.Forms.ListViewItem("Item Description", 0);
-            System.Windows.Forms.ListViewItem listViewItem14 = new System.Windows.Forms.ListViewItem("Item Description", 0);
-            System.Windows.Forms.ListViewItem listViewItem15 = new System.Windows.Forms.ListViewItem("Item Description", 0);
-            System.Windows.Forms.ListViewItem listViewItem16 = new System.Windows.Forms.ListViewItem("Item Description", 0);
             tcICS = new System.Windows.Forms.TabControl();
             tpInfo = new System.Windows.Forms.TabPage();
             textBox1 = new System.Windows.Forms.TextBox();
@@ -135,7 +118,6 @@
             lPageCount = new System.Windows.Forms.Label();
             tFilterMenuShopItemList = new System.Windows.Forms.TextBox();
             lvMenuShopItemList = new System.Windows.Forms.ListView();
-            imageList1 = new System.Windows.Forms.ImageList(components);
             cbSubMenu = new System.Windows.Forms.ComboBox();
             cbMainMenu = new System.Windows.Forms.ComboBox();
             lvMenuItemsTab = new System.Windows.Forms.ListView();
@@ -1110,26 +1092,16 @@
             // lvMenuShopItemList
             // 
             lvMenuShopItemList.AllowDrop = true;
-            lvMenuShopItemList.BackColor = System.Drawing.Color.FromArgb(245, 245, 235);
-            lvMenuShopItemList.Items.AddRange(new System.Windows.Forms.ListViewItem[] { listViewItem1, listViewItem2, listViewItem3, listViewItem4, listViewItem5, listViewItem6, listViewItem7, listViewItem8 });
-            lvMenuShopItemList.LargeImageList = imageList1;
+            lvMenuShopItemList.BackColor = System.Drawing.Color.FromArgb(225, 208, 168);
             lvMenuShopItemList.Location = new System.Drawing.Point(22, 75);
             lvMenuShopItemList.MultiSelect = false;
             lvMenuShopItemList.Name = "lvMenuShopItemList";
             lvMenuShopItemList.Size = new System.Drawing.Size(188, 342);
-            lvMenuShopItemList.SmallImageList = imageList1;
             lvMenuShopItemList.TabIndex = 5;
             lvMenuShopItemList.TileSize = new System.Drawing.Size(255, 64);
             lvMenuShopItemList.UseCompatibleStateImageBehavior = false;
             lvMenuShopItemList.View = System.Windows.Forms.View.SmallIcon;
             lvMenuShopItemList.MouseDown += lvMenuShopItemList_MouseDown;
-            // 
-            // imageList1
-            // 
-            imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            imageList1.ImageStream = (System.Windows.Forms.ImageListStreamer)resources.GetObject("imageList1.ImageStream");
-            imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            imageList1.Images.SetKeyName(0, "none.png");
             // 
             // cbSubMenu
             // 
@@ -1156,17 +1128,15 @@
             // lvMenuItemsTab
             // 
             lvMenuItemsTab.AllowDrop = true;
-            lvMenuItemsTab.BackColor = System.Drawing.Color.FromArgb(245, 245, 235);
-            lvMenuItemsTab.Items.AddRange(new System.Windows.Forms.ListViewItem[] { listViewItem9, listViewItem10, listViewItem11, listViewItem12, listViewItem13, listViewItem14, listViewItem15, listViewItem16 });
-            lvMenuItemsTab.LargeImageList = imageList1;
+            lvMenuItemsTab.BackColor = System.Drawing.Color.FromArgb(247, 246, 241);
             lvMenuItemsTab.Location = new System.Drawing.Point(252, 75);
             lvMenuItemsTab.MultiSelect = false;
             lvMenuItemsTab.Name = "lvMenuItemsTab";
             lvMenuItemsTab.Size = new System.Drawing.Size(365, 342);
-            lvMenuItemsTab.SmallImageList = imageList1;
             lvMenuItemsTab.TabIndex = 1;
-            lvMenuItemsTab.TileSize = new System.Drawing.Size(255, 64);
+            lvMenuItemsTab.TileSize = new System.Drawing.Size(170, 80);
             lvMenuItemsTab.UseCompatibleStateImageBehavior = false;
+            lvMenuItemsTab.View = System.Windows.Forms.View.Tile;
             lvMenuItemsTab.DragDrop += lvMenuItemsTab_DragDrop;
             lvMenuItemsTab.DragEnter += lvMenuItemsTab_DragEnter;
             lvMenuItemsTab.DragLeave += lvMenuItemsTab_DragLeave;
@@ -1299,7 +1269,6 @@
         private System.Windows.Forms.TextBox tFilterShopItem;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ListView lvMenuItemsTab;
-        private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.ComboBox cbMainMenu;

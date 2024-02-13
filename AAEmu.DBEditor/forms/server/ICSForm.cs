@@ -6,11 +6,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace AAEmu.DBEditor.forms.server
 {
@@ -18,6 +20,10 @@ namespace AAEmu.DBEditor.forms.server
     {
         private IcsSkus SelectedSKU { get; set; }
         private IcsShopItems SelectedShopItem { get; set; }
+        private static string ShoppingCart { get; } = "🛒";
+        private static string ShoppingBag { get; } = "🛍";
+        private static string PresentBox { get; } = "🎁";
+        private static string MoneyBag { get; } = "💰";
 
         public ICSForm()
         {
@@ -28,9 +34,9 @@ namespace AAEmu.DBEditor.forms.server
         {
             MainForm.Self.AddOwnedForm(this);
             SelectedSKU = null;
-            SelectedShopItem = null;
-            // Populate Menu Dropdowns
+            SelectedShopItem = null;            
 
+            // Populate Menu Dropdowns
             // Main Menu Names (4905 -> 4910)
             cbMainMenu.Items.Clear();
             for (var m = 1; m <= 6; m++)
@@ -120,7 +126,7 @@ namespace AAEmu.DBEditor.forms.server
             cbSKUShopEntryId.Items.Add("0");
             foreach (var shopItem in shopItems)
             {
-                var subSKUs = Data.MySqlDb.Game.IcsSkus.Where(x => x.ShopId == shopItem.ShopId).OrderBy(x => x.Position);
+                var subSKUs = Data.MySqlDb.Game.IcsSkus.Where(x => x.ShopId == shopItem.ShopId).OrderBy(x => x.Position).ToList();
                 if (IsShopItemFilteredOut(tFilterShopItem.Text, shopItem, subSKUs))
                     continue;
 
@@ -177,7 +183,7 @@ namespace AAEmu.DBEditor.forms.server
             }
         }
 
-        private bool IsShopItemFilteredOut(string rawFilter, IcsShopItems shopItem, IOrderedQueryable<IcsSkus> subSKUs)
+        private bool IsShopItemFilteredOut(string rawFilter, IcsShopItems shopItem, List<IcsSkus> subSKUs)
         {
             var filterWords = rawFilter.ToLower().Split(" ").ToList();
             if (filterWords.Count == 0)
@@ -234,7 +240,7 @@ namespace AAEmu.DBEditor.forms.server
             lvMenuShopItemList.LargeImageList = Data.Client.Icons32;
             foreach (var shopItem in shopItems)
             {
-                var subSKUs = Data.MySqlDb.Game.IcsSkus.Where(x => x.ShopId == shopItem.ShopId).OrderBy(x => x.Position);
+                var subSKUs = Data.MySqlDb.Game.IcsSkus.Where(x => x.ShopId == shopItem.ShopId).OrderBy(x => x.Position).ToList();
                 if (IsShopItemFilteredOut(tFilterMenuShopItemList.Text, shopItem, subSKUs))
                     continue;
 
@@ -265,19 +271,42 @@ namespace AAEmu.DBEditor.forms.server
             }
         }
 
+        private void RePageTabPage()
+        {
+            var itemPerPage = (cbMainMenu.SelectedIndex == 0 && cbSubMenu.SelectedIndex == 0) ? 4 : 8;
+
+            var newPos = 0;
+            foreach (ListViewItem item in lvMenuItemsTab.Items)
+            {
+                var thisPage = (int)Math.Ceiling((item.Index + 0.75f) / itemPerPage);
+                while (lvMenuItemsTab.Groups.Count < thisPage)
+                {
+                    var newPage = (lvMenuItemsTab.Groups.Count + 1);
+                    lvMenuItemsTab.Groups.Add(newPage.ToString(), "Page " + newPage.ToString());
+                }
+                item.Group = lvMenuItemsTab.Groups[thisPage.ToString()];
+                if (item.Tag is IcsMenu menuItem)
+                {
+                    menuItem.TabPos = newPos;
+                }
+                newPos++;
+            }
+        }
+
         private void FillShopTabsPage()
         {
             // Fill Tab's page
             var mainMenu = cbMainMenu.SelectedIndex;
             var subMenu = cbSubMenu.SelectedIndex;
             lvMenuItemsTab.Items.Clear();
+            lvMenuItemsTab.Groups.Clear();
             lvMenuItemsTab.LargeImageList = Data.Client.Icons;
             lvMenuItemsTab.SmallImageList = Data.Client.Icons;
 
             if (mainMenu < 0 || subMenu < 0)
                 return;
 
-            var itemPerPage = (mainMenu == 1 || subMenu == 1) ? 4 : 8;
+            var itemPerPage = (mainMenu == 1 && subMenu == 1) ? 4 : 8;
 
             // Add one because of how it's used in the game and DB
             mainMenu++;
@@ -321,12 +350,20 @@ namespace AAEmu.DBEditor.forms.server
                         break;
                     }
 
+                var buttonText = string.Empty;
+                if ((shopItem.ShopButtons & 0x1) == 0)
+                    buttonText += ShoppingCart;
+                if ((shopItem.ShopButtons & 0x2) == 0)
+                    buttonText += PresentBox;
+
                 var newItem = new ListViewItem();
                 newItem.Tag = menuItem;
-                newItem.Text = displayName;
+                newItem.Text = string.IsNullOrWhiteSpace(buttonText) ? displayName : buttonText + " " + displayName;
                 newItem.ImageIndex = Data.Client.GetIconIndexByItemTemplateId(displayItemId);
+
                 lvMenuItemsTab.Items.Add(newItem);
             }
+            RePageTabPage();
         }
 
         private void lvSKUs_SelectedIndexChanged(object sender, EventArgs e)
@@ -469,7 +506,7 @@ namespace AAEmu.DBEditor.forms.server
 
         private void btnSKUGetNewId_Click(object sender, EventArgs e)
         {
-            var lastSku = Data.MySqlDb.Game.IcsSkus.OrderBy(x => x.Sku).Reverse().First();
+            var lastSku = Data.MySqlDb.Game.IcsSkus.OrderBy(x => x.Sku).Reverse().FirstOrDefault();
             if (lastSku == null)
             {
                 tSKUSKU.Text = "1000000";
@@ -665,7 +702,7 @@ namespace AAEmu.DBEditor.forms.server
 
         private void btnNewShopItemId_Click(object sender, EventArgs e)
         {
-            var lastShopItem = Data.MySqlDb.Game.IcsShopItems.OrderBy(x => x.ShopId).Reverse().First();
+            var lastShopItem = Data.MySqlDb.Game.IcsShopItems.OrderBy(x => x.ShopId).Reverse().FirstOrDefault();
             if (lastShopItem == null)
             {
                 tShopItemShopId.Text = "2000000";
@@ -795,9 +832,21 @@ namespace AAEmu.DBEditor.forms.server
                 return;
             }
 
+            // New MenuItem
+            var newIcsMenu = new IcsMenu();
+            newIcsMenu.MainTab = (byte)(cbMainMenu.SelectedIndex + 1);
+            newIcsMenu.SubTab = (byte)(cbSubMenu.SelectedIndex + 1);
+            newIcsMenu.TabPos = 9999;
+            newIcsMenu.ShopId = shopItem.ShopId;
+            Data.MySqlDb.Game.IcsMenu.Add(newIcsMenu);
+
             var targetPoint = lvMenuItemsTab.PointToClient(new Point(e.X, e.Y));
+
             var newItem = new ListViewItem();
             newItem.Text = shopItem.ShopId.ToString();
+            newItem.Tag = newIcsMenu;
+            newItem.ImageIndex = Data.Client.GetIconIndexByItemTemplateId(shopItem.DisplayItemId);
+            newItem.Text = shopItem.Name + " - " + shopItem.ShopId.ToString();
 
             var targetItemIndex = lvMenuItemsTab.InsertionMark.NearestIndex(targetPoint);
             if (targetItemIndex >= 0)
@@ -807,6 +856,13 @@ namespace AAEmu.DBEditor.forms.server
             else
             {
                 lvMenuItemsTab.Items.Add(newItem);
+            }
+            RePageTabPage();
+            //Data.MySqlDb.Game.IcsMenu.Update(newIcsMenu);
+            if (Data.MySqlDb.Game.SaveChanges() <= 0)
+            {
+                MessageBox.Show("Failed to save changes to DB");
+                return;
             }
             //lvMenuItemsTab.Sort();
         }
