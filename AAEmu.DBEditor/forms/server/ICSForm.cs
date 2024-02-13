@@ -1,6 +1,8 @@
 ﻿using AAEmu.DBEditor;
 using AAEmu.DBEditor.data;
 using AAEmu.DBEditor.data.aaemu.game;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,7 +36,7 @@ namespace AAEmu.DBEditor.forms.server
         {
             MainForm.Self.AddOwnedForm(this);
             SelectedSKU = null;
-            SelectedShopItem = null;            
+            SelectedShopItem = null;
 
             // Populate Menu Dropdowns
             // Main Menu Names (4905 -> 4910)
@@ -284,7 +286,7 @@ namespace AAEmu.DBEditor.forms.server
                     var newPage = (lvMenuItemsTab.Groups.Count + 1);
                     lvMenuItemsTab.Groups.Add(newPage.ToString(), "Page " + newPage.ToString());
                 }
-                item.Group = lvMenuItemsTab.Groups[thisPage.ToString()];
+                // item.Group = lvMenuItemsTab.Groups[thisPage.ToString()];
                 if (item.Tag is IcsMenu menuItem)
                 {
                     menuItem.TabPos = newPos;
@@ -293,7 +295,7 @@ namespace AAEmu.DBEditor.forms.server
             }
         }
 
-        private void FillShopTabsPage()
+        private void FillShopTabsPage(IcsMenu newlyAddedItem = null)
         {
             // Fill Tab's page
             var mainMenu = cbMainMenu.SelectedIndex;
@@ -362,8 +364,13 @@ namespace AAEmu.DBEditor.forms.server
                 newItem.ImageIndex = Data.Client.GetIconIndexByItemTemplateId(displayItemId);
 
                 lvMenuItemsTab.Items.Add(newItem);
+                if (menuItem == newlyAddedItem)
+                {
+                    newItem.Selected = true;
+                }
             }
             RePageTabPage();
+            btnAutoCreateAllItemsTab.Enabled = ((mainMenu != 1) && (subMenu == 1)) || ((mainMenu == 1) && (subMenu == 4));
         }
 
         private void lvSKUs_SelectedIndexChanged(object sender, EventArgs e)
@@ -521,8 +528,28 @@ namespace AAEmu.DBEditor.forms.server
 
             try
             {
+                if (!uint.TryParse(cbSKUShopEntryId.Text, out var shopItemId))
+                    shopItemId = 0;
+
+                if (shopItemId == 0)
+                {
+                    // Create new default shop for this SKU
+                    var lastShopItem = Data.MySqlDb.Game.IcsShopItems.OrderBy(x => x.ShopId).Reverse().FirstOrDefault();
+                    if (lastShopItem == null)
+                    {
+                        shopItemId = 2000000;
+                    }
+                    else
+                    {
+                        shopItemId = lastShopItem.ShopId + 1;
+                    }
+                    var newShopItem = new IcsShopItems();
+                    newShopItem.ShopId = shopItemId;
+                    Data.MySqlDb.Game.IcsShopItems.Add(newShopItem);
+                }
+
                 SelectedSKU.Sku = uint.Parse(tSKUSKU.Text);
-                SelectedSKU.ShopId = uint.Parse(cbSKUShopEntryId.Text);
+                SelectedSKU.ShopId = shopItemId;
                 SelectedSKU.Position = int.Parse(tSKUShopEntryPosition.Text);
                 SelectedSKU.IsDefault = (byte)(cbSKUIsDefault.Checked ? 1 : 0);
                 SelectedSKU.ItemId = uint.Parse(tSKUItemId.Text);
@@ -548,7 +575,7 @@ namespace AAEmu.DBEditor.forms.server
 
                 if (Data.MySqlDb.Game.SaveChanges() <= 0)
                 {
-                    MessageBox.Show("Failed to save changes to DB");
+                    MessageBox.Show("Failed to save SKU changes to DB");
                     return;
                 }
                 FillSKUList();
@@ -755,7 +782,7 @@ namespace AAEmu.DBEditor.forms.server
 
                 if (Data.MySqlDb.Game.SaveChanges() <= 0)
                 {
-                    MessageBox.Show("Failed to save changes to DB");
+                    MessageBox.Show("Failed to save Shop Item changes to DB");
                     return;
                 }
                 FillSKUList();
@@ -808,9 +835,14 @@ namespace AAEmu.DBEditor.forms.server
         private void lvMenuItemsTab_DragEnter(object sender, DragEventArgs e)
         {
             var shopItem = e.Data.GetData(typeof(IcsShopItems)) as IcsShopItems;
+            var menuItem = e.Data.GetData(typeof(IcsMenu)) as IcsMenu;
             if (shopItem != null)
             {
                 e.Effect = DragDropEffects.Link;
+            }
+            else if (menuItem != null)
+            {
+                e.Effect = DragDropEffects.Move;
             }
             else
             {
@@ -826,11 +858,61 @@ namespace AAEmu.DBEditor.forms.server
         private void lvMenuItemsTab_DragDrop(object sender, DragEventArgs e)
         {
             var shopItem = e.Data.GetData(typeof(IcsShopItems)) as IcsShopItems;
-            if (shopItem == null)
+            var menuItem = e.Data.GetData(typeof(IcsMenu)) as IcsMenu;
+            if ((shopItem == null) && (menuItem == null))
             {
                 e.Effect = DragDropEffects.None;
                 return;
             }
+
+            // Where did we drop it?
+            var targetPoint = lvMenuItemsTab.PointToClient(new Point(e.X, e.Y));
+            var targetItemIndex = lvMenuItemsTab.InsertionMark.NearestIndex(targetPoint);
+            if (lvMenuItemsTab.InsertionMark.AppearsAfterItem)
+                targetItemIndex++;
+
+            // We're dropping a IcsMenu item, so we're moving things
+            if (menuItem != null)
+            {
+                var oldIndex = -1;
+                ListViewItem oldItem = null;
+                foreach (ListViewItem item in lvMenuItemsTab.Items)
+                {
+                    if (item.Tag == menuItem)
+                    {
+                        oldIndex = item.Index;
+                        oldItem = item;
+                        break;
+                    }
+                }
+
+                if ((oldIndex < 0) || (oldItem == null) || (oldIndex == targetItemIndex))
+                    return; // couldn't find the old ListViewItem that's being dragged, or it wasn't dragged at all
+
+                // If moved to the end of the list
+                if (targetItemIndex >= lvMenuItemsTab.Items.Count)
+                {
+                    lvMenuItemsTab.Items.RemoveAt(oldIndex);
+                    lvMenuItemsTab.Items.Add(oldItem);
+                }
+                else
+                {
+                    // Moving backwards/forwards
+                    lvMenuItemsTab.Items.RemoveAt(oldIndex);
+                    lvMenuItemsTab.Items.Insert(targetItemIndex, oldItem);
+                }
+
+                RePageTabPage();
+                if (Data.MySqlDb.Game.SaveChanges() <= 0)
+                {
+                    MessageBox.Show("Failed to save menu move changes to DB");
+                    return;
+                }
+                lvMenuItemsTab.Sort();
+                return;
+            }
+
+            // Otherwise we're dragging in a IcsShopItem and need to make a new entry
 
             // New MenuItem
             var newIcsMenu = new IcsMenu();
@@ -840,16 +922,13 @@ namespace AAEmu.DBEditor.forms.server
             newIcsMenu.ShopId = shopItem.ShopId;
             Data.MySqlDb.Game.IcsMenu.Add(newIcsMenu);
 
-            var targetPoint = lvMenuItemsTab.PointToClient(new Point(e.X, e.Y));
-
             var newItem = new ListViewItem();
             newItem.Text = shopItem.ShopId.ToString();
             newItem.Tag = newIcsMenu;
             newItem.ImageIndex = Data.Client.GetIconIndexByItemTemplateId(shopItem.DisplayItemId);
             newItem.Text = shopItem.Name + " - " + shopItem.ShopId.ToString();
 
-            var targetItemIndex = lvMenuItemsTab.InsertionMark.NearestIndex(targetPoint);
-            if (targetItemIndex >= 0)
+            if ((targetItemIndex >= 0) && (targetItemIndex < lvMenuItemsTab.Items.Count))
             {
                 lvMenuItemsTab.Items.Insert(targetItemIndex, newItem);
             }
@@ -858,13 +937,14 @@ namespace AAEmu.DBEditor.forms.server
                 lvMenuItemsTab.Items.Add(newItem);
             }
             RePageTabPage();
-            //Data.MySqlDb.Game.IcsMenu.Update(newIcsMenu);
+
             if (Data.MySqlDb.Game.SaveChanges() <= 0)
             {
-                MessageBox.Show("Failed to save changes to DB");
+                MessageBox.Show("Failed to save menu add changes to DB");
                 return;
             }
-            //lvMenuItemsTab.Sort();
+            lvMenuItemsTab.Sort();
+            FillShopTabsPage(newIcsMenu);
         }
 
         private void cbMenuTab_Changed(object sender, EventArgs e)
@@ -891,5 +971,113 @@ namespace AAEmu.DBEditor.forms.server
         {
             FillShopTabsPage();
         }
+
+        private void lvMenuItemsTab_MouseDown(object sender, MouseEventArgs e)
+        {
+            var underCursor = lvMenuItemsTab.GetItemAt(e.X, e.Y);
+            if (underCursor == null)
+                return;
+            underCursor.Selected = true;
+            if (underCursor.Tag is IcsMenu menuItem)
+                lvMenuShopItemList.DoDragDrop(menuItem, DragDropEffects.Move);
+        }
+
+        private void lvMenuItemsTab_DragOver(object sender, DragEventArgs e)
+        {
+            // https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.listviewinsertionmark.nearestindex?view=windowsdesktop-8.0&devlangs=csharp&f1url=%3FappId%3DDev16IDEF1%26l%3DEN-US%26k%3Dk(System.Windows.Forms.ListViewInsertionMark.NearestIndex)%3Bk(DevLang-csharp)%26rd%3Dtrue
+
+            // Retrieve the client coordinates of the mouse pointer.
+            Point targetPoint =
+                lvMenuItemsTab.PointToClient(new Point(e.X, e.Y));
+
+            // Retrieve the index of the item closest to the mouse pointer.
+            int targetIndex = lvMenuItemsTab.InsertionMark.NearestIndex(targetPoint);
+
+            // Confirm that the mouse pointer is not over the dragged item.
+            if (targetIndex > -1)
+            {
+                // Determine whether the mouse pointer is to the left or
+                // the right of the midpoint of the closest item and set
+                // the InsertionMark.AppearsAfterItem property accordingly.
+                Rectangle itemBounds = lvMenuItemsTab.GetItemRect(targetIndex);
+                if (targetPoint.X > itemBounds.Left + (itemBounds.Width / 2))
+                {
+                    lvMenuItemsTab.InsertionMark.AppearsAfterItem = true;
+                }
+                else
+                {
+                    lvMenuItemsTab.InsertionMark.AppearsAfterItem = false;
+                }
+            }
+
+            // Set the location of the insertion mark. If the mouse is
+            // over the dragged item, the targetIndex value is -1 and
+            // the insertion mark disappears.
+            lvMenuItemsTab.InsertionMark.Index = targetIndex;
+        }
+
+        private void lvMenuItemsTab_DrawItem(object sender, DrawListViewItemEventArgs e)
+        {
+            e.DrawDefault = true;
+        }
+
+        private void pTrash_DragEnter(object sender, DragEventArgs e)
+        {
+            var menuItem = e.Data.GetData(typeof(IcsMenu)) as IcsMenu;
+            if (menuItem != null)
+            {
+                e.Effect = DragDropEffects.Move;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void pTrash_DragDrop(object sender, DragEventArgs e)
+        {
+            var menuItem = e.Data.GetData(typeof(IcsMenu)) as IcsMenu;
+            if (menuItem == null)
+                return;
+
+            Data.MySqlDb.Game.IcsMenu.Remove(menuItem);
+            Data.MySqlDb.Game.SaveChanges();
+            FillShopTabsPage();
+        }
+
+        private void pTrash_DragLeave(object sender, EventArgs e)
+        {
+            // Do Nothing
+        }
+
+        private void btnAutoCreateAllItemsTab_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("This will remove all entries of this tab and poplate them with the contents of all other items in this sub-menu!" + Environment.NewLine +
+                "Are you sure you want to continue?", "Auto-create items?", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                return;
+
+            var mainMenu = (byte)(cbMainMenu.SelectedIndex + 1);
+            var subMenu = (byte)(cbSubMenu.SelectedIndex + 1);
+
+            // Delete all items on this sub menu
+            Data.MySqlDb.Game.IcsMenu.Where(x => (x.MainTab == mainMenu) && (x.SubTab == subMenu)).ExecuteDelete();
+            Data.MySqlDb.Game.SaveChanges();
+            var allItemsOfThisMenu = Data.MySqlDb.Game.IcsMenu.Where(x => (x.MainTab == mainMenu)).OrderBy(x => x.SubTab).ThenBy(x => x.TabPos).ToList();
+            var newPos = 0;
+            foreach(var item in allItemsOfThisMenu)
+            {
+                var newItem = new IcsMenu();
+                newItem.MainTab = mainMenu;
+                newItem.SubTab = subMenu;
+                newItem.TabPos = newPos;
+                newItem.ShopId = item.ShopId;
+
+                Data.MySqlDb.Game.IcsMenu.Add(newItem);
+                newPos++;
+            }
+            Data.MySqlDb.Game.SaveChanges();
+            FillShopTabsPage();
+        }
     }
 }
+

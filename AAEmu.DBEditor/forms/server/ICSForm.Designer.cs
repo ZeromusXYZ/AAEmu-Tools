@@ -39,6 +39,7 @@
             columnHeader1 = new System.Windows.Forms.ColumnHeader();
             columnHeader2 = new System.Windows.Forms.ColumnHeader();
             columnHeader3 = new System.Windows.Forms.ColumnHeader();
+            label24 = new System.Windows.Forms.Label();
             btnSKUGetNewId = new System.Windows.Forms.Button();
             lSKUDiscountCalculation = new System.Windows.Forms.Label();
             btnSKUNew = new System.Windows.Forms.Button();
@@ -115,6 +116,9 @@
             tShopItemMaxLevel = new System.Windows.Forms.TextBox();
             tpShopTabs = new System.Windows.Forms.TabPage();
             panel1 = new System.Windows.Forms.Panel();
+            btnAutoCreateAllItemsTab = new System.Windows.Forms.Button();
+            label26 = new System.Windows.Forms.Label();
+            pTrash = new System.Windows.Forms.Panel();
             lPageCount = new System.Windows.Forms.Label();
             tFilterMenuShopItemList = new System.Windows.Forms.TextBox();
             lvMenuShopItemList = new System.Windows.Forms.ListView();
@@ -200,6 +204,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(label24);
             splitContainer1.Panel2.Controls.Add(btnSKUGetNewId);
             splitContainer1.Panel2.Controls.Add(lSKUDiscountCalculation);
             splitContainer1.Panel2.Controls.Add(btnSKUNew);
@@ -274,6 +279,15 @@
             // columnHeader3
             // 
             columnHeader3.Text = "Count";
+            // 
+            // label24
+            // 
+            label24.AutoSize = true;
+            label24.Location = new System.Drawing.Point(2, 420);
+            label24.Name = "label24";
+            label24.Size = new System.Drawing.Size(406, 16);
+            label24.TabIndex = 37;
+            label24.Text = "(*) Leave Shop Entry Id blank to create a new shop item with default settings";
             // 
             // btnSKUGetNewId
             // 
@@ -565,9 +579,9 @@
             label5.AutoSize = true;
             label5.Location = new System.Drawing.Point(3, 39);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(77, 16);
+            label5.Size = new System.Drawing.Size(93, 16);
             label5.TabIndex = 4;
-            label5.Text = "Shop Entry Id";
+            label5.Text = "Shop Entry Id (*)";
             // 
             // label4
             // 
@@ -1060,6 +1074,9 @@
             // panel1
             // 
             panel1.BackgroundImage = (System.Drawing.Image)resources.GetObject("panel1.BackgroundImage");
+            panel1.Controls.Add(btnAutoCreateAllItemsTab);
+            panel1.Controls.Add(label26);
+            panel1.Controls.Add(pTrash);
             panel1.Controls.Add(lPageCount);
             panel1.Controls.Add(tFilterMenuShopItemList);
             panel1.Controls.Add(lvMenuShopItemList);
@@ -1070,6 +1087,38 @@
             panel1.Name = "panel1";
             panel1.Size = new System.Drawing.Size(660, 500);
             panel1.TabIndex = 0;
+            // 
+            // btnAutoCreateAllItemsTab
+            // 
+            btnAutoCreateAllItemsTab.Enabled = false;
+            btnAutoCreateAllItemsTab.Location = new System.Drawing.Point(252, 461);
+            btnAutoCreateAllItemsTab.Name = "btnAutoCreateAllItemsTab";
+            btnAutoCreateAllItemsTab.Size = new System.Drawing.Size(215, 23);
+            btnAutoCreateAllItemsTab.TabIndex = 12;
+            btnAutoCreateAllItemsTab.Text = "Auto-Create \"All Items\" Tab";
+            btnAutoCreateAllItemsTab.UseVisualStyleBackColor = true;
+            btnAutoCreateAllItemsTab.Click += btnAutoCreateAllItemsTab_Click;
+            // 
+            // label26
+            // 
+            label26.AutoSize = true;
+            label26.Location = new System.Drawing.Point(22, 10);
+            label26.Name = "label26";
+            label26.Size = new System.Drawing.Size(553, 16);
+            label26.TabIndex = 11;
+            label26.Text = "Drag-and-drop items from the left to add to page. Drag in page to move, or drag to trash can to remove.";
+            // 
+            // pTrash
+            // 
+            pTrash.AllowDrop = true;
+            pTrash.BackgroundImage = (System.Drawing.Image)resources.GetObject("pTrash.BackgroundImage");
+            pTrash.Location = new System.Drawing.Point(553, 420);
+            pTrash.Name = "pTrash";
+            pTrash.Size = new System.Drawing.Size(64, 64);
+            pTrash.TabIndex = 8;
+            pTrash.DragDrop += pTrash_DragDrop;
+            pTrash.DragEnter += pTrash_DragEnter;
+            pTrash.DragLeave += pTrash_DragLeave;
             // 
             // lPageCount
             // 
@@ -1132,14 +1181,19 @@
             lvMenuItemsTab.Location = new System.Drawing.Point(252, 75);
             lvMenuItemsTab.MultiSelect = false;
             lvMenuItemsTab.Name = "lvMenuItemsTab";
+            lvMenuItemsTab.OwnerDraw = true;
+            lvMenuItemsTab.ShowGroups = false;
             lvMenuItemsTab.Size = new System.Drawing.Size(365, 342);
             lvMenuItemsTab.TabIndex = 1;
             lvMenuItemsTab.TileSize = new System.Drawing.Size(170, 80);
             lvMenuItemsTab.UseCompatibleStateImageBehavior = false;
             lvMenuItemsTab.View = System.Windows.Forms.View.Tile;
+            lvMenuItemsTab.DrawItem += lvMenuItemsTab_DrawItem;
             lvMenuItemsTab.DragDrop += lvMenuItemsTab_DragDrop;
             lvMenuItemsTab.DragEnter += lvMenuItemsTab_DragEnter;
+            lvMenuItemsTab.DragOver += lvMenuItemsTab_DragOver;
             lvMenuItemsTab.DragLeave += lvMenuItemsTab_DragLeave;
+            lvMenuItemsTab.MouseDown += lvMenuItemsTab_MouseDown;
             // 
             // ICSForm
             // 
@@ -1276,5 +1330,9 @@
         private System.Windows.Forms.TextBox tFilterMenuShopItemList;
         private System.Windows.Forms.ListView lvMenuShopItemList;
         private System.Windows.Forms.Label lPageCount;
+        private System.Windows.Forms.Panel pTrash;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Button btnAutoCreateAllItemsTab;
     }
 }
