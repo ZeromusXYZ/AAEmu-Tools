@@ -98,6 +98,7 @@ namespace AAEmu.DBEditor
                 UpdateProgress("ServerDB loaded");
                 UpdateLabel(lServerDB, Data.Server.FileName + " <" + Data.Server.TableNames.Count.ToString() + " tables>");
                 AAEmu.DBEditor.Properties.Settings.Default.Save();
+                Data.Server.LoadDbCache();
             }
             return res;
         }

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using AAEmu.DBEditor.Properties;
@@ -19,6 +20,7 @@ namespace AAEmu.DBEditor.data
         public ImageList Icons32 { get; private set; }
         public ImageList Icons128 { get; private set; }
         public static string DefaultPakIcon = "charge_package.dds";
+        private Dictionary<long, int> ItemIconIndexCache = new();
 
         public bool Initialize()
         {
@@ -65,6 +67,7 @@ namespace AAEmu.DBEditor.data
                 TransparentColor = default
             };
             Icons128.Images.Add("noicon", (Image)Resources.ResourceManager.GetObject("noicon"));
+            ItemIconIndexCache.Clear();
 
             return true;
         }
@@ -153,13 +156,18 @@ namespace AAEmu.DBEditor.data
 
         public int GetIconIndexByItemTemplateId(long itemTemplateId)
         {
-            var itemEntry = Data.Server.CompactSqlite.Items.FirstOrDefault(x => x.Id == itemTemplateId);
+            if (ItemIconIndexCache.TryGetValue(itemTemplateId, out var idx))
+                return idx;
+
+            var itemEntry = Data.Server.GetItem(itemTemplateId);// .CompactSqlite.Items.FirstOrDefault(x => x.Id == itemTemplateId);
             if (itemEntry != null)
             {
                 var iconEntry = Data.Server.CompactSqlite.Icons.FirstOrDefault(x => x.Id == itemEntry.IconId);
                 if (iconEntry != null)
                 {
-                    return Data.Client.GetIconIndexByName(iconEntry.Filename);
+                    var imageListIconIndex = Data.Client.GetIconIndexByName(iconEntry.Filename);
+                    ItemIconIndexCache.Add(itemTemplateId, imageListIconIndex);
+                    return imageListIconIndex;
                 }
             }
 

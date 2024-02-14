@@ -8881,9 +8881,8 @@ public partial class CompactContext : DbContext
 
         modelBuilder.Entity<Item>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("items");
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            // entity.HasNoKey().ToTable("items");
 
             entity.Property(e => e.ActabilityGroupId)
                 .HasColumnType("INT")

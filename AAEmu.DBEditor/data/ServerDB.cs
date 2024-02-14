@@ -3,6 +3,7 @@ using AAEmu.DBEditor.data.gamedb;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System;
 
 namespace AAEmu.DBEditor.data
 {
@@ -24,6 +25,8 @@ namespace AAEmu.DBEditor.data
                 return v ?? defaultText;
             return defaultText;
         }
+
+        public Dictionary<long, Item> ItemCache { get; set; } = new();
 
         public bool ReloadLocale()
         {
@@ -109,5 +112,18 @@ namespace AAEmu.DBEditor.data
             return TableNames.Count > 0;
         }
 
+        internal void LoadDbCache()
+        {
+            ItemCache.Clear();
+            foreach(var item in CompactSqlite.Items)
+                ItemCache.Add((long)item.Id, item);
+        }
+
+        public Item GetItem(long itemId)
+        {
+            if (ItemCache.TryGetValue(itemId, out var item))
+                return item;
+            return null;
+        }
     }
 }

@@ -70,29 +70,39 @@ namespace AAEmu.DBEditor.forms.server
             lvSKUs.Items.Clear();
             lvSKUs.SmallImageList = Data.Client.Icons32;
             SelectedSKU = null;
+            //var itemsToAdd = new List<ListViewItem>();
             foreach (var skuItem in skus)
             {
                 if (IsSkuFilteredOut(tFilterSku.Text, skuItem))
                     continue;
 
-                var skuIcon = lvSKUs.Items.Add(skuItem.Sku.ToString());
+                var skuIcon = new ListViewItem(skuItem.Sku.ToString());
                 skuIcon.Tag = skuItem;
-                var itemEntry = Data.Server.CompactSqlite.Items.FirstOrDefault(x => x.Id == skuItem.ItemId);
+                var itemEntry = Data.Server.GetItem((long)skuItem.ItemId);// .CompactSqlite.Items.FirstOrDefault(x => x.Id == skuItem.ItemId);
                 if (itemEntry != null)
                 {
                     skuIcon.SubItems.Add(Data.Server.GetText("items", "name", (long)skuItem.ItemId, itemEntry.Name));
+
+                    skuIcon.ImageIndex = Data.Client.GetIconIndexByItemTemplateId((long)skuItem.ItemId);
+                    /*
                     var iconEntry = Data.Server.CompactSqlite.Icons.FirstOrDefault(x => x.Id == itemEntry.IconId);
                     if (iconEntry != null)
                     {
                         skuIcon.ImageIndex = Data.Client.GetIconIndexByName(iconEntry.Filename);
                     }
+                    */
                 }
                 else
                 {
                     skuIcon.SubItems.Add(skuItem.ItemId.ToString());
                 }
                 skuIcon.SubItems.Add(skuItem.ItemCount.ToString());
+
+                lvSKUs.Items.Add(skuIcon);
+                //itemsToAdd.Add(skuIcon);
             }
+            //lvSKUs.BeginUpdate();
+            //lvSKUs.Items.AddRange(itemsToAdd.ToArray());
             lvSKUs.EndUpdate();
         }
 
@@ -158,7 +168,7 @@ namespace AAEmu.DBEditor.forms.server
                         case 2: currencyName = "Loyalty"; break;
                         case 3: currencyName = "Coins"; break;
                     }
-                    var itemEntry = Data.Server.CompactSqlite.Items.FirstOrDefault(x => x.Id == subSku.ItemId);
+                    var itemEntry = Data.Server.GetItem((long)subSku.ItemId);// .CompactSqlite.Items.FirstOrDefault(x => x.Id == subSku.ItemId);
                     var subItemName = "<item:" + subSku.ItemId.ToString() + ">";
                     if (itemEntry != null)
                         subItemName = Data.Server.GetText("items", "name", (long)subSku.ItemId, itemEntry.Name);
@@ -265,7 +275,7 @@ namespace AAEmu.DBEditor.forms.server
 
                 foreach (var subSku in subSKUs)
                 {
-                    var itemEntry = Data.Server.CompactSqlite.Items.FirstOrDefault(x => x.Id == subSku.ItemId);
+                    var itemEntry = Data.Server.GetItem((long)subSku.ItemId);// .CompactSqlite.Items.FirstOrDefault(x => x.Id == subSku.ItemId);
                     var subItemName = "<item:" + subSku.ItemId.ToString() + ">";
                     if (itemEntry != null)
                         subItemName = Data.Server.GetText("items", "name", (long)subSku.ItemId, itemEntry.Name);

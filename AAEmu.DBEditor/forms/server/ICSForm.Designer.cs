@@ -1134,7 +1134,7 @@
             tFilterMenuShopItemList.Location = new System.Drawing.Point(22, 45);
             tFilterMenuShopItemList.Name = "tFilterMenuShopItemList";
             tFilterMenuShopItemList.PlaceholderText = "<enter filter by shop item text>";
-            tFilterMenuShopItemList.Size = new System.Drawing.Size(188, 23);
+            tFilterMenuShopItemList.Size = new System.Drawing.Size(196, 23);
             tFilterMenuShopItemList.TabIndex = 6;
             tFilterMenuShopItemList.TextChanged += tFilterMenuShopItemList_TextChanged;
             // 
@@ -1145,7 +1145,7 @@
             lvMenuShopItemList.Location = new System.Drawing.Point(22, 75);
             lvMenuShopItemList.MultiSelect = false;
             lvMenuShopItemList.Name = "lvMenuShopItemList";
-            lvMenuShopItemList.Size = new System.Drawing.Size(188, 342);
+            lvMenuShopItemList.Size = new System.Drawing.Size(196, 342);
             lvMenuShopItemList.TabIndex = 5;
             lvMenuShopItemList.TileSize = new System.Drawing.Size(255, 64);
             lvMenuShopItemList.UseCompatibleStateImageBehavior = false;
