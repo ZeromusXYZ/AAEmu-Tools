@@ -37,6 +37,9 @@ namespace AAEmu.DBEditor.forms.server
             MainForm.Self.AddOwnedForm(this);
             SelectedSKU = null;
             SelectedShopItem = null;
+            cbSKUEventType.SelectedIndex = 0;
+            cbSKUSelectType.SelectedIndex = 0;
+            cbShopItemLimitedType.SelectedIndex = 0;
 
             // Populate Menu Dropdowns
             // Main Menu Names (4905 -> 4910)
@@ -419,8 +422,8 @@ namespace AAEmu.DBEditor.forms.server
             cbSKUIsDefault.Checked = SelectedSKU.IsDefault > 0;
             tSKUItemId.Text = SelectedSKU.ItemId.ToString();
             tSKUItemCount.Text = SelectedSKU.ItemCount.ToString();
-            tSKUSelectType.Text = SelectedSKU.SelectType.ToString();
-            tSKUEventType.Text = SelectedSKU.EventType.ToString();
+            cbSKUSelectType.SelectedIndex = (byte)((SelectedSKU.SelectType >= 0) && (SelectedSKU.SelectType < cbSKUSelectType.Items.Count) ? SelectedSKU.SelectType : 0);
+            cbSKUEventType.SelectedIndex = (byte)((SelectedSKU.EventType >= 0) && (SelectedSKU.EventType < cbSKUEventType.Items.Count) ? SelectedSKU.EventType : 0);
 
             if ((SelectedSKU.EventEndDate == null) || (SelectedSKU.EventEndDate <= DateTime.MinValue))
             {
@@ -477,11 +480,9 @@ namespace AAEmu.DBEditor.forms.server
             if (long.TryParse(tSKUItemCount.Text, out var itemCount))
                 hasChanged |= ((itemCount > 0) && (itemCount != SelectedSKU.ItemCount));
 
-            if (byte.TryParse(tSKUSelectType.Text, out var selectType))
-                hasChanged |= (selectType != SelectedSKU.SelectType);
+            hasChanged |= (cbSKUSelectType.SelectedIndex != SelectedSKU.SelectType);
 
-            if (byte.TryParse(tSKUEventType.Text, out var eventType))
-                hasChanged |= (eventType != SelectedSKU.EventType);
+            hasChanged |= (cbSKUEventType.SelectedIndex != SelectedSKU.EventType);
 
             if ((SelectedSKU.EventEndDate == null) || (SelectedSKU.EventEndDate <= DateTime.MinValue))
             {
@@ -579,8 +580,8 @@ namespace AAEmu.DBEditor.forms.server
                 SelectedSKU.IsDefault = (byte)(cbSKUIsDefault.Checked ? 1 : 0);
                 SelectedSKU.ItemId = uint.Parse(tSKUItemId.Text);
                 SelectedSKU.ItemCount = uint.Parse(tSKUItemCount.Text);
-                SelectedSKU.SelectType = byte.Parse(tSKUSelectType.Text);
-                SelectedSKU.EventType = byte.Parse(tSKUEventType.Text);
+                SelectedSKU.SelectType = (byte)cbSKUSelectType.SelectedIndex;
+                SelectedSKU.EventType = (byte)cbSKUEventType.SelectedIndex;
                 if (cbSKUEventHasEnd.Checked)
                     SelectedSKU.EventEndDate = dtpSKUEventEndDate.Value;
                 else
@@ -654,7 +655,7 @@ namespace AAEmu.DBEditor.forms.server
 
             cbShopItemIsHidden.Checked = (SelectedShopItem.IsHidden != 0);
 
-            cbShopItemLimitedType.Checked = (SelectedShopItem.LimitedType > 0);
+            cbShopItemLimitedType.SelectedIndex = (SelectedShopItem.LimitedType >= 0) && (SelectedShopItem.LimitedType < cbShopItemLimitedType.Items.Count) ? SelectedShopItem.LimitedType : 0;
             tShopItemLimitedStockMax.Text = SelectedShopItem.LimitedStockMax.ToString();
             tShopItemRemaining.Text = SelectedShopItem.Remaining.ToString();
             tShopItemMinLevel.Text = SelectedShopItem.LevelMin.ToString();
@@ -701,7 +702,7 @@ namespace AAEmu.DBEditor.forms.server
 
             hasChanged |= (cbShopItemIsHidden.Checked != (SelectedShopItem.IsHidden != 0));
 
-            hasChanged |= (cbShopItemLimitedType.Checked != ((SelectedShopItem.LimitedType > 0)));
+            hasChanged |= (cbShopItemLimitedType.SelectedIndex != SelectedShopItem.LimitedType);
 
             if (uint.TryParse(tShopItemLimitedStockMax.Text, out var limitedStopMax))
                 hasChanged |= (limitedStopMax != SelectedShopItem.LimitedStockMax);
@@ -774,7 +775,7 @@ namespace AAEmu.DBEditor.forms.server
                 SelectedShopItem.Name = tShopItemName.Text;
                 SelectedShopItem.ShopButtons = (byte)((cbShopItemAllowCart.Checked ? 0x0 : 0x1) + (cbShopItemAllowGift.Checked ? 0x0 : 0x2));
                 SelectedShopItem.IsHidden = (byte)(cbShopItemIsHidden.Checked ? 1 : 0);
-                SelectedShopItem.LimitedType = (byte)(cbShopItemLimitedType.Checked ? 1 : 0);
+                SelectedShopItem.LimitedType = (byte)cbShopItemLimitedType.SelectedIndex;
                 SelectedShopItem.LimitedStockMax = uint.Parse(tShopItemLimitedStockMax.Text);
                 SelectedShopItem.Remaining = int.Parse(tShopItemRemaining.Text);
                 SelectedShopItem.LevelMin = byte.Parse(tShopItemMinLevel.Text);

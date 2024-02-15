@@ -39,6 +39,8 @@
             columnHeader1 = new System.Windows.Forms.ColumnHeader();
             columnHeader2 = new System.Windows.Forms.ColumnHeader();
             columnHeader3 = new System.Windows.Forms.ColumnHeader();
+            cbSKUSelectType = new System.Windows.Forms.ComboBox();
+            cbSKUEventType = new System.Windows.Forms.ComboBox();
             label24 = new System.Windows.Forms.Label();
             btnSKUGetNewId = new System.Windows.Forms.Button();
             lSKUDiscountCalculation = new System.Windows.Forms.Label();
@@ -50,8 +52,6 @@
             label11 = new System.Windows.Forms.Label();
             tSKUDiscountPrice = new System.Windows.Forms.TextBox();
             tSKUPrice = new System.Windows.Forms.TextBox();
-            tSKUEventType = new System.Windows.Forms.TextBox();
-            tSKUSelectType = new System.Windows.Forms.TextBox();
             tSKUItemCount = new System.Windows.Forms.TextBox();
             tSKUItemId = new System.Windows.Forms.TextBox();
             tSKUShopEntryPosition = new System.Windows.Forms.TextBox();
@@ -98,7 +98,7 @@
             label21 = new System.Windows.Forms.Label();
             dtpShopItemSaleStart = new System.Windows.Forms.DateTimePicker();
             groupBox2 = new System.Windows.Forms.GroupBox();
-            cbShopItemLimitedType = new System.Windows.Forms.CheckBox();
+            cbShopItemLimitedType = new System.Windows.Forms.ComboBox();
             label23 = new System.Windows.Forms.Label();
             tShopItemLimitedStockMax = new System.Windows.Forms.TextBox();
             tShopItemRemaining = new System.Windows.Forms.TextBox();
@@ -204,6 +204,8 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(cbSKUSelectType);
+            splitContainer1.Panel2.Controls.Add(cbSKUEventType);
             splitContainer1.Panel2.Controls.Add(label24);
             splitContainer1.Panel2.Controls.Add(btnSKUGetNewId);
             splitContainer1.Panel2.Controls.Add(lSKUDiscountCalculation);
@@ -215,8 +217,6 @@
             splitContainer1.Panel2.Controls.Add(label11);
             splitContainer1.Panel2.Controls.Add(tSKUDiscountPrice);
             splitContainer1.Panel2.Controls.Add(tSKUPrice);
-            splitContainer1.Panel2.Controls.Add(tSKUEventType);
-            splitContainer1.Panel2.Controls.Add(tSKUSelectType);
             splitContainer1.Panel2.Controls.Add(tSKUItemCount);
             splitContainer1.Panel2.Controls.Add(tSKUItemId);
             splitContainer1.Panel2.Controls.Add(tSKUShopEntryPosition);
@@ -279,6 +279,28 @@
             // columnHeader3
             // 
             columnHeader3.Text = "Count";
+            // 
+            // cbSKUSelectType
+            // 
+            cbSKUSelectType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cbSKUSelectType.FormattingEnabled = true;
+            cbSKUSelectType.Items.AddRange(new object[] { "Default (amount+event)", "Unused", "Event-Type only", "Item Name + Event-Type" });
+            cbSKUSelectType.Location = new System.Drawing.Point(98, 131);
+            cbSKUSelectType.Name = "cbSKUSelectType";
+            cbSKUSelectType.Size = new System.Drawing.Size(229, 24);
+            cbSKUSelectType.TabIndex = 39;
+            cbSKUSelectType.SelectedIndexChanged += tSKU_Changed;
+            // 
+            // cbSKUEventType
+            // 
+            cbSKUEventType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cbSKUEventType.FormattingEnabled = true;
+            cbSKUEventType.Items.AddRange(new object[] { "None", "Event", "Hot", "Bonus", "New" });
+            cbSKUEventType.Location = new System.Drawing.Point(98, 159);
+            cbSKUEventType.Name = "cbSKUEventType";
+            cbSKUEventType.Size = new System.Drawing.Size(132, 24);
+            cbSKUEventType.TabIndex = 38;
+            cbSKUEventType.SelectedIndexChanged += tSKU_Changed;
             // 
             // label24
             // 
@@ -385,24 +407,6 @@
             tSKUPrice.Size = new System.Drawing.Size(75, 23);
             tSKUPrice.TabIndex = 27;
             tSKUPrice.TextChanged += tSKU_Changed;
-            // 
-            // tSKUEventType
-            // 
-            tSKUEventType.Location = new System.Drawing.Point(98, 160);
-            tSKUEventType.Name = "tSKUEventType";
-            tSKUEventType.PlaceholderText = "0";
-            tSKUEventType.Size = new System.Drawing.Size(63, 23);
-            tSKUEventType.TabIndex = 26;
-            tSKUEventType.TextChanged += tSKU_Changed;
-            // 
-            // tSKUSelectType
-            // 
-            tSKUSelectType.Location = new System.Drawing.Point(98, 131);
-            tSKUSelectType.Name = "tSKUSelectType";
-            tSKUSelectType.PlaceholderText = "0";
-            tSKUSelectType.Size = new System.Drawing.Size(63, 23);
-            tSKUSelectType.TabIndex = 25;
-            tSKUSelectType.TextChanged += tSKU_Changed;
             // 
             // tSKUItemCount
             // 
@@ -521,7 +525,7 @@
             // cbSKUEventHasEnd
             // 
             cbSKUEventHasEnd.AutoSize = true;
-            cbSKUEventHasEnd.Location = new System.Drawing.Point(167, 162);
+            cbSKUEventHasEnd.Location = new System.Drawing.Point(268, 163);
             cbSKUEventHasEnd.Name = "cbSKUEventHasEnd";
             cbSKUEventHasEnd.Size = new System.Drawing.Size(125, 20);
             cbSKUEventHasEnd.TabIndex = 11;
@@ -890,27 +894,27 @@
             // 
             // cbShopItemLimitedType
             // 
-            cbShopItemLimitedType.AutoSize = true;
-            cbShopItemLimitedType.Location = new System.Drawing.Point(6, 22);
+            cbShopItemLimitedType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cbShopItemLimitedType.FormattingEnabled = true;
+            cbShopItemLimitedType.Items.AddRange(new object[] { "No limit", "Limit per account", "Limit per character" });
+            cbShopItemLimitedType.Location = new System.Drawing.Point(6, 19);
             cbShopItemLimitedType.Name = "cbShopItemLimitedType";
-            cbShopItemLimitedType.Size = new System.Drawing.Size(134, 20);
-            cbShopItemLimitedType.TabIndex = 28;
-            cbShopItemLimitedType.Text = "Is Limited Stock Item";
-            cbShopItemLimitedType.UseVisualStyleBackColor = true;
-            cbShopItemLimitedType.CheckedChanged += tShopItems_Changed;
+            cbShopItemLimitedType.Size = new System.Drawing.Size(140, 24);
+            cbShopItemLimitedType.TabIndex = 46;
+            cbShopItemLimitedType.SelectedIndexChanged += tShopItems_Changed;
             // 
             // label23
             // 
             label23.AutoSize = true;
-            label23.Location = new System.Drawing.Point(263, 52);
+            label23.Location = new System.Drawing.Point(6, 52);
             label23.Name = "label23";
-            label23.Size = new System.Drawing.Size(101, 16);
+            label23.Size = new System.Drawing.Size(249, 16);
             label23.TabIndex = 45;
-            label23.Text = "remaining for sale";
+            label23.Text = "Remaining for sales when global sales limit set";
             // 
             // tShopItemLimitedStockMax
             // 
-            tShopItemLimitedStockMax.Location = new System.Drawing.Point(158, 20);
+            tShopItemLimitedStockMax.Location = new System.Drawing.Point(264, 19);
             tShopItemLimitedStockMax.Name = "tShopItemLimitedStockMax";
             tShopItemLimitedStockMax.PlaceholderText = "number of total items for sale";
             tShopItemLimitedStockMax.Size = new System.Drawing.Size(99, 23);
@@ -920,7 +924,7 @@
             // 
             // tShopItemRemaining
             // 
-            tShopItemRemaining.Location = new System.Drawing.Point(158, 49);
+            tShopItemRemaining.Location = new System.Drawing.Point(263, 49);
             tShopItemRemaining.Name = "tShopItemRemaining";
             tShopItemRemaining.Size = new System.Drawing.Size(99, 23);
             tShopItemRemaining.TabIndex = 44;
@@ -930,11 +934,11 @@
             // label15
             // 
             label15.AutoSize = true;
-            label15.Location = new System.Drawing.Point(263, 23);
+            label15.Location = new System.Drawing.Point(155, 22);
             label15.Name = "label15";
-            label15.Size = new System.Drawing.Size(116, 16);
+            label15.Size = new System.Drawing.Size(103, 16);
             label15.TabIndex = 30;
-            label15.Text = "total amount for sale";
+            label15.Text = "maximum amount";
             // 
             // groupBox1
             // 
@@ -979,7 +983,7 @@
             // 
             tShopItemBuyRestrictId.Location = new System.Drawing.Point(298, 49);
             tShopItemBuyRestrictId.Name = "tShopItemBuyRestrictId";
-            tShopItemBuyRestrictId.Size = new System.Drawing.Size(79, 23);
+            tShopItemBuyRestrictId.Size = new System.Drawing.Size(65, 23);
             tShopItemBuyRestrictId.TabIndex = 38;
             tShopItemBuyRestrictId.Text = "0";
             tShopItemBuyRestrictId.TextChanged += tShopItems_Changed;
@@ -1272,8 +1276,6 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox tSKUDiscountPrice;
         private System.Windows.Forms.TextBox tSKUPrice;
-        private System.Windows.Forms.TextBox tSKUEventType;
-        private System.Windows.Forms.TextBox tSKUSelectType;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.TreeView tvShopItems;
         private System.Windows.Forms.Button btnSKUNew;
@@ -1289,7 +1291,6 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox tShopItemLimitedStockMax;
-        private System.Windows.Forms.CheckBox cbShopItemLimitedType;
         private System.Windows.Forms.TextBox tShopItemName;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label17;
@@ -1334,5 +1335,8 @@
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Button btnAutoCreateAllItemsTab;
+        private System.Windows.Forms.ComboBox cbShopItemLimitedType;
+        private System.Windows.Forms.ComboBox cbSKUEventType;
+        private System.Windows.Forms.ComboBox cbSKUSelectType;
     }
 }
