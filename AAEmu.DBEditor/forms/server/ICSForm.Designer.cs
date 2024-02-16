@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ICSForm));
             tcICS = new System.Windows.Forms.TabControl();
             tpInfo = new System.Windows.Forms.TabPage();
@@ -116,7 +117,7 @@
             tShopItemMaxLevel = new System.Windows.Forms.TextBox();
             tpShopTabs = new System.Windows.Forms.TabPage();
             panel1 = new System.Windows.Forms.Panel();
-            btnAutoCreateAllItemsTab = new System.Windows.Forms.Button();
+            btnAutoCreateTab = new System.Windows.Forms.Button();
             label26 = new System.Windows.Forms.Label();
             pTrash = new System.Windows.Forms.Panel();
             lPageCount = new System.Windows.Forms.Label();
@@ -125,6 +126,10 @@
             cbSubMenu = new System.Windows.Forms.ComboBox();
             cbMainMenu = new System.Windows.Forms.ComboBox();
             lvMenuItemsTab = new System.Windows.Forms.ListView();
+            cmsMenuTab = new System.Windows.Forms.ContextMenuStrip(components);
+            tsmiMenuTabCancel = new System.Windows.Forms.ToolStripMenuItem();
+            tsmiMenuTabS1 = new System.Windows.Forms.ToolStripSeparator();
+            tsmiMenuTabFindShopItem = new System.Windows.Forms.ToolStripMenuItem();
             tcICS.SuspendLayout();
             tpInfo.SuspendLayout();
             tpSKUs.SuspendLayout();
@@ -143,6 +148,7 @@
             groupBox1.SuspendLayout();
             tpShopTabs.SuspendLayout();
             panel1.SuspendLayout();
+            cmsMenuTab.SuspendLayout();
             SuspendLayout();
             // 
             // tcICS
@@ -668,6 +674,7 @@
             tvShopItems.TabIndex = 0;
             tvShopItems.DrawNode += tvShopItems_DrawNode;
             tvShopItems.AfterSelect += tvShopItems_AfterSelect;
+            tvShopItems.DoubleClick += tvShopItems_DoubleClick;
             // 
             // btnShopItemNew
             // 
@@ -1078,7 +1085,7 @@
             // panel1
             // 
             panel1.BackgroundImage = (System.Drawing.Image)resources.GetObject("panel1.BackgroundImage");
-            panel1.Controls.Add(btnAutoCreateAllItemsTab);
+            panel1.Controls.Add(btnAutoCreateTab);
             panel1.Controls.Add(label26);
             panel1.Controls.Add(pTrash);
             panel1.Controls.Add(lPageCount);
@@ -1092,16 +1099,16 @@
             panel1.Size = new System.Drawing.Size(660, 500);
             panel1.TabIndex = 0;
             // 
-            // btnAutoCreateAllItemsTab
+            // btnAutoCreateTab
             // 
-            btnAutoCreateAllItemsTab.Enabled = false;
-            btnAutoCreateAllItemsTab.Location = new System.Drawing.Point(252, 461);
-            btnAutoCreateAllItemsTab.Name = "btnAutoCreateAllItemsTab";
-            btnAutoCreateAllItemsTab.Size = new System.Drawing.Size(215, 23);
-            btnAutoCreateAllItemsTab.TabIndex = 12;
-            btnAutoCreateAllItemsTab.Text = "Auto-Create \"All Items\" Tab";
-            btnAutoCreateAllItemsTab.UseVisualStyleBackColor = true;
-            btnAutoCreateAllItemsTab.Click += btnAutoCreateAllItemsTab_Click;
+            btnAutoCreateTab.Enabled = false;
+            btnAutoCreateTab.Location = new System.Drawing.Point(252, 461);
+            btnAutoCreateTab.Name = "btnAutoCreateTab";
+            btnAutoCreateTab.Size = new System.Drawing.Size(165, 23);
+            btnAutoCreateTab.TabIndex = 12;
+            btnAutoCreateTab.Text = "Auto-Create this Tab";
+            btnAutoCreateTab.UseVisualStyleBackColor = true;
+            btnAutoCreateTab.Click += btnAutoCreateTab_Click;
             // 
             // label26
             // 
@@ -1182,6 +1189,7 @@
             // 
             lvMenuItemsTab.AllowDrop = true;
             lvMenuItemsTab.BackColor = System.Drawing.Color.FromArgb(247, 246, 241);
+            lvMenuItemsTab.ContextMenuStrip = cmsMenuTab;
             lvMenuItemsTab.Location = new System.Drawing.Point(252, 75);
             lvMenuItemsTab.MultiSelect = false;
             lvMenuItemsTab.Name = "lvMenuItemsTab";
@@ -1198,6 +1206,30 @@
             lvMenuItemsTab.DragOver += lvMenuItemsTab_DragOver;
             lvMenuItemsTab.DragLeave += lvMenuItemsTab_DragLeave;
             lvMenuItemsTab.MouseDown += lvMenuItemsTab_MouseDown;
+            // 
+            // cmsMenuTab
+            // 
+            cmsMenuTab.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { tsmiMenuTabCancel, tsmiMenuTabS1, tsmiMenuTabFindShopItem });
+            cmsMenuTab.Name = "cmsMenuTab";
+            cmsMenuTab.Size = new System.Drawing.Size(154, 54);
+            // 
+            // tsmiMenuTabCancel
+            // 
+            tsmiMenuTabCancel.Name = "tsmiMenuTabCancel";
+            tsmiMenuTabCancel.Size = new System.Drawing.Size(153, 22);
+            tsmiMenuTabCancel.Text = "Cancel";
+            // 
+            // tsmiMenuTabS1
+            // 
+            tsmiMenuTabS1.Name = "tsmiMenuTabS1";
+            tsmiMenuTabS1.Size = new System.Drawing.Size(150, 6);
+            // 
+            // tsmiMenuTabFindShopItem
+            // 
+            tsmiMenuTabFindShopItem.Name = "tsmiMenuTabFindShopItem";
+            tsmiMenuTabFindShopItem.Size = new System.Drawing.Size(153, 22);
+            tsmiMenuTabFindShopItem.Text = "Find Shop Item";
+            tsmiMenuTabFindShopItem.Click += tsmiMenuTabFindShopItem_Click;
             // 
             // ICSForm
             // 
@@ -1235,6 +1267,7 @@
             tpShopTabs.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            cmsMenuTab.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -1334,9 +1367,13 @@
         private System.Windows.Forms.Panel pTrash;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Button btnAutoCreateAllItemsTab;
+        private System.Windows.Forms.Button btnAutoCreateTab;
         private System.Windows.Forms.ComboBox cbShopItemLimitedType;
         private System.Windows.Forms.ComboBox cbSKUEventType;
         private System.Windows.Forms.ComboBox cbSKUSelectType;
+        private System.Windows.Forms.ContextMenuStrip cmsMenuTab;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMenuTabCancel;
+        private System.Windows.Forms.ToolStripSeparator tsmiMenuTabS1;
+        private System.Windows.Forms.ToolStripMenuItem tsmiMenuTabFindShopItem;
     }
 }

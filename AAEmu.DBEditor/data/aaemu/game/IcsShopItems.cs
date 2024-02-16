@@ -26,7 +26,7 @@ public partial class IcsShopItems
     public string Name { get; set; }
 
     /// <summary>
-    /// Enables limited stock mode if non-zero
+    /// Enables limited stock mode if non-zero, Account(1), Chracter(2)
     /// </summary>
     public byte LimitedType { get; set; }
 

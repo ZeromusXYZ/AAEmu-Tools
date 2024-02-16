@@ -161,7 +161,7 @@ namespace AAEmu.DBEditor.forms.server
                 {
                     if ((minPrice == 0) && (maxPrice == 0) && (subSku.Price > 0))
                     {
-                        minPrice = subSku.Price ?? 0;
+                        minPrice = subSku.Price;
                         maxPrice = minPrice;
                     }
                     switch (subSku.Currency)
@@ -187,8 +187,8 @@ namespace AAEmu.DBEditor.forms.server
                     if (displayIconItemId == 0)
                         displayIconItemId = (long)subSku.ItemId;
 
-                    minPrice = Math.Min(minPrice, subSku.Price ?? minPrice);
-                    maxPrice = Math.Max(maxPrice, subSku.Price ?? maxPrice);
+                    minPrice = Math.Min(minPrice, subSku.Price);
+                    maxPrice = Math.Max(maxPrice, subSku.Price);
                 }
 
                 if (string.IsNullOrEmpty(shopItem.Name) && (!string.IsNullOrEmpty(displayName)))
@@ -398,7 +398,12 @@ namespace AAEmu.DBEditor.forms.server
             }
             lvMenuItemsTab.EndUpdate();
             RePageTabPage();
-            btnAutoCreateAllItemsTab.Enabled = ((mainMenu != 1) && (subMenu == 1)) || ((mainMenu == 1) && (subMenu == 4));
+            btnAutoCreateTab.Enabled = 
+                ((mainMenu != 1) && (subMenu == 1)) ||  // all menus except first, sub menu 1 => All
+                ((mainMenu == 1) && (subMenu == 4)) ||  // first menu, sub menu 4 => All
+                ((mainMenu == 1) && (subMenu == 1)) ||  // first menu, sub menu 1 => Limited
+                ((mainMenu == 1) && (subMenu == 3))     // first menu, sub menu 3 => New
+                ;
         }
 
         private void lvSKUs_SelectedIndexChanged(object sender, EventArgs e)
@@ -912,7 +917,7 @@ namespace AAEmu.DBEditor.forms.server
                     }
                 }
 
-                if ((oldIndex < 0) || (oldItem == null) || (oldIndex == targetItemIndex))
+                if ((lvMenuItemsTab.Items.Count <= 1) || (oldIndex < 0) || (oldItem == null) || (oldIndex == targetItemIndex))
                     return; // couldn't find the old ListViewItem that's being dragged, or it wasn't dragged at all
 
                 // If moved to the end of the list
@@ -1078,6 +1083,51 @@ namespace AAEmu.DBEditor.forms.server
 
         private void btnAutoCreateAllItemsTab_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void tvShopItems_DoubleClick(object sender, EventArgs e)
+        {
+            var searchText = string.Empty;
+            if (tvShopItems.SelectedNode?.Tag is IcsShopItems shopItem)
+            {
+                searchText += shopItem.ShopId.ToString() + " ";
+            }
+            if (tvShopItems.SelectedNode?.Tag is IcsSkus sku)
+            {
+                searchText = sku.Sku.ToString() + " ";
+            }
+
+            searchText = searchText.Trim();
+            if (!string.IsNullOrWhiteSpace(searchText))
+            {
+                tFilterSku.Text = searchText;
+                tcICS.SelectedTab = tpSKUs;
+            }
+        }
+
+        private void tsmiMenuTabFindShopItem_Click(object sender, EventArgs e)
+        {
+            var searchText = string.Empty;
+
+            foreach (ListViewItem item in lvMenuItemsTab.SelectedItems)
+            {
+                if (item.Tag is IcsMenu menuItem)
+                {
+                    searchText = menuItem.ShopId.ToString();
+                }
+            }
+
+            searchText = searchText.Trim();
+            if (!string.IsNullOrWhiteSpace(searchText))
+            {
+                tFilterShopItem.Text = searchText;
+                tcICS.SelectedTab = tpShopEntries;
+            }
+        }
+
+        private void AutoFillAllitemsTab()
+        {
             if (MessageBox.Show("This will remove all entries of this tab and poplate them with the contents of all other items in this sub-menu!" + Environment.NewLine +
                 "Are you sure you want to continue?", "Auto-create items?", MessageBoxButtons.YesNo) != DialogResult.Yes)
                 return;
@@ -1100,7 +1150,7 @@ namespace AAEmu.DBEditor.forms.server
             }
             var allItemsOfThisMenu = Data.MySqlDb.Game.IcsMenu.Where(x => (x.MainTab == mainMenu)).OrderBy(x => x.SubTab).ThenBy(x => x.TabPos).ToList();
             var newPos = 0;
-            foreach(var item in allItemsOfThisMenu)
+            foreach (var item in allItemsOfThisMenu)
             {
                 var newItem = new IcsMenu();
                 newItem.MainTab = mainMenu;
@@ -1120,6 +1170,168 @@ namespace AAEmu.DBEditor.forms.server
                 MessageBox.Show("Failed to save new data: " + ex.Message, "", MessageBoxButtons.OK);
             }
             FillShopTabsPage();
+        }
+
+        private void AutoFillNewItemsTab()
+        {
+            if (MessageBox.Show("This will remove all entries of this tab and poplate them with the contents of all other items that are marked as New!" + Environment.NewLine +
+                "Are you sure you want to continue?", "Auto-create items?", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                return;
+
+            var mainMenu = (byte)(cbMainMenu.SelectedIndex + 1);
+            var subMenu = (byte)(cbSubMenu.SelectedIndex + 1);
+
+            // Delete all items on this sub menu
+            try
+            {
+                if (lvMenuItemsTab.Items.Count > 0)
+                {
+                    Data.MySqlDb.Game.IcsMenu.Where(x => (x.MainTab == mainMenu) && (x.SubTab == subMenu)).ExecuteDelete();
+                    Data.MySqlDb.Game.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to delete old data: " + ex.Message, "", MessageBoxButtons.OK);
+            }
+
+            var allNewItems = Data.MySqlDb.Game.IcsMenu.OrderBy(x => x.MainTab).ThenBy(x => x.SubTab).ThenBy(x => x.TabPos).ToList();
+            var newItemsToAdd = new List<uint>();
+
+            foreach (var item in allNewItems)
+            {
+                var shopItem = Data.MySqlDb.Game.IcsShopItems.FirstOrDefault(x => x.ShopId == item.ShopId);
+                if (shopItem == null)
+                    continue;
+
+                // Check if already added
+                if (newItemsToAdd.Contains(shopItem.ShopId))
+                    continue;
+
+                var skus = Data.MySqlDb.Game.IcsSkus.Where(x => x.ShopId == shopItem.ShopId).ToList();
+                foreach (var sku in skus)
+                {
+                    if (sku.EventType == 4)
+                    {
+                        newItemsToAdd.Add(shopItem.ShopId);
+                        break;
+                    }
+                }
+            }
+
+
+            var newPos = 0;
+            foreach (var item in newItemsToAdd)
+            {
+                var newItem = new IcsMenu();
+                newItem.MainTab = mainMenu;
+                newItem.SubTab = subMenu;
+                newItem.TabPos = newPos;
+                newItem.ShopId = item;
+
+                Data.MySqlDb.Game.IcsMenu.Add(newItem);
+                newPos++;
+            }
+            try
+            {
+                Data.MySqlDb.Game.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to save new data: " + ex.Message, "", MessageBoxButtons.OK);
+            }
+            FillShopTabsPage();
+        }
+
+        private void AutoFillLimitedItemsTab()
+        {
+            if (MessageBox.Show("This will remove all entries of this tab and poplate them with the contents of all other items with limited global stock!" + Environment.NewLine +
+                "Are you sure you want to continue?", "Auto-create items?", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                return;
+
+            var mainMenu = (byte)(cbMainMenu.SelectedIndex + 1);
+            var subMenu = (byte)(cbSubMenu.SelectedIndex + 1);
+
+            // Delete all items on this sub menu
+            try
+            {
+                if (lvMenuItemsTab.Items.Count > 0)
+                {
+                    Data.MySqlDb.Game.IcsMenu.Where(x => (x.MainTab == mainMenu) && (x.SubTab == subMenu)).ExecuteDelete();
+                    Data.MySqlDb.Game.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to delete old data: " + ex.Message, "", MessageBoxButtons.OK);
+            }
+
+            var allNewItems = Data.MySqlDb.Game.IcsMenu.OrderBy(x => x.MainTab).ThenBy(x => x.SubTab).ThenBy(x => x.TabPos).ToList();
+            var newItemsToAdd = new List<uint>();
+
+            foreach (var item in allNewItems)
+            {
+                var shopItem = Data.MySqlDb.Game.IcsShopItems.FirstOrDefault(x => x.ShopId == item.ShopId);
+                if (shopItem == null)
+                    continue;
+
+                // Check if already added
+                if (newItemsToAdd.Contains(shopItem.ShopId))
+                    continue;
+
+                if (shopItem.Remaining >= 0)
+                    newItemsToAdd.Add(shopItem.ShopId);
+            }
+
+            var newPos = 0;
+            foreach (var item in newItemsToAdd)
+            {
+                var newItem = new IcsMenu();
+                newItem.MainTab = mainMenu;
+                newItem.SubTab = subMenu;
+                newItem.TabPos = newPos;
+                newItem.ShopId = item;
+
+                Data.MySqlDb.Game.IcsMenu.Add(newItem);
+                newPos++;
+            }
+            try
+            {
+                Data.MySqlDb.Game.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Failed to save new data: " + ex.Message, "", MessageBoxButtons.OK);
+            }
+            FillShopTabsPage();
+        }
+
+        private void btnAutoCreateTab_Click(object sender, EventArgs e)
+        {
+            var mainMenu = (byte)(cbMainMenu.SelectedIndex + 1);
+            var subMenu = (byte)(cbSubMenu.SelectedIndex + 1);
+
+            if (
+                ((mainMenu != 1) && (subMenu == 1)) ||  // all menus except first, sub menu 1 => All
+                ((mainMenu == 1) && (subMenu == 4))  // first menu, sub menu 4 => All
+                )
+            {
+                AutoFillAllitemsTab();
+                return;
+            }
+
+            if (((mainMenu == 1) && (subMenu == 1)))  // first menu, sub menu 1 => Limited
+            {
+                AutoFillLimitedItemsTab();
+                return;
+            }
+
+            if (((mainMenu == 1) && (subMenu == 3)))     // first menu, sub menu 3 => New
+            {
+                AutoFillNewItemsTab();
+                return;
+            }
+
         }
     }
 }

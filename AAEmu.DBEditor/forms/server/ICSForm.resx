@@ -117,24 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="textBox1.Text" xml:space="preserve">
-    <value>
-To create shop entries you need to do the following things.
-
-1) Create a new SKU for the item entry you want to sell
-SKUs are individual lines on the sales panel where you can optionally select how many you want to buy at the same time.
-SKUs with the same Shop ID will be listed together when you press the buy button in-game.
-You can use this to offer items in bulk at a discount. If you want to sell somthing in multiple currencies, you will need to create a duplicate SKU for it in another currency.
-
---- below is not yet implemented ---
-
-2) Create a Shop Item entry
-You can attach multiple SKUs to one shop item if wanted. Here you decide if this entry is giftable or not.
-
-3) Setup the Marketplace Shop Tab items
-You can define which shop items appear on which tabs. It's possible to put one Shop Item on more than one tab without having to create a seperate entry for it. This ensures that prices are consistent across all tabs.
-You can simply drag-and-drop items into place.</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="panel1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -6872,4 +6854,28 @@ You can simply drag-and-drop items into place.</value>
         qgAAAABJRU5ErkJggg==
 </value>
   </data>
+  <metadata name="cmsMenuTab.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="textBox1.Text" xml:space="preserve">
+    <value>
+To create shop entries you need to do the following things.
+
+1) Create a new SKU for the item entry you want to sell
+SKUs are individual lines on the sales panel where you can optionally select how many you want to buy at the same time.
+SKUs with the same Shop ID will be listed together when you press the buy button in-game.
+You can use this to offer items in bulk at a discount. If you want to sell somthing in multiple currencies, you will need to create a duplicate SKU for it in another currency.
+
+--- below is not yet implemented ---
+
+2) Create a Shop Item entry
+You can attach multiple SKUs to one shop item if wanted. Here you decide if this entry is giftable or not.
+
+3) Setup the Marketplace Shop Tab items
+You can define which shop items appear on which tabs. It's possible to put one Shop Item on more than one tab without having to create a seperate entry for it. This ensures that prices are consistent across all tabs.
+You can simply drag-and-drop items into place.</value>
+  </data>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>66</value>
+  </metadata>
 </root>

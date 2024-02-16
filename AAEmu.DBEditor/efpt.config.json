@@ -36,6 +36,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "audit_ics_sales",
+         "ObjectType": 0
+      },
+      {
          "Name": "blocked",
          "ObjectType": 0
       },

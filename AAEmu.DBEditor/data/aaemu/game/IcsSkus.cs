@@ -15,56 +15,56 @@ public partial class IcsSkus
     /// <summary>
     /// Reference to the shop item
     /// </summary>
-    public uint? ShopId { get; set; }
+    public uint ShopId { get; set; }
 
     /// <summary>
     /// Used for display order inside the item details
     /// </summary>
-    public int? Position { get; set; }
+    public int Position { get; set; }
 
     /// <summary>
     /// Item that is for sale
     /// </summary>
-    public uint? ItemId { get; set; }
+    public uint ItemId { get; set; }
 
     /// <summary>
     /// Number of items for this detail
     /// </summary>
-    public uint? ItemCount { get; set; }
+    public uint ItemCount { get; set; }
 
-    public byte? SelectType { get; set; }
+    public byte SelectType { get; set; }
 
     /// <summary>
     /// Is this the default selection?
     /// </summary>
-    public byte? IsDefault { get; set; }
+    public byte IsDefault { get; set; }
 
-    public byte? EventType { get; set; }
+    public byte EventType { get; set; }
 
     public DateTime? EventEndDate { get; set; }
 
     /// <summary>
     /// Credits(0), AAPoints(1), Loyalty(2), Coins(3)
     /// </summary>
-    public byte? Currency { get; set; }
+    public byte Currency { get; set; }
 
     /// <summary>
     /// Price of the item
     /// </summary>
-    public uint? Price { get; set; }
+    public uint Price { get; set; }
 
     /// <summary>
     /// Discounted price (this is used if set)
     /// </summary>
-    public uint? DiscountPrice { get; set; }
+    public uint DiscountPrice { get; set; }
 
     /// <summary>
     /// Bonus item included for this purchase
     /// </summary>
-    public uint? BonusItemId { get; set; }
+    public uint BonusItemId { get; set; }
 
     /// <summary>
     /// Amount of bonus items included
     /// </summary>
-    public uint? BonusItemCount { get; set; }
+    public uint BonusItemCount { get; set; }
 }
