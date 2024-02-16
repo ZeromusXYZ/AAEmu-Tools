@@ -117,6 +117,30 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="textBox1.Text" xml:space="preserve">
+    <value>To create shop entries you need to do the following things.
+
+1) Create a new SKU for the item entry you want to sell
+SKUs are individual lines on the sales panel where you can optionally select how many you want to buy at the same time.
+SKUs with the same Shop ID will be listed together when you press the buy button in-game.
+You can use this to offer items in bulk at a discount. If you want to sell somthing in multiple currencies, you will need to create a duplicate SKU for it in another currency.
+If you create a new SKU and leave the shop item id empty or zero, a new shop item with the default settings will get created for just this SKU.
+
+2) Create a Shop Item entry
+You can attach multiple SKUs to one shop item if wanted. Here you decide if this entry is giftable or not.
+You can double-click on a item in the tree view to filter the SKUs for that shop item.
+
+3) Setup the Marketplace Shop Tab items
+You can define which shop items appear on which tabs. It's possible to put one Shop Item on more than one tab without having to create a seperate entry for it. This ensures that prices are consistent across all tabs.
+You can simply drag-and-drop items into place.
+If you have opened one of the "special tab menus", like "All, Featured or New". The button at the bottom to auto-create this sub menu will be enabled. It will do it's best to fill in items as needed, but it will erase any items that were already on that sub menu.
+You can also right-click on items on the tab menu page and pcik find shop item to filter for that item on the shop item tab.
+
+
+(*) Notes:
+- There is currently no way to create new items from a empty database. It's adviced to install the example shop from AAEmu first and edit that.
+- It is not allowed to delete SKUs or Shop Items once created. This is due to the logging feature used by AAEmu. Editing or removing the IDs would mess up the logs.</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="panel1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -6857,24 +6881,6 @@
   <metadata name="cmsMenuTab.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="textBox1.Text" xml:space="preserve">
-    <value>
-To create shop entries you need to do the following things.
-
-1) Create a new SKU for the item entry you want to sell
-SKUs are individual lines on the sales panel where you can optionally select how many you want to buy at the same time.
-SKUs with the same Shop ID will be listed together when you press the buy button in-game.
-You can use this to offer items in bulk at a discount. If you want to sell somthing in multiple currencies, you will need to create a duplicate SKU for it in another currency.
-
---- below is not yet implemented ---
-
-2) Create a Shop Item entry
-You can attach multiple SKUs to one shop item if wanted. Here you decide if this entry is giftable or not.
-
-3) Setup the Marketplace Shop Tab items
-You can define which shop items appear on which tabs. It's possible to put one Shop Item on more than one tab without having to create a seperate entry for it. This ensures that prices are consistent across all tabs.
-You can simply drag-and-drop items into place.</value>
-  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>66</value>
   </metadata>
