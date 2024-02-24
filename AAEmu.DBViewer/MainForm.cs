@@ -5690,14 +5690,32 @@ namespace AAEmu.DBViewer
                 nodeText += " - " + buff.nameLocalized;
                 setCustomIcon = IconIDToLabel(buff.icon_id, null);
             }
-            else if (key.EndsWith("zone_id") && (AADB.DB_Zones.TryGetValue(val, out var zone)))
+            else if (key.EndsWith("zone_id"))
             {
-                res.targetTabPage = tpZones;
-                res.targetTextBox = tZonesSearch;
-                res.targetSearchText = zone.display_textLocalized;
-                res.targetSearchButton = btnSearchZones;
-                res.ForeColor = Color.WhiteSmoke;
-                nodeText += " - " + zone.display_textLocalized;
+                if (AADB.DB_Zones.TryGetValue(val, out var zone))
+                {
+                    res.targetTabPage = tpZones;
+                    res.targetTextBox = tZonesSearch;
+                    res.targetSearchText = zone.display_textLocalized;
+                    res.targetSearchButton = btnSearchZones;
+                    res.ForeColor = Color.WhiteSmoke;
+                    nodeText += " - " + zone.display_textLocalized + " (key)";
+                }
+                // Some quest related entries use "zone_id" when they instead mean "zone_group_id"
+                // So we add the 2nd part here.
+                if (AADB.DB_Zone_Groups.TryGetValue(val, out var zoneGroup))
+                {
+                    res.targetTabPage = tpZones;
+                    res.targetTextBox = tZonesSearch;
+                    res.targetSearchText = zoneGroup.display_textLocalized;
+                    res.targetSearchButton = btnSearchZones;
+                    res.ForeColor = Color.WhiteSmoke;
+                    if (zone != null)
+                        nodeText += " or ";
+                    else
+                        nodeText += " - ";
+                    nodeText += zoneGroup.display_textLocalized + " (group)";
+                }
             }
             else if (key.EndsWith("zone_group_id") && (AADB.DB_Zone_Groups.TryGetValue(val, out var zoneGroup)))
             {
