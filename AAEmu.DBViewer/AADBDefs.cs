@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace AAEmu.DBDefs
 {
@@ -380,6 +381,14 @@ namespace AAEmu.DBDefs
         // Helpers
         public string nameLocalized = string.Empty;
         public string SearchString = string.Empty;
+    }
+
+    class GameQuestMonsterGroups
+    {
+        public long id;
+        public string name;
+        public long category_id;
+        public string nameLocalized = string.Empty;
     }
 
     class GameSkillItems
@@ -936,6 +945,16 @@ namespace AAEmu.DBDefs
         public bool always_drop = false;
     }
 
+    public class GameLootGroup
+    {
+        public long id = 0;
+        public long pack_id = 0;
+        public long group_no = 0;
+        public long drop_rate = 0;
+        public long item_grade_distribution_id = 0;
+    }
+
+
     public class GameLootPackDroppingNpc
     {
         public long id = 0;
@@ -953,6 +972,68 @@ namespace AAEmu.DBDefs
         public long min_dice = 0;
     }
 
+    public class GameSlaves
+    {
+        public long id = 0;
+        public string name = string.Empty;
+        public long model_id = 0;
+        public bool mountable = false;
+        public float offset_x = 0f;
+        public float offset_y = 0f;
+        public float offset_z = 0f;
+        public float obb_pos_x = 0f;
+        public float obb_pos_y = 0f;
+        public float obb_pos_z = 0f;
+        public float obb_size_x = 0f;
+        public float obb_size_y = 0f;
+        public float obb_size_z = 0f;
+        public long portal_spawn_fx_id = 0;
+        public float portal_scale = 0f;
+        public float portal_time = 0f;
+        public long portal_despawn_fx_id = 0;
+        public long hp25_doodad_count = 0;
+        public long hp50_doodad_count = 0;
+        public long hp75_doodad_count = 0;
+        public float spawn_x_offset = 0f;
+        public float spawn_y_offset = 0f;
+        public long faction_id = 0;
+        public long level = 0;
+        public long cost = 0;
+        public long slave_kind_id = 0;
+        public long spawn_valid_area_range = 0;
+        public long slave_initial_item_pack_id = 0;
+        public long slave_customizing_id = 0;
+        public bool customizable = false;
+
+        public string nameLocalized = string.Empty;
+        public string searchText = string.Empty;
+    }
+
+    public class GameModel
+    {
+        public long id = 0;
+        public string comment = string.Empty;
+        public long sub_id = 0;
+        public string sub_type = string.Empty;
+        public float dying_time = 0f;
+        public long sound_material_id = 0;
+        public bool big = false;
+        public float target_decal_size = 0f;
+        public bool use_target_decal = false;
+        public bool use_target_silhouette = false;
+        public bool use_target_highlight = false;
+        public string name = string.Empty;
+        public float camera_distance = 0f;
+        public bool show_name_tag = false;
+        public float name_tag_offset = 0f;
+        public long sound_pack_id = 0;
+        public bool despawn_doodad_on_collision = false;
+        public bool play_mount_animation = false;
+        public bool selectable = false;
+        public long mount_pose_id = 0;
+        public float camera_distance_for_wide_angle = 0f;
+    }
+
     static class AADB
     {
         public static Dictionary<string, GameTranslation> DB_Translations = new Dictionary<string, GameTranslation>();
@@ -963,6 +1044,7 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameSkills> DB_Skills = new Dictionary<long, GameSkills>();
         public static Dictionary<long, GameSkillEffects> DB_Skill_Effects = new Dictionary<long, GameSkillEffects>();
         public static Dictionary<long, GameNPC> DB_NPCs = new Dictionary<long, GameNPC>();
+        public static Dictionary<long, GameQuestMonsterGroups> DB_Quest_Monster_Groups = new Dictionary<long, GameQuestMonsterGroups>();
         public static Dictionary<long, string> DB_Icons = new Dictionary<long, string>();
         public static Dictionary<long, GameSkillItems> DB_Skill_Reagents = new Dictionary<long, GameSkillItems>();
         public static Dictionary<long, GameSkillItems> DB_Skill_Products = new Dictionary<long, GameSkillItems>();
@@ -1003,8 +1085,11 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameNpcSpawner> DB_Npc_Spawners = new Dictionary<long, GameNpcSpawner>();
         public static Dictionary<long, GameSpecialties> DB_Specialities = new Dictionary<long, GameSpecialties>();
         public static Dictionary<long, GameLoot> DB_Loots = new Dictionary<long, GameLoot>();
+        public static Dictionary<long, GameLootGroup> DB_Loot_Groups = new Dictionary<long, GameLootGroup>();
         public static Dictionary<long, GameLootPackDroppingNpc> DB_Loot_Pack_Dropping_Npc = new Dictionary<long, GameLootPackDroppingNpc>();
         public static Dictionary<long, GameLootActAbilityGroup> DB_Loot_ActAbility_Groups = new Dictionary<long, GameLootActAbilityGroup>();
+        public static Dictionary<long, GameSlaves> DB_Slaves = new Dictionary<long, GameSlaves>();
+        public static Dictionary<long, GameModel> DB_Models = new Dictionary<long, GameModel>();
 
         public static string GetTranslationByID(long idx, string table, string field, string defaultValue = "$NODEFAULT")
         {
@@ -1132,11 +1217,9 @@ namespace AAEmu.DBDefs
         {
             var res = string.Empty;
             // https://www.reddit.com/r/archeage/comments/3dak17/datamining_every_location_of_everything_in/
-            // (0.00097657363894522145695357130138029 * (X - Coordinate)) - 21 = (Longitude in degrees)
-            // (0.00097657363894522145695357130138029 * (Y - Coordinate)) - 28 = (Latitude in degrees)
 
-            var fx = (0.00097657363894522145695357130138029f * x) - 21f;
-            var fy = (0.00097657363894522145695357130138029f * y) - 28f;
+            var fx = (x / 1024f) - 21f;
+            var fy = (y / 1024f) - 28f;
             // X - Longitude
             if (fx >= 0f)
             {
@@ -1166,8 +1249,8 @@ namespace AAEmu.DBDefs
 
         public static PointF SextantToCoord(float longitude, float latitude)
         {
-            var ux = ((longitude + 21f) / 0.00097657363894522145695357130138029f);
-            var uy = ((latitude + 28f) / 0.00097657363894522145695357130138029f);
+            var ux = (longitude + 21f) * 1024f;
+            var uy = (latitude + 28f) * 1024f;
             return new PointF(ux, uy);
         }
 
@@ -1189,6 +1272,5 @@ namespace AAEmu.DBDefs
             }
             return res;
         }
-
     }
 }

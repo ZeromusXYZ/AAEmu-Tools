@@ -1,5 +1,5 @@
 ﻿
-namespace AAEmu.DbEditor
+namespace AAEmu.DBEditor
 {
     partial class MainForm
     {
@@ -29,416 +29,516 @@ namespace AAEmu.DbEditor
         /// </summary>
         private void InitializeComponent()
         {
-            this.MM = new System.Windows.Forms.MenuStrip();
-            this.MMFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMFileOpenServer = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMFileOpenClient = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMFileOpenMySQL = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMFileS1 = new System.Windows.Forms.ToolStripSeparator();
-            this.MMFileSettings = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMFileS3 = new System.Windows.Forms.ToolStripSeparator();
-            this.MMFileReload = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMFileS2 = new System.Windows.Forms.ToolStripSeparator();
-            this.MMFileExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMClient = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMClientMap = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMClientS1 = new System.Windows.Forms.ToolStripSeparator();
-            this.MMClientItems = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMClientDoodads = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMClientNPCs = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMClientSkills = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMClientZones = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMClientBuffs = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMClientFactions = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMClientQuests = new System.Windows.Forms.ToolStripMenuItem();
-            this.MMClientLoot = new System.Windows.Forms.ToolStripMenuItem();
-            this.serverToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.accountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.charactersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.guildsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
-            this.cashShopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.lMySQLServer = new System.Windows.Forms.Label();
-            this.lClientPak = new System.Windows.Forms.Label();
-            this.lServerDB = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.lClientLanguage = new System.Windows.Forms.Label();
-            this.ofdServerDB = new System.Windows.Forms.OpenFileDialog();
-            this.ofdClientPak = new System.Windows.Forms.OpenFileDialog();
-            this.TestPanel = new System.Windows.Forms.Panel();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.sbL1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.MM.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
-            this.SuspendLayout();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            MM = new System.Windows.Forms.MenuStrip();
+            MMFile = new System.Windows.Forms.ToolStripMenuItem();
+            MMFileOpenServer = new System.Windows.Forms.ToolStripMenuItem();
+            MMFileOpenClient = new System.Windows.Forms.ToolStripMenuItem();
+            MMFileOpenMySQL = new System.Windows.Forms.ToolStripMenuItem();
+            MMFileS1 = new System.Windows.Forms.ToolStripSeparator();
+            MMFileSettings = new System.Windows.Forms.ToolStripMenuItem();
+            MMFileS3 = new System.Windows.Forms.ToolStripSeparator();
+            MMFileReload = new System.Windows.Forms.ToolStripMenuItem();
+            MMFileS2 = new System.Windows.Forms.ToolStripSeparator();
+            MMFileExit = new System.Windows.Forms.ToolStripMenuItem();
+            MMClient = new System.Windows.Forms.ToolStripMenuItem();
+            MMClientMap = new System.Windows.Forms.ToolStripMenuItem();
+            MMClientS1 = new System.Windows.Forms.ToolStripSeparator();
+            MMClientItems = new System.Windows.Forms.ToolStripMenuItem();
+            MMClientDoodads = new System.Windows.Forms.ToolStripMenuItem();
+            MMClientNPCs = new System.Windows.Forms.ToolStripMenuItem();
+            MMClientSkills = new System.Windows.Forms.ToolStripMenuItem();
+            MMClientZones = new System.Windows.Forms.ToolStripMenuItem();
+            MMClientBuffs = new System.Windows.Forms.ToolStripMenuItem();
+            MMClientFactions = new System.Windows.Forms.ToolStripMenuItem();
+            MMClientQuests = new System.Windows.Forms.ToolStripMenuItem();
+            MMClientLoot = new System.Windows.Forms.ToolStripMenuItem();
+            MMServer = new System.Windows.Forms.ToolStripMenuItem();
+            MMServerAccounts = new System.Windows.Forms.ToolStripMenuItem();
+            MMServerCharacters = new System.Windows.Forms.ToolStripMenuItem();
+            MMServerGuilds = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            MMServerICS = new System.Windows.Forms.ToolStripMenuItem();
+            MMVersion = new System.Windows.Forms.ToolStripMenuItem();
+            label3 = new System.Windows.Forms.Label();
+            label2 = new System.Windows.Forms.Label();
+            label4 = new System.Windows.Forms.Label();
+            lMySQLServer = new System.Windows.Forms.Label();
+            lClientPak = new System.Windows.Forms.Label();
+            lServerDB = new System.Windows.Forms.Label();
+            ofdServerDB = new System.Windows.Forms.OpenFileDialog();
+            ofdClientPak = new System.Windows.Forms.OpenFileDialog();
+            TestPanel = new System.Windows.Forms.Panel();
+            statusStrip1 = new System.Windows.Forms.StatusStrip();
+            sbL1 = new System.Windows.Forms.ToolStripStatusLabel();
+            gbLocale = new System.Windows.Forms.GroupBox();
+            rbLocaleFr = new System.Windows.Forms.RadioButton();
+            rbLocaleDe = new System.Windows.Forms.RadioButton();
+            rbLocaleJa = new System.Windows.Forms.RadioButton();
+            rbLocaleZhTw = new System.Windows.Forms.RadioButton();
+            rbLocaleZhCn = new System.Windows.Forms.RadioButton();
+            rbLocaleRu = new System.Windows.Forms.RadioButton();
+            rbLocaleKo = new System.Windows.Forms.RadioButton();
+            rbLocaleEnUs = new System.Windows.Forms.RadioButton();
+            MM.SuspendLayout();
+            statusStrip1.SuspendLayout();
+            gbLocale.SuspendLayout();
+            SuspendLayout();
             // 
             // MM
             // 
-            this.MM.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MMFile,
-            this.MMClient,
-            this.serverToolStripMenuItem});
-            this.MM.Location = new System.Drawing.Point(0, 0);
-            this.MM.Name = "MM";
-            this.MM.Size = new System.Drawing.Size(734, 24);
-            this.MM.TabIndex = 0;
-            this.MM.Text = "menuStrip1";
+            MM.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { MMFile, MMClient, MMServer, MMVersion });
+            MM.Location = new System.Drawing.Point(0, 0);
+            MM.Name = "MM";
+            MM.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
+            MM.Size = new System.Drawing.Size(856, 24);
+            MM.TabIndex = 0;
+            MM.Text = "menuStrip1";
             // 
             // MMFile
             // 
-            this.MMFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MMFileOpenServer,
-            this.MMFileOpenClient,
-            this.MMFileOpenMySQL,
-            this.MMFileS1,
-            this.MMFileSettings,
-            this.MMFileS3,
-            this.MMFileReload,
-            this.MMFileS2,
-            this.MMFileExit});
-            this.MMFile.Name = "MMFile";
-            this.MMFile.Size = new System.Drawing.Size(37, 20);
-            this.MMFile.Text = "&File";
+            MMFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMFileOpenServer, MMFileOpenClient, MMFileOpenMySQL, MMFileS1, MMFileSettings, MMFileS3, MMFileReload, MMFileS2, MMFileExit });
+            MMFile.Name = "MMFile";
+            MMFile.Size = new System.Drawing.Size(37, 20);
+            MMFile.Text = "&File";
             // 
             // MMFileOpenServer
             // 
-            this.MMFileOpenServer.Name = "MMFileOpenServer";
-            this.MMFileOpenServer.Size = new System.Drawing.Size(183, 22);
-            this.MMFileOpenServer.Text = "Open Server DB ...";
-            this.MMFileOpenServer.Click += new System.EventHandler(this.MMFileOpenServer_Click);
+            MMFileOpenServer.Name = "MMFileOpenServer";
+            MMFileOpenServer.Size = new System.Drawing.Size(181, 22);
+            MMFileOpenServer.Text = "Open Server DB ...";
+            MMFileOpenServer.Click += MMFileOpenServer_Click;
             // 
             // MMFileOpenClient
             // 
-            this.MMFileOpenClient.Name = "MMFileOpenClient";
-            this.MMFileOpenClient.Size = new System.Drawing.Size(183, 22);
-            this.MMFileOpenClient.Text = "Open Game Client ...";
-            this.MMFileOpenClient.Click += new System.EventHandler(this.MMFileOpenClient_Click);
+            MMFileOpenClient.Name = "MMFileOpenClient";
+            MMFileOpenClient.Size = new System.Drawing.Size(181, 22);
+            MMFileOpenClient.Text = "Open Game Client ...";
+            MMFileOpenClient.Click += MMFileOpenClient_Click;
             // 
             // MMFileOpenMySQL
             // 
-            this.MMFileOpenMySQL.Enabled = false;
-            this.MMFileOpenMySQL.Name = "MMFileOpenMySQL";
-            this.MMFileOpenMySQL.Size = new System.Drawing.Size(183, 22);
-            this.MMFileOpenMySQL.Text = "Open MySQL DB ...";
+            MMFileOpenMySQL.Name = "MMFileOpenMySQL";
+            MMFileOpenMySQL.Size = new System.Drawing.Size(181, 22);
+            MMFileOpenMySQL.Text = "Open MySQL DB ...";
+            MMFileOpenMySQL.Click += MMFileOpenMySQL_Click;
             // 
             // MMFileS1
             // 
-            this.MMFileS1.Name = "MMFileS1";
-            this.MMFileS1.Size = new System.Drawing.Size(180, 6);
+            MMFileS1.Name = "MMFileS1";
+            MMFileS1.Size = new System.Drawing.Size(178, 6);
             // 
             // MMFileSettings
             // 
-            this.MMFileSettings.Enabled = false;
-            this.MMFileSettings.Name = "MMFileSettings";
-            this.MMFileSettings.Size = new System.Drawing.Size(183, 22);
-            this.MMFileSettings.Text = "Settings ...";
+            MMFileSettings.Enabled = false;
+            MMFileSettings.Name = "MMFileSettings";
+            MMFileSettings.Size = new System.Drawing.Size(181, 22);
+            MMFileSettings.Text = "Settings ...";
             // 
             // MMFileS3
             // 
-            this.MMFileS3.Name = "MMFileS3";
-            this.MMFileS3.Size = new System.Drawing.Size(180, 6);
+            MMFileS3.Name = "MMFileS3";
+            MMFileS3.Size = new System.Drawing.Size(178, 6);
             // 
             // MMFileReload
             // 
-            this.MMFileReload.Name = "MMFileReload";
-            this.MMFileReload.Size = new System.Drawing.Size(183, 22);
-            this.MMFileReload.Text = "Reload";
-            this.MMFileReload.Click += new System.EventHandler(this.MMFileReload_Click);
+            MMFileReload.Name = "MMFileReload";
+            MMFileReload.Size = new System.Drawing.Size(181, 22);
+            MMFileReload.Text = "Reload";
+            MMFileReload.Click += MMFileReload_Click;
             // 
             // MMFileS2
             // 
-            this.MMFileS2.Name = "MMFileS2";
-            this.MMFileS2.Size = new System.Drawing.Size(180, 6);
+            MMFileS2.Name = "MMFileS2";
+            MMFileS2.Size = new System.Drawing.Size(178, 6);
             // 
             // MMFileExit
             // 
-            this.MMFileExit.Name = "MMFileExit";
-            this.MMFileExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.MMFileExit.Size = new System.Drawing.Size(183, 22);
-            this.MMFileExit.Text = "E&xit";
-            this.MMFileExit.Click += new System.EventHandler(this.MMFileExit_Click);
+            MMFileExit.Name = "MMFileExit";
+            MMFileExit.ShortcutKeys = System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4;
+            MMFileExit.Size = new System.Drawing.Size(181, 22);
+            MMFileExit.Text = "E&xit";
+            MMFileExit.Click += MMFileExit_Click;
             // 
             // MMClient
             // 
-            this.MMClient.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MMClientMap,
-            this.MMClientS1,
-            this.MMClientItems,
-            this.MMClientDoodads,
-            this.MMClientNPCs,
-            this.MMClientSkills,
-            this.MMClientZones,
-            this.MMClientBuffs,
-            this.MMClientFactions,
-            this.MMClientQuests,
-            this.MMClientLoot});
-            this.MMClient.Name = "MMClient";
-            this.MMClient.Size = new System.Drawing.Size(50, 20);
-            this.MMClient.Text = "Client";
+            MMClient.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMClientMap, MMClientS1, MMClientItems, MMClientDoodads, MMClientNPCs, MMClientSkills, MMClientZones, MMClientBuffs, MMClientFactions, MMClientQuests, MMClientLoot });
+            MMClient.Name = "MMClient";
+            MMClient.Size = new System.Drawing.Size(49, 20);
+            MMClient.Text = "Client";
+            MMClient.DropDownOpened += MMClient_DropDownOpened;
             // 
             // MMClientMap
             // 
-            this.MMClientMap.Enabled = false;
-            this.MMClientMap.Name = "MMClientMap";
-            this.MMClientMap.Size = new System.Drawing.Size(121, 22);
-            this.MMClientMap.Text = "Map";
+            MMClientMap.Enabled = false;
+            MMClientMap.Name = "MMClientMap";
+            MMClientMap.Size = new System.Drawing.Size(121, 22);
+            MMClientMap.Text = "Map";
+            MMClientMap.Click += MMClientMap_Click;
             // 
             // MMClientS1
             // 
-            this.MMClientS1.Name = "MMClientS1";
-            this.MMClientS1.Size = new System.Drawing.Size(118, 6);
+            MMClientS1.Name = "MMClientS1";
+            MMClientS1.Size = new System.Drawing.Size(118, 6);
             // 
             // MMClientItems
             // 
-            this.MMClientItems.Enabled = false;
-            this.MMClientItems.Name = "MMClientItems";
-            this.MMClientItems.Size = new System.Drawing.Size(121, 22);
-            this.MMClientItems.Text = "Items";
+            MMClientItems.Enabled = false;
+            MMClientItems.Name = "MMClientItems";
+            MMClientItems.Size = new System.Drawing.Size(121, 22);
+            MMClientItems.Text = "Items";
             // 
             // MMClientDoodads
             // 
-            this.MMClientDoodads.Enabled = false;
-            this.MMClientDoodads.Name = "MMClientDoodads";
-            this.MMClientDoodads.Size = new System.Drawing.Size(121, 22);
-            this.MMClientDoodads.Text = "Doodads";
+            MMClientDoodads.Enabled = false;
+            MMClientDoodads.Name = "MMClientDoodads";
+            MMClientDoodads.Size = new System.Drawing.Size(121, 22);
+            MMClientDoodads.Text = "Doodads";
             // 
             // MMClientNPCs
             // 
-            this.MMClientNPCs.Enabled = false;
-            this.MMClientNPCs.Name = "MMClientNPCs";
-            this.MMClientNPCs.Size = new System.Drawing.Size(121, 22);
-            this.MMClientNPCs.Text = "NPCs";
+            MMClientNPCs.Enabled = false;
+            MMClientNPCs.Name = "MMClientNPCs";
+            MMClientNPCs.Size = new System.Drawing.Size(121, 22);
+            MMClientNPCs.Text = "NPCs";
             // 
             // MMClientSkills
             // 
-            this.MMClientSkills.Enabled = false;
-            this.MMClientSkills.Name = "MMClientSkills";
-            this.MMClientSkills.Size = new System.Drawing.Size(121, 22);
-            this.MMClientSkills.Text = "Skills";
+            MMClientSkills.Enabled = false;
+            MMClientSkills.Name = "MMClientSkills";
+            MMClientSkills.Size = new System.Drawing.Size(121, 22);
+            MMClientSkills.Text = "Skills";
             // 
             // MMClientZones
             // 
-            this.MMClientZones.Enabled = false;
-            this.MMClientZones.Name = "MMClientZones";
-            this.MMClientZones.Size = new System.Drawing.Size(121, 22);
-            this.MMClientZones.Text = "Zones";
+            MMClientZones.Enabled = false;
+            MMClientZones.Name = "MMClientZones";
+            MMClientZones.Size = new System.Drawing.Size(121, 22);
+            MMClientZones.Text = "Zones";
             // 
             // MMClientBuffs
             // 
-            this.MMClientBuffs.Enabled = false;
-            this.MMClientBuffs.Name = "MMClientBuffs";
-            this.MMClientBuffs.Size = new System.Drawing.Size(121, 22);
-            this.MMClientBuffs.Text = "Buffs";
+            MMClientBuffs.Enabled = false;
+            MMClientBuffs.Name = "MMClientBuffs";
+            MMClientBuffs.Size = new System.Drawing.Size(121, 22);
+            MMClientBuffs.Text = "Buffs";
             // 
             // MMClientFactions
             // 
-            this.MMClientFactions.Enabled = false;
-            this.MMClientFactions.Name = "MMClientFactions";
-            this.MMClientFactions.Size = new System.Drawing.Size(121, 22);
-            this.MMClientFactions.Text = "Factions";
+            MMClientFactions.Enabled = false;
+            MMClientFactions.Name = "MMClientFactions";
+            MMClientFactions.Size = new System.Drawing.Size(121, 22);
+            MMClientFactions.Text = "Factions";
             // 
             // MMClientQuests
             // 
-            this.MMClientQuests.Enabled = false;
-            this.MMClientQuests.Name = "MMClientQuests";
-            this.MMClientQuests.Size = new System.Drawing.Size(121, 22);
-            this.MMClientQuests.Text = "Quests";
+            MMClientQuests.Enabled = false;
+            MMClientQuests.Name = "MMClientQuests";
+            MMClientQuests.Size = new System.Drawing.Size(121, 22);
+            MMClientQuests.Text = "Quests";
             // 
             // MMClientLoot
             // 
-            this.MMClientLoot.Enabled = false;
-            this.MMClientLoot.Name = "MMClientLoot";
-            this.MMClientLoot.Size = new System.Drawing.Size(121, 22);
-            this.MMClientLoot.Text = "Loot";
+            MMClientLoot.Enabled = false;
+            MMClientLoot.Name = "MMClientLoot";
+            MMClientLoot.Size = new System.Drawing.Size(121, 22);
+            MMClientLoot.Text = "Loot";
             // 
-            // serverToolStripMenuItem
+            // MMServer
             // 
-            this.serverToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.accountsToolStripMenuItem,
-            this.charactersToolStripMenuItem,
-            this.guildsToolStripMenuItem,
-            this.toolStripMenuItem2,
-            this.cashShopToolStripMenuItem});
-            this.serverToolStripMenuItem.Name = "serverToolStripMenuItem";
-            this.serverToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
-            this.serverToolStripMenuItem.Text = "Server";
+            MMServer.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMServerAccounts, MMServerCharacters, MMServerGuilds, toolStripMenuItem2, MMServerICS });
+            MMServer.Name = "MMServer";
+            MMServer.Size = new System.Drawing.Size(51, 20);
+            MMServer.Text = "Server";
+            MMServer.DropDownOpened += serverToolStripMenuItem_DropDownOpened;
             // 
-            // accountsToolStripMenuItem
+            // MMServerAccounts
             // 
-            this.accountsToolStripMenuItem.Enabled = false;
-            this.accountsToolStripMenuItem.Name = "accountsToolStripMenuItem";
-            this.accountsToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
-            this.accountsToolStripMenuItem.Text = "Accounts";
+            MMServerAccounts.Enabled = false;
+            MMServerAccounts.Name = "MMServerAccounts";
+            MMServerAccounts.Size = new System.Drawing.Size(129, 22);
+            MMServerAccounts.Text = "Accounts";
+            MMServerAccounts.Click += MMServerAccounts_Click;
             // 
-            // charactersToolStripMenuItem
+            // MMServerCharacters
             // 
-            this.charactersToolStripMenuItem.Enabled = false;
-            this.charactersToolStripMenuItem.Name = "charactersToolStripMenuItem";
-            this.charactersToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
-            this.charactersToolStripMenuItem.Text = "Characters";
+            MMServerCharacters.Enabled = false;
+            MMServerCharacters.Name = "MMServerCharacters";
+            MMServerCharacters.Size = new System.Drawing.Size(129, 22);
+            MMServerCharacters.Text = "Characters";
             // 
-            // guildsToolStripMenuItem
+            // MMServerGuilds
             // 
-            this.guildsToolStripMenuItem.Enabled = false;
-            this.guildsToolStripMenuItem.Name = "guildsToolStripMenuItem";
-            this.guildsToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
-            this.guildsToolStripMenuItem.Text = "Guilds";
+            MMServerGuilds.Enabled = false;
+            MMServerGuilds.Name = "MMServerGuilds";
+            MMServerGuilds.Size = new System.Drawing.Size(129, 22);
+            MMServerGuilds.Text = "Guilds";
             // 
             // toolStripMenuItem2
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(127, 6);
+            toolStripMenuItem2.Name = "toolStripMenuItem2";
+            toolStripMenuItem2.Size = new System.Drawing.Size(126, 6);
             // 
-            // cashShopToolStripMenuItem
+            // MMServerICS
             // 
-            this.cashShopToolStripMenuItem.Enabled = false;
-            this.cashShopToolStripMenuItem.Name = "cashShopToolStripMenuItem";
-            this.cashShopToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
-            this.cashShopToolStripMenuItem.Text = "Cash Shop";
+            MMServerICS.Enabled = false;
+            MMServerICS.Name = "MMServerICS";
+            MMServerICS.Size = new System.Drawing.Size(129, 22);
+            MMServerICS.Text = "Cash Shop";
+            MMServerICS.Click += MMServerICS_Click;
+            // 
+            // MMVersion
+            // 
+            MMVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            MMVersion.Name = "MMVersion";
+            MMVersion.Size = new System.Drawing.Size(57, 20);
+            MMVersion.Text = "Version";
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(69, 27);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(59, 13);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Server DB:";
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(86, 33);
+            label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(60, 16);
+            label3.TabIndex = 3;
+            label3.Text = "Server DB:";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(69, 49);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Client PAK:";
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(86, 60);
+            label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(64, 16);
+            label2.TabIndex = 4;
+            label2.Text = "Client PAK:";
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(69, 71);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(45, 13);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "MySQL:";
+            label4.AutoSize = true;
+            label4.Location = new System.Drawing.Point(86, 87);
+            label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(48, 16);
+            label4.TabIndex = 5;
+            label4.Text = "MySQL:";
             // 
             // lMySQLServer
             // 
-            this.lMySQLServer.AutoSize = true;
-            this.lMySQLServer.Location = new System.Drawing.Point(162, 71);
-            this.lMySQLServer.Name = "lMySQLServer";
-            this.lMySQLServer.Size = new System.Drawing.Size(52, 13);
-            this.lMySQLServer.TabIndex = 8;
-            this.lMySQLServer.Text = "127.0.0.1";
+            lMySQLServer.AutoSize = true;
+            lMySQLServer.Location = new System.Drawing.Point(189, 87);
+            lMySQLServer.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lMySQLServer.Name = "lMySQLServer";
+            lMySQLServer.Size = new System.Drawing.Size(50, 16);
+            lMySQLServer.TabIndex = 8;
+            lMySQLServer.Text = "127.0.0.1";
             // 
             // lClientPak
             // 
-            this.lClientPak.AutoSize = true;
-            this.lClientPak.Location = new System.Drawing.Point(162, 49);
-            this.lClientPak.Name = "lClientPak";
-            this.lClientPak.Size = new System.Drawing.Size(43, 13);
-            this.lClientPak.TabIndex = 7;
-            this.lClientPak.Text = "<none>";
+            lClientPak.AutoSize = true;
+            lClientPak.Location = new System.Drawing.Point(189, 60);
+            lClientPak.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lClientPak.Name = "lClientPak";
+            lClientPak.Size = new System.Drawing.Size(50, 16);
+            lClientPak.TabIndex = 7;
+            lClientPak.Text = "<none>";
             // 
             // lServerDB
             // 
-            this.lServerDB.AutoSize = true;
-            this.lServerDB.Location = new System.Drawing.Point(162, 27);
-            this.lServerDB.Name = "lServerDB";
-            this.lServerDB.Size = new System.Drawing.Size(43, 13);
-            this.lServerDB.TabIndex = 6;
-            this.lServerDB.Text = "<none>";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(69, 95);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(87, 13);
-            this.label7.TabIndex = 9;
-            this.label7.Text = "Client Language:";
-            // 
-            // lClientLanguage
-            // 
-            this.lClientLanguage.AutoSize = true;
-            this.lClientLanguage.Location = new System.Drawing.Point(162, 95);
-            this.lClientLanguage.Name = "lClientLanguage";
-            this.lClientLanguage.Size = new System.Drawing.Size(36, 13);
-            this.lClientLanguage.TabIndex = 10;
-            this.lClientLanguage.Text = "en_us";
+            lServerDB.AutoSize = true;
+            lServerDB.Location = new System.Drawing.Point(189, 33);
+            lServerDB.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lServerDB.Name = "lServerDB";
+            lServerDB.Size = new System.Drawing.Size(50, 16);
+            lServerDB.TabIndex = 6;
+            lServerDB.Text = "<none>";
             // 
             // ofdServerDB
             // 
-            this.ofdServerDB.DefaultExt = "sqlite3";
-            this.ofdServerDB.FileName = "compact.sqlite3";
-            this.ofdServerDB.Filter = "SQLite Files|*.sqlite*|All files|*.*";
-            this.ofdServerDB.InitialDirectory = "Data";
-            this.ofdServerDB.ReadOnlyChecked = true;
-            this.ofdServerDB.Title = "Open Server DB File";
+            ofdServerDB.DefaultExt = "sqlite3";
+            ofdServerDB.FileName = "compact.sqlite3";
+            ofdServerDB.Filter = "SQLite Files|*.sqlite*|All files|*.*";
+            ofdServerDB.InitialDirectory = "Data";
+            ofdServerDB.ReadOnlyChecked = true;
+            ofdServerDB.Title = "Open Server DB File";
             // 
             // ofdClientPak
             // 
-            this.ofdClientPak.FileName = "game_pak";
-            this.ofdClientPak.Filter = "Pak Files|*pak*.*|All Files|*.*";
-            this.ofdClientPak.Title = "Open client game_pak";
+            ofdClientPak.FileName = "game_pak";
+            ofdClientPak.Filter = "Pak Files|*pak*.*|All Files|*.*";
+            ofdClientPak.Title = "Open client game_pak";
             // 
             // TestPanel
             // 
-            this.TestPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.TestPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.TestPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.TestPanel.Location = new System.Drawing.Point(12, 27);
-            this.TestPanel.Name = "TestPanel";
-            this.TestPanel.Size = new System.Drawing.Size(51, 51);
-            this.TestPanel.TabIndex = 11;
+            TestPanel.BackColor = System.Drawing.SystemColors.Control;
+            TestPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            TestPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            TestPanel.Location = new System.Drawing.Point(14, 33);
+            TestPanel.Margin = new System.Windows.Forms.Padding(4);
+            TestPanel.Name = "TestPanel";
+            TestPanel.Size = new System.Drawing.Size(64, 64);
+            TestPanel.TabIndex = 11;
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sbL1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 119);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(734, 22);
-            this.statusStrip1.TabIndex = 12;
-            this.statusStrip1.Text = "statusStrip1";
+            statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { sbL1 });
+            statusStrip1.Location = new System.Drawing.Point(0, 207);
+            statusStrip1.Name = "statusStrip1";
+            statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
+            statusStrip1.Size = new System.Drawing.Size(856, 22);
+            statusStrip1.TabIndex = 12;
+            statusStrip1.Text = "statusStrip1";
             // 
             // sbL1
             // 
-            this.sbL1.Name = "sbL1";
-            this.sbL1.Size = new System.Drawing.Size(28, 17);
-            this.sbL1.Text = "Info";
+            sbL1.Name = "sbL1";
+            sbL1.Size = new System.Drawing.Size(28, 17);
+            sbL1.Text = "Info";
+            // 
+            // gbLocale
+            // 
+            gbLocale.Controls.Add(rbLocaleFr);
+            gbLocale.Controls.Add(rbLocaleDe);
+            gbLocale.Controls.Add(rbLocaleJa);
+            gbLocale.Controls.Add(rbLocaleZhTw);
+            gbLocale.Controls.Add(rbLocaleZhCn);
+            gbLocale.Controls.Add(rbLocaleRu);
+            gbLocale.Controls.Add(rbLocaleKo);
+            gbLocale.Controls.Add(rbLocaleEnUs);
+            gbLocale.Location = new System.Drawing.Point(14, 115);
+            gbLocale.Name = "gbLocale";
+            gbLocale.Size = new System.Drawing.Size(246, 77);
+            gbLocale.TabIndex = 13;
+            gbLocale.TabStop = false;
+            gbLocale.Text = "Client Language";
+            // 
+            // rbLocaleFr
+            // 
+            rbLocaleFr.AutoSize = true;
+            rbLocaleFr.Enabled = false;
+            rbLocaleFr.Location = new System.Drawing.Point(200, 22);
+            rbLocaleFr.Name = "rbLocaleFr";
+            rbLocaleFr.Size = new System.Drawing.Size(33, 20);
+            rbLocaleFr.TabIndex = 7;
+            rbLocaleFr.Text = "fr";
+            rbLocaleFr.UseVisualStyleBackColor = true;
+            rbLocaleFr.CheckedChanged += rbLocale_CheckedChanged;
+            // 
+            // rbLocaleDe
+            // 
+            rbLocaleDe.AutoSize = true;
+            rbLocaleDe.Enabled = false;
+            rbLocaleDe.Location = new System.Drawing.Point(139, 22);
+            rbLocaleDe.Name = "rbLocaleDe";
+            rbLocaleDe.Size = new System.Drawing.Size(38, 20);
+            rbLocaleDe.TabIndex = 6;
+            rbLocaleDe.Text = "de";
+            rbLocaleDe.UseVisualStyleBackColor = true;
+            rbLocaleDe.CheckedChanged += rbLocale_CheckedChanged;
+            // 
+            // rbLocaleJa
+            // 
+            rbLocaleJa.AutoSize = true;
+            rbLocaleJa.Enabled = false;
+            rbLocaleJa.Location = new System.Drawing.Point(200, 48);
+            rbLocaleJa.Name = "rbLocaleJa";
+            rbLocaleJa.Size = new System.Drawing.Size(34, 20);
+            rbLocaleJa.TabIndex = 5;
+            rbLocaleJa.Text = "ja";
+            rbLocaleJa.UseVisualStyleBackColor = true;
+            rbLocaleJa.CheckedChanged += rbLocale_CheckedChanged;
+            // 
+            // rbLocaleZhTw
+            // 
+            rbLocaleZhTw.AutoSize = true;
+            rbLocaleZhTw.Enabled = false;
+            rbLocaleZhTw.Location = new System.Drawing.Point(139, 48);
+            rbLocaleZhTw.Name = "rbLocaleZhTw";
+            rbLocaleZhTw.Size = new System.Drawing.Size(55, 20);
+            rbLocaleZhTw.TabIndex = 4;
+            rbLocaleZhTw.Text = "zh_tw";
+            rbLocaleZhTw.UseVisualStyleBackColor = true;
+            rbLocaleZhTw.CheckedChanged += rbLocale_CheckedChanged;
+            // 
+            // rbLocaleZhCn
+            // 
+            rbLocaleZhCn.AutoSize = true;
+            rbLocaleZhCn.Enabled = false;
+            rbLocaleZhCn.Location = new System.Drawing.Point(78, 48);
+            rbLocaleZhCn.Name = "rbLocaleZhCn";
+            rbLocaleZhCn.Size = new System.Drawing.Size(55, 20);
+            rbLocaleZhCn.TabIndex = 3;
+            rbLocaleZhCn.Text = "zh_cn";
+            rbLocaleZhCn.UseVisualStyleBackColor = true;
+            rbLocaleZhCn.CheckedChanged += rbLocale_CheckedChanged;
+            // 
+            // rbLocaleRu
+            // 
+            rbLocaleRu.AutoSize = true;
+            rbLocaleRu.Enabled = false;
+            rbLocaleRu.Location = new System.Drawing.Point(78, 22);
+            rbLocaleRu.Name = "rbLocaleRu";
+            rbLocaleRu.Size = new System.Drawing.Size(36, 20);
+            rbLocaleRu.TabIndex = 2;
+            rbLocaleRu.Text = "ru";
+            rbLocaleRu.UseVisualStyleBackColor = true;
+            rbLocaleRu.CheckedChanged += rbLocale_CheckedChanged;
+            // 
+            // rbLocaleKo
+            // 
+            rbLocaleKo.AutoSize = true;
+            rbLocaleKo.Location = new System.Drawing.Point(6, 22);
+            rbLocaleKo.Name = "rbLocaleKo";
+            rbLocaleKo.Size = new System.Drawing.Size(38, 20);
+            rbLocaleKo.TabIndex = 1;
+            rbLocaleKo.Text = "ko";
+            rbLocaleKo.UseVisualStyleBackColor = true;
+            rbLocaleKo.CheckedChanged += rbLocale_CheckedChanged;
+            // 
+            // rbLocaleEnUs
+            // 
+            rbLocaleEnUs.AutoSize = true;
+            rbLocaleEnUs.Checked = true;
+            rbLocaleEnUs.Enabled = false;
+            rbLocaleEnUs.Location = new System.Drawing.Point(6, 48);
+            rbLocaleEnUs.Name = "rbLocaleEnUs";
+            rbLocaleEnUs.Size = new System.Drawing.Size(55, 20);
+            rbLocaleEnUs.TabIndex = 0;
+            rbLocaleEnUs.TabStop = true;
+            rbLocaleEnUs.Text = "en_us";
+            rbLocaleEnUs.UseVisualStyleBackColor = true;
+            rbLocaleEnUs.CheckedChanged += rbLocale_CheckedChanged;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(734, 141);
-            this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.TestPanel);
-            this.Controls.Add(this.lClientLanguage);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.lMySQLServer);
-            this.Controls.Add(this.lClientPak);
-            this.Controls.Add(this.lServerDB);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.MM);
-            this.MainMenuStrip = this.MM;
-            this.Name = "MainForm";
-            this.Text = "AAEmu.Editor";
-            this.Load += new System.EventHandler(this.MainForm_Load);
-            this.MM.ResumeLayout(false);
-            this.MM.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(856, 229);
+            Controls.Add(gbLocale);
+            Controls.Add(statusStrip1);
+            Controls.Add(TestPanel);
+            Controls.Add(lMySQLServer);
+            Controls.Add(lClientPak);
+            Controls.Add(lServerDB);
+            Controls.Add(label4);
+            Controls.Add(label2);
+            Controls.Add(label3);
+            Controls.Add(MM);
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            MainMenuStrip = MM;
+            Margin = new System.Windows.Forms.Padding(4);
+            Name = "MainForm";
+            Text = "AAEmu.Editor";
+            Load += MainForm_Load;
+            MM.ResumeLayout(false);
+            MM.PerformLayout();
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
+            gbLocale.ResumeLayout(false);
+            gbLocale.PerformLayout();
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -464,20 +564,17 @@ namespace AAEmu.DbEditor
         private System.Windows.Forms.ToolStripMenuItem MMClientFactions;
         private System.Windows.Forms.ToolStripMenuItem MMClientQuests;
         private System.Windows.Forms.ToolStripMenuItem MMClientLoot;
-        private System.Windows.Forms.ToolStripMenuItem serverToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem accountsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem charactersToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem guildsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MMServer;
+        private System.Windows.Forms.ToolStripMenuItem MMServerAccounts;
+        private System.Windows.Forms.ToolStripMenuItem MMServerGuilds;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem cashShopToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MMServerICS;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lMySQLServer;
         private System.Windows.Forms.Label lClientPak;
         private System.Windows.Forms.Label lServerDB;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label lClientLanguage;
         private System.Windows.Forms.ToolStripSeparator MMFileS3;
         private System.Windows.Forms.ToolStripMenuItem MMFileReload;
         private System.Windows.Forms.OpenFileDialog ofdServerDB;
@@ -485,6 +582,17 @@ namespace AAEmu.DbEditor
         private System.Windows.Forms.Panel TestPanel;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel sbL1;
+        private System.Windows.Forms.ToolStripMenuItem MMServerCharacters;
+        private System.Windows.Forms.GroupBox gbLocale;
+        private System.Windows.Forms.RadioButton rbLocaleEnUs;
+        private System.Windows.Forms.RadioButton rbLocaleRu;
+        private System.Windows.Forms.RadioButton rbLocaleKo;
+        private System.Windows.Forms.RadioButton rbLocaleFr;
+        private System.Windows.Forms.RadioButton rbLocaleDe;
+        private System.Windows.Forms.RadioButton rbLocaleJa;
+        private System.Windows.Forms.RadioButton rbLocaleZhTw;
+        private System.Windows.Forms.RadioButton rbLocaleZhCn;
+        private System.Windows.Forms.ToolStripMenuItem MMVersion;
     }
 }
 

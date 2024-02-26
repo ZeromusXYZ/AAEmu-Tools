@@ -1,15 +1,62 @@
-﻿using AAEmu.DbEditor.Utils.DB;
+﻿using AAEmu.DBEditor.Utils.DB;
+using AAEmu.DBEditor.data.gamedb;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System;
 
-namespace AAEmu.DbEditor.data
+namespace AAEmu.DBEditor.data
 {
     public class ServerDB
     {
         private string fileName;
 
         public string FileName { get { return fileName; } }
-        public List<string> TableNames { get; set; } = new List<string>();
+
+        public CompactContext CompactSqlite { get; set; }
+
+        public List<string> TableNames { get; set; } = new();
+
+        public Dictionary<(string, string, long?), string> LocalizedText { get; set; } = new();
+
+        public string GetText(string tableName, string columnName, long index, string defaultText)
+        {
+            if (LocalizedText.TryGetValue((tableName, columnName, index), out var v))
+                return v ?? defaultText;
+            return defaultText;
+        }
+
+        public Dictionary<long, Item> ItemCache { get; set; } = new();
+
+        public bool ReloadLocale()
+        {
+            LocalizedText.Clear();
+            try
+            {
+                var locals = CompactSqlite.LocalizedTexts.ToList();
+                foreach (var localize in locals)
+                {
+                    var s = localize.Ko;
+                    switch (AAEmu.DBEditor.Properties.Settings.Default.ClientLanguage.ToLower())
+                    {
+                        case "ko": s = localize.Ko; break;
+                        case "en_us": s = localize.EnUs; break;
+                        case "ru": s = localize.Ru; break;
+                        case "de": s = localize.De; break;
+                        case "fr": s = localize.Fr; break;
+                        case "zh_cn": s = localize.ZhCn; break;
+                        case "zh_tw": s = localize.ZhTw; break;
+                        case "ja": s = localize.Ja; break;
+                    }
+                    LocalizedText.Add(new(localize.TblName, localize.TblColumnName, localize.Idx), s);
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
 
         public bool OpenDB(string fileName)
         {
@@ -19,6 +66,7 @@ namespace AAEmu.DbEditor.data
             fileName = Path.GetFullPath(fileName);
             if (File.Exists(fileName))
             {
+                // Read Table Names
                 SQLite.SqLiteFileName = fileName;
                 var sql = "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name ASC";
 
@@ -49,10 +97,33 @@ namespace AAEmu.DbEditor.data
                 }
                 if (TableNames.Count > 0)
                     this.fileName = fileName;
-                return TableNames.Count > 0;
+
+                CompactSqlite = new CompactContext();
+                try
+                {
+                    if (!ReloadLocale())
+                        return false;
+                }
+                catch
+                {
+                    return false;
+                }
             }
-            return false;
+            return TableNames.Count > 0;
         }
 
+        internal void LoadDbCache()
+        {
+            ItemCache.Clear();
+            foreach(var item in CompactSqlite.Items)
+                ItemCache.Add((long)item.Id, item);
+        }
+
+        public Item GetItem(long itemId)
+        {
+            if (ItemCache.TryGetValue(itemId, out var item))
+                return item;
+            return null;
+        }
     }
 }

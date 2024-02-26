@@ -1,26 +1,53 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <AssemblyTitle>AAEmu.DBEditor</AssemblyTitle>
     <Product>AAEmu.DBEditor</Product>
     <Description>Viewer and Editor for AAEmu</Description>
-    <Copyright>Copyright ©  2021-2022 - No Rights Reserved</Copyright>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
-    <FileVersion>0.1.0.0</FileVersion>
+    <Copyright>Copyright ©  2023-2024 - No Rights Reserved</Copyright>
+    <AssemblyVersion>0.0.1.1</AssemblyVersion>
+    <FileVersion>0.0.1.1</FileVersion>
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <ApplicationIcon>AAEmu.DBEditor.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="AAEmu.DBEditor.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="data\gamedb\" />
     <Folder Include="Models\Server\Game\" />
     <Folder Include="Models\Server\Login\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AAPacker" Version="1.0.2" />
+    <PackageReference Include="EfCore.SchemaCompare" Version="7.0.0" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.6" />
+    <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.2" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BitmapUtil\BitmapUtil.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 </Project>

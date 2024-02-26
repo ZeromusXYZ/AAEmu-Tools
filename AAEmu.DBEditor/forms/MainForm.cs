@@ -1,10 +1,14 @@
-﻿using AAEmu.DbEditor.data;
+﻿using AAEmu.DBEditor.data;
+using AAEmu.DBEditor.forms;
+using AAEmu.DBEditor.forms.server;
 using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace AAEmu.DbEditor
+namespace AAEmu.DBEditor
 {
     public partial class MainForm : Form
     {
@@ -21,7 +25,7 @@ namespace AAEmu.DbEditor
             Close();
         }
 
-        private bool DoReload()
+        private bool CloseAllForms()
         {
             if (OwnedForms.Length > 0)
                 if (MessageBox.Show("Reloading will first close all open forms!\r\nDo you want to continue ?", "Reload", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) != DialogResult.Yes)
@@ -30,20 +34,34 @@ namespace AAEmu.DbEditor
             for (var i = OwnedForms.Length - 1; i >= 0; i--)
                 OwnedForms[i].Close();
 
+            return true;
+        }
+
+        private bool DoReload()
+        {
+            if (!CloseAllForms())
+                return false;
+
             if (ValidateFilesTask != null)
             {
                 MessageBox.Show("Already busy loading data, cannot reload yet!", "Reload", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
+            Application.UseWaitCursor = true;
+
+            /*
             var res = false;
             ValidateFilesTask = new Task(new Action(delegate
             {
                 res = ValidateFiles();
             }));
             ValidateFilesTask.Start();
+            */
+            var res = ValidateFiles();
 
             // Reload the DB stuff
+            Application.UseWaitCursor = false;
             return res;
         }
 
@@ -52,19 +70,35 @@ namespace AAEmu.DbEditor
             DoReload();
         }
 
+        private void UpdateLocaleButtons()
+        {
+            var archeAgeText = Data.Server?.CompactSqlite?.LocalizedTexts?.FirstOrDefault(x => (x.TblName == "ui_texts") && (x.TblColumnName == "text") && (x.Idx == 1)); // 1944 = ArcheAge, 1 = Success!
+
+            rbLocaleKo.Enabled = (archeAgeText != null) && !string.IsNullOrEmpty(archeAgeText.Ko);
+            rbLocaleEnUs.Enabled = (archeAgeText != null) && !string.IsNullOrEmpty(archeAgeText.EnUs);
+            rbLocaleRu.Enabled = (archeAgeText != null) && !string.IsNullOrEmpty(archeAgeText.Ru);
+            rbLocaleZhCn.Enabled = (archeAgeText != null) && !string.IsNullOrEmpty(archeAgeText.ZhCn);
+            rbLocaleZhTw.Enabled = (archeAgeText != null) && !string.IsNullOrEmpty(archeAgeText.ZhTw);
+            rbLocaleJa.Enabled = (archeAgeText != null) && !string.IsNullOrEmpty(archeAgeText.Ja);
+            rbLocaleDe.Enabled = (archeAgeText != null) && !string.IsNullOrEmpty(archeAgeText.De);
+            rbLocaleFr.Enabled = (archeAgeText != null) && !string.IsNullOrEmpty(archeAgeText.Fr);
+        }
+
         private bool OpenServerDbTask()
         {
             var res = true;
-            if (!Data.Server.OpenDB(AAEmu.DbEditor.Properties.Settings.Default.ServerDB))
+            if (!Data.Server.OpenDB(AAEmu.DBEditor.Properties.Settings.Default.ServerDB))
             {
-                MainForm.Self.UpdateProgress("Opening ServerDB failed ...");
+                UpdateProgress("Opening ServerDB failed");
                 res = false;
-                UpdateLabel(lServerDB, AAEmu.DbEditor.Properties.Settings.Default.ServerDB + " <failed to load>");
+                UpdateLabel(lServerDB, AAEmu.DBEditor.Properties.Settings.Default.ServerDB + " <failed to load>");
             }
             else
             {
-                MainForm.Self.UpdateProgress("ServerDB loaded ...");
+                UpdateProgress("ServerDB loaded");
                 UpdateLabel(lServerDB, Data.Server.FileName + " <" + Data.Server.TableNames.Count.ToString() + " tables>");
+                AAEmu.DBEditor.Properties.Settings.Default.Save();
+                Data.Server.LoadDbCache();
             }
             return res;
         }
@@ -72,23 +106,23 @@ namespace AAEmu.DbEditor
         private bool OpenClientPakTask()
         {
             var res = true;
-            MainForm.Self.UpdateProgress("Loading Client Pak File ...");
-            if (string.IsNullOrWhiteSpace(AAEmu.DbEditor.Properties.Settings.Default.ClientPak) || !File.Exists(AAEmu.DbEditor.Properties.Settings.Default.ClientPak))
+            UpdateProgress("Loading Client Pak File ...");
+            if (string.IsNullOrWhiteSpace(AAEmu.DBEditor.Properties.Settings.Default.ClientPak) || !File.Exists(AAEmu.DBEditor.Properties.Settings.Default.ClientPak))
             {
                 UpdateLabel(lClientPak, "<not defined>");
                 TestPanel.BackgroundImage = null;
             }
             else
-            if (File.Exists(AAEmu.DbEditor.Properties.Settings.Default.ClientPak) && !Data.Client.Open(AAEmu.DbEditor.Properties.Settings.Default.ClientPak))
+            if (File.Exists(AAEmu.DBEditor.Properties.Settings.Default.ClientPak) && !Data.Client.Open(AAEmu.DBEditor.Properties.Settings.Default.ClientPak))
             {
-                MainForm.Self.UpdateProgress("Loading Client Pak File failed ...");
+                UpdateProgress("Loading Client Pak File failed");
                 res = false;
                 UpdateLabel(lClientPak, Data.Client.FileName + " <failed to load>");
                 TestPanel.BackgroundImage = null;
             }
             else
             {
-                MainForm.Self.UpdateProgress("Loaded Client Pak ...");
+                UpdateProgress("Loaded Client Pak");
                 UpdateLabel(lClientPak, Data.Client.FileName);
                 TestPanel.BackgroundImage = Data.Client.GetIconByName(ClientPak.DefaultPakIcon);
             }
@@ -98,9 +132,20 @@ namespace AAEmu.DbEditor
 
         private bool OpenMySQlTask()
         {
-            MainForm.Self.UpdateProgress("Opening MySQL server ...");
-            UpdateLabel(lMySQLServer, AAEmu.DbEditor.Properties.Settings.Default.MySQLDB);
-            return true;
+            UpdateProgress("Opening MySQL server ...");
+            Data.MySqlDb.Initialize();
+            if (Data.MySqlDb.IsValid)
+            {
+                UpdateLabel(lMySQLServer, AAEmu.DBEditor.Properties.Settings.Default.MySQLDB + " - " + AAEmu.DBEditor.Properties.Settings.Default.MySQLLogin + " - " + AAEmu.DBEditor.Properties.Settings.Default.MySQLGame);
+                AAEmu.DBEditor.Properties.Settings.Default.Save();
+                UpdateProgress("MySQL loaded");
+            }
+            else
+            {
+                UpdateLabel(lMySQLServer, "<failed> " + Data.MySqlDb.LastError);
+                UpdateProgress("MySQL failed to load");
+            }
+            return Data.MySqlDb.IsValid;
         }
 
         private bool ValidateFiles()
@@ -111,7 +156,6 @@ namespace AAEmu.DbEditor
             UpdateLabel(lMySQLServer, "Loading ...");
 
             var res = true;
-
 
             var mySqlTask = OpenMySQlTask();
             var serverDbTask = OpenServerDbTask();
@@ -124,69 +168,82 @@ namespace AAEmu.DbEditor
             if (!mySqlTask)
                 res = false;
 
+            Invoke(new Action(delegate { UpdateLocaleButtons(); }));
+
             if (res)
                 UpdateProgress("Done");
             else
                 UpdateProgress("Loading failed");
 
             ValidateFilesTask = null;
+
             return res;
-        }
-
-        private void UpdateLabels()
-        {
-            if ((Data.Server.FileName != String.Empty) && (Data.Server.TableNames.Count > 0))
-                lServerDB.Text = Data.Server.FileName;
-            else
-                lServerDB.Text = "<none>";
-
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // Update settings if needed
+            if (!Properties.Settings.Default.IsUpdated)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.Save();
+                Properties.Settings.Default.Reload();
+                Properties.Settings.Default.IsUpdated = true;
+                Properties.Settings.Default.Save();
+            }
+
             MainForm.Self = this;
+            MMVersion.Text = "Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Data.Initialize();
             ValidateFilesTask = new Task(new Action(delegate
             {
                 ValidateFiles();
             }));
             ValidateFilesTask.Start();
+            UpdateLocaleButtons();
         }
 
         private void MMFileOpenServer_Click(object sender, EventArgs e)
         {
+            if (!CloseAllForms())
+                return;
+
             if (ofdServerDB.ShowDialog() == DialogResult.OK)
             {
-                var oldServerDB = AAEmu.DbEditor.Properties.Settings.Default.ServerDB;
-                AAEmu.DbEditor.Properties.Settings.Default.ServerDB = ofdServerDB.FileName;
-                if (!DoReload())
+                var oldServerDB = AAEmu.DBEditor.Properties.Settings.Default.ServerDB;
+                AAEmu.DBEditor.Properties.Settings.Default.ServerDB = ofdServerDB.FileName;
+                if (!OpenServerDbTask())
                 {
-                    AAEmu.DbEditor.Properties.Settings.Default.ServerDB = oldServerDB;
-                    AAEmu.DbEditor.Properties.Settings.Default.Save();
+                    AAEmu.DBEditor.Properties.Settings.Default.ServerDB = oldServerDB;
+                    // AAEmu.DBEditor.Properties.Settings.Default.Save();
                 }
                 else
                 {
-                    AAEmu.DbEditor.Properties.Settings.Default.ServerDB = Data.Server.FileName;
-                    AAEmu.DbEditor.Properties.Settings.Default.Save();
+                    AAEmu.DBEditor.Properties.Settings.Default.ServerDB = Data.Server.FileName;
+                    AAEmu.DBEditor.Properties.Settings.Default.Save();
                 }
             }
         }
 
         private void MMFileOpenClient_Click(object sender, EventArgs e)
         {
+            if (!CloseAllForms())
+                return;
+
             if (ofdClientPak.ShowDialog() == DialogResult.OK)
             {
-                var oldPak = AAEmu.DbEditor.Properties.Settings.Default.ClientPak;
-                AAEmu.DbEditor.Properties.Settings.Default.ClientPak = ofdClientPak.FileName;
-                if (!DoReload())
+                var oldPak = AAEmu.DBEditor.Properties.Settings.Default.ClientPak;
+                AAEmu.DBEditor.Properties.Settings.Default.ClientPak = ofdClientPak.FileName;
+                Data.Client.Initialize();
+                if (!OpenClientPakTask())
                 {
-                    AAEmu.DbEditor.Properties.Settings.Default.ClientPak = oldPak;
-                    AAEmu.DbEditor.Properties.Settings.Default.Save();
+                    AAEmu.DBEditor.Properties.Settings.Default.ClientPak = oldPak;
+                    // AAEmu.DBEditor.Properties.Settings.Default.Save();
                 }
                 else
                 {
-                    AAEmu.DbEditor.Properties.Settings.Default.ClientPak = Data.Client.FileName;
-                    AAEmu.DbEditor.Properties.Settings.Default.Save();
+                    AAEmu.DBEditor.Properties.Settings.Default.ClientPak = Data.Client.FileName;
+                    AAEmu.DBEditor.Properties.Settings.Default.Save();
                 }
             }
         }
@@ -211,6 +268,62 @@ namespace AAEmu.DbEditor
                 label.Text = text;
                 label.Invalidate();
             }));
+        }
+
+        private void MMClientMap_Click(object sender, EventArgs e)
+        {
+            MapForm.Instance.Show();
+        }
+
+        private void MMClient_DropDownOpened(object sender, EventArgs e)
+        {
+            // Not implemented yet, so nothing enabled
+            // MMClientMap.Enabled = Data.Client?.Pak?.IsOpen ?? false;
+        }
+
+        private void serverToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
+        {
+            MMServerAccounts.Enabled = Data.MySqlDb.IsValid;
+            MMServerICS.Enabled = Data.MySqlDb.IsValid;
+        }
+
+        private void MMServerAccounts_Click(object sender, EventArgs e)
+        {
+            var accountForm = new AccountsForm();
+            accountForm.Show();
+        }
+
+        private void MMFileOpenMySQL_Click(object sender, EventArgs e)
+        {
+            if (!CloseAllForms())
+                return;
+
+            using var mysqlSettingsForm = new MySqlSettingsForm();
+            if (mysqlSettingsForm.ShowDialog() == DialogResult.OK)
+                OpenMySQlTask();
+        }
+
+        private void rbLocale_CheckedChanged(object sender, EventArgs e)
+        {
+            if (sender is not RadioButton rbLocale)
+                return;
+
+            if (rbLocale.Checked)
+            {
+                AAEmu.DBEditor.Properties.Settings.Default.ClientLanguage = rbLocale.Text;
+                AAEmu.DBEditor.Properties.Settings.Default.Save();
+                UpdateProgress("Updated Locale, reloading from DB ...");
+                if (Data.Server.ReloadLocale())
+                    UpdateProgress($"Locale updated to {rbLocale.Text}.");
+                else
+                    UpdateProgress($"Failed to update locale to {rbLocale.Text}!");
+            }
+        }
+
+        private void MMServerICS_Click(object sender, EventArgs e)
+        {
+            var icsForm = new ICSForm();
+            icsForm.Show();
         }
     }
 }
