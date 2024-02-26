@@ -182,6 +182,16 @@ namespace AAEmu.DBEditor
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            // Update settings if needed
+            if (!Properties.Settings.Default.IsUpdated)
+            {
+                Properties.Settings.Default.Upgrade();
+                Properties.Settings.Default.Save();
+                Properties.Settings.Default.Reload();
+                Properties.Settings.Default.IsUpdated = true;
+                Properties.Settings.Default.Save();
+            }
+
             MainForm.Self = this;
             MMVersion.Text = "Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Data.Initialize();
@@ -267,7 +277,8 @@ namespace AAEmu.DBEditor
 
         private void MMClient_DropDownOpened(object sender, EventArgs e)
         {
-            MMClientMap.Enabled = Data.Client?.Pak?.IsOpen ?? false;
+            // Not implemented yet, so nothing enabled
+            // MMClientMap.Enabled = Data.Client?.Pak?.IsOpen ?? false;
         }
 
         private void serverToolStripMenuItem_DropDownOpened(object sender, EventArgs e)

@@ -26,5 +26,8 @@
     <Setting Name="ClientLanguage" Type="System.String" Scope="User">
       <Value Profile="(Default)">en_us</Value>
     </Setting>
+    <Setting Name="IsUpdated" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

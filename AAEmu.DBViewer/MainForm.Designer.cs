@@ -30,7 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
             lbTableNames = new System.Windows.Forms.ListBox();
             tcViewer = new System.Windows.Forms.TabControl();
             tbTables = new System.Windows.Forms.TabPage();
@@ -376,6 +376,8 @@
             tvQuestWorkflow = new System.Windows.Forms.TreeView();
             tpSlaves = new System.Windows.Forms.TabPage();
             groupBox15 = new System.Windows.Forms.GroupBox();
+            lSlaveName = new System.Windows.Forms.Label();
+            label143 = new System.Windows.Forms.Label();
             lSlaveTemplate = new System.Windows.Forms.Label();
             label146 = new System.Windows.Forms.Label();
             btnSearchSlave = new System.Windows.Forms.Button();
@@ -538,8 +540,7 @@
             ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             ofdJsonData = new System.Windows.Forms.OpenFileDialog();
             ilIcons = new System.Windows.Forms.ImageList(components);
-            lSlaveName = new System.Windows.Forms.Label();
-            label143 = new System.Windows.Forms.Label();
+            label142 = new System.Windows.Forms.Label();
             tcViewer.SuspendLayout();
             tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSimple).BeginInit();
@@ -619,7 +620,6 @@
             // 
             lbTableNames.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lbTableNames.FormattingEnabled = true;
-            lbTableNames.ItemHeight = 16;
             lbTableNames.Location = new System.Drawing.Point(7, 39);
             lbTableNames.Margin = new System.Windows.Forms.Padding(4);
             lbTableNames.Name = "lbTableNames";
@@ -1273,7 +1273,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(678, 329);
-            splitContainer2.SplitterDistance = 402;
+            splitContainer2.SplitterDistance = 401;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1281,7 +1281,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(311, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(310, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1312,7 +1312,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(394, 298);
+            tvBuffTriggers.Size = new System.Drawing.Size(393, 298);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += tvBuffTriggers_DoubleClick;
             // 
@@ -4443,7 +4443,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(492, 517);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(491, 517);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4475,7 +4475,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(719, 507);
+            tvQuestWorkflow.Size = new System.Drawing.Size(718, 507);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += tvQuestWorkflow_DoubleClick;
             // 
@@ -4511,6 +4511,26 @@
             groupBox15.TabIndex = 18;
             groupBox15.TabStop = false;
             groupBox15.Text = "Vehicle Info";
+            // 
+            // lSlaveName
+            // 
+            lSlaveName.AutoSize = true;
+            lSlaveName.Location = new System.Drawing.Point(69, 38);
+            lSlaveName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lSlaveName.Name = "lSlaveName";
+            lSlaveName.Size = new System.Drawing.Size(22, 16);
+            lSlaveName.TabIndex = 3;
+            lSlaveName.Text = "???";
+            // 
+            // label143
+            // 
+            label143.AutoSize = true;
+            label143.Location = new System.Drawing.Point(8, 38);
+            label143.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label143.Name = "label143";
+            label143.Size = new System.Drawing.Size(38, 16);
+            label143.TabIndex = 2;
+            label143.Text = "Name";
             // 
             // lSlaveTemplate
             // 
@@ -5301,16 +5321,16 @@
             // 
             tvSkill.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             tvSkill.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            tvSkill.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            tvSkill.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             tvSkill.ImageIndex = 0;
             tvSkill.ImageList = ilMiniIcons;
             tvSkill.ItemHeight = 24;
             tvSkill.Location = new System.Drawing.Point(7, 7);
             tvSkill.Margin = new System.Windows.Forms.Padding(4);
             tvSkill.Name = "tvSkill";
-            treeNode2.Name = "SkillNode";
-            treeNode2.Text = "Skill";
-            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
+            treeNode1.Name = "SkillNode";
+            treeNode1.Text = "Skill";
+            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
             tvSkill.SelectedImageIndex = 0;
             tvSkill.Size = new System.Drawing.Size(575, 343);
             tvSkill.TabIndex = 0;
@@ -5348,7 +5368,7 @@
             // 
             tvTagInfo.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             tvTagInfo.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            tvTagInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            tvTagInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             tvTagInfo.ImageIndex = 0;
             tvTagInfo.ImageList = ilMiniIcons;
             tvTagInfo.ItemHeight = 24;
@@ -5427,6 +5447,7 @@
             // 
             // tpTrade
             // 
+            tpTrade.Controls.Add(label142);
             tpTrade.Controls.Add(lTradeRoute);
             tpTrade.Controls.Add(label133);
             tpTrade.Controls.Add(label134);
@@ -5519,7 +5540,6 @@
             // 
             lbTradeDestination.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lbTradeDestination.FormattingEnabled = true;
-            lbTradeDestination.ItemHeight = 16;
             lbTradeDestination.Location = new System.Drawing.Point(261, 38);
             lbTradeDestination.Margin = new System.Windows.Forms.Padding(4);
             lbTradeDestination.Name = "lbTradeDestination";
@@ -5531,7 +5551,6 @@
             // 
             lbTradeSource.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lbTradeSource.FormattingEnabled = true;
-            lbTradeSource.ItemHeight = 16;
             lbTradeSource.Location = new System.Drawing.Point(9, 38);
             lbTradeSource.Margin = new System.Windows.Forms.Padding(4);
             lbTradeSource.Name = "lbTradeSource";
@@ -6320,25 +6339,14 @@
             ilIcons.Images.SetKeyName(3, "icon_exclamation_green.png");
             ilIcons.Images.SetKeyName(4, "icon_exclamation_blue.png");
             // 
-            // lSlaveName
+            // label142
             // 
-            lSlaveName.AutoSize = true;
-            lSlaveName.Location = new System.Drawing.Point(69, 38);
-            lSlaveName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            lSlaveName.Name = "lSlaveName";
-            lSlaveName.Size = new System.Drawing.Size(22, 16);
-            lSlaveName.TabIndex = 3;
-            lSlaveName.Text = "???";
-            // 
-            // label143
-            // 
-            label143.AutoSize = true;
-            label143.Location = new System.Drawing.Point(8, 38);
-            label143.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label143.Name = "label143";
-            label143.Size = new System.Drawing.Size(38, 16);
-            label143.TabIndex = 2;
-            label143.Text = "Name";
+            label142.AutoSize = true;
+            label142.Location = new System.Drawing.Point(513, 140);
+            label142.Name = "label142";
+            label142.Size = new System.Drawing.Size(296, 16);
+            label142.TabIndex = 9;
+            label142.Text = "Note: This is only the raw rates for the sales by distance";
             // 
             // MainForm
             // 
@@ -6975,6 +6983,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column38;
         private System.Windows.Forms.Label lSlaveName;
         private System.Windows.Forms.Label label143;
+        private System.Windows.Forms.Label label142;
     }
 }
 

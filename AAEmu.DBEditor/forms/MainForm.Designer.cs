@@ -29,6 +29,7 @@ namespace AAEmu.DBEditor
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             MM = new System.Windows.Forms.MenuStrip();
             MMFile = new System.Windows.Forms.ToolStripMenuItem();
             MMFileOpenServer = new System.Windows.Forms.ToolStripMenuItem();
@@ -524,6 +525,7 @@ namespace AAEmu.DBEditor
             Controls.Add(label2);
             Controls.Add(label3);
             Controls.Add(MM);
+            Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = MM;
             Margin = new System.Windows.Forms.Padding(4);
             Name = "MainForm";
