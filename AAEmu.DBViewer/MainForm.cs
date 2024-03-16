@@ -5202,6 +5202,18 @@ namespace AAEmu.DBViewer
             {
                 lNPCTemplate.Text = npc.id.ToString();
                 lNPCTags.Text = TagsAsString(id, AADB.DB_Tagged_NPCs);
+                var spawnerText = "";
+                var spawners = AADB.DB_Npc_Spawner_Npcs.Values.Where(x => x.member_type == "Npc" && x.member_id == npc.id).ToList();
+                foreach (var npcSpawner in spawners)
+                {
+                    spawnerText += "ID:" +npcSpawner.npc_spawner_id;
+                    if (AADB.DB_Npc_Spawners.TryGetValue(npcSpawner.npc_spawner_id, out var spawner))
+                    {
+                        spawnerText += " (cat:"+spawner.npc_spawner_category_id+") " + spawner.name + " - " + spawner.comment;
+                    }
+                    spawnerText += Environment.NewLine + Environment.NewLine;
+                }
+                rtNPCSpawners.Text = spawnerText;
                 ShowSelectedData("npcs", "(id = " + id.ToString() + ")", "id ASC");
                 btnShowNPCsOnMap.Tag = npc.id;
                 btnShowNpcLoot.Tag = npc.id;
@@ -5211,6 +5223,7 @@ namespace AAEmu.DBViewer
             {
                 lNPCTemplate.Text = "???";
                 lNPCTags.Text = "???";
+                rtNPCSpawners.Text = "???";
                 btnShowNPCsOnMap.Tag = 0;
                 btnShowNpcLoot.Tag = 0;
                 btnShowNpcLoot.Enabled = false;

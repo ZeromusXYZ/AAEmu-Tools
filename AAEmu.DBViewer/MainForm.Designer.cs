@@ -339,6 +339,7 @@
             LootGroupRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tpNPCs = new System.Windows.Forms.TabPage();
             groupBox13 = new System.Windows.Forms.GroupBox();
+            label145 = new System.Windows.Forms.Label();
             btnShowNpcLoot = new System.Windows.Forms.Button();
             btnShowNPCsOnMap = new System.Windows.Forms.Button();
             lNPCTags = new System.Windows.Forms.Label();
@@ -459,6 +460,7 @@
             label137 = new System.Windows.Forms.Label();
             tSearchTags = new System.Windows.Forms.TextBox();
             tpTrade = new System.Windows.Forms.TabPage();
+            label142 = new System.Windows.Forms.Label();
             lTradeRoute = new System.Windows.Forms.Label();
             label133 = new System.Windows.Forms.Label();
             label134 = new System.Windows.Forms.Label();
@@ -540,7 +542,7 @@
             ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             ofdJsonData = new System.Windows.Forms.OpenFileDialog();
             ilIcons = new System.Windows.Forms.ImageList(components);
-            label142 = new System.Windows.Forms.Label();
+            rtNPCSpawners = new System.Windows.Forms.RichTextBox();
             tcViewer.SuspendLayout();
             tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSimple).BeginInit();
@@ -1273,7 +1275,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(678, 329);
-            splitContainer2.SplitterDistance = 401;
+            splitContainer2.SplitterDistance = 399;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1281,7 +1283,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(310, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(308, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1312,7 +1314,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(393, 298);
+            tvBuffTriggers.Size = new System.Drawing.Size(391, 298);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += tvBuffTriggers_DoubleClick;
             // 
@@ -4079,6 +4081,8 @@
             // 
             groupBox13.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             groupBox13.BackColor = System.Drawing.Color.FromArgb(70, 60, 40);
+            groupBox13.Controls.Add(rtNPCSpawners);
+            groupBox13.Controls.Add(label145);
             groupBox13.Controls.Add(btnShowNpcLoot);
             groupBox13.Controls.Add(btnShowNPCsOnMap);
             groupBox13.Controls.Add(lNPCTags);
@@ -4095,6 +4099,16 @@
             groupBox13.TabIndex = 13;
             groupBox13.TabStop = false;
             groupBox13.Text = "NPC Info";
+            // 
+            // label145
+            // 
+            label145.AutoSize = true;
+            label145.Location = new System.Drawing.Point(7, 63);
+            label145.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label145.Name = "label145";
+            label145.Size = new System.Drawing.Size(57, 16);
+            label145.TabIndex = 28;
+            label145.Text = "Spawners";
             // 
             // btnShowNpcLoot
             // 
@@ -4443,7 +4457,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(491, 517);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(489, 517);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4475,7 +4489,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(718, 507);
+            tvQuestWorkflow.Size = new System.Drawing.Size(716, 507);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += tvQuestWorkflow_DoubleClick;
             // 
@@ -5466,6 +5480,15 @@
             tpTrade.Text = "Trades";
             tpTrade.UseVisualStyleBackColor = true;
             // 
+            // label142
+            // 
+            label142.AutoSize = true;
+            label142.Location = new System.Drawing.Point(513, 140);
+            label142.Name = "label142";
+            label142.Size = new System.Drawing.Size(296, 16);
+            label142.TabIndex = 9;
+            label142.Text = "Note: This is only the raw rates for the sales by distance";
+            // 
             // lTradeRoute
             // 
             lTradeRoute.AutoSize = true;
@@ -6339,14 +6362,16 @@
             ilIcons.Images.SetKeyName(3, "icon_exclamation_green.png");
             ilIcons.Images.SetKeyName(4, "icon_exclamation_blue.png");
             // 
-            // label142
+            // rtNPCSpawners
             // 
-            label142.AutoSize = true;
-            label142.Location = new System.Drawing.Point(513, 140);
-            label142.Name = "label142";
-            label142.Size = new System.Drawing.Size(296, 16);
-            label142.TabIndex = 9;
-            label142.Text = "Note: This is only the raw rates for the sales by distance";
+            rtNPCSpawners.BackColor = System.Drawing.Color.FromArgb(70, 60, 40);
+            rtNPCSpawners.ForeColor = System.Drawing.Color.FromArgb(208, 192, 171);
+            rtNPCSpawners.Location = new System.Drawing.Point(10, 83);
+            rtNPCSpawners.Margin = new System.Windows.Forms.Padding(4);
+            rtNPCSpawners.Name = "rtNPCSpawners";
+            rtNPCSpawners.Size = new System.Drawing.Size(240, 282);
+            rtNPCSpawners.TabIndex = 30;
+            rtNPCSpawners.Text = "";
             // 
             // MainForm
             // 
@@ -6984,6 +7009,8 @@
         private System.Windows.Forms.Label lSlaveName;
         private System.Windows.Forms.Label label143;
         private System.Windows.Forms.Label label142;
+        private System.Windows.Forms.Label label145;
+        private System.Windows.Forms.RichTextBox rtNPCSpawners;
     }
 }
 
