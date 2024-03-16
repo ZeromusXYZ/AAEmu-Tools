@@ -1397,6 +1397,31 @@ namespace AAEmu.DBViewer
                 }
             }
 
+            sql = "SELECT * FROM ai_files ORDER BY id ASC";
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        AADB.DB_Quest_Monster_Groups.Clear();
+
+                        while (reader.Read())
+                        {
+                            var t = new GameAiFiles();
+                            // Actual DB entries
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+                            t.param_template = GetString(reader, "param_template");
+
+                            AADB.DB_AiFiles.Add(t.id, t);
+                        }
+                    }
+                }
+            }
+
         }
 
         private void LoadFactions()
@@ -5286,6 +5311,21 @@ namespace AAEmu.DBViewer
                 {
                     var nickNode = tvNPCInfo.Nodes.Add("[" + AADB.GetTranslationByID(npc.npc_nickname_id, "npc_nicknames", "name") + "]");
                     nickNode.ForeColor = Color.Yellow;
+                }
+
+                if (npc.ai_file_id > 0)
+                {
+                    if (AADB.DB_AiFiles.TryGetValue(npc.ai_file_id, out var aiFile))
+                    {
+                        var aiNode = tvNPCInfo.Nodes.Add("AI: " + aiFile.name);
+                        aiNode.ForeColor = Color.White;
+                        // aiNode.ImageIndex = 3;
+                        // aiNode.SelectedImageIndex = aiNode.ImageIndex;
+                    }
+                    else
+                    {
+                        tvNPCInfo.Nodes.Add("AI Unknown FileId: " + npc.ai_file_id);
+                    }
                 }
 
                 #region spawners

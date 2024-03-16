@@ -1075,6 +1075,14 @@ namespace AAEmu.DBDefs
         public long skill_id = 0;
     }
 
+    class GameAiFiles
+    {
+        // Actual DB entries
+        public long id = 0;
+        public string name = string.Empty;
+        public string param_template = string.Empty;
+    }
+
     static class AADB
     {
         public static Dictionary<string, GameTranslation> DB_Translations = new Dictionary<string, GameTranslation>();
@@ -1134,6 +1142,7 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameModel> DB_Models = new Dictionary<long, GameModel>();
         public static Dictionary<long, GameNpcInitialBuffs> DB_NpcInitialBuffs = new();
         public static Dictionary<long, GameNpcInteractions> DB_NpcInteractions = new();
+        public static Dictionary<long, GameAiFiles> DB_AiFiles = new();
 
         public static string GetTranslationByID(long idx, string table, string field, string defaultValue = "$NODEFAULT")
         {
