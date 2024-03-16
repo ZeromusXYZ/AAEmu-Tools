@@ -1034,6 +1034,31 @@ namespace AAEmu.DBDefs
         public float camera_distance_for_wide_angle = 0f;
     }
 
+    class GameNpSkills
+    {
+        // Actual DB entries
+        public long id = 0;
+        public long owner_id = 0;
+        public string owner_type = string.Empty;
+        public long skill_id = 0;
+        public SkillUseConditionKind skill_use_condition_id = 0;
+        public float skill_use_param1 = 0f;
+        public float skill_use_param2 = 0f;
+    }
+
+    public enum SkillUseConditionKind
+    {
+        None = -1,
+        InCombat = 0,
+        InIdle = 1,
+        OnDeath = 2,
+        InAlert = 3,
+        InDead = 4,
+        OnSpawn = 5,
+        OnDespawn = 6,
+        OnAlert = 7
+    }
+
     static class AADB
     {
         public static Dictionary<string, GameTranslation> DB_Translations = new Dictionary<string, GameTranslation>();
@@ -1043,6 +1068,7 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameEffects> DB_Effects = new Dictionary<long, GameEffects>();
         public static Dictionary<long, GameSkills> DB_Skills = new Dictionary<long, GameSkills>();
         public static Dictionary<long, GameSkillEffects> DB_Skill_Effects = new Dictionary<long, GameSkillEffects>();
+        public static Dictionary<long, GameNpSkills> DB_NpSkills = new Dictionary<long, GameNpSkills>();
         public static Dictionary<long, GameNPC> DB_NPCs = new Dictionary<long, GameNPC>();
         public static Dictionary<long, GameQuestMonsterGroups> DB_Quest_Monster_Groups = new Dictionary<long, GameQuestMonsterGroups>();
         public static Dictionary<long, string> DB_Icons = new Dictionary<long, string>();

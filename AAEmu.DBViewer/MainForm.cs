@@ -1001,6 +1001,32 @@ namespace AAEmu.DBViewer
 
                     }
                 }
+
+                // NpSkills
+                sql = "SELECT * FROM np_skills ORDER BY id ASC";
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_NpSkills.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        while (reader.Read())
+                        {
+                            var t = new GameNpSkills();
+                            t.id = GetInt64(reader, "id");
+                            t.owner_id = GetInt64(reader, "owner_id");
+                            t.owner_type = GetString(reader, "owner_type"); // They are actually all "Npc"
+                            t.skill_id = GetInt64(reader, "skill_id");
+                            t.skill_use_condition_id = (SkillUseConditionKind)GetInt64(reader, "skill_use_condition_id");
+                            t.skill_use_param1 = GetFloat(reader, "skill_use_param1");
+                            t.skill_use_param2 = GetFloat(reader, "skill_use_param2");
+                            AADB.DB_NpSkills.Add(t.id, t);
+                        }
+
+                    }
+                }
             }
 
             Cursor = Cursors.Default;
@@ -1332,7 +1358,7 @@ namespace AAEmu.DBViewer
                             t.name = GetString(reader, "name");
                             t.category_id = GetInt64(reader, "category_id");
                             t.nameLocalized = AADB.GetTranslationByID(t.id, "quest_monster_groups", "name", t.name);
-                            
+
                             AADB.DB_Quest_Monster_Groups.Add(t.id, t);
                         }
                     }
@@ -3209,12 +3235,12 @@ namespace AAEmu.DBViewer
                 if (AADB.DB_Plot_Events.TryGetValue(n.Value.next_event_id, out var next))
                 {
                     //AddPlotEventNode(eventNode, next, depth, "Next Plot Event: ");
-                    
+
                     var nextNode = new TreeNode("Next Event Node: " + next.id.ToString() + " - " + next.name);
                     nextNode.Tag = next.id;
                     nextNode.ImageIndex = 2;
-                    nextNode.SelectedImageIndex = nextNode.ImageIndex ;
-                    eventNode.Nodes.Add(nextNode);                    
+                    nextNode.SelectedImageIndex = nextNode.ImageIndex;
+                    eventNode.Nodes.Add(nextNode);
                 }
                 else
                 {
@@ -5202,18 +5228,78 @@ namespace AAEmu.DBViewer
             {
                 lNPCTemplate.Text = npc.id.ToString();
                 lNPCTags.Text = TagsAsString(id, AADB.DB_Tagged_NPCs);
-                var spawnerText = "";
+                tvNPCInfo.Nodes.Clear();
+
+                #region spawners
+                // Spawners
+                var spawnersNode = tvNPCInfo.Nodes.Add("Spawners");
+                spawnersNode.ImageIndex = 1;
+                spawnersNode.SelectedImageIndex = 1;
                 var spawners = AADB.DB_Npc_Spawner_Npcs.Values.Where(x => x.member_type == "Npc" && x.member_id == npc.id).ToList();
                 foreach (var npcSpawner in spawners)
                 {
-                    spawnerText += "ID:" +npcSpawner.npc_spawner_id;
                     if (AADB.DB_Npc_Spawners.TryGetValue(npcSpawner.npc_spawner_id, out var spawner))
                     {
-                        spawnerText += " (cat:"+spawner.npc_spawner_category_id+") " + spawner.name + " - " + spawner.comment;
+                        var spawnerNode = spawnersNode.Nodes.Add("ID:" + npcSpawner.npc_spawner_id + (spawner.activation_state ? " (active)":""));
+                        spawnerNode.Nodes.Add($"Category: {spawner.npc_spawner_category_id}");
+                        if (!string.IsNullOrWhiteSpace(spawner.name))
+                            spawnerNode.Nodes.Add($"Name: {spawner.name}");
+                        if (!string.IsNullOrWhiteSpace(spawner.comment))
+                            spawnerNode.Nodes.Add($"Comment: {spawner.comment}");
+
+                        spawnerNode.Nodes.Add($"Activation State: {spawner.activation_state}");
+                        spawnerNode.Nodes.Add($"Save Indun: {spawner.save_indun}");
+
+                        if (spawner.spawn_delay_min == spawner.spawn_delay_max)
+                        {
+                            spawnerNode.Nodes.Add($"Spawn Delay: {MSToString((long)spawner.spawn_delay_min * 1000, true)}");
+                        }
+                        else
+                        {
+                            spawnerNode.Nodes.Add($"Spawn Delay Min: {MSToString((long)spawner.spawn_delay_min * 1000, true)}");
+                            spawnerNode.Nodes.Add($"Spawn Delay Max: {MSToString((long)spawner.spawn_delay_max * 1000, true)}");
+                        }
+
+                        if (spawner.min_population != 0)
+                            spawnerNode.Nodes.Add($"Min Population: {spawner.min_population}");
+                        if (spawner.maxPopulation != 1)
+                            spawnerNode.Nodes.Add($"Max Population: {spawner.maxPopulation}");
+                        if (spawner.startTime > 0)
+                            spawnerNode.Nodes.Add($"Start Time: {spawner.startTime}");
+                        if (spawner.endTime > 0)
+                            spawnerNode.Nodes.Add($"End Time: {spawner.endTime}");
+                        if (spawner.test_radius_npc > 0)
+                            spawnerNode.Nodes.Add($"Test Radius NPC: {spawner.test_radius_npc}");
+                        if (spawner.test_radius_pc > 0)
+                            spawnerNode.Nodes.Add($"Test Radius PC: {spawner.test_radius_pc}");
+                        if (spawner.suspend_spawn_count > 0)
+                            spawnerNode.Nodes.Add($"Suspend Spawn Count: {spawner.suspend_spawn_count}");
                     }
-                    spawnerText += Environment.NewLine + Environment.NewLine;
+                    else
+                    {
+                        spawnersNode.Nodes.Add("NOT found!:" + npcSpawner.npc_spawner_id);
+                    }
+                    spawnersNode.Expand();
                 }
-                rtNPCSpawners.Text = spawnerText;
+                #endregion
+
+
+                #region np_skills
+                // NP Skills
+                var npSkillsNode = tvNPCInfo.Nodes.Add("NP Skills");
+                npSkillsNode.ImageIndex = 2;
+                npSkillsNode.SelectedImageIndex = 2;
+                var npSkills = AADB.DB_NpSkills.Values.Where(x => x.owner_id == npc.id && x.owner_type == "Npc").ToList();
+                foreach (var npSkill in npSkills)
+                {
+                    var npSkillNode = AddCustomPropertyNode("skill_id", npSkill.skill_id.ToString(), false, npSkillsNode);
+                    npSkillNode.Text += $", {npSkill.skill_use_condition_id}( {npSkill.skill_use_param1:F1} | {npSkill.skill_use_param2:F1} )";
+                }
+                npSkillsNode.Expand();
+
+
+                #endregion
+
                 ShowSelectedData("npcs", "(id = " + id.ToString() + ")", "id ASC");
                 btnShowNPCsOnMap.Tag = npc.id;
                 btnShowNpcLoot.Tag = npc.id;
@@ -5223,7 +5309,7 @@ namespace AAEmu.DBViewer
             {
                 lNPCTemplate.Text = "???";
                 lNPCTags.Text = "???";
-                rtNPCSpawners.Text = "???";
+                tvNPCInfo.Nodes.Clear();
                 btnShowNPCsOnMap.Tag = 0;
                 btnShowNpcLoot.Tag = 0;
                 btnShowNpcLoot.Enabled = false;
@@ -9114,5 +9200,11 @@ namespace AAEmu.DBViewer
             }
         }
 
+        private void tvNPCInfo_DoubleClick(object sender, EventArgs e)
+        {
+            // In properties the node tag is used internally, so only allow this node double-click if it's not set
+            if ((sender is TreeView tv) && (tv.SelectedNode != null) && (tv.SelectedNode.Tag == null))
+                ProcessNodeInfoDoubleClick(tv.SelectedNode);
+        }
     }
 }

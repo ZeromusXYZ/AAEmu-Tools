@@ -30,7 +30,8 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("NPC");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
             lbTableNames = new System.Windows.Forms.ListBox();
             tcViewer = new System.Windows.Forms.TabControl();
             tbTables = new System.Windows.Forms.TabPage();
@@ -339,7 +340,7 @@
             LootGroupRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tpNPCs = new System.Windows.Forms.TabPage();
             groupBox13 = new System.Windows.Forms.GroupBox();
-            label145 = new System.Windows.Forms.Label();
+            tvNPCInfo = new System.Windows.Forms.TreeView();
             btnShowNpcLoot = new System.Windows.Forms.Button();
             btnShowNPCsOnMap = new System.Windows.Forms.Button();
             lNPCTags = new System.Windows.Forms.Label();
@@ -542,7 +543,6 @@
             ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             ofdJsonData = new System.Windows.Forms.OpenFileDialog();
             ilIcons = new System.Windows.Forms.ImageList(components);
-            rtNPCSpawners = new System.Windows.Forms.RichTextBox();
             tcViewer.SuspendLayout();
             tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSimple).BeginInit();
@@ -1275,7 +1275,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(678, 329);
-            splitContainer2.SplitterDistance = 399;
+            splitContainer2.SplitterDistance = 396;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1283,7 +1283,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(308, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(305, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1314,7 +1314,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(391, 298);
+            tvBuffTriggers.Size = new System.Drawing.Size(388, 298);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += tvBuffTriggers_DoubleClick;
             // 
@@ -4081,8 +4081,7 @@
             // 
             groupBox13.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             groupBox13.BackColor = System.Drawing.Color.FromArgb(70, 60, 40);
-            groupBox13.Controls.Add(rtNPCSpawners);
-            groupBox13.Controls.Add(label145);
+            groupBox13.Controls.Add(tvNPCInfo);
             groupBox13.Controls.Add(btnShowNpcLoot);
             groupBox13.Controls.Add(btnShowNPCsOnMap);
             groupBox13.Controls.Add(lNPCTags);
@@ -4091,24 +4090,34 @@
             groupBox13.Controls.Add(lNPCTemplate);
             groupBox13.Controls.Add(label81);
             groupBox13.ForeColor = System.Drawing.Color.FromArgb(208, 192, 171);
-            groupBox13.Location = new System.Drawing.Point(812, 12);
+            groupBox13.Location = new System.Drawing.Point(531, 12);
             groupBox13.Margin = new System.Windows.Forms.Padding(4);
             groupBox13.Name = "groupBox13";
             groupBox13.Padding = new System.Windows.Forms.Padding(4);
-            groupBox13.Size = new System.Drawing.Size(258, 575);
+            groupBox13.Size = new System.Drawing.Size(539, 575);
             groupBox13.TabIndex = 13;
             groupBox13.TabStop = false;
             groupBox13.Text = "NPC Info";
             // 
-            // label145
+            // tvNPCInfo
             // 
-            label145.AutoSize = true;
-            label145.Location = new System.Drawing.Point(7, 63);
-            label145.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label145.Name = "label145";
-            label145.Size = new System.Drawing.Size(57, 16);
-            label145.TabIndex = 28;
-            label145.Text = "Spawners";
+            tvNPCInfo.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            tvNPCInfo.BackColor = System.Drawing.Color.FromArgb(70, 60, 40);
+            tvNPCInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            tvNPCInfo.ForeColor = System.Drawing.Color.FromArgb(208, 192, 171);
+            tvNPCInfo.ImageIndex = 0;
+            tvNPCInfo.ImageList = ilMiniIcons;
+            tvNPCInfo.ItemHeight = 24;
+            tvNPCInfo.Location = new System.Drawing.Point(8, 40);
+            tvNPCInfo.Margin = new System.Windows.Forms.Padding(4);
+            tvNPCInfo.Name = "tvNPCInfo";
+            treeNode1.Name = "SkillNode";
+            treeNode1.Text = "NPC";
+            tvNPCInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
+            tvNPCInfo.SelectedImageIndex = 0;
+            tvNPCInfo.Size = new System.Drawing.Size(523, 359);
+            tvNPCInfo.TabIndex = 31;
+            tvNPCInfo.DoubleClick += tvNPCInfo_DoubleClick;
             // 
             // btnShowNpcLoot
             // 
@@ -4118,7 +4127,7 @@
             btnShowNpcLoot.Location = new System.Drawing.Point(10, 506);
             btnShowNpcLoot.Margin = new System.Windows.Forms.Padding(4);
             btnShowNpcLoot.Name = "btnShowNpcLoot";
-            btnShowNpcLoot.Size = new System.Drawing.Size(240, 27);
+            btnShowNpcLoot.Size = new System.Drawing.Size(521, 27);
             btnShowNpcLoot.TabIndex = 27;
             btnShowNpcLoot.Text = "Find Loot";
             btnShowNpcLoot.UseVisualStyleBackColor = true;
@@ -4131,7 +4140,7 @@
             btnShowNPCsOnMap.Location = new System.Drawing.Point(10, 540);
             btnShowNPCsOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnShowNPCsOnMap.Name = "btnShowNPCsOnMap";
-            btnShowNPCsOnMap.Size = new System.Drawing.Size(240, 27);
+            btnShowNPCsOnMap.Size = new System.Drawing.Size(521, 27);
             btnShowNPCsOnMap.TabIndex = 26;
             btnShowNPCsOnMap.Text = "Find Selected";
             btnShowNPCsOnMap.UseVisualStyleBackColor = true;
@@ -4141,7 +4150,7 @@
             // 
             lNPCTags.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lNPCTags.AutoSize = true;
-            lNPCTags.Location = new System.Drawing.Point(7, 398);
+            lNPCTags.Location = new System.Drawing.Point(7, 432);
             lNPCTags.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lNPCTags.Name = "lNPCTags";
             lNPCTags.Size = new System.Drawing.Size(22, 16);
@@ -4152,7 +4161,7 @@
             // 
             label125.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             label125.AutoSize = true;
-            label125.Location = new System.Drawing.Point(7, 369);
+            label125.Location = new System.Drawing.Point(7, 403);
             label125.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label125.Name = "label125";
             label125.Size = new System.Drawing.Size(30, 16);
@@ -4194,7 +4203,7 @@
             // 
             btnSearchNPC.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             btnSearchNPC.Enabled = false;
-            btnSearchNPC.Location = new System.Drawing.Point(713, 10);
+            btnSearchNPC.Location = new System.Drawing.Point(431, 9);
             btnSearchNPC.Margin = new System.Windows.Forms.Padding(4);
             btnSearchNPC.Name = "btnSearchNPC";
             btnSearchNPC.Size = new System.Drawing.Size(92, 28);
@@ -4219,7 +4228,7 @@
             tSearchNPC.Location = new System.Drawing.Point(217, 12);
             tSearchNPC.Margin = new System.Windows.Forms.Padding(4);
             tSearchNPC.Name = "tSearchNPC";
-            tSearchNPC.Size = new System.Drawing.Size(488, 23);
+            tSearchNPC.Size = new System.Drawing.Size(206, 23);
             tSearchNPC.TabIndex = 8;
             tSearchNPC.TextChanged += TSearchNPC_TextChanged;
             tSearchNPC.KeyDown += TSearchNPC_KeyDown;
@@ -4239,7 +4248,7 @@
             dgvNPCs.ReadOnly = true;
             dgvNPCs.RowHeadersVisible = false;
             dgvNPCs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvNPCs.Size = new System.Drawing.Size(796, 538);
+            dgvNPCs.Size = new System.Drawing.Size(514, 538);
             dgvNPCs.TabIndex = 7;
             dgvNPCs.SelectionChanged += DgvNPCs_SelectionChanged;
             // 
@@ -4457,7 +4466,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(489, 517);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(486, 517);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4489,7 +4498,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(716, 507);
+            tvQuestWorkflow.Size = new System.Drawing.Size(713, 507);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += tvQuestWorkflow_DoubleClick;
             // 
@@ -5342,9 +5351,9 @@
             tvSkill.Location = new System.Drawing.Point(7, 7);
             tvSkill.Margin = new System.Windows.Forms.Padding(4);
             tvSkill.Name = "tvSkill";
-            treeNode1.Name = "SkillNode";
-            treeNode1.Text = "Skill";
-            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
+            treeNode2.Name = "SkillNode";
+            treeNode2.Text = "Skill";
+            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
             tvSkill.SelectedImageIndex = 0;
             tvSkill.Size = new System.Drawing.Size(575, 343);
             tvSkill.TabIndex = 0;
@@ -6362,17 +6371,6 @@
             ilIcons.Images.SetKeyName(3, "icon_exclamation_green.png");
             ilIcons.Images.SetKeyName(4, "icon_exclamation_blue.png");
             // 
-            // rtNPCSpawners
-            // 
-            rtNPCSpawners.BackColor = System.Drawing.Color.FromArgb(70, 60, 40);
-            rtNPCSpawners.ForeColor = System.Drawing.Color.FromArgb(208, 192, 171);
-            rtNPCSpawners.Location = new System.Drawing.Point(10, 83);
-            rtNPCSpawners.Margin = new System.Windows.Forms.Padding(4);
-            rtNPCSpawners.Name = "rtNPCSpawners";
-            rtNPCSpawners.Size = new System.Drawing.Size(240, 282);
-            rtNPCSpawners.TabIndex = 30;
-            rtNPCSpawners.Text = "";
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -7009,8 +7007,7 @@
         private System.Windows.Forms.Label lSlaveName;
         private System.Windows.Forms.Label label143;
         private System.Windows.Forms.Label label142;
-        private System.Windows.Forms.Label label145;
-        private System.Windows.Forms.RichTextBox rtNPCSpawners;
+        private System.Windows.Forms.TreeView tvNPCInfo;
     }
 }
 
