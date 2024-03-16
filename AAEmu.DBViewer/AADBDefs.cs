@@ -1059,6 +1059,22 @@ namespace AAEmu.DBDefs
         OnAlert = 7
     }
 
+    class GameNpcInitialBuffs
+    {
+        // Actual DB entries
+        public long id = 0;
+        public long npc_id = 0;
+        public long buff_id = 0;
+    }
+
+    class GameNpcInteractions
+    {
+        // Actual DB entries
+        public long id = 0;
+        public long npc_interaction_set_id = 0;
+        public long skill_id = 0;
+    }
+
     static class AADB
     {
         public static Dictionary<string, GameTranslation> DB_Translations = new Dictionary<string, GameTranslation>();
@@ -1116,6 +1132,8 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameLootActAbilityGroup> DB_Loot_ActAbility_Groups = new Dictionary<long, GameLootActAbilityGroup>();
         public static Dictionary<long, GameSlaves> DB_Slaves = new Dictionary<long, GameSlaves>();
         public static Dictionary<long, GameModel> DB_Models = new Dictionary<long, GameModel>();
+        public static Dictionary<long, GameNpcInitialBuffs> DB_NpcInitialBuffs = new();
+        public static Dictionary<long, GameNpcInteractions> DB_NpcInteractions = new();
 
         public static string GetTranslationByID(long idx, string table, string field, string defaultValue = "$NODEFAULT")
         {

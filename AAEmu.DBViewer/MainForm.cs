@@ -19,6 +19,7 @@ using System.Runtime;
 using AAEmu.Game.Models.Game.World;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 using System.Xml.Linq;
+using Microsoft.VisualBasic;
 
 namespace AAEmu.DBViewer
 {
@@ -1003,29 +1004,36 @@ namespace AAEmu.DBViewer
                 }
 
                 // NpSkills
-                sql = "SELECT * FROM np_skills ORDER BY id ASC";
-                using (var command = connection.CreateCommand())
+                if (allTableNames.Contains("np_skills"))
+                {
+                    sql = "SELECT * FROM np_skills ORDER BY id ASC";
+                    using (var command = connection.CreateCommand())
+                    {
+                        AADB.DB_NpSkills.Clear();
+
+                        command.CommandText = sql;
+                        command.Prepare();
+                        using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                        {
+                            while (reader.Read())
+                            {
+                                var t = new GameNpSkills();
+                                t.id = GetInt64(reader, "id");
+                                t.owner_id = GetInt64(reader, "owner_id");
+                                t.owner_type = GetString(reader, "owner_type"); // They are actually all "Npc"
+                                t.skill_id = GetInt64(reader, "skill_id");
+                                t.skill_use_condition_id = (SkillUseConditionKind)GetInt64(reader, "skill_use_condition_id");
+                                t.skill_use_param1 = GetFloat(reader, "skill_use_param1");
+                                t.skill_use_param2 = GetFloat(reader, "skill_use_param2");
+                                AADB.DB_NpSkills.Add(t.id, t);
+                            }
+
+                        }
+                    }
+                }
+                else
                 {
                     AADB.DB_NpSkills.Clear();
-
-                    command.CommandText = sql;
-                    command.Prepare();
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
-                    {
-                        while (reader.Read())
-                        {
-                            var t = new GameNpSkills();
-                            t.id = GetInt64(reader, "id");
-                            t.owner_id = GetInt64(reader, "owner_id");
-                            t.owner_type = GetString(reader, "owner_type"); // They are actually all "Npc"
-                            t.skill_id = GetInt64(reader, "skill_id");
-                            t.skill_use_condition_id = (SkillUseConditionKind)GetInt64(reader, "skill_use_condition_id");
-                            t.skill_use_param1 = GetFloat(reader, "skill_use_param1");
-                            t.skill_use_param2 = GetFloat(reader, "skill_use_param2");
-                            AADB.DB_NpSkills.Add(t.id, t);
-                        }
-
-                    }
                 }
             }
 
@@ -1292,7 +1300,6 @@ namespace AAEmu.DBViewer
                 }
             }
 
-
             sql = "SELECT * FROM npc_spawners ORDER BY id ASC";
 
             AADB.DB_Npc_Spawners.Clear();
@@ -1365,6 +1372,30 @@ namespace AAEmu.DBViewer
                 }
             }
 
+            sql = "SELECT * FROM npc_interactions ORDER BY id ASC";
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        AADB.DB_Quest_Monster_Groups.Clear();
+
+                        while (reader.Read())
+                        {
+                            var t = new GameNpcInteractions();
+                            // Actual DB entries
+                            t.id = GetInt64(reader, "id");
+                            t.npc_interaction_set_id = GetInt64(reader, "npc_interaction_set_id");
+                            t.skill_id = GetInt64(reader, "skill_id");
+
+                            AADB.DB_NpcInteractions.Add(t.id, t);
+                        }
+                    }
+                }
+            }
 
         }
 
@@ -2092,6 +2123,7 @@ namespace AAEmu.DBViewer
         {
             string sql = "SELECT * FROM buffs ORDER BY id ASC";
             string triggerSql = "SELECT * FROM buff_triggers ORDER BY id ASC";
+            string npcInitialSql = "SELECT * FROM npc_initial_buffs ORDER BY id ASC";
 
             using (var connection = SQLite.CreateConnection())
             {
@@ -2179,6 +2211,26 @@ namespace AAEmu.DBViewer
                             t.effect_id = GetInt64(reader, "effect_id");
 
                             AADB.DB_BuffTriggers.Add(t.id, t);
+                        }
+                    }
+                }
+
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_NpcInitialBuffs.Clear();
+                    command.CommandText = npcInitialSql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+
+                        while (reader.Read())
+                        {
+                            var t = new GameNpcInitialBuffs();
+                            t.id = GetInt64(reader, "id");
+                            t.npc_id = GetInt64(reader, "npc_id");
+                            t.buff_id = GetInt64(reader, "buff_id");
+
+                            AADB.DB_NpcInitialBuffs.Add(t.id, t);
                         }
                     }
                 }
@@ -5230,6 +5282,12 @@ namespace AAEmu.DBViewer
                 lNPCTags.Text = TagsAsString(id, AADB.DB_Tagged_NPCs);
                 tvNPCInfo.Nodes.Clear();
 
+                if (npc.npc_nickname_id > 0)
+                {
+                    var nickNode = tvNPCInfo.Nodes.Add("[" + AADB.GetTranslationByID(npc.npc_nickname_id, "npc_nicknames", "name") + "]");
+                    nickNode.ForeColor = Color.Yellow;
+                }
+
                 #region spawners
                 // Spawners
                 var spawnersNode = tvNPCInfo.Nodes.Add("Spawners");
@@ -5240,7 +5298,7 @@ namespace AAEmu.DBViewer
                 {
                     if (AADB.DB_Npc_Spawners.TryGetValue(npcSpawner.npc_spawner_id, out var spawner))
                     {
-                        var spawnerNode = spawnersNode.Nodes.Add("ID:" + npcSpawner.npc_spawner_id + (spawner.activation_state ? " (active)":""));
+                        var spawnerNode = spawnersNode.Nodes.Add("ID:" + npcSpawner.npc_spawner_id + (spawner.activation_state ? " (active)" : ""));
                         spawnerNode.Nodes.Add($"Category: {spawner.npc_spawner_category_id}");
                         if (!string.IsNullOrWhiteSpace(spawner.name))
                             spawnerNode.Nodes.Add($"Name: {spawner.name}");
@@ -5283,6 +5341,49 @@ namespace AAEmu.DBViewer
                 }
                 #endregion
 
+                #region interactions
+                var interactionNode = tvNPCInfo.Nodes.Add("Interaction");
+                interactionNode.ImageIndex = 2;
+                interactionNode.SelectedImageIndex = 2;
+                if (npc.npc_interaction_set_id > 0)
+                {
+                    var interactions = AADB.DB_NpcInteractions.Values.Where(x => x.npc_interaction_set_id == npc.npc_interaction_set_id).ToList();
+                    foreach (var interaction in interactions)
+                    {
+                        AddCustomPropertyNode("skill_id", interaction.skill_id.ToString(), false, interactionNode);
+                    }
+                }
+                if (npc.auctioneer)
+                    interactionNode.Nodes.Add("Auction");
+                if (npc.banker)
+                    interactionNode.Nodes.Add("Warehouse");
+                if (npc.blacksmith)
+                    interactionNode.Nodes.Add("Blacksmith");
+                if (npc.expedition)
+                    interactionNode.Nodes.Add("Guild Manager");
+                if (npc.merchant)
+                    interactionNode.Nodes.Add("Merchant");
+                if (npc.priest)
+                    interactionNode.Nodes.Add("Priest");
+                if (npc.repairman)
+                    interactionNode.Nodes.Add("Repairs");
+                if (npc.skill_trainer)
+                    interactionNode.Nodes.Add("Skillmanager");
+                if (npc.specialty)
+                    interactionNode.Nodes.Add("Speciality");
+                if (npc.stabler)
+                    interactionNode.Nodes.Add("Stablemaster");
+                if (npc.teleporter)
+                    interactionNode.Nodes.Add("Teleporter");
+                if (npc.trader)
+                    interactionNode.Nodes.Add("Trader");
+
+                if (interactionNode.Nodes.Count > 0)
+                    interactionNode.Expand();
+                else
+                    tvNPCInfo.Nodes.Remove(interactionNode);
+
+                #endregion
 
                 #region np_skills
                 // NP Skills
@@ -5295,7 +5396,25 @@ namespace AAEmu.DBViewer
                     var npSkillNode = AddCustomPropertyNode("skill_id", npSkill.skill_id.ToString(), false, npSkillsNode);
                     npSkillNode.Text += $", {npSkill.skill_use_condition_id}( {npSkill.skill_use_param1:F1} | {npSkill.skill_use_param2:F1} )";
                 }
-                npSkillsNode.Expand();
+                if (npSkillsNode.Nodes.Count > 0)
+                    npSkillsNode.Expand();
+                else
+                    tvNPCInfo.Nodes.Remove(npSkillsNode);
+                #endregion
+
+                #region initial_buffs
+                var initialBuffsNode = tvNPCInfo.Nodes.Add("Initial Buffs");
+                initialBuffsNode.ImageIndex = 2;
+                initialBuffsNode.SelectedImageIndex = 2;
+                var initialBuffs = AADB.DB_NpcInitialBuffs.Values.Where(x => x.npc_id == npc.id).ToList();
+                foreach (var initialBuff in initialBuffs)
+                {
+                    AddCustomPropertyNode("buff_id", initialBuff.buff_id.ToString(), false, initialBuffsNode);
+                }
+                if (initialBuffsNode.Nodes.Count > 0)
+                    initialBuffsNode.Expand();
+                else
+                    tvNPCInfo.Nodes.Remove(initialBuffsNode);
 
 
                 #endregion
