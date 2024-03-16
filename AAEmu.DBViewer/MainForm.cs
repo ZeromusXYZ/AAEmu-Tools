@@ -6029,6 +6029,39 @@ namespace AAEmu.DBViewer
                     res.ForeColor = Color.Red;
                 }
             }
+            else if (key.EndsWith("loot_pack_id"))
+            {
+                var lootNode = new TreeNodeWithInfo();
+                lootNode.Text = key + ": " + val;
+                lootNode.ForeColor = Color.Yellow;
+                
+                var loots = AADB.DB_Loots.Where(l => l.Value.loot_pack_id == val).OrderBy(l => l.Value.group);
+                foreach (var loot in loots)
+                {
+                    var itemNode = new TreeNodeWithInfo();
+                    itemNode.Text = loot.Value.item_id.ToString();
+                    if (AADB.DB_Items.TryGetValue(loot.Value.item_id, out var lItem))
+                    {
+                        itemNode.targetTabPage = tpItems;
+                        itemNode.targetTextBox = tItemSearch;
+                        itemNode.targetSearchText = lItem.nameLocalized;
+                        itemNode.targetSearchButton = btnItemSearch;
+                        itemNode.ForeColor = Color.WhiteSmoke;
+                        itemNode.Text += " - " + lItem.nameLocalized;
+                        itemNode.SelectedImageIndex = itemNode.ImageIndex = IconIDToLabel(lItem.icon_id, null);
+                    }
+                    else
+                    {
+                        itemNode.Text = " - ???";
+                        itemNode.ForeColor = Color.Red;
+                    }
+
+                    lootNode.Nodes.Add(itemNode);
+                }
+
+                rootNode.Nodes.Add(lootNode);
+                return lootNode;
+            }
 
             res.Text = nodeText;
 
