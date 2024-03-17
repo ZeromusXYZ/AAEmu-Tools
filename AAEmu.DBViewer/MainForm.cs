@@ -2709,9 +2709,10 @@ namespace AAEmu.DBViewer
             Application.UseWaitCursor = false;
 
             if (firstResult >= 0)
+            {
                 ShowDBItem(firstResult);
-
-            AddToSearchHistory(cbItemSearch, searchTextLower);
+                AddToSearchHistory(cbItemSearch, searchTextLower);
+            }
         }
 
         /// <summary>
@@ -4895,7 +4896,8 @@ namespace AAEmu.DBViewer
 
             dgvSkills.Visible = true;
 
-            AddToSearchHistory(cbSkillSearch, searchText);
+            if (dgvSkills.Rows.Count > 0)
+                AddToSearchHistory(cbSkillSearch, searchText);
 
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
@@ -5236,8 +5238,8 @@ namespace AAEmu.DBViewer
                         }
                     }
                 }
-
-                AddToSearchHistory(cbSimpleSQL, cbSimpleSQL.Text);            
+                if (dgvSimple.Rows.Count > 0)
+                    AddToSearchHistory(cbSimpleSQL, cbSimpleSQL.Text);
             }
             catch (Exception x)
             {
@@ -5305,7 +5307,9 @@ namespace AAEmu.DBViewer
 
             }
 
-            AddToSearchHistory(cbSearchNPC, searchText);
+            if (c > 0)
+                AddToSearchHistory(cbSearchNPC, searchText);
+
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
         }
@@ -5772,7 +5776,8 @@ namespace AAEmu.DBViewer
 
             }
 
-            AddToSearchHistory(cbSearchDoodads, searchText);
+            if (c > 0)
+                AddToSearchHistory(cbSearchDoodads, searchText);
 
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
@@ -6755,7 +6760,8 @@ namespace AAEmu.DBViewer
                 }
             }
 
-            AddToSearchHistory(cbQuestSearch, searchText);
+            if (dgvQuests.Rows.Count > 0)
+                AddToSearchHistory(cbQuestSearch, searchText);
         }
 
         private void tQuestSearch_TextChanged(object sender, EventArgs e)
@@ -6917,7 +6923,8 @@ namespace AAEmu.DBViewer
 
             }
 
-            AddToSearchHistory(cbSearchBuffs, searchText);
+            if (c > 0)
+                AddToSearchHistory(cbSearchBuffs, searchText);
 
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
