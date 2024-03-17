@@ -5425,7 +5425,19 @@ namespace AAEmu.DBViewer
 
                 #endregion
 
-                #region np_skills
+                #region skills
+                // Base Skill
+                if (npc.base_skill_id > 0)
+                {
+                    var baseSkillNode = tvNPCInfo.Nodes.Add("Base Skill");
+                    baseSkillNode.ImageIndex = 2;
+                    baseSkillNode.SelectedImageIndex = 2;
+                    AddCustomPropertyNode("skill_id", npc.base_skill_id.ToString(), false, baseSkillNode);
+                    AddCustomPropertyNode("base_skill_delay", npc.base_skill_delay.ToString(), true, baseSkillNode);
+                    AddCustomPropertyNode("base_skill_strafe", npc.base_skill_strafe.ToString(), false, baseSkillNode);
+                    baseSkillNode.Expand();
+                }
+
                 // NP Skills
                 var npSkillsNode = tvNPCInfo.Nodes.Add("NP Skills");
                 npSkillsNode.ImageIndex = 2;
