@@ -11,6 +11,7 @@ namespace AAEmu.DBViewer.utils
     {
         public TabPage targetTabPage;
         public TextBox targetTextBox;
+        public ComboBox targetSearchBox;
         public string targetSearchText = String.Empty;
         public Button targetSearchButton;
     }

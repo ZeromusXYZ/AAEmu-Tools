@@ -130,12 +130,27 @@ namespace AAEmu.DBViewer
                 }
             }
 
+            LoadHistory(Properties.Settings.Default.HistorySearchItem, cbItemSearch);
+            LoadHistory(Properties.Settings.Default.HistorySearchNpc, cbSearchNPC);
+            LoadHistory(Properties.Settings.Default.HistorySearchQuest, cbQuestSearch);
+            LoadHistory(Properties.Settings.Default.HistorySearchSkill, cbSkillSearch);
+            LoadHistory(Properties.Settings.Default.HistorySearchDoodad, cbSearchDoodads);
+            LoadHistory(Properties.Settings.Default.HistorySearchBuff, cbSearchBuffs);
+            LoadHistory(Properties.Settings.Default.HistorySearchSQL, cbSimpleSQL);
+
             tcViewer.SelectedTab = tpItems;
             AttachEventsToLabels();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Properties.Settings.Default.HistorySearchItem = CreateHistory(cbItemSearch);
+            Properties.Settings.Default.HistorySearchNpc = CreateHistory(cbSearchNPC);
+            Properties.Settings.Default.HistorySearchQuest = CreateHistory(cbQuestSearch);
+            Properties.Settings.Default.HistorySearchSkill = CreateHistory(cbSkillSearch);
+            Properties.Settings.Default.HistorySearchDoodad = CreateHistory(cbSearchDoodads);
+            Properties.Settings.Default.HistorySearchBuff = CreateHistory(cbSearchBuffs);
+            Properties.Settings.Default.HistorySearchSQL = CreateHistory(cbSimpleSQL);
             Properties.Settings.Default.Save();
 
             if (MapViewForm.ThisForm != null)
@@ -2567,7 +2582,7 @@ namespace AAEmu.DBViewer
         private void BtnItemSearch_Click(object sender, EventArgs e)
         {
             dgvItem.Rows.Clear();
-            string searchText = tItemSearch.Text;
+            string searchText = cbItemSearch.Text;
             if (searchText == string.Empty)
                 return;
             string lng = cbItemSearchLanguage.Text;
@@ -2696,6 +2711,7 @@ namespace AAEmu.DBViewer
             if (firstResult >= 0)
                 ShowDBItem(firstResult);
 
+            AddToSearchHistory(cbItemSearch, searchTextLower);
         }
 
         /// <summary>
@@ -4744,7 +4760,7 @@ namespace AAEmu.DBViewer
 
         private void TItemSearch_TextChanged(object sender, EventArgs e)
         {
-            btnItemSearch.Enabled = (tItemSearch.Text != string.Empty);
+            btnItemSearch.Enabled = (cbItemSearch.Text != string.Empty);
         }
 
         private void BtnFindItemInLoot_Click(object sender, EventArgs e)
@@ -4816,7 +4832,7 @@ namespace AAEmu.DBViewer
 
         private void TSkillSearch_TextChanged(object sender, EventArgs e)
         {
-            btnSkillSearch.Enabled = (tSkillSearch.Text != string.Empty);
+            btnSkillSearch.Enabled = (cbSkillSearch.Text != string.Empty);
         }
 
         private void BtnSkillSearch_Click(object sender, EventArgs e)
@@ -4824,7 +4840,7 @@ namespace AAEmu.DBViewer
             dgvSkills.Rows.Clear();
             dgvSkillReagents.Rows.Clear();
             dgvSkillProducts.Rows.Clear();
-            string searchText = tSkillSearch.Text;
+            string searchText = cbSkillSearch.Text;
             if (searchText == string.Empty)
                 return;
             string lng = cbItemSearchLanguage.Text;
@@ -4878,6 +4894,9 @@ namespace AAEmu.DBViewer
             }
 
             dgvSkills.Visible = true;
+
+            AddToSearchHistory(cbSkillSearch, searchText);
+
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
 
@@ -4942,9 +4961,9 @@ namespace AAEmu.DBViewer
                         AddSkillLine(p.Value.skill_id);
                 }
 
-                tSkillSearch.Text = string.Empty;
+                cbSkillSearch.Text = string.Empty;
                 tcViewer.SelectedTab = tpSkills;
-                //tSkillSearch.Text = item.use_skill_id.ToString();
+                //cbSkillSearch.Text = item.use_skill_id.ToString();
                 //BtnSkillSearch_Click(null, null);
             }
         }
@@ -5163,14 +5182,14 @@ namespace AAEmu.DBViewer
             if (lbTableNames.SelectedItem == null)
                 return;
             var tablename = lbTableNames.SelectedItem.ToString();
-            tSimpleSQL.Text = "SELECT * FROM " + tablename + " LIMIT 0, 50";
+            cbSimpleSQL.Text = "SELECT * FROM " + tablename + " LIMIT 0, 50";
 
             // BtnSimpleSQL_Click(null, null);
         }
 
         private void BtnSimpleSQL_Click(object sender, EventArgs e)
         {
-            if (tSimpleSQL.Text == string.Empty)
+            if (cbSimpleSQL.Text == string.Empty)
                 return;
 
             try
@@ -5179,7 +5198,7 @@ namespace AAEmu.DBViewer
                 {
                     using (var command = connection.CreateCommand())
                     {
-                        command.CommandText = tSimpleSQL.Text;
+                        command.CommandText = cbSimpleSQL.Text;
                         command.Prepare();
                         using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                         {
@@ -5217,6 +5236,8 @@ namespace AAEmu.DBViewer
                         }
                     }
                 }
+
+                AddToSearchHistory(cbSimpleSQL, cbSimpleSQL.Text);            
             }
             catch (Exception x)
             {
@@ -5229,7 +5250,7 @@ namespace AAEmu.DBViewer
 
         private void TSimpleSQL_TextChanged(object sender, EventArgs e)
         {
-            btnSimpleSQL.Enabled = (tSimpleSQL.Text != string.Empty);
+            btnSimpleSQL.Enabled = (cbSimpleSQL.Text != string.Empty);
         }
 
         private void TSimpleSQL_KeyDown(object sender, KeyEventArgs e)
@@ -5240,7 +5261,7 @@ namespace AAEmu.DBViewer
 
         private void BtnSearchNPC_Click(object sender, EventArgs e)
         {
-            string searchText = tSearchNPC.Text.ToLower();
+            string searchText = cbSearchNPC.Text.ToLower();
             if (searchText == string.Empty)
                 return;
             long searchID;
@@ -5284,13 +5305,14 @@ namespace AAEmu.DBViewer
 
             }
 
+            AddToSearchHistory(cbSearchNPC, searchText);
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
         }
 
         private void TSearchNPC_TextChanged(object sender, EventArgs e)
         {
-            btnSearchNPC.Enabled = (tSearchNPC.Text != string.Empty);
+            btnSearchNPC.Enabled = (cbSearchNPC.Text != string.Empty);
         }
 
         private void TSearchNPC_KeyDown(object sender, KeyEventArgs e)
@@ -5682,7 +5704,7 @@ namespace AAEmu.DBViewer
 
         private void TSearchDoodads_TextChanged(object sender, EventArgs e)
         {
-            btnSearchDoodads.Enabled = (tSearchDoodads.Text != string.Empty);
+            btnSearchDoodads.Enabled = (cbSearchDoodads.Text != string.Empty);
         }
 
         private void TSearchDoodads_KeyDown(object sender, KeyEventArgs e)
@@ -5693,7 +5715,7 @@ namespace AAEmu.DBViewer
 
         private void BtnSearchDoodads_Click(object sender, EventArgs e)
         {
-            string searchText = tSearchDoodads.Text.ToLower();
+            string searchText = cbSearchDoodads.Text.ToLower();
             if (searchText == string.Empty)
                 return;
             long searchID;
@@ -5749,6 +5771,8 @@ namespace AAEmu.DBViewer
                 }
 
             }
+
+            AddToSearchHistory(cbSearchDoodads, searchText);
 
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
@@ -5915,7 +5939,7 @@ namespace AAEmu.DBViewer
             else if (key.EndsWith("skill_id") && (AADB.DB_Skills.TryGetValue(val, out var skill)))
             {
                 res.targetTabPage = tpSkills;
-                res.targetTextBox = tSkillSearch;
+                res.targetSearchBox = cbSkillSearch;
                 res.targetSearchText = skill.nameLocalized;
                 res.targetSearchButton = btnSkillSearch;
                 res.ForeColor = Color.WhiteSmoke;
@@ -5925,7 +5949,7 @@ namespace AAEmu.DBViewer
             else if (key.EndsWith("item_id") && (AADB.DB_Items.TryGetValue(val, out var item)))
             {
                 res.targetTabPage = tpItems;
-                res.targetTextBox = tItemSearch;
+                res.targetSearchBox = cbItemSearch;
                 res.targetSearchText = item.nameLocalized;
                 res.targetSearchButton = btnItemSearch;
                 res.ForeColor = Color.WhiteSmoke;
@@ -5935,7 +5959,7 @@ namespace AAEmu.DBViewer
             else if (key.EndsWith("doodad_id") && (AADB.DB_Doodad_Almighties.TryGetValue(val, out var doodad)))
             {
                 res.targetTabPage = tpDoodads;
-                res.targetTextBox = tSearchDoodads;
+                res.targetSearchBox = cbSearchDoodads;
                 res.targetSearchText = doodad.nameLocalized;
                 res.targetSearchButton = btnSearchDoodads;
                 res.ForeColor = Color.WhiteSmoke;
@@ -5944,7 +5968,7 @@ namespace AAEmu.DBViewer
             else if (key.EndsWith("npc_id") && (AADB.DB_NPCs.TryGetValue(val, out var npc)))
             {
                 res.targetTabPage = tpNPCs;
-                res.targetTextBox = tSearchNPC;
+                res.targetSearchBox = cbSearchNPC;
                 res.targetSearchText = npc.nameLocalized;
                 res.targetSearchButton = btnSearchNPC;
                 res.ForeColor = Color.WhiteSmoke;
@@ -5953,7 +5977,7 @@ namespace AAEmu.DBViewer
             else if (key.EndsWith("buff_id") && (AADB.DB_Buffs.TryGetValue(val, out var buff)))
             {
                 res.targetTabPage = tpBuffs;
-                res.targetTextBox = tSearchBuffs;
+                res.targetSearchBox = cbSearchBuffs;
                 res.targetSearchText = buff.nameLocalized;
                 res.targetSearchButton = btnSearchBuffs;
                 res.ForeColor = Color.WhiteSmoke;
@@ -6000,7 +6024,7 @@ namespace AAEmu.DBViewer
                      (AADB.DB_ItemsCategories.TryGetValue(val, out var itemCategory)))
             {
                 res.targetTabPage = tpItems;
-                res.targetTextBox = tItemSearch;
+                res.targetSearchBox = cbItemSearch;
                 res.targetSearchText = itemCategory.nameLocalized;
                 res.targetSearchButton = btnItemSearch;
                 res.ForeColor = Color.WhiteSmoke;
@@ -6055,7 +6079,7 @@ namespace AAEmu.DBViewer
                     if (AADB.DB_Items.TryGetValue(loot.Value.item_id, out var lItem))
                     {
                         itemNode.targetTabPage = tpItems;
-                        itemNode.targetTextBox = tItemSearch;
+                        itemNode.targetSearchBox = cbItemSearch;
                         itemNode.targetSearchText = lItem.nameLocalized;
                         itemNode.targetSearchButton = btnItemSearch;
                         itemNode.ForeColor = Color.WhiteSmoke;
@@ -6686,7 +6710,7 @@ namespace AAEmu.DBViewer
 
         private void btnQuestsSearch_Click(object sender, EventArgs e)
         {
-            string searchText = tQuestSearch.Text.ToLower();
+            string searchText = cbQuestSearch.Text.ToLower();
             if (searchText == string.Empty)
                 return;
             long searchID;
@@ -6731,11 +6755,12 @@ namespace AAEmu.DBViewer
                 }
             }
 
+            AddToSearchHistory(cbQuestSearch, searchText);
         }
 
         private void tQuestSearch_TextChanged(object sender, EventArgs e)
         {
-            btnQuestsSearch.Enabled = (tQuestSearch.Text != string.Empty);
+            btnQuestsSearch.Enabled = (cbQuestSearch.Text != string.Empty);
         }
 
         private void tQuestSearch_KeyDown(object sender, KeyEventArgs e)
@@ -6850,7 +6875,7 @@ namespace AAEmu.DBViewer
 
         private void btnSearchBuffs_Click(object sender, EventArgs e)
         {
-            string searchText = tSearchBuffs.Text.ToLower();
+            string searchText = cbSearchBuffs.Text.ToLower();
             if (searchText == string.Empty)
                 return;
             long searchID;
@@ -6892,13 +6917,15 @@ namespace AAEmu.DBViewer
 
             }
 
+            AddToSearchHistory(cbSearchBuffs, searchText);
+
             Cursor = Cursors.Default;
             Application.UseWaitCursor = false;
         }
 
         private void tSearchBuffs_TextChanged(object sender, EventArgs e)
         {
-            btnSearchBuffs.Enabled = (tSearchBuffs.Text.Length > 0);
+            btnSearchBuffs.Enabled = (cbSearchBuffs.Text.Length > 0);
         }
 
         private void tSearchBuffs_KeyDown(object sender, KeyEventArgs e)
@@ -8920,16 +8947,16 @@ namespace AAEmu.DBViewer
 
         private void cbItemSearchFilterChanged(object sender, EventArgs e)
         {
-            if (tItemSearch.Text.Replace("*", "") == string.Empty)
+            if (cbItemSearch.Text.Replace("*", "") == string.Empty)
             {
 
                 if ((cbItemSearchItemArmorSlotTypeList.SelectedIndex > 0) ||
                     (cbItemSearchItemCategoryTypeList.SelectedIndex > 0) ||
                     (cbItemSearchRange.SelectedIndex > 0) ||
                     (cbItemSearchType.SelectedIndex > 0))
-                    tItemSearch.Text = "*";
+                    cbItemSearch.Text = "*";
                 else
-                    tItemSearch.Text = string.Empty;
+                    cbItemSearch.Text = string.Empty;
             }
         }
 
@@ -8942,6 +8969,8 @@ namespace AAEmu.DBViewer
                     tcViewer.SelectedTab = info.targetTabPage;
                 if (info.targetTextBox != null)
                     info.targetTextBox.Text = info.targetSearchText;
+                if (info.targetSearchBox != null)
+                    info.targetSearchBox.Text = info.targetSearchText;
                 if (info.targetSearchButton != null)
                     info.targetSearchButton.PerformClick();
             }
@@ -9409,6 +9438,39 @@ namespace AAEmu.DBViewer
             // In properties the node tag is used internally, so only allow this node double-click if it's not set
             if ((sender is TreeView tv) && (tv.SelectedNode != null) && (tv.SelectedNode.Tag == null))
                 ProcessNodeInfoDoubleClick(tv.SelectedNode);
+        }
+
+        private void AddToSearchHistory(ComboBox searchBox, string searchString)
+        {
+            var oldText = searchBox.Text;
+            var s = searchString.ToLower();
+            if (searchBox.Items.Contains(s))
+                searchBox.Items.Remove(s);
+            searchBox.Items.Insert(0, s);
+
+            // Put a artificial limit
+            while (searchBox.Items.Count > 50)
+                searchBox.Items.RemoveAt(searchBox.Items.Count - 1);
+
+            searchBox.Text = oldText;
+        }
+
+        private void LoadHistory(string savedHistoryString, ComboBox comboBox)
+        {
+            var lines = savedHistoryString.Split(Environment.NewLine);
+            comboBox.Items.Clear();
+            foreach (var line in lines)
+                if (!string.IsNullOrWhiteSpace(line))
+                    comboBox.Items.Add(line);
+        }
+
+        private string CreateHistory(ComboBox comboBox)
+        {
+            var res = new List<string>();
+            foreach (string line in comboBox.Items)
+                if (!string.IsNullOrWhiteSpace(line))
+                    res.Add(line);
+            return string.Join(Environment.NewLine, res);
         }
     }
 }

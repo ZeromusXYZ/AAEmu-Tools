@@ -12,7 +12,7 @@ namespace AAEmu.DBViewer.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.3.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -164,6 +164,90 @@ namespace AAEmu.DBViewer.Properties {
             }
             set {
                 this["NewGMCommands"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string HistorySearchNpc {
+            get {
+                return ((string)(this["HistorySearchNpc"]));
+            }
+            set {
+                this["HistorySearchNpc"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string HistorySearchItem {
+            get {
+                return ((string)(this["HistorySearchItem"]));
+            }
+            set {
+                this["HistorySearchItem"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string HistorySearchQuest {
+            get {
+                return ((string)(this["HistorySearchQuest"]));
+            }
+            set {
+                this["HistorySearchQuest"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string HistorySearchSkill {
+            get {
+                return ((string)(this["HistorySearchSkill"]));
+            }
+            set {
+                this["HistorySearchSkill"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string HistorySearchBuff {
+            get {
+                return ((string)(this["HistorySearchBuff"]));
+            }
+            set {
+                this["HistorySearchBuff"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string HistorySearchDoodad {
+            get {
+                return ((string)(this["HistorySearchDoodad"]));
+            }
+            set {
+                this["HistorySearchDoodad"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string HistorySearchSQL {
+            get {
+                return ((string)(this["HistorySearchSQL"]));
+            }
+            set {
+                this["HistorySearchSQL"] = value;
             }
         }
     }

@@ -41,7 +41,6 @@
             lCurrentPakFile = new System.Windows.Forms.Label();
             label41 = new System.Windows.Forms.Label();
             btnSimpleSQL = new System.Windows.Forms.Button();
-            tSimpleSQL = new System.Windows.Forms.TextBox();
             dgvSimple = new System.Windows.Forms.DataGridView();
             label8 = new System.Windows.Forms.Label();
             btnFindGameClient = new System.Windows.Forms.Button();
@@ -84,6 +83,7 @@
             btnExportDataForVieweD = new System.Windows.Forms.Button();
             lSpace = new System.Windows.Forms.Label();
             tpBuffs = new System.Windows.Forms.TabPage();
+            cbSearchBuffs = new System.Windows.Forms.ComboBox();
             groupBox14 = new System.Windows.Forms.GroupBox();
             splitContainer2 = new System.Windows.Forms.SplitContainer();
             cbBuffsHideEmpty = new System.Windows.Forms.CheckBox();
@@ -106,12 +106,12 @@
             label113 = new System.Windows.Forms.Label();
             btnSearchBuffs = new System.Windows.Forms.Button();
             label115 = new System.Windows.Forms.Label();
-            tSearchBuffs = new System.Windows.Forms.TextBox();
             dgvBuffs = new System.Windows.Forms.DataGridView();
             dataGridViewTextBoxColumn21 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn24 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             Column52 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tpDoodads = new System.Windows.Forms.TabPage();
+            cbSearchDoodads = new System.Windows.Forms.ComboBox();
             tcDoodads = new System.Windows.Forms.TabControl();
             tpDoodadInfo = new System.Windows.Forms.TabPage();
             groupBox9 = new System.Windows.Forms.GroupBox();
@@ -231,7 +231,6 @@
             tvDoodadDetails = new System.Windows.Forms.TreeView();
             btnSearchDoodads = new System.Windows.Forms.Button();
             label46 = new System.Windows.Forms.Label();
-            tSearchDoodads = new System.Windows.Forms.TextBox();
             dgvDoodads = new System.Windows.Forms.DataGridView();
             dataGridViewTextBoxColumn18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -284,6 +283,7 @@
             Column24 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             Column29 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tpItems = new System.Windows.Forms.TabPage();
+            cbItemSearch = new System.Windows.Forms.ComboBox();
             label139 = new System.Windows.Forms.Label();
             cbItemSearchType = new System.Windows.Forms.ComboBox();
             cbItemSearchRange = new System.Windows.Forms.ComboBox();
@@ -315,7 +315,6 @@
             Item_Name_EN_US = new System.Windows.Forms.DataGridViewTextBoxColumn();
             btnFindItemInLoot = new System.Windows.Forms.Button();
             label1 = new System.Windows.Forms.Label();
-            tItemSearch = new System.Windows.Forms.TextBox();
             tpLoot = new System.Windows.Forms.TabPage();
             label141 = new System.Windows.Forms.Label();
             groupBox11 = new System.Windows.Forms.GroupBox();
@@ -339,6 +338,7 @@
             Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             LootGroupRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tpNPCs = new System.Windows.Forms.TabPage();
+            cbSearchNPC = new System.Windows.Forms.ComboBox();
             groupBox13 = new System.Windows.Forms.GroupBox();
             tvNPCInfo = new System.Windows.Forms.TreeView();
             btnShowNpcLoot = new System.Windows.Forms.Button();
@@ -350,7 +350,6 @@
             label81 = new System.Windows.Forms.Label();
             btnSearchNPC = new System.Windows.Forms.Button();
             label39 = new System.Windows.Forms.Label();
-            tSearchNPC = new System.Windows.Forms.TextBox();
             dgvNPCs = new System.Windows.Forms.DataGridView();
             dataGridViewTextBoxColumn14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -361,8 +360,8 @@
             Column34 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tpQuests = new System.Windows.Forms.TabPage();
             panel1 = new System.Windows.Forms.Panel();
+            cbQuestSearch = new System.Windows.Forms.ComboBox();
             label89 = new System.Windows.Forms.Label();
-            tQuestSearch = new System.Windows.Forms.TextBox();
             btnQuestsSearch = new System.Windows.Forms.Button();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             groupBox12 = new System.Windows.Forms.GroupBox();
@@ -394,9 +393,9 @@
             Column38 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tpSkills = new System.Windows.Forms.TabPage();
             splitContainer3 = new System.Windows.Forms.SplitContainer();
+            cbSkillSearch = new System.Windows.Forms.ComboBox();
             label9 = new System.Windows.Forms.Label();
             btnSkillSearch = new System.Windows.Forms.Button();
-            tSkillSearch = new System.Windows.Forms.TextBox();
             dgvSkills = new System.Windows.Forms.DataGridView();
             dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -543,6 +542,7 @@
             ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             ofdJsonData = new System.Windows.Forms.OpenFileDialog();
             ilIcons = new System.Windows.Forms.ImageList(components);
+            cbSimpleSQL = new System.Windows.Forms.ComboBox();
             tcViewer.SuspendLayout();
             tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSimple).BeginInit();
@@ -660,13 +660,13 @@
             // tbTables
             // 
             tbTables.BackColor = System.Drawing.Color.Transparent;
+            tbTables.Controls.Add(cbSimpleSQL);
             tbTables.Controls.Add(cbNewGM);
             tbTables.Controls.Add(label29);
             tbTables.Controls.Add(tFilterTables);
             tbTables.Controls.Add(lCurrentPakFile);
             tbTables.Controls.Add(label41);
             tbTables.Controls.Add(btnSimpleSQL);
-            tbTables.Controls.Add(tSimpleSQL);
             tbTables.Controls.Add(dgvSimple);
             tbTables.Controls.Add(label8);
             tbTables.Controls.Add(btnFindGameClient);
@@ -747,17 +747,6 @@
             btnSimpleSQL.Text = "Run SQL";
             btnSimpleSQL.UseVisualStyleBackColor = true;
             btnSimpleSQL.Click += BtnSimpleSQL_Click;
-            // 
-            // tSimpleSQL
-            // 
-            tSimpleSQL.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            tSimpleSQL.Location = new System.Drawing.Point(329, 129);
-            tSimpleSQL.Margin = new System.Windows.Forms.Padding(4);
-            tSimpleSQL.Name = "tSimpleSQL";
-            tSimpleSQL.Size = new System.Drawing.Size(646, 23);
-            tSimpleSQL.TabIndex = 10;
-            tSimpleSQL.TextChanged += TSimpleSQL_TextChanged;
-            tSimpleSQL.KeyDown += TSimpleSQL_KeyDown;
             // 
             // dgvSimple
             // 
@@ -1216,10 +1205,10 @@
             // 
             // tpBuffs
             // 
+            tpBuffs.Controls.Add(cbSearchBuffs);
             tpBuffs.Controls.Add(groupBox14);
             tpBuffs.Controls.Add(btnSearchBuffs);
             tpBuffs.Controls.Add(label115);
-            tpBuffs.Controls.Add(tSearchBuffs);
             tpBuffs.Controls.Add(dgvBuffs);
             tpBuffs.Location = new System.Drawing.Point(4, 25);
             tpBuffs.Margin = new System.Windows.Forms.Padding(4);
@@ -1228,6 +1217,17 @@
             tpBuffs.TabIndex = 12;
             tpBuffs.Text = "Buffs";
             tpBuffs.UseVisualStyleBackColor = true;
+            // 
+            // cbSearchBuffs
+            // 
+            cbSearchBuffs.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            cbSearchBuffs.FormattingEnabled = true;
+            cbSearchBuffs.Location = new System.Drawing.Point(107, 12);
+            cbSearchBuffs.Name = "cbSearchBuffs";
+            cbSearchBuffs.Size = new System.Drawing.Size(165, 24);
+            cbSearchBuffs.TabIndex = 24;
+            cbSearchBuffs.TextUpdate += tSearchBuffs_TextChanged;
+            cbSearchBuffs.KeyDown += tSearchBuffs_KeyDown;
             // 
             // groupBox14
             // 
@@ -1275,7 +1275,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(678, 329);
-            splitContainer2.SplitterDistance = 396;
+            splitContainer2.SplitterDistance = 389;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1283,7 +1283,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(305, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(298, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1314,7 +1314,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(388, 298);
+            tvBuffTriggers.Size = new System.Drawing.Size(381, 298);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += tvBuffTriggers_DoubleClick;
             // 
@@ -1499,16 +1499,6 @@
             label115.TabIndex = 10;
             label115.Text = "Buff Name or ID";
             // 
-            // tSearchBuffs
-            // 
-            tSearchBuffs.Location = new System.Drawing.Point(113, 11);
-            tSearchBuffs.Margin = new System.Windows.Forms.Padding(4);
-            tSearchBuffs.Name = "tSearchBuffs";
-            tSearchBuffs.Size = new System.Drawing.Size(158, 23);
-            tSearchBuffs.TabIndex = 9;
-            tSearchBuffs.TextChanged += tSearchBuffs_TextChanged;
-            tSearchBuffs.KeyDown += tSearchBuffs_KeyDown;
-            // 
             // dgvBuffs
             // 
             dgvBuffs.AllowUserToAddRows = false;
@@ -1555,10 +1545,10 @@
             // 
             // tpDoodads
             // 
+            tpDoodads.Controls.Add(cbSearchDoodads);
             tpDoodads.Controls.Add(tcDoodads);
             tpDoodads.Controls.Add(btnSearchDoodads);
             tpDoodads.Controls.Add(label46);
-            tpDoodads.Controls.Add(tSearchDoodads);
             tpDoodads.Controls.Add(dgvDoodads);
             tpDoodads.Location = new System.Drawing.Point(4, 25);
             tpDoodads.Margin = new System.Windows.Forms.Padding(4);
@@ -1568,6 +1558,17 @@
             tpDoodads.TabIndex = 8;
             tpDoodads.Text = "Doodads";
             tpDoodads.UseVisualStyleBackColor = true;
+            // 
+            // cbSearchDoodads
+            // 
+            cbSearchDoodads.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            cbSearchDoodads.FormattingEnabled = true;
+            cbSearchDoodads.Location = new System.Drawing.Point(258, 13);
+            cbSearchDoodads.Name = "cbSearchDoodads";
+            cbSearchDoodads.Size = new System.Drawing.Size(314, 24);
+            cbSearchDoodads.TabIndex = 23;
+            cbSearchDoodads.TextChanged += TSearchDoodads_TextChanged;
+            cbSearchDoodads.KeyDown += TSearchDoodads_KeyDown;
             // 
             // tcDoodads
             // 
@@ -2892,17 +2893,6 @@
             label46.TabIndex = 13;
             label46.Text = "Search Doodad ID, Group ID, Name or Model";
             // 
-            // tSearchDoodads
-            // 
-            tSearchDoodads.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            tSearchDoodads.Location = new System.Drawing.Point(276, 12);
-            tSearchDoodads.Margin = new System.Windows.Forms.Padding(4);
-            tSearchDoodads.Name = "tSearchDoodads";
-            tSearchDoodads.Size = new System.Drawing.Size(294, 23);
-            tSearchDoodads.TabIndex = 12;
-            tSearchDoodads.TextChanged += TSearchDoodads_TextChanged;
-            tSearchDoodads.KeyDown += TSearchDoodads_KeyDown;
-            // 
             // dgvDoodads
             // 
             dgvDoodads.AllowUserToAddRows = false;
@@ -3441,6 +3431,7 @@
             // 
             // tpItems
             // 
+            tpItems.Controls.Add(cbItemSearch);
             tpItems.Controls.Add(label139);
             tpItems.Controls.Add(cbItemSearchType);
             tpItems.Controls.Add(cbItemSearchRange);
@@ -3455,7 +3446,6 @@
             tpItems.Controls.Add(dgvItem);
             tpItems.Controls.Add(btnFindItemInLoot);
             tpItems.Controls.Add(label1);
-            tpItems.Controls.Add(tItemSearch);
             tpItems.Location = new System.Drawing.Point(4, 25);
             tpItems.Margin = new System.Windows.Forms.Padding(4);
             tpItems.Name = "tpItems";
@@ -3464,6 +3454,17 @@
             tpItems.TabIndex = 1;
             tpItems.Text = "Items";
             tpItems.UseVisualStyleBackColor = true;
+            // 
+            // cbItemSearch
+            // 
+            cbItemSearch.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            cbItemSearch.FormattingEnabled = true;
+            cbItemSearch.Location = new System.Drawing.Point(224, 8);
+            cbItemSearch.Name = "cbItemSearch";
+            cbItemSearch.Size = new System.Drawing.Size(391, 24);
+            cbItemSearch.TabIndex = 22;
+            cbItemSearch.TextChanged += TItemSearch_TextChanged;
+            cbItemSearch.KeyDown += TItemSearch_KeyDown;
             // 
             // label139
             // 
@@ -3826,17 +3827,6 @@
             label1.TabIndex = 1;
             label1.Text = "Search in Item ID, Name or description";
             // 
-            // tItemSearch
-            // 
-            tItemSearch.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            tItemSearch.Location = new System.Drawing.Point(230, 7);
-            tItemSearch.Margin = new System.Windows.Forms.Padding(4);
-            tItemSearch.Name = "tItemSearch";
-            tItemSearch.Size = new System.Drawing.Size(384, 23);
-            tItemSearch.TabIndex = 0;
-            tItemSearch.TextChanged += TItemSearch_TextChanged;
-            tItemSearch.KeyDown += TItemSearch_KeyDown;
-            // 
             // tpLoot
             // 
             tpLoot.Controls.Add(label141);
@@ -4063,10 +4053,10 @@
             // 
             // tpNPCs
             // 
+            tpNPCs.Controls.Add(cbSearchNPC);
             tpNPCs.Controls.Add(groupBox13);
             tpNPCs.Controls.Add(btnSearchNPC);
             tpNPCs.Controls.Add(label39);
-            tpNPCs.Controls.Add(tSearchNPC);
             tpNPCs.Controls.Add(dgvNPCs);
             tpNPCs.Location = new System.Drawing.Point(4, 25);
             tpNPCs.Margin = new System.Windows.Forms.Padding(4);
@@ -4076,6 +4066,17 @@
             tpNPCs.TabIndex = 6;
             tpNPCs.Text = "NPCs";
             tpNPCs.UseVisualStyleBackColor = true;
+            // 
+            // cbSearchNPC
+            // 
+            cbSearchNPC.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            cbSearchNPC.FormattingEnabled = true;
+            cbSearchNPC.Location = new System.Drawing.Point(200, 12);
+            cbSearchNPC.Name = "cbSearchNPC";
+            cbSearchNPC.Size = new System.Drawing.Size(224, 24);
+            cbSearchNPC.TabIndex = 14;
+            cbSearchNPC.TextChanged += TSearchNPC_TextChanged;
+            cbSearchNPC.KeyDown += TSearchNPC_KeyDown;
             // 
             // groupBox13
             // 
@@ -4222,17 +4223,6 @@
             label39.TabIndex = 9;
             label39.Text = "Search NPC ID, Name or Model ID";
             // 
-            // tSearchNPC
-            // 
-            tSearchNPC.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            tSearchNPC.Location = new System.Drawing.Point(217, 12);
-            tSearchNPC.Margin = new System.Windows.Forms.Padding(4);
-            tSearchNPC.Name = "tSearchNPC";
-            tSearchNPC.Size = new System.Drawing.Size(206, 23);
-            tSearchNPC.TabIndex = 8;
-            tSearchNPC.TextChanged += TSearchNPC_TextChanged;
-            tSearchNPC.KeyDown += TSearchNPC_KeyDown;
-            // 
             // dgvNPCs
             // 
             dgvNPCs.AllowUserToAddRows = false;
@@ -4316,8 +4306,8 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(cbQuestSearch);
             panel1.Controls.Add(label89);
-            panel1.Controls.Add(tQuestSearch);
             panel1.Controls.Add(btnQuestsSearch);
             panel1.Dock = System.Windows.Forms.DockStyle.Top;
             panel1.Location = new System.Drawing.Point(4, 4);
@@ -4325,6 +4315,17 @@
             panel1.Name = "panel1";
             panel1.Size = new System.Drawing.Size(1074, 39);
             panel1.TabIndex = 14;
+            // 
+            // cbQuestSearch
+            // 
+            cbQuestSearch.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            cbQuestSearch.FormattingEnabled = true;
+            cbQuestSearch.Location = new System.Drawing.Point(151, 8);
+            cbQuestSearch.Name = "cbQuestSearch";
+            cbQuestSearch.Size = new System.Drawing.Size(818, 24);
+            cbQuestSearch.TabIndex = 15;
+            cbQuestSearch.TextChanged += tQuestSearch_TextChanged;
+            cbQuestSearch.KeyDown += tQuestSearch_KeyDown;
             // 
             // label89
             // 
@@ -4335,17 +4336,6 @@
             label89.Size = new System.Drawing.Size(138, 16);
             label89.TabIndex = 10;
             label89.Text = "Search Quest ID or Name";
-            // 
-            // tQuestSearch
-            // 
-            tQuestSearch.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            tQuestSearch.Location = new System.Drawing.Point(163, 7);
-            tQuestSearch.Margin = new System.Windows.Forms.Padding(4);
-            tQuestSearch.Name = "tQuestSearch";
-            tQuestSearch.Size = new System.Drawing.Size(805, 23);
-            tQuestSearch.TabIndex = 9;
-            tQuestSearch.TextChanged += tQuestSearch_TextChanged;
-            tQuestSearch.KeyDown += tQuestSearch_KeyDown;
             // 
             // btnQuestsSearch
             // 
@@ -4466,7 +4456,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(486, 517);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(479, 517);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4498,7 +4488,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(713, 507);
+            tvQuestWorkflow.Size = new System.Drawing.Size(706, 507);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += tvQuestWorkflow_DoubleClick;
             // 
@@ -4695,9 +4685,9 @@
             // 
             // splitContainer3.Panel1
             // 
+            splitContainer3.Panel1.Controls.Add(cbSkillSearch);
             splitContainer3.Panel1.Controls.Add(label9);
             splitContainer3.Panel1.Controls.Add(btnSkillSearch);
-            splitContainer3.Panel1.Controls.Add(tSkillSearch);
             splitContainer3.Panel1.Controls.Add(dgvSkills);
             // 
             // splitContainer3.Panel2
@@ -4707,6 +4697,17 @@
             splitContainer3.SplitterDistance = 470;
             splitContainer3.SplitterWidth = 5;
             splitContainer3.TabIndex = 10;
+            // 
+            // cbSkillSearch
+            // 
+            cbSkillSearch.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            cbSkillSearch.FormattingEnabled = true;
+            cbSkillSearch.Location = new System.Drawing.Point(134, 6);
+            cbSkillSearch.Name = "cbSkillSearch";
+            cbSkillSearch.Size = new System.Drawing.Size(233, 24);
+            cbSkillSearch.TabIndex = 23;
+            cbSkillSearch.TextChanged += TSkillSearch_TextChanged;
+            cbSkillSearch.KeyDown += TSkillSearch_KeyDown;
             // 
             // label9
             // 
@@ -4722,7 +4723,7 @@
             // 
             btnSkillSearch.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             btnSkillSearch.Enabled = false;
-            btnSkillSearch.Location = new System.Drawing.Point(374, 2);
+            btnSkillSearch.Location = new System.Drawing.Point(374, 3);
             btnSkillSearch.Margin = new System.Windows.Forms.Padding(4);
             btnSkillSearch.Name = "btnSkillSearch";
             btnSkillSearch.Size = new System.Drawing.Size(92, 28);
@@ -4730,17 +4731,6 @@
             btnSkillSearch.Text = "Search";
             btnSkillSearch.UseVisualStyleBackColor = true;
             btnSkillSearch.Click += BtnSkillSearch_Click;
-            // 
-            // tSkillSearch
-            // 
-            tSkillSearch.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            tSkillSearch.Location = new System.Drawing.Point(145, 5);
-            tSkillSearch.Margin = new System.Windows.Forms.Padding(4);
-            tSkillSearch.Name = "tSkillSearch";
-            tSkillSearch.Size = new System.Drawing.Size(222, 23);
-            tSkillSearch.TabIndex = 4;
-            tSkillSearch.TextChanged += TSkillSearch_TextChanged;
-            tSkillSearch.KeyDown += TSkillSearch_KeyDown;
             // 
             // dgvSkills
             // 
@@ -6371,6 +6361,17 @@
             ilIcons.Images.SetKeyName(3, "icon_exclamation_green.png");
             ilIcons.Images.SetKeyName(4, "icon_exclamation_blue.png");
             // 
+            // cbSimpleSQL
+            // 
+            cbSimpleSQL.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            cbSimpleSQL.FormattingEnabled = true;
+            cbSimpleSQL.Location = new System.Drawing.Point(328, 130);
+            cbSimpleSQL.Name = "cbSimpleSQL";
+            cbSimpleSQL.Size = new System.Drawing.Size(647, 24);
+            cbSimpleSQL.TabIndex = 25;
+            cbSimpleSQL.TextChanged += TSimpleSQL_TextChanged;
+            cbSimpleSQL.KeyDown += TSimpleSQL_KeyDown;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -6502,7 +6503,6 @@
         private System.Windows.Forms.TabPage tbTables;
         private System.Windows.Forms.TabPage tpItems;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tItemSearch;
         private System.Windows.Forms.DataGridView dgvItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn Item_ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn Item_Name_EN_US;
@@ -6534,7 +6534,6 @@
         private System.Windows.Forms.Button btnSkillSearch;
         private System.Windows.Forms.DataGridView dgvSkills;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox tSkillSearch;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label skillIcon;
         private System.Windows.Forms.RichTextBox rtSkillDescription;
@@ -6639,11 +6638,9 @@
         private System.Windows.Forms.TabPage tpNPCs;
         private System.Windows.Forms.Button btnSearchNPC;
         private System.Windows.Forms.Label label39;
-        private System.Windows.Forms.TextBox tSearchNPC;
         private System.Windows.Forms.DataGridView dgvNPCs;
         private System.Windows.Forms.DataGridView dgvSimple;
         private System.Windows.Forms.Button btnSimpleSQL;
-        private System.Windows.Forms.TextBox tSimpleSQL;
         private System.Windows.Forms.Label label41;
         private System.Windows.Forms.TabPage tbFactions;
         private System.Windows.Forms.Button btnSearchFaction;
@@ -6689,7 +6686,6 @@
         private System.Windows.Forms.TabPage tpDoodads;
         private System.Windows.Forms.Button btnSearchDoodads;
         private System.Windows.Forms.Label label46;
-        private System.Windows.Forms.TextBox tSearchDoodads;
         private System.Windows.Forms.DataGridView dgvDoodads;
         private System.Windows.Forms.TabControl tcDoodads;
         private System.Windows.Forms.TabPage tpDoodadInfo;
@@ -6806,7 +6802,6 @@
         private System.Windows.Forms.TabPage tpQuests;
         private System.Windows.Forms.Button btnQuestsSearch;
         private System.Windows.Forms.Label label89;
-        private System.Windows.Forms.TextBox tQuestSearch;
         private System.Windows.Forms.DataGridView dgvQuests;
         private System.Windows.Forms.Label lItemAddGMCommand;
         private System.Windows.Forms.GroupBox groupBox13;
@@ -6846,7 +6841,6 @@
         private System.Windows.Forms.Label label113;
         private System.Windows.Forms.Button btnSearchBuffs;
         private System.Windows.Forms.Label label115;
-        private System.Windows.Forms.TextBox tSearchBuffs;
         private System.Windows.Forms.DataGridView dgvBuffs;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn21;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn24;
@@ -7008,6 +7002,13 @@
         private System.Windows.Forms.Label label143;
         private System.Windows.Forms.Label label142;
         private System.Windows.Forms.TreeView tvNPCInfo;
+        private System.Windows.Forms.ComboBox cbItemSearch;
+        private System.Windows.Forms.ComboBox cbSearchNPC;
+        private System.Windows.Forms.ComboBox cbQuestSearch;
+        private System.Windows.Forms.ComboBox cbSkillSearch;
+        private System.Windows.Forms.ComboBox cbSearchDoodads;
+        private System.Windows.Forms.ComboBox cbSearchBuffs;
+        private System.Windows.Forms.ComboBox cbSimpleSQL;
     }
 }
 
