@@ -35,6 +35,7 @@
             lbTableNames = new System.Windows.Forms.ListBox();
             tcViewer = new System.Windows.Forms.TabControl();
             tbTables = new System.Windows.Forms.TabPage();
+            cbSimpleSQL = new System.Windows.Forms.ComboBox();
             cbNewGM = new System.Windows.Forms.CheckBox();
             label29 = new System.Windows.Forms.Label();
             tFilterTables = new System.Windows.Forms.TextBox();
@@ -542,7 +543,6 @@
             ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             ofdJsonData = new System.Windows.Forms.OpenFileDialog();
             ilIcons = new System.Windows.Forms.ImageList(components);
-            cbSimpleSQL = new System.Windows.Forms.ComboBox();
             tcViewer.SuspendLayout();
             tbTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSimple).BeginInit();
@@ -681,6 +681,17 @@
             tbTables.Size = new System.Drawing.Size(1082, 600);
             tbTables.TabIndex = 0;
             tbTables.Text = "Tables and Settings";
+            // 
+            // cbSimpleSQL
+            // 
+            cbSimpleSQL.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            cbSimpleSQL.FormattingEnabled = true;
+            cbSimpleSQL.Location = new System.Drawing.Point(328, 130);
+            cbSimpleSQL.Name = "cbSimpleSQL";
+            cbSimpleSQL.Size = new System.Drawing.Size(647, 24);
+            cbSimpleSQL.TabIndex = 25;
+            cbSimpleSQL.TextChanged += TSimpleSQL_TextChanged;
+            cbSimpleSQL.KeyDown += TSimpleSQL_KeyDown;
             // 
             // cbNewGM
             // 
@@ -1220,7 +1231,6 @@
             // 
             // cbSearchBuffs
             // 
-            cbSearchBuffs.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             cbSearchBuffs.FormattingEnabled = true;
             cbSearchBuffs.Location = new System.Drawing.Point(107, 12);
             cbSearchBuffs.Name = "cbSearchBuffs";
@@ -1275,7 +1285,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(678, 329);
-            splitContainer2.SplitterDistance = 389;
+            splitContainer2.SplitterDistance = 388;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1283,7 +1293,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(298, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(297, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1314,7 +1324,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(381, 298);
+            tvBuffTriggers.Size = new System.Drawing.Size(380, 298);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += tvBuffTriggers_DoubleClick;
             // 
@@ -4456,7 +4466,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(479, 517);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(478, 517);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4488,7 +4498,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(706, 507);
+            tvQuestWorkflow.Size = new System.Drawing.Size(705, 507);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += tvQuestWorkflow_DoubleClick;
             // 
@@ -6360,17 +6370,6 @@
             ilIcons.Images.SetKeyName(2, "icon_exclamation_yellow.png");
             ilIcons.Images.SetKeyName(3, "icon_exclamation_green.png");
             ilIcons.Images.SetKeyName(4, "icon_exclamation_blue.png");
-            // 
-            // cbSimpleSQL
-            // 
-            cbSimpleSQL.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            cbSimpleSQL.FormattingEnabled = true;
-            cbSimpleSQL.Location = new System.Drawing.Point(328, 130);
-            cbSimpleSQL.Name = "cbSimpleSQL";
-            cbSimpleSQL.Size = new System.Drawing.Size(647, 24);
-            cbSimpleSQL.TabIndex = 25;
-            cbSimpleSQL.TextChanged += TSimpleSQL_TextChanged;
-            cbSimpleSQL.KeyDown += TSimpleSQL_KeyDown;
             // 
             // MainForm
             // 
