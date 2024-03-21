@@ -462,7 +462,11 @@ namespace AAEmu.DBEditor.forms.server
         private void tSKU_Changed(object sender, EventArgs e)
         {
             if (SelectedSKU == null)
+            {
+                btnSKUNew.Enabled = true;
+                btnSKUUpdate.Enabled = false;
                 return;
+            }
 
             var isNewSKU = false;
             var hasChanged = false;
@@ -549,7 +553,16 @@ namespace AAEmu.DBEditor.forms.server
             {
                 tSKUSKU.Text = "1000000";
             }
-            tSKUSKU.Text = (lastSku.Sku + 1).ToString();
+            else
+            {
+                tSKUSKU.Text = (lastSku.Sku + 1).ToString();
+            }
+        }
+
+        private void EnterPlaceholderText(System.Windows.Forms.TextBox t)
+        {
+            if (string.IsNullOrEmpty(t.Text))
+                t.Text = t.PlaceholderText;
         }
 
         private void btnSKUUpdate_Click(object sender, EventArgs e)
@@ -579,11 +592,15 @@ namespace AAEmu.DBEditor.forms.server
                     Data.MySqlDb.Game.IcsShopItems.Add(newShopItem);
                 }
 
+                EnterPlaceholderText(tSKUSKU);
                 SelectedSKU.Sku = uint.Parse(tSKUSKU.Text);
                 SelectedSKU.ShopId = shopItemId;
+                EnterPlaceholderText(tSKUShopEntryPosition);
                 SelectedSKU.Position = int.Parse(tSKUShopEntryPosition.Text);
                 SelectedSKU.IsDefault = (byte)(cbSKUIsDefault.Checked ? 1 : 0);
+                EnterPlaceholderText(tSKUItemId);
                 SelectedSKU.ItemId = uint.Parse(tSKUItemId.Text);
+                EnterPlaceholderText(tSKUItemCount);
                 SelectedSKU.ItemCount = uint.Parse(tSKUItemCount.Text);
                 SelectedSKU.SelectType = (byte)cbSKUSelectType.SelectedIndex;
                 SelectedSKU.EventType = (byte)cbSKUEventType.SelectedIndex;
@@ -591,6 +608,7 @@ namespace AAEmu.DBEditor.forms.server
                     SelectedSKU.EventEndDate = dtpSKUEventEndDate.Value;
                 else
                     SelectedSKU.EventEndDate = DateTime.MinValue;
+                EnterPlaceholderText(tSKUPrice);
                 SelectedSKU.Price = uint.Parse(tSKUPrice.Text);
                 if (rbSKUCurrencyCredits.Checked)
                     SelectedSKU.Currency = 0;
@@ -600,8 +618,11 @@ namespace AAEmu.DBEditor.forms.server
                     SelectedSKU.Currency = 2;
                 if (rbSKUCurrencyCoins.Checked)
                     SelectedSKU.Currency = 3;
+                EnterPlaceholderText(tSKUDiscountPrice);
                 SelectedSKU.DiscountPrice = uint.Parse(tSKUDiscountPrice.Text);
+                EnterPlaceholderText(tSKUBonusItemId);
                 SelectedSKU.BonusItemId = uint.Parse(tSKUBonusItemId.Text);
+                EnterPlaceholderText(tSKUBonusItemCount);
                 SelectedSKU.BonusItemCount = uint.Parse(tSKUBonusItemCount.Text);
 
                 if (Data.MySqlDb.Game.SaveChanges() <= 0)
@@ -624,7 +645,9 @@ namespace AAEmu.DBEditor.forms.server
         private void btnSKUNew_Click(object sender, EventArgs e)
         {
             var newSku = new IcsSkus();
-            newSku.Sku = uint.Parse(tSKUSKU.Text); // Set this so we won't have duplicate keys
+            if (!uint.TryParse(tSKUSKU.Text, out var newSkuSku))
+                return;
+            newSku.Sku = newSkuSku;// Set this so we won't have duplicate keys
 
             Data.MySqlDb.Game.IcsSkus.Add(newSku);
             SelectedSKU = newSku;
@@ -765,7 +788,10 @@ namespace AAEmu.DBEditor.forms.server
             {
                 tShopItemShopId.Text = "2000000";
             }
-            tShopItemShopId.Text = (lastShopItem.ShopId + 1).ToString();
+            else
+            {
+                tShopItemShopId.Text = (lastShopItem.ShopId + 1).ToString();
+            }
         }
 
         private void btnShopItemUpdate_Click(object sender, EventArgs e)
