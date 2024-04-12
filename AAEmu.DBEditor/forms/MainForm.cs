@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AAEmu.DBEditor.forms.client;
 
 namespace AAEmu.DBEditor
 {
@@ -279,6 +280,7 @@ namespace AAEmu.DBEditor
         {
             // Not implemented yet, so nothing enabled
             // MMClientMap.Enabled = Data.Client?.Pak?.IsOpen ?? false;
+            MMClientItems.Enabled = Data.Server.TableNames.Count > 0;
         }
 
         private void serverToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
@@ -324,6 +326,12 @@ namespace AAEmu.DBEditor
         {
             var icsForm = new ICSForm();
             icsForm.Show();
+        }
+
+        private void MMClientItems_Click(object sender, EventArgs e)
+        {
+            var newItemForm = new ItemsForm();
+            newItemForm.Show();
         }
     }
 }
