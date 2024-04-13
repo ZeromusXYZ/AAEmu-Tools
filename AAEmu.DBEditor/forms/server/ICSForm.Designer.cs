@@ -1381,8 +1381,6 @@
         private System.Windows.Forms.TextBox tFilterShopItem;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ListView lvMenuItemsTab;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.ComboBox cbMainMenu;
         private System.Windows.Forms.ComboBox cbSubMenu;
         private System.Windows.Forms.TextBox tFilterMenuShopItemList;
