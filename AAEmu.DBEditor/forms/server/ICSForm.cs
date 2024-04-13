@@ -1,6 +1,7 @@
 ﻿using AAEmu.DBEditor;
 using AAEmu.DBEditor.data;
 using AAEmu.DBEditor.data.aaemu.game;
+using AAEmu.DBEditor.forms.client;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -35,6 +36,7 @@ namespace AAEmu.DBEditor.forms.server
         private void ICSForm_Load(object sender, EventArgs e)
         {
             MainForm.Self.AddOwnedForm(this);
+            Text += $" ({Data.Server.GetText("ui_texts", "text", 4961, "ICS")})";
             SelectedSKU = null;
             SelectedShopItem = null;
             cbSKUEventType.SelectedIndex = 0;
@@ -398,7 +400,7 @@ namespace AAEmu.DBEditor.forms.server
             }
             lvMenuItemsTab.EndUpdate();
             RePageTabPage();
-            btnAutoCreateTab.Enabled = 
+            btnAutoCreateTab.Enabled =
                 ((mainMenu != 1) && (subMenu == 1)) ||  // all menus except first, sub menu 1 => All
                 ((mainMenu == 1) && (subMenu == 4)) ||  // first menu, sub menu 4 => All
                 ((mainMenu == 1) && (subMenu == 1)) ||  // first menu, sub menu 1 => Limited
@@ -1358,6 +1360,30 @@ namespace AAEmu.DBEditor.forms.server
                 return;
             }
 
+        }
+
+        private void btnSkuItemSearch_Click(object sender, EventArgs e)
+        {
+            using (var itemForm = new ItemsForm())
+            {
+                itemForm.IsSelectionDialog = true;
+                if (itemForm.ShowDialog() == DialogResult.OK)
+                {
+                    tSKUItemId.Text = itemForm.SelectedItem.Id.ToString();
+                }
+            }
+        }
+
+        private void btnShopItemDisplaySearch_Click(object sender, EventArgs e)
+        {
+            using (var itemForm = new ItemsForm())
+            {
+                itemForm.IsSelectionDialog = true;
+                if (itemForm.ShowDialog() == DialogResult.OK)
+                {
+                    tShopItemDisplayItemId.Text = itemForm.SelectedItem.Id.ToString();
+                }
+            }
         }
     }
 }

@@ -40,6 +40,7 @@
             columnHeader1 = new System.Windows.Forms.ColumnHeader();
             columnHeader2 = new System.Windows.Forms.ColumnHeader();
             columnHeader3 = new System.Windows.Forms.ColumnHeader();
+            btnSkuItemSearch = new System.Windows.Forms.Button();
             cbSKUSelectType = new System.Windows.Forms.ComboBox();
             cbSKUEventType = new System.Windows.Forms.ComboBox();
             label24 = new System.Windows.Forms.Label();
@@ -81,6 +82,7 @@
             btnShopItemNew = new System.Windows.Forms.Button();
             btnShopItemUpdate = new System.Windows.Forms.Button();
             groupBox4 = new System.Windows.Forms.GroupBox();
+            btnShopItemDisplaySearch = new System.Windows.Forms.Button();
             cbShopItemAllowCart = new System.Windows.Forms.CheckBox();
             cbShopItemAllowGift = new System.Windows.Forms.CheckBox();
             label12 = new System.Windows.Forms.Label();
@@ -210,6 +212,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(btnSkuItemSearch);
             splitContainer1.Panel2.Controls.Add(cbSKUSelectType);
             splitContainer1.Panel2.Controls.Add(cbSKUEventType);
             splitContainer1.Panel2.Controls.Add(label24);
@@ -285,6 +288,16 @@
             // columnHeader3
             // 
             columnHeader3.Text = "Count";
+            // 
+            // btnSkuItemSearch
+            // 
+            btnSkuItemSearch.Location = new System.Drawing.Point(68, 92);
+            btnSkuItemSearch.Name = "btnSkuItemSearch";
+            btnSkuItemSearch.Size = new System.Drawing.Size(24, 24);
+            btnSkuItemSearch.TabIndex = 40;
+            btnSkuItemSearch.Text = "🔍";
+            btnSkuItemSearch.UseVisualStyleBackColor = true;
+            btnSkuItemSearch.Click += btnSkuItemSearch_Click;
             // 
             // cbSKUSelectType
             // 
@@ -702,6 +715,7 @@
             // 
             // groupBox4
             // 
+            groupBox4.Controls.Add(btnShopItemDisplaySearch);
             groupBox4.Controls.Add(cbShopItemAllowCart);
             groupBox4.Controls.Add(cbShopItemAllowGift);
             groupBox4.Controls.Add(label12);
@@ -718,6 +732,16 @@
             groupBox4.TabIndex = 48;
             groupBox4.TabStop = false;
             groupBox4.Text = "Shop Settings";
+            // 
+            // btnShopItemDisplaySearch
+            // 
+            btnShopItemDisplaySearch.Location = new System.Drawing.Point(260, 44);
+            btnShopItemDisplaySearch.Name = "btnShopItemDisplaySearch";
+            btnShopItemDisplaySearch.Size = new System.Drawing.Size(24, 24);
+            btnShopItemDisplaySearch.TabIndex = 41;
+            btnShopItemDisplaySearch.Text = "🔍";
+            btnShopItemDisplaySearch.UseVisualStyleBackColor = true;
+            btnShopItemDisplaySearch.Click += btnShopItemDisplaySearch_Click;
             // 
             // cbShopItemAllowCart
             // 
@@ -1238,7 +1262,7 @@
             ClientSize = new System.Drawing.Size(887, 546);
             Controls.Add(tcICS);
             Name = "ICSForm";
-            Text = "ICSForm";
+            Text = "Ingame Cash Shop";
             Load += ICSForm_Load;
             tcICS.ResumeLayout(false);
             tpInfo.ResumeLayout(false);
@@ -1375,5 +1399,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiMenuTabCancel;
         private System.Windows.Forms.ToolStripSeparator tsmiMenuTabS1;
         private System.Windows.Forms.ToolStripMenuItem tsmiMenuTabFindShopItem;
+        private System.Windows.Forms.Button btnSkuItemSearch;
+        private System.Windows.Forms.Button btnShopItemDisplaySearch;
     }
 }

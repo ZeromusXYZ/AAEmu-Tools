@@ -19,10 +19,10 @@ namespace AAEmu.DBEditor.data
 
         public Dictionary<(string, string, long?), string> LocalizedText { get; set; } = new();
 
-        public string GetText(string tableName, string columnName, long index, string defaultText)
+        public string GetText(string tableName, string columnName, long index, string defaultText, bool defaultIfEmpty = true)
         {
             if (LocalizedText.TryGetValue((tableName, columnName, index), out var v))
-                return v ?? defaultText;
+                return defaultIfEmpty && string.IsNullOrWhiteSpace(v) ? defaultText : v ?? defaultText;
             return defaultText;
         }
 
