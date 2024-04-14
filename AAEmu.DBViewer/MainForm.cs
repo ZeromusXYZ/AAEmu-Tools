@@ -1018,6 +1018,48 @@ namespace AAEmu.DBViewer
                     }
                 }
 
+                // Mount Skills
+                sql = "SELECT * FROM mount_skills ORDER BY id ASC";
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Mount_Skills.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        while (reader.Read())
+                        {
+                            var t = new GameMountSkill();
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+                            t.skill_id = GetInt64(reader, "skill_id");
+                            AADB.DB_Mount_Skills.Add(t.id, t);
+                        }
+                    }
+                }
+
+                // Slave Mount Skills
+                sql = "SELECT * FROM slave_mount_skills ORDER BY id ASC";
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Slave_Mount_Skills.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        while (reader.Read())
+                        {
+                            var t = new GameSlaveMountSkill();
+                            t.id = GetInt64(reader, "id");
+                            t.slave_id = GetInt64(reader, "slave_id");
+                            t.mount_skill_id = GetInt64(reader, "mount_skill_id");
+                            AADB.DB_Slave_Mount_Skills.Add(t.id, t);
+                        }
+                    }
+                }
+
                 // NpSkills
                 if (allTableNames.Contains("np_skills"))
                 {
@@ -2164,6 +2206,9 @@ namespace AAEmu.DBViewer
             string sql = "SELECT * FROM buffs ORDER BY id ASC";
             string triggerSql = "SELECT * FROM buff_triggers ORDER BY id ASC";
             string npcInitialSql = "SELECT * FROM npc_initial_buffs ORDER BY id ASC";
+            string passiveSql = "SELECT * FROM passive_buffs ORDER BY id ASC";
+            string slavePassiveSql = "SELECT * FROM slave_passive_buffs ORDER BY id ASC";
+            string slaveInitialSql = "SELECT * FROM slave_initial_buffs ORDER BY id ASC";
 
             using (var connection = SQLite.CreateConnection())
             {
@@ -2271,6 +2316,70 @@ namespace AAEmu.DBViewer
                             t.buff_id = GetInt64(reader, "buff_id");
 
                             AADB.DB_NpcInitialBuffs.Add(t.id, t);
+                        }
+                    }
+                }
+
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Passive_Buffs.Clear();
+                    command.CommandText = passiveSql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+
+                        while (reader.Read())
+                        {
+                            var t = new GamePassiveBuff();
+                            t.id = GetInt64(reader, "id");
+                            t.ability_id = GetInt64(reader, "ability_id");
+                            t.level = GetInt64(reader, "level");
+                            t.buff_id = GetInt64(reader, "buff_id");
+                            t.req_points = GetInt64(reader, "req_points");
+                            t.active = GetBool(reader, "active");
+
+                            AADB.DB_Passive_Buffs.Add(t.id, t);
+                        }
+                    }
+                }
+
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Slave_Passive_Buffs.Clear();
+                    command.CommandText = slavePassiveSql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+
+                        while (reader.Read())
+                        {
+                            var t = new GameSlavePassiveBuff();
+                            t.id = GetInt64(reader, "id");
+                            t.owner_id = GetInt64(reader, "owner_id");
+                            t.owner_type = GetString(reader, "owner_type");
+                            t.passive_buff_id = GetInt64(reader, "passive_buff_id");
+
+                            AADB.DB_Slave_Passive_Buffs.Add(t.id, t);
+                        }
+                    }
+                }
+
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Slave_Initial_Buffs.Clear();
+                    command.CommandText = slaveInitialSql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+
+                        while (reader.Read())
+                        {
+                            var t = new GameSlaveInitialBuff();
+                            t.id = GetInt64(reader, "id");
+                            t.slave_id = GetInt64(reader, "slave_id");
+                            t.buff_id = GetInt64(reader, "buff_id");
+
+                            AADB.DB_Slave_Initial_Buffs.Add(t.id, t);
                         }
                     }
                 }
@@ -5945,7 +6054,8 @@ namespace AAEmu.DBViewer
             {
                 res.targetTabPage = tpSkills;
                 res.targetSearchBox = cbSkillSearch;
-                res.targetSearchText = skill.nameLocalized;
+                // res.targetSearchText = skill.nameLocalized;
+                res.targetSearchText = skill.id.ToString();
                 res.targetSearchButton = btnSkillSearch;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + skill.nameLocalized;
@@ -5955,7 +6065,8 @@ namespace AAEmu.DBViewer
             {
                 res.targetTabPage = tpItems;
                 res.targetSearchBox = cbItemSearch;
-                res.targetSearchText = item.nameLocalized;
+                // res.targetSearchText = item.nameLocalized;
+                res.targetSearchText = item.id.ToString();
                 res.targetSearchButton = btnItemSearch;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + item.nameLocalized;
@@ -5965,7 +6076,8 @@ namespace AAEmu.DBViewer
             {
                 res.targetTabPage = tpDoodads;
                 res.targetSearchBox = cbSearchDoodads;
-                res.targetSearchText = doodad.nameLocalized;
+                // res.targetSearchText = doodad.nameLocalized;
+                res.targetSearchText = doodad.id.ToString();
                 res.targetSearchButton = btnSearchDoodads;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + doodad.nameLocalized;
@@ -5974,7 +6086,8 @@ namespace AAEmu.DBViewer
             {
                 res.targetTabPage = tpNPCs;
                 res.targetSearchBox = cbSearchNPC;
-                res.targetSearchText = npc.nameLocalized;
+                // res.targetSearchText = npc.nameLocalized;
+                res.targetSearchText = npc.id.ToString();
                 res.targetSearchButton = btnSearchNPC;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + npc.nameLocalized;
@@ -5983,7 +6096,8 @@ namespace AAEmu.DBViewer
             {
                 res.targetTabPage = tpBuffs;
                 res.targetSearchBox = cbSearchBuffs;
-                res.targetSearchText = buff.nameLocalized;
+                // res.targetSearchText = buff.nameLocalized;
+                res.targetSearchText = buff.id.ToString();
                 res.targetSearchButton = btnSearchBuffs;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + buff.nameLocalized;
@@ -6039,7 +6153,8 @@ namespace AAEmu.DBViewer
             {
                 res.targetTabPage = tpTags;
                 res.targetTextBox = tSearchTags;
-                res.targetSearchText = tagId.nameLocalized;
+                // res.targetSearchText = tagId.nameLocalized;
+                res.targetSearchText = tagId.id.ToString();
                 res.targetSearchButton = btnSearchTags;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + tagId.nameLocalized;
@@ -6075,7 +6190,7 @@ namespace AAEmu.DBViewer
                 var lootNode = new TreeNodeWithInfo();
                 lootNode.Text = key + ": " + val;
                 lootNode.ForeColor = Color.Yellow;
-                
+
                 var loots = AADB.DB_Loots.Where(l => l.Value.loot_pack_id == val).OrderBy(l => l.Value.group);
                 foreach (var loot in loots)
                 {
@@ -9378,7 +9493,16 @@ namespace AAEmu.DBViewer
             foreach (var t in AADB.DB_Slaves)
             {
                 var z = t.Value;
-                if ((z.id == searchID) || (z.model_id == searchID) || (z.searchText.IndexOf(searchText) >= 0))
+                var modelDetails = string.Empty;
+                if (AADB.DB_Models.TryGetValue(z.model_id, out var model))
+                    modelDetails = model.sub_type + " " + model.sub_id.ToString() + " - " + model.name;
+
+                if (
+                    (z.id == searchID) ||
+                    (z.model_id == searchID) ||
+                    (z.searchText.IndexOf(searchText) >= 0) ||
+                    (modelDetails.IndexOf(searchText) >= 0)
+                    )
                 {
                     var line = dgvSlaves.Rows.Add();
                     var row = dgvSlaves.Rows[line];
@@ -9388,9 +9512,6 @@ namespace AAEmu.DBViewer
                     row.Cells[2].Value = z.model_id.ToString();
                     row.Cells[3].Value = z.level.ToString();
                     row.Cells[4].Value = AADB.GetFactionName(z.faction_id, true);
-                    var modelDetails = string.Empty;
-                    if (AADB.DB_Models.TryGetValue(z.model_id, out var model))
-                        modelDetails = model.sub_type + " " + model.sub_id.ToString() + " - " + model.name;
                     row.Cells[5].Value = modelDetails;
 
                     if (c == 0)
@@ -9432,11 +9553,50 @@ namespace AAEmu.DBViewer
                 lSlaveTemplate.Text = slave.id.ToString();
                 lSlaveName.Text = slave.nameLocalized;
                 ShowSelectedData("slaves", "(id = " + id.ToString() + ")", "id ASC");
+
+                tvSlaveInfo.Nodes.Clear();
+
+                // Passive Buffs
+                var slavePassiveBuff = AADB.DB_Slave_Passive_Buffs.Values.FirstOrDefault(x => x.owner_type == "Slave" && x.owner_id == slave.id);
+                if ((slavePassiveBuff != null) && AADB.DB_Passive_Buffs.TryGetValue(slavePassiveBuff.passive_buff_id, out var passiveBuff))
+                {
+                    var passiveNode = tvSlaveInfo.Nodes.Add("Passive Buffs");
+                    AddCustomPropertyNode("buff_id", passiveBuff.buff_id.ToString(), false, passiveNode);
+                }
+
+                // Initial Buffs
+                var slaveInitialBuffs = AADB.DB_Slave_Initial_Buffs.Values.Where(x => x.slave_id == slave.id).ToList();
+                if (slaveInitialBuffs.Count > 0)
+                {
+                    var initialNode = tvSlaveInfo.Nodes.Add("Initial Buffs");
+                    foreach (var initialBuff in slaveInitialBuffs)
+                    {
+                        AddCustomPropertyNode("buff_id", initialBuff.buff_id.ToString(), false, initialNode);
+                    }
+                }
+
+                // Skills
+                var slaveMountSkills = AADB.DB_Slave_Mount_Skills.Values.Where(x => x.slave_id == slave.id).ToList();
+                if (slaveMountSkills.Count > 0)
+                {
+                    var skillNode = tvSlaveInfo.Nodes.Add("Skills");
+                    foreach (var slaveMountSkill in slaveMountSkills)
+                    {
+                        if (!AADB.DB_Mount_Skills.TryGetValue(slaveMountSkill.mount_skill_id, out var mountSkill))
+                            continue;
+                        AddCustomPropertyNode("skill_id", mountSkill.skill_id.ToString(), false, skillNode);
+                    }       
+                }
+
+
+                tvSlaveInfo.ExpandAll();
+
             }
             else
             {
                 lSlaveTemplate.Text = "???";
                 lSlaveName.Text = "???";
+                tvSlaveInfo.Nodes.Clear();
             }
         }
 
@@ -9482,6 +9642,28 @@ namespace AAEmu.DBViewer
                 if (!string.IsNullOrWhiteSpace(line))
                     res.Add(line);
             return string.Join(Environment.NewLine, res);
+        }
+
+        private void dgvSlaves_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvSlaves.SelectedRows.Count <= 0)
+                return;
+            var row = dgvSlaves.SelectedRows[0];
+            if (row.Cells.Count <= 0)
+                return;
+
+            var val = row.Cells[0].Value;
+            if (val == null)
+                return;
+
+            var qid = long.Parse(val.ToString());
+            ShowDBSlaveInfo(qid);
+        }
+
+        private void tvSlaveInfo_DoubleClick(object sender, EventArgs e)
+        {
+            if ((sender is TreeView tv) && (tv.SelectedNode != null) && (tv.SelectedNode.Tag == null))
+                ProcessNodeInfoDoubleClick(tv.SelectedNode);
         }
     }
 }

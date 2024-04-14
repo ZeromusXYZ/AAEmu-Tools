@@ -1083,6 +1083,45 @@ namespace AAEmu.DBDefs
         public string param_template = string.Empty;
     }
 
+    class GamePassiveBuff
+    {
+        public long id = 0;
+        public long ability_id = 0;
+        public long level = 0;
+        public long buff_id = 0;
+        public long req_points = 0;
+        public bool active = false;
+    }
+
+    class GameSlavePassiveBuff
+    {
+        public long id = 0;
+        public long owner_id = 0;
+        public string owner_type = string.Empty;
+        public long passive_buff_id = 0;
+    }
+
+    class GameSlaveInitialBuff
+    {
+        public long id = 0;
+        public long slave_id = 0;
+        public long buff_id = 0;
+    }
+
+    class GameMountSkill
+    {
+        public long id = 0;
+        public string name = string.Empty;
+        public long skill_id = 0;
+    }
+
+    class GameSlaveMountSkill
+    {
+        public long id = 0;
+        public long slave_id = 0;
+        public long mount_skill_id = 0;
+    }
+
     static class AADB
     {
         public static Dictionary<string, GameTranslation> DB_Translations = new Dictionary<string, GameTranslation>();
@@ -1093,6 +1132,8 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameSkills> DB_Skills = new Dictionary<long, GameSkills>();
         public static Dictionary<long, GameSkillEffects> DB_Skill_Effects = new Dictionary<long, GameSkillEffects>();
         public static Dictionary<long, GameNpSkills> DB_NpSkills = new Dictionary<long, GameNpSkills>();
+        public static Dictionary<long, GameMountSkill> DB_Mount_Skills = new Dictionary<long, GameMountSkill>();
+        public static Dictionary<long, GameSlaveMountSkill> DB_Slave_Mount_Skills = new Dictionary<long, GameSlaveMountSkill>();
         public static Dictionary<long, GameNPC> DB_NPCs = new Dictionary<long, GameNPC>();
         public static Dictionary<long, GameQuestMonsterGroups> DB_Quest_Monster_Groups = new Dictionary<long, GameQuestMonsterGroups>();
         public static Dictionary<long, string> DB_Icons = new Dictionary<long, string>();
@@ -1122,6 +1163,9 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameZoneGroupBannedTags> DB_Zone_Group_Banned_Tags = new Dictionary<long, GameZoneGroupBannedTags>();
         public static Dictionary<long, GameBuff> DB_Buffs = new Dictionary<long, GameBuff>();
         public static Dictionary<long, GameBuffTrigger> DB_BuffTriggers = new Dictionary<long, GameBuffTrigger>();
+        public static Dictionary<long, GamePassiveBuff> DB_Passive_Buffs = new Dictionary<long, GamePassiveBuff>();
+        public static Dictionary<long, GameSlavePassiveBuff> DB_Slave_Passive_Buffs = new Dictionary<long, GameSlavePassiveBuff>();
+        public static Dictionary<long, GameSlaveInitialBuff> DB_Slave_Initial_Buffs = new Dictionary<long, GameSlaveInitialBuff>();
         public static Dictionary<long, GameTransfers> DB_Transfers = new Dictionary<long, GameTransfers>();
         public static List<GameTransferPaths> DB_TransferPaths = new List<GameTransferPaths>();
         public static List<QuestSphereEntry> PAK_QuestSignSpheres = new List<QuestSphereEntry>();

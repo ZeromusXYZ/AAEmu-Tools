@@ -31,7 +31,8 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("NPC");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Slave");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Skill");
             lbTableNames = new System.Windows.Forms.ListBox();
             tcViewer = new System.Windows.Forms.TabControl();
             tbTables = new System.Windows.Forms.TabPage();
@@ -378,6 +379,7 @@
             tvQuestWorkflow = new System.Windows.Forms.TreeView();
             tpSlaves = new System.Windows.Forms.TabPage();
             groupBox15 = new System.Windows.Forms.GroupBox();
+            tvSlaveInfo = new System.Windows.Forms.TreeView();
             lSlaveName = new System.Windows.Forms.Label();
             label143 = new System.Windows.Forms.Label();
             lSlaveTemplate = new System.Windows.Forms.Label();
@@ -1285,7 +1287,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(678, 329);
-            splitContainer2.SplitterDistance = 388;
+            splitContainer2.SplitterDistance = 380;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1293,7 +1295,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(297, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(289, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1324,7 +1326,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(380, 298);
+            tvBuffTriggers.Size = new System.Drawing.Size(372, 298);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += tvBuffTriggers_DoubleClick;
             // 
@@ -4083,7 +4085,7 @@
             cbSearchNPC.FormattingEnabled = true;
             cbSearchNPC.Location = new System.Drawing.Point(200, 12);
             cbSearchNPC.Name = "cbSearchNPC";
-            cbSearchNPC.Size = new System.Drawing.Size(224, 24);
+            cbSearchNPC.Size = new System.Drawing.Size(317, 24);
             cbSearchNPC.TabIndex = 14;
             cbSearchNPC.TextChanged += TSearchNPC_TextChanged;
             cbSearchNPC.KeyDown += TSearchNPC_KeyDown;
@@ -4101,11 +4103,11 @@
             groupBox13.Controls.Add(lNPCTemplate);
             groupBox13.Controls.Add(label81);
             groupBox13.ForeColor = System.Drawing.Color.FromArgb(208, 192, 171);
-            groupBox13.Location = new System.Drawing.Point(531, 12);
+            groupBox13.Location = new System.Drawing.Point(624, 12);
             groupBox13.Margin = new System.Windows.Forms.Padding(4);
             groupBox13.Name = "groupBox13";
             groupBox13.Padding = new System.Windows.Forms.Padding(4);
-            groupBox13.Size = new System.Drawing.Size(539, 575);
+            groupBox13.Size = new System.Drawing.Size(446, 575);
             groupBox13.TabIndex = 13;
             groupBox13.TabStop = false;
             groupBox13.Text = "NPC Info";
@@ -4126,7 +4128,7 @@
             treeNode1.Text = "NPC";
             tvNPCInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
             tvNPCInfo.SelectedImageIndex = 0;
-            tvNPCInfo.Size = new System.Drawing.Size(523, 359);
+            tvNPCInfo.Size = new System.Drawing.Size(430, 359);
             tvNPCInfo.TabIndex = 31;
             tvNPCInfo.DoubleClick += tvNPCInfo_DoubleClick;
             // 
@@ -4138,7 +4140,7 @@
             btnShowNpcLoot.Location = new System.Drawing.Point(10, 506);
             btnShowNpcLoot.Margin = new System.Windows.Forms.Padding(4);
             btnShowNpcLoot.Name = "btnShowNpcLoot";
-            btnShowNpcLoot.Size = new System.Drawing.Size(521, 27);
+            btnShowNpcLoot.Size = new System.Drawing.Size(428, 27);
             btnShowNpcLoot.TabIndex = 27;
             btnShowNpcLoot.Text = "Find Loot";
             btnShowNpcLoot.UseVisualStyleBackColor = true;
@@ -4151,7 +4153,7 @@
             btnShowNPCsOnMap.Location = new System.Drawing.Point(10, 540);
             btnShowNPCsOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnShowNPCsOnMap.Name = "btnShowNPCsOnMap";
-            btnShowNPCsOnMap.Size = new System.Drawing.Size(521, 27);
+            btnShowNPCsOnMap.Size = new System.Drawing.Size(428, 27);
             btnShowNPCsOnMap.TabIndex = 26;
             btnShowNPCsOnMap.Text = "Find Selected";
             btnShowNPCsOnMap.UseVisualStyleBackColor = true;
@@ -4214,7 +4216,7 @@
             // 
             btnSearchNPC.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             btnSearchNPC.Enabled = false;
-            btnSearchNPC.Location = new System.Drawing.Point(431, 9);
+            btnSearchNPC.Location = new System.Drawing.Point(524, 10);
             btnSearchNPC.Margin = new System.Windows.Forms.Padding(4);
             btnSearchNPC.Name = "btnSearchNPC";
             btnSearchNPC.Size = new System.Drawing.Size(92, 28);
@@ -4248,7 +4250,7 @@
             dgvNPCs.ReadOnly = true;
             dgvNPCs.RowHeadersVisible = false;
             dgvNPCs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvNPCs.Size = new System.Drawing.Size(514, 538);
+            dgvNPCs.Size = new System.Drawing.Size(607, 538);
             dgvNPCs.TabIndex = 7;
             dgvNPCs.SelectionChanged += DgvNPCs_SelectionChanged;
             // 
@@ -4466,7 +4468,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(478, 517);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(470, 517);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4498,7 +4500,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(705, 507);
+            tvQuestWorkflow.Size = new System.Drawing.Size(697, 507);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += tvQuestWorkflow_DoubleClick;
             // 
@@ -4521,19 +4523,40 @@
             // 
             groupBox15.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             groupBox15.BackColor = System.Drawing.Color.FromArgb(70, 60, 40);
+            groupBox15.Controls.Add(tvSlaveInfo);
             groupBox15.Controls.Add(lSlaveName);
             groupBox15.Controls.Add(label143);
             groupBox15.Controls.Add(lSlaveTemplate);
             groupBox15.Controls.Add(label146);
             groupBox15.ForeColor = System.Drawing.Color.FromArgb(208, 192, 171);
-            groupBox15.Location = new System.Drawing.Point(814, 13);
+            groupBox15.Location = new System.Drawing.Point(744, 13);
             groupBox15.Margin = new System.Windows.Forms.Padding(4);
             groupBox15.Name = "groupBox15";
             groupBox15.Padding = new System.Windows.Forms.Padding(4);
-            groupBox15.Size = new System.Drawing.Size(258, 576);
+            groupBox15.Size = new System.Drawing.Size(328, 576);
             groupBox15.TabIndex = 18;
             groupBox15.TabStop = false;
             groupBox15.Text = "Vehicle Info";
+            // 
+            // tvSlaveInfo
+            // 
+            tvSlaveInfo.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            tvSlaveInfo.BackColor = System.Drawing.Color.FromArgb(70, 60, 40);
+            tvSlaveInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            tvSlaveInfo.ForeColor = System.Drawing.Color.FromArgb(208, 192, 171);
+            tvSlaveInfo.ImageIndex = 0;
+            tvSlaveInfo.ImageList = ilMiniIcons;
+            tvSlaveInfo.ItemHeight = 24;
+            tvSlaveInfo.Location = new System.Drawing.Point(8, 58);
+            tvSlaveInfo.Margin = new System.Windows.Forms.Padding(4);
+            tvSlaveInfo.Name = "tvSlaveInfo";
+            treeNode2.Name = "SkillNode";
+            treeNode2.Text = "Slave";
+            tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
+            tvSlaveInfo.SelectedImageIndex = 0;
+            tvSlaveInfo.Size = new System.Drawing.Size(312, 510);
+            tvSlaveInfo.TabIndex = 32;
+            tvSlaveInfo.DoubleClick += tvSlaveInfo_DoubleClick;
             // 
             // lSlaveName
             // 
@@ -4579,7 +4602,7 @@
             // 
             btnSearchSlave.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             btnSearchSlave.Enabled = false;
-            btnSearchSlave.Location = new System.Drawing.Point(715, 11);
+            btnSearchSlave.Location = new System.Drawing.Point(644, 10);
             btnSearchSlave.Margin = new System.Windows.Forms.Padding(4);
             btnSearchSlave.Name = "btnSearchSlave";
             btnSearchSlave.Size = new System.Drawing.Size(92, 28);
@@ -4604,7 +4627,7 @@
             tSearchSlave.Location = new System.Drawing.Point(219, 13);
             tSearchSlave.Margin = new System.Windows.Forms.Padding(4);
             tSearchSlave.Name = "tSearchSlave";
-            tSearchSlave.Size = new System.Drawing.Size(488, 23);
+            tSearchSlave.Size = new System.Drawing.Size(417, 23);
             tSearchSlave.TabIndex = 15;
             tSearchSlave.TextChanged += tSearchSlave_TextChanged;
             tSearchSlave.KeyDown += tSearchSlave_KeyDown;
@@ -4624,8 +4647,9 @@
             dgvSlaves.ReadOnly = true;
             dgvSlaves.RowHeadersVisible = false;
             dgvSlaves.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvSlaves.Size = new System.Drawing.Size(796, 538);
+            dgvSlaves.Size = new System.Drawing.Size(725, 538);
             dgvSlaves.TabIndex = 14;
+            dgvSlaves.SelectionChanged += dgvSlaves_SelectionChanged;
             // 
             // dataGridViewTextBoxColumn25
             // 
@@ -5351,9 +5375,9 @@
             tvSkill.Location = new System.Drawing.Point(7, 7);
             tvSkill.Margin = new System.Windows.Forms.Padding(4);
             tvSkill.Name = "tvSkill";
-            treeNode2.Name = "SkillNode";
-            treeNode2.Text = "Skill";
-            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
+            treeNode3.Name = "SkillNode";
+            treeNode3.Text = "Skill";
+            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode3 });
             tvSkill.SelectedImageIndex = 0;
             tvSkill.Size = new System.Drawing.Size(575, 343);
             tvSkill.TabIndex = 0;
@@ -7008,6 +7032,7 @@
         private System.Windows.Forms.ComboBox cbSearchDoodads;
         private System.Windows.Forms.ComboBox cbSearchBuffs;
         private System.Windows.Forms.ComboBox cbSimpleSQL;
+        private System.Windows.Forms.TreeView tvSlaveInfo;
     }
 }
 
