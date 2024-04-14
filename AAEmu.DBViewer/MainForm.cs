@@ -1396,7 +1396,7 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        AADB.DB_Quest_Monster_Groups.Clear();
+                        AADB.DB_NpcInteractions.Clear();
 
                         while (reader.Read())
                         {
@@ -1421,7 +1421,7 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        AADB.DB_Quest_Monster_Groups.Clear();
+                        AADB.DB_AiFiles.Clear();
 
                         while (reader.Read())
                         {
@@ -2983,10 +2983,10 @@ namespace AAEmu.DBViewer
                     rt.SelectionColor = resetColor;
                     restText = restText.Substring(nextEndBracket + 1);
                 }
-                else if (restText.StartsWith("@NPC_GROUP_NAME(") && (nextEndBracket > 17))
+                else if (restText.StartsWith("@NPC_GROUP_NAME(") && (nextEndBracket > 16))
                 {
                     rt.SelectionColor = Color.Yellow;
-                    var valueText = restText.Substring(17, nextEndBracket - 17);
+                    var valueText = restText.Substring(16, nextEndBracket - 16);
                     if (long.TryParse(valueText, out var value) && (AADB.DB_Quest_Monster_Groups.TryGetValue(value, out var npcGroup)))
                         rt.AppendText(npcGroup.nameLocalized);
                     else
@@ -9451,9 +9451,13 @@ namespace AAEmu.DBViewer
         {
             var oldText = searchBox.Text;
             var s = searchString.ToLower();
-            if (searchBox.Items.Contains(s))
-                searchBox.Items.Remove(s);
-            searchBox.Items.Insert(0, s);
+            for (int i = searchBox.Items.Count - 1; i >= 0; i--)
+            {
+                string item = (string)searchBox.Items[i];
+                if (item.ToLower() == s)
+                    searchBox.Items.RemoveAt(i);
+            }
+            searchBox.Items.Insert(0, oldText);
 
             // Put a artificial limit
             while (searchBox.Items.Count > 50)
