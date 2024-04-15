@@ -1122,6 +1122,26 @@ namespace AAEmu.DBDefs
         public long mount_skill_id = 0;
     }
 
+    class GameSlaveBinding
+    {
+        public long id = 0;
+        public long owner_id = 0;
+        public string owner_type = string.Empty;
+        public long slave_id = 0;
+        public long attach_point_id = 0;
+    }
+
+    class GameSlaveDoodadBinding
+    {
+        public long id = 0;
+        public long owner_id = 0;
+        public string owner_type = string.Empty;
+        public long attach_point_id = 0;
+        public long doodad_id = 0;
+        public bool persist = false;
+        public float scale = 0f;
+    }
+
     static class AADB
     {
         public static Dictionary<string, GameTranslation> DB_Translations = new Dictionary<string, GameTranslation>();
@@ -1183,6 +1203,8 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameLootPackDroppingNpc> DB_Loot_Pack_Dropping_Npc = new Dictionary<long, GameLootPackDroppingNpc>();
         public static Dictionary<long, GameLootActAbilityGroup> DB_Loot_ActAbility_Groups = new Dictionary<long, GameLootActAbilityGroup>();
         public static Dictionary<long, GameSlaves> DB_Slaves = new Dictionary<long, GameSlaves>();
+        public static Dictionary<long, GameSlaveBinding> DB_Slave_Bindings = new Dictionary<long, GameSlaveBinding>();
+        public static Dictionary<long, GameSlaveDoodadBinding> DB_Slave_Doodad_Bindings = new Dictionary<long, GameSlaveDoodadBinding>();
         public static Dictionary<long, GameModel> DB_Models = new Dictionary<long, GameModel>();
         public static Dictionary<long, GameNpcInitialBuffs> DB_NpcInitialBuffs = new();
         public static Dictionary<long, GameNpcInteractions> DB_NpcInteractions = new();

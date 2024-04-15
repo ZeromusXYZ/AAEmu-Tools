@@ -1287,7 +1287,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(678, 329);
-            splitContainer2.SplitterDistance = 380;
+            splitContainer2.SplitterDistance = 379;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1295,7 +1295,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(289, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(288, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1326,7 +1326,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(372, 298);
+            tvBuffTriggers.Size = new System.Drawing.Size(371, 298);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += tvBuffTriggers_DoubleClick;
             // 
@@ -4468,7 +4468,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(470, 517);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(469, 517);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4500,7 +4500,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(697, 507);
+            tvQuestWorkflow.Size = new System.Drawing.Size(696, 507);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += tvQuestWorkflow_DoubleClick;
             // 
@@ -4529,11 +4529,11 @@
             groupBox15.Controls.Add(lSlaveTemplate);
             groupBox15.Controls.Add(label146);
             groupBox15.ForeColor = System.Drawing.Color.FromArgb(208, 192, 171);
-            groupBox15.Location = new System.Drawing.Point(744, 13);
+            groupBox15.Location = new System.Drawing.Point(688, 13);
             groupBox15.Margin = new System.Windows.Forms.Padding(4);
             groupBox15.Name = "groupBox15";
             groupBox15.Padding = new System.Windows.Forms.Padding(4);
-            groupBox15.Size = new System.Drawing.Size(328, 576);
+            groupBox15.Size = new System.Drawing.Size(384, 576);
             groupBox15.TabIndex = 18;
             groupBox15.TabStop = false;
             groupBox15.Text = "Vehicle Info";
@@ -4554,7 +4554,7 @@
             treeNode2.Text = "Slave";
             tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
             tvSlaveInfo.SelectedImageIndex = 0;
-            tvSlaveInfo.Size = new System.Drawing.Size(312, 510);
+            tvSlaveInfo.Size = new System.Drawing.Size(368, 510);
             tvSlaveInfo.TabIndex = 32;
             tvSlaveInfo.DoubleClick += tvSlaveInfo_DoubleClick;
             // 
@@ -4602,7 +4602,7 @@
             // 
             btnSearchSlave.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             btnSearchSlave.Enabled = false;
-            btnSearchSlave.Location = new System.Drawing.Point(644, 10);
+            btnSearchSlave.Location = new System.Drawing.Point(588, 11);
             btnSearchSlave.Margin = new System.Windows.Forms.Padding(4);
             btnSearchSlave.Name = "btnSearchSlave";
             btnSearchSlave.Size = new System.Drawing.Size(92, 28);
@@ -4627,7 +4627,7 @@
             tSearchSlave.Location = new System.Drawing.Point(219, 13);
             tSearchSlave.Margin = new System.Windows.Forms.Padding(4);
             tSearchSlave.Name = "tSearchSlave";
-            tSearchSlave.Size = new System.Drawing.Size(417, 23);
+            tSearchSlave.Size = new System.Drawing.Size(361, 23);
             tSearchSlave.TabIndex = 15;
             tSearchSlave.TextChanged += tSearchSlave_TextChanged;
             tSearchSlave.KeyDown += tSearchSlave_KeyDown;
@@ -4647,7 +4647,7 @@
             dgvSlaves.ReadOnly = true;
             dgvSlaves.RowHeadersVisible = false;
             dgvSlaves.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvSlaves.Size = new System.Drawing.Size(725, 538);
+            dgvSlaves.Size = new System.Drawing.Size(669, 538);
             dgvSlaves.TabIndex = 14;
             dgvSlaves.SelectionChanged += dgvSlaves_SelectionChanged;
             // 

@@ -4756,6 +4756,7 @@ namespace AAEmu.DBViewer
         {
             using (var connection = SQLite.CreateConnection())
             {
+                // Slaves
                 using (var command = connection.CreateCommand())
                 {
                     AADB.DB_Slaves.Clear();
@@ -4812,6 +4813,65 @@ namespace AAEmu.DBViewer
                     }
                 }
 
+                // Slave Bindings
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Slave_Bindings.Clear();
+
+                    command.CommandText = "SELECT * FROM slave_bindings ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameSlaveBinding();
+                            t.id = GetInt64(reader, "id");
+                            t.owner_id = GetInt64(reader, "owner_id");
+                            t.owner_type = GetString(reader, "owner_type");
+                            t.slave_id = GetInt64(reader, "slave_id");
+                            t.attach_point_id = GetInt64(reader, "attach_point_id");
+
+                            AADB.DB_Slave_Bindings.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+
+                // Slave Doodad Bindings
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Slave_Doodad_Bindings.Clear();
+
+                    command.CommandText = "SELECT * FROM slave_doodad_bindings ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameSlaveDoodadBinding();
+                            t.id = GetInt64(reader, "id");
+                            t.owner_id = GetInt64(reader, "owner_id");
+                            t.owner_type = GetString(reader, "owner_type");
+                            t.attach_point_id = GetInt64(reader, "attach_point_id");
+                            t.doodad_id = GetInt64(reader, "doodad_id");
+                            t.persist = GetBool(reader, "persist");
+                            t.scale = GetFloat(reader, "scale");
+
+                            AADB.DB_Slave_Doodad_Bindings.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
             }
 
         }
@@ -6091,6 +6151,15 @@ namespace AAEmu.DBViewer
                 res.targetSearchButton = btnSearchNPC;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + npc.nameLocalized;
+            }
+            else if (key.EndsWith("slave_id") && (AADB.DB_Slaves.TryGetValue(val, out var slave)))
+            {
+                res.targetTabPage = tpNPCs;
+                // res.targetSearchBox = slave.id.ToString();
+                res.targetSearchText = slave.id.ToString();
+                res.targetSearchButton = btnSearchSlave;
+                res.ForeColor = Color.WhiteSmoke;
+                nodeText += " - " + slave.nameLocalized;
             }
             else if (key.EndsWith("buff_id") && (AADB.DB_Buffs.TryGetValue(val, out var buff)))
             {
@@ -9591,6 +9660,23 @@ namespace AAEmu.DBViewer
                     }       
                 }
 
+                // Bindings
+                var slaveBindings = AADB.DB_Slave_Bindings.Values.Where(x => x.owner_type == "Slave" && x.owner_id == slave.id).ToList();
+                var slaveDoodadBindings = AADB.DB_Slave_Doodad_Bindings.Values.Where(x => x.owner_type == "Slave" && x.owner_id == slave.id).ToList();
+                if ((slaveBindings.Count > 0) || (slaveDoodadBindings.Count > 0))
+                {
+                    var bindingNode = tvSlaveInfo.Nodes.Add("Bindings");
+                    foreach (var slaveBinding in slaveBindings)
+                    {
+                        var n = AddCustomPropertyNode("slave_id", slaveBinding.slave_id.ToString(), false, bindingNode);
+                        n.Text = $" @{slaveBinding.attach_point_id}: {n.Text}";
+                    }
+                    foreach (var slaveDoodadBinding in slaveDoodadBindings)
+                    {
+                        var n = AddCustomPropertyNode("doodad_id", slaveDoodadBinding.doodad_id.ToString(), false, bindingNode);
+                        n.Text = $" @{slaveDoodadBinding.attach_point_id}: {n.Text}";
+                    }
+                }
 
                 tvSlaveInfo.ExpandAll();
 
