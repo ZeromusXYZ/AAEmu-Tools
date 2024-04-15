@@ -9094,7 +9094,10 @@ namespace AAEmu.DBViewer
                 if (info.targetSearchBox != null)
                     info.targetSearchBox.Text = info.targetSearchText;
                 if (info.targetSearchButton != null)
+                {
+                    info.targetSearchButton.Enabled = true;
                     info.targetSearchButton.PerformClick();
+                }
             }
         }
 
