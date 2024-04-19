@@ -1049,7 +1049,7 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        var indx = 1l;
+                        var indx = 1L;
                         while (reader.Read())
                         {
                             var t = new GameSlaveMountSkill();
@@ -2310,7 +2310,7 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        var indx = 1l;
+                        var indx = 1L;
                         while (reader.Read())
                         {
                             var t = new GameNpcInitialBuffs();
@@ -2355,7 +2355,7 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        var indx = 1l;
+                        var indx = 1L;
                         while (reader.Read())
                         {
                             var t = new GameSlavePassiveBuff();
@@ -2378,7 +2378,7 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        var indx = 1l;
+                        var indx = 1L;
                         while (reader.Read())
                         {
                             var t = new GameSlaveInitialBuff();
@@ -4833,7 +4833,7 @@ namespace AAEmu.DBViewer
                     {
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
-                        var indx = 1l;
+                        var indx = 1L;
 
                         while (reader.Read())
                         {
@@ -4865,7 +4865,7 @@ namespace AAEmu.DBViewer
                     {
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
-                        var indx = 1l;
+                        var indx = 1L;
 
                         while (reader.Read())
                         {
