@@ -1032,7 +1032,7 @@ namespace AAEmu.DBViewer
                         {
                             var t = new GameMountSkill();
                             t.id = GetInt64(reader, "id");
-                            t.name = GetString(reader, "name");
+                            //t.name = GetString(reader, "name"); // no in 3030
                             t.skill_id = GetInt64(reader, "skill_id");
                             AADB.DB_Mount_Skills.Add(t.id, t);
                         }
@@ -1040,7 +1040,7 @@ namespace AAEmu.DBViewer
                 }
 
                 // Slave Mount Skills
-                sql = "SELECT * FROM slave_mount_skills ORDER BY id ASC";
+                sql = "SELECT * FROM slave_mount_skills ORDER BY slave_id ASC";
                 using (var command = connection.CreateCommand())
                 {
                     AADB.DB_Slave_Mount_Skills.Clear();
@@ -1049,13 +1049,16 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
+                        var indx = 1l;
                         while (reader.Read())
                         {
                             var t = new GameSlaveMountSkill();
-                            t.id = GetInt64(reader, "id");
+                            //t.id = GetInt64(reader, "id"); // no in 3030
+                            t.id = indx;
                             t.slave_id = GetInt64(reader, "slave_id");
                             t.mount_skill_id = GetInt64(reader, "mount_skill_id");
                             AADB.DB_Slave_Mount_Skills.Add(t.id, t);
+                            indx++;
                         }
                     }
                 }
@@ -1420,7 +1423,7 @@ namespace AAEmu.DBViewer
                             // Actual DB entries
                             t.id = GetInt64(reader, "id");
                             t.name = GetString(reader, "name");
-                            t.category_id = GetInt64(reader, "category_id");
+                            //t.category_id = GetInt64(reader, "category_id"); // no in 3030
                             t.nameLocalized = AADB.GetTranslationByID(t.id, "quest_monster_groups", "name", t.name);
 
                             AADB.DB_Quest_Monster_Groups.Add(t.id, t);
@@ -2205,10 +2208,10 @@ namespace AAEmu.DBViewer
         {
             string sql = "SELECT * FROM buffs ORDER BY id ASC";
             string triggerSql = "SELECT * FROM buff_triggers ORDER BY id ASC";
-            string npcInitialSql = "SELECT * FROM npc_initial_buffs ORDER BY id ASC";
+            string npcInitialSql = "SELECT * FROM npc_initial_buffs ORDER BY npc_id ASC";
             string passiveSql = "SELECT * FROM passive_buffs ORDER BY id ASC";
-            string slavePassiveSql = "SELECT * FROM slave_passive_buffs ORDER BY id ASC";
-            string slaveInitialSql = "SELECT * FROM slave_initial_buffs ORDER BY id ASC";
+            string slavePassiveSql = "SELECT * FROM slave_passive_buffs ORDER BY owner_id ASC";
+            string slaveInitialSql = "SELECT * FROM slave_initial_buffs ORDER BY slave_id ASC";
 
             using (var connection = SQLite.CreateConnection())
             {
@@ -2307,15 +2310,17 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-
+                        var indx = 1l;
                         while (reader.Read())
                         {
                             var t = new GameNpcInitialBuffs();
-                            t.id = GetInt64(reader, "id");
+                            //t.id = GetInt64(reader, "id"); // no in 3030
+                            t.id = indx;
                             t.npc_id = GetInt64(reader, "npc_id");
                             t.buff_id = GetInt64(reader, "buff_id");
 
                             AADB.DB_NpcInitialBuffs.Add(t.id, t);
+                            indx++;
                         }
                     }
                 }
@@ -2350,16 +2355,18 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-
+                        var indx = 1l;
                         while (reader.Read())
                         {
                             var t = new GameSlavePassiveBuff();
-                            t.id = GetInt64(reader, "id");
+                            //t.id = GetInt64(reader, "id"); // no in 3030
+                            t.id = indx;
                             t.owner_id = GetInt64(reader, "owner_id");
                             t.owner_type = GetString(reader, "owner_type");
                             t.passive_buff_id = GetInt64(reader, "passive_buff_id");
 
                             AADB.DB_Slave_Passive_Buffs.Add(t.id, t);
+                            indx++;
                         }
                     }
                 }
@@ -2371,15 +2378,17 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-
+                        var indx = 1l;
                         while (reader.Read())
                         {
                             var t = new GameSlaveInitialBuff();
-                            t.id = GetInt64(reader, "id");
+                            //t.id = GetInt64(reader, "id"); no in 3030
+                            t.id = indx;
                             t.slave_id = GetInt64(reader, "slave_id");
                             t.buff_id = GetInt64(reader, "buff_id");
 
                             AADB.DB_Slave_Initial_Buffs.Add(t.id, t);
+                            indx++;
                         }
                     }
                 }
@@ -4818,23 +4827,26 @@ namespace AAEmu.DBViewer
                 {
                     AADB.DB_Slave_Bindings.Clear();
 
-                    command.CommandText = "SELECT * FROM slave_bindings ORDER BY id ASC";
+                    command.CommandText = "SELECT * FROM slave_bindings ORDER BY owner_id ASC";
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
+                        var indx = 1l;
 
                         while (reader.Read())
                         {
                             var t = new GameSlaveBinding();
-                            t.id = GetInt64(reader, "id");
+                            //t.id = GetInt64(reader, "id"); // no in 3030
+                            t.id = indx;
                             t.owner_id = GetInt64(reader, "owner_id");
                             t.owner_type = GetString(reader, "owner_type");
                             t.slave_id = GetInt64(reader, "slave_id");
                             t.attach_point_id = GetInt64(reader, "attach_point_id");
 
                             AADB.DB_Slave_Bindings.Add(t.id, t);
+                            indx++;
                         }
 
                         Cursor = Cursors.Default;
@@ -4847,17 +4859,19 @@ namespace AAEmu.DBViewer
                 {
                     AADB.DB_Slave_Doodad_Bindings.Clear();
 
-                    command.CommandText = "SELECT * FROM slave_doodad_bindings ORDER BY id ASC";
+                    command.CommandText = "SELECT * FROM slave_doodad_bindings ORDER BY owner_id ASC";
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
+                        var indx = 1l;
 
                         while (reader.Read())
                         {
                             var t = new GameSlaveDoodadBinding();
-                            t.id = GetInt64(reader, "id");
+                            //t.id = GetInt64(reader, "id"); // no in 3030
+                            t.id = indx;
                             t.owner_id = GetInt64(reader, "owner_id");
                             t.owner_type = GetString(reader, "owner_type");
                             t.attach_point_id = GetInt64(reader, "attach_point_id");
@@ -4866,6 +4880,7 @@ namespace AAEmu.DBViewer
                             t.scale = GetFloat(reader, "scale");
 
                             AADB.DB_Slave_Doodad_Bindings.Add(t.id, t);
+                            indx++;
                         }
 
                         Cursor = Cursors.Default;
@@ -4896,7 +4911,7 @@ namespace AAEmu.DBViewer
                             var t = new GameModel();
 
                             t.id = GetInt64(reader, "id");
-                            t.comment = GetString(reader, "comment");
+                            //t.comment = GetString(reader, "comment"); // no in 3030
                             t.sub_id = GetInt64(reader, "sub_id");
                             t.sub_type = GetString(reader, "sub_type");
                             t.dying_time = GetFloat(reader, "dying_time");
