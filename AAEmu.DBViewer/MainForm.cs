@@ -1028,11 +1028,20 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
+                        var readNames = false;
                         while (reader.Read())
                         {
+                            // name field is not present after in 3.0.3.0
+                            if (columnNames == null)
+                            {
+                                columnNames = reader.GetColumnNames();
+                                readNames = (columnNames.IndexOf("name") >= 0);
+                            }
+
                             var t = new GameMountSkill();
                             t.id = GetInt64(reader, "id");
-                            //t.name = GetString(reader, "name"); // no in 3030
+                            if (readNames)
+                                t.name = GetString(reader, "name");
                             t.skill_id = GetInt64(reader, "skill_id");
                             AADB.DB_Mount_Skills.Add(t.id, t);
                         }
@@ -1050,11 +1059,18 @@ namespace AAEmu.DBViewer
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
                         var indx = 1L;
+                        var readId = false;
                         while (reader.Read())
                         {
+                            // id field is not present after in 3.0.3.0
+                            if (columnNames == null)
+                            {
+                                columnNames = reader.GetColumnNames();
+                                readId = (columnNames.IndexOf("id") >= 0);
+                            }
+
                             var t = new GameSlaveMountSkill();
-                            //t.id = GetInt64(reader, "id"); // no in 3030
-                            t.id = indx;
+                            t.id = readId ? GetInt64(reader, "id") : indx;
                             t.slave_id = GetInt64(reader, "slave_id");
                             t.mount_skill_id = GetInt64(reader, "mount_skill_id");
                             AADB.DB_Slave_Mount_Skills.Add(t.id, t);
@@ -1417,13 +1433,22 @@ namespace AAEmu.DBViewer
                     {
                         AADB.DB_Quest_Monster_Groups.Clear();
 
+                        var readCatId = false;
+                        var columnNames = new List<string>();
                         while (reader.Read())
                         {
+                            // category_id field is not present after in 3.0.3.0
+                            if (columnNames == null)
+                            {
+                                columnNames = reader.GetColumnNames();
+                                readCatId = (columnNames.IndexOf("category_id") >= 0);
+                            }
+
                             var t = new GameQuestMonsterGroups();
                             // Actual DB entries
                             t.id = GetInt64(reader, "id");
                             t.name = GetString(reader, "name");
-                            //t.category_id = GetInt64(reader, "category_id"); // no in 3030
+                            t.category_id = readCatId ? GetInt64(reader, "category_id") : 0;
                             t.nameLocalized = AADB.GetTranslationByID(t.id, "quest_monster_groups", "name", t.name);
 
                             AADB.DB_Quest_Monster_Groups.Add(t.id, t);
@@ -2310,12 +2335,20 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
+                        var columnNames = new List<string>();
                         var indx = 1L;
+                        var readId = false;
                         while (reader.Read())
                         {
+                            // id field is not present after in 3.0.3.0
+                            if (columnNames == null)
+                            {
+                                columnNames = reader.GetColumnNames();
+                                readId = (columnNames.IndexOf("id") >= 0);
+                            }
+
                             var t = new GameNpcInitialBuffs();
-                            //t.id = GetInt64(reader, "id"); // no in 3030
-                            t.id = indx;
+                            t.id = readId ? GetInt64(reader, "id") : indx;
                             t.npc_id = GetInt64(reader, "npc_id");
                             t.buff_id = GetInt64(reader, "buff_id");
 
@@ -2355,12 +2388,20 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
+                        var columnNames = new List<string>();
+                        var readId = false;
                         var indx = 1L;
                         while (reader.Read())
                         {
+                            // id field is not present after in 3.0.3.0
+                            if (columnNames == null)
+                            {
+                                columnNames = reader.GetColumnNames();
+                                readId = (columnNames.IndexOf("id") >= 0);
+                            }
+
                             var t = new GameSlavePassiveBuff();
-                            //t.id = GetInt64(reader, "id"); // no in 3030
-                            t.id = indx;
+                            t.id = readId ? GetInt64(reader, "id") : indx;
                             t.owner_id = GetInt64(reader, "owner_id");
                             t.owner_type = GetString(reader, "owner_type");
                             t.passive_buff_id = GetInt64(reader, "passive_buff_id");
@@ -4833,13 +4874,21 @@ namespace AAEmu.DBViewer
                     {
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
-                        var indx = 1L;
 
+                        var columnNames = new List<string>();
+                        var readId = false;
+                        var indx = 1L;
                         while (reader.Read())
                         {
+                            // id field is not present after in 3.0.3.0
+                            if (columnNames == null)
+                            {
+                                columnNames = reader.GetColumnNames();
+                                readId = (columnNames.IndexOf("id") >= 0);
+                            }
+
                             var t = new GameSlaveBinding();
-                            //t.id = GetInt64(reader, "id"); // no in 3030
-                            t.id = indx;
+                            t.id = readId ? GetInt64(reader, "id") : indx;
                             t.owner_id = GetInt64(reader, "owner_id");
                             t.owner_type = GetString(reader, "owner_type");
                             t.slave_id = GetInt64(reader, "slave_id");
@@ -4865,13 +4914,21 @@ namespace AAEmu.DBViewer
                     {
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
-                        var indx = 1L;
 
+                        var columnNames = new List<string>();
+                        var readId = false;
+                        var indx = 1L;
                         while (reader.Read())
                         {
+                            // id field is not present after in 3.0.3.0
+                            if (columnNames == null)
+                            {
+                                columnNames = reader.GetColumnNames();
+                                readId = (columnNames.IndexOf("id") >= 0);
+                            }
+
                             var t = new GameSlaveDoodadBinding();
-                            //t.id = GetInt64(reader, "id"); // no in 3030
-                            t.id = indx;
+                            t.id = readId ? GetInt64(reader, "id") : indx;
                             t.owner_id = GetInt64(reader, "owner_id");
                             t.owner_type = GetString(reader, "owner_type");
                             t.attach_point_id = GetInt64(reader, "attach_point_id");
@@ -4906,12 +4963,22 @@ namespace AAEmu.DBViewer
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
 
+                        var readComment = false;
+                        var columnNames = new List<string>();
                         while (reader.Read())
                         {
+                            // comment field is not present after in 3.0.3.0
+                            if (columnNames == null)
+                            {
+                                columnNames = reader.GetColumnNames();
+                                readComment = (columnNames.IndexOf("comment") >= 0);
+                            }
+
                             var t = new GameModel();
 
                             t.id = GetInt64(reader, "id");
-                            //t.comment = GetString(reader, "comment"); // no in 3030
+                            if (readComment)
+                                t.comment = GetString(reader, "comment");
                             t.sub_id = GetInt64(reader, "sub_id");
                             t.sub_type = GetString(reader, "sub_type");
                             t.dying_time = GetFloat(reader, "dying_time");
