@@ -1028,6 +1028,7 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
+                        columnNames = null;
                         var readNames = false;
                         while (reader.Read())
                         {
@@ -1058,6 +1059,7 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
+                        columnNames = null;
                         var indx = 1L;
                         var readId = false;
                         while (reader.Read())
@@ -1434,7 +1436,7 @@ namespace AAEmu.DBViewer
                         AADB.DB_Quest_Monster_Groups.Clear();
 
                         var readCatId = false;
-                        var columnNames = new List<string>();
+                        List<string> columnNames = null;
                         while (reader.Read())
                         {
                             // category_id field is not present after in 3.0.3.0
@@ -2335,7 +2337,7 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        var columnNames = new List<string>();
+                        List<string> columnNames = null;
                         var indx = 1L;
                         var readId = false;
                         while (reader.Read())
@@ -2388,7 +2390,7 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        var columnNames = new List<string>();
+                        List<string> columnNames = null;
                         var readId = false;
                         var indx = 1L;
                         while (reader.Read())
@@ -4875,7 +4877,7 @@ namespace AAEmu.DBViewer
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
 
-                        var columnNames = new List<string>();
+                        List<string> columnNames = null;
                         var readId = false;
                         var indx = 1L;
                         while (reader.Read())
@@ -4915,7 +4917,7 @@ namespace AAEmu.DBViewer
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
 
-                        var columnNames = new List<string>();
+                        List<string> columnNames = null;
                         var readId = false;
                         var indx = 1L;
                         while (reader.Read())
@@ -4963,8 +4965,8 @@ namespace AAEmu.DBViewer
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
 
+                        List<string> columnNames = null;
                         var readComment = false;
-                        var columnNames = new List<string>();
                         while (reader.Read())
                         {
                             // comment field is not present after in 3.0.3.0
