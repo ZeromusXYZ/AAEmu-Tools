@@ -3522,7 +3522,11 @@ namespace AAEmu.DBViewer
 
             if (skillEffectsList != null)
             {
-                long totalWeight = skillEffectsList.Count(x => x.weight > 0);
+                long totalWeight = 0;
+                foreach (var skillEffect in skillEffectsList)
+                {
+                    totalWeight += skillEffect.weight;
+                }
                 foreach (var skillEffect in skillEffectsList)
                 {
                     if (effectsRoot == null)
