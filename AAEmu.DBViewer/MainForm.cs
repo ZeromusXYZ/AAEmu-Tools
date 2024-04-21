@@ -3510,7 +3510,7 @@ namespace AAEmu.DBViewer
         {
             tvSkill.Nodes.Clear();
             var imgId = ilIcons.Images.IndexOfKey(skill.icon_id.ToString());
-            var rootNode = new TreeNode(skill.nameLocalized, imgId, imgId);
+            var rootNode = new TreeNode(skill.nameLocalized + $" ( {skill.id} )", imgId, imgId);
             rootNode.Tag = 0;
             tvSkill.Nodes.Add(rootNode);
 
