@@ -31,8 +31,8 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("NPC");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Slave");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Slave");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
             lbTableNames = new System.Windows.Forms.ListBox();
             tcViewer = new System.Windows.Forms.TabControl();
             tbTables = new System.Windows.Forms.TabPage();
@@ -645,10 +645,10 @@
             tcViewer.Controls.Add(tpLoot);
             tcViewer.Controls.Add(tpNPCs);
             tcViewer.Controls.Add(tpQuests);
-            tcViewer.Controls.Add(tpSlaves);
             tcViewer.Controls.Add(tpSkills);
             tcViewer.Controls.Add(tpTags);
             tcViewer.Controls.Add(tpTrade);
+            tcViewer.Controls.Add(tpSlaves);
             tcViewer.Controls.Add(tpZones);
             tcViewer.Dock = System.Windows.Forms.DockStyle.Fill;
             tcViewer.Location = new System.Drawing.Point(0, 0);
@@ -1287,7 +1287,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(678, 329);
-            splitContainer2.SplitterDistance = 379;
+            splitContainer2.SplitterDistance = 378;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1295,7 +1295,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(288, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(287, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1326,7 +1326,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(371, 298);
+            tvBuffTriggers.Size = new System.Drawing.Size(370, 298);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += tvBuffTriggers_DoubleClick;
             // 
@@ -4468,7 +4468,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(469, 517);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(468, 517);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4500,7 +4500,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(696, 507);
+            tvQuestWorkflow.Size = new System.Drawing.Size(695, 507);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += tvQuestWorkflow_DoubleClick;
             // 
@@ -4550,9 +4550,9 @@
             tvSlaveInfo.Location = new System.Drawing.Point(8, 58);
             tvSlaveInfo.Margin = new System.Windows.Forms.Padding(4);
             tvSlaveInfo.Name = "tvSlaveInfo";
-            treeNode2.Name = "SkillNode";
-            treeNode2.Text = "Slave";
-            tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
+            treeNode3.Name = "SkillNode";
+            treeNode3.Text = "Slave";
+            tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode3 });
             tvSlaveInfo.SelectedImageIndex = 0;
             tvSlaveInfo.Size = new System.Drawing.Size(368, 510);
             tvSlaveInfo.TabIndex = 32;
@@ -5375,9 +5375,9 @@
             tvSkill.Location = new System.Drawing.Point(7, 7);
             tvSkill.Margin = new System.Windows.Forms.Padding(4);
             tvSkill.Name = "tvSkill";
-            treeNode3.Name = "SkillNode";
-            treeNode3.Text = "Skill";
-            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode3 });
+            treeNode2.Name = "SkillNode";
+            treeNode2.Text = "Skill";
+            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
             tvSkill.SelectedImageIndex = 0;
             tvSkill.Size = new System.Drawing.Size(575, 343);
             tvSkill.TabIndex = 0;

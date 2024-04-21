@@ -17,9 +17,6 @@ using AAEmu.DBViewer.JsonData;
 using AAEmu.DBViewer.utils;
 using System.Runtime;
 using AAEmu.Game.Models.Game.World;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
-using System.Xml.Linq;
-using Microsoft.VisualBasic;
 
 namespace AAEmu.DBViewer
 {
@@ -3525,6 +3522,7 @@ namespace AAEmu.DBViewer
 
             if (skillEffectsList != null)
             {
+                long totalWeight = skillEffectsList.Count(x => x.weight > 0);
                 foreach (var skillEffect in skillEffectsList)
                 {
                     if (effectsRoot == null)
@@ -3535,7 +3533,7 @@ namespace AAEmu.DBViewer
                         effectsRoot.Tag = 0;
                     }
 
-                    CreateSkillEffectNode(skillEffect.effect_id, effectsRoot, true);
+                    CreateSkillEffectNode(skillEffect.effect_id, effectsRoot, skillEffect.weight, totalWeight, true);
                 }
             }
 
@@ -3560,12 +3558,13 @@ namespace AAEmu.DBViewer
             tvSkill.SelectedNode = rootNode;
         }
 
-        private void CreateSkillEffectNode(long effect_id, TreeNode effectsRoot, bool hideEmptyProperties)
+        private void CreateSkillEffectNode(long effect_id, TreeNode effectsRoot, long thisWeight, long totalWeight, bool hideEmptyProperties)
         {
             var effectTypeText = "???";
             if (AADB.DB_Effects.TryGetValue(effect_id, out var effect))
             {
-                effectTypeText = effect.actual_type + " ( " + effect.actual_id.ToString() + " )";
+                var rate = (totalWeight > 0 && thisWeight > 0) ? thisWeight * 100f / totalWeight : 100f;
+                effectTypeText = effect.actual_type + " ( " + effect.actual_id.ToString() + " )" + (rate < 100 ? $" {rate:F0}%" : "");
             }
 
             var skillEffectNode = effectsRoot.Nodes.Add(effectTypeText);
@@ -4492,7 +4491,7 @@ namespace AAEmu.DBViewer
                     {
                         // var triggerNode = new TreeNode($"{trigger.id} - Effect {trigger.effect_id} ({effect.actual_type} {effect.actual_id})");
                         // groupingNode.Nodes.Add(triggerNode);
-                        CreateSkillEffectNode(effect.id, groupingNode, cbBuffsHideEmpty.Checked);
+                        CreateSkillEffectNode(effect.id, groupingNode, 0, 0, cbBuffsHideEmpty.Checked);
                     }
                 }
             }
@@ -6143,7 +6142,7 @@ namespace AAEmu.DBViewer
             var rootSplit = rootNode.Text.Split(' ');
             var rootTypeName = string.Empty;
             long rootTypeKey = 0;
-            if ((rootSplit.Length == 4) && (rootSplit[1] == "(") && (rootSplit[3] == ")")) // name ( id )
+            if ((rootSplit.Length >= 4) && (rootSplit[1] == "(") && (rootSplit[3] == ")")) // name ( id )
             {
                 rootTypeName = FunctionTypeToTableName(rootSplit[0]);
                 if (long.TryParse(rootSplit[2], out var v))
