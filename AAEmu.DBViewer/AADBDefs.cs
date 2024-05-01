@@ -504,7 +504,6 @@ namespace AAEmu.DBDefs
 
         // Helpers
         public string nameLocalized = string.Empty;
-        public string owner_nameLocalized = string.Empty;
         public string SearchString = string.Empty;
     }
 

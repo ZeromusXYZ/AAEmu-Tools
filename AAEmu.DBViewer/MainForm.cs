@@ -1538,13 +1538,7 @@ namespace AAEmu.DBViewer
                             t.diplomacy_link_id = GetInt64(reader, "diplomacy_link_id");
 
                             t.nameLocalized = AADB.GetTranslationByID(t.id, "system_factions", "name", t.name);
-                            // Actuall not even sure if owner_name can be localized, also not sure yet what owner_id points to
-                            if (t.owner_name != string.Empty)
-                                t.owner_nameLocalized =
-                                    AADB.GetTranslationByID(t.id, "system_factions", "name", t.owner_name);
-                            else
-                                t.owner_nameLocalized = "";
-                            t.SearchString = t.name + " " + t.nameLocalized + " " + t.owner_nameLocalized;
+                            t.SearchString = t.name + " " + t.nameLocalized + " " + t.owner_name;
                             t.SearchString = t.SearchString.ToLower();
                             AADB.DB_GameSystem_Factions.Add(t.id, t);
                         }
@@ -5826,10 +5820,14 @@ namespace AAEmu.DBViewer
                         row.Cells[2].Value = string.Empty;
                     }
 
-                    if (z.owner_nameLocalized != string.Empty)
-                        row.Cells[3].Value = z.owner_nameLocalized + " (" + z.owner_id.ToString() + ")";
+                    if ((z.owner_type_id == 1) && AADB.DB_NPCs.TryGetValue(z.owner_id, out var ownerNpc))
+                    {
+                        row.Cells[3].Value = ownerNpc.nameLocalized;
+                    }
                     else
-                        row.Cells[3].Value = z.owner_id.ToString();
+                    {
+                        row.Cells[3].Value = z.owner_name + " (" + z.owner_id.ToString() + ")";
+                    }
                     string d = string.Empty;
                     if (z.is_diplomacy_tgt)
                         d += "Is Target ";
@@ -5882,10 +5880,15 @@ namespace AAEmu.DBViewer
                     row.Cells[2].Value = string.Empty;
                 }
 
-                if (z.owner_nameLocalized != string.Empty)
-                    row.Cells[3].Value = z.owner_nameLocalized + " (" + z.owner_id.ToString() + ")";
+                if ((z.owner_type_id == 1) && AADB.DB_NPCs.TryGetValue(z.owner_id, out var ownerNpc))
+                {
+                    row.Cells[3].Value = ownerNpc.nameLocalized;
+                }
                 else
-                    row.Cells[3].Value = z.owner_id.ToString();
+                {
+                    row.Cells[3].Value = z.owner_name + " (" + z.owner_id.ToString() + ")";
+                }
+
                 string d = string.Empty;
                 if (z.is_diplomacy_tgt)
                     d += "Is Target ";
@@ -5929,7 +5932,7 @@ namespace AAEmu.DBViewer
             {
                 lFactionID.Text = f.id.ToString();
                 lFactionName.Text = f.nameLocalized;
-                lFactionOwnerName.Text = f.owner_nameLocalized;
+                lFactionOwnerName.Text = f.owner_name;
                 lFactionOwnerTypeID.Text = f.owner_type_id.ToString();
                 lFactionOwnerID.Text = f.owner_id.ToString();
                 LFactionPoliticalSystemID.Text = f.political_system_id.ToString();
