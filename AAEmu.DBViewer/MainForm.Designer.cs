@@ -342,6 +342,7 @@
             tpNPCs = new System.Windows.Forms.TabPage();
             cbSearchNPC = new System.Windows.Forms.ComboBox();
             groupBox13 = new System.Windows.Forms.GroupBox();
+            cbNpcCollapseLoot = new System.Windows.Forms.CheckBox();
             tvNPCInfo = new System.Windows.Forms.TreeView();
             btnShowNpcLoot = new System.Windows.Forms.Button();
             btnShowNPCsOnMap = new System.Windows.Forms.Button();
@@ -1287,7 +1288,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(678, 329);
-            splitContainer2.SplitterDistance = 377;
+            splitContainer2.SplitterDistance = 375;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1295,7 +1296,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(286, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(284, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1326,7 +1327,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(369, 298);
+            tvBuffTriggers.Size = new System.Drawing.Size(367, 298);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += tvBuffTriggers_DoubleClick;
             // 
@@ -4094,6 +4095,7 @@
             // 
             groupBox13.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             groupBox13.BackColor = System.Drawing.Color.FromArgb(70, 60, 40);
+            groupBox13.Controls.Add(cbNpcCollapseLoot);
             groupBox13.Controls.Add(tvNPCInfo);
             groupBox13.Controls.Add(btnShowNpcLoot);
             groupBox13.Controls.Add(btnShowNPCsOnMap);
@@ -4111,6 +4113,19 @@
             groupBox13.TabIndex = 13;
             groupBox13.TabStop = false;
             groupBox13.Text = "NPC Info";
+            // 
+            // cbNpcCollapseLoot
+            // 
+            cbNpcCollapseLoot.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            cbNpcCollapseLoot.AutoSize = true;
+            cbNpcCollapseLoot.Checked = true;
+            cbNpcCollapseLoot.CheckState = System.Windows.Forms.CheckState.Checked;
+            cbNpcCollapseLoot.Location = new System.Drawing.Point(10, 479);
+            cbNpcCollapseLoot.Name = "cbNpcCollapseLoot";
+            cbNpcCollapseLoot.Size = new System.Drawing.Size(183, 20);
+            cbNpcCollapseLoot.TabIndex = 32;
+            cbNpcCollapseLoot.Text = "Collapse Loot node by default";
+            cbNpcCollapseLoot.UseVisualStyleBackColor = true;
             // 
             // tvNPCInfo
             // 
@@ -4468,7 +4483,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(467, 517);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(465, 517);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4500,7 +4515,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(694, 507);
+            tvQuestWorkflow.Size = new System.Drawing.Size(692, 507);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += tvQuestWorkflow_DoubleClick;
             // 
@@ -7033,6 +7048,7 @@
         private System.Windows.Forms.ComboBox cbSearchBuffs;
         private System.Windows.Forms.ComboBox cbSimpleSQL;
         private System.Windows.Forms.TreeView tvSlaveInfo;
+        private System.Windows.Forms.CheckBox cbNpcCollapseLoot;
     }
 }
 

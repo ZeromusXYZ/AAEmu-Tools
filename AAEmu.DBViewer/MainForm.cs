@@ -17,6 +17,7 @@ using AAEmu.DBViewer.JsonData;
 using AAEmu.DBViewer.utils;
 using System.Runtime;
 using AAEmu.Game.Models.Game.World;
+using System.Runtime.InteropServices;
 
 namespace AAEmu.DBViewer
 {
@@ -5747,10 +5748,127 @@ namespace AAEmu.DBViewer
 
                 #endregion
 
-                ShowSelectedData("npcs", "(id = " + id.ToString() + ")", "id ASC");
-                btnShowNPCsOnMap.Tag = npc.id;
+                #region loot_drops
                 btnShowNpcLoot.Tag = npc.id;
                 btnShowNpcLoot.Enabled = AADB.DB_Loot_Pack_Dropping_Npc.Any(pl => pl.Value.npc_id == npc.id);
+                if (btnShowNpcLoot.Enabled)
+                {
+                    var lootNode = tvNPCInfo.Nodes.Add("Loot");
+                    lootNode.ImageIndex = 2;
+                    lootNode.SelectedImageIndex = 2;
+
+                    var allPacksForNpc = AADB.DB_Loot_Pack_Dropping_Npc.Where(lp => lp.Value.npc_id == npc.id).ToList();
+                    var nonDefaultPackCount = allPacksForNpc.Count(p => p.Value.default_pack == false);
+
+                    // GroupId, (List<GameLoot>, TotalValue)
+                    var resultLootGroups = new Dictionary<long, List<GameLoot>>();
+
+                    // Check all loot connected to this NPC
+                    foreach (var (_, pack) in allPacksForNpc)
+                    {
+                        var lootPacks = AADB.DB_Loots.Values.Where(x => x.loot_pack_id == pack.loot_pack_id);
+                        if ((lootPacks == null) || (lootPacks.Count() <= 0))
+                        {
+                            // Pack does not exist
+                            lootNode.Nodes.Add($"Missing loot_pack_id {pack.loot_pack_id}");
+                            continue;
+                        }
+
+                        foreach (var lootPack in lootPacks)
+                        {
+                            if (!resultLootGroups.TryGetValue(lootPack.group, out var lootGroup))
+                            {
+                                lootGroup = new List<GameLoot>();
+                                resultLootGroups.Add(lootPack.group, lootGroup);
+                            }
+                            lootGroup.Add(lootPack);
+                        }
+                    }
+
+                    var groupKeys = resultLootGroups.Keys.ToList();
+                    groupKeys.Sort();
+
+                    // Create group nodes
+                    var groupNodes = new Dictionary<long, TreeNode>();
+                    foreach(var groupId in groupKeys)
+                    {
+                        var groupName = $"Group {groupId}";
+                        if (groupId == 0)
+                            groupName = "Quest Items";
+                        if (groupId == 1)
+                            groupName = "Always Drop";
+                        groupNodes.Add(groupId, lootNode.Nodes.Add(groupName));
+                    }
+
+                    // List each item and sort by group
+                    foreach (var lootGroup in resultLootGroups)
+                    {
+                        if (!groupNodes.TryGetValue(lootGroup.Key, out var groupNode))
+                            continue;
+
+                        var totalWeight = lootGroup.Value.Sum(x => x.drop_rate);
+                        if (totalWeight <= 0)
+                            totalWeight = 1;
+
+                        groupNode.Text += $" (Weight {totalWeight})";
+
+                        foreach(var loot in lootGroup.Value)
+                        {
+                            var baseDropRate = loot.group switch
+                            {
+                                1 => 1f / (float)lootGroup.Value.Count,
+                                4 => 1f,
+                                _ => loot.drop_rate / (float)totalWeight,
+                            };
+                            if (loot.drop_rate == 1)
+                                baseDropRate = 1f;
+
+                            var lootGroupData = AADB.DB_Loot_Groups.Values.FirstOrDefault(x => x.pack_id == loot.loot_pack_id && x.group_no == loot.group);
+
+                            var groupDropRate = 1f;
+                            if (lootGroupData != null)
+                            {
+                                switch (loot.group)
+                                {
+                                    case 1:
+                                        groupDropRate = 1f;
+                                        break;
+                                    case 4:
+                                        groupDropRate = (lootGroupData.drop_rate / 10_000_000f);
+                                        break;
+                                    default:
+                                        groupDropRate = (lootGroupData.drop_rate / 10_000f);
+                                        break;
+                                }
+                            }
+                            if (groupDropRate > 1f)
+                                groupDropRate = 1f;
+
+                            var dropRate = baseDropRate * groupDropRate;
+
+                            var visibleRate = dropRate * 100f;
+
+                            var itemNode = AddCustomPropertyNode("item_id", loot.item_id.ToString(), false, groupNode);
+
+                            if (visibleRate > 50f)
+                                itemNode.Text = $"{visibleRate:F0}% {itemNode.Text}";
+                            else
+                            if (visibleRate > 5f)
+                                itemNode.Text = $"{visibleRate:F1}% {itemNode.Text}";
+                            else
+                                itemNode.Text = $"{visibleRate:F2}% {itemNode.Text}";
+                        }
+
+                    }
+
+                    lootNode.ExpandAll();
+                    if (cbNpcCollapseLoot.Checked)
+                        lootNode.Collapse();
+                }
+                #endregion
+
+                ShowSelectedData("npcs", "(id = " + id.ToString() + ")", "id ASC");
+                btnShowNPCsOnMap.Tag = npc.id;
             }
             else
             {
