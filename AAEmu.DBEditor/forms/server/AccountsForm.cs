@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -21,6 +22,7 @@ namespace AAEmu.DBEditor.forms.server
     public partial class AccountsForm : Form
     {
         public Users SelectedAccount { get; set; }
+        public Accounts SelectedGameAccount { get; set; }
 
         public AccountsForm()
         {
@@ -41,6 +43,8 @@ namespace AAEmu.DBEditor.forms.server
         private void UpdateList(string selectUser)
         {
             SelectedAccount = null;
+            SelectedGameAccount = null;
+            btnSave.Enabled = false;
 
             var users = Data.MySqlDb.Login.Users.ToList();
             if (!string.IsNullOrWhiteSpace(tUserFilter.Text))
@@ -48,7 +52,7 @@ namespace AAEmu.DBEditor.forms.server
                 var selectList = new List<long>();
                 var fLower = tUserFilter.Text.ToLower();
                 var userNameList = Data.MySqlDb.Login.Users.Where(x => x.Username.ToLower().Contains(fLower)).ToList();
-                foreach ( var user in userNameList )
+                foreach (var user in userNameList)
                 {
                     if (selectList.Contains(user.Id))
                         continue;
@@ -93,6 +97,8 @@ namespace AAEmu.DBEditor.forms.server
         private void dgvUsers_SelectionChanged(object sender, EventArgs e)
         {
             SelectedAccount = null;
+            SelectedGameAccount = null;
+            btnSave.Enabled = false;
             lvCharacters.Clear();
             if (dgvUsers.SelectedCells.Count < 1)
                 return;
@@ -121,6 +127,29 @@ namespace AAEmu.DBEditor.forms.server
             }
 
             SelectedAccount = account;
+            Data.MySqlDb.Login.Users.Entry(SelectedAccount).Reload();
+
+            var gameAccount = Data.MySqlDb.Game.Accounts.FirstOrDefault(x => x.AccountId == accountId);
+            SelectedGameAccount = gameAccount;
+            if (gameAccount != null)
+            {
+                Data.MySqlDb.Game.Accounts.Entry(SelectedGameAccount).Reload();
+                tLabor.Text = gameAccount.Labor.ToString(CultureInfo.InvariantCulture);
+                tCredits.Text = gameAccount.Credits.ToString(CultureInfo.InvariantCulture);
+                tLoyalty.Text = gameAccount.Loyalty.ToString(CultureInfo.InvariantCulture);
+                cbAccessLevel.Text = gameAccount.AccessLevel.ToString(CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                tLabor.Text = "";
+                tCredits.Text = "";
+                tLoyalty.Text = "";
+                cbAccessLevel.Text = "";
+            }
+            tLabor.Enabled = (gameAccount != null);
+            tCredits.Enabled = (gameAccount != null);
+            tLoyalty.Enabled = (gameAccount != null);
+            cbAccessLevel.Enabled = (gameAccount != null);
 
             var characters = Data.MySqlDb.Game.Characters.Where(x => x.AccountId == accountId).ToList();
             if (characters.Count <= 0)
@@ -134,8 +163,18 @@ namespace AAEmu.DBEditor.forms.server
                 var icon = lvCharacters.Items.Add(character.Name);
                 icon.ImageIndex = character.Race + (character.Gender == 2 ? 9 : 0); // I'm too lazy to optimize the icons in the list
                 icon.Tag = character;
+                if (character.Deleted > 0)
+                {
+                    icon.ImageIndex = 0;
+                    icon.ForeColor = Color.Red;
+                }
+                else
+                if (character.DeleteTime > DateTime.MinValue)
+                {
+                    icon.ForeColor = Color.Purple;
+                }
             }
-
+            btnSave.Enabled = false;
         }
 
         private void lvCharacters_SelectedIndexChanged(object sender, EventArgs e)
@@ -153,15 +192,15 @@ namespace AAEmu.DBEditor.forms.server
             if (c == null)
             {
                 lCharacterName.Text = "<none>";
-                lLevel.Text = "<none>";
-                lClass.Text = "<none>";
-                lMoney.Text = "0c";
+                lLevel.Text = "";
+                lClass.Text = "";
+                lMoney.Text = "";
                 pbCharacter.Image = ilRaces.Images[0];
                 return;
             }
 
             pbCharacter.Image = ilRaces.Images[iconId];
-            lCharacterName.Text = c.Name;
+            lCharacterName.Text = c.Name + (c.Deleted > 0 ? " (deleted)" : "");
             lLevel.Text = $"{Data.Server.GetText("ui_texts", "text", 1097, "<level>")} {c.Level}  {c.GetRaceName()} {c.GetGenderName()}";
             lMoney.Text = $"{c.GetMoney(c.Money)} on player, {c.GetMoney(c.Money2)} in warehouse";
             lClass.Text = c.GetClassName();
@@ -224,6 +263,7 @@ namespace AAEmu.DBEditor.forms.server
                 {
                     var hash = sha.ComputeHash(passBytes);
                     var passHash = Convert.ToBase64String(hash);
+                    Data.MySqlDb.Login.Users.Entry(SelectedAccount).Reload();
                     SelectedAccount.Password = passHash;
                     SelectedAccount.UpdatedAt = (ulong)DateTime.UtcNow.ToFileTime();
                     try
@@ -259,6 +299,7 @@ namespace AAEmu.DBEditor.forms.server
                 Data.MySqlDb.Login.Users.Remove(SelectedAccount);
                 Data.MySqlDb.Login.SaveChanges();
                 SelectedAccount = null;
+                SelectedGameAccount = null;
             }
             catch (Exception ex)
             {
@@ -287,6 +328,7 @@ namespace AAEmu.DBEditor.forms.server
                     return;
                 }
 
+                Data.MySqlDb.Login.Users.Entry(SelectedAccount).Reload();
                 SelectedAccount.Username = newName;
                 SelectedAccount.UpdatedAt = (ulong)DateTime.UtcNow.ToFileTime();
                 try
@@ -305,6 +347,47 @@ namespace AAEmu.DBEditor.forms.server
         private void tUserFilter_TextChanged(object sender, EventArgs e)
         {
             UpdateList(SelectedAccount?.Username ?? "");
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            // Game specific settings
+            if (SelectedGameAccount != null)
+            {
+                var valid = true;
+                if (!int.TryParse(tLabor.Text, CultureInfo.InvariantCulture, out int newLabor))
+                    valid = false;
+                if (!int.TryParse(tCredits.Text, CultureInfo.InvariantCulture, out int newCredits))
+                    valid = false;
+                if (!int.TryParse(tLoyalty.Text, CultureInfo.InvariantCulture, out int newLoyalty))
+                    valid = false;
+                if (!int.TryParse(cbAccessLevel.Text, CultureInfo.InvariantCulture, out int newAccountAccessLevel))
+                    valid = false;
+
+                if (valid)
+                {
+                    try
+                    {
+                        Data.MySqlDb.Game.Accounts.Entry(SelectedGameAccount).Reload();
+                        SelectedGameAccount.Labor = newLabor;
+                        SelectedGameAccount.Credits = newCredits;
+                        SelectedGameAccount.Loyalty = newLoyalty;
+                        SelectedGameAccount.AccessLevel = newAccountAccessLevel;
+                        Data.MySqlDb.Game.Accounts.Update(SelectedGameAccount);
+                        Data.MySqlDb.Game.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                        return;
+                    }
+                }
+            }
+        }
+
+        private void AccountValueChanged(object sender, EventArgs e)
+        {
+            btnSave.Enabled = true;
         }
     }
 }

@@ -803,6 +803,19 @@ namespace AAEmu.DBEditor.forms.server
 
             try
             {
+                // Critical check if remaining count changed (ask user if they want to continue)
+                var oldCount = SelectedShopItem.Remaining;
+                var newCount = int.Parse(tShopItemRemaining.Text);
+                Data.MySqlDb.Game.IcsShopItems.Entry(SelectedShopItem).Reload();
+                if (SelectedShopItem.Remaining != oldCount)
+                {
+                    if (MessageBox.Show(
+                        $"Remaining amount changed since you started editing this item {oldCount} => {SelectedShopItem.Remaining}.\n" +
+                        $"Do You want to continue with your new value of {newCount}?\n\n" +
+                        $"Note that is is not recommended to edit the shop while it is online!", 
+                        "Remaing count changed", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                        return;
+                }
                 SelectedShopItem.ShopId = uint.Parse(tShopItemShopId.Text);
                 SelectedShopItem.DisplayItemId = uint.Parse(tShopItemDisplayItemId.Text);
                 SelectedShopItem.Name = tShopItemName.Text;
