@@ -28,4 +28,9 @@ public partial class ItemContainers
     /// Owning Character Id
     /// </summary>
     public uint OwnerId { get; set; }
+
+    /// <summary>
+    /// Owning Mate Id
+    /// </summary>
+    public uint MateId { get; set; }
 }

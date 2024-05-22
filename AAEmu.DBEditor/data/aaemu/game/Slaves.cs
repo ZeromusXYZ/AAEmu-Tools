@@ -16,14 +16,33 @@ public partial class Slaves
     /// Item that is used to summon this vehicle
     /// </summary>
     public uint? ItemId { get; set; }
+
+    /// <summary>
+    /// Slave template Id of this vehicle
+    /// </summary>
     public uint? TemplateId { get; set; }
+
+    /// <summary>
+    /// Binding point Id
+    /// </summary>
     public int? AttachPoint { get; set; }
 
     public string Name { get; set; }
 
-    public uint? Summoner { get; set; }
+    /// <summary>
+    /// Parent unit type
+    /// </summary>
     public uint? OwnerType { get; set; }
+
+    /// <summary>
+    /// Parent unit DB Id
+    /// </summary>
     public uint? OwnerId { get; set; }
+
+    /// <summary>
+    /// Owning player
+    /// </summary>
+    public uint? Summoner { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 

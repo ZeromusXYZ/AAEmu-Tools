@@ -120,9 +120,38 @@ public partial class aaemu_game_context : DbContext
                 .ValueGeneratedNever()
                 .HasColumnType("int(11)")
                 .HasColumnName("account_id");
+            entity.Property(e => e.AccessLevel)
+                .HasColumnType("int(11)")
+                .HasColumnName("access_level");
             entity.Property(e => e.Credits)
                 .HasColumnType("int(11)")
                 .HasColumnName("credits");
+            entity.Property(e => e.Labor)
+                .HasColumnType("int(11)")
+                .HasColumnName("labor");
+            entity.Property(e => e.LastCreditsTick)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime")
+                .HasColumnName("last_credits_tick");
+            entity.Property(e => e.LastLaborTick)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime")
+                .HasColumnName("last_labor_tick");
+            entity.Property(e => e.LastLogin)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime")
+                .HasColumnName("last_login");
+            entity.Property(e => e.LastLoyaltyTick)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime")
+                .HasColumnName("last_loyalty_tick");
+            entity.Property(e => e.LastUpdated)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("datetime")
+                .HasColumnName("last_updated");
+            entity.Property(e => e.Loyalty)
+                .HasColumnType("int(11)")
+                .HasColumnName("loyalty");
         });
 
         modelBuilder.Entity<Actabilities>(entity =>
@@ -1165,6 +1194,10 @@ public partial class aaemu_game_context : DbContext
                 .HasDefaultValueSql("'ItemContainer'")
                 .HasComment("Partial Container Class Name")
                 .HasColumnName("container_type");
+            entity.Property(e => e.MateId)
+                .HasComment("Owning Mate Id")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("mate_id");
             entity.Property(e => e.OwnerId)
                 .HasComment("Owning Character Id")
                 .HasColumnType("int(10) unsigned")
@@ -1172,7 +1205,7 @@ public partial class aaemu_game_context : DbContext
             entity.Property(e => e.SlotType)
                 .IsRequired()
                 .HasComment("Internal Container Type")
-                .HasColumnType("enum('Equipment','Inventory','Bank','Trade','Mail','System')")
+                .HasColumnType("enum('Equipment','Inventory','Bank','Trade','Mail','System','EquipmentMate')")
                 .HasColumnName("slot_type");
         });
 
@@ -1239,7 +1272,7 @@ public partial class aaemu_game_context : DbContext
                 .HasColumnName("slot");
             entity.Property(e => e.SlotType)
                 .IsRequired()
-                .HasColumnType("enum('Equipment','Inventory','Bank','Trade','Mail','System')")
+                .HasColumnType("enum('Equipment','Inventory','Bank','Trade','Mail','System','EquipmentMate')")
                 .HasColumnName("slot_type");
             entity.Property(e => e.TemplateId)
                 .HasColumnType("int(10) unsigned")
@@ -1594,6 +1627,11 @@ public partial class aaemu_game_context : DbContext
                 .ValueGeneratedNever()
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("id");
+            entity.Property(e => e.AttachPoint)
+                .HasDefaultValueSql("'0'")
+                .HasComment("Binding point Id")
+                .HasColumnType("int(10)")
+                .HasColumnName("attach_point");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime")
@@ -1605,31 +1643,31 @@ public partial class aaemu_game_context : DbContext
                 .HasComment("Item that is used to summon this vehicle")
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("item_id");
-            entity.Property(e => e.TemplateId)
-                .HasComment("Slave template Id of this vehicle")
-                .HasColumnType("int(10) unsigned")
-                .HasColumnName("template_id");
-            entity.Property(e => e.AttachPoint)
-                .HasComment("Binding point Id")
-                .HasColumnType("int(10)")
-                .HasColumnName("attach_point");
-            entity.Property(e => e.OwnerType)
-                .HasComment("Parent unit type")
-                .HasColumnType("int(10) unsigned")
-                .HasColumnName("owner_type");
-            entity.Property(e => e.OwnerId)
-                .HasComment("Parent unit DB Id")
-                .HasColumnType("int(10) unsigned")
-                .HasColumnName("owner_id");
-            entity.Property(e => e.Summoner)
-                .HasColumnType("int(10) unsigned")
-                .HasColumnName("summoner");
             entity.Property(e => e.Mp)
                 .HasColumnType("int(11)")
                 .HasColumnName("mp");
             entity.Property(e => e.Name)
                 .HasColumnType("text")
                 .HasColumnName("name");
+            entity.Property(e => e.OwnerId)
+                .HasDefaultValueSql("'0'")
+                .HasComment("Parent unit DB Id")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("owner_id");
+            entity.Property(e => e.OwnerType)
+                .HasDefaultValueSql("'0'")
+                .HasComment("Parent unit type")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("owner_type");
+            entity.Property(e => e.Summoner)
+                .HasComment("Owning player")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("summoner");
+            entity.Property(e => e.TemplateId)
+                .HasDefaultValueSql("'0'")
+                .HasComment("Slave template Id of this vehicle")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("template_id");
             entity.Property(e => e.UpdatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime")
