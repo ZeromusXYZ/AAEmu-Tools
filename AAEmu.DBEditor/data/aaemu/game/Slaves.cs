@@ -16,10 +16,14 @@ public partial class Slaves
     /// Item that is used to summon this vehicle
     /// </summary>
     public uint? ItemId { get; set; }
+    public uint? TemplateId { get; set; }
+    public int? AttachPoint { get; set; }
 
     public string Name { get; set; }
 
-    public uint? Owner { get; set; }
+    public uint? Summoner { get; set; }
+    public uint? OwnerType { get; set; }
+    public uint? OwnerId { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 

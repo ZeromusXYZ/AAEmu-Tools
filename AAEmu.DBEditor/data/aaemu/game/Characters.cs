@@ -34,10 +34,6 @@ public partial class Characters
 
     public int Mp { get; set; }
 
-    public int LaborPower { get; set; }
-
-    public DateTime LaborPowerModified { get; set; }
-
     public int ConsumedLp { get; set; }
 
     public sbyte Ability1 { get; set; }
@@ -103,8 +99,6 @@ public partial class Characters
     public DateTime TransferRequestTime { get; set; }
 
     public DateTime DeleteTime { get; set; }
-
-    public int BmPoint { get; set; }
 
     public bool AutoUseAapoint { get; set; }
 
