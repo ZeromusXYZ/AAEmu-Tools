@@ -45,13 +45,5 @@ namespace AAEmu.DBEditor.data.aaemu.game
 
             return s;
         }
-
-        public string GetMoney(long m)
-        {
-            var g = m / 10000;
-            var s = (m - (g * 10000)) / 100;
-            var c = (m - (g * 10000) - (s * 100));
-            return $"{g} g  {s} s  {c} c";
-        }
     }
 }

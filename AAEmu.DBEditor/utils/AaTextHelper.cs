@@ -195,5 +195,20 @@ namespace AAEmu.DBEditor.utils
             return color;
         }
 
+        public static string CopperToString(long amount)
+        {
+            var gold = amount;
+            var copper = gold % 100;
+            gold /= 100;
+            var silver = gold % 100;
+            gold /= 100;
+            if (gold > 0)
+                return $"{gold} g {silver} s {copper} c";
+
+            if (silver > 0)
+                return $"{silver} s {copper} c";
+
+            return $"{copper} c";
+        }
     }
 }

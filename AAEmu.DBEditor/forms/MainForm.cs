@@ -286,6 +286,7 @@ namespace AAEmu.DBEditor
         private void serverToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
         {
             MMServerAccounts.Enabled = Data.MySqlDb.IsValid;
+            MMServerCharacters.Enabled = Data.MySqlDb.IsValid;
             MMServerICS.Enabled = Data.MySqlDb.IsValid;
         }
 
@@ -332,6 +333,12 @@ namespace AAEmu.DBEditor
         {
             var newItemForm = new ItemsForm();
             newItemForm.Show();
+        }
+
+        private void MMServerCharacters_Click(object sender, EventArgs e)
+        {
+            var characterForm = new CharacterForm();
+            characterForm.Show();
         }
     }
 }

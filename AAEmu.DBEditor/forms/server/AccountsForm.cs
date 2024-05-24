@@ -16,6 +16,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AAEmu.DBEditor.utils;
 
 namespace AAEmu.DBEditor.forms.server
 {
@@ -202,7 +203,7 @@ namespace AAEmu.DBEditor.forms.server
             pbCharacter.Image = ilRaces.Images[iconId];
             lCharacterName.Text = c.Name + (c.Deleted > 0 ? " (deleted)" : "");
             lLevel.Text = $"{Data.Server.GetText("ui_texts", "text", 1097, "<level>")} {c.Level}  {c.GetRaceName()} {c.GetGenderName()}";
-            lMoney.Text = $"{c.GetMoney(c.Money)} on player, {c.GetMoney(c.Money2)} in warehouse";
+            lMoney.Text = $"{AaTextHelper.CopperToString(c.Money)} on player, {AaTextHelper.CopperToString(c.Money2)} in warehouse";
             lClass.Text = c.GetClassName();
         }
 
