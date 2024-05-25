@@ -30,13 +30,16 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CharacterForm));
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Select a character in the list on the left ...");
             System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("0");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Select a character in the list on the left ...");
             tFilter = new System.Windows.Forms.TextBox();
             lvCharacterList = new System.Windows.Forms.ListView();
             ilRaces = new System.Windows.Forms.ImageList(components);
             label1 = new System.Windows.Forms.Label();
             tcCharacter = new System.Windows.Forms.TabControl();
             tpServerStats = new System.Windows.Forms.TabPage();
+            tvStats = new System.Windows.Forms.TreeView();
             tpItems = new System.Windows.Forms.TabPage();
             lContainer = new System.Windows.Forms.Label();
             lvItems = new System.Windows.Forms.ListView();
@@ -54,14 +57,14 @@
             rbWarehouse = new System.Windows.Forms.RadioButton();
             rbInventory = new System.Windows.Forms.RadioButton();
             rbEquipement = new System.Windows.Forms.RadioButton();
-            lInventoryGold = new System.Windows.Forms.Label();
-            label2 = new System.Windows.Forms.Label();
-            label3 = new System.Windows.Forms.Label();
-            lBankGold = new System.Windows.Forms.Label();
+            tpOwnedObjects = new System.Windows.Forms.TabPage();
+            cbIncludeAccountHouses = new System.Windows.Forms.CheckBox();
+            tvOwned = new System.Windows.Forms.TreeView();
             tcCharacter.SuspendLayout();
             tpServerStats.SuspendLayout();
             tpItems.SuspendLayout();
             gbContainerSelect.SuspendLayout();
+            tpOwnedObjects.SuspendLayout();
             SuspendLayout();
             // 
             // tFilter
@@ -129,6 +132,7 @@
             tcCharacter.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             tcCharacter.Controls.Add(tpServerStats);
             tcCharacter.Controls.Add(tpItems);
+            tcCharacter.Controls.Add(tpOwnedObjects);
             tcCharacter.Location = new System.Drawing.Point(195, 9);
             tcCharacter.Name = "tcCharacter";
             tcCharacter.SelectedIndex = 0;
@@ -137,10 +141,7 @@
             // 
             // tpServerStats
             // 
-            tpServerStats.Controls.Add(label3);
-            tpServerStats.Controls.Add(lBankGold);
-            tpServerStats.Controls.Add(label2);
-            tpServerStats.Controls.Add(lInventoryGold);
+            tpServerStats.Controls.Add(tvStats);
             tpServerStats.Location = new System.Drawing.Point(4, 25);
             tpServerStats.Name = "tpServerStats";
             tpServerStats.Padding = new System.Windows.Forms.Padding(3);
@@ -148,6 +149,17 @@
             tpServerStats.TabIndex = 0;
             tpServerStats.Text = "Stats";
             tpServerStats.UseVisualStyleBackColor = true;
+            // 
+            // tvStats
+            // 
+            tvStats.Dock = System.Windows.Forms.DockStyle.Fill;
+            tvStats.Location = new System.Drawing.Point(3, 3);
+            tvStats.Name = "tvStats";
+            treeNode1.Name = "Node0";
+            treeNode1.Text = "Select a character in the list on the left ...";
+            tvStats.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
+            tvStats.Size = new System.Drawing.Size(606, 363);
+            tvStats.TabIndex = 4;
             // 
             // tpItems
             // 
@@ -324,41 +336,41 @@
             rbEquipement.UseVisualStyleBackColor = true;
             rbEquipement.CheckedChanged += rbContainers_CheckedChanged;
             // 
-            // lInventoryGold
+            // tpOwnedObjects
             // 
-            lInventoryGold.AutoSize = true;
-            lInventoryGold.Location = new System.Drawing.Point(124, 5);
-            lInventoryGold.Name = "lInventoryGold";
-            lInventoryGold.Size = new System.Drawing.Size(20, 16);
-            lInventoryGold.TabIndex = 0;
-            lInventoryGold.Text = "0g";
+            tpOwnedObjects.Controls.Add(cbIncludeAccountHouses);
+            tpOwnedObjects.Controls.Add(tvOwned);
+            tpOwnedObjects.Location = new System.Drawing.Point(4, 25);
+            tpOwnedObjects.Name = "tpOwnedObjects";
+            tpOwnedObjects.Padding = new System.Windows.Forms.Padding(3);
+            tpOwnedObjects.Size = new System.Drawing.Size(612, 369);
+            tpOwnedObjects.TabIndex = 2;
+            tpOwnedObjects.Text = "Owned";
+            tpOwnedObjects.UseVisualStyleBackColor = true;
             // 
-            // label2
+            // cbIncludeAccountHouses
             // 
-            label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(6, 5);
-            label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(57, 16);
-            label2.TabIndex = 1;
-            label2.Text = "Inventory";
+            cbIncludeAccountHouses.AutoSize = true;
+            cbIncludeAccountHouses.Checked = true;
+            cbIncludeAccountHouses.CheckState = System.Windows.Forms.CheckState.Checked;
+            cbIncludeAccountHouses.Location = new System.Drawing.Point(3, 3);
+            cbIncludeAccountHouses.Name = "cbIncludeAccountHouses";
+            cbIncludeAccountHouses.Size = new System.Drawing.Size(221, 20);
+            cbIncludeAccountHouses.TabIndex = 6;
+            cbIncludeAccountHouses.Text = "Include other houses on this account";
+            cbIncludeAccountHouses.UseVisualStyleBackColor = true;
+            cbIncludeAccountHouses.CheckedChanged += cbIncludeAccountHouses_CheckedChanged;
             // 
-            // label3
+            // tvOwned
             // 
-            label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(6, 27);
-            label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(66, 16);
-            label3.TabIndex = 3;
-            label3.Text = "Warehouse";
-            // 
-            // lBankGold
-            // 
-            lBankGold.AutoSize = true;
-            lBankGold.Location = new System.Drawing.Point(124, 27);
-            lBankGold.Name = "lBankGold";
-            lBankGold.Size = new System.Drawing.Size(20, 16);
-            lBankGold.TabIndex = 2;
-            lBankGold.Text = "0g";
+            tvOwned.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            tvOwned.Location = new System.Drawing.Point(3, 27);
+            tvOwned.Name = "tvOwned";
+            treeNode2.Name = "Node0";
+            treeNode2.Text = "Select a character in the list on the left ...";
+            tvOwned.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
+            tvOwned.Size = new System.Drawing.Size(606, 339);
+            tvOwned.TabIndex = 5;
             // 
             // CharacterForm
             // 
@@ -375,11 +387,12 @@
             Load += CharacterForm_Load;
             tcCharacter.ResumeLayout(false);
             tpServerStats.ResumeLayout(false);
-            tpServerStats.PerformLayout();
             tpItems.ResumeLayout(false);
             tpItems.PerformLayout();
             gbContainerSelect.ResumeLayout(false);
             gbContainerSelect.PerformLayout();
+            tpOwnedObjects.ResumeLayout(false);
+            tpOwnedObjects.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -409,9 +422,9 @@
         private System.Windows.Forms.ColumnHeader chItemCount;
         private System.Windows.Forms.Label lContainer;
         private System.Windows.Forms.ColumnHeader chItemSlot;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label lBankGold;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label lInventoryGold;
+        private System.Windows.Forms.TreeView tvStats;
+        private System.Windows.Forms.TabPage tpOwnedObjects;
+        private System.Windows.Forms.TreeView tvOwned;
+        private System.Windows.Forms.CheckBox cbIncludeAccountHouses;
     }
 }

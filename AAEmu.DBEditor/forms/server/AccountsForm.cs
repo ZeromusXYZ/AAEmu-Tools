@@ -1,22 +1,16 @@
-﻿using AAEmu.DBEditor;
-using AAEmu.DBEditor.data;
-using AAEmu.DBEditor.data.aaemu;
+﻿using AAEmu.DBEditor.data;
 using AAEmu.DBEditor.data.aaemu.game;
 using AAEmu.DBEditor.data.aaemu.login;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using AAEmu.DBEditor.utils;
+using AAEmu.DBEditor.data.enums;
 
 namespace AAEmu.DBEditor.forms.server
 {
@@ -180,19 +174,19 @@ namespace AAEmu.DBEditor.forms.server
 
         private void lvCharacters_SelectedIndexChanged(object sender, EventArgs e)
         {
-            data.aaemu.game.Characters c = null;
+            Characters c = null;
             var iconId = 0;
             foreach (ListViewItem s in lvCharacters.SelectedItems)
-                if (s.Tag is data.aaemu.game.Characters)
+                if (s.Tag is Characters tag)
                 {
-                    c = s.Tag as data.aaemu.game.Characters;
+                    c = tag;
                     iconId = s.ImageIndex;
                     break;
                 }
 
             if (c == null)
             {
-                lCharacterName.Text = "<none>";
+                lCharacterName.Text = @"<none>";
                 lLevel.Text = "";
                 lClass.Text = "";
                 lMoney.Text = "";
@@ -202,9 +196,12 @@ namespace AAEmu.DBEditor.forms.server
 
             pbCharacter.Image = ilRaces.Images[iconId];
             lCharacterName.Text = c.Name + (c.Deleted > 0 ? " (deleted)" : "");
+            // ReSharper disable once LocalizableElement
             lLevel.Text = $"{Data.Server.GetText("ui_texts", "text", 1097, "<level>")} {c.Level}  {c.GetRaceName()} {c.GetGenderName()}";
+            // ReSharper disable once LocalizableElement
             lMoney.Text = $"{AaTextHelper.CopperToString(c.Money)} on player, {AaTextHelper.CopperToString(c.Money2)} in warehouse";
-            lClass.Text = c.GetClassName();
+            // ReSharper disable once LocalizableElement
+            lClass.Text = $"{AbilityNames.GetClassName(c.Ability1, c.Ability2, c.Ability3)} ({c.GetClassName()})";
         }
 
         private void MenuAccountNew_Click(object sender, EventArgs e)

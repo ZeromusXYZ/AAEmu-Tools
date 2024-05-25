@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using AAEmu.DBEditor.data;
 using AAEmu.DBEditor.data.aaemu.game;
 using AAEmu.DBEditor.data.enums;
 using AAEmu.DBEditor.utils;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.VisualBasic.Devices;
 
 namespace AAEmu.DBEditor.forms.server
 {
@@ -24,7 +28,7 @@ namespace AAEmu.DBEditor.forms.server
             lvItems.Items.Clear();
             lvItems.SmallImageList = Data.Client.Icons16;
             lvItems.LargeImageList = Data.Client.Icons32;
-            tcCharacter.SelectedTab = tpItems;
+            tcCharacter.SelectedTab = tpServerStats;
             tFilter_TextChanged(null, null);
         }
 
@@ -102,7 +106,7 @@ namespace AAEmu.DBEditor.forms.server
                 {
                     newItem.SubItems.Add(item.Slot.ToString());
                 }
-                
+
                 if ((lastSlot == item.Slot) && (itemContainer.SlotType != "Mail"))
                     newItem.ForeColor = Color.Red;
                 lastSlot = item.Slot;
@@ -130,13 +134,213 @@ namespace AAEmu.DBEditor.forms.server
                 if (selectedItem.Tag is not Characters character)
                     continue;
                 SelectedCharacter = character;
-                rbEquipement.Checked = true;
-                gbContainerSelect.Text = $"Containers of {character.Name} ({character.Id})";
-                lInventoryGold.Text = AaTextHelper.CopperToString(character.Money);
-                lBankGold.Text = AaTextHelper.CopperToString(character.Money2);
-                rbContainers_CheckedChanged(rbEquipement, null);
+                PopulateItemsTab(SelectedCharacter);
+                PopulateStatsTab(SelectedCharacter);
+                PopulateOwnedTab(SelectedCharacter);
                 break;
             }
+        }
+
+        private void PopulateItemsTab(Characters character)
+        {
+            rbEquipement.Checked = true;
+            gbContainerSelect.Text = $"Containers of {character.Name} ({character.Id})";
+            rbContainers_CheckedChanged(rbEquipement, null);
+        }
+
+        private byte GetLevel(long exp)
+        {
+            var level = Data.Server.CompactSqlite.Levels.Where(x => x.TotalExp <= exp).OrderByDescending(x => x.Id).FirstOrDefault();
+            return (byte)(level?.Id ?? 0);
+        }
+
+        private void PopulateStatsTab(Characters character)
+        {
+            tvStats.Nodes.Clear();
+            var rootNode = tvStats.Nodes.Add($"{character.Name} ({character.Id})");
+            rootNode.Nodes.Add($"{Data.Server.GetText("system_factions", "name", character.FactionId, "<" + character.FactionId + ">")} ({character.FactionId})");
+
+            // Class
+            var classNode = rootNode.Nodes.Add($"Lv {character.Level} - {AbilityNames.GetClassName(character.Ability1, character.Ability2, character.Ability3)} ({character.GetClassName()})");
+            var abilities = Data.MySqlDb.Game.Abilities.Where(x => x.Owner == character.Id);
+            foreach (var ability in abilities)
+            {
+                var abilityName = Data.Server.GetText("ui_texts", "text", 1110 + ability.Id, "<" + ability.Id + ">");
+                var abilityNode = classNode.Nodes.Add($"Lv {GetLevel(ability.Exp)} {abilityName} ({ability.Id}), Exp {ability.Exp}");
+                if ((ability.Id == character.Ability1) || (ability.Id == character.Ability2) || (ability.Id == character.Ability3))
+                    abilityNode.NodeFont = new Font(tvStats.Font, FontStyle.Bold);
+            }
+
+            // Inventory
+            var inventoryNode = rootNode.Nodes.Add("Inventory");
+            inventoryNode.Nodes.Add($"Size: {character.NumInvSlot}");
+            inventoryNode.Nodes.Add($"Money: {AaTextHelper.CopperToString(character.Money)}");
+
+            // Warehouse
+            var warehouseNode = rootNode.Nodes.Add("Warehouse"); // Bank
+            warehouseNode.Nodes.Add($"Size: {character.NumBankSlot}");
+            warehouseNode.Nodes.Add($"Money: {AaTextHelper.CopperToString(character.Money2)}");
+
+            // Vocation Skills
+            var vocationNode = rootNode.Nodes.Add($"Vocation ({character.VocationPoint} badges)");
+            var actAbilities = Data.MySqlDb.Game.Actabilities.Where(x => x.Owner == character.Id).OrderBy(x => x.Id);
+            foreach (var actAbility in actAbilities)
+            {
+                if (actAbility.Point <= 0)
+                    continue;
+
+                var abilityName = Data.Server.GetText("actability_groups", "name", actAbility.Id, "<" + actAbility.Id + ">");
+                var abilityNode = vocationNode.Nodes.Add($"{abilityName}, {actAbility.Point} (Rank {actAbility.Step})");
+            }
+
+            // Honor
+            rootNode.Nodes.Add($"Honor {character.HonorPoint}, PvP {character.PvpHonor}");
+
+            // Default expand layout
+            tvStats.CollapseAll();
+            rootNode.Expand();
+            inventoryNode.ExpandAll();
+            warehouseNode.ExpandAll();
+        }
+
+        private void PopulateOwnedTab(Characters character)
+        {
+            tvOwned.Nodes.Clear();
+
+            // Housing
+            #region houses
+            var housingNode = tvOwned.Nodes.Add($"Houses and Farms");
+            List<Housings> houses;
+            if (cbIncludeAccountHouses.Checked)
+                houses = Data.MySqlDb.Game.Housings.Where(x => x.AccountId == character.AccountId).ToList();
+            else
+                houses = Data.MySqlDb.Game.Housings.Where(x => x.Owner == character.Id).ToList();
+            foreach (var house in houses)
+            {
+                var houseNode = housingNode.Nodes.Add($"{house.Name} ({house.Id})");
+                if (cbIncludeAccountHouses.Checked && house.Owner == character.Id)
+                {
+                    houseNode.NodeFont = new Font(tvOwned.Font, FontStyle.Bold);
+                }
+                else
+                {
+                    var ownerCharacter = Data.MySqlDb.Game.Characters.FirstOrDefault(x => x.Id == house.Owner);
+                    houseNode.Nodes.Add($"Owner: {ownerCharacter?.Name ?? "<none>"} ({ownerCharacter?.Id ?? 0})");
+                }
+
+                if (house.CoOwner != house.Owner)
+                {
+                    var coOwnerCharacter = Data.MySqlDb.Game.Characters.FirstOrDefault(x => x.Id == house.CoOwner);
+                    houseNode.Nodes.Add($"Co-Owner: {coOwnerCharacter?.Name ?? "<none>"} ({coOwnerCharacter?.Id ?? 0})");
+                }
+
+                houseNode.Nodes.Add($"Pos: {house.X:F0}, {house.Y:F0}, {house.Z:F0}");
+            }
+            #endregion
+
+            // Pets
+            #region pets
+            var petsNode = tvOwned.Nodes.Add("Pets");
+            var pets = Data.MySqlDb.Game.Mates.Where(x => x.Owner == character.Id).ToList();
+            foreach (var pet in pets)
+            {
+                var petNode = petsNode.Nodes.Add($"{pet.Name} ({pet.Id}) Lv {pet.Level} ");
+
+                var petItem = Data.MySqlDb.Game.Items.FirstOrDefault(x => x.Id == pet.ItemId);
+                if (petItem == null)
+                {
+                    petNode.Nodes.Add($"Item {pet.ItemId} - Orphaned").ForeColor = Color.Red;
+                    petNode.ForeColor = Color.Red;
+                }
+                else
+                {
+                    var item = Data.Server.GetItem(petItem.TemplateId);
+                    petNode.Nodes.Add($"({petItem.Id}) {Data.Server.GetText("items", "name", (long)item.Id, item.Name)} ({item.Id})");
+                }
+
+                petNode.Nodes.Add($"Exp {pet.Xp}");
+
+                var gearNode = petNode.Nodes.Add($"Equipment");
+                var petGearContainer = Data.MySqlDb.Game.ItemContainers.FirstOrDefault(x => x.MateId == pet.Id);
+                if (petGearContainer != null)
+                {
+                    var petGears = Data.MySqlDb.Game.Items.Where(x => x.ContainerId == petGearContainer.ContainerId);
+                    if (petGears.Any())
+                    {
+                        foreach (var petGear in petGears)
+                        {
+                            var item = Data.Server.GetItem(petGear.TemplateId);
+                            gearNode.Nodes.Add($"Item {Data.Server.GetText("items", "name", (long)item.Id, item.Name)} ({petGear.Id})");
+                        }
+                    }
+                    else
+                    {
+                        gearNode.Text = "No equipment";
+                    }
+                }
+                else
+                {
+                    gearNode.Text = "No equipment container";
+                }
+
+                gearNode.Collapse();
+                petNode.Collapse();
+            }
+            #endregion
+
+            // Vehicles
+            #region vehicles
+            var vehiclesNode = tvOwned.Nodes.Add($"Vehicles");
+            var vehicles = Data.MySqlDb.Game.Slaves.Where(x => x.OwnerId == character.Id && x.OwnerType == 0 && x.Summoner == character.Id).ToList();
+            foreach (var vehicle in vehicles)
+            {
+                var vehicleNode = vehiclesNode.Nodes.Add($"{vehicle.Name} ({vehicle.Id})");
+                var vehicleItem = Data.MySqlDb.Game.Items.FirstOrDefault(x => x.Id == vehicle.ItemId);
+                if (vehicleItem == null)
+                {
+                    vehicleNode.Nodes.Add($"Item {vehicle.ItemId} - Orphaned").ForeColor = Color.Red;
+                    vehicleNode.ForeColor = Color.Red;
+                }
+                else
+                {
+                    var item = Data.Server.GetItem(vehicleItem.TemplateId);
+                    vehicleNode.Nodes.Add($"({vehicleItem.Id}) Item {Data.Server.GetText("items", "name", (long)item.Id, item.Name)} ({item.Id})");
+                }
+                vehicleNode.Nodes.Add($"Pos: {vehicle.X:F0}, {vehicle.Y:F0}, {vehicle.Z:F0}");
+                vehicleNode.Nodes.Add($"{vehicle.Hp} HP, {vehicle.Mp} MP");
+                var childrenNode = vehicleNode.Nodes.Add($"Persistent Children");
+                var doodads = Data.MySqlDb.Game.Doodads.Where(x => (x.OwnerType == 2) && (x.HouseId == vehicle.Id));
+                foreach (var doodad in doodads)
+                {
+                    var doodadNode = childrenNode.Nodes.Add($"Doodad {doodad.Id} {Data.Server.GetText("doodad_almighties", "name", doodad.TemplateId, $"<{doodad.TemplateId}>", true)} ({doodad.TemplateId})");
+                    if (doodad.ParentDoodad > 0)
+                        doodadNode.Nodes.Add($"Parent: {doodad.ParentDoodad}");
+                    doodadNode.Nodes.Add($"AttachPoint: {doodad.AttachPoint}");
+                    doodadNode.Nodes.Add($"Pos: {doodad.X:F1}, {doodad.Y:F1}, {doodad.Z:F1}");
+                }
+
+                var slaves = Data.MySqlDb.Game.Slaves.Where(x => (x.OwnerType == 2) && (x.OwnerId == vehicle.Id));
+                foreach (var slave in slaves)
+                {
+                    var slaveNode = childrenNode.Nodes.Add($"Slave {slave.Id} {slave.Name} ({slave.TemplateId})");
+                    slaveNode.Nodes.Add($"AttachPoint: {slave.AttachPoint}");
+                    slaveNode.Nodes.Add($"Pos: {slave.X:F1}, {slave.Y:F1}, {slave.Z:F1}");
+                    slaveNode.Nodes.Add($"{slave.Hp} HP, {slave.Mp} MP");
+                }
+            }
+            #endregion
+
+            // Default expand layout
+            // tvOwned.ExpandAll();
+            housingNode.Expand();
+            petsNode.Expand();
+            vehiclesNode.Expand();
+        }
+
+        private void cbIncludeAccountHouses_CheckedChanged(object sender, EventArgs e)
+        {
+            if (SelectedCharacter != null)
+                PopulateOwnedTab(SelectedCharacter);
         }
     }
 }
