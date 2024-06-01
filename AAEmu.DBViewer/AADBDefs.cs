@@ -1,6 +1,8 @@
-﻿using System;
+﻿using AAEmu.DBViewer.enums;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
@@ -1141,6 +1143,90 @@ namespace AAEmu.DBDefs
         public float scale = 0f;
     }
 
+    public class GameScheduleItem
+    {
+        public long id = 0;
+        public string name = string.Empty;
+        public int kind_id = 0;
+        public int st_year = 0;
+        public int st_month = 0;
+        public int st_day = 0;
+        public int st_hour = 0;
+        public int st_min = 0;
+        public int ed_year = 0;
+        public int ed_month = 0;
+        public int ed_day = 0;
+        public int ed_hour = 0;
+        public int ed_min = 0;
+        public long give_term = 0;
+        public long give_max = 0;
+        public long item_id = 0;
+        public long item_count = 0;
+        public long premium_grade_id = 0;
+        public bool active_take = false;
+        public bool on_air = false;
+        public string tool_tip = string.Empty;
+        public bool show_wherever = false;
+        public bool show_whenever = false;
+        public string icon_path = string.Empty;
+        public string enable_key_string = string.Empty;
+        public string disable_key_string = string.Empty;
+        public string label_key_string = string.Empty;
+
+        public override string ToString()
+        {
+            var isActive = on_air ? " ON AIR" : "";
+            return $"{id:000}{isActive} [{kind_id}]: {AADB.GetTranslationByID(id, "schedule_items", "name", name)}";
+        }
+    }
+
+    public class GameGameSchedules
+    {
+        public long id = 0;
+        public string name = string.Empty;
+        public AaDayOfWeek day_of_week_id = 0;
+        public long start_time = 0;
+        public long end_time = 0;
+        public long st_year = 0;
+        public long st_month = 0;
+        public long st_day = 0;
+        public long st_hour = 0;
+        public long st_min = 0;
+        public long ed_year = 0;
+        public long ed_month = 0;
+        public long ed_day = 0;
+        public long ed_hour = 0;
+        public long ed_min = 0;
+        public long start_time_min = 0;
+        public long end_time_min = 0;
+
+        public override string ToString()
+        {
+            return $"{id:000} : {AADB.GetTranslationByID(id, "game_schedules", "name", name)}";
+        }
+    }
+
+    public class GameScheduleQuest
+    {
+        public long id = 0;
+        public long game_schedule_id = 0;
+        public long quest_id = 0;
+    }
+
+    public class GameScheduleDoodads
+    {
+        public long id = 0;
+        public long game_schedule_id = 0;
+        public long doodad_id = 0;
+    }
+
+    public class GameScheduleSpawners
+    {
+        public long id = 0;
+        public long game_schedule_id = 0;
+        public long spawner_id = 0;
+    }
+
     static class AADB
     {
         public static Dictionary<string, GameTranslation> DB_Translations = new Dictionary<string, GameTranslation>();
@@ -1208,6 +1294,11 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameNpcInitialBuffs> DB_NpcInitialBuffs = new();
         public static Dictionary<long, GameNpcInteractions> DB_NpcInteractions = new();
         public static Dictionary<long, GameAiFiles> DB_AiFiles = new();
+        public static Dictionary<long, GameScheduleItem> DB_ScheduleItems = new();
+        public static Dictionary<long, GameGameSchedules> DB_GameSchedules = new();
+        public static Dictionary<long, GameScheduleQuest> DB_ScheduleQuest = new();
+        public static Dictionary<long, GameScheduleDoodads> DB_ScheduleDoodads = new();
+        public static Dictionary<long, GameScheduleSpawners> DB_ScheduleSpawners = new();
 
         public static string GetTranslationByID(long idx, string table, string field, string defaultValue = "$NODEFAULT")
         {

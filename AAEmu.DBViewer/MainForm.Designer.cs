@@ -457,6 +457,13 @@
             label121 = new System.Windows.Forms.Label();
             lbTradeDestination = new System.Windows.Forms.ListBox();
             lbTradeSource = new System.Windows.Forms.ListBox();
+            tpSchedules = new System.Windows.Forms.TabPage();
+            tcScheduleTypes = new System.Windows.Forms.TabControl();
+            tpScheduleIRL = new System.Windows.Forms.TabPage();
+            lbSchedulesIRL = new System.Windows.Forms.ListBox();
+            tpScheduleGame = new System.Windows.Forms.TabPage();
+            lbSchedulesGame = new System.Windows.Forms.ListBox();
+            tvSchedule = new System.Windows.Forms.TreeView();
             tpSlaves = new System.Windows.Forms.TabPage();
             groupBox15 = new System.Windows.Forms.GroupBox();
             tvSlaveInfo = new System.Windows.Forms.TreeView();
@@ -611,6 +618,10 @@
             tpTags.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvTags).BeginInit();
             tpTrade.SuspendLayout();
+            tpSchedules.SuspendLayout();
+            tcScheduleTypes.SuspendLayout();
+            tpScheduleIRL.SuspendLayout();
+            tpScheduleGame.SuspendLayout();
             tpSlaves.SuspendLayout();
             groupBox15.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSlaves).BeginInit();
@@ -649,6 +660,7 @@
             tcViewer.Controls.Add(tpSkills);
             tcViewer.Controls.Add(tpTags);
             tcViewer.Controls.Add(tpTrade);
+            tcViewer.Controls.Add(tpSchedules);
             tcViewer.Controls.Add(tpSlaves);
             tcViewer.Controls.Add(tpZones);
             tcViewer.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1288,7 +1300,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(678, 329);
-            splitContainer2.SplitterDistance = 375;
+            splitContainer2.SplitterDistance = 367;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1296,7 +1308,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(284, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(276, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1327,7 +1339,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(367, 298);
+            tvBuffTriggers.Size = new System.Drawing.Size(359, 298);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += tvBuffTriggers_DoubleClick;
             // 
@@ -4483,7 +4495,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(465, 517);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(457, 517);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4515,7 +4527,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(692, 507);
+            tvQuestWorkflow.Size = new System.Drawing.Size(684, 507);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += tvQuestWorkflow_DoubleClick;
             // 
@@ -5435,6 +5447,84 @@
             lbTradeSource.Size = new System.Drawing.Size(244, 548);
             lbTradeSource.TabIndex = 0;
             lbTradeSource.SelectedIndexChanged += lbTradeSource_SelectedIndexChanged;
+            // 
+            // tpSchedules
+            // 
+            tpSchedules.Controls.Add(tcScheduleTypes);
+            tpSchedules.Controls.Add(tvSchedule);
+            tpSchedules.Location = new System.Drawing.Point(4, 25);
+            tpSchedules.Name = "tpSchedules";
+            tpSchedules.Padding = new System.Windows.Forms.Padding(3);
+            tpSchedules.Size = new System.Drawing.Size(1082, 600);
+            tpSchedules.TabIndex = 17;
+            tpSchedules.Text = "Schedules";
+            tpSchedules.UseVisualStyleBackColor = true;
+            // 
+            // tcScheduleTypes
+            // 
+            tcScheduleTypes.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            tcScheduleTypes.Controls.Add(tpScheduleIRL);
+            tcScheduleTypes.Controls.Add(tpScheduleGame);
+            tcScheduleTypes.Location = new System.Drawing.Point(8, 6);
+            tcScheduleTypes.Name = "tcScheduleTypes";
+            tcScheduleTypes.SelectedIndex = 0;
+            tcScheduleTypes.Size = new System.Drawing.Size(351, 580);
+            tcScheduleTypes.TabIndex = 3;
+            // 
+            // tpScheduleIRL
+            // 
+            tpScheduleIRL.Controls.Add(lbSchedulesIRL);
+            tpScheduleIRL.Location = new System.Drawing.Point(4, 25);
+            tpScheduleIRL.Name = "tpScheduleIRL";
+            tpScheduleIRL.Padding = new System.Windows.Forms.Padding(3);
+            tpScheduleIRL.Size = new System.Drawing.Size(343, 551);
+            tpScheduleIRL.TabIndex = 0;
+            tpScheduleIRL.Text = "Seasonal";
+            tpScheduleIRL.UseVisualStyleBackColor = true;
+            // 
+            // lbSchedulesIRL
+            // 
+            lbSchedulesIRL.Dock = System.Windows.Forms.DockStyle.Fill;
+            lbSchedulesIRL.FormattingEnabled = true;
+            lbSchedulesIRL.Location = new System.Drawing.Point(3, 3);
+            lbSchedulesIRL.Name = "lbSchedulesIRL";
+            lbSchedulesIRL.Size = new System.Drawing.Size(337, 545);
+            lbSchedulesIRL.TabIndex = 0;
+            lbSchedulesIRL.SelectedIndexChanged += lbSchedules_SelectedIndexChanged;
+            // 
+            // tpScheduleGame
+            // 
+            tpScheduleGame.Controls.Add(lbSchedulesGame);
+            tpScheduleGame.Location = new System.Drawing.Point(4, 25);
+            tpScheduleGame.Name = "tpScheduleGame";
+            tpScheduleGame.Padding = new System.Windows.Forms.Padding(3);
+            tpScheduleGame.Size = new System.Drawing.Size(343, 551);
+            tpScheduleGame.TabIndex = 1;
+            tpScheduleGame.Text = "Game";
+            tpScheduleGame.UseVisualStyleBackColor = true;
+            // 
+            // lbSchedulesGame
+            // 
+            lbSchedulesGame.Dock = System.Windows.Forms.DockStyle.Fill;
+            lbSchedulesGame.FormattingEnabled = true;
+            lbSchedulesGame.Location = new System.Drawing.Point(3, 3);
+            lbSchedulesGame.Name = "lbSchedulesGame";
+            lbSchedulesGame.Size = new System.Drawing.Size(337, 545);
+            lbSchedulesGame.TabIndex = 1;
+            lbSchedulesGame.SelectedIndexChanged += lbSchedulesGame_SelectedIndexChanged;
+            // 
+            // tvSchedule
+            // 
+            tvSchedule.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            tvSchedule.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            tvSchedule.ImageIndex = 0;
+            tvSchedule.ImageList = ilMiniIcons;
+            tvSchedule.Location = new System.Drawing.Point(365, 34);
+            tvSchedule.Name = "tvSchedule";
+            tvSchedule.SelectedImageIndex = 0;
+            tvSchedule.Size = new System.Drawing.Size(433, 552);
+            tvSchedule.TabIndex = 2;
+            tvSchedule.DoubleClick += tvSchedule_DoubleClick;
             // 
             // tpSlaves
             // 
@@ -6518,6 +6608,10 @@
             ((System.ComponentModel.ISupportInitialize)dgvTags).EndInit();
             tpTrade.ResumeLayout(false);
             tpTrade.PerformLayout();
+            tpSchedules.ResumeLayout(false);
+            tcScheduleTypes.ResumeLayout(false);
+            tpScheduleIRL.ResumeLayout(false);
+            tpScheduleGame.ResumeLayout(false);
             tpSlaves.ResumeLayout(false);
             tpSlaves.PerformLayout();
             groupBox15.ResumeLayout(false);
@@ -7049,6 +7143,13 @@
         private System.Windows.Forms.ComboBox cbSimpleSQL;
         private System.Windows.Forms.TreeView tvSlaveInfo;
         private System.Windows.Forms.CheckBox cbNpcCollapseLoot;
+        private System.Windows.Forms.TabPage tpSchedules;
+        private System.Windows.Forms.ListBox lbSchedulesIRL;
+        private System.Windows.Forms.TreeView tvSchedule;
+        private System.Windows.Forms.TabControl tcScheduleTypes;
+        private System.Windows.Forms.TabPage tpScheduleIRL;
+        private System.Windows.Forms.TabPage tpScheduleGame;
+        private System.Windows.Forms.ListBox lbSchedulesGame;
     }
 }
 

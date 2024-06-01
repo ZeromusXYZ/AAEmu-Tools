@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using AAEmu.DBViewer.JsonData;
 using AAEmu.DBViewer.utils;
 using System.Runtime;
+using System.Runtime.InteropServices.JavaScript;
 using AAEmu.Game.Models.Game.World;
 using AAEmu.DBViewer.enums;
 
@@ -3511,27 +3512,27 @@ namespace AAEmu.DBViewer
 
             var skillsProperties = GetCustomTableValues("skills", "id", skill.id.ToString());
             foreach (var skillsProperty in skillsProperties)
-            foreach (var skillsPropertyValue in skillsProperty)
-            {
-                if ((skillsPropertyValue.Key == "name") || 
-                    (skillsPropertyValue.Key == "desc") || 
-                    (skillsPropertyValue.Key == "web_desc") ||
-                    (skillsPropertyValue.Key == "name_tr") ||
-                    (skillsPropertyValue.Key == "desc_tr") ||
-                    (skillsPropertyValue.Key == "web_desc_tr")
-                    )
-                    continue; // ignore name/description fields
-
-                var thisNode = AddCustomPropertyNode(skillsPropertyValue.Key, skillsPropertyValue.Value, true, rootNode);
-                if (thisNode == null)
-                    continue;
-
-                if (thisNode.ImageIndex <= 0) // override default blank icon with blue !
+                foreach (var skillsPropertyValue in skillsProperty)
                 {
-                    thisNode.ImageIndex = 4;
-                    thisNode.SelectedImageIndex = 4;
+                    if ((skillsPropertyValue.Key == "name") ||
+                        (skillsPropertyValue.Key == "desc") ||
+                        (skillsPropertyValue.Key == "web_desc") ||
+                        (skillsPropertyValue.Key == "name_tr") ||
+                        (skillsPropertyValue.Key == "desc_tr") ||
+                        (skillsPropertyValue.Key == "web_desc_tr")
+                        )
+                        continue; // ignore name/description fields
+
+                    var thisNode = AddCustomPropertyNode(skillsPropertyValue.Key, skillsPropertyValue.Value, true, rootNode);
+                    if (thisNode == null)
+                        continue;
+
+                    if (thisNode.ImageIndex <= 0) // override default blank icon with blue !
+                    {
+                        thisNode.ImageIndex = 4;
+                        thisNode.SelectedImageIndex = 4;
+                    }
                 }
-            }
 
             /*
             if (skill.casting_time > 0)
@@ -4655,6 +4656,8 @@ namespace AAEmu.DBViewer
                 LoadTrades();
                 loading.ShowInfo("Loading: Loot");
                 LoadLoots();
+                loading.ShowInfo("Loading: Schedules");
+                LoadSchedules();
             }
 
             return true;
@@ -5048,6 +5051,199 @@ namespace AAEmu.DBViewer
 
             }
 
+        }
+
+        private void LoadSchedules()
+        {
+            using (var connection = SQLite.CreateConnection())
+            {
+                // seasonal
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_ScheduleItems.Clear();
+
+                    command.CommandText = "SELECT * FROM schedule_items ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameScheduleItem();
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+                            t.kind_id = (int)GetInt64(reader, "kind_id");
+                            t.st_year = (int)GetInt64(reader, "st_year");
+                            t.st_month = (int)GetInt64(reader, "st_month");
+                            t.st_day = (int)GetInt64(reader, "st_day");
+                            t.st_hour = (int)GetInt64(reader, "st_hour");
+                            t.st_min = (int)GetInt64(reader, "st_min");
+                            t.ed_year = (int)GetInt64(reader, "ed_year");
+                            t.ed_month = (int)GetInt64(reader, "ed_month");
+                            t.ed_day = (int)GetInt64(reader, "ed_day");
+                            t.ed_hour = (int)GetInt64(reader, "ed_hour");
+                            t.ed_min = (int)GetInt64(reader, "ed_min");
+                            t.give_term = GetInt64(reader, "give_term");
+                            t.give_max = GetInt64(reader, "give_max");
+                            t.item_id = GetInt64(reader, "item_id");
+                            t.item_count = GetInt64(reader, "item_count");
+                            t.premium_grade_id = GetInt64(reader, "premium_grade_id");
+                            t.active_take = GetBool(reader, "active_take");
+                            t.on_air = GetBool(reader, "on_air");
+                            t.show_wherever = GetBool(reader, "show_wherever");
+                            t.show_whenever = GetBool(reader, "show_whenever");
+                            t.tool_tip = GetString(reader, "tool_tip");
+                            t.icon_path = GetString(reader, "icon_path");
+                            t.enable_key_string = GetString(reader, "enable_key_string");
+                            t.disable_key_string = GetString(reader, "disable_key_string");
+                            t.label_key_string = GetString(reader, "label_key_string");
+
+                            AADB.DB_ScheduleItems.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+
+                // in-game
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_GameSchedules.Clear();
+
+                    command.CommandText = "SELECT * FROM game_schedules ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameGameSchedules();
+                            t.id = GetInt64(reader, "id");
+                            t.name = GetString(reader, "name");
+                            t.day_of_week_id = (AaDayOfWeek)GetInt64(reader, "day_of_week_id");
+                            t.start_time = GetInt64(reader, "start_time");
+                            t.start_time_min = GetInt64(reader, "start_time_min");
+                            t.end_time = GetInt64(reader, "end_time");
+                            t.end_time_min = GetInt64(reader, "end_time_min");
+                            t.st_year = GetInt64(reader, "st_year");
+                            t.st_month = GetInt64(reader, "st_month");
+                            t.st_day = GetInt64(reader, "st_day");
+                            t.st_hour = GetInt64(reader, "st_hour");
+                            t.st_min = GetInt64(reader, "st_min");
+                            t.ed_year = GetInt64(reader, "ed_year");
+                            t.ed_month = GetInt64(reader, "ed_month");
+                            t.ed_day = GetInt64(reader, "ed_day");
+                            t.ed_hour = GetInt64(reader, "ed_hour");
+                            t.ed_min = GetInt64(reader, "ed_min");
+
+                            AADB.DB_GameSchedules.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+
+                // schedule doodads
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_ScheduleDoodads.Clear();
+
+                    command.CommandText = "SELECT * FROM game_schedule_doodads ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameScheduleDoodads();
+                            t.id = GetInt64(reader, "id");
+                            t.game_schedule_id = GetInt64(reader, "game_schedule_id");
+                            t.doodad_id = GetInt64(reader, "doodad_id");
+
+                            AADB.DB_ScheduleDoodads.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+
+                // schedule spawners
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_ScheduleSpawners.Clear();
+
+                    command.CommandText = "SELECT * FROM game_schedule_spawners ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameScheduleSpawners();
+                            t.id = GetInt64(reader, "id");
+                            t.game_schedule_id = GetInt64(reader, "game_schedule_id");
+                            t.spawner_id = GetInt64(reader, "spawner_id");
+
+                            AADB.DB_ScheduleSpawners.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+
+                // schedule quests
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_ScheduleQuest.Clear();
+
+                    command.CommandText = "SELECT * FROM game_schedule_quests ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameScheduleQuest();
+                            t.id = GetInt64(reader, "id");
+                            t.game_schedule_id = GetInt64(reader, "game_schedule_id");
+                            t.quest_id = GetInt64(reader, "quest_id");
+
+                            AADB.DB_ScheduleQuest.Add(t.id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
+
+            lbSchedulesIRL.Sorted = true;
+            lbSchedulesIRL.Items.Clear();
+            foreach (var (key, val) in AADB.DB_ScheduleItems)
+            {
+                lbSchedulesIRL.Items.Add(val);
+            }
+
+            lbSchedulesGame.Sorted = true;
+            lbSchedulesGame.Items.Clear();
+            foreach (var (key, val) in AADB.DB_GameSchedules)
+            {
+                lbSchedulesGame.Items.Add(val);
+            }
         }
 
         private void TItemSearch_TextChanged(object sender, EventArgs e)
@@ -5830,7 +6026,7 @@ namespace AAEmu.DBViewer
 
                     // Create group nodes
                     var groupNodes = new Dictionary<long, TreeNode>();
-                    foreach(var groupId in groupKeys)
+                    foreach (var groupId in groupKeys)
                     {
                         var groupName = $"Group {groupId}";
                         if (groupId == 0)
@@ -5852,7 +6048,7 @@ namespace AAEmu.DBViewer
 
                         groupNode.Text += $" (Weight {totalWeight})";
 
-                        foreach(var loot in lootGroup.Value)
+                        foreach (var loot in lootGroup.Value)
                         {
                             var baseDropRate = loot.group switch
                             {
@@ -6535,6 +6731,24 @@ namespace AAEmu.DBViewer
                 rootNode.Nodes.Add(lootNode);
                 return lootNode;
             }
+            else if (key.EndsWith("spawner_id"))
+            {
+                var spawnNode = new TreeNodeWithInfo();
+                spawnNode.Text = key + ": " + val;
+                spawnNode.ForeColor = Color.Yellow;
+                rootNode.Nodes.Add(spawnNode);
+
+                var spawns = AADB.DB_Npc_Spawner_Npcs.Values.Where(x => x.npc_spawner_id == val);
+                foreach (var npcSpawnerNpc in spawns)
+                {
+                    if (npcSpawnerNpc.member_type == "Npc")
+                        AddCustomPropertyNode("npc_id", npcSpawnerNpc.member_id.ToString(), false, spawnNode);
+                    if (npcSpawnerNpc.member_type == "NpcGroup")
+                        AddCustomPropertyNode("npc_group_id", npcSpawnerNpc.member_id.ToString(), false, spawnNode);
+                }
+
+                return spawnNode;
+            }
             else if (key.StartsWith("ability_id"))
             {
                 try
@@ -6551,6 +6765,16 @@ namespace AAEmu.DBViewer
             else if ((key.EndsWith("icon_id") || key.EndsWith("icon1_id") || key.EndsWith("icon2_id")) && AADB.DB_Icons.TryGetValue(val, out var _))
             {
                 setCustomIcon = IconIDToLabel(val, null);
+            }
+            else if (key.EndsWith("quest_id") && (AADB.DB_Quest_Contexts.TryGetValue(val, out var quest)))
+            {
+                res.targetTabPage = tpQuests;
+                res.targetSearchBox = cbQuestSearch;
+                // res.targetSearchText = buff.nameLocalized;
+                res.targetSearchText = quest.id.ToString();
+                res.targetSearchButton = btnQuestsSearch;
+                res.ForeColor = Color.WhiteSmoke;
+                nodeText += " - " + quest.nameLocalized;
             }
 
             res.Text = nodeText;
@@ -9922,7 +10146,7 @@ namespace AAEmu.DBViewer
                         if (!AADB.DB_Mount_Skills.TryGetValue(slaveMountSkill.mount_skill_id, out var mountSkill))
                             continue;
                         AddCustomPropertyNode("skill_id", mountSkill.skill_id.ToString(), false, skillNode);
-                    }       
+                    }
                 }
 
                 // Bindings
@@ -10018,6 +10242,112 @@ namespace AAEmu.DBViewer
         {
             if ((sender is TreeView tv) && (tv.SelectedNode != null) && (tv.SelectedNode.Tag == null))
                 ProcessNodeInfoDoubleClick(tv.SelectedNode);
+        }
+
+        private void lbSchedules_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selectedItem = (lbSchedulesIRL.SelectedItem as GameScheduleItem);
+            if (selectedItem == null)
+                return;
+            tvSchedule.Nodes.Clear();
+            var rootNode = tvSchedule.Nodes.Add(selectedItem.ToString());
+            if ((selectedItem.st_year > 0) && (selectedItem.st_month > 0) && (selectedItem.st_day > 0))
+            {
+                var startTime = new DateTime(
+                    selectedItem.st_year, selectedItem.st_month, selectedItem.st_day,
+                    selectedItem.st_hour, selectedItem.st_min, selectedItem.st_min);
+                rootNode.Nodes.Add($"Starts: {startTime}");
+            }
+
+            if ((selectedItem.ed_year > 0) && (selectedItem.ed_month > 0) && (selectedItem.ed_day > 0))
+            {
+                var startTime = new DateTime(
+                    selectedItem.ed_year, selectedItem.ed_month, selectedItem.ed_day,
+                    selectedItem.ed_hour, selectedItem.ed_min, selectedItem.ed_min);
+                rootNode.Nodes.Add($"Ends: {startTime}");
+            }
+
+            rootNode.Nodes.Add($"give_term: {selectedItem.give_term}");
+            rootNode.Nodes.Add($"give_max: {selectedItem.give_max}");
+
+            if ((selectedItem.item_id > 0) || (selectedItem.item_count > 0))
+            {
+                AddCustomPropertyNode("item_id", selectedItem.item_id.ToString(), true, rootNode);
+                rootNode.Nodes.Add($"item_count: {selectedItem.item_count}");
+            }
+
+            rootNode.Nodes.Add($"premium_grade_id: {selectedItem.premium_grade_id}");
+            rootNode.Nodes.Add($"active_take: {selectedItem.active_take}");
+            rootNode.Nodes.Add($"on_air: {selectedItem.on_air}");
+            rootNode.Nodes.Add($"tool_tip: {AADB.GetTranslationByID(selectedItem.id, "schedule_items", "tool_tip", selectedItem.tool_tip)}");
+            rootNode.Nodes.Add($"show_wherever: {selectedItem.show_wherever}");
+            rootNode.Nodes.Add($"show_whenever: {selectedItem.show_whenever}");
+            rootNode.Nodes.Add($"icon_path: {selectedItem.icon_path}");
+            rootNode.Nodes.Add($"enable_key_string: {selectedItem.enable_key_string}");
+            rootNode.Nodes.Add($"disable_key_string: {selectedItem.disable_key_string}");
+            rootNode.Nodes.Add($"label_key_string: {selectedItem.label_key_string}");
+            rootNode.ExpandAll();
+        }
+
+        private void lbSchedulesGame_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selectedItem = (lbSchedulesGame.SelectedItem as GameGameSchedules);
+            if (selectedItem == null)
+                return;
+            tvSchedule.Nodes.Clear();
+            var rootNode = tvSchedule.Nodes.Add(selectedItem.ToString());
+
+            rootNode.Nodes.Add($"Day of the Week: {selectedItem.day_of_week_id}");
+
+            rootNode.Nodes.Add($"Starts: {selectedItem.start_time:00}:{selectedItem.start_time_min:00}");
+            rootNode.Nodes.Add($"Ends: {selectedItem.end_time:00}:{selectedItem.end_time_min:00}");
+
+            if ((selectedItem.st_year > 0) && (selectedItem.st_month > 0) && (selectedItem.st_day > 0))
+            {
+                var startTime = new DateTime(
+                    (int)selectedItem.st_year, (int)selectedItem.st_month, (int)selectedItem.st_day,
+                    (int)selectedItem.st_hour, (int)selectedItem.st_min, (int)selectedItem.st_min);
+                rootNode.Nodes.Add($"IRL Starts: {startTime}");
+            }
+
+            if ((selectedItem.ed_year > 0) && (selectedItem.ed_month > 0) && (selectedItem.ed_day > 0))
+            {
+                var startTime = new DateTime(
+                    (int)selectedItem.ed_year, (int)selectedItem.ed_month, (int)selectedItem.ed_day,
+                    (int)selectedItem.ed_hour, (int)selectedItem.ed_min, (int)selectedItem.ed_min);
+                rootNode.Nodes.Add($"IRL Ends: {startTime}");
+            }
+
+            var quests = AADB.DB_ScheduleQuest.Values.Where(x => x.game_schedule_id == selectedItem.id);
+            if (quests.Any())
+            {
+                var questNode = tvSchedule.Nodes.Add("Quests");
+                foreach (var gameScheduleQuest in quests)
+                    AddCustomPropertyNode("quest_id", gameScheduleQuest.quest_id.ToString(), false, questNode);
+            }
+
+            var doodads = AADB.DB_ScheduleDoodads.Values.Where(x => x.game_schedule_id == selectedItem.id);
+            if (doodads.Any())
+            {
+                var doodadNode = tvSchedule.Nodes.Add("Doodads");
+                foreach (var gameScheduleQuest in doodads)
+                    AddCustomPropertyNode("doodad_id", gameScheduleQuest.doodad_id.ToString(), false, doodadNode);
+            }
+
+            var spawners = AADB.DB_ScheduleSpawners.Values.Where(x => x.game_schedule_id == selectedItem.id);
+            if (spawners.Any())
+            {
+                var spawnersNode = tvSchedule.Nodes.Add("Spawners");
+                foreach (var gameScheduleQuest in spawners)
+                    AddCustomPropertyNode("spawner_id", gameScheduleQuest.spawner_id.ToString(), false, spawnersNode);
+            }
+
+            tvSchedule.ExpandAll();
+        }
+
+        private void tvSchedule_DoubleClick(object sender, EventArgs e)
+        {
+            ProcessNodeInfoDoubleClick(tvSchedule.SelectedNode);
         }
     }
 }
