@@ -17,7 +17,7 @@ using AAEmu.DBViewer.JsonData;
 using AAEmu.DBViewer.utils;
 using System.Runtime;
 using AAEmu.Game.Models.Game.World;
-using System.Runtime.InteropServices;
+using AAEmu.DBViewer.enums;
 
 namespace AAEmu.DBViewer
 {
@@ -3509,6 +3509,44 @@ namespace AAEmu.DBViewer
             rootNode.Tag = 0;
             tvSkill.Nodes.Add(rootNode);
 
+            var skillsProperties = GetCustomTableValues("skills", "id", skill.id.ToString());
+            foreach (var skillsProperty in skillsProperties)
+            foreach (var skillsPropertyValue in skillsProperty)
+            {
+                if ((skillsPropertyValue.Key == "name") || 
+                    (skillsPropertyValue.Key == "desc") || 
+                    (skillsPropertyValue.Key == "web_desc") ||
+                    (skillsPropertyValue.Key == "name_tr") ||
+                    (skillsPropertyValue.Key == "desc_tr") ||
+                    (skillsPropertyValue.Key == "web_desc_tr")
+                    )
+                    continue; // ignore name/description fields
+
+                var thisNode = AddCustomPropertyNode(skillsPropertyValue.Key, skillsPropertyValue.Value, true, rootNode);
+                if (thisNode == null)
+                    continue;
+
+                if (thisNode.ImageIndex <= 0) // override default blank icon with blue !
+                {
+                    thisNode.ImageIndex = 4;
+                    thisNode.SelectedImageIndex = 4;
+                }
+            }
+
+            /*
+            if (skill.casting_time > 0)
+                AddCustomPropertyNode("casting_time", skill.casting_time.ToString(), true, rootNode);
+
+            if (skill.cooldown_time > 0)
+                AddCustomPropertyNode("cooldown_time", skill.cooldown_time.ToString(), true, rootNode);
+
+            if (skill.effect_delay > 0)
+                AddCustomPropertyNode("effect_delay", skill.effect_delay.ToString(), true, rootNode);
+
+            if (skill.ability_id > 0)
+                AddCustomPropertyNode("ability_id", ((AbilityType)skill.ability_id).ToString(), true, rootNode);
+            */
+
             var skillEffectsList = from se in AADB.DB_Skill_Effects
                                    where se.Value.skill_id == skill.id
                                    select se.Value;
@@ -3554,6 +3592,8 @@ namespace AAEmu.DBViewer
             }
 
             tvSkill.ExpandAll();
+            if (tvSkill.Nodes.Count > 1)
+                rootNode.Collapse();
             tvSkill.SelectedNode = rootNode;
         }
 
@@ -6303,7 +6343,7 @@ namespace AAEmu.DBViewer
             var res = new TreeNodeWithInfo();
             var setCustomIcon = -1;
 
-            if (key.EndsWith("delay") || key.EndsWith("_time") || key.EndsWith("duration"))
+            if (key.EndsWith("delay") || key.EndsWith("_time") || key.EndsWith("duration") || key.EndsWith("custom_gcd"))
             {
                 if (long.TryParse(value, out var delayVal))
                 {
@@ -6494,6 +6534,23 @@ namespace AAEmu.DBViewer
 
                 rootNode.Nodes.Add(lootNode);
                 return lootNode;
+            }
+            else if (key.StartsWith("ability_id"))
+            {
+                try
+                {
+                    res.ForeColor = Color.LawnGreen;
+                    nodeText += " - " + ((AbilityType)Enum.Parse(typeof(AbilityType), value)).ToString();
+                }
+                catch
+                {
+                    nodeText += " - ???";
+                    res.ForeColor = Color.Red;
+                }
+            }
+            else if ((key.EndsWith("icon_id") || key.EndsWith("icon1_id") || key.EndsWith("icon2_id")) && AADB.DB_Icons.TryGetValue(val, out var _))
+            {
+                setCustomIcon = IconIDToLabel(val, null);
             }
 
             res.Text = nodeText;
