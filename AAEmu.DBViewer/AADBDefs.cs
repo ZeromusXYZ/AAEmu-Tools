@@ -393,6 +393,13 @@ namespace AAEmu.DBDefs
         public string nameLocalized = string.Empty;
     }
 
+    class GameQuestMonsterNpcs
+    {
+        public long id;
+        public long quest_monster_group_id;
+        public long npc_id;
+    }
+
     class GameSkillItems
     {
         public long id = 0;
@@ -1241,6 +1248,7 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameSlaveMountSkill> DB_Slave_Mount_Skills = new Dictionary<long, GameSlaveMountSkill>();
         public static Dictionary<long, GameNPC> DB_NPCs = new Dictionary<long, GameNPC>();
         public static Dictionary<long, GameQuestMonsterGroups> DB_Quest_Monster_Groups = new Dictionary<long, GameQuestMonsterGroups>();
+        public static Dictionary<long, GameQuestMonsterNpcs> DB_Quest_Monster_Npcs = new();
         public static Dictionary<long, string> DB_Icons = new Dictionary<long, string>();
         public static Dictionary<long, GameSkillItems> DB_Skill_Reagents = new Dictionary<long, GameSkillItems>();
         public static Dictionary<long, GameSkillItems> DB_Skill_Products = new Dictionary<long, GameSkillItems>();

@@ -1458,6 +1458,34 @@ namespace AAEmu.DBViewer
                 }
             }
 
+            sql = "SELECT * FROM quest_monster_npcs ORDER BY id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        AADB.DB_Quest_Monster_Npcs.Clear();
+
+                        var readCatId = false;
+                        List<string> columnNames = null;
+                        while (reader.Read())
+                        {
+                            var t = new GameQuestMonsterNpcs();
+                            // Actual DB entries
+                            t.id = GetInt64(reader, "id");
+                            t.quest_monster_group_id = GetInt64(reader, "quest_monster_group_id");
+                            t.npc_id = GetInt64(reader, "npc_id");
+
+                            AADB.DB_Quest_Monster_Npcs.Add(t.id, t);
+                        }
+                    }
+                }
+            }
+
             sql = "SELECT * FROM npc_interactions ORDER BY id ASC";
             using (var connection = SQLite.CreateConnection())
             {
@@ -6596,6 +6624,20 @@ namespace AAEmu.DBViewer
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + npc.nameLocalized;
             }
+            /*
+            else if (key.EndsWith("npc_group_id"))
+            {
+                var npcs = AADB.DB_Quest_Monster_Npcs.Values.Where(x => x.quest_monster_group_id == val);
+                if (npcs.Any())
+                {
+                    foreach (var npcFromGroup in npcs)
+                    {
+                        AddCustomPropertyNode("npc_id", npcFromGroup.npc_id.ToString(), false, res);
+                    }
+                }
+                res.ForeColor = Color.Yellow;
+            }
+            */
             else if (key.EndsWith("slave_id") && (AADB.DB_Slaves.TryGetValue(val, out var slave)))
             {
                 res.targetTabPage = tpNPCs;
@@ -6780,7 +6822,7 @@ namespace AAEmu.DBViewer
             res.Text = nodeText;
 
             rootNode.Nodes.Add(res);
-            if ((rootNode?.TreeView.ImageList != null) && (setCustomIcon >= 0))
+            if ((rootNode?.TreeView?.ImageList != null) && (setCustomIcon >= 0))
             {
                 res.ImageIndex = setCustomIcon;
                 res.SelectedImageIndex = setCustomIcon;
