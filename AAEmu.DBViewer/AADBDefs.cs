@@ -1234,6 +1234,89 @@ namespace AAEmu.DBDefs
         public long spawner_id = 0;
     }
 
+    public class GameTowerDefs
+    {
+        public long id = 0;
+
+        public string name = string.Empty;
+        public string start_msg = string.Empty;
+        public string end_msg = string.Empty;
+        public float tod = 0f;
+        public float first_wave_after = 0f;
+        public long target_npc_spawner_id = 0;
+        public long kill_npc_id = 0;
+        public long kill_npc_count = 0;
+        public float force_end_time = 0f;
+        public long tod_day_interval = 0;
+        public string title_msg = string.Empty;
+        public long milestone_id = 0;
+
+        // Helpers
+        public string nameLocalized = string.Empty;
+        public string start_msgLocalized = string.Empty;
+        public string end_msgLocalized = string.Empty;
+        public string title_msgLocalized = string.Empty;
+
+        public override string ToString()
+        {
+            return $"{id}: {title_msgLocalized}";
+        }
+    }
+
+    public class GameTowerDefProgs
+    {
+        public long id = 0;
+        public long tower_def_id = 0;
+        public string msg = string.Empty;
+        public float cond_to_next_time = 0f;
+        public bool cond_comp_by_and = false;
+
+        // Helpers
+        public string msgLocalized = string.Empty;
+    }
+
+    public class GameTowerDefProgSpawnTargets
+    {
+        public long id = 0;
+        public long tower_def_prog_id = 0;
+        public long spawn_target_id = 0;
+        public string spawn_target_type = string.Empty;
+        public bool despawn_on_next_step = false;
+    }
+
+    public class GameTowerDefProgKillTargets
+    {
+        public long id = 0;
+        public long tower_def_prog_id = 0;
+        public long kill_target_id = 0;
+        public string kill_target_type = string.Empty;
+        public long kill_count = 0;
+    }
+
+    public class GameConflictZones
+    {
+        public long zone_group_id = 0;
+        public long num_kills_0 = 0;
+        public long num_kills_1 = 0;
+        public long num_kills_2 = 0;
+        public long num_kills_3 = 0;
+        public long num_kills_4 = 0;
+        public long no_kill_min_0 = 0;
+        public long no_kill_min_1 = 0;
+        public long no_kill_min_2 = 0;
+        public long no_kill_min_3 = 0;
+        public long no_kill_min_4 = 0;
+        public long conflict_min = 0;
+        public long war_min = 0;
+        public long peace_min = 0;
+        public long peace_protected_faction_id = 0;
+        public long nuia_return_point_id = 0;
+        public long harihara_return_point_id = 0;
+        public long war_tower_def_id = 0;
+        public long peace_tower_def_id = 0;
+        public bool closed = false;
+    }
+
     static class AADB
     {
         public static Dictionary<string, GameTranslation> DB_Translations = new Dictionary<string, GameTranslation>();
@@ -1254,6 +1337,7 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameSkillItems> DB_Skill_Products = new Dictionary<long, GameSkillItems>();
         public static Dictionary<long, GameZone> DB_Zones = new Dictionary<long, GameZone>();
         public static Dictionary<long, GameZone_Groups> DB_Zone_Groups = new Dictionary<long, GameZone_Groups>();
+        public static Dictionary<long, GameConflictZones> DB_ConflictZones = new ();
         public static Dictionary<long, GameWorld_Groups> DB_World_Groups = new Dictionary<long, GameWorld_Groups>();
         public static Dictionary<long, GameSystemFaction> DB_GameSystem_Factions = new Dictionary<long, GameSystemFaction>();
         public static Dictionary<long, GameSystemFactionRelation> DB_GameSystem_Faction_Relations = new Dictionary<long, GameSystemFactionRelation>();
@@ -1307,6 +1391,10 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameScheduleQuest> DB_ScheduleQuest = new();
         public static Dictionary<long, GameScheduleDoodads> DB_ScheduleDoodads = new();
         public static Dictionary<long, GameScheduleSpawners> DB_ScheduleSpawners = new();
+        public static Dictionary<long, GameTowerDefs> DB_TowerDefs = new();
+        public static Dictionary<long, GameTowerDefProgs> DB_TowerDefProgs = new();
+        public static Dictionary<long, GameTowerDefProgSpawnTargets> DB_TowerDefProgSpawnTargets = new();
+        public static Dictionary<long, GameTowerDefProgKillTargets> DB_TowerDefProgKillTargets = new();
 
         public static string GetTranslationByID(long idx, string table, string field, string defaultValue = "$NODEFAULT")
         {

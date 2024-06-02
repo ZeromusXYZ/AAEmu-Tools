@@ -463,6 +463,8 @@
             lbSchedulesIRL = new System.Windows.Forms.ListBox();
             tpScheduleGame = new System.Windows.Forms.TabPage();
             lbSchedulesGame = new System.Windows.Forms.ListBox();
+            tpTowerDefs = new System.Windows.Forms.TabPage();
+            lbTowerDefs = new System.Windows.Forms.ListBox();
             tvSchedule = new System.Windows.Forms.TreeView();
             tpSlaves = new System.Windows.Forms.TabPage();
             groupBox15 = new System.Windows.Forms.GroupBox();
@@ -622,6 +624,7 @@
             tcScheduleTypes.SuspendLayout();
             tpScheduleIRL.SuspendLayout();
             tpScheduleGame.SuspendLayout();
+            tpTowerDefs.SuspendLayout();
             tpSlaves.SuspendLayout();
             groupBox15.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSlaves).BeginInit();
@@ -1300,7 +1303,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(678, 329);
-            splitContainer2.SplitterDistance = 367;
+            splitContainer2.SplitterDistance = 364;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1308,7 +1311,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(276, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(273, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1339,7 +1342,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(359, 298);
+            tvBuffTriggers.Size = new System.Drawing.Size(356, 298);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += tvBuffTriggers_DoubleClick;
             // 
@@ -4495,7 +4498,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(457, 517);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(454, 517);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4527,7 +4530,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(684, 507);
+            tvQuestWorkflow.Size = new System.Drawing.Size(681, 507);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += tvQuestWorkflow_DoubleClick;
             // 
@@ -5465,6 +5468,7 @@
             tcScheduleTypes.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             tcScheduleTypes.Controls.Add(tpScheduleIRL);
             tcScheduleTypes.Controls.Add(tpScheduleGame);
+            tcScheduleTypes.Controls.Add(tpTowerDefs);
             tcScheduleTypes.Location = new System.Drawing.Point(8, 6);
             tcScheduleTypes.Name = "tcScheduleTypes";
             tcScheduleTypes.SelectedIndex = 0;
@@ -5513,16 +5517,37 @@
             lbSchedulesGame.TabIndex = 1;
             lbSchedulesGame.SelectedIndexChanged += lbSchedulesGame_SelectedIndexChanged;
             // 
+            // tpTowerDefs
+            // 
+            tpTowerDefs.Controls.Add(lbTowerDefs);
+            tpTowerDefs.Location = new System.Drawing.Point(4, 25);
+            tpTowerDefs.Name = "tpTowerDefs";
+            tpTowerDefs.Padding = new System.Windows.Forms.Padding(3);
+            tpTowerDefs.Size = new System.Drawing.Size(343, 551);
+            tpTowerDefs.TabIndex = 2;
+            tpTowerDefs.Text = "Rifts";
+            tpTowerDefs.UseVisualStyleBackColor = true;
+            // 
+            // lbTowerDefs
+            // 
+            lbTowerDefs.Dock = System.Windows.Forms.DockStyle.Fill;
+            lbTowerDefs.FormattingEnabled = true;
+            lbTowerDefs.Location = new System.Drawing.Point(3, 3);
+            lbTowerDefs.Name = "lbTowerDefs";
+            lbTowerDefs.Size = new System.Drawing.Size(337, 545);
+            lbTowerDefs.TabIndex = 2;
+            lbTowerDefs.SelectedIndexChanged += lbTowerDefs_SelectedIndexChanged;
+            // 
             // tvSchedule
             // 
-            tvSchedule.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            tvSchedule.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             tvSchedule.BackColor = System.Drawing.SystemColors.AppWorkspace;
             tvSchedule.ImageIndex = 0;
             tvSchedule.ImageList = ilMiniIcons;
             tvSchedule.Location = new System.Drawing.Point(365, 34);
             tvSchedule.Name = "tvSchedule";
             tvSchedule.SelectedImageIndex = 0;
-            tvSchedule.Size = new System.Drawing.Size(433, 552);
+            tvSchedule.Size = new System.Drawing.Size(709, 552);
             tvSchedule.TabIndex = 2;
             tvSchedule.DoubleClick += tvSchedule_DoubleClick;
             // 
@@ -6612,6 +6637,7 @@
             tcScheduleTypes.ResumeLayout(false);
             tpScheduleIRL.ResumeLayout(false);
             tpScheduleGame.ResumeLayout(false);
+            tpTowerDefs.ResumeLayout(false);
             tpSlaves.ResumeLayout(false);
             tpSlaves.PerformLayout();
             groupBox15.ResumeLayout(false);
@@ -7150,6 +7176,8 @@
         private System.Windows.Forms.TabPage tpScheduleIRL;
         private System.Windows.Forms.TabPage tpScheduleGame;
         private System.Windows.Forms.ListBox lbSchedulesGame;
+        private System.Windows.Forms.TabPage tpTowerDefs;
+        private System.Windows.Forms.ListBox lbTowerDefs;
     }
 }
 
