@@ -5132,312 +5132,321 @@ namespace AAEmu.DBViewer
             using (var connection = SQLite.CreateConnection())
             {
                 // seasonal
-                using (var command = connection.CreateCommand())
+                AADB.DB_ScheduleItems.Clear();
+                if (allTableNames.Contains("schedule_items"))
                 {
-                    AADB.DB_ScheduleItems.Clear();
-
-                    command.CommandText = "SELECT * FROM schedule_items ORDER BY id ASC";
-                    command.Prepare();
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    using (var command = connection.CreateCommand())
                     {
-                        Application.UseWaitCursor = true;
-                        Cursor = Cursors.WaitCursor;
-
-                        var hasPremiumGrade = (reader.GetColumnNames()?.IndexOf("premium_grade_id") >= 0);
-
-                        while (reader.Read())
+                        command.CommandText = "SELECT * FROM schedule_items ORDER BY id ASC";
+                        command.Prepare();
+                        using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                         {
-                            var t = new GameScheduleItem();
-                            t.id = GetInt64(reader, "id");
-                            t.name = GetString(reader, "name");
-                            t.kind_id = (int)GetInt64(reader, "kind_id");
-                            t.st_year = (int)GetInt64(reader, "st_year");
-                            t.st_month = (int)GetInt64(reader, "st_month");
-                            t.st_day = (int)GetInt64(reader, "st_day");
-                            t.st_hour = (int)GetInt64(reader, "st_hour");
-                            t.st_min = (int)GetInt64(reader, "st_min");
-                            t.ed_year = (int)GetInt64(reader, "ed_year");
-                            t.ed_month = (int)GetInt64(reader, "ed_month");
-                            t.ed_day = (int)GetInt64(reader, "ed_day");
-                            t.ed_hour = (int)GetInt64(reader, "ed_hour");
-                            t.ed_min = (int)GetInt64(reader, "ed_min");
-                            t.give_term = GetInt64(reader, "give_term");
-                            t.give_max = GetInt64(reader, "give_max");
-                            t.item_id = GetInt64(reader, "item_id");
-                            t.item_count = GetInt64(reader, "item_count");
-                            t.premium_grade_id = hasPremiumGrade ? GetInt64(reader, "premium_grade_id") : 0;
-                            t.active_take = GetBool(reader, "active_take");
-                            t.on_air = GetBool(reader, "on_air");
-                            t.show_wherever = GetBool(reader, "show_wherever");
-                            t.show_whenever = GetBool(reader, "show_whenever");
-                            t.tool_tip = GetString(reader, "tool_tip");
-                            t.icon_path = GetString(reader, "icon_path");
-                            t.enable_key_string = GetString(reader, "enable_key_string");
-                            t.disable_key_string = GetString(reader, "disable_key_string");
-                            t.label_key_string = GetString(reader, "label_key_string");
+                            Application.UseWaitCursor = true;
+                            Cursor = Cursors.WaitCursor;
 
-                            AADB.DB_ScheduleItems.Add(t.id, t);
+                            var hasPremiumGrade = (reader.GetColumnNames()?.IndexOf("premium_grade_id") >= 0);
+
+                            while (reader.Read())
+                            {
+                                var t = new GameScheduleItem();
+                                t.id = GetInt64(reader, "id");
+                                t.name = GetString(reader, "name");
+                                t.kind_id = (int)GetInt64(reader, "kind_id");
+                                t.st_year = (int)GetInt64(reader, "st_year");
+                                t.st_month = (int)GetInt64(reader, "st_month");
+                                t.st_day = (int)GetInt64(reader, "st_day");
+                                t.st_hour = (int)GetInt64(reader, "st_hour");
+                                t.st_min = (int)GetInt64(reader, "st_min");
+                                t.ed_year = (int)GetInt64(reader, "ed_year");
+                                t.ed_month = (int)GetInt64(reader, "ed_month");
+                                t.ed_day = (int)GetInt64(reader, "ed_day");
+                                t.ed_hour = (int)GetInt64(reader, "ed_hour");
+                                t.ed_min = (int)GetInt64(reader, "ed_min");
+                                t.give_term = GetInt64(reader, "give_term");
+                                t.give_max = GetInt64(reader, "give_max");
+                                t.item_id = GetInt64(reader, "item_id");
+                                t.item_count = GetInt64(reader, "item_count");
+                                t.premium_grade_id = hasPremiumGrade ? GetInt64(reader, "premium_grade_id") : 0;
+                                t.active_take = GetBool(reader, "active_take");
+                                t.on_air = GetBool(reader, "on_air");
+                                t.show_wherever = GetBool(reader, "show_wherever");
+                                t.show_whenever = GetBool(reader, "show_whenever");
+                                t.tool_tip = GetString(reader, "tool_tip");
+                                t.icon_path = GetString(reader, "icon_path");
+                                t.enable_key_string = GetString(reader, "enable_key_string");
+                                t.disable_key_string = GetString(reader, "disable_key_string");
+                                t.label_key_string = GetString(reader, "label_key_string");
+
+                                AADB.DB_ScheduleItems.Add(t.id, t);
+                            }
+
+                            Cursor = Cursors.Default;
+                            Application.UseWaitCursor = false;
                         }
-
-                        Cursor = Cursors.Default;
-                        Application.UseWaitCursor = false;
                     }
                 }
 
                 // in-game
-                using (var command = connection.CreateCommand())
+                AADB.DB_GameSchedules.Clear();
+                AADB.DB_ScheduleDoodads.Clear();
+                AADB.DB_ScheduleSpawners.Clear();
+                AADB.DB_ScheduleQuest.Clear();
+                if (allTableNames.Contains("game_schedules") &&
+                    allTableNames.Contains("game_schedule_doodads") &&
+                    allTableNames.Contains("game_schedule_spawners") &&
+                    allTableNames.Contains("game_schedule_quests"))
                 {
-                    AADB.DB_GameSchedules.Clear();
-
-                    command.CommandText = "SELECT * FROM game_schedules ORDER BY id ASC";
-                    command.Prepare();
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    using (var command = connection.CreateCommand())
                     {
-                        Application.UseWaitCursor = true;
-                        Cursor = Cursors.WaitCursor;
 
-                        while (reader.Read())
+                        command.CommandText = "SELECT * FROM game_schedules ORDER BY id ASC";
+                        command.Prepare();
+                        using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                         {
-                            var t = new GameGameSchedules();
-                            t.id = GetInt64(reader, "id");
-                            t.name = GetString(reader, "name");
-                            t.day_of_week_id = (AaDayOfWeek)GetInt64(reader, "day_of_week_id");
-                            t.start_time = GetInt64(reader, "start_time");
-                            t.start_time_min = GetInt64(reader, "start_time_min");
-                            t.end_time = GetInt64(reader, "end_time");
-                            t.end_time_min = GetInt64(reader, "end_time_min");
-                            t.st_year = GetInt64(reader, "st_year");
-                            t.st_month = GetInt64(reader, "st_month");
-                            t.st_day = GetInt64(reader, "st_day");
-                            t.st_hour = GetInt64(reader, "st_hour");
-                            t.st_min = GetInt64(reader, "st_min");
-                            t.ed_year = GetInt64(reader, "ed_year");
-                            t.ed_month = GetInt64(reader, "ed_month");
-                            t.ed_day = GetInt64(reader, "ed_day");
-                            t.ed_hour = GetInt64(reader, "ed_hour");
-                            t.ed_min = GetInt64(reader, "ed_min");
+                            Application.UseWaitCursor = true;
+                            Cursor = Cursors.WaitCursor;
 
-                            AADB.DB_GameSchedules.Add(t.id, t);
+                            while (reader.Read())
+                            {
+                                var t = new GameGameSchedules();
+                                t.id = GetInt64(reader, "id");
+                                t.name = GetString(reader, "name");
+                                t.day_of_week_id = (AaDayOfWeek)GetInt64(reader, "day_of_week_id");
+                                t.start_time = GetInt64(reader, "start_time");
+                                t.start_time_min = GetInt64(reader, "start_time_min");
+                                t.end_time = GetInt64(reader, "end_time");
+                                t.end_time_min = GetInt64(reader, "end_time_min");
+                                t.st_year = GetInt64(reader, "st_year");
+                                t.st_month = GetInt64(reader, "st_month");
+                                t.st_day = GetInt64(reader, "st_day");
+                                t.st_hour = GetInt64(reader, "st_hour");
+                                t.st_min = GetInt64(reader, "st_min");
+                                t.ed_year = GetInt64(reader, "ed_year");
+                                t.ed_month = GetInt64(reader, "ed_month");
+                                t.ed_day = GetInt64(reader, "ed_day");
+                                t.ed_hour = GetInt64(reader, "ed_hour");
+                                t.ed_min = GetInt64(reader, "ed_min");
+
+                                AADB.DB_GameSchedules.Add(t.id, t);
+                            }
+
+                            Cursor = Cursors.Default;
+                            Application.UseWaitCursor = false;
                         }
-
-                        Cursor = Cursors.Default;
-                        Application.UseWaitCursor = false;
                     }
-                }
 
-                // schedule doodads
-                using (var command = connection.CreateCommand())
-                {
-                    AADB.DB_ScheduleDoodads.Clear();
-
-                    command.CommandText = "SELECT * FROM game_schedule_doodads ORDER BY id ASC";
-                    command.Prepare();
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    // schedule doodads
+                    using (var command = connection.CreateCommand())
                     {
-                        Application.UseWaitCursor = true;
-                        Cursor = Cursors.WaitCursor;
-
-                        while (reader.Read())
+                        command.CommandText = "SELECT * FROM game_schedule_doodads ORDER BY id ASC";
+                        command.Prepare();
+                        using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                         {
-                            var t = new GameScheduleDoodads();
-                            t.id = GetInt64(reader, "id");
-                            t.game_schedule_id = GetInt64(reader, "game_schedule_id");
-                            t.doodad_id = GetInt64(reader, "doodad_id");
+                            Application.UseWaitCursor = true;
+                            Cursor = Cursors.WaitCursor;
 
-                            AADB.DB_ScheduleDoodads.Add(t.id, t);
+                            while (reader.Read())
+                            {
+                                var t = new GameScheduleDoodads();
+                                t.id = GetInt64(reader, "id");
+                                t.game_schedule_id = GetInt64(reader, "game_schedule_id");
+                                t.doodad_id = GetInt64(reader, "doodad_id");
+
+                                AADB.DB_ScheduleDoodads.Add(t.id, t);
+                            }
+
+                            Cursor = Cursors.Default;
+                            Application.UseWaitCursor = false;
                         }
-
-                        Cursor = Cursors.Default;
-                        Application.UseWaitCursor = false;
                     }
-                }
 
-                // schedule spawners
-                using (var command = connection.CreateCommand())
-                {
-                    AADB.DB_ScheduleSpawners.Clear();
-
-                    command.CommandText = "SELECT * FROM game_schedule_spawners ORDER BY id ASC";
-                    command.Prepare();
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    // schedule spawners
+                    using (var command = connection.CreateCommand())
                     {
-                        Application.UseWaitCursor = true;
-                        Cursor = Cursors.WaitCursor;
-
-                        while (reader.Read())
+                        command.CommandText = "SELECT * FROM game_schedule_spawners ORDER BY id ASC";
+                        command.Prepare();
+                        using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                         {
-                            var t = new GameScheduleSpawners();
-                            t.id = GetInt64(reader, "id");
-                            t.game_schedule_id = GetInt64(reader, "game_schedule_id");
-                            t.spawner_id = GetInt64(reader, "spawner_id");
+                            Application.UseWaitCursor = true;
+                            Cursor = Cursors.WaitCursor;
 
-                            AADB.DB_ScheduleSpawners.Add(t.id, t);
+                            while (reader.Read())
+                            {
+                                var t = new GameScheduleSpawners();
+                                t.id = GetInt64(reader, "id");
+                                t.game_schedule_id = GetInt64(reader, "game_schedule_id");
+                                t.spawner_id = GetInt64(reader, "spawner_id");
+
+                                AADB.DB_ScheduleSpawners.Add(t.id, t);
+                            }
+
+                            Cursor = Cursors.Default;
+                            Application.UseWaitCursor = false;
                         }
-
-                        Cursor = Cursors.Default;
-                        Application.UseWaitCursor = false;
                     }
-                }
 
-                // schedule quests
-                using (var command = connection.CreateCommand())
-                {
-                    AADB.DB_ScheduleQuest.Clear();
-
-                    command.CommandText = "SELECT * FROM game_schedule_quests ORDER BY id ASC";
-                    command.Prepare();
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    // schedule quests
+                    using (var command = connection.CreateCommand())
                     {
-                        Application.UseWaitCursor = true;
-                        Cursor = Cursors.WaitCursor;
+                        AADB.DB_ScheduleQuest.Clear();
 
-                        while (reader.Read())
+                        command.CommandText = "SELECT * FROM game_schedule_quests ORDER BY id ASC";
+                        command.Prepare();
+                        using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                         {
-                            var t = new GameScheduleQuest();
-                            t.id = GetInt64(reader, "id");
-                            t.game_schedule_id = GetInt64(reader, "game_schedule_id");
-                            t.quest_id = GetInt64(reader, "quest_id");
+                            Application.UseWaitCursor = true;
+                            Cursor = Cursors.WaitCursor;
 
-                            AADB.DB_ScheduleQuest.Add(t.id, t);
+                            while (reader.Read())
+                            {
+                                var t = new GameScheduleQuest();
+                                t.id = GetInt64(reader, "id");
+                                t.game_schedule_id = GetInt64(reader, "game_schedule_id");
+                                t.quest_id = GetInt64(reader, "quest_id");
+
+                                AADB.DB_ScheduleQuest.Add(t.id, t);
+                            }
+
+                            Cursor = Cursors.Default;
+                            Application.UseWaitCursor = false;
                         }
-
-                        Cursor = Cursors.Default;
-                        Application.UseWaitCursor = false;
                     }
                 }
 
                 // tower defs
-                using (var command = connection.CreateCommand())
+                AADB.DB_TowerDefs.Clear();
+                AADB.DB_TowerDefProgs.Clear();
+                AADB.DB_TowerDefProgSpawnTargets.Clear();
+                AADB.DB_TowerDefProgKillTargets.Clear();
+                if (allTableNames.Contains("tower_defs") &&
+                    allTableNames.Contains("tower_def_progs") &&
+                    allTableNames.Contains("tower_def_prog_spawn_targets") &&
+                    allTableNames.Contains("tower_def_prog_kill_targets"))
                 {
-                    AADB.DB_TowerDefs.Clear();
-
-                    command.CommandText = "SELECT * FROM tower_defs ORDER BY id ASC";
-                    command.Prepare();
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    using (var command = connection.CreateCommand())
                     {
-                        Application.UseWaitCursor = true;
-                        Cursor = Cursors.WaitCursor;
-
-                        var hasName = (reader.GetColumnNames()?.IndexOf("name") >= 0);
-                        var hasMilestone = (reader.GetColumnNames()?.IndexOf("milestone_id") >= 0);
-
-                        while (reader.Read())
+                        command.CommandText = "SELECT * FROM tower_defs ORDER BY id ASC";
+                        command.Prepare();
+                        using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                         {
-                            var t = new GameTowerDefs();
-                            t.id = GetInt64(reader, "id");
-                            t.name = hasName ? GetString(reader, "name") : string.Empty;
-                            t.start_msg = GetString(reader, "start_msg");
-                            t.end_msg = GetString(reader, "end_msg");
-                            t.tod = GetFloat(reader, "tod");
-                            t.first_wave_after = GetFloat(reader, "first_wave_after");
-                            t.target_npc_spawner_id = GetInt64(reader, "target_npc_spawner_id");
-                            t.kill_npc_id = GetInt64(reader, "kill_npc_id");
-                            t.kill_npc_count = GetInt64(reader, "kill_npc_count");
-                            t.force_end_time = GetFloat(reader, "force_end_time");
-                            t.tod_day_interval = GetInt64(reader, "tod_day_interval");
-                            t.milestone_id = hasMilestone ? GetInt64(reader, "milestone_id") : 0;
+                            Application.UseWaitCursor = true;
+                            Cursor = Cursors.WaitCursor;
 
-                            // Helpers
-                            t.nameLocalized = AADB.GetTranslationByID(t.id, "tower_defs", "name", t.name);
-                            t.start_msgLocalized = AADB.GetTranslationByID(t.id, "tower_defs", "start_msg", t.name);
-                            t.end_msgLocalized = AADB.GetTranslationByID(t.id, "tower_defs", "end_msg", t.name);
-                            t.title_msgLocalized = AADB.GetTranslationByID(t.id, "tower_defs", "title_msg", t.name);
+                            var hasName = (reader.GetColumnNames()?.IndexOf("name") >= 0);
+                            var hasMilestone = (reader.GetColumnNames()?.IndexOf("milestone_id") >= 0);
 
-                            AADB.DB_TowerDefs.Add(t.id, t);
+                            while (reader.Read())
+                            {
+                                var t = new GameTowerDefs();
+                                t.id = GetInt64(reader, "id");
+                                t.name = hasName ? GetString(reader, "name") : string.Empty;
+                                t.start_msg = GetString(reader, "start_msg");
+                                t.end_msg = GetString(reader, "end_msg");
+                                t.tod = GetFloat(reader, "tod");
+                                t.first_wave_after = GetFloat(reader, "first_wave_after");
+                                t.target_npc_spawner_id = GetInt64(reader, "target_npc_spawner_id");
+                                t.kill_npc_id = GetInt64(reader, "kill_npc_id");
+                                t.kill_npc_count = GetInt64(reader, "kill_npc_count");
+                                t.force_end_time = GetFloat(reader, "force_end_time");
+                                t.tod_day_interval = GetInt64(reader, "tod_day_interval");
+                                t.milestone_id = hasMilestone ? GetInt64(reader, "milestone_id") : 0;
+
+                                // Helpers
+                                t.nameLocalized = AADB.GetTranslationByID(t.id, "tower_defs", "name", t.name);
+                                t.start_msgLocalized = AADB.GetTranslationByID(t.id, "tower_defs", "start_msg", t.name);
+                                t.end_msgLocalized = AADB.GetTranslationByID(t.id, "tower_defs", "end_msg", t.name);
+                                t.title_msgLocalized = AADB.GetTranslationByID(t.id, "tower_defs", "title_msg", t.name);
+
+                                AADB.DB_TowerDefs.Add(t.id, t);
+                            }
+
+                            Cursor = Cursors.Default;
+                            Application.UseWaitCursor = false;
                         }
-
-                        Cursor = Cursors.Default;
-                        Application.UseWaitCursor = false;
                     }
-                }
 
-                // tower def progs
-                using (var command = connection.CreateCommand())
-                {
-                    AADB.DB_TowerDefProgs.Clear();
-
-                    command.CommandText = "SELECT * FROM tower_def_progs ORDER BY id ASC";
-                    command.Prepare();
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    // tower def progs
+                    using (var command = connection.CreateCommand())
                     {
-                        Application.UseWaitCursor = true;
-                        Cursor = Cursors.WaitCursor;
-
-                        while (reader.Read())
+                        command.CommandText = "SELECT * FROM tower_def_progs ORDER BY id ASC";
+                        command.Prepare();
+                        using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                         {
-                            var t = new GameTowerDefProgs();
-                            t.id = GetInt64(reader, "id");
-                            t.tower_def_id = GetInt64(reader, "tower_def_id");
-                            t.msg = GetString(reader, "msg");
-                            t.cond_to_next_time = GetFloat(reader, "cond_to_next_time");
-                            t.cond_comp_by_and = GetBool(reader, "cond_comp_by_and");
+                            Application.UseWaitCursor = true;
+                            Cursor = Cursors.WaitCursor;
 
-                            // Helpers
-                            t.msgLocalized = AADB.GetTranslationByID(t.id, "tower_def_progs", "msg", t.msg);
+                            while (reader.Read())
+                            {
+                                var t = new GameTowerDefProgs();
+                                t.id = GetInt64(reader, "id");
+                                t.tower_def_id = GetInt64(reader, "tower_def_id");
+                                t.msg = GetString(reader, "msg");
+                                t.cond_to_next_time = GetFloat(reader, "cond_to_next_time");
+                                t.cond_comp_by_and = GetBool(reader, "cond_comp_by_and");
 
-                            AADB.DB_TowerDefProgs.Add(t.id, t);
+                                // Helpers
+                                t.msgLocalized = AADB.GetTranslationByID(t.id, "tower_def_progs", "msg", t.msg);
+
+                                AADB.DB_TowerDefProgs.Add(t.id, t);
+                            }
+
+                            Cursor = Cursors.Default;
+                            Application.UseWaitCursor = false;
                         }
-
-                        Cursor = Cursors.Default;
-                        Application.UseWaitCursor = false;
                     }
-                }
 
-                // tower def prog spawn targets
-                using (var command = connection.CreateCommand())
-                {
-                    AADB.DB_TowerDefProgSpawnTargets.Clear();
-
-                    command.CommandText = "SELECT * FROM tower_def_prog_spawn_targets ORDER BY id ASC";
-                    command.Prepare();
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    // tower def prog spawn targets
+                    using (var command = connection.CreateCommand())
                     {
-                        Application.UseWaitCursor = true;
-                        Cursor = Cursors.WaitCursor;
-
-                        while (reader.Read())
+                        command.CommandText = "SELECT * FROM tower_def_prog_spawn_targets ORDER BY id ASC";
+                        command.Prepare();
+                        using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                         {
-                            var t = new GameTowerDefProgSpawnTargets();
-                            t.id = GetInt64(reader, "id");
-                            t.tower_def_prog_id = GetInt64(reader, "tower_def_prog_id");
-                            t.spawn_target_id = GetInt64(reader, "spawn_target_id");
-                            t.spawn_target_type = GetString(reader, "spawn_target_type");
-                            t.despawn_on_next_step = GetBool(reader, "despawn_on_next_step");
+                            Application.UseWaitCursor = true;
+                            Cursor = Cursors.WaitCursor;
 
-                            AADB.DB_TowerDefProgSpawnTargets.Add(t.id, t);
+                            while (reader.Read())
+                            {
+                                var t = new GameTowerDefProgSpawnTargets();
+                                t.id = GetInt64(reader, "id");
+                                t.tower_def_prog_id = GetInt64(reader, "tower_def_prog_id");
+                                t.spawn_target_id = GetInt64(reader, "spawn_target_id");
+                                t.spawn_target_type = GetString(reader, "spawn_target_type");
+                                t.despawn_on_next_step = GetBool(reader, "despawn_on_next_step");
+
+                                AADB.DB_TowerDefProgSpawnTargets.Add(t.id, t);
+                            }
+
+                            Cursor = Cursors.Default;
+                            Application.UseWaitCursor = false;
                         }
-
-                        Cursor = Cursors.Default;
-                        Application.UseWaitCursor = false;
                     }
-                }
 
-                // tower def kill targets
-                using (var command = connection.CreateCommand())
-                {
-                    AADB.DB_TowerDefProgKillTargets.Clear();
-
-                    command.CommandText = "SELECT * FROM tower_def_prog_kill_targets ORDER BY id ASC";
-                    command.Prepare();
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    // tower def kill targets
+                    using (var command = connection.CreateCommand())
                     {
-                        Application.UseWaitCursor = true;
-                        Cursor = Cursors.WaitCursor;
-
-                        while (reader.Read())
+                        command.CommandText = "SELECT * FROM tower_def_prog_kill_targets ORDER BY id ASC";
+                        command.Prepare();
+                        using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                         {
-                            var t = new GameTowerDefProgKillTargets();
-                            t.id = GetInt64(reader, "id");
-                            t.tower_def_prog_id = GetInt64(reader, "tower_def_prog_id");
-                            t.kill_target_id = GetInt64(reader, "kill_target_id");
-                            t.kill_target_type = GetString(reader, "kill_target_type");
-                            t.kill_count = GetInt64(reader, "kill_count");
+                            Application.UseWaitCursor = true;
+                            Cursor = Cursors.WaitCursor;
 
-                            AADB.DB_TowerDefProgKillTargets.Add(t.id, t);
+                            while (reader.Read())
+                            {
+                                var t = new GameTowerDefProgKillTargets();
+                                t.id = GetInt64(reader, "id");
+                                t.tower_def_prog_id = GetInt64(reader, "tower_def_prog_id");
+                                t.kill_target_id = GetInt64(reader, "kill_target_id");
+                                t.kill_target_type = GetString(reader, "kill_target_type");
+                                t.kill_count = GetInt64(reader, "kill_count");
+
+                                AADB.DB_TowerDefProgKillTargets.Add(t.id, t);
+                            }
+
+                            Cursor = Cursors.Default;
+                            Application.UseWaitCursor = false;
                         }
-
-                        Cursor = Cursors.Default;
-                        Application.UseWaitCursor = false;
                     }
                 }
             }
@@ -5462,6 +5471,17 @@ namespace AAEmu.DBViewer
             {
                 lbTowerDefs.Items.Add(val);
             }
+
+            tpSchedules.Enabled = (lbSchedulesIRL.Items.Count > 0) || 
+                                  (lbSchedulesGame.Items.Count > 0) ||
+                                  (lbTowerDefs.Items.Count > 0);
+
+            if (lbSchedulesIRL.Items.Count <= 0)
+                lbSchedulesIRL.Items.Add("Nothing loaded or incomplete data");
+            if (lbSchedulesGame.Items.Count <= 0)
+                lbSchedulesGame.Items.Add("Nothing loaded or incomplete data");
+            if (lbTowerDefs.Items.Count <= 0)
+                lbTowerDefs.Items.Add("Nothing loaded or incomplete data");
 
             tcScheduleTypes.SelectedTab = tpTowerDefs;
         }
