@@ -5143,6 +5143,8 @@ namespace AAEmu.DBViewer
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
 
+                        var hasPremiumGrade = (reader.GetColumnNames()?.IndexOf("premium_grade_id") >= 0);
+
                         while (reader.Read())
                         {
                             var t = new GameScheduleItem();
@@ -5163,7 +5165,7 @@ namespace AAEmu.DBViewer
                             t.give_max = GetInt64(reader, "give_max");
                             t.item_id = GetInt64(reader, "item_id");
                             t.item_count = GetInt64(reader, "item_count");
-                            t.premium_grade_id = GetInt64(reader, "premium_grade_id");
+                            t.premium_grade_id = hasPremiumGrade ? GetInt64(reader, "premium_grade_id") : 0;
                             t.active_take = GetBool(reader, "active_take");
                             t.on_air = GetBool(reader, "on_air");
                             t.show_wherever = GetBool(reader, "show_wherever");
@@ -5316,11 +5318,14 @@ namespace AAEmu.DBViewer
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
 
+                        var hasName = (reader.GetColumnNames()?.IndexOf("name") >= 0);
+                        var hasMilestone = (reader.GetColumnNames()?.IndexOf("milestone_id") >= 0);
+
                         while (reader.Read())
                         {
                             var t = new GameTowerDefs();
                             t.id = GetInt64(reader, "id");
-                            t.name = GetString(reader, "name");
+                            t.name = hasName ? GetString(reader, "name") : string.Empty;
                             t.start_msg = GetString(reader, "start_msg");
                             t.end_msg = GetString(reader, "end_msg");
                             t.tod = GetFloat(reader, "tod");
@@ -5330,7 +5335,7 @@ namespace AAEmu.DBViewer
                             t.kill_npc_count = GetInt64(reader, "kill_npc_count");
                             t.force_end_time = GetFloat(reader, "force_end_time");
                             t.tod_day_interval = GetInt64(reader, "tod_day_interval");
-                            t.milestone_id = GetInt64(reader, "milestone_id");
+                            t.milestone_id = hasMilestone ? GetInt64(reader, "milestone_id") : 0;
 
                             // Helpers
                             t.nameLocalized = AADB.GetTranslationByID(t.id, "tower_defs", "name", t.name);
@@ -10587,10 +10592,13 @@ namespace AAEmu.DBViewer
             if (selectedItem == null)
                 return;
             tvSchedule.Nodes.Clear();
-            var rootNode = tvSchedule.Nodes.Add($"{selectedItem.id} - {selectedItem.nameLocalized}");
+            var hasName = !string.IsNullOrWhiteSpace(selectedItem.nameLocalized);
+            var displayName = hasName ? selectedItem.nameLocalized : selectedItem.title_msgLocalized;
+            var rootNode = tvSchedule.Nodes.Add($"{selectedItem.id} - {displayName}");
             rootNode.ImageIndex = 3;
 
-            rootNode.Nodes.Add($"Title: {selectedItem.title_msgLocalized}");
+            if (hasName)
+                rootNode.Nodes.Add($"Title: {selectedItem.title_msgLocalized}");
 
             if (selectedItem.tod != 0f)
             {
