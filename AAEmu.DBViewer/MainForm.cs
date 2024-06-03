@@ -19,6 +19,7 @@ using System.Runtime;
 using System.Runtime.InteropServices.JavaScript;
 using AAEmu.Game.Models.Game.World;
 using AAEmu.DBViewer.enums;
+using System.Drawing.Drawing2D;
 
 namespace AAEmu.DBViewer
 {
@@ -6343,6 +6344,70 @@ namespace AAEmu.DBViewer
                 }
                 #endregion
 
+                #region events
+                var eventSpawns = AADB.DB_TowerDefProgSpawnTargets.Values.Where(x => x.spawn_target_type == "NpcSpawner" && spawners.Select(s => s.npc_spawner_id).Contains(x.spawn_target_id));
+                var eventMainSpawns = AADB.DB_TowerDefs.Values.Where(x => spawners.Select(s => s.npc_spawner_id).Contains(x.target_npc_spawner_id));
+                if (eventSpawns.Any() || eventMainSpawns.Any())
+                {
+                    var eventNode = tvNPCInfo.Nodes.Add("Event Spawns");
+                    foreach (var eventMainSpawn in eventMainSpawns)
+                    {
+                        eventNode.Nodes.Add($"Spawner: {eventMainSpawn.target_npc_spawner_id}, Event: {eventMainSpawn.title_msgLocalized}");
+                    }
+
+                    foreach (var eventSpawn in eventSpawns)
+                    {
+                        if (AADB.DB_TowerDefProgs.TryGetValue(eventSpawn.tower_def_prog_id, out var eventProg))
+                        {
+                            if (AADB.DB_TowerDefs.TryGetValue(eventProg.tower_def_id, out var eventTowerDef))
+                            {
+                                eventNode.Nodes.Add($"{eventTowerDef.title_msgLocalized} ({eventTowerDef.id}) - {eventProg.msgLocalized} ({eventProg.id})");
+                            }
+                            else
+                            {
+                                eventNode.Nodes.Add($"Unknown TowerDef: {eventProg.tower_def_id}, Prog: {eventSpawn.tower_def_prog_id}");
+                            }
+                        }
+                        else
+                        {
+                            eventNode.Nodes.Add($"Unknown TowerDefProg: {eventSpawn.tower_def_prog_id}");
+                        }
+                        
+                    }
+                }
+
+                var eventKills = AADB.DB_TowerDefProgKillTargets.Values.Where(x => x.kill_target_type == "Npc" && x.kill_target_id == npc.id);
+                var eventMainKills = AADB.DB_TowerDefs.Values.Where(x => x.kill_npc_id == npc.id);
+                if (eventKills.Any() || eventMainKills.Any())
+                {
+                    var killNode = tvNPCInfo.Nodes.Add("Event Kills");
+                    foreach (var eventMainKill in eventMainKills)
+                    {
+                        killNode.Nodes.Add($"{eventMainKill.kill_npc_count} x {eventMainKill.title_msgLocalized}");
+                    }
+
+                    foreach (var eventKill in eventKills)
+                    {
+                        if (AADB.DB_TowerDefProgs.TryGetValue(eventKill.tower_def_prog_id, out var eventProg))
+                        {
+                            if (AADB.DB_TowerDefs.TryGetValue(eventProg.tower_def_id, out var eventTowerDef))
+                            {
+                                killNode.Nodes.Add($"{eventKill.kill_count} x {eventTowerDef.title_msgLocalized} ({eventTowerDef.id}) - {eventProg.msgLocalized} ({eventProg.id})");
+                            }
+                            else
+                            {
+                                killNode.Nodes.Add($"Unknown TowerDef: {eventProg.tower_def_id}, Prog: {eventKill.tower_def_prog_id}");
+                            }
+                        }
+                        else
+                        {
+                            killNode.Nodes.Add($"Unknown TowerDefProg: {eventKill.tower_def_prog_id}");
+                        }
+
+                    }
+                }
+                #endregion
+
                 ShowSelectedData("npcs", "(id = " + id.ToString() + ")", "id ASC");
                 btnShowNPCsOnMap.Tag = npc.id;
             }
@@ -10543,6 +10608,8 @@ namespace AAEmu.DBViewer
             rootNode.Nodes.Add($"disable_key_string: {selectedItem.disable_key_string}");
             rootNode.Nodes.Add($"label_key_string: {selectedItem.label_key_string}");
             rootNode.ExpandAll();
+
+            ShowSelectedData("schedule_items", "(id = " + selectedItem.id.ToString() + ")", "id ASC");
         }
 
         private void lbSchedulesGame_SelectedIndexChanged(object sender, EventArgs e)
@@ -10599,6 +10666,7 @@ namespace AAEmu.DBViewer
             }
 
             tvSchedule.ExpandAll();
+            ShowSelectedData("game_schedules", "(id = " + selectedItem.id.ToString() + ")", "id ASC");
         }
 
         private void tvSchedule_DoubleClick(object sender, EventArgs e)
@@ -10721,6 +10789,8 @@ namespace AAEmu.DBViewer
             }
 
             rootNode.ExpandAll();
+
+            ShowSelectedData("tower_defs", "(id = " + selectedItem.id.ToString() + ")", "id ASC");
         }
     }
 }
