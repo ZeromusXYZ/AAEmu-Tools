@@ -8,6 +8,7 @@ using System.Linq;
 using System.Numerics;
 using System.Windows.Forms;
 using System.Xml;
+using AAEmu.DBViewer.utils;
 
 namespace AAEmu.DBViewer
 {
@@ -1447,7 +1448,7 @@ namespace AAEmu.DBViewer
                 var worldNode = _xml.SelectNodes("/World");
                 if (worldNode.Count < 1)
                     return false;
-                var worldAttribs = MainForm.ReadNodeAttributes(worldNode[0]);
+                var worldAttribs = XmlHelper.ReadNodeAttributes(worldNode[0]);
                 if (worldAttribs.TryGetValue("name", out var wName))
                     WorldName = wName;
                 if (worldAttribs.TryGetValue("cellxcount", out var sCellXCount))
@@ -1464,7 +1465,7 @@ namespace AAEmu.DBViewer
                 for (var i = 0; i < zoneNodes.Count; i++)
                 {
                     var n = zoneNodes[i];
-                    var attribs = MainForm.ReadNodeAttributes(n);
+                    var attribs = XmlHelper.ReadNodeAttributes(n);
                     var newZI = new MapViewWorldXMLZoneInfo();
                     foreach (var attrib in attribs)
                     {
@@ -1489,7 +1490,7 @@ namespace AAEmu.DBViewer
                     var zoneCells = n.SelectNodes("cellList/cell");
                     for (var zc = 0; zc < zoneCells.Count; zc++)
                     {
-                        var cellAttribs = MainForm.ReadNodeAttributes(zoneCells[zc]);
+                        var cellAttribs = XmlHelper.ReadNodeAttributes(zoneCells[zc]);
                         var zcX = 0;
                         var zcY = 0;
                         foreach (var cellAttrib in cellAttribs)
