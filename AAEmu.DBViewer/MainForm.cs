@@ -1632,11 +1632,11 @@ namespace AAEmu.DBViewer
                 var questNode = TvSpheres.Nodes.Add("Quests Sign Spheres");
                 foreach (var questId in questList)
                 {
-                    var quests = AADB.PAK_QuestSignSpheres.Where(x => x.questID == questId);
+                    var quests = AADB.PAK_QuestSignSpheres.Where(x => x.QuestId == questId).ToArray();
                     foreach (var questSphereEntry in quests)
                     {
                         var qNode = AddCustomPropertyNode("quest_id", questId.ToString(), false, questNode);
-                        AddCustomPropertyNode("component_id", questSphereEntry.componentID.ToString(), false, qNode);
+                        AddCustomPropertyNode("component_id", questSphereEntry.ComponentId.ToString(), false, qNode);
                         qNode.Nodes.Add($"world_id: {questSphereEntry.WorldId}");
 
                         // var zoneOffset = Vector3.Zero;

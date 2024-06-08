@@ -822,8 +822,8 @@ namespace AAEmu.DBDefs
     {
         public string WorldId = string.Empty;
         public int ZoneKey = -1;
-        public int questID = -1;
-        public int componentID = -1;
+        public int QuestId = -1;
+        public int ComponentId = -1;
         public float X = 0.0f;
         public float Y = 0.0f;
         public float Z = 0.0f;

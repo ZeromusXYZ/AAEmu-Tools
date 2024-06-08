@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -876,7 +877,7 @@ namespace AAEmu.DBViewer
                         sl.Clear();
                         while (!rs.EndOfStream)
                         {
-                            sl.Add(rs.ReadLine().Trim(' ').Trim('\t').ToLower());
+                            sl.Add(rs.ReadLine().Trim().ToLower());
                         }
                     }
 
@@ -945,9 +946,9 @@ namespace AAEmu.DBViewer
                                 qse.WorldId = worldname;
                                 qse.ZoneKey = zone;
 
-                                qse.questID = int.Parse(l1.Substring(6));
+                                qse.QuestId = int.Parse(l1.Substring(6));
 
-                                qse.componentID = int.Parse(l2.Substring(6));
+                                qse.ComponentId = int.Parse(l2.Substring(6));
 
                                 var subline = l3.Substring(4).Replace("(", "").Replace(")", "").Replace("x", "")
                                     .Replace("y", "").Replace("z", "").Replace(" ", "");
@@ -967,7 +968,7 @@ namespace AAEmu.DBViewer
                                     CultureInfo.InvariantCulture);
 
                                 AADB.PAK_QuestSignSpheres.Add(qse);
-                                i += 5;
+                                i += 4;
                             }
                             catch (Exception x)
                             {
@@ -975,6 +976,10 @@ namespace AAEmu.DBViewer
                                     MessageBoxIcon.Error);
                                 return;
                             }
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"Invalid data at line {i} in {pfi.Name}");
                         }
                     }
                     // System.Threading.Thread.Sleep(5);
@@ -1001,9 +1006,9 @@ namespace AAEmu.DBViewer
             foreach (var p in AADB.PAK_QuestSignSpheres)
             {
                 var name = string.Empty;
-                if (AADB.DB_Quest_Contexts.TryGetValue(p.questID, out var qc))
+                if (AADB.DB_Quest_Contexts.TryGetValue(p.QuestId, out var qc))
                     name += qc.nameLocalized + " ";
-                name += "q:" + p.questID.ToString() + " c:" + p.componentID.ToString();
+                name += "q:" + p.QuestId.ToString() + " c:" + p.ComponentId.ToString();
                 Color col = Color.LightCyan;
 
                 var isFilteredVal = false;
@@ -1015,10 +1020,10 @@ namespace AAEmu.DBViewer
 
                 if (cbQuestSignSphereSearchShowAll.Checked || (eQuestSignSphereSearch.Text == string.Empty))
                 {
-                    map.AddQuestSphere(p.X, p.Y, p.Z, name, col, p.radius, p.componentID);
+                    map.AddQuestSphere(p.X, p.Y, p.Z, name, col, p.radius, p.ComponentId);
                 }
                 else if (isFilteredVal)
-                    map.AddQuestSphere(p.X, p.Y, p.Z, name, col, p.radius, p.componentID);
+                    map.AddQuestSphere(p.X, p.Y, p.Z, name, col, p.radius, p.ComponentId);
             }
 
             map.tsbShowQuestSphere.Checked = true;
@@ -1058,14 +1063,14 @@ namespace AAEmu.DBViewer
             foreach (var p in AADB.PAK_QuestSignSpheres)
             {
                 var name = string.Empty;
-                if (AADB.DB_Quest_Contexts.TryGetValue(p.questID, out var qc))
+                if (AADB.DB_Quest_Contexts.TryGetValue(p.QuestId, out var qc))
                     name += qc.nameLocalized + " ";
                 else
                     continue;
                 if (qc.id != searchId)
                     continue;
-                name += "q:" + p.questID.ToString() + " c:" + p.componentID.ToString();
-                map.AddQuestSphere(p.X, p.Y, p.Z, name, Color.Cyan, p.radius, p.componentID);
+                name += "q:" + p.QuestId.ToString() + " c:" + p.ComponentId.ToString();
+                map.AddQuestSphere(p.X, p.Y, p.Z, name, Color.Cyan, p.radius, p.ComponentId);
                 sphereCount++;
             }
 
