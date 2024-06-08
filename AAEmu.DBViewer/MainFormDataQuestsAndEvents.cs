@@ -854,7 +854,7 @@ namespace AAEmu.DBViewer
             ShowSelectedData("quest_contexts", "id = " + qid.ToString(), "id ASC");
         }
 
-        public void LoadQuestSpheres()
+        public void LoadQuestSpheresFromPak()
         {
             if ((pak == null) || (!pak.IsOpen))
                 return;
@@ -942,8 +942,8 @@ namespace AAEmu.DBViewer
                             try
                             {
                                 var qse = new QuestSphereEntry();
-                                qse.worldID = worldname;
-                                qse.zoneID = zone;
+                                qse.WorldId = worldname;
+                                qse.ZoneKey = zone;
 
                                 qse.questID = int.Parse(l1.Substring(6));
 
@@ -1414,5 +1414,46 @@ namespace AAEmu.DBViewer
 
             ShowSelectedData("tower_defs", "(id = " + selectedItem.id.ToString() + ")", "id ASC");
         }
+
+        private void LoadSpheresFromCompact()
+        {
+            using var connection = SQLite.CreateConnection();
+
+            using (var command = connection.CreateCommand())
+            {
+                AADB.DB_Spheres.Clear();
+
+                command.CommandText = "SELECT * FROM spheres ORDER BY id ASC";
+                command.Prepare();
+                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                {
+                    Application.UseWaitCursor = true;
+                    Cursor = Cursors.WaitCursor;
+
+                    while (reader.Read())
+                    {
+                        var t = new GameSpheres();
+                        t.id = GetInt64(reader, "id");
+                        t.name = GetString(reader, "name");
+                        t.enter_or_leave = GetBool(reader, "enter_or_leave");
+                        t.sphere_detail_id = GetInt64(reader, "sphere_detail_id");
+                        t.sphere_detail_type = GetString(reader, "sphere_detail_type");
+                        t.trigger_condition_id = GetInt64(reader, "trigger_condition_id");
+                        t.trigger_condition_time = GetInt64(reader, "trigger_condition_time");
+                        t.team_msg = GetString(reader, "team_msg");
+                        t.category_id = GetInt64(reader, "category_id");
+                        t.or_unit_reqs = GetBool(reader, "or_unit_reqs");
+                        t.is_personal_msg = GetBool(reader, "is_personal_msg");
+
+                        AADB.DB_Spheres.Add(t.id, t);
+                    }
+
+                    Cursor = Cursors.Default;
+                    Application.UseWaitCursor = false;
+
+                }
+            }
+        }
+
     }
 }

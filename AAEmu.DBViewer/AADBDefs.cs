@@ -820,8 +820,8 @@ namespace AAEmu.DBDefs
 
     public class QuestSphereEntry
     {
-        public string worldID = string.Empty;
-        public int zoneID = -1;
+        public string WorldId = string.Empty;
+        public int ZoneKey = -1;
         public int questID = -1;
         public int componentID = -1;
         public float X = 0.0f;
@@ -1317,6 +1317,24 @@ namespace AAEmu.DBDefs
         public bool closed = false;
     }
 
+    public class GameSpheres
+    {
+        public long id { get; set; } = 0;
+        public string name { get; set; } = string.Empty;
+        public bool enter_or_leave { get; set; } = false;
+        public long sphere_detail_id { get; set; } = 0;
+        public string sphere_detail_type { get; set; } = string.Empty;
+        public long trigger_condition_id { get; set; } = 0;
+        public long trigger_condition_time { get; set; } = 0;
+        public string team_msg { get; set; } = string.Empty;
+        public long category_id { get; set; } = 0;
+        public bool or_unit_reqs { get; set; } = false;
+        public bool is_personal_msg { get; set; } = false;
+        // public long milestone_id { get; set; } = 0;
+        // public bool name_tr { get; set; } = false;
+        // public bool team_msg_tr { get; set; } = false;
+    }
+
     static class AADB
     {
         public static Dictionary<string, GameTranslation> DB_Translations = new Dictionary<string, GameTranslation>();
@@ -1395,6 +1413,7 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameTowerDefProgs> DB_TowerDefProgs = new();
         public static Dictionary<long, GameTowerDefProgSpawnTargets> DB_TowerDefProgSpawnTargets = new();
         public static Dictionary<long, GameTowerDefProgKillTargets> DB_TowerDefProgKillTargets = new();
+        public static Dictionary<long, GameSpheres> DB_Spheres = new();
 
         public static string GetTranslationByID(long idx, string table, string field, string defaultValue = "$NODEFAULT")
         {

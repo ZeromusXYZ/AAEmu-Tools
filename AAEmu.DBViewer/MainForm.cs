@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.IO;
+using System.Numerics;
 using AAPacker;
 using AAEmu.DBDefs;
 using AAEmu.Game.Utils.DB;
@@ -11,6 +12,7 @@ using AAEmu.ClipboardHelper;
 using AAEmu.DBViewer.utils;
 using System.Runtime;
 using AAEmu.DBViewer.enums;
+using System.Security.Cryptography;
 
 namespace AAEmu.DBViewer
 {
@@ -116,7 +118,7 @@ namespace AAEmu.DBViewer
                         loading.ShowInfo("Loading: World Data");
                         PrepareWorldXml(true);
                         loading.ShowInfo("Loading: Quest Sign Sphere Data");
-                        LoadQuestSpheres();
+                        LoadQuestSpheresFromPak();
                     }
                 }
             }
@@ -783,6 +785,8 @@ namespace AAEmu.DBViewer
                 LoadLoots();
                 loading.ShowInfo("Loading: Schedules");
                 LoadSchedules();
+                loading.ShowInfo("Loading: Spheres");
+                LoadSpheresFromCompact();
             }
 
             return true;
@@ -1178,7 +1182,22 @@ namespace AAEmu.DBViewer
                     res.targetSearchText = zone.display_textLocalized;
                     res.targetSearchButton = btnSearchZones;
                     res.ForeColor = Color.WhiteSmoke;
-                    nodeText += " - " + zone.display_textLocalized + " (key)";
+                    nodeText += " - " + zone.display_textLocalized + " (id)";
+                }
+
+                var zoneByKey = AADB.DB_Zones.Values.FirstOrDefault(z => z.zone_key == val);
+                if (zoneByKey != null)
+                {
+                    res.targetTabPage = tpZones;
+                    res.targetTextBox = tZonesSearch;
+                    res.targetSearchText = zoneByKey.display_textLocalized;
+                    res.targetSearchButton = btnSearchZones;
+                    res.ForeColor = Color.WhiteSmoke;
+                    if (zone != null)
+                        nodeText += " or ";
+                    else
+                        nodeText += " - ";
+                    nodeText += zoneByKey.display_textLocalized + " (key)";
                 }
                 // Some quest related entries use "zone_id" when they instead mean "zone_group_id"
                 // So we add the 2nd part here.
@@ -1189,7 +1208,7 @@ namespace AAEmu.DBViewer
                     res.targetSearchText = zoneGroup.display_textLocalized;
                     res.targetSearchButton = btnSearchZones;
                     res.ForeColor = Color.WhiteSmoke;
-                    if (zone != null)
+                    if ((zone != null) || (zoneByKey != null))
                         nodeText += " or ";
                     else
                         nodeText += " - ";
@@ -1224,6 +1243,16 @@ namespace AAEmu.DBViewer
                 res.targetSearchButton = btnSearchTags;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + tagId.nameLocalized;
+            }
+            else if (key.EndsWith("sphere_id") && (AADB.DB_Spheres.TryGetValue(val, out var sphere)))
+            {
+                res.targetTabPage = tpSpheres;
+                res.targetSearchBox = CbSearchSpheres;
+                // res.targetSearchText = npc.nameLocalized;
+                res.targetSearchText = sphere.id.ToString();
+                res.targetSearchButton = BtnSearchSpheres;
+                res.ForeColor = Color.WhiteSmoke;
+                nodeText += " - " + sphere.name;
             }
             else if (key.EndsWith("wi_id"))
             {
@@ -1427,6 +1456,21 @@ namespace AAEmu.DBViewer
                     info.targetSearchButton.Enabled = true;
                     info.targetSearchButton.PerformClick();
                 }
+
+                if (!string.IsNullOrWhiteSpace(info.targetWorldName) && info.targetPosition != Vector3.Zero)
+                {
+                    PrepareWorldXml(false);
+                    var map = MapViewForm.GetMap();
+                    map.Show();
+                    map.cbInstanceSelect.Text = info.targetWorldName;
+
+                    if (map.GetPoICount() > 0 && MessageBox.Show("Keep PoI's ?","",MessageBoxButtons.YesNo) == DialogResult.No)
+                        map.ClearPoI();
+                    map.AddPoI(info.targetPosition.X, info.targetPosition.Y, info.targetPosition.Z, info.targetSearchText, Color.Aquamarine, info.targetRadius, "", 0, null);
+
+                    map.FocusAll(true,false,false);
+                    map.BringToFront();
+                }
             }
         }
 
@@ -1484,6 +1528,181 @@ namespace AAEmu.DBViewer
                 if (!string.IsNullOrWhiteSpace(line))
                     res.Add(line);
             return string.Join(Environment.NewLine, res);
+        }
+
+        private void CbSearchSpheres_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                BtnSearchSpheres_Click(null, null);
+            }
+        }
+
+        private void BtnSearchSpheres_Click(object sender, EventArgs e)
+        {
+            var searchText = CbSearchSpheres.Text.ToLower();
+            if (searchText == string.Empty)
+                return;
+            if (!long.TryParse(searchText, out var searchId))
+                searchId = -1;
+
+            var first = true;
+            DgvSpheres.Rows.Clear();
+            foreach (var dbSphere in AADB.DB_Spheres.Values)
+            {
+                if (
+                    (dbSphere.id != searchId) &&
+                    (dbSphere.sphere_detail_id != searchId) &&
+                    (!dbSphere.name.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)) &&
+                    (!dbSphere.sphere_detail_type.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
+                    )
+                    continue;
+
+                var line = DgvSpheres.Rows.Add();
+                var row = DgvSpheres.Rows[line];
+
+                row.Cells[0].Value = dbSphere.id.ToString();
+                row.Cells[1].Value = dbSphere.name;
+                row.Cells[2].Value = dbSphere.sphere_detail_type;
+                row.Cells[3].Value = dbSphere.sphere_detail_id.ToString();
+                row.Cells[4].Value = dbSphere.enter_or_leave.ToString();
+
+                if (first)
+                {
+                    first = false;
+                    ShowDbSphere(dbSphere.id);
+                    ShowSelectedData("spheres", "id = " + dbSphere.id.ToString(), "id ASC");
+                }
+
+                if (DgvSpheres.Rows.Count > 250)
+                {
+                    MessageBox.Show("Results truncated to 250 results, please be more specific in the search");
+                    break;
+                }
+            }
+
+        }
+
+        private void ShowDbSphere(long id)
+        {
+            TvSpheres.Nodes.Clear();
+            if (!AADB.DB_Spheres.TryGetValue(id, out var sphere))
+                return;
+
+            var rootNode = TvSpheres.Nodes.Add($"{sphere.id} - {sphere.name}");
+            AddCustomPropertyNode("enter_or_leave", sphere.enter_or_leave.ToString(), false, rootNode);
+            AddCustomPropertyNode("trigger_condition_id", sphere.trigger_condition_id.ToString(), false, rootNode);
+            AddCustomPropertyNode("trigger_condition_time", sphere.trigger_condition_time.ToString(), false, rootNode);
+            AddCustomPropertyNode("team_msg", sphere.team_msg, false, rootNode);
+
+            // category_id seems to be Quest Category Id?
+            var cat = AADB.DB_Quest_Categories.GetValueOrDefault(sphere.category_id);
+            var catName = cat?.nameLocalized ?? "???";
+            rootNode.Nodes.Add($"category_id: {sphere.category_id} - {catName}");
+            // AddCustomPropertyNode("category_id", sphere.category_id.ToString(), false, rootNode);
+            AddCustomPropertyNode("or_unit_reqs", sphere.or_unit_reqs.ToString(), false, rootNode);
+            AddCustomPropertyNode("is_personal_msg", sphere.is_personal_msg.ToString(), false, rootNode);
+
+            var questList = new List<long>();
+
+            var detailNode = rootNode.Nodes.Add($"{sphere.sphere_detail_type} - {sphere.sphere_detail_id}");
+            var detailsTableName = FunctionTypeToTableName(sphere.sphere_detail_type);
+            var effectValuesList = GetCustomTableValues(detailsTableName, "id", sphere.sphere_detail_id.ToString());
+            foreach (var effectValues in effectValuesList)
+                foreach (var effectValue in effectValues)
+                {
+                    var thisNode = AddCustomPropertyNode(effectValue.Key, effectValue.Value, false, detailNode);
+                    if (thisNode == null)
+                        continue;
+
+                    if (thisNode.ImageIndex <= 0) // override default blank icon with blue !
+                    {
+                        thisNode.ImageIndex = 4;
+                        thisNode.SelectedImageIndex = 4;
+                    }
+
+                    if (detailsTableName == "sphere_quests" && effectValue.Key == "quest_id")
+                    {
+                        questList.Add(long.Parse(effectValue.Value));
+                    }
+                }
+
+            if (questList.Count > 0)
+            {
+                var questNode = TvSpheres.Nodes.Add("Quests Sign Spheres");
+                foreach (var questId in questList)
+                {
+                    var quests = AADB.PAK_QuestSignSpheres.Where(x => x.questID == questId);
+                    foreach (var questSphereEntry in quests)
+                    {
+                        var qNode = AddCustomPropertyNode("quest_id", questId.ToString(), false, questNode);
+                        AddCustomPropertyNode("component_id", questSphereEntry.componentID.ToString(), false, qNode);
+                        qNode.Nodes.Add($"world_id: {questSphereEntry.WorldId}");
+
+                        // var zoneOffset = Vector3.Zero;
+                        var zoneNode = new TreeNodeWithInfo();
+                        qNode.Nodes.Add(zoneNode);
+                        zoneNode.Text = $"zone_id: {questSphereEntry.ZoneKey}";
+                        var zoneByKey = AADB.DB_Zones.Values.FirstOrDefault(z => z.zone_key == questSphereEntry.ZoneKey);
+                        if (zoneByKey != null)
+                        {
+                            zoneNode.targetTabPage = tpZones;
+                            zoneNode.targetTextBox = tZonesSearch;
+                            zoneNode.targetSearchText = zoneByKey.display_textLocalized;
+                            zoneNode.targetSearchButton = btnSearchZones;
+                            zoneNode.ForeColor = Color.WhiteSmoke;
+                            zoneNode.Text += " - " + zoneByKey.display_textLocalized + " (key)";
+
+                            // var zoneGroup = AADB.DB_Zone_Groups.GetValueOrDefault(zoneByKey.group_id);
+                            // if (zoneGroup != null)
+                            //     zoneOffset = new Vector3(zoneGroup.PosAndSize.X, zoneGroup.PosAndSize.Y, 0f);
+                        }
+
+                        var zonePosNode = new TreeNodeWithInfo();
+                        zonePosNode.Text = $"Position: {questSphereEntry.X} , {questSphereEntry.Y} , {questSphereEntry.Z}";
+                        zonePosNode.targetPosition = new Vector3(questSphereEntry.X, questSphereEntry.Y, questSphereEntry.Z);
+                        zonePosNode.targetRadius = questSphereEntry.radius;
+                        zonePosNode.targetWorldName = questSphereEntry.WorldId;
+                        zonePosNode.targetSearchText = rootNode.Text;
+                        zonePosNode.ForeColor = Color.Aquamarine;
+                        qNode.Nodes.Add(zonePosNode);
+
+                        qNode.Nodes.Add($"Radius: {questSphereEntry.radius}");
+                    }
+                }
+
+                if (questNode.Nodes.Count <= 0)
+                    TvSpheres.Nodes.Remove(questNode);
+            }
+
+            TvSpheres.ExpandAll();
+        }
+
+        private void DgvSpheres_SelectionChanged(object sender, EventArgs e)
+        {
+            if (DgvSpheres.SelectedRows.Count <= 0)
+                return;
+            var row = DgvSpheres.SelectedRows[0];
+            if (row.Cells.Count <= 0)
+                return;
+
+            var val = row.Cells[0].Value;
+            if (val == null)
+                return;
+
+            var sid = long.Parse(val.ToString());
+            ShowDbSphere(sid);
+            ShowSelectedData("spheres", "id = " + sid.ToString(), "id ASC");
+        }
+
+        private void TvSpheres_DoubleClick(object sender, EventArgs e)
+        {
+            ProcessNodeInfoDoubleClick(TvSpheres.SelectedNode);
+        }
+
+        private void CbSearchSpheres_TextChanged(object sender, EventArgs e)
+        {
+            BtnSearchSpheres.Enabled = !string.IsNullOrWhiteSpace(CbSearchSpheres.Text);
         }
     }
 }
