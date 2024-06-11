@@ -890,6 +890,16 @@ namespace AAEmu.DBViewer
             rootNode.Tag = 0;
             tvSkill.Nodes.Add(rootNode);
 
+            var requires = GetSkillRequirements(skill.id);
+            if (requires is { Count: > 0 })
+            {
+                var reqNode = tvSkill.Nodes.Add($"Requires");
+                foreach (var req in requires)
+                {
+                    reqNode.Nodes.Add($"kind_id: {req.kind_id}, value1: {req.value1}, value2 {req.value2}");
+                }
+            }
+
             var skillsProperties = GetCustomTableValues("skills", "id", skill.id.ToString());
             foreach (var skillsProperty in skillsProperties)
             foreach (var skillsPropertyValue in skillsProperty)
@@ -1591,6 +1601,69 @@ namespace AAEmu.DBViewer
             {
                 node.Expand();
             }
+        }
+
+        private void LoadUnitReqs()
+        {
+            AADB.DB_UnitReqs.Clear();
+            using var connection = SQLite.CreateConnection();
+            using var command = connection.CreateCommand();
+            command.CommandText = "SELECT * FROM unit_reqs";
+            command.Prepare();
+            using var sqliteReader = command.ExecuteReader();
+            using var reader = new SQLiteWrapperReader(sqliteReader);
+            while (reader.Read())
+            {
+                var t = new GameUnitReqs();
+                t.id = reader.GetUInt32("id");
+                t.owner_id = reader.GetUInt32("owner_id");
+                t.owner_type = reader.GetString("owner_type");
+                t.kind_id = reader.GetUInt32("kind_id");
+                t.value1 = reader.GetUInt32("value1");
+                t.value2 = reader.GetUInt32("value2");
+
+                AADB.DB_UnitReqs.TryAdd(t.id, t);
+            }
+        }
+
+        private IEnumerable<GameUnitReqs> GetRequirement(string ownerType, long ownerId)
+        {
+            return AADB.DB_UnitReqs.Values.Where(x => x.owner_id == ownerId && x.owner_type == ownerType);
+        }
+
+        public List<GameUnitReqs> GetSkillRequirements(long skillId)
+        {
+            return GetRequirement("Skill", skillId).ToList();
+        }
+
+        public List<GameUnitReqs> GetAchievementObjectiveRequirements(long achievementObjectiveId)
+        {
+            return GetRequirement("AchievementObjective", achievementObjectiveId).ToList();
+        }
+
+        public List<GameUnitReqs> GetAiEventRequirements(long aiEvent)
+        {
+            return GetRequirement("AiEvent", aiEvent).ToList();
+        }
+
+        public List<GameUnitReqs> GetItemArmorRequirements(long armorId)
+        {
+            return GetRequirement("ItemArmor", armorId).ToList();
+        }
+
+        public List<GameUnitReqs> GetItemWeaponRequirements(long weaponId)
+        {
+            return GetRequirement("ItemWeapon", weaponId).ToList();
+        }
+
+        public List<GameUnitReqs> GetQuestComponentRequirements(long componentId)
+        {
+            return GetRequirement("QuestComponent", componentId).ToList();
+        }
+
+        public List<GameUnitReqs> GetSphereRequirements(long sphereId)
+        {
+            return GetRequirement("Sphere", sphereId).ToList();
         }
     }
 }

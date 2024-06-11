@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -1335,6 +1336,19 @@ namespace AAEmu.DBDefs
         // public bool team_msg_tr { get; set; } = false;
     }
 
+    public class GameUnitReqs
+    {
+        public uint id { get; set; }
+        public uint owner_id { get; set; }
+        /// <summary>
+        /// Possible values: AchievementObjective, AiEvent, ItemArmor, ItemWeapon, QuestComponent, Skill, Sphere
+        /// </summary>
+        public string owner_type { get; set; }
+        public uint kind_id { get; set; }
+        public uint value1 { get; set; }
+        public uint value2 { get; set; }
+    }
+
     static class AADB
     {
         public static Dictionary<string, GameTranslation> DB_Translations = new Dictionary<string, GameTranslation>();
@@ -1414,6 +1428,7 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameTowerDefProgSpawnTargets> DB_TowerDefProgSpawnTargets = new();
         public static Dictionary<long, GameTowerDefProgKillTargets> DB_TowerDefProgKillTargets = new();
         public static Dictionary<long, GameSpheres> DB_Spheres = new();
+        public static Dictionary<long, GameUnitReqs> DB_UnitReqs = new();
 
         public static string GetTranslationByID(long idx, string table, string field, string defaultValue = "$NODEFAULT")
         {

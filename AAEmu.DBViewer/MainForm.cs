@@ -771,6 +771,7 @@ namespace AAEmu.DBViewer
                 LoadSkills();
                 LoadSkillReagents();
                 LoadSkillProducts();
+                LoadUnitReqs();
                 loading.ShowInfo("Loading: Models");
                 LoadModels();
                 loading.ShowInfo("Loading: NPCs");
