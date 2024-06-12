@@ -896,7 +896,7 @@ namespace AAEmu.DBViewer
                 var reqNode = tvSkill.Nodes.Add($"Requires");
                 foreach (var req in requires)
                 {
-                    reqNode.Nodes.Add($"kind_id: {req.kind_id}, value1: {req.value1}, value2 {req.value2}");
+                    reqNode.Nodes.Add($"kind_id: {req.kind_id}, value1: {req.value1}, value2: {req.value2}");
                 }
             }
 
@@ -1618,7 +1618,7 @@ namespace AAEmu.DBViewer
                 t.id = reader.GetUInt32("id");
                 t.owner_id = reader.GetUInt32("owner_id");
                 t.owner_type = reader.GetString("owner_type");
-                t.kind_id = reader.GetUInt32("kind_id");
+                t.kind_id = (GameUnitReqsKindId)reader.GetUInt32("kind_id");
                 t.value1 = reader.GetUInt32("value1");
                 t.value2 = reader.GetUInt32("value2");
 
