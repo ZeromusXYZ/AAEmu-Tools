@@ -894,7 +894,7 @@ namespace AAEmu.DBViewer
                         }
                     }
 
-                    var worldname = "";
+                    var worldName = "";
                     var zone = 0;
 
                     if (nameSplit.Length > 6)
@@ -906,7 +906,7 @@ namespace AAEmu.DBViewer
                             (nameSplit[6] == "client")
                            )
                         {
-                            worldname = nameSplit[2];
+                            worldName = nameSplit[2];
                             zone = int.Parse(nameSplit[5]);
                         }
                     }
@@ -914,11 +914,11 @@ namespace AAEmu.DBViewer
                     var zoneOffX = 0f;
                     var zoneOffY = 0f;
 
-                    var zonexml = MapViewWorldXML.main_world.GetZoneByKey(zone);
-                    if (zonexml != null)
+                    var zoneXml = MapViewWorldXML.main_world.GetZoneByKey(zone);
+                    if (zoneXml != null)
                     {
-                        zoneOffX = zonexml.originCellX * 1024f;
-                        zoneOffY = zonexml.originCellY * 1024f;
+                        zoneOffX = zoneXml.originCellX * 1024f;
+                        zoneOffY = zoneXml.originCellY * 1024f;
                     }
 
                     /*
@@ -956,25 +956,25 @@ namespace AAEmu.DBViewer
                             try
                             {
                                 var qse = new QuestSphereEntry();
-                                qse.WorldId = worldname;
+                                qse.WorldId = worldName;
                                 qse.ZoneKey = zone;
 
                                 qse.QuestId = int.Parse(l1.Substring(6));
 
                                 qse.ComponentId = int.Parse(l2.Substring(6));
 
-                                var subline = l3.Substring(4).Replace("(", "").Replace(")", "").Replace("x", "")
+                                var subLine = l3.Substring(4).Replace("(", "").Replace(")", "").Replace("x", "")
                                     .Replace("y", "").Replace("z", "").Replace(" ", "");
-                                var posstring = subline.Split(',');
-                                if (posstring.Length == 3)
+                                var posString = subLine.Split(',');
+                                if (posString.Length == 3)
                                 {
                                     // Parse the floats with NumberStyles.Float and CultureInfo.InvariantCulture or we get all sorts of
                                     // weird stuff with the decimal points depending on the user's language settings
-                                    qse.X = zoneOffX + float.Parse(posstring[0], NumberStyles.Float,
+                                    qse.X = zoneOffX + float.Parse(posString[0], NumberStyles.Float,
                                         CultureInfo.InvariantCulture);
-                                    qse.Y = zoneOffY + float.Parse(posstring[1], NumberStyles.Float,
+                                    qse.Y = zoneOffY + float.Parse(posString[1], NumberStyles.Float,
                                         CultureInfo.InvariantCulture);
-                                    qse.Z = float.Parse(posstring[2], NumberStyles.Float, CultureInfo.InvariantCulture);
+                                    qse.Z = float.Parse(posString[2], NumberStyles.Float, CultureInfo.InvariantCulture);
                                 }
 
                                 qse.radius = float.Parse(l4.Substring(7), NumberStyles.Float,

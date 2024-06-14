@@ -1293,7 +1293,7 @@
             groupBox14.Margin = new System.Windows.Forms.Padding(4);
             groupBox14.Name = "groupBox14";
             groupBox14.Padding = new System.Windows.Forms.Padding(4);
-            groupBox14.Size = new System.Drawing.Size(692, 599);
+            groupBox14.Size = new System.Drawing.Size(700, 587);
             groupBox14.TabIndex = 12;
             groupBox14.TabStop = false;
             groupBox14.Text = "Buff Info";
@@ -1316,8 +1316,8 @@
             // 
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
-            splitContainer2.Size = new System.Drawing.Size(678, 350);
-            splitContainer2.SplitterDistance = 353;
+            splitContainer2.Size = new System.Drawing.Size(686, 338);
+            splitContainer2.SplitterDistance = 360;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1325,7 +1325,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(262, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(269, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1356,7 +1356,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(345, 319);
+            tvBuffTriggers.Size = new System.Drawing.Size(352, 307);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -1389,14 +1389,14 @@
             flpBuff.Location = new System.Drawing.Point(7, 30);
             flpBuff.Margin = new System.Windows.Forms.Padding(4);
             flpBuff.Name = "flpBuff";
-            flpBuff.Size = new System.Drawing.Size(254, 315);
+            flpBuff.Size = new System.Drawing.Size(254, 303);
             flpBuff.TabIndex = 2;
             // 
             // lBuffAddGMCommand
             // 
             lBuffAddGMCommand.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lBuffAddGMCommand.AutoSize = true;
-            lBuffAddGMCommand.Location = new System.Drawing.Point(7, 575);
+            lBuffAddGMCommand.Location = new System.Drawing.Point(7, 563);
             lBuffAddGMCommand.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lBuffAddGMCommand.Name = "lBuffAddGMCommand";
             lBuffAddGMCommand.Size = new System.Drawing.Size(83, 16);
@@ -1407,7 +1407,7 @@
             // 
             lBuffTags.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lBuffTags.AutoSize = true;
-            lBuffTags.Location = new System.Drawing.Point(63, 544);
+            lBuffTags.Location = new System.Drawing.Point(63, 532);
             lBuffTags.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lBuffTags.Name = "lBuffTags";
             lBuffTags.Size = new System.Drawing.Size(22, 16);
@@ -1418,7 +1418,7 @@
             // 
             label117.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             label117.AutoSize = true;
-            label117.Location = new System.Drawing.Point(7, 544);
+            label117.Location = new System.Drawing.Point(7, 532);
             label117.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label117.Name = "label117";
             label117.Size = new System.Drawing.Size(30, 16);
@@ -1463,7 +1463,7 @@
             rtBuffDesc.Location = new System.Drawing.Point(10, 105);
             rtBuffDesc.Margin = new System.Windows.Forms.Padding(4);
             rtBuffDesc.Name = "rtBuffDesc";
-            rtBuffDesc.Size = new System.Drawing.Size(674, 78);
+            rtBuffDesc.Size = new System.Drawing.Size(682, 78);
             rtBuffDesc.TabIndex = 13;
             rtBuffDesc.Text = "";
             // 
@@ -1471,7 +1471,7 @@
             // 
             buffIcon.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             buffIcon.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            buffIcon.Location = new System.Drawing.Point(610, 20);
+            buffIcon.Location = new System.Drawing.Point(618, 20);
             buffIcon.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             buffIcon.Name = "buffIcon";
             buffIcon.Size = new System.Drawing.Size(75, 79);
@@ -1556,7 +1556,7 @@
             dgvBuffs.ReadOnly = true;
             dgvBuffs.RowHeadersVisible = false;
             dgvBuffs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvBuffs.Size = new System.Drawing.Size(362, 559);
+            dgvBuffs.Size = new System.Drawing.Size(362, 547);
             dgvBuffs.TabIndex = 8;
             dgvBuffs.SelectionChanged += DgvBuffs_SelectionChanged;
             // 
@@ -2950,7 +2950,7 @@
             dgvDoodads.ReadOnly = true;
             dgvDoodads.RowHeadersVisible = false;
             dgvDoodads.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvDoodads.Size = new System.Drawing.Size(662, 559);
+            dgvDoodads.Size = new System.Drawing.Size(662, 546);
             dgvDoodads.TabIndex = 11;
             dgvDoodads.SelectionChanged += DgvDoodads_SelectionChanged;
             // 
@@ -3432,7 +3432,7 @@
             dgvFactions.ReadOnly = true;
             dgvFactions.RowHeadersVisible = false;
             dgvFactions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvFactions.Size = new System.Drawing.Size(837, 559);
+            dgvFactions.Size = new System.Drawing.Size(837, 546);
             dgvFactions.TabIndex = 11;
             dgvFactions.SelectionChanged += DgvFactions_SelectionChanged;
             // 
@@ -3636,7 +3636,7 @@
             groupBox1.Margin = new System.Windows.Forms.Padding(4);
             groupBox1.Name = "groupBox1";
             groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            groupBox1.Size = new System.Drawing.Size(352, 599);
+            groupBox1.Size = new System.Drawing.Size(352, 580);
             groupBox1.TabIndex = 6;
             groupBox1.TabStop = false;
             groupBox1.Text = "Item Info";
@@ -3665,7 +3665,7 @@
             // 
             lItemTags.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lItemTags.AutoSize = true;
-            lItemTags.Location = new System.Drawing.Point(7, 516);
+            lItemTags.Location = new System.Drawing.Point(7, 497);
             lItemTags.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lItemTags.Name = "lItemTags";
             lItemTags.Size = new System.Drawing.Size(22, 16);
@@ -3676,7 +3676,7 @@
             // 
             label127.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             label127.AutoSize = true;
-            label127.Location = new System.Drawing.Point(7, 500);
+            label127.Location = new System.Drawing.Point(7, 481);
             label127.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label127.Name = "label127";
             label127.Size = new System.Drawing.Size(30, 16);
@@ -3687,7 +3687,7 @@
             // 
             lItemAddGMCommand.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lItemAddGMCommand.AutoSize = true;
-            lItemAddGMCommand.Location = new System.Drawing.Point(7, 574);
+            lItemAddGMCommand.Location = new System.Drawing.Point(7, 555);
             lItemAddGMCommand.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lItemAddGMCommand.Name = "lItemAddGMCommand";
             lItemAddGMCommand.Size = new System.Drawing.Size(55, 16);
@@ -3714,7 +3714,7 @@
             rtItemDesc.Location = new System.Drawing.Point(10, 121);
             rtItemDesc.Margin = new System.Windows.Forms.Padding(4);
             rtItemDesc.Name = "rtItemDesc";
-            rtItemDesc.Size = new System.Drawing.Size(334, 375);
+            rtItemDesc.Size = new System.Drawing.Size(334, 356);
             rtItemDesc.TabIndex = 10;
             rtItemDesc.Text = "";
             // 
@@ -4512,7 +4512,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(443, 517);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(442, 517);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4544,7 +4544,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(728, 507);
+            tvQuestWorkflow.Size = new System.Drawing.Size(727, 507);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -4644,7 +4644,7 @@
             tvSchedule.Location = new System.Drawing.Point(365, 34);
             tvSchedule.Name = "tvSchedule";
             tvSchedule.SelectedImageIndex = 0;
-            tvSchedule.Size = new System.Drawing.Size(709, 573);
+            tvSchedule.Size = new System.Drawing.Size(709, 560);
             tvSchedule.TabIndex = 2;
             tvSchedule.DoubleClick += TvSchedule_DoubleClick;
             // 
@@ -5486,7 +5486,7 @@
             tvTagInfo.Margin = new System.Windows.Forms.Padding(4);
             tvTagInfo.Name = "tvTagInfo";
             tvTagInfo.SelectedImageIndex = 0;
-            tvTagInfo.Size = new System.Drawing.Size(610, 563);
+            tvTagInfo.Size = new System.Drawing.Size(610, 552);
             tvTagInfo.TabIndex = 12;
             tvTagInfo.DoubleClick += TvTagInfo_DoubleClick;
             // 
@@ -5517,7 +5517,7 @@
             dgvTags.ReadOnly = true;
             dgvTags.RowHeadersVisible = false;
             dgvTags.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvTags.Size = new System.Drawing.Size(441, 564);
+            dgvTags.Size = new System.Drawing.Size(441, 552);
             dgvTags.TabIndex = 10;
             dgvTags.SelectionChanged += DgvTags_SelectionChanged;
             // 

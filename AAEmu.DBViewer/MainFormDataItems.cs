@@ -83,7 +83,7 @@ namespace AAEmu.DBViewer
 
                         while (reader.Read())
                         {
-                            GameItemArmors t = new GameItemArmors();
+                            var t = new GameItemArmors();
                             t.id = GetInt64(reader, "id");
                             t.item_id = GetInt64(reader, "item_id");
                             t.slot_type_id = GetInt64(reader, "slot_type_id");
@@ -97,6 +97,44 @@ namespace AAEmu.DBViewer
                         Cursor = Cursors.Default;
                         Application.UseWaitCursor = false;
 
+                    }
+                }
+            }
+
+        }
+
+        private void LoadItemWeapons()
+        {
+            string sql = "SELECT * FROM item_weapons ORDER BY id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_Item_Weapons.Clear();
+
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameItemWeapons();
+                            t.id = GetInt64(reader, "id");
+                            t.item_id = GetInt64(reader, "item_id");
+                            t.holdable_id = GetInt64(reader, "holdable_id");
+                            t.or_unit_reqs = GetBool(reader, "or_unit_reqs");
+
+                            AADB.DB_Item_Weapons.Add(t.id, t);
+                            if (AADB.DB_Items.TryGetValue(t.item_id, out var item))
+                                item.item_weapons = t;
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
                     }
                 }
             }
@@ -323,9 +361,21 @@ namespace AAEmu.DBViewer
                 {
                     var requiresArmor = GetItemArmorRequirements(item.item_armors.id);
                     if (requiresArmor.Any())
-                        fullDescription += $"\n\n|ni;Requires {(item.item_armors.or_unit_reqs ? "Any" : "All")} of|r";
+                        fullDescription += $"\n\n|ni;Equipping this armor requires {(item.item_armors.or_unit_reqs ? "Any" : "All")} of the following|r";
                     
                     foreach (var req in requiresArmor)
+                    {
+                        fullDescription += $"\n{req.kind_id} - Value1: {req.value1}, Value2: {req.value2}";
+                    }
+                }
+
+                if (item.item_weapons?.id > 0)
+                {
+                    var requiresWeapon = GetItemWeaponRequirements(item.item_armors.id);
+                    if (requiresWeapon.Any())
+                        fullDescription += $"\n\n|ni;Equipping this weapon requires {(item.item_weapons.or_unit_reqs ? "Any" : "All")} of the following|r";
+
+                    foreach (var req in requiresWeapon)
                     {
                         fullDescription += $"\n{req.kind_id} - Value1: {req.value1}, Value2: {req.value2}";
                     }

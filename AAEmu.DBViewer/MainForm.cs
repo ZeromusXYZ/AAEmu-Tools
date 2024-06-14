@@ -768,6 +768,7 @@ namespace AAEmu.DBViewer
                 LoadItemCategories();
                 LoadItems();
                 LoadItemArmors();
+                LoadItemWeapons();
                 loading.ShowInfo("Loading: Skills");
                 LoadSkills();
                 LoadSkillReagents();

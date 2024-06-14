@@ -181,6 +181,7 @@ namespace AAEmu.DBDefs
 
         // Linked
         public GameItemArmors item_armors = null;
+        public GameItemWeapons item_weapons = null;
 
         // Helpers
         public string nameLocalized = string.Empty;
@@ -226,6 +227,15 @@ namespace AAEmu.DBDefs
         public long id = 0;
         public long item_id = 0;
         public long slot_type_id = 0;
+        public bool or_unit_reqs = false;
+    }
+
+    class GameItemWeapons
+    {
+        // Actual DB entries
+        public long id = 0;
+        public long item_id = 0;
+        public long holdable_id = 0;
         public bool or_unit_reqs = false;
     }
 
@@ -1464,6 +1474,7 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameItemCategories> DB_ItemsCategories = new Dictionary<long, GameItemCategories>();
         public static Dictionary<long, GameItem> DB_Items = new Dictionary<long, GameItem>();
         public static Dictionary<long, GameItemArmors> DB_Item_Armors = new Dictionary<long, GameItemArmors>();
+        public static Dictionary<long, GameItemWeapons> DB_Item_Weapons = new Dictionary<long, GameItemWeapons>();
         public static Dictionary<long, GameEffects> DB_Effects = new Dictionary<long, GameEffects>();
         public static Dictionary<long, GameSkills> DB_Skills = new Dictionary<long, GameSkills>();
         public static Dictionary<long, GameSkillEffects> DB_Skill_Effects = new Dictionary<long, GameSkillEffects>();
