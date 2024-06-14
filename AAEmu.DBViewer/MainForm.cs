@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.IO;
 using System.Numerics;
+using System.Reflection;
 using AAPacker;
 using AAEmu.DBDefs;
 using AAEmu.Game.Utils.DB;
@@ -64,6 +65,9 @@ namespace AAEmu.DBViewer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            MMVersion.Text = $"Version {Assembly.GetExecutingAssembly().GetName().Version}";
+            tcViewer.ItemSize = new Size(0, 1);
+
             // Update settings if needed
             if (!Properties.Settings.Default.IsUpdated)
             {
@@ -739,7 +743,7 @@ namespace AAEmu.DBViewer
                 // The table name loading is basically just to check if we can read the DB file
                 LoadTableNames();
                 Properties.Settings.Default.DBFileName = sqlfile;
-                Text = defaultTitle + " - " + sqlfile + " (" + Properties.Settings.Default.DefaultGameLanguage + ")";
+                Text = $"{defaultTitle} [{tcViewer.SelectedTab?.Text}] - {Properties.Settings.Default.DBFileName} ({Properties.Settings.Default.DefaultGameLanguage})";
                 // make sure translations are loaded first, other tables depend on it
 
                 loading.ShowInfo("Loading: Translation");
@@ -1065,7 +1069,7 @@ namespace AAEmu.DBViewer
             if (!string.IsNullOrWhiteSpace(localizedValue) && (localizedValue != value))
             {
                 var localizedNode = new TreeNodeWithInfo();
-                localizedNode.targetTabPage = tbLocalizer;
+                localizedNode.targetTabPage = tpLocalizer;
                 localizedNode.targetTextBox = tSearchLocalized;
                 localizedNode.targetSearchText = rootTypeName + " " + key + " =" + rootTypeKey + "=";
                 localizedNode.targetSearchButton = null;
@@ -1411,7 +1415,7 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private void tbLocalizer_Enter(object sender, EventArgs e)
+        private void TpLocalizerEnter(object sender, EventArgs e)
         {
             if (tSearchLocalized.Text == string.Empty)
                 tSearchLocalized.Text = "doodad name =320=";
@@ -1467,11 +1471,11 @@ namespace AAEmu.DBViewer
                     map.Show();
                     map.cbInstanceSelect.Text = info.targetWorldName;
 
-                    if (map.GetPoICount() > 0 && MessageBox.Show("Keep PoI's ?","",MessageBoxButtons.YesNo) == DialogResult.No)
+                    if (map.GetPoICount() > 0 && MessageBox.Show("Keep PoI's ?", "", MessageBoxButtons.YesNo) == DialogResult.No)
                         map.ClearPoI();
                     map.AddPoI(info.targetPosition.X, info.targetPosition.Y, info.targetPosition.Z, info.targetSearchText, Color.Aquamarine, info.targetRadius, "", 0, null);
 
-                    map.FocusAll(true,false,false);
+                    map.FocusAll(true, false, false);
                     map.BringToFront();
                 }
             }
@@ -1726,6 +1730,96 @@ namespace AAEmu.DBViewer
             }
 
             return null;
+        }
+
+        private void MMFileExit_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void MMFileTables_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpTables;
+        }
+
+        private void MMSelectedData_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpCurrentRecord;
+        }
+
+        private void MMLocalizer_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpLocalizer;
+        }
+
+        private void MMGameObjectsNpcs_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpNPCs;
+        }
+
+        private void MMGameObjectsVehicles_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpSlaves;
+        }
+
+        private void MMSystemItems_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpItems;
+        }
+
+        private void MMSystemBuffs_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpBuffs;
+        }
+
+        private void MMSystemMaps_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpMap;
+        }
+
+        private void MMSystemLoot_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpLoot;
+        }
+
+        private void MMSystemSchedule_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpSchedules;
+        }
+
+        private void MMSystemTags_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpTags;
+        }
+
+        private void MMSystemTrades_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpTrade;
+        }
+
+        private void MMSystemZones_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpZones;
+        }
+
+        private void MMSystemSkills_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpSkills;
+        }
+
+        private void MMSystemFactions_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpFactions;
+        }
+
+        private void MMSplitter_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpV1;
+        }
+
+        private void tcViewer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Text = $"{defaultTitle} [{tcViewer.SelectedTab?.Text}] - {Properties.Settings.Default.DBFileName} ({Properties.Settings.Default.DefaultGameLanguage})";
         }
     }
 }

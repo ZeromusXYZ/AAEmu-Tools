@@ -35,7 +35,7 @@
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Slave");
             lbTableNames = new System.Windows.Forms.ListBox();
             tcViewer = new System.Windows.Forms.TabControl();
-            tbTables = new System.Windows.Forms.TabPage();
+            tpTables = new System.Windows.Forms.TabPage();
             cbSimpleSQL = new System.Windows.Forms.ComboBox();
             cbNewGM = new System.Windows.Forms.CheckBox();
             label29 = new System.Windows.Forms.Label();
@@ -55,7 +55,7 @@
             dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            tbLocalizer = new System.Windows.Forms.TabPage();
+            tpLocalizer = new System.Windows.Forms.TabPage();
             label93 = new System.Windows.Forms.Label();
             dgvLocalized = new System.Windows.Forms.DataGridView();
             Column48 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -243,7 +243,7 @@
             Column31 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             Column22 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             Column53 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            tbFactions = new System.Windows.Forms.TabPage();
+            tpFactions = new System.Windows.Forms.TabPage();
             groupBox7 = new System.Windows.Forms.GroupBox();
             lFactionHostilePirate = new System.Windows.Forms.Label();
             label49 = new System.Windows.Forms.Label();
@@ -566,12 +566,36 @@
             ofdCustomPaths = new System.Windows.Forms.OpenFileDialog();
             ofdJsonData = new System.Windows.Forms.OpenFileDialog();
             ilIcons = new System.Windows.Forms.ImageList(components);
+            MM = new System.Windows.Forms.MenuStrip();
+            MMFile = new System.Windows.Forms.ToolStripMenuItem();
+            MMFileTables = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            MMFileExit = new System.Windows.Forms.ToolStripMenuItem();
+            MMSelectedData = new System.Windows.Forms.ToolStripMenuItem();
+            MMLocalizer = new System.Windows.Forms.ToolStripMenuItem();
+            MMSplitter = new System.Windows.Forms.ToolStripMenuItem();
+            MMCombat = new System.Windows.Forms.ToolStripMenuItem();
+            MMSystemBuffs = new System.Windows.Forms.ToolStripMenuItem();
+            MMSystemSkills = new System.Windows.Forms.ToolStripMenuItem();
+            MMGameObjects = new System.Windows.Forms.ToolStripMenuItem();
+            MMGameObjectsNpcs = new System.Windows.Forms.ToolStripMenuItem();
+            MMGameObjectsVehicles = new System.Windows.Forms.ToolStripMenuItem();
+            MMVersion = new System.Windows.Forms.ToolStripMenuItem();
+            MMSystems = new System.Windows.Forms.ToolStripMenuItem();
+            MMSystemFactions = new System.Windows.Forms.ToolStripMenuItem();
+            MMSystemItems = new System.Windows.Forms.ToolStripMenuItem();
+            MMSystemLoot = new System.Windows.Forms.ToolStripMenuItem();
+            MMSystemMaps = new System.Windows.Forms.ToolStripMenuItem();
+            MMSystemSchedule = new System.Windows.Forms.ToolStripMenuItem();
+            MMSystemTags = new System.Windows.Forms.ToolStripMenuItem();
+            MMSystemTrades = new System.Windows.Forms.ToolStripMenuItem();
+            MMSystemZones = new System.Windows.Forms.ToolStripMenuItem();
             tcViewer.SuspendLayout();
-            tbTables.SuspendLayout();
+            tpTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSimple).BeginInit();
             tpCurrentRecord.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvCurrentData).BeginInit();
-            tbLocalizer.SuspendLayout();
+            tpLocalizer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvLocalized).BeginInit();
             tpMap.SuspendLayout();
             tpV1.SuspendLayout();
@@ -593,7 +617,7 @@
             tpDoodadTools.SuspendLayout();
             tpDoodadWorkflow.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvDoodads).BeginInit();
-            tbFactions.SuspendLayout();
+            tpFactions.SuspendLayout();
             groupBox7.SuspendLayout();
             groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvFactions).BeginInit();
@@ -646,6 +670,7 @@
             groupBox4.SuspendLayout();
             groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvZones).BeginInit();
+            MM.SuspendLayout();
             SuspendLayout();
             // 
             // lbTableNames
@@ -655,20 +680,21 @@
             lbTableNames.Location = new System.Drawing.Point(7, 39);
             lbTableNames.Margin = new System.Windows.Forms.Padding(4);
             lbTableNames.Name = "lbTableNames";
-            lbTableNames.Size = new System.Drawing.Size(314, 516);
+            lbTableNames.Size = new System.Drawing.Size(314, 532);
             lbTableNames.TabIndex = 1;
             lbTableNames.SelectedIndexChanged += LbTableNames_SelectedIndexChanged;
             // 
             // tcViewer
             // 
-            tcViewer.Controls.Add(tbTables);
+            tcViewer.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            tcViewer.Controls.Add(tpTables);
             tcViewer.Controls.Add(tpCurrentRecord);
-            tcViewer.Controls.Add(tbLocalizer);
+            tcViewer.Controls.Add(tpLocalizer);
             tcViewer.Controls.Add(tpMap);
             tcViewer.Controls.Add(tpV1);
             tcViewer.Controls.Add(tpBuffs);
             tcViewer.Controls.Add(tpDoodads);
-            tcViewer.Controls.Add(tbFactions);
+            tcViewer.Controls.Add(tpFactions);
             tcViewer.Controls.Add(tpItems);
             tcViewer.Controls.Add(tpLoot);
             tcViewer.Controls.Add(tpNPCs);
@@ -681,38 +707,40 @@
             tcViewer.Controls.Add(tpSlaves);
             tcViewer.Controls.Add(tpZones);
             tcViewer.Dock = System.Windows.Forms.DockStyle.Fill;
-            tcViewer.Location = new System.Drawing.Point(0, 0);
+            tcViewer.ItemSize = new System.Drawing.Size(10, 10);
+            tcViewer.Location = new System.Drawing.Point(0, 24);
             tcViewer.Margin = new System.Windows.Forms.Padding(4);
             tcViewer.Name = "tcViewer";
             tcViewer.SelectedIndex = 0;
-            tcViewer.Size = new System.Drawing.Size(1090, 629);
-            tcViewer.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
+            tcViewer.Size = new System.Drawing.Size(1090, 605);
+            tcViewer.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             tcViewer.TabIndex = 3;
+            tcViewer.SelectedIndexChanged += tcViewer_SelectedIndexChanged;
             // 
-            // tbTables
+            // tpTables
             // 
-            tbTables.BackColor = System.Drawing.Color.Transparent;
-            tbTables.Controls.Add(cbSimpleSQL);
-            tbTables.Controls.Add(cbNewGM);
-            tbTables.Controls.Add(label29);
-            tbTables.Controls.Add(tFilterTables);
-            tbTables.Controls.Add(lCurrentPakFile);
-            tbTables.Controls.Add(label41);
-            tbTables.Controls.Add(btnSimpleSQL);
-            tbTables.Controls.Add(dgvSimple);
-            tbTables.Controls.Add(label8);
-            tbTables.Controls.Add(btnFindGameClient);
-            tbTables.Controls.Add(btnOpenServerDB);
-            tbTables.Controls.Add(lbTableNames);
-            tbTables.Controls.Add(label2);
-            tbTables.Controls.Add(cbItemSearchLanguage);
-            tbTables.Location = new System.Drawing.Point(4, 25);
-            tbTables.Margin = new System.Windows.Forms.Padding(4);
-            tbTables.Name = "tbTables";
-            tbTables.Padding = new System.Windows.Forms.Padding(4);
-            tbTables.Size = new System.Drawing.Size(1082, 600);
-            tbTables.TabIndex = 0;
-            tbTables.Text = "Tables and Settings";
+            tpTables.BackColor = System.Drawing.Color.Transparent;
+            tpTables.Controls.Add(cbSimpleSQL);
+            tpTables.Controls.Add(cbNewGM);
+            tpTables.Controls.Add(label29);
+            tpTables.Controls.Add(tFilterTables);
+            tpTables.Controls.Add(lCurrentPakFile);
+            tpTables.Controls.Add(label41);
+            tpTables.Controls.Add(btnSimpleSQL);
+            tpTables.Controls.Add(dgvSimple);
+            tpTables.Controls.Add(label8);
+            tpTables.Controls.Add(btnFindGameClient);
+            tpTables.Controls.Add(btnOpenServerDB);
+            tpTables.Controls.Add(lbTableNames);
+            tpTables.Controls.Add(label2);
+            tpTables.Controls.Add(cbItemSearchLanguage);
+            tpTables.Location = new System.Drawing.Point(4, 14);
+            tpTables.Margin = new System.Windows.Forms.Padding(4);
+            tpTables.Name = "tpTables";
+            tpTables.Padding = new System.Windows.Forms.Padding(4);
+            tpTables.Size = new System.Drawing.Size(1082, 587);
+            tpTables.TabIndex = 0;
+            tpTables.Text = "Tables and Settings";
             // 
             // cbSimpleSQL
             // 
@@ -805,7 +833,7 @@
             dgvSimple.Name = "dgvSimple";
             dgvSimple.RowHeadersVisible = false;
             dgvSimple.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            dgvSimple.Size = new System.Drawing.Size(741, 416);
+            dgvSimple.Size = new System.Drawing.Size(741, 417);
             dgvSimple.TabIndex = 9;
             // 
             // label8
@@ -870,10 +898,10 @@
             // 
             tpCurrentRecord.Controls.Add(labelCurrentDataInfo);
             tpCurrentRecord.Controls.Add(dgvCurrentData);
-            tpCurrentRecord.Location = new System.Drawing.Point(4, 25);
+            tpCurrentRecord.Location = new System.Drawing.Point(4, 14);
             tpCurrentRecord.Margin = new System.Windows.Forms.Padding(4);
             tpCurrentRecord.Name = "tpCurrentRecord";
-            tpCurrentRecord.Size = new System.Drawing.Size(1082, 600);
+            tpCurrentRecord.Size = new System.Drawing.Size(1082, 587);
             tpCurrentRecord.TabIndex = 4;
             tpCurrentRecord.Text = "Selected Data";
             tpCurrentRecord.UseVisualStyleBackColor = true;
@@ -903,7 +931,7 @@
             dgvCurrentData.Name = "dgvCurrentData";
             dgvCurrentData.RowHeadersVisible = false;
             dgvCurrentData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            dgvCurrentData.Size = new System.Drawing.Size(1060, 579);
+            dgvCurrentData.Size = new System.Drawing.Size(1060, 551);
             dgvCurrentData.TabIndex = 3;
             // 
             // dataGridViewTextBoxColumn4
@@ -924,20 +952,20 @@
             Column12.HeaderText = "Localized";
             Column12.Name = "Column12";
             // 
-            // tbLocalizer
+            // tpLocalizer
             // 
-            tbLocalizer.Controls.Add(label93);
-            tbLocalizer.Controls.Add(dgvLocalized);
-            tbLocalizer.Controls.Add(tSearchLocalized);
-            tbLocalizer.Location = new System.Drawing.Point(4, 25);
-            tbLocalizer.Margin = new System.Windows.Forms.Padding(4);
-            tbLocalizer.Name = "tbLocalizer";
-            tbLocalizer.Padding = new System.Windows.Forms.Padding(4);
-            tbLocalizer.Size = new System.Drawing.Size(1082, 600);
-            tbLocalizer.TabIndex = 10;
-            tbLocalizer.Text = "Localizer";
-            tbLocalizer.UseVisualStyleBackColor = true;
-            tbLocalizer.Enter += tbLocalizer_Enter;
+            tpLocalizer.Controls.Add(label93);
+            tpLocalizer.Controls.Add(dgvLocalized);
+            tpLocalizer.Controls.Add(tSearchLocalized);
+            tpLocalizer.Location = new System.Drawing.Point(4, 14);
+            tpLocalizer.Margin = new System.Windows.Forms.Padding(4);
+            tpLocalizer.Name = "tpLocalizer";
+            tpLocalizer.Padding = new System.Windows.Forms.Padding(4);
+            tpLocalizer.Size = new System.Drawing.Size(1082, 587);
+            tpLocalizer.TabIndex = 10;
+            tpLocalizer.Text = "Localizer";
+            tpLocalizer.UseVisualStyleBackColor = true;
+            tpLocalizer.Enter += TpLocalizerEnter;
             // 
             // label93
             // 
@@ -964,7 +992,7 @@
             dgvLocalized.Name = "dgvLocalized";
             dgvLocalized.RowHeadersVisible = false;
             dgvLocalized.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            dgvLocalized.Size = new System.Drawing.Size(1060, 543);
+            dgvLocalized.Size = new System.Drawing.Size(1060, 515);
             dgvLocalized.TabIndex = 11;
             // 
             // Column48
@@ -1018,11 +1046,11 @@
             tpMap.Controls.Add(btnFindAllQuestSpheres);
             tpMap.Controls.Add(btnFindAllTransferPaths);
             tpMap.Controls.Add(btnMap);
-            tpMap.Location = new System.Drawing.Point(4, 25);
+            tpMap.Location = new System.Drawing.Point(4, 14);
             tpMap.Margin = new System.Windows.Forms.Padding(4);
             tpMap.Name = "tpMap";
             tpMap.Padding = new System.Windows.Forms.Padding(4);
-            tpMap.Size = new System.Drawing.Size(1082, 600);
+            tpMap.Size = new System.Drawing.Size(1082, 587);
             tpMap.TabIndex = 13;
             tpMap.Text = "Map";
             tpMap.UseVisualStyleBackColor = true;
@@ -1191,11 +1219,11 @@
             tpV1.Controls.Add(btnExportNPCSpawnData);
             tpV1.Controls.Add(btnExportDataForVieweD);
             tpV1.Controls.Add(lSpace);
-            tpV1.Location = new System.Drawing.Point(4, 25);
+            tpV1.Location = new System.Drawing.Point(4, 14);
             tpV1.Margin = new System.Windows.Forms.Padding(4);
             tpV1.Name = "tpV1";
             tpV1.Padding = new System.Windows.Forms.Padding(4);
-            tpV1.Size = new System.Drawing.Size(1082, 600);
+            tpV1.Size = new System.Drawing.Size(1082, 587);
             tpV1.TabIndex = 11;
             tpV1.Text = "|";
             tpV1.UseVisualStyleBackColor = true;
@@ -1203,7 +1231,7 @@
             // btnExportDoodadSpawnData
             // 
             btnExportDoodadSpawnData.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            btnExportDoodadSpawnData.Location = new System.Drawing.Point(9, 511);
+            btnExportDoodadSpawnData.Location = new System.Drawing.Point(4, 488);
             btnExportDoodadSpawnData.Margin = new System.Windows.Forms.Padding(4);
             btnExportDoodadSpawnData.Name = "btnExportDoodadSpawnData";
             btnExportDoodadSpawnData.Size = new System.Drawing.Size(194, 28);
@@ -1215,7 +1243,7 @@
             // btnExportNPCSpawnData
             // 
             btnExportNPCSpawnData.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            btnExportNPCSpawnData.Location = new System.Drawing.Point(9, 547);
+            btnExportNPCSpawnData.Location = new System.Drawing.Point(4, 524);
             btnExportNPCSpawnData.Margin = new System.Windows.Forms.Padding(4);
             btnExportNPCSpawnData.Name = "btnExportNPCSpawnData";
             btnExportNPCSpawnData.Size = new System.Drawing.Size(194, 28);
@@ -1227,7 +1255,7 @@
             // btnExportDataForVieweD
             // 
             btnExportDataForVieweD.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            btnExportDataForVieweD.Location = new System.Drawing.Point(9, 582);
+            btnExportDataForVieweD.Location = new System.Drawing.Point(4, 559);
             btnExportDataForVieweD.Margin = new System.Windows.Forms.Padding(4);
             btnExportDataForVieweD.Name = "btnExportDataForVieweD";
             btnExportDataForVieweD.Size = new System.Drawing.Size(194, 28);
@@ -1253,10 +1281,10 @@
             tpBuffs.Controls.Add(btnSearchBuffs);
             tpBuffs.Controls.Add(label115);
             tpBuffs.Controls.Add(dgvBuffs);
-            tpBuffs.Location = new System.Drawing.Point(4, 25);
+            tpBuffs.Location = new System.Drawing.Point(4, 14);
             tpBuffs.Margin = new System.Windows.Forms.Padding(4);
             tpBuffs.Name = "tpBuffs";
-            tpBuffs.Size = new System.Drawing.Size(1082, 600);
+            tpBuffs.Size = new System.Drawing.Size(1082, 587);
             tpBuffs.TabIndex = 12;
             tpBuffs.Text = "Buffs";
             tpBuffs.UseVisualStyleBackColor = true;
@@ -1293,7 +1321,7 @@
             groupBox14.Margin = new System.Windows.Forms.Padding(4);
             groupBox14.Name = "groupBox14";
             groupBox14.Padding = new System.Windows.Forms.Padding(4);
-            groupBox14.Size = new System.Drawing.Size(700, 587);
+            groupBox14.Size = new System.Drawing.Size(700, 574);
             groupBox14.TabIndex = 12;
             groupBox14.TabStop = false;
             groupBox14.Text = "Buff Info";
@@ -1316,8 +1344,8 @@
             // 
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
-            splitContainer2.Size = new System.Drawing.Size(686, 338);
-            splitContainer2.SplitterDistance = 360;
+            splitContainer2.Size = new System.Drawing.Size(686, 325);
+            splitContainer2.SplitterDistance = 333;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1325,7 +1353,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(269, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(242, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1356,7 +1384,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(352, 307);
+            tvBuffTriggers.Size = new System.Drawing.Size(325, 294);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -1389,14 +1417,14 @@
             flpBuff.Location = new System.Drawing.Point(7, 30);
             flpBuff.Margin = new System.Windows.Forms.Padding(4);
             flpBuff.Name = "flpBuff";
-            flpBuff.Size = new System.Drawing.Size(254, 303);
+            flpBuff.Size = new System.Drawing.Size(254, 290);
             flpBuff.TabIndex = 2;
             // 
             // lBuffAddGMCommand
             // 
             lBuffAddGMCommand.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lBuffAddGMCommand.AutoSize = true;
-            lBuffAddGMCommand.Location = new System.Drawing.Point(7, 563);
+            lBuffAddGMCommand.Location = new System.Drawing.Point(7, 550);
             lBuffAddGMCommand.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lBuffAddGMCommand.Name = "lBuffAddGMCommand";
             lBuffAddGMCommand.Size = new System.Drawing.Size(83, 16);
@@ -1407,7 +1435,7 @@
             // 
             lBuffTags.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lBuffTags.AutoSize = true;
-            lBuffTags.Location = new System.Drawing.Point(63, 532);
+            lBuffTags.Location = new System.Drawing.Point(63, 519);
             lBuffTags.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lBuffTags.Name = "lBuffTags";
             lBuffTags.Size = new System.Drawing.Size(22, 16);
@@ -1418,7 +1446,7 @@
             // 
             label117.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             label117.AutoSize = true;
-            label117.Location = new System.Drawing.Point(7, 532);
+            label117.Location = new System.Drawing.Point(7, 519);
             label117.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label117.Name = "label117";
             label117.Size = new System.Drawing.Size(30, 16);
@@ -1556,7 +1584,7 @@
             dgvBuffs.ReadOnly = true;
             dgvBuffs.RowHeadersVisible = false;
             dgvBuffs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvBuffs.Size = new System.Drawing.Size(362, 547);
+            dgvBuffs.Size = new System.Drawing.Size(362, 534);
             dgvBuffs.TabIndex = 8;
             dgvBuffs.SelectionChanged += DgvBuffs_SelectionChanged;
             // 
@@ -1592,11 +1620,11 @@
             tpDoodads.Controls.Add(btnSearchDoodads);
             tpDoodads.Controls.Add(label46);
             tpDoodads.Controls.Add(dgvDoodads);
-            tpDoodads.Location = new System.Drawing.Point(4, 25);
+            tpDoodads.Location = new System.Drawing.Point(4, 14);
             tpDoodads.Margin = new System.Windows.Forms.Padding(4);
             tpDoodads.Name = "tpDoodads";
             tpDoodads.Padding = new System.Windows.Forms.Padding(4);
-            tpDoodads.Size = new System.Drawing.Size(1082, 600);
+            tpDoodads.Size = new System.Drawing.Size(1082, 587);
             tpDoodads.TabIndex = 8;
             tpDoodads.Text = "Doodads";
             tpDoodads.UseVisualStyleBackColor = true;
@@ -1625,7 +1653,7 @@
             tcDoodads.Multiline = true;
             tcDoodads.Name = "tcDoodads";
             tcDoodads.SelectedIndex = 0;
-            tcDoodads.Size = new System.Drawing.Size(399, 592);
+            tcDoodads.Size = new System.Drawing.Size(399, 579);
             tcDoodads.TabIndex = 15;
             // 
             // tpDoodadInfo
@@ -1636,7 +1664,7 @@
             tpDoodadInfo.Margin = new System.Windows.Forms.Padding(4);
             tpDoodadInfo.Name = "tpDoodadInfo";
             tpDoodadInfo.Padding = new System.Windows.Forms.Padding(4);
-            tpDoodadInfo.Size = new System.Drawing.Size(391, 563);
+            tpDoodadInfo.Size = new System.Drawing.Size(391, 550);
             tpDoodadInfo.TabIndex = 1;
             tpDoodadInfo.Text = "Doodad";
             tpDoodadInfo.UseVisualStyleBackColor = true;
@@ -2552,7 +2580,7 @@
             tpDoodadFunctions.Margin = new System.Windows.Forms.Padding(4);
             tpDoodadFunctions.Name = "tpDoodadFunctions";
             tpDoodadFunctions.Padding = new System.Windows.Forms.Padding(4);
-            tpDoodadFunctions.Size = new System.Drawing.Size(391, 563);
+            tpDoodadFunctions.Size = new System.Drawing.Size(391, 550);
             tpDoodadFunctions.TabIndex = 2;
             tpDoodadFunctions.Text = "Functions";
             tpDoodadFunctions.UseVisualStyleBackColor = true;
@@ -2855,7 +2883,7 @@
             tpDoodadTools.Margin = new System.Windows.Forms.Padding(4);
             tpDoodadTools.Name = "tpDoodadTools";
             tpDoodadTools.Padding = new System.Windows.Forms.Padding(4);
-            tpDoodadTools.Size = new System.Drawing.Size(391, 563);
+            tpDoodadTools.Size = new System.Drawing.Size(391, 550);
             tpDoodadTools.TabIndex = 3;
             tpDoodadTools.Text = "Tools";
             tpDoodadTools.UseVisualStyleBackColor = true;
@@ -2864,7 +2892,7 @@
             // 
             btnShowDoodadOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             btnShowDoodadOnMap.ForeColor = System.Drawing.Color.Black;
-            btnShowDoodadOnMap.Location = new System.Drawing.Point(7, 520);
+            btnShowDoodadOnMap.Location = new System.Drawing.Point(7, 507);
             btnShowDoodadOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnShowDoodadOnMap.Name = "btnShowDoodadOnMap";
             btnShowDoodadOnMap.Size = new System.Drawing.Size(376, 27);
@@ -2881,7 +2909,7 @@
             tpDoodadWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tpDoodadWorkflow.Name = "tpDoodadWorkflow";
             tpDoodadWorkflow.Padding = new System.Windows.Forms.Padding(4);
-            tpDoodadWorkflow.Size = new System.Drawing.Size(391, 563);
+            tpDoodadWorkflow.Size = new System.Drawing.Size(391, 550);
             tpDoodadWorkflow.TabIndex = 4;
             tpDoodadWorkflow.Text = "Workflow";
             tpDoodadWorkflow.UseVisualStyleBackColor = true;
@@ -2890,7 +2918,7 @@
             // 
             cbDoodadWorkflowHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             cbDoodadWorkflowHideEmpty.AutoSize = true;
-            cbDoodadWorkflowHideEmpty.Location = new System.Drawing.Point(7, 529);
+            cbDoodadWorkflowHideEmpty.Location = new System.Drawing.Point(7, 516);
             cbDoodadWorkflowHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbDoodadWorkflowHideEmpty.Name = "cbDoodadWorkflowHideEmpty";
             cbDoodadWorkflowHideEmpty.Size = new System.Drawing.Size(123, 20);
@@ -2908,7 +2936,7 @@
             tvDoodadDetails.Location = new System.Drawing.Point(7, 7);
             tvDoodadDetails.Margin = new System.Windows.Forms.Padding(4);
             tvDoodadDetails.Name = "tvDoodadDetails";
-            tvDoodadDetails.Size = new System.Drawing.Size(375, 514);
+            tvDoodadDetails.Size = new System.Drawing.Size(375, 501);
             tvDoodadDetails.TabIndex = 0;
             tvDoodadDetails.DoubleClick += TvDoodadDetails_DoubleClick;
             // 
@@ -2950,7 +2978,7 @@
             dgvDoodads.ReadOnly = true;
             dgvDoodads.RowHeadersVisible = false;
             dgvDoodads.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvDoodads.Size = new System.Drawing.Size(662, 546);
+            dgvDoodads.Size = new System.Drawing.Size(662, 533);
             dgvDoodads.TabIndex = 11;
             dgvDoodads.SelectionChanged += DgvDoodads_SelectionChanged;
             // 
@@ -3017,23 +3045,23 @@
             Column53.ReadOnly = true;
             Column53.Width = 72;
             // 
-            // tbFactions
+            // tpFactions
             // 
-            tbFactions.Controls.Add(groupBox7);
-            tbFactions.Controls.Add(groupBox6);
-            tbFactions.Controls.Add(btnFactionsAll);
-            tbFactions.Controls.Add(btnSearchFaction);
-            tbFactions.Controls.Add(label42);
-            tbFactions.Controls.Add(tSearchFaction);
-            tbFactions.Controls.Add(dgvFactions);
-            tbFactions.Location = new System.Drawing.Point(4, 25);
-            tbFactions.Margin = new System.Windows.Forms.Padding(4);
-            tbFactions.Name = "tbFactions";
-            tbFactions.Padding = new System.Windows.Forms.Padding(4);
-            tbFactions.Size = new System.Drawing.Size(1082, 600);
-            tbFactions.TabIndex = 7;
-            tbFactions.Text = "Factions";
-            tbFactions.UseVisualStyleBackColor = true;
+            tpFactions.Controls.Add(groupBox7);
+            tpFactions.Controls.Add(groupBox6);
+            tpFactions.Controls.Add(btnFactionsAll);
+            tpFactions.Controls.Add(btnSearchFaction);
+            tpFactions.Controls.Add(label42);
+            tpFactions.Controls.Add(tSearchFaction);
+            tpFactions.Controls.Add(dgvFactions);
+            tpFactions.Location = new System.Drawing.Point(4, 14);
+            tpFactions.Margin = new System.Windows.Forms.Padding(4);
+            tpFactions.Name = "tpFactions";
+            tpFactions.Padding = new System.Windows.Forms.Padding(4);
+            tpFactions.Size = new System.Drawing.Size(1082, 587);
+            tpFactions.TabIndex = 7;
+            tpFactions.Text = "Factions";
+            tpFactions.UseVisualStyleBackColor = true;
             // 
             // groupBox7
             // 
@@ -3432,7 +3460,7 @@
             dgvFactions.ReadOnly = true;
             dgvFactions.RowHeadersVisible = false;
             dgvFactions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvFactions.Size = new System.Drawing.Size(837, 546);
+            dgvFactions.Size = new System.Drawing.Size(837, 533);
             dgvFactions.TabIndex = 11;
             dgvFactions.SelectionChanged += DgvFactions_SelectionChanged;
             // 
@@ -3488,11 +3516,11 @@
             tpItems.Controls.Add(dgvItem);
             tpItems.Controls.Add(btnFindItemInLoot);
             tpItems.Controls.Add(label1);
-            tpItems.Location = new System.Drawing.Point(4, 25);
+            tpItems.Location = new System.Drawing.Point(4, 14);
             tpItems.Margin = new System.Windows.Forms.Padding(4);
             tpItems.Name = "tpItems";
             tpItems.Padding = new System.Windows.Forms.Padding(4);
-            tpItems.Size = new System.Drawing.Size(1082, 600);
+            tpItems.Size = new System.Drawing.Size(1082, 587);
             tpItems.TabIndex = 1;
             tpItems.Text = "Items";
             tpItems.UseVisualStyleBackColor = true;
@@ -3603,7 +3631,7 @@
             btnFindItemSkill.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             btnFindItemSkill.BackColor = System.Drawing.SystemColors.Control;
             btnFindItemSkill.ForeColor = System.Drawing.SystemColors.ControlText;
-            btnFindItemSkill.Location = new System.Drawing.Point(113, 572);
+            btnFindItemSkill.Location = new System.Drawing.Point(113, 551);
             btnFindItemSkill.Margin = new System.Windows.Forms.Padding(4);
             btnFindItemSkill.Name = "btnFindItemSkill";
             btnFindItemSkill.Size = new System.Drawing.Size(130, 28);
@@ -3636,7 +3664,7 @@
             groupBox1.Margin = new System.Windows.Forms.Padding(4);
             groupBox1.Name = "groupBox1";
             groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            groupBox1.Size = new System.Drawing.Size(352, 580);
+            groupBox1.Size = new System.Drawing.Size(352, 568);
             groupBox1.TabIndex = 6;
             groupBox1.TabStop = false;
             groupBox1.Text = "Item Info";
@@ -3665,7 +3693,7 @@
             // 
             lItemTags.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lItemTags.AutoSize = true;
-            lItemTags.Location = new System.Drawing.Point(7, 497);
+            lItemTags.Location = new System.Drawing.Point(7, 485);
             lItemTags.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lItemTags.Name = "lItemTags";
             lItemTags.Size = new System.Drawing.Size(22, 16);
@@ -3676,7 +3704,7 @@
             // 
             label127.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             label127.AutoSize = true;
-            label127.Location = new System.Drawing.Point(7, 481);
+            label127.Location = new System.Drawing.Point(7, 469);
             label127.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label127.Name = "label127";
             label127.Size = new System.Drawing.Size(30, 16);
@@ -3687,7 +3715,7 @@
             // 
             lItemAddGMCommand.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lItemAddGMCommand.AutoSize = true;
-            lItemAddGMCommand.Location = new System.Drawing.Point(7, 555);
+            lItemAddGMCommand.Location = new System.Drawing.Point(7, 543);
             lItemAddGMCommand.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lItemAddGMCommand.Name = "lItemAddGMCommand";
             lItemAddGMCommand.Size = new System.Drawing.Size(55, 16);
@@ -3714,7 +3742,7 @@
             rtItemDesc.Location = new System.Drawing.Point(10, 121);
             rtItemDesc.Margin = new System.Windows.Forms.Padding(4);
             rtItemDesc.Name = "rtItemDesc";
-            rtItemDesc.Size = new System.Drawing.Size(334, 356);
+            rtItemDesc.Size = new System.Drawing.Size(334, 344);
             rtItemDesc.TabIndex = 10;
             rtItemDesc.Text = "";
             // 
@@ -3826,7 +3854,7 @@
             dgvItem.ReadOnly = true;
             dgvItem.RowHeadersVisible = false;
             dgvItem.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvItem.Size = new System.Drawing.Size(701, 433);
+            dgvItem.Size = new System.Drawing.Size(701, 411);
             dgvItem.TabIndex = 2;
             dgvItem.SelectionChanged += DgvItemSearch_SelectionChanged;
             // 
@@ -3850,7 +3878,7 @@
             btnFindItemInLoot.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             btnFindItemInLoot.BackColor = System.Drawing.SystemColors.Control;
             btnFindItemInLoot.ForeColor = System.Drawing.SystemColors.ControlText;
-            btnFindItemInLoot.Location = new System.Drawing.Point(13, 572);
+            btnFindItemInLoot.Location = new System.Drawing.Point(13, 551);
             btnFindItemInLoot.Margin = new System.Windows.Forms.Padding(4);
             btnFindItemInLoot.Name = "btnFindItemInLoot";
             btnFindItemInLoot.Size = new System.Drawing.Size(93, 28);
@@ -3877,11 +3905,11 @@
             tpLoot.Controls.Add(label7);
             tpLoot.Controls.Add(tLootSearch);
             tpLoot.Controls.Add(dgvLoot);
-            tpLoot.Location = new System.Drawing.Point(4, 25);
+            tpLoot.Location = new System.Drawing.Point(4, 14);
             tpLoot.Margin = new System.Windows.Forms.Padding(4);
             tpLoot.Name = "tpLoot";
             tpLoot.Padding = new System.Windows.Forms.Padding(4);
-            tpLoot.Size = new System.Drawing.Size(1082, 600);
+            tpLoot.Size = new System.Drawing.Size(1082, 587);
             tpLoot.TabIndex = 2;
             tpLoot.Text = "Loot";
             tpLoot.UseVisualStyleBackColor = true;
@@ -3890,7 +3918,7 @@
             // 
             label141.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             label141.AutoSize = true;
-            label141.Location = new System.Drawing.Point(9, 492);
+            label141.Location = new System.Drawing.Point(9, 488);
             label141.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label141.Name = "label141";
             label141.Size = new System.Drawing.Size(421, 16);
@@ -3907,7 +3935,7 @@
             groupBox11.Controls.Add(LLootGroupPackID);
             groupBox11.Controls.Add(label101);
             groupBox11.ForeColor = System.Drawing.Color.FromArgb(208, 192, 171);
-            groupBox11.Location = new System.Drawing.Point(9, 512);
+            groupBox11.Location = new System.Drawing.Point(9, 508);
             groupBox11.Margin = new System.Windows.Forms.Padding(4);
             groupBox11.Name = "groupBox11";
             groupBox11.Padding = new System.Windows.Forms.Padding(4);
@@ -4019,7 +4047,7 @@
             dgvLoot.ReadOnly = true;
             dgvLoot.RowHeadersVisible = false;
             dgvLoot.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvLoot.Size = new System.Drawing.Size(1062, 437);
+            dgvLoot.Size = new System.Drawing.Size(1062, 433);
             dgvLoot.TabIndex = 3;
             dgvLoot.SelectionChanged += DgvLoot_SelectionChanged;
             // 
@@ -4100,11 +4128,11 @@
             tpNPCs.Controls.Add(btnSearchNPC);
             tpNPCs.Controls.Add(label39);
             tpNPCs.Controls.Add(dgvNPCs);
-            tpNPCs.Location = new System.Drawing.Point(4, 25);
+            tpNPCs.Location = new System.Drawing.Point(4, 14);
             tpNPCs.Margin = new System.Windows.Forms.Padding(4);
             tpNPCs.Name = "tpNPCs";
             tpNPCs.Padding = new System.Windows.Forms.Padding(4);
-            tpNPCs.Size = new System.Drawing.Size(1082, 600);
+            tpNPCs.Size = new System.Drawing.Size(1082, 587);
             tpNPCs.TabIndex = 6;
             tpNPCs.Text = "NPCs";
             tpNPCs.UseVisualStyleBackColor = true;
@@ -4138,7 +4166,7 @@
             groupBox13.Margin = new System.Windows.Forms.Padding(4);
             groupBox13.Name = "groupBox13";
             groupBox13.Padding = new System.Windows.Forms.Padding(4);
-            groupBox13.Size = new System.Drawing.Size(446, 575);
+            groupBox13.Size = new System.Drawing.Size(446, 567);
             groupBox13.TabIndex = 13;
             groupBox13.TabStop = false;
             groupBox13.Text = "NPC Info";
@@ -4149,7 +4177,7 @@
             cbNpcCollapseLoot.AutoSize = true;
             cbNpcCollapseLoot.Checked = true;
             cbNpcCollapseLoot.CheckState = System.Windows.Forms.CheckState.Checked;
-            cbNpcCollapseLoot.Location = new System.Drawing.Point(10, 479);
+            cbNpcCollapseLoot.Location = new System.Drawing.Point(10, 471);
             cbNpcCollapseLoot.Name = "cbNpcCollapseLoot";
             cbNpcCollapseLoot.Size = new System.Drawing.Size(183, 20);
             cbNpcCollapseLoot.TabIndex = 32;
@@ -4172,7 +4200,7 @@
             treeNode1.Text = "NPC";
             tvNPCInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
             tvNPCInfo.SelectedImageIndex = 0;
-            tvNPCInfo.Size = new System.Drawing.Size(430, 359);
+            tvNPCInfo.Size = new System.Drawing.Size(430, 351);
             tvNPCInfo.TabIndex = 31;
             tvNPCInfo.DoubleClick += TvNpcInfo_DoubleClick;
             // 
@@ -4181,7 +4209,7 @@
             btnShowNpcLoot.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             btnShowNpcLoot.Enabled = false;
             btnShowNpcLoot.ForeColor = System.Drawing.Color.Black;
-            btnShowNpcLoot.Location = new System.Drawing.Point(10, 506);
+            btnShowNpcLoot.Location = new System.Drawing.Point(10, 498);
             btnShowNpcLoot.Margin = new System.Windows.Forms.Padding(4);
             btnShowNpcLoot.Name = "btnShowNpcLoot";
             btnShowNpcLoot.Size = new System.Drawing.Size(428, 27);
@@ -4194,7 +4222,7 @@
             // 
             btnShowNPCsOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             btnShowNPCsOnMap.ForeColor = System.Drawing.Color.Black;
-            btnShowNPCsOnMap.Location = new System.Drawing.Point(10, 540);
+            btnShowNPCsOnMap.Location = new System.Drawing.Point(10, 532);
             btnShowNPCsOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnShowNPCsOnMap.Name = "btnShowNPCsOnMap";
             btnShowNPCsOnMap.Size = new System.Drawing.Size(428, 27);
@@ -4207,7 +4235,7 @@
             // 
             lNPCTags.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lNPCTags.AutoSize = true;
-            lNPCTags.Location = new System.Drawing.Point(7, 432);
+            lNPCTags.Location = new System.Drawing.Point(7, 424);
             lNPCTags.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lNPCTags.Name = "lNPCTags";
             lNPCTags.Size = new System.Drawing.Size(22, 16);
@@ -4218,7 +4246,7 @@
             // 
             label125.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             label125.AutoSize = true;
-            label125.Location = new System.Drawing.Point(7, 403);
+            label125.Location = new System.Drawing.Point(7, 395);
             label125.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label125.Name = "label125";
             label125.Size = new System.Drawing.Size(30, 16);
@@ -4229,7 +4257,7 @@
             // 
             lGMNPCSpawn.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lGMNPCSpawn.AutoSize = true;
-            lGMNPCSpawn.Location = new System.Drawing.Point(7, 460);
+            lGMNPCSpawn.Location = new System.Drawing.Point(7, 452);
             lGMNPCSpawn.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lGMNPCSpawn.Name = "lGMNPCSpawn";
             lGMNPCSpawn.Size = new System.Drawing.Size(46, 16);
@@ -4294,7 +4322,7 @@
             dgvNPCs.ReadOnly = true;
             dgvNPCs.RowHeadersVisible = false;
             dgvNPCs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvNPCs.Size = new System.Drawing.Size(607, 538);
+            dgvNPCs.Size = new System.Drawing.Size(607, 529);
             dgvNPCs.TabIndex = 7;
             dgvNPCs.SelectionChanged += DgvNpcs_SelectionChanged;
             // 
@@ -4351,11 +4379,11 @@
             // 
             tpQuests.Controls.Add(panel1);
             tpQuests.Controls.Add(splitContainer1);
-            tpQuests.Location = new System.Drawing.Point(4, 25);
+            tpQuests.Location = new System.Drawing.Point(4, 14);
             tpQuests.Margin = new System.Windows.Forms.Padding(4);
             tpQuests.Name = "tpQuests";
             tpQuests.Padding = new System.Windows.Forms.Padding(4);
-            tpQuests.Size = new System.Drawing.Size(1082, 600);
+            tpQuests.Size = new System.Drawing.Size(1082, 587);
             tpQuests.TabIndex = 9;
             tpQuests.Text = "Quests";
             tpQuests.UseVisualStyleBackColor = true;
@@ -4424,7 +4452,7 @@
             splitContainer1.Panel2.Controls.Add(btnQuestFindRelatedOnMap);
             splitContainer1.Panel2.Controls.Add(cbQuestWorkflowHideEmpty);
             splitContainer1.Panel2.Controls.Add(tvQuestWorkflow);
-            splitContainer1.Size = new System.Drawing.Size(1073, 549);
+            splitContainer1.Size = new System.Drawing.Size(1073, 545);
             splitContainer1.SplitterDistance = 330;
             splitContainer1.SplitterWidth = 5;
             splitContainer1.TabIndex = 13;
@@ -4437,7 +4465,7 @@
             groupBox12.Margin = new System.Windows.Forms.Padding(4);
             groupBox12.Name = "groupBox12";
             groupBox12.Padding = new System.Windows.Forms.Padding(4);
-            groupBox12.Size = new System.Drawing.Size(323, 315);
+            groupBox12.Size = new System.Drawing.Size(323, 311);
             groupBox12.TabIndex = 9;
             groupBox12.TabStop = false;
             groupBox12.Text = "Quest Text";
@@ -4450,7 +4478,7 @@
             rtQuestText.Location = new System.Drawing.Point(4, 20);
             rtQuestText.Margin = new System.Windows.Forms.Padding(4);
             rtQuestText.Name = "rtQuestText";
-            rtQuestText.Size = new System.Drawing.Size(315, 291);
+            rtQuestText.Size = new System.Drawing.Size(315, 287);
             rtQuestText.TabIndex = 11;
             rtQuestText.Text = "";
             // 
@@ -4512,7 +4540,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(442, 517);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(415, 513);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4527,7 +4555,7 @@
             cbQuestWorkflowHideEmpty.AutoSize = true;
             cbQuestWorkflowHideEmpty.Checked = true;
             cbQuestWorkflowHideEmpty.CheckState = System.Windows.Forms.CheckState.Checked;
-            cbQuestWorkflowHideEmpty.Location = new System.Drawing.Point(2, 523);
+            cbQuestWorkflowHideEmpty.Location = new System.Drawing.Point(2, 519);
             cbQuestWorkflowHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbQuestWorkflowHideEmpty.Name = "cbQuestWorkflowHideEmpty";
             cbQuestWorkflowHideEmpty.Size = new System.Drawing.Size(123, 20);
@@ -4544,7 +4572,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(727, 507);
+            tvQuestWorkflow.Size = new System.Drawing.Size(700, 503);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -4552,10 +4580,10 @@
             // 
             tpSchedules.Controls.Add(tcScheduleTypes);
             tpSchedules.Controls.Add(tvSchedule);
-            tpSchedules.Location = new System.Drawing.Point(4, 25);
+            tpSchedules.Location = new System.Drawing.Point(4, 14);
             tpSchedules.Name = "tpSchedules";
             tpSchedules.Padding = new System.Windows.Forms.Padding(3);
-            tpSchedules.Size = new System.Drawing.Size(1082, 600);
+            tpSchedules.Size = new System.Drawing.Size(1082, 587);
             tpSchedules.TabIndex = 17;
             tpSchedules.Text = "Schedules";
             tpSchedules.UseVisualStyleBackColor = true;
@@ -4569,7 +4597,7 @@
             tcScheduleTypes.Location = new System.Drawing.Point(8, 6);
             tcScheduleTypes.Name = "tcScheduleTypes";
             tcScheduleTypes.SelectedIndex = 0;
-            tcScheduleTypes.Size = new System.Drawing.Size(351, 601);
+            tcScheduleTypes.Size = new System.Drawing.Size(351, 581);
             tcScheduleTypes.TabIndex = 3;
             // 
             // tpScheduleIRL
@@ -4578,7 +4606,7 @@
             tpScheduleIRL.Location = new System.Drawing.Point(4, 25);
             tpScheduleIRL.Name = "tpScheduleIRL";
             tpScheduleIRL.Padding = new System.Windows.Forms.Padding(3);
-            tpScheduleIRL.Size = new System.Drawing.Size(343, 572);
+            tpScheduleIRL.Size = new System.Drawing.Size(343, 552);
             tpScheduleIRL.TabIndex = 0;
             tpScheduleIRL.Text = "Seasonal";
             tpScheduleIRL.UseVisualStyleBackColor = true;
@@ -4589,7 +4617,7 @@
             lbSchedulesIRL.FormattingEnabled = true;
             lbSchedulesIRL.Location = new System.Drawing.Point(3, 3);
             lbSchedulesIRL.Name = "lbSchedulesIRL";
-            lbSchedulesIRL.Size = new System.Drawing.Size(337, 566);
+            lbSchedulesIRL.Size = new System.Drawing.Size(337, 546);
             lbSchedulesIRL.TabIndex = 0;
             lbSchedulesIRL.SelectedIndexChanged += LbSchedules_SelectedIndexChanged;
             // 
@@ -4599,7 +4627,7 @@
             tpScheduleGame.Location = new System.Drawing.Point(4, 25);
             tpScheduleGame.Name = "tpScheduleGame";
             tpScheduleGame.Padding = new System.Windows.Forms.Padding(3);
-            tpScheduleGame.Size = new System.Drawing.Size(343, 572);
+            tpScheduleGame.Size = new System.Drawing.Size(343, 552);
             tpScheduleGame.TabIndex = 1;
             tpScheduleGame.Text = "Game";
             tpScheduleGame.UseVisualStyleBackColor = true;
@@ -4610,7 +4638,7 @@
             lbSchedulesGame.FormattingEnabled = true;
             lbSchedulesGame.Location = new System.Drawing.Point(3, 3);
             lbSchedulesGame.Name = "lbSchedulesGame";
-            lbSchedulesGame.Size = new System.Drawing.Size(337, 566);
+            lbSchedulesGame.Size = new System.Drawing.Size(337, 546);
             lbSchedulesGame.TabIndex = 1;
             lbSchedulesGame.SelectedIndexChanged += LbSchedulesGame_SelectedIndexChanged;
             // 
@@ -4620,7 +4648,7 @@
             tpTowerDefs.Location = new System.Drawing.Point(4, 25);
             tpTowerDefs.Name = "tpTowerDefs";
             tpTowerDefs.Padding = new System.Windows.Forms.Padding(3);
-            tpTowerDefs.Size = new System.Drawing.Size(343, 572);
+            tpTowerDefs.Size = new System.Drawing.Size(343, 552);
             tpTowerDefs.TabIndex = 2;
             tpTowerDefs.Text = "Rifts";
             tpTowerDefs.UseVisualStyleBackColor = true;
@@ -4631,7 +4659,7 @@
             lbTowerDefs.FormattingEnabled = true;
             lbTowerDefs.Location = new System.Drawing.Point(3, 3);
             lbTowerDefs.Name = "lbTowerDefs";
-            lbTowerDefs.Size = new System.Drawing.Size(337, 566);
+            lbTowerDefs.Size = new System.Drawing.Size(337, 546);
             lbTowerDefs.TabIndex = 2;
             lbTowerDefs.SelectedIndexChanged += LbTowerDefs_SelectedIndexChanged;
             // 
@@ -4644,18 +4672,18 @@
             tvSchedule.Location = new System.Drawing.Point(365, 34);
             tvSchedule.Name = "tvSchedule";
             tvSchedule.SelectedImageIndex = 0;
-            tvSchedule.Size = new System.Drawing.Size(709, 560);
+            tvSchedule.Size = new System.Drawing.Size(709, 549);
             tvSchedule.TabIndex = 2;
             tvSchedule.DoubleClick += TvSchedule_DoubleClick;
             // 
             // tpSkills
             // 
             tpSkills.Controls.Add(splitContainer3);
-            tpSkills.Location = new System.Drawing.Point(4, 25);
+            tpSkills.Location = new System.Drawing.Point(4, 14);
             tpSkills.Margin = new System.Windows.Forms.Padding(4);
             tpSkills.Name = "tpSkills";
             tpSkills.Padding = new System.Windows.Forms.Padding(4);
-            tpSkills.Size = new System.Drawing.Size(1082, 600);
+            tpSkills.Size = new System.Drawing.Size(1082, 587);
             tpSkills.TabIndex = 3;
             tpSkills.Text = "Skill";
             tpSkills.UseVisualStyleBackColor = true;
@@ -4677,7 +4705,7 @@
             // splitContainer3.Panel2
             // 
             splitContainer3.Panel2.Controls.Add(tcSkillInfo);
-            splitContainer3.Size = new System.Drawing.Size(1074, 592);
+            splitContainer3.Size = new System.Drawing.Size(1074, 579);
             splitContainer3.SplitterDistance = 470;
             splitContainer3.SplitterWidth = 5;
             splitContainer3.TabIndex = 10;
@@ -4731,7 +4759,7 @@
             dgvSkills.ReadOnly = true;
             dgvSkills.RowHeadersVisible = false;
             dgvSkills.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvSkills.Size = new System.Drawing.Size(467, 548);
+            dgvSkills.Size = new System.Drawing.Size(467, 535);
             dgvSkills.TabIndex = 6;
             dgvSkills.SelectionChanged += DgvSkills_SelectionChanged;
             // 
@@ -4769,7 +4797,7 @@
             tcSkillInfo.Multiline = true;
             tcSkillInfo.Name = "tcSkillInfo";
             tcSkillInfo.SelectedIndex = 0;
-            tcSkillInfo.Size = new System.Drawing.Size(599, 592);
+            tcSkillInfo.Size = new System.Drawing.Size(599, 579);
             tcSkillInfo.TabIndex = 9;
             // 
             // tpSkillInfo
@@ -4781,7 +4809,7 @@
             tpSkillInfo.Margin = new System.Windows.Forms.Padding(4);
             tpSkillInfo.Name = "tpSkillInfo";
             tpSkillInfo.Padding = new System.Windows.Forms.Padding(4);
-            tpSkillInfo.Size = new System.Drawing.Size(591, 563);
+            tpSkillInfo.Size = new System.Drawing.Size(591, 550);
             tpSkillInfo.TabIndex = 0;
             tpSkillInfo.Text = "Skill";
             // 
@@ -4812,7 +4840,7 @@
             groupBox2.Margin = new System.Windows.Forms.Padding(4);
             groupBox2.Name = "groupBox2";
             groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            groupBox2.Size = new System.Drawing.Size(583, 555);
+            groupBox2.Size = new System.Drawing.Size(583, 542);
             groupBox2.TabIndex = 8;
             groupBox2.TabStop = false;
             groupBox2.Text = "Skill Info";
@@ -4821,7 +4849,7 @@
             // 
             lSkillTags.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lSkillTags.AutoSize = true;
-            lSkillTags.Location = new System.Drawing.Point(7, 531);
+            lSkillTags.Location = new System.Drawing.Point(7, 518);
             lSkillTags.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lSkillTags.Name = "lSkillTags";
             lSkillTags.Size = new System.Drawing.Size(22, 16);
@@ -4832,7 +4860,7 @@
             // 
             label123.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             label123.AutoSize = true;
-            label123.Location = new System.Drawing.Point(7, 515);
+            label123.Location = new System.Drawing.Point(7, 502);
             label123.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label123.Name = "label123";
             label123.Size = new System.Drawing.Size(30, 16);
@@ -4847,7 +4875,7 @@
             rtSkillDescription.Location = new System.Drawing.Point(10, 148);
             rtSkillDescription.Margin = new System.Windows.Forms.Padding(4);
             rtSkillDescription.Name = "rtSkillDescription";
-            rtSkillDescription.Size = new System.Drawing.Size(565, 362);
+            rtSkillDescription.Size = new System.Drawing.Size(565, 349);
             rtSkillDescription.TabIndex = 10;
             rtSkillDescription.Text = "";
             // 
@@ -5013,7 +5041,7 @@
             tpSkillItems.Margin = new System.Windows.Forms.Padding(4);
             tpSkillItems.Name = "tpSkillItems";
             tpSkillItems.Padding = new System.Windows.Forms.Padding(4);
-            tpSkillItems.Size = new System.Drawing.Size(591, 563);
+            tpSkillItems.Size = new System.Drawing.Size(591, 550);
             tpSkillItems.TabIndex = 1;
             tpSkillItems.Text = "Items?";
             tpSkillItems.UseVisualStyleBackColor = true;
@@ -5027,7 +5055,7 @@
             dgvSkillProducts.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             dgvSkillProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvSkillProducts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { dataGridViewTextBoxColumn9, dataGridViewTextBoxColumn10, dataGridViewTextBoxColumn11 });
-            dgvSkillProducts.Location = new System.Drawing.Point(9, 384);
+            dgvSkillProducts.Location = new System.Drawing.Point(9, 371);
             dgvSkillProducts.Margin = new System.Windows.Forms.Padding(4);
             dgvSkillProducts.Name = "dgvSkillProducts";
             dgvSkillProducts.ReadOnly = true;
@@ -5073,7 +5101,7 @@
             dgvSkillReagents.ReadOnly = true;
             dgvSkillReagents.RowHeadersVisible = false;
             dgvSkillReagents.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvSkillReagents.Size = new System.Drawing.Size(573, 327);
+            dgvSkillReagents.Size = new System.Drawing.Size(573, 314);
             dgvSkillReagents.TabIndex = 7;
             // 
             // dataGridViewTextBoxColumn6
@@ -5102,7 +5130,7 @@
             // 
             label13.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             label13.AutoSize = true;
-            label13.Location = new System.Drawing.Point(7, 364);
+            label13.Location = new System.Drawing.Point(7, 351);
             label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label13.Name = "label13";
             label13.Size = new System.Drawing.Size(119, 16);
@@ -5129,7 +5157,7 @@
             tpSkillExecution.Margin = new System.Windows.Forms.Padding(4);
             tpSkillExecution.Name = "tpSkillExecution";
             tpSkillExecution.Padding = new System.Windows.Forms.Padding(4);
-            tpSkillExecution.Size = new System.Drawing.Size(591, 563);
+            tpSkillExecution.Size = new System.Drawing.Size(591, 550);
             tpSkillExecution.TabIndex = 2;
             tpSkillExecution.Text = "Execution";
             tpSkillExecution.UseVisualStyleBackColor = true;
@@ -5137,7 +5165,7 @@
             // btnSkillTreeCollapse
             // 
             btnSkillTreeCollapse.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            btnSkillTreeCollapse.Location = new System.Drawing.Point(7, 368);
+            btnSkillTreeCollapse.Location = new System.Drawing.Point(7, 355);
             btnSkillTreeCollapse.Margin = new System.Windows.Forms.Padding(4);
             btnSkillTreeCollapse.Name = "btnSkillTreeCollapse";
             btnSkillTreeCollapse.Size = new System.Drawing.Size(44, 28);
@@ -5149,7 +5177,7 @@
             // btnCopySkillExecutionTree
             // 
             btnCopySkillExecutionTree.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            btnCopySkillExecutionTree.Location = new System.Drawing.Point(496, 368);
+            btnCopySkillExecutionTree.Location = new System.Drawing.Point(496, 355);
             btnCopySkillExecutionTree.Margin = new System.Windows.Forms.Padding(4);
             btnCopySkillExecutionTree.Name = "btnCopySkillExecutionTree";
             btnCopySkillExecutionTree.Size = new System.Drawing.Size(88, 28);
@@ -5174,7 +5202,7 @@
             gbSkillPlotEventInfo.Controls.Add(lPlotEventP3);
             gbSkillPlotEventInfo.Controls.Add(lPlotEventP2);
             gbSkillPlotEventInfo.Controls.Add(lPlotEventP1);
-            gbSkillPlotEventInfo.Location = new System.Drawing.Point(7, 403);
+            gbSkillPlotEventInfo.Location = new System.Drawing.Point(7, 390);
             gbSkillPlotEventInfo.Margin = new System.Windows.Forms.Padding(4);
             gbSkillPlotEventInfo.Name = "gbSkillPlotEventInfo";
             gbSkillPlotEventInfo.Padding = new System.Windows.Forms.Padding(4);
@@ -5328,7 +5356,7 @@
             treeNode2.Text = "Skill";
             tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
             tvSkill.SelectedImageIndex = 0;
-            tvSkill.Size = new System.Drawing.Size(575, 343);
+            tvSkill.Size = new System.Drawing.Size(575, 330);
             tvSkill.TabIndex = 0;
             tvSkill.AfterSelect += TvSkill_AfterSelect;
             tvSkill.DoubleClick += TvSkill_DoubleClick;
@@ -5340,9 +5368,9 @@
             tpSpheres.Controls.Add(BtnSearchSpheres);
             tpSpheres.Controls.Add(label144);
             tpSpheres.Controls.Add(DgvSpheres);
-            tpSpheres.Location = new System.Drawing.Point(4, 25);
+            tpSpheres.Location = new System.Drawing.Point(4, 14);
             tpSpheres.Name = "tpSpheres";
-            tpSpheres.Size = new System.Drawing.Size(1082, 600);
+            tpSpheres.Size = new System.Drawing.Size(1082, 587);
             tpSpheres.TabIndex = 18;
             tpSpheres.Text = "Spheres";
             tpSpheres.UseVisualStyleBackColor = true;
@@ -5355,7 +5383,7 @@
             TvSpheres.Location = new System.Drawing.Point(460, 54);
             TvSpheres.Margin = new System.Windows.Forms.Padding(4);
             TvSpheres.Name = "TvSpheres";
-            TvSpheres.Size = new System.Drawing.Size(613, 537);
+            TvSpheres.Size = new System.Drawing.Size(613, 529);
             TvSpheres.TabIndex = 18;
             TvSpheres.DoubleClick += TvSpheres_DoubleClick;
             // 
@@ -5408,7 +5436,7 @@
             DgvSpheres.ReadOnly = true;
             DgvSpheres.RowHeadersVisible = false;
             DgvSpheres.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            DgvSpheres.Size = new System.Drawing.Size(443, 537);
+            DgvSpheres.Size = new System.Drawing.Size(443, 529);
             DgvSpheres.TabIndex = 9;
             DgvSpheres.SelectionChanged += DgvSpheres_SelectionChanged;
             // 
@@ -5455,11 +5483,11 @@
             tpTags.Controls.Add(dgvTags);
             tpTags.Controls.Add(label137);
             tpTags.Controls.Add(tSearchTags);
-            tpTags.Location = new System.Drawing.Point(4, 25);
+            tpTags.Location = new System.Drawing.Point(4, 14);
             tpTags.Margin = new System.Windows.Forms.Padding(4);
             tpTags.Name = "tpTags";
             tpTags.Padding = new System.Windows.Forms.Padding(4);
-            tpTags.Size = new System.Drawing.Size(1082, 600);
+            tpTags.Size = new System.Drawing.Size(1082, 587);
             tpTags.TabIndex = 15;
             tpTags.Text = "Tags";
             tpTags.UseVisualStyleBackColor = true;
@@ -5486,7 +5514,7 @@
             tvTagInfo.Margin = new System.Windows.Forms.Padding(4);
             tvTagInfo.Name = "tvTagInfo";
             tvTagInfo.SelectedImageIndex = 0;
-            tvTagInfo.Size = new System.Drawing.Size(610, 552);
+            tvTagInfo.Size = new System.Drawing.Size(610, 539);
             tvTagInfo.TabIndex = 12;
             tvTagInfo.DoubleClick += TvTagInfo_DoubleClick;
             // 
@@ -5517,7 +5545,7 @@
             dgvTags.ReadOnly = true;
             dgvTags.RowHeadersVisible = false;
             dgvTags.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvTags.Size = new System.Drawing.Size(441, 552);
+            dgvTags.Size = new System.Drawing.Size(441, 539);
             dgvTags.TabIndex = 10;
             dgvTags.SelectionChanged += DgvTags_SelectionChanged;
             // 
@@ -5567,11 +5595,11 @@
             tpTrade.Controls.Add(label121);
             tpTrade.Controls.Add(lbTradeDestination);
             tpTrade.Controls.Add(lbTradeSource);
-            tpTrade.Location = new System.Drawing.Point(4, 25);
+            tpTrade.Location = new System.Drawing.Point(4, 14);
             tpTrade.Margin = new System.Windows.Forms.Padding(4);
             tpTrade.Name = "tpTrade";
             tpTrade.Padding = new System.Windows.Forms.Padding(4);
-            tpTrade.Size = new System.Drawing.Size(1082, 600);
+            tpTrade.Size = new System.Drawing.Size(1082, 587);
             tpTrade.TabIndex = 14;
             tpTrade.Text = "Trades";
             tpTrade.UseVisualStyleBackColor = true;
@@ -5662,7 +5690,7 @@
             lbTradeDestination.Location = new System.Drawing.Point(261, 38);
             lbTradeDestination.Margin = new System.Windows.Forms.Padding(4);
             lbTradeDestination.Name = "lbTradeDestination";
-            lbTradeDestination.Size = new System.Drawing.Size(244, 564);
+            lbTradeDestination.Size = new System.Drawing.Size(244, 532);
             lbTradeDestination.TabIndex = 1;
             lbTradeDestination.SelectedIndexChanged += LbTradeDestination_SelectedIndexChanged;
             // 
@@ -5673,7 +5701,7 @@
             lbTradeSource.Location = new System.Drawing.Point(9, 38);
             lbTradeSource.Margin = new System.Windows.Forms.Padding(4);
             lbTradeSource.Name = "lbTradeSource";
-            lbTradeSource.Size = new System.Drawing.Size(244, 564);
+            lbTradeSource.Size = new System.Drawing.Size(244, 532);
             lbTradeSource.TabIndex = 0;
             lbTradeSource.SelectedIndexChanged += LbTradeSource_SelectedIndexChanged;
             // 
@@ -5684,10 +5712,10 @@
             tpSlaves.Controls.Add(label147);
             tpSlaves.Controls.Add(tSearchSlave);
             tpSlaves.Controls.Add(dgvSlaves);
-            tpSlaves.Location = new System.Drawing.Point(4, 25);
+            tpSlaves.Location = new System.Drawing.Point(4, 14);
             tpSlaves.Name = "tpSlaves";
             tpSlaves.Padding = new System.Windows.Forms.Padding(3);
-            tpSlaves.Size = new System.Drawing.Size(1082, 600);
+            tpSlaves.Size = new System.Drawing.Size(1082, 587);
             tpSlaves.TabIndex = 16;
             tpSlaves.Text = "Vehicles";
             tpSlaves.UseVisualStyleBackColor = true;
@@ -5706,7 +5734,7 @@
             groupBox15.Margin = new System.Windows.Forms.Padding(4);
             groupBox15.Name = "groupBox15";
             groupBox15.Padding = new System.Windows.Forms.Padding(4);
-            groupBox15.Size = new System.Drawing.Size(384, 576);
+            groupBox15.Size = new System.Drawing.Size(384, 563);
             groupBox15.TabIndex = 18;
             groupBox15.TabStop = false;
             groupBox15.Text = "Vehicle Info";
@@ -5727,7 +5755,7 @@
             treeNode3.Text = "Slave";
             tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode3 });
             tvSlaveInfo.SelectedImageIndex = 0;
-            tvSlaveInfo.Size = new System.Drawing.Size(368, 510);
+            tvSlaveInfo.Size = new System.Drawing.Size(368, 497);
             tvSlaveInfo.TabIndex = 32;
             tvSlaveInfo.DoubleClick += TvSlaveInfo_DoubleClick;
             // 
@@ -5820,7 +5848,7 @@
             dgvSlaves.ReadOnly = true;
             dgvSlaves.RowHeadersVisible = false;
             dgvSlaves.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvSlaves.Size = new System.Drawing.Size(669, 538);
+            dgvSlaves.Size = new System.Drawing.Size(669, 525);
             dgvSlaves.TabIndex = 14;
             dgvSlaves.SelectionChanged += DgvSlaves_SelectionChanged;
             // 
@@ -5880,11 +5908,11 @@
             tpZones.Controls.Add(dgvZones);
             tpZones.Controls.Add(label10);
             tpZones.Controls.Add(tZonesSearch);
-            tpZones.Location = new System.Drawing.Point(4, 25);
+            tpZones.Location = new System.Drawing.Point(4, 14);
             tpZones.Margin = new System.Windows.Forms.Padding(4);
             tpZones.Name = "tpZones";
             tpZones.Padding = new System.Windows.Forms.Padding(4);
-            tpZones.Size = new System.Drawing.Size(1082, 600);
+            tpZones.Size = new System.Drawing.Size(1082, 587);
             tpZones.TabIndex = 5;
             tpZones.Text = "Zones";
             tpZones.UseVisualStyleBackColor = true;
@@ -6543,7 +6571,7 @@
             dgvZones.ReadOnly = true;
             dgvZones.RowHeadersVisible = false;
             dgvZones.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvZones.Size = new System.Drawing.Size(698, 543);
+            dgvZones.Size = new System.Drawing.Size(698, 530);
             dgvZones.TabIndex = 6;
             dgvZones.SelectionChanged += DgvZones_SelectionChanged;
             // 
@@ -6651,27 +6679,197 @@
             ilIcons.Images.SetKeyName(3, "icon_exclamation_green.png");
             ilIcons.Images.SetKeyName(4, "icon_exclamation_blue.png");
             // 
+            // MM
+            // 
+            MM.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { MMFile, MMSelectedData, MMLocalizer, MMSplitter, MMCombat, MMGameObjects, MMVersion, MMSystems });
+            MM.Location = new System.Drawing.Point(0, 0);
+            MM.Name = "MM";
+            MM.Size = new System.Drawing.Size(1090, 24);
+            MM.TabIndex = 4;
+            MM.Text = "menuStrip1";
+            // 
+            // MMFile
+            // 
+            MMFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMFileTables, toolStripMenuItem1, MMFileExit });
+            MMFile.Name = "MMFile";
+            MMFile.Size = new System.Drawing.Size(37, 20);
+            MMFile.Text = "&File";
+            // 
+            // MMFileTables
+            // 
+            MMFileTables.Name = "MMFileTables";
+            MMFileTables.Size = new System.Drawing.Size(174, 22);
+            MMFileTables.Text = "Tables and Settings";
+            MMFileTables.Click += MMFileTables_Click;
+            // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new System.Drawing.Size(171, 6);
+            // 
+            // MMFileExit
+            // 
+            MMFileExit.Name = "MMFileExit";
+            MMFileExit.Size = new System.Drawing.Size(174, 22);
+            MMFileExit.Text = "E&xit";
+            MMFileExit.Click += MMFileExit_Click;
+            // 
+            // MMSelectedData
+            // 
+            MMSelectedData.Name = "MMSelectedData";
+            MMSelectedData.Size = new System.Drawing.Size(90, 20);
+            MMSelectedData.Text = "Selected &Data";
+            MMSelectedData.Click += MMSelectedData_Click;
+            // 
+            // MMLocalizer
+            // 
+            MMLocalizer.Name = "MMLocalizer";
+            MMLocalizer.Size = new System.Drawing.Size(65, 20);
+            MMLocalizer.Text = "Localizer";
+            MMLocalizer.Click += MMLocalizer_Click;
+            // 
+            // MMSplitter
+            // 
+            MMSplitter.Name = "MMSplitter";
+            MMSplitter.Size = new System.Drawing.Size(22, 20);
+            MMSplitter.Text = "|";
+            MMSplitter.Click += MMSplitter_Click;
+            // 
+            // MMCombat
+            // 
+            MMCombat.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMSystemBuffs, MMSystemSkills });
+            MMCombat.Name = "MMCombat";
+            MMCombat.Size = new System.Drawing.Size(60, 20);
+            MMCombat.Text = "Combat";
+            // 
+            // MMSystemBuffs
+            // 
+            MMSystemBuffs.Name = "MMSystemBuffs";
+            MMSystemBuffs.Size = new System.Drawing.Size(101, 22);
+            MMSystemBuffs.Text = "Buffs";
+            MMSystemBuffs.Click += MMSystemBuffs_Click;
+            // 
+            // MMSystemSkills
+            // 
+            MMSystemSkills.Name = "MMSystemSkills";
+            MMSystemSkills.Size = new System.Drawing.Size(101, 22);
+            MMSystemSkills.Text = "Skills";
+            MMSystemSkills.Click += MMSystemSkills_Click;
+            // 
+            // MMGameObjects
+            // 
+            MMGameObjects.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMGameObjectsNpcs, MMGameObjectsVehicles });
+            MMGameObjects.Name = "MMGameObjects";
+            MMGameObjects.Size = new System.Drawing.Size(92, 20);
+            MMGameObjects.Text = "Game Objects";
+            // 
+            // MMGameObjectsNpcs
+            // 
+            MMGameObjectsNpcs.Name = "MMGameObjectsNpcs";
+            MMGameObjectsNpcs.Size = new System.Drawing.Size(116, 22);
+            MMGameObjectsNpcs.Text = "NPCs";
+            MMGameObjectsNpcs.Click += MMGameObjectsNpcs_Click;
+            // 
+            // MMGameObjectsVehicles
+            // 
+            MMGameObjectsVehicles.Name = "MMGameObjectsVehicles";
+            MMGameObjectsVehicles.Size = new System.Drawing.Size(116, 22);
+            MMGameObjectsVehicles.Text = "Vehicles";
+            MMGameObjectsVehicles.Click += MMGameObjectsVehicles_Click;
+            // 
+            // MMVersion
+            // 
+            MMVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            MMVersion.Name = "MMVersion";
+            MMVersion.Size = new System.Drawing.Size(57, 20);
+            MMVersion.Text = "Version";
+            // 
+            // MMSystems
+            // 
+            MMSystems.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMSystemFactions, MMSystemItems, MMSystemLoot, MMSystemMaps, MMSystemSchedule, MMSystemTags, MMSystemTrades, MMSystemZones });
+            MMSystems.Name = "MMSystems";
+            MMSystems.Size = new System.Drawing.Size(61, 20);
+            MMSystems.Text = "Systems";
+            // 
+            // MMSystemFactions
+            // 
+            MMSystemFactions.Name = "MMSystemFactions";
+            MMSystemFactions.Size = new System.Drawing.Size(122, 22);
+            MMSystemFactions.Text = "Factions";
+            MMSystemFactions.Click += MMSystemFactions_Click;
+            // 
+            // MMSystemItems
+            // 
+            MMSystemItems.Name = "MMSystemItems";
+            MMSystemItems.Size = new System.Drawing.Size(122, 22);
+            MMSystemItems.Text = "Items";
+            MMSystemItems.Click += MMSystemItems_Click;
+            // 
+            // MMSystemLoot
+            // 
+            MMSystemLoot.Name = "MMSystemLoot";
+            MMSystemLoot.Size = new System.Drawing.Size(122, 22);
+            MMSystemLoot.Text = "Loot";
+            MMSystemLoot.Click += MMSystemLoot_Click;
+            // 
+            // MMSystemMaps
+            // 
+            MMSystemMaps.Name = "MMSystemMaps";
+            MMSystemMaps.Size = new System.Drawing.Size(122, 22);
+            MMSystemMaps.Text = "Maps";
+            MMSystemMaps.Click += MMSystemMaps_Click;
+            // 
+            // MMSystemSchedule
+            // 
+            MMSystemSchedule.Name = "MMSystemSchedule";
+            MMSystemSchedule.Size = new System.Drawing.Size(122, 22);
+            MMSystemSchedule.Text = "Schedule";
+            MMSystemSchedule.Click += MMSystemSchedule_Click;
+            // 
+            // MMSystemTags
+            // 
+            MMSystemTags.Name = "MMSystemTags";
+            MMSystemTags.Size = new System.Drawing.Size(122, 22);
+            MMSystemTags.Text = "Tags";
+            MMSystemTags.Click += MMSystemTags_Click;
+            // 
+            // MMSystemTrades
+            // 
+            MMSystemTrades.Name = "MMSystemTrades";
+            MMSystemTrades.Size = new System.Drawing.Size(122, 22);
+            MMSystemTrades.Text = "Trades";
+            MMSystemTrades.Click += MMSystemTrades_Click;
+            // 
+            // MMSystemZones
+            // 
+            MMSystemZones.Name = "MMSystemZones";
+            MMSystemZones.Size = new System.Drawing.Size(122, 22);
+            MMSystemZones.Text = "Zones";
+            MMSystemZones.Click += MMSystemZones_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1090, 629);
             Controls.Add(tcViewer);
+            Controls.Add(MM);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
+            MainMenuStrip = MM;
             Margin = new System.Windows.Forms.Padding(4);
             Name = "MainForm";
             Text = "AAEmu.DBViewer";
             FormClosed += MainForm_FormClosed;
             Load += MainForm_Load;
             tcViewer.ResumeLayout(false);
-            tbTables.ResumeLayout(false);
-            tbTables.PerformLayout();
+            tpTables.ResumeLayout(false);
+            tpTables.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSimple).EndInit();
             tpCurrentRecord.ResumeLayout(false);
             tpCurrentRecord.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvCurrentData).EndInit();
-            tbLocalizer.ResumeLayout(false);
-            tbLocalizer.PerformLayout();
+            tpLocalizer.ResumeLayout(false);
+            tpLocalizer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvLocalized).EndInit();
             tpMap.ResumeLayout(false);
             tpMap.PerformLayout();
@@ -6704,8 +6902,8 @@
             tpDoodadWorkflow.ResumeLayout(false);
             tpDoodadWorkflow.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvDoodads).EndInit();
-            tbFactions.ResumeLayout(false);
-            tbFactions.PerformLayout();
+            tpFactions.ResumeLayout(false);
+            tpFactions.PerformLayout();
             groupBox7.ResumeLayout(false);
             groupBox7.PerformLayout();
             groupBox6.ResumeLayout(false);
@@ -6781,13 +6979,16 @@
             groupBox3.ResumeLayout(false);
             groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvZones).EndInit();
+            MM.ResumeLayout(false);
+            MM.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
         private System.Windows.Forms.ListBox lbTableNames;
         private System.Windows.Forms.TabControl tcViewer;
-        private System.Windows.Forms.TabPage tbTables;
+        private System.Windows.Forms.TabPage tpTables;
         private System.Windows.Forms.TabPage tpItems;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dgvItem;
@@ -6929,7 +7130,7 @@
         private System.Windows.Forms.DataGridView dgvSimple;
         private System.Windows.Forms.Button btnSimpleSQL;
         private System.Windows.Forms.Label label41;
-        private System.Windows.Forms.TabPage tbFactions;
+        private System.Windows.Forms.TabPage tpFactions;
         private System.Windows.Forms.Button btnSearchFaction;
         private System.Windows.Forms.Label label42;
         private System.Windows.Forms.TextBox tSearchFaction;
@@ -7113,7 +7314,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column19;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column20;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column36;
-        private System.Windows.Forms.TabPage tbLocalizer;
+        private System.Windows.Forms.TabPage tpLocalizer;
         private System.Windows.Forms.DataGridView dgvLocalized;
         private System.Windows.Forms.TextBox tSearchLocalized;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column48;
@@ -7318,6 +7519,30 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column39;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column41;
         private System.Windows.Forms.TreeView TvSpheres;
+        private System.Windows.Forms.MenuStrip MM;
+        private System.Windows.Forms.ToolStripMenuItem MMFile;
+        private System.Windows.Forms.ToolStripMenuItem MMFileExit;
+        private System.Windows.Forms.ToolStripMenuItem MMFileTables;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem MMSelectedData;
+        private System.Windows.Forms.ToolStripMenuItem MMLocalizer;
+        private System.Windows.Forms.ToolStripMenuItem MMGameObjects;
+        private System.Windows.Forms.ToolStripMenuItem MMGameObjectsNpcs;
+        private System.Windows.Forms.ToolStripMenuItem MMGameObjectsVehicles;
+        private System.Windows.Forms.ToolStripMenuItem MMSystems;
+        private System.Windows.Forms.ToolStripMenuItem MMSystemItems;
+        private System.Windows.Forms.ToolStripMenuItem MMSystemMaps;
+        private System.Windows.Forms.ToolStripMenuItem MMSystemLoot;
+        private System.Windows.Forms.ToolStripMenuItem MMSystemSchedule;
+        private System.Windows.Forms.ToolStripMenuItem MMSystemTags;
+        private System.Windows.Forms.ToolStripMenuItem MMSystemTrades;
+        private System.Windows.Forms.ToolStripMenuItem MMSystemZones;
+        private System.Windows.Forms.ToolStripMenuItem MMSplitter;
+        private System.Windows.Forms.ToolStripMenuItem MMVersion;
+        private System.Windows.Forms.ToolStripMenuItem MMSystemFactions;
+        private System.Windows.Forms.ToolStripMenuItem MMCombat;
+        private System.Windows.Forms.ToolStripMenuItem MMSystemBuffs;
+        private System.Windows.Forms.ToolStripMenuItem MMSystemSkills;
     }
 }
 

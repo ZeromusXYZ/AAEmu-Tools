@@ -371,7 +371,7 @@ namespace AAEmu.DBViewer
 
                 if (item.item_weapons?.id > 0)
                 {
-                    var requiresWeapon = GetItemWeaponRequirements(item.item_armors.id);
+                    var requiresWeapon = GetItemWeaponRequirements(item.item_weapons.id);
                     if (requiresWeapon.Any())
                         fullDescription += $"\n\n|ni;Equipping this weapon requires {(item.item_weapons.or_unit_reqs ? "Any" : "All")} of the following|r";
 
