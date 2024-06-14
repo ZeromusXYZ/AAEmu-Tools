@@ -67,6 +67,8 @@ namespace AAEmu.DBViewer
                             t.first_reagent_only = GetBool(reader, "first_reagent_only");
                             t.plot_id = GetInt64(reader, "plot_id");
 
+                            t.or_unit_reqs = GetBool(reader, "or_unit_reqs");
+
                             t.nameLocalized = AADB.GetTranslationByID(t.id, "skills", "name", t.name);
                             t.descriptionLocalized = AADB.GetTranslationByID(t.id, "skills", "desc", t.desc);
                             if (readWebDesc)
@@ -891,14 +893,7 @@ namespace AAEmu.DBViewer
             tvSkill.Nodes.Add(rootNode);
 
             var requires = GetSkillRequirements(skill.id);
-            if (requires is { Count: > 0 })
-            {
-                var reqNode = tvSkill.Nodes.Add($"Requires");
-                foreach (var req in requires)
-                {
-                    reqNode.Nodes.Add($"kind_id: {req.kind_id}, value1: {req.value1}, value2: {req.value2}");
-                }
-            }
+            var redNode = AddUnitRequirementNode(requires, skill.or_unit_reqs, tvSkill.Nodes);
 
             var skillsProperties = GetCustomTableValues("skills", "id", skill.id.ToString());
             foreach (var skillsProperty in skillsProperties)

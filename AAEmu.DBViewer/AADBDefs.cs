@@ -226,6 +226,7 @@ namespace AAEmu.DBDefs
         public long id = 0;
         public long item_id = 0;
         public long slot_type_id = 0;
+        public bool or_unit_reqs = false;
     }
 
     class GameSkills
@@ -250,6 +251,7 @@ namespace AAEmu.DBDefs
         public long consume_lp = 0;
         public bool first_reagent_only = false;
         public long plot_id = 0;
+        public bool or_unit_reqs = false;
 
         // Helpers
         public string nameLocalized = string.Empty;

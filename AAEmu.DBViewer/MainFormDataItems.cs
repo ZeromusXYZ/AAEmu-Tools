@@ -87,6 +87,7 @@ namespace AAEmu.DBViewer
                             t.id = GetInt64(reader, "id");
                             t.item_id = GetInt64(reader, "item_id");
                             t.slot_type_id = GetInt64(reader, "slot_type_id");
+                            t.or_unit_reqs = GetBool(reader, "or_unit_reqs");
 
                             AADB.DB_Item_Armors.Add(t.id, t);
                             if (AADB.DB_Items.TryGetValue(t.item_id, out var item))
@@ -316,6 +317,18 @@ namespace AAEmu.DBViewer
                     if (!string.IsNullOrWhiteSpace(fullDescription))
                         fullDescription += "\r\r";
                     fullDescription += "[START_DESCRIPTION]" + useSkill.descriptionLocalized;
+                }
+
+                if (item.item_armors?.id > 0)
+                {
+                    var requiresArmor = GetItemArmorRequirements(item.item_armors.id);
+                    if (requiresArmor.Any())
+                        fullDescription += $"\n\n|ni;Requires {(item.item_armors.or_unit_reqs ? "Any" : "All")} of|r";
+                    
+                    foreach (var req in requiresArmor)
+                    {
+                        fullDescription += $"\n{req.kind_id} - Value1: {req.value1}, Value2: {req.value2}";
+                    }
                 }
 
                 FormattedTextToRichtEdit(fullDescription, rtItemDesc);

@@ -13,6 +13,7 @@ using AAEmu.DBViewer.utils;
 using System.Runtime;
 using AAEmu.DBViewer.enums;
 using System.Security.Cryptography;
+using Newtonsoft.Json;
 
 namespace AAEmu.DBViewer
 {
@@ -1601,8 +1602,11 @@ namespace AAEmu.DBViewer
             var catName = cat?.nameLocalized ?? "???";
             rootNode.Nodes.Add($"category_id: {sphere.category_id} - {catName}");
             // AddCustomPropertyNode("category_id", sphere.category_id.ToString(), false, rootNode);
-            AddCustomPropertyNode("or_unit_reqs", sphere.or_unit_reqs.ToString(), false, rootNode);
+            // AddCustomPropertyNode("or_unit_reqs", sphere.or_unit_reqs.ToString(), false, rootNode);
             AddCustomPropertyNode("is_personal_msg", sphere.is_personal_msg.ToString(), false, rootNode);
+
+            var requires = GetSphereRequirements(sphere.id);
+            var redNode = AddUnitRequirementNode(requires, sphere.or_unit_reqs, TvSpheres.Nodes);
 
             var questList = new List<long>();
 
@@ -1704,6 +1708,23 @@ namespace AAEmu.DBViewer
         private void CbSearchSpheres_TextChanged(object sender, EventArgs e)
         {
             BtnSearchSpheres.Enabled = !string.IsNullOrWhiteSpace(CbSearchSpheres.Text);
+        }
+
+        public TreeNode AddUnitRequirementNode(List<GameUnitReqs> requirements, bool orUnitReqs, TreeNodeCollection root)
+        {
+            if (requirements.Any())
+            {
+                var reqNode = root.Add($"Requires {(orUnitReqs ? "Any" : "All")} of");
+                reqNode.ForeColor = Color.Aqua;
+                foreach (var req in requirements)
+                {
+                    reqNode.Nodes.Add($"kind_id: {req.kind_id}, value1: {req.value1}, value2: {req.value2}");
+                }
+                reqNode.ExpandAll();
+                return reqNode;
+            }
+
+            return null;
         }
     }
 }
