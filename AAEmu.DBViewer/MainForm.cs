@@ -1821,5 +1821,10 @@ namespace AAEmu.DBViewer
         {
             Text = $"{defaultTitle} [{tcViewer.SelectedTab?.Text}] - {Properties.Settings.Default.DBFileName} ({Properties.Settings.Default.DefaultGameLanguage})";
         }
+
+        private void MMSystemQuests_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpQuests;
+        }
     }
 }
