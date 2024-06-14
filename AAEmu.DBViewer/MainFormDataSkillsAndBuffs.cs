@@ -893,7 +893,7 @@ namespace AAEmu.DBViewer
             tvSkill.Nodes.Add(rootNode);
 
             var requires = GetSkillRequirements(skill.id);
-            var redNode = AddUnitRequirementNode(requires, skill.or_unit_reqs, tvSkill.Nodes);
+            var reqNode = AddUnitRequirementNode(requires, skill.or_unit_reqs, tvSkill.Nodes);
 
             var skillsProperties = GetCustomTableValues("skills", "id", skill.id.ToString());
             foreach (var skillsProperty in skillsProperties)

@@ -1607,7 +1607,7 @@ namespace AAEmu.DBViewer
             AddCustomPropertyNode("is_personal_msg", sphere.is_personal_msg.ToString(), false, rootNode);
 
             var requires = GetSphereRequirements(sphere.id);
-            var redNode = AddUnitRequirementNode(requires, sphere.or_unit_reqs, TvSpheres.Nodes);
+            var reqNode = AddUnitRequirementNode(requires, sphere.or_unit_reqs, TvSpheres.Nodes);
 
             var questList = new List<long>();
 

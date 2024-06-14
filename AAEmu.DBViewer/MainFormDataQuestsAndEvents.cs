@@ -354,16 +354,7 @@ namespace AAEmu.DBViewer
                 componentNode.ForeColor = Color.Yellow;
 
                 var requires = GetQuestComponentRequirements(c.id);
-                if (requires is { Count: > 0 })
-                {
-                    var reqNode = componentNode.Nodes.Add($"Requires {(c.or_unit_reqs ? "Any" : "All")} of");
-                    reqNode.ForeColor = Color.Aqua;
-                    foreach (var req in requires)
-                    {
-                        reqNode.Nodes.Add($"kind_id: {req.kind_id}, value1: {req.value1}, value2: {req.value2}");
-                    }
-                    reqNode.ExpandAll();
-                }
+                var reqNode = AddUnitRequirementNode(requires, c.or_unit_reqs, componentNode.Nodes);
 
                 var componentInfoNode = componentNode.Nodes.Add("Properties");
                 componentInfoNode.ForeColor = Color.Yellow;
