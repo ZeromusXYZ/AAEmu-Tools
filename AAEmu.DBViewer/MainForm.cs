@@ -25,6 +25,9 @@ namespace AAEmu.DBViewer
         public AAPak pak = new("");
         private List<string> possibleLanguageIDs = new List<string>();
         private List<string> allTableNames = new List<string>();
+        private readonly List<TabPage> tabHistory = new();
+        private bool skipTabHistory = false;
+        private int tabHistoryIndex = 0;
 
         public MainForm()
         {
@@ -1820,6 +1823,14 @@ namespace AAEmu.DBViewer
         private void tcViewer_SelectedIndexChanged(object sender, EventArgs e)
         {
             Text = $"{defaultTitle} [{tcViewer.SelectedTab?.Text}] - {Properties.Settings.Default.DBFileName} ({Properties.Settings.Default.DefaultGameLanguage})";
+            if (skipTabHistory == false && tcViewer.SelectedTab != null)
+            {
+                if (tabHistory.Count > tabHistoryIndex)
+                    tabHistory.RemoveRange(tabHistoryIndex, tabHistory.Count - tabHistoryIndex - 1);
+
+                tabHistory.Add(tcViewer.SelectedTab);
+                tabHistoryIndex = tabHistory.Count-1;
+            }
         }
 
         private void MMSystemQuests_Click(object sender, EventArgs e)
@@ -1830,6 +1841,28 @@ namespace AAEmu.DBViewer
         private void MMGameObjectsDoodads_Click(object sender, EventArgs e)
         {
             tcViewer.SelectedTab = tpDoodads;
+        }
+
+        private void MMBack_Click(object sender, EventArgs e)
+        {
+            skipTabHistory = true;
+            if (tabHistoryIndex > 0)
+            {
+                tabHistoryIndex--;
+                tcViewer.SelectedTab = tabHistory[tabHistoryIndex];
+            }
+            skipTabHistory = false;
+        }
+
+        private void MMForward_Click(object sender, EventArgs e)
+        {
+            skipTabHistory = true;
+            if (tabHistoryIndex < tabHistory.Count-1)
+            {
+                tabHistoryIndex++;
+                tcViewer.SelectedTab = tabHistory[tabHistoryIndex];
+            }
+            skipTabHistory = false;
         }
     }
 }
