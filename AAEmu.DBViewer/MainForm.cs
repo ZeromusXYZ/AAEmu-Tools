@@ -1826,5 +1826,10 @@ namespace AAEmu.DBViewer
         {
             tcViewer.SelectedTab = tpQuests;
         }
+
+        private void MMGameObjectsDoodads_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpDoodads;
+        }
     }
 }

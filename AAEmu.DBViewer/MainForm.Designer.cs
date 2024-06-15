@@ -580,17 +580,18 @@
             MMGameObjects = new System.Windows.Forms.ToolStripMenuItem();
             MMGameObjectsNpcs = new System.Windows.Forms.ToolStripMenuItem();
             MMGameObjectsVehicles = new System.Windows.Forms.ToolStripMenuItem();
+            MMGameObjectsDoodads = new System.Windows.Forms.ToolStripMenuItem();
             MMVersion = new System.Windows.Forms.ToolStripMenuItem();
             MMSystems = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemFactions = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemItems = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemLoot = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemMaps = new System.Windows.Forms.ToolStripMenuItem();
+            MMSystemQuests = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemSchedule = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemTags = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemTrades = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemZones = new System.Windows.Forms.ToolStripMenuItem();
-            MMSystemQuests = new System.Windows.Forms.ToolStripMenuItem();
             tcViewer.SuspendLayout();
             tpTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSimple).BeginInit();
@@ -1346,7 +1347,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 325);
-            splitContainer2.SplitterDistance = 332;
+            splitContainer2.SplitterDistance = 330;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1354,7 +1355,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(241, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(239, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1385,7 +1386,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(324, 294);
+            tvBuffTriggers.Size = new System.Drawing.Size(322, 294);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -4541,7 +4542,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(414, 513);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(412, 513);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4573,7 +4574,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(699, 503);
+            tvQuestWorkflow.Size = new System.Drawing.Size(697, 503);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -6759,7 +6760,7 @@
             // 
             // MMGameObjects
             // 
-            MMGameObjects.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMGameObjectsNpcs, MMGameObjectsVehicles });
+            MMGameObjects.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMGameObjectsDoodads, MMGameObjectsNpcs, MMGameObjectsVehicles });
             MMGameObjects.Name = "MMGameObjects";
             MMGameObjects.Size = new System.Drawing.Size(92, 20);
             MMGameObjects.Text = "Game Objects";
@@ -6767,16 +6768,23 @@
             // MMGameObjectsNpcs
             // 
             MMGameObjectsNpcs.Name = "MMGameObjectsNpcs";
-            MMGameObjectsNpcs.Size = new System.Drawing.Size(116, 22);
+            MMGameObjectsNpcs.Size = new System.Drawing.Size(121, 22);
             MMGameObjectsNpcs.Text = "NPCs";
             MMGameObjectsNpcs.Click += MMGameObjectsNpcs_Click;
             // 
             // MMGameObjectsVehicles
             // 
             MMGameObjectsVehicles.Name = "MMGameObjectsVehicles";
-            MMGameObjectsVehicles.Size = new System.Drawing.Size(116, 22);
+            MMGameObjectsVehicles.Size = new System.Drawing.Size(121, 22);
             MMGameObjectsVehicles.Text = "Vehicles";
             MMGameObjectsVehicles.Click += MMGameObjectsVehicles_Click;
+            // 
+            // MMGameObjectsDoodads
+            // 
+            MMGameObjectsDoodads.Name = "MMGameObjectsDoodads";
+            MMGameObjectsDoodads.Size = new System.Drawing.Size(121, 22);
+            MMGameObjectsDoodads.Text = "Doodads";
+            MMGameObjectsDoodads.Click += MMGameObjectsDoodads_Click;
             // 
             // MMVersion
             // 
@@ -6795,65 +6803,65 @@
             // MMSystemFactions
             // 
             MMSystemFactions.Name = "MMSystemFactions";
-            MMSystemFactions.Size = new System.Drawing.Size(180, 22);
+            MMSystemFactions.Size = new System.Drawing.Size(122, 22);
             MMSystemFactions.Text = "Factions";
             MMSystemFactions.Click += MMSystemFactions_Click;
             // 
             // MMSystemItems
             // 
             MMSystemItems.Name = "MMSystemItems";
-            MMSystemItems.Size = new System.Drawing.Size(180, 22);
+            MMSystemItems.Size = new System.Drawing.Size(122, 22);
             MMSystemItems.Text = "Items";
             MMSystemItems.Click += MMSystemItems_Click;
             // 
             // MMSystemLoot
             // 
             MMSystemLoot.Name = "MMSystemLoot";
-            MMSystemLoot.Size = new System.Drawing.Size(180, 22);
+            MMSystemLoot.Size = new System.Drawing.Size(122, 22);
             MMSystemLoot.Text = "Loot";
             MMSystemLoot.Click += MMSystemLoot_Click;
             // 
             // MMSystemMaps
             // 
             MMSystemMaps.Name = "MMSystemMaps";
-            MMSystemMaps.Size = new System.Drawing.Size(180, 22);
+            MMSystemMaps.Size = new System.Drawing.Size(122, 22);
             MMSystemMaps.Text = "Maps";
             MMSystemMaps.Click += MMSystemMaps_Click;
+            // 
+            // MMSystemQuests
+            // 
+            MMSystemQuests.Name = "MMSystemQuests";
+            MMSystemQuests.Size = new System.Drawing.Size(122, 22);
+            MMSystemQuests.Text = "Quests";
+            MMSystemQuests.Click += MMSystemQuests_Click;
             // 
             // MMSystemSchedule
             // 
             MMSystemSchedule.Name = "MMSystemSchedule";
-            MMSystemSchedule.Size = new System.Drawing.Size(180, 22);
+            MMSystemSchedule.Size = new System.Drawing.Size(122, 22);
             MMSystemSchedule.Text = "Schedule";
             MMSystemSchedule.Click += MMSystemSchedule_Click;
             // 
             // MMSystemTags
             // 
             MMSystemTags.Name = "MMSystemTags";
-            MMSystemTags.Size = new System.Drawing.Size(180, 22);
+            MMSystemTags.Size = new System.Drawing.Size(122, 22);
             MMSystemTags.Text = "Tags";
             MMSystemTags.Click += MMSystemTags_Click;
             // 
             // MMSystemTrades
             // 
             MMSystemTrades.Name = "MMSystemTrades";
-            MMSystemTrades.Size = new System.Drawing.Size(180, 22);
+            MMSystemTrades.Size = new System.Drawing.Size(122, 22);
             MMSystemTrades.Text = "Trades";
             MMSystemTrades.Click += MMSystemTrades_Click;
             // 
             // MMSystemZones
             // 
             MMSystemZones.Name = "MMSystemZones";
-            MMSystemZones.Size = new System.Drawing.Size(180, 22);
+            MMSystemZones.Size = new System.Drawing.Size(122, 22);
             MMSystemZones.Text = "Zones";
             MMSystemZones.Click += MMSystemZones_Click;
-            // 
-            // MMSystemQuests
-            // 
-            MMSystemQuests.Name = "MMSystemQuests";
-            MMSystemQuests.Size = new System.Drawing.Size(180, 22);
-            MMSystemQuests.Text = "Quests";
-            MMSystemQuests.Click += MMSystemQuests_Click;
             // 
             // MainForm
             // 
@@ -7552,6 +7560,7 @@
         private System.Windows.Forms.ToolStripMenuItem MMSystemBuffs;
         private System.Windows.Forms.ToolStripMenuItem MMSystemSkills;
         private System.Windows.Forms.ToolStripMenuItem MMSystemQuests;
+        private System.Windows.Forms.ToolStripMenuItem MMGameObjectsDoodads;
     }
 }
 
