@@ -1607,10 +1607,16 @@ namespace AAEmu.DBViewer
             command.Prepare();
             using var sqliteReader = command.ExecuteReader();
             using var reader = new SQLiteWrapperReader(sqliteReader);
+            var useDbId = false;
+            var columnNames = reader.GetColumnNames();
+            if (columnNames.IndexOf("id") >= 0)
+                useDbId = true;
+            var i = 0u;
             while (reader.Read())
             {
                 var t = new GameUnitReqs();
-                t.id = reader.GetUInt32("id");
+                i++;
+                t.id = useDbId ? reader.GetUInt32("id") : i;
                 t.owner_id = reader.GetUInt32("owner_id");
                 t.owner_type = reader.GetString("owner_type");
                 t.kind_id = (GameUnitReqsKindId)reader.GetUInt32("kind_id");
