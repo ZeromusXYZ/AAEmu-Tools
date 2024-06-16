@@ -69,6 +69,7 @@ namespace AAEmu.DBViewer
         private void MainForm_Load(object sender, EventArgs e)
         {
             MMVersion.Text = $"Version {Assembly.GetExecutingAssembly().GetName().Version}";
+            MM.Visible = false;
             tcViewer.ItemSize = new Size(0, 1);
 
             // Update settings if needed
@@ -1831,6 +1832,12 @@ namespace AAEmu.DBViewer
                 tabHistory.Add(tcViewer.SelectedTab);
                 tabHistoryIndex = tabHistory.Count - 1;
             }
+
+            foreach (ToolStripItem stripItem in TBMain.Items)
+            {
+                // stripItem.BackColor = (stripItem.Text == tcViewer.SelectedTab?.Text) ? Color.Red : SystemColors.Control ;
+                stripItem.Enabled = (stripItem.Text != tcViewer.SelectedTab?.Text);
+            }
         }
 
         private void MMSystemQuests_Click(object sender, EventArgs e)
@@ -1865,7 +1872,7 @@ namespace AAEmu.DBViewer
             skipTabHistory = false;
         }
 
-        private void spheresToolStripMenuItem_Click(object sender, EventArgs e)
+        private void MMSystemSpheres_Click(object sender, EventArgs e)
         {
             tcViewer.SelectedTab = tpSpheres;
         }
@@ -1873,6 +1880,111 @@ namespace AAEmu.DBViewer
         private void TBFileExit_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void TMBack_Click(object sender, EventArgs e)
+        {
+            MMBack_Click(null, null);
+        }
+
+        private void TBForward_Click(object sender, EventArgs e)
+        {
+            MMForward_Click(null, null);
+        }
+
+        private void TBSelectedData_Click(object sender, EventArgs e)
+        {
+            MMSelectedData_Click(null, null);
+        }
+
+        private void TBLocalizer_Click(object sender, EventArgs e)
+        {
+            MMLocalizer_Click(null, null);
+        }
+
+        private void TBMap_Click(object sender, EventArgs e)
+        {
+            MMSystemMaps_Click(null, null);
+        }
+
+        private void TBSplit_Click(object sender, EventArgs e)
+        {
+            MMSplitter_Click(null, null);
+        }
+
+        private void TBBuffs_Click(object sender, EventArgs e)
+        {
+            MMSystemBuffs_Click(null, null);
+        }
+
+        private void TBDoodads_Click(object sender, EventArgs e)
+        {
+            MMGameObjectsDoodads_Click(null, null);
+        }
+
+        private void TBFactions_Click(object sender, EventArgs e)
+        {
+            MMSystemFactions_Click(null, null);
+        }
+
+        private void TBItems_Click(object sender, EventArgs e)
+        {
+            MMSystemItems_Click(null, null);
+        }
+
+        private void TBLoot_Click(object sender, EventArgs e)
+        {
+            MMSystemLoot_Click(null, null);
+        }
+
+        private void TBNpc_Click(object sender, EventArgs e)
+        {
+            MMGameObjectsNpcs_Click(null, null);
+        }
+
+        private void TBQuests_Click(object sender, EventArgs e)
+        {
+            MMSystemQuests_Click(null, null);
+        }
+
+        private void TBSchedules_Click(object sender, EventArgs e)
+        {
+            MMSystemSchedule_Click(null, null);
+        }
+
+        private void TBSkills_Click(object sender, EventArgs e)
+        {
+            MMSystemSkills_Click(null, null);
+        }
+
+        private void TBSpheres_Click(object sender, EventArgs e)
+        {
+            MMSystemSpheres_Click(null, null);
+        }
+
+        private void TBTags_Click(object sender, EventArgs e)
+        {
+            MMSystemTags_Click(null, null);
+        }
+
+        private void TBTrades_Click(object sender, EventArgs e)
+        {
+            MMSystemTrades_Click(null, null);
+        }
+
+        private void TBSlaves_Click(object sender, EventArgs e)
+        {
+            MMGameObjectsVehicles_Click(null, null);
+        }
+
+        private void TBZones_Click(object sender, EventArgs e)
+        {
+            MMSystemZones_Click(null, null);
+        }
+
+        private void TBFileTables_Click(object sender, EventArgs e)
+        {
+            MMFileTables_Click(null, null);
         }
     }
 }

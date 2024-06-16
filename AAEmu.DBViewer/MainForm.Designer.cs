@@ -591,14 +591,37 @@
             MMSystemMaps = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemQuests = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemSchedule = new System.Windows.Forms.ToolStripMenuItem();
-            spheresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            MMSystemSpheres = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemTags = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemTrades = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemZones = new System.Windows.Forms.ToolStripMenuItem();
             TBMain = new System.Windows.Forms.ToolStrip();
             TBFile = new System.Windows.Forms.ToolStripDropDownButton();
+            TBFileTables = new System.Windows.Forms.ToolStripMenuItem();
             TBFileExit = new System.Windows.Forms.ToolStripMenuItem();
             TBS1 = new System.Windows.Forms.ToolStripSeparator();
+            TMBack = new System.Windows.Forms.ToolStripButton();
+            TBForward = new System.Windows.Forms.ToolStripButton();
+            TBS2 = new System.Windows.Forms.ToolStripSeparator();
+            TBSelectedData = new System.Windows.Forms.ToolStripButton();
+            TBLocalizer = new System.Windows.Forms.ToolStripButton();
+            toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            TBMap = new System.Windows.Forms.ToolStripButton();
+            TBSplit = new System.Windows.Forms.ToolStripButton();
+            TBBuffs = new System.Windows.Forms.ToolStripButton();
+            TBDoodads = new System.Windows.Forms.ToolStripButton();
+            TBFactions = new System.Windows.Forms.ToolStripButton();
+            TBItems = new System.Windows.Forms.ToolStripButton();
+            TBLoot = new System.Windows.Forms.ToolStripButton();
+            TBNpc = new System.Windows.Forms.ToolStripButton();
+            TBQuests = new System.Windows.Forms.ToolStripButton();
+            TBSchedules = new System.Windows.Forms.ToolStripButton();
+            TBSkills = new System.Windows.Forms.ToolStripButton();
+            TBSpheres = new System.Windows.Forms.ToolStripButton();
+            TBTags = new System.Windows.Forms.ToolStripButton();
+            TBTrades = new System.Windows.Forms.ToolStripButton();
+            TBSlaves = new System.Windows.Forms.ToolStripButton();
+            TBZones = new System.Windows.Forms.ToolStripButton();
             tcViewer.SuspendLayout();
             tpTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSimple).BeginInit();
@@ -696,6 +719,7 @@
             // 
             // tcViewer
             // 
+            tcViewer.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             tcViewer.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
             tcViewer.Controls.Add(tpTables);
             tcViewer.Controls.Add(tpCurrentRecord);
@@ -716,13 +740,12 @@
             tcViewer.Controls.Add(tpTrade);
             tcViewer.Controls.Add(tpSlaves);
             tcViewer.Controls.Add(tpZones);
-            tcViewer.Dock = System.Windows.Forms.DockStyle.Fill;
             tcViewer.ItemSize = new System.Drawing.Size(10, 10);
-            tcViewer.Location = new System.Drawing.Point(0, 24);
+            tcViewer.Location = new System.Drawing.Point(0, 27);
             tcViewer.Margin = new System.Windows.Forms.Padding(4);
             tcViewer.Name = "tcViewer";
             tcViewer.SelectedIndex = 0;
-            tcViewer.Size = new System.Drawing.Size(1090, 605);
+            tcViewer.Size = new System.Drawing.Size(1090, 602);
             tcViewer.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             tcViewer.TabIndex = 3;
             tcViewer.SelectedIndexChanged += tcViewer_SelectedIndexChanged;
@@ -748,7 +771,7 @@
             tpTables.Margin = new System.Windows.Forms.Padding(4);
             tpTables.Name = "tpTables";
             tpTables.Padding = new System.Windows.Forms.Padding(4);
-            tpTables.Size = new System.Drawing.Size(1082, 587);
+            tpTables.Size = new System.Drawing.Size(1082, 584);
             tpTables.TabIndex = 0;
             tpTables.Text = "Tables and Settings";
             // 
@@ -843,7 +866,7 @@
             dgvSimple.Name = "dgvSimple";
             dgvSimple.RowHeadersVisible = false;
             dgvSimple.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            dgvSimple.Size = new System.Drawing.Size(741, 417);
+            dgvSimple.Size = new System.Drawing.Size(741, 414);
             dgvSimple.TabIndex = 9;
             // 
             // label8
@@ -911,7 +934,7 @@
             tpCurrentRecord.Location = new System.Drawing.Point(4, 14);
             tpCurrentRecord.Margin = new System.Windows.Forms.Padding(4);
             tpCurrentRecord.Name = "tpCurrentRecord";
-            tpCurrentRecord.Size = new System.Drawing.Size(1082, 587);
+            tpCurrentRecord.Size = new System.Drawing.Size(1082, 584);
             tpCurrentRecord.TabIndex = 4;
             tpCurrentRecord.Text = "Selected Data";
             tpCurrentRecord.UseVisualStyleBackColor = true;
@@ -971,7 +994,7 @@
             tpLocalizer.Margin = new System.Windows.Forms.Padding(4);
             tpLocalizer.Name = "tpLocalizer";
             tpLocalizer.Padding = new System.Windows.Forms.Padding(4);
-            tpLocalizer.Size = new System.Drawing.Size(1082, 587);
+            tpLocalizer.Size = new System.Drawing.Size(1082, 584);
             tpLocalizer.TabIndex = 10;
             tpLocalizer.Text = "Localizer";
             tpLocalizer.UseVisualStyleBackColor = true;
@@ -1060,7 +1083,7 @@
             tpMap.Margin = new System.Windows.Forms.Padding(4);
             tpMap.Name = "tpMap";
             tpMap.Padding = new System.Windows.Forms.Padding(4);
-            tpMap.Size = new System.Drawing.Size(1082, 587);
+            tpMap.Size = new System.Drawing.Size(1082, 584);
             tpMap.TabIndex = 13;
             tpMap.Text = "Map";
             tpMap.UseVisualStyleBackColor = true;
@@ -1233,7 +1256,7 @@
             tpV1.Margin = new System.Windows.Forms.Padding(4);
             tpV1.Name = "tpV1";
             tpV1.Padding = new System.Windows.Forms.Padding(4);
-            tpV1.Size = new System.Drawing.Size(1082, 587);
+            tpV1.Size = new System.Drawing.Size(1082, 584);
             tpV1.TabIndex = 11;
             tpV1.Text = "|";
             tpV1.UseVisualStyleBackColor = true;
@@ -1241,7 +1264,7 @@
             // btnExportDoodadSpawnData
             // 
             btnExportDoodadSpawnData.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            btnExportDoodadSpawnData.Location = new System.Drawing.Point(4, 488);
+            btnExportDoodadSpawnData.Location = new System.Drawing.Point(8, 84);
             btnExportDoodadSpawnData.Margin = new System.Windows.Forms.Padding(4);
             btnExportDoodadSpawnData.Name = "btnExportDoodadSpawnData";
             btnExportDoodadSpawnData.Size = new System.Drawing.Size(194, 28);
@@ -1253,7 +1276,7 @@
             // btnExportNPCSpawnData
             // 
             btnExportNPCSpawnData.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            btnExportNPCSpawnData.Location = new System.Drawing.Point(4, 524);
+            btnExportNPCSpawnData.Location = new System.Drawing.Point(8, 120);
             btnExportNPCSpawnData.Margin = new System.Windows.Forms.Padding(4);
             btnExportNPCSpawnData.Name = "btnExportNPCSpawnData";
             btnExportNPCSpawnData.Size = new System.Drawing.Size(194, 28);
@@ -1265,7 +1288,7 @@
             // btnExportDataForVieweD
             // 
             btnExportDataForVieweD.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            btnExportDataForVieweD.Location = new System.Drawing.Point(4, 559);
+            btnExportDataForVieweD.Location = new System.Drawing.Point(8, 155);
             btnExportDataForVieweD.Margin = new System.Windows.Forms.Padding(4);
             btnExportDataForVieweD.Name = "btnExportDataForVieweD";
             btnExportDataForVieweD.Size = new System.Drawing.Size(194, 28);
@@ -1294,7 +1317,7 @@
             tpBuffs.Location = new System.Drawing.Point(4, 14);
             tpBuffs.Margin = new System.Windows.Forms.Padding(4);
             tpBuffs.Name = "tpBuffs";
-            tpBuffs.Size = new System.Drawing.Size(1082, 587);
+            tpBuffs.Size = new System.Drawing.Size(1082, 584);
             tpBuffs.TabIndex = 12;
             tpBuffs.Text = "Buffs";
             tpBuffs.UseVisualStyleBackColor = true;
@@ -1355,7 +1378,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 325);
-            splitContainer2.SplitterDistance = 317;
+            splitContainer2.SplitterDistance = 284;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1363,7 +1386,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(226, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(193, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1394,7 +1417,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(309, 294);
+            tvBuffTriggers.Size = new System.Drawing.Size(276, 294);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -1634,7 +1657,7 @@
             tpDoodads.Margin = new System.Windows.Forms.Padding(4);
             tpDoodads.Name = "tpDoodads";
             tpDoodads.Padding = new System.Windows.Forms.Padding(4);
-            tpDoodads.Size = new System.Drawing.Size(1082, 587);
+            tpDoodads.Size = new System.Drawing.Size(1082, 584);
             tpDoodads.TabIndex = 8;
             tpDoodads.Text = "Doodads";
             tpDoodads.UseVisualStyleBackColor = true;
@@ -1663,7 +1686,7 @@
             tcDoodads.Multiline = true;
             tcDoodads.Name = "tcDoodads";
             tcDoodads.SelectedIndex = 0;
-            tcDoodads.Size = new System.Drawing.Size(399, 579);
+            tcDoodads.Size = new System.Drawing.Size(399, 576);
             tcDoodads.TabIndex = 15;
             // 
             // tpDoodadInfo
@@ -1674,7 +1697,7 @@
             tpDoodadInfo.Margin = new System.Windows.Forms.Padding(4);
             tpDoodadInfo.Name = "tpDoodadInfo";
             tpDoodadInfo.Padding = new System.Windows.Forms.Padding(4);
-            tpDoodadInfo.Size = new System.Drawing.Size(391, 550);
+            tpDoodadInfo.Size = new System.Drawing.Size(391, 547);
             tpDoodadInfo.TabIndex = 1;
             tpDoodadInfo.Text = "Doodad";
             tpDoodadInfo.UseVisualStyleBackColor = true;
@@ -2590,7 +2613,7 @@
             tpDoodadFunctions.Margin = new System.Windows.Forms.Padding(4);
             tpDoodadFunctions.Name = "tpDoodadFunctions";
             tpDoodadFunctions.Padding = new System.Windows.Forms.Padding(4);
-            tpDoodadFunctions.Size = new System.Drawing.Size(391, 550);
+            tpDoodadFunctions.Size = new System.Drawing.Size(391, 547);
             tpDoodadFunctions.TabIndex = 2;
             tpDoodadFunctions.Text = "Functions";
             tpDoodadFunctions.UseVisualStyleBackColor = true;
@@ -2893,7 +2916,7 @@
             tpDoodadTools.Margin = new System.Windows.Forms.Padding(4);
             tpDoodadTools.Name = "tpDoodadTools";
             tpDoodadTools.Padding = new System.Windows.Forms.Padding(4);
-            tpDoodadTools.Size = new System.Drawing.Size(391, 550);
+            tpDoodadTools.Size = new System.Drawing.Size(391, 547);
             tpDoodadTools.TabIndex = 3;
             tpDoodadTools.Text = "Tools";
             tpDoodadTools.UseVisualStyleBackColor = true;
@@ -2902,7 +2925,7 @@
             // 
             btnShowDoodadOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             btnShowDoodadOnMap.ForeColor = System.Drawing.Color.Black;
-            btnShowDoodadOnMap.Location = new System.Drawing.Point(7, 507);
+            btnShowDoodadOnMap.Location = new System.Drawing.Point(7, 504);
             btnShowDoodadOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnShowDoodadOnMap.Name = "btnShowDoodadOnMap";
             btnShowDoodadOnMap.Size = new System.Drawing.Size(376, 27);
@@ -2919,7 +2942,7 @@
             tpDoodadWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tpDoodadWorkflow.Name = "tpDoodadWorkflow";
             tpDoodadWorkflow.Padding = new System.Windows.Forms.Padding(4);
-            tpDoodadWorkflow.Size = new System.Drawing.Size(391, 550);
+            tpDoodadWorkflow.Size = new System.Drawing.Size(391, 547);
             tpDoodadWorkflow.TabIndex = 4;
             tpDoodadWorkflow.Text = "Workflow";
             tpDoodadWorkflow.UseVisualStyleBackColor = true;
@@ -2928,7 +2951,7 @@
             // 
             cbDoodadWorkflowHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             cbDoodadWorkflowHideEmpty.AutoSize = true;
-            cbDoodadWorkflowHideEmpty.Location = new System.Drawing.Point(7, 516);
+            cbDoodadWorkflowHideEmpty.Location = new System.Drawing.Point(7, 513);
             cbDoodadWorkflowHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbDoodadWorkflowHideEmpty.Name = "cbDoodadWorkflowHideEmpty";
             cbDoodadWorkflowHideEmpty.Size = new System.Drawing.Size(123, 20);
@@ -2946,7 +2969,7 @@
             tvDoodadDetails.Location = new System.Drawing.Point(7, 7);
             tvDoodadDetails.Margin = new System.Windows.Forms.Padding(4);
             tvDoodadDetails.Name = "tvDoodadDetails";
-            tvDoodadDetails.Size = new System.Drawing.Size(375, 501);
+            tvDoodadDetails.Size = new System.Drawing.Size(375, 498);
             tvDoodadDetails.TabIndex = 0;
             tvDoodadDetails.DoubleClick += TvDoodadDetails_DoubleClick;
             // 
@@ -3068,7 +3091,7 @@
             tpFactions.Margin = new System.Windows.Forms.Padding(4);
             tpFactions.Name = "tpFactions";
             tpFactions.Padding = new System.Windows.Forms.Padding(4);
-            tpFactions.Size = new System.Drawing.Size(1082, 587);
+            tpFactions.Size = new System.Drawing.Size(1082, 584);
             tpFactions.TabIndex = 7;
             tpFactions.Text = "Factions";
             tpFactions.UseVisualStyleBackColor = true;
@@ -3530,7 +3553,7 @@
             tpItems.Margin = new System.Windows.Forms.Padding(4);
             tpItems.Name = "tpItems";
             tpItems.Padding = new System.Windows.Forms.Padding(4);
-            tpItems.Size = new System.Drawing.Size(1082, 587);
+            tpItems.Size = new System.Drawing.Size(1082, 584);
             tpItems.TabIndex = 1;
             tpItems.Text = "Items";
             tpItems.UseVisualStyleBackColor = true;
@@ -3919,7 +3942,7 @@
             tpLoot.Margin = new System.Windows.Forms.Padding(4);
             tpLoot.Name = "tpLoot";
             tpLoot.Padding = new System.Windows.Forms.Padding(4);
-            tpLoot.Size = new System.Drawing.Size(1082, 587);
+            tpLoot.Size = new System.Drawing.Size(1082, 584);
             tpLoot.TabIndex = 2;
             tpLoot.Text = "Loot";
             tpLoot.UseVisualStyleBackColor = true;
@@ -4142,7 +4165,7 @@
             tpNPCs.Margin = new System.Windows.Forms.Padding(4);
             tpNPCs.Name = "tpNPCs";
             tpNPCs.Padding = new System.Windows.Forms.Padding(4);
-            tpNPCs.Size = new System.Drawing.Size(1082, 587);
+            tpNPCs.Size = new System.Drawing.Size(1082, 584);
             tpNPCs.TabIndex = 6;
             tpNPCs.Text = "NPCs";
             tpNPCs.UseVisualStyleBackColor = true;
@@ -4393,7 +4416,7 @@
             tpQuests.Margin = new System.Windows.Forms.Padding(4);
             tpQuests.Name = "tpQuests";
             tpQuests.Padding = new System.Windows.Forms.Padding(4);
-            tpQuests.Size = new System.Drawing.Size(1082, 587);
+            tpQuests.Size = new System.Drawing.Size(1082, 584);
             tpQuests.TabIndex = 9;
             tpQuests.Text = "Quests";
             tpQuests.UseVisualStyleBackColor = true;
@@ -4550,7 +4573,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(399, 513);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(366, 513);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4582,7 +4605,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(684, 503);
+            tvQuestWorkflow.Size = new System.Drawing.Size(651, 503);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -4593,7 +4616,7 @@
             tpSchedules.Location = new System.Drawing.Point(4, 14);
             tpSchedules.Name = "tpSchedules";
             tpSchedules.Padding = new System.Windows.Forms.Padding(3);
-            tpSchedules.Size = new System.Drawing.Size(1082, 587);
+            tpSchedules.Size = new System.Drawing.Size(1082, 584);
             tpSchedules.TabIndex = 17;
             tpSchedules.Text = "Schedules";
             tpSchedules.UseVisualStyleBackColor = true;
@@ -4693,7 +4716,7 @@
             tpSkills.Margin = new System.Windows.Forms.Padding(4);
             tpSkills.Name = "tpSkills";
             tpSkills.Padding = new System.Windows.Forms.Padding(4);
-            tpSkills.Size = new System.Drawing.Size(1082, 587);
+            tpSkills.Size = new System.Drawing.Size(1082, 584);
             tpSkills.TabIndex = 3;
             tpSkills.Text = "Skill";
             tpSkills.UseVisualStyleBackColor = true;
@@ -4715,7 +4738,7 @@
             // splitContainer3.Panel2
             // 
             splitContainer3.Panel2.Controls.Add(tcSkillInfo);
-            splitContainer3.Size = new System.Drawing.Size(1074, 579);
+            splitContainer3.Size = new System.Drawing.Size(1074, 576);
             splitContainer3.SplitterDistance = 470;
             splitContainer3.SplitterWidth = 5;
             splitContainer3.TabIndex = 10;
@@ -4769,7 +4792,7 @@
             dgvSkills.ReadOnly = true;
             dgvSkills.RowHeadersVisible = false;
             dgvSkills.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvSkills.Size = new System.Drawing.Size(467, 535);
+            dgvSkills.Size = new System.Drawing.Size(467, 532);
             dgvSkills.TabIndex = 6;
             dgvSkills.SelectionChanged += DgvSkills_SelectionChanged;
             // 
@@ -4807,7 +4830,7 @@
             tcSkillInfo.Multiline = true;
             tcSkillInfo.Name = "tcSkillInfo";
             tcSkillInfo.SelectedIndex = 0;
-            tcSkillInfo.Size = new System.Drawing.Size(599, 579);
+            tcSkillInfo.Size = new System.Drawing.Size(599, 576);
             tcSkillInfo.TabIndex = 9;
             // 
             // tpSkillInfo
@@ -4819,7 +4842,7 @@
             tpSkillInfo.Margin = new System.Windows.Forms.Padding(4);
             tpSkillInfo.Name = "tpSkillInfo";
             tpSkillInfo.Padding = new System.Windows.Forms.Padding(4);
-            tpSkillInfo.Size = new System.Drawing.Size(591, 550);
+            tpSkillInfo.Size = new System.Drawing.Size(591, 547);
             tpSkillInfo.TabIndex = 0;
             tpSkillInfo.Text = "Skill";
             // 
@@ -4850,7 +4873,7 @@
             groupBox2.Margin = new System.Windows.Forms.Padding(4);
             groupBox2.Name = "groupBox2";
             groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            groupBox2.Size = new System.Drawing.Size(583, 542);
+            groupBox2.Size = new System.Drawing.Size(583, 539);
             groupBox2.TabIndex = 8;
             groupBox2.TabStop = false;
             groupBox2.Text = "Skill Info";
@@ -4859,7 +4882,7 @@
             // 
             lSkillTags.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lSkillTags.AutoSize = true;
-            lSkillTags.Location = new System.Drawing.Point(7, 518);
+            lSkillTags.Location = new System.Drawing.Point(7, 515);
             lSkillTags.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lSkillTags.Name = "lSkillTags";
             lSkillTags.Size = new System.Drawing.Size(22, 16);
@@ -4870,7 +4893,7 @@
             // 
             label123.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             label123.AutoSize = true;
-            label123.Location = new System.Drawing.Point(7, 502);
+            label123.Location = new System.Drawing.Point(7, 499);
             label123.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label123.Name = "label123";
             label123.Size = new System.Drawing.Size(30, 16);
@@ -4885,7 +4908,7 @@
             rtSkillDescription.Location = new System.Drawing.Point(10, 148);
             rtSkillDescription.Margin = new System.Windows.Forms.Padding(4);
             rtSkillDescription.Name = "rtSkillDescription";
-            rtSkillDescription.Size = new System.Drawing.Size(565, 349);
+            rtSkillDescription.Size = new System.Drawing.Size(565, 346);
             rtSkillDescription.TabIndex = 10;
             rtSkillDescription.Text = "";
             // 
@@ -5051,7 +5074,7 @@
             tpSkillItems.Margin = new System.Windows.Forms.Padding(4);
             tpSkillItems.Name = "tpSkillItems";
             tpSkillItems.Padding = new System.Windows.Forms.Padding(4);
-            tpSkillItems.Size = new System.Drawing.Size(591, 550);
+            tpSkillItems.Size = new System.Drawing.Size(591, 547);
             tpSkillItems.TabIndex = 1;
             tpSkillItems.Text = "Items?";
             tpSkillItems.UseVisualStyleBackColor = true;
@@ -5065,7 +5088,7 @@
             dgvSkillProducts.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             dgvSkillProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvSkillProducts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { dataGridViewTextBoxColumn9, dataGridViewTextBoxColumn10, dataGridViewTextBoxColumn11 });
-            dgvSkillProducts.Location = new System.Drawing.Point(9, 371);
+            dgvSkillProducts.Location = new System.Drawing.Point(9, 368);
             dgvSkillProducts.Margin = new System.Windows.Forms.Padding(4);
             dgvSkillProducts.Name = "dgvSkillProducts";
             dgvSkillProducts.ReadOnly = true;
@@ -5111,7 +5134,7 @@
             dgvSkillReagents.ReadOnly = true;
             dgvSkillReagents.RowHeadersVisible = false;
             dgvSkillReagents.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvSkillReagents.Size = new System.Drawing.Size(573, 314);
+            dgvSkillReagents.Size = new System.Drawing.Size(573, 311);
             dgvSkillReagents.TabIndex = 7;
             // 
             // dataGridViewTextBoxColumn6
@@ -5140,7 +5163,7 @@
             // 
             label13.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             label13.AutoSize = true;
-            label13.Location = new System.Drawing.Point(7, 351);
+            label13.Location = new System.Drawing.Point(7, 348);
             label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label13.Name = "label13";
             label13.Size = new System.Drawing.Size(119, 16);
@@ -5167,7 +5190,7 @@
             tpSkillExecution.Margin = new System.Windows.Forms.Padding(4);
             tpSkillExecution.Name = "tpSkillExecution";
             tpSkillExecution.Padding = new System.Windows.Forms.Padding(4);
-            tpSkillExecution.Size = new System.Drawing.Size(591, 550);
+            tpSkillExecution.Size = new System.Drawing.Size(591, 547);
             tpSkillExecution.TabIndex = 2;
             tpSkillExecution.Text = "Execution";
             tpSkillExecution.UseVisualStyleBackColor = true;
@@ -5175,7 +5198,7 @@
             // btnSkillTreeCollapse
             // 
             btnSkillTreeCollapse.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            btnSkillTreeCollapse.Location = new System.Drawing.Point(7, 355);
+            btnSkillTreeCollapse.Location = new System.Drawing.Point(7, 352);
             btnSkillTreeCollapse.Margin = new System.Windows.Forms.Padding(4);
             btnSkillTreeCollapse.Name = "btnSkillTreeCollapse";
             btnSkillTreeCollapse.Size = new System.Drawing.Size(44, 28);
@@ -5187,7 +5210,7 @@
             // btnCopySkillExecutionTree
             // 
             btnCopySkillExecutionTree.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            btnCopySkillExecutionTree.Location = new System.Drawing.Point(496, 355);
+            btnCopySkillExecutionTree.Location = new System.Drawing.Point(496, 352);
             btnCopySkillExecutionTree.Margin = new System.Windows.Forms.Padding(4);
             btnCopySkillExecutionTree.Name = "btnCopySkillExecutionTree";
             btnCopySkillExecutionTree.Size = new System.Drawing.Size(88, 28);
@@ -5212,7 +5235,7 @@
             gbSkillPlotEventInfo.Controls.Add(lPlotEventP3);
             gbSkillPlotEventInfo.Controls.Add(lPlotEventP2);
             gbSkillPlotEventInfo.Controls.Add(lPlotEventP1);
-            gbSkillPlotEventInfo.Location = new System.Drawing.Point(7, 390);
+            gbSkillPlotEventInfo.Location = new System.Drawing.Point(7, 387);
             gbSkillPlotEventInfo.Margin = new System.Windows.Forms.Padding(4);
             gbSkillPlotEventInfo.Name = "gbSkillPlotEventInfo";
             gbSkillPlotEventInfo.Padding = new System.Windows.Forms.Padding(4);
@@ -5366,7 +5389,7 @@
             treeNode2.Text = "Skill";
             tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
             tvSkill.SelectedImageIndex = 0;
-            tvSkill.Size = new System.Drawing.Size(575, 330);
+            tvSkill.Size = new System.Drawing.Size(575, 327);
             tvSkill.TabIndex = 0;
             tvSkill.AfterSelect += TvSkill_AfterSelect;
             tvSkill.DoubleClick += TvSkill_DoubleClick;
@@ -5380,7 +5403,7 @@
             tpSpheres.Controls.Add(DgvSpheres);
             tpSpheres.Location = new System.Drawing.Point(4, 14);
             tpSpheres.Name = "tpSpheres";
-            tpSpheres.Size = new System.Drawing.Size(1082, 587);
+            tpSpheres.Size = new System.Drawing.Size(1082, 584);
             tpSpheres.TabIndex = 18;
             tpSpheres.Text = "Spheres";
             tpSpheres.UseVisualStyleBackColor = true;
@@ -5497,7 +5520,7 @@
             tpTags.Margin = new System.Windows.Forms.Padding(4);
             tpTags.Name = "tpTags";
             tpTags.Padding = new System.Windows.Forms.Padding(4);
-            tpTags.Size = new System.Drawing.Size(1082, 587);
+            tpTags.Size = new System.Drawing.Size(1082, 584);
             tpTags.TabIndex = 15;
             tpTags.Text = "Tags";
             tpTags.UseVisualStyleBackColor = true;
@@ -5609,7 +5632,7 @@
             tpTrade.Margin = new System.Windows.Forms.Padding(4);
             tpTrade.Name = "tpTrade";
             tpTrade.Padding = new System.Windows.Forms.Padding(4);
-            tpTrade.Size = new System.Drawing.Size(1082, 587);
+            tpTrade.Size = new System.Drawing.Size(1082, 584);
             tpTrade.TabIndex = 14;
             tpTrade.Text = "Trades";
             tpTrade.UseVisualStyleBackColor = true;
@@ -5725,7 +5748,7 @@
             tpSlaves.Location = new System.Drawing.Point(4, 14);
             tpSlaves.Name = "tpSlaves";
             tpSlaves.Padding = new System.Windows.Forms.Padding(3);
-            tpSlaves.Size = new System.Drawing.Size(1082, 587);
+            tpSlaves.Size = new System.Drawing.Size(1082, 584);
             tpSlaves.TabIndex = 16;
             tpSlaves.Text = "Vehicles";
             tpSlaves.UseVisualStyleBackColor = true;
@@ -5922,7 +5945,7 @@
             tpZones.Margin = new System.Windows.Forms.Padding(4);
             tpZones.Name = "tpZones";
             tpZones.Padding = new System.Windows.Forms.Padding(4);
-            tpZones.Size = new System.Drawing.Size(1082, 587);
+            tpZones.Size = new System.Drawing.Size(1082, 584);
             tpZones.TabIndex = 5;
             tpZones.Text = "Zones";
             tpZones.UseVisualStyleBackColor = true;
@@ -6698,6 +6721,7 @@
             MM.Size = new System.Drawing.Size(1090, 24);
             MM.TabIndex = 4;
             MM.Text = "Menu";
+            MM.Visible = false;
             // 
             // MMFile
             // 
@@ -6829,7 +6853,7 @@
             // 
             // MMSystems
             // 
-            MMSystems.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMSystemFactions, MMSystemItems, MMSystemLoot, MMSystemMaps, MMSystemQuests, MMSystemSchedule, spheresToolStripMenuItem, MMSystemTags, MMSystemTrades, MMSystemZones });
+            MMSystems.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMSystemFactions, MMSystemItems, MMSystemLoot, MMSystemMaps, MMSystemQuests, MMSystemSchedule, MMSystemSpheres, MMSystemTags, MMSystemTrades, MMSystemZones });
             MMSystems.Name = "MMSystems";
             MMSystems.Size = new System.Drawing.Size(61, 20);
             MMSystems.Text = "Systems";
@@ -6879,12 +6903,12 @@
             MMSystemSchedule.Text = "Schedule";
             MMSystemSchedule.Click += MMSystemSchedule_Click;
             // 
-            // spheresToolStripMenuItem
+            // MMSystemSpheres
             // 
-            spheresToolStripMenuItem.Name = "spheresToolStripMenuItem";
-            spheresToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
-            spheresToolStripMenuItem.Text = "Spheres";
-            spheresToolStripMenuItem.Click += spheresToolStripMenuItem_Click;
+            MMSystemSpheres.Name = "MMSystemSpheres";
+            MMSystemSpheres.Size = new System.Drawing.Size(129, 22);
+            MMSystemSpheres.Text = "Spheres";
+            MMSystemSpheres.Click += MMSystemSpheres_Click;
             // 
             // MMSystemTags
             // 
@@ -6909,29 +6933,37 @@
             // 
             // TBMain
             // 
-            TBMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { TBFile, TBS1 });
+            TBMain.Font = new System.Drawing.Font("Segoe UI Variable Text", 10F);
+            TBMain.ImageScalingSize = new System.Drawing.Size(24, 24);
+            TBMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { TBFile, TBS1, TMBack, TBForward, TBS2, TBSelectedData, TBLocalizer, toolStripSeparator1, TBMap, TBSplit, TBBuffs, TBDoodads, TBFactions, TBItems, TBLoot, TBNpc, TBQuests, TBSchedules, TBSkills, TBSpheres, TBTags, TBTrades, TBSlaves, TBZones });
             TBMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-            TBMain.Location = new System.Drawing.Point(0, 24);
+            TBMain.Location = new System.Drawing.Point(0, 0);
             TBMain.Name = "TBMain";
-            TBMain.Size = new System.Drawing.Size(1090, 23);
+            TBMain.Size = new System.Drawing.Size(1090, 31);
             TBMain.TabIndex = 5;
-            TBMain.Text = "toolStrip1";
-            TBMain.Visible = false;
+            TBMain.Text = "Toolbar";
             // 
             // TBFile
             // 
-            TBFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            TBFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { TBFileExit });
+            TBFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            TBFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { TBFileTables, TBFileExit });
             TBFile.Image = (System.Drawing.Image)resources.GetObject("TBFile.Image");
             TBFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             TBFile.Name = "TBFile";
-            TBFile.Size = new System.Drawing.Size(29, 20);
-            TBFile.Text = "toolStripDropDownButton1";
+            TBFile.Size = new System.Drawing.Size(42, 23);
+            TBFile.Text = "File";
+            // 
+            // TBFileTables
+            // 
+            TBFileTables.Name = "TBFileTables";
+            TBFileTables.Size = new System.Drawing.Size(194, 24);
+            TBFileTables.Text = "Tables and Settings";
+            TBFileTables.Click += TBFileTables_Click;
             // 
             // TBFileExit
             // 
             TBFileExit.Name = "TBFileExit";
-            TBFileExit.Size = new System.Drawing.Size(180, 22);
+            TBFileExit.Size = new System.Drawing.Size(194, 24);
             TBFileExit.Text = "Exit";
             TBFileExit.Click += TBFileExit_Click;
             // 
@@ -6939,6 +6971,226 @@
             // 
             TBS1.Name = "TBS1";
             TBS1.Size = new System.Drawing.Size(6, 23);
+            // 
+            // TMBack
+            // 
+            TMBack.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            TMBack.Image = (System.Drawing.Image)resources.GetObject("TMBack.Image");
+            TMBack.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TMBack.Name = "TMBack";
+            TMBack.Size = new System.Drawing.Size(33, 23);
+            TMBack.Text = "<<";
+            TMBack.ToolTipText = "Previous page";
+            TMBack.Click += TMBack_Click;
+            // 
+            // TBForward
+            // 
+            TBForward.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            TBForward.Image = (System.Drawing.Image)resources.GetObject("TBForward.Image");
+            TBForward.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBForward.Name = "TBForward";
+            TBForward.Size = new System.Drawing.Size(33, 23);
+            TBForward.Text = ">>";
+            TBForward.ToolTipText = "Next Page";
+            TBForward.Click += TBForward_Click;
+            // 
+            // TBS2
+            // 
+            TBS2.Name = "TBS2";
+            TBS2.Size = new System.Drawing.Size(6, 23);
+            // 
+            // TBSelectedData
+            // 
+            TBSelectedData.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            TBSelectedData.Image = (System.Drawing.Image)resources.GetObject("TBSelectedData.Image");
+            TBSelectedData.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBSelectedData.Name = "TBSelectedData";
+            TBSelectedData.Size = new System.Drawing.Size(96, 23);
+            TBSelectedData.Text = "Selected Data";
+            TBSelectedData.Click += TBSelectedData_Click;
+            // 
+            // TBLocalizer
+            // 
+            TBLocalizer.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBLocalizer.Image = Properties.Resources.icon_map_globe;
+            TBLocalizer.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBLocalizer.Name = "TBLocalizer";
+            TBLocalizer.Size = new System.Drawing.Size(28, 28);
+            TBLocalizer.Text = "Localizer";
+            TBLocalizer.ToolTipText = "Localizer (F8)";
+            TBLocalizer.Click += TBLocalizer_Click;
+            // 
+            // toolStripSeparator1
+            // 
+            toolStripSeparator1.Name = "toolStripSeparator1";
+            toolStripSeparator1.Size = new System.Drawing.Size(6, 23);
+            // 
+            // TBMap
+            // 
+            TBMap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBMap.Image = (System.Drawing.Image)resources.GetObject("TBMap.Image");
+            TBMap.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBMap.Name = "TBMap";
+            TBMap.Size = new System.Drawing.Size(28, 28);
+            TBMap.Text = "Map";
+            TBMap.ToolTipText = "Map (F9)";
+            TBMap.Click += TBMap_Click;
+            // 
+            // TBSplit
+            // 
+            TBSplit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            TBSplit.Image = (System.Drawing.Image)resources.GetObject("TBSplit.Image");
+            TBSplit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBSplit.Name = "TBSplit";
+            TBSplit.Size = new System.Drawing.Size(23, 23);
+            TBSplit.Text = "|";
+            TBSplit.Click += TBSplit_Click;
+            // 
+            // TBBuffs
+            // 
+            TBBuffs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBBuffs.Image = (System.Drawing.Image)resources.GetObject("TBBuffs.Image");
+            TBBuffs.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBBuffs.Name = "TBBuffs";
+            TBBuffs.Size = new System.Drawing.Size(28, 28);
+            TBBuffs.Text = "Buffs";
+            TBBuffs.ToolTipText = "Buffs (F5)";
+            TBBuffs.Click += TBBuffs_Click;
+            // 
+            // TBDoodads
+            // 
+            TBDoodads.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBDoodads.Image = (System.Drawing.Image)resources.GetObject("TBDoodads.Image");
+            TBDoodads.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBDoodads.Name = "TBDoodads";
+            TBDoodads.Size = new System.Drawing.Size(28, 28);
+            TBDoodads.Text = "Doodads";
+            TBDoodads.ToolTipText = "Doodads (F4)";
+            TBDoodads.Click += TBDoodads_Click;
+            // 
+            // TBFactions
+            // 
+            TBFactions.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBFactions.Image = (System.Drawing.Image)resources.GetObject("TBFactions.Image");
+            TBFactions.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBFactions.Name = "TBFactions";
+            TBFactions.Size = new System.Drawing.Size(28, 28);
+            TBFactions.Text = "Factions";
+            TBFactions.Click += TBFactions_Click;
+            // 
+            // TBItems
+            // 
+            TBItems.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBItems.Image = (System.Drawing.Image)resources.GetObject("TBItems.Image");
+            TBItems.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBItems.Name = "TBItems";
+            TBItems.Size = new System.Drawing.Size(28, 28);
+            TBItems.Text = "Items";
+            TBItems.ToolTipText = "Items (F7)";
+            TBItems.Click += TBItems_Click;
+            // 
+            // TBLoot
+            // 
+            TBLoot.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBLoot.Image = (System.Drawing.Image)resources.GetObject("TBLoot.Image");
+            TBLoot.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBLoot.Name = "TBLoot";
+            TBLoot.Size = new System.Drawing.Size(28, 28);
+            TBLoot.Text = "Loot";
+            TBLoot.Click += TBLoot_Click;
+            // 
+            // TBNpc
+            // 
+            TBNpc.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBNpc.Image = (System.Drawing.Image)resources.GetObject("TBNpc.Image");
+            TBNpc.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBNpc.Name = "TBNpc";
+            TBNpc.Size = new System.Drawing.Size(28, 28);
+            TBNpc.Text = "NPCs";
+            TBNpc.ToolTipText = "NPCs (F6)";
+            TBNpc.Click += TBNpc_Click;
+            // 
+            // TBQuests
+            // 
+            TBQuests.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBQuests.Image = (System.Drawing.Image)resources.GetObject("TBQuests.Image");
+            TBQuests.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBQuests.Name = "TBQuests";
+            TBQuests.Size = new System.Drawing.Size(28, 28);
+            TBQuests.Text = "Quests";
+            TBQuests.ToolTipText = "Quests (F2)";
+            TBQuests.Click += TBQuests_Click;
+            // 
+            // TBSchedules
+            // 
+            TBSchedules.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBSchedules.Image = (System.Drawing.Image)resources.GetObject("TBSchedules.Image");
+            TBSchedules.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBSchedules.Name = "TBSchedules";
+            TBSchedules.Size = new System.Drawing.Size(28, 28);
+            TBSchedules.Text = "Schedules";
+            TBSchedules.Click += TBSchedules_Click;
+            // 
+            // TBSkills
+            // 
+            TBSkills.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBSkills.Image = (System.Drawing.Image)resources.GetObject("TBSkills.Image");
+            TBSkills.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBSkills.Name = "TBSkills";
+            TBSkills.Size = new System.Drawing.Size(28, 28);
+            TBSkills.Text = "Skills";
+            TBSkills.ToolTipText = "Skills (F3)";
+            TBSkills.Click += TBSkills_Click;
+            // 
+            // TBSpheres
+            // 
+            TBSpheres.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBSpheres.Image = (System.Drawing.Image)resources.GetObject("TBSpheres.Image");
+            TBSpheres.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBSpheres.Name = "TBSpheres";
+            TBSpheres.Size = new System.Drawing.Size(28, 28);
+            TBSpheres.Text = "Spheres";
+            TBSpheres.Click += TBSpheres_Click;
+            // 
+            // TBTags
+            // 
+            TBTags.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBTags.Image = (System.Drawing.Image)resources.GetObject("TBTags.Image");
+            TBTags.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBTags.Name = "TBTags";
+            TBTags.Size = new System.Drawing.Size(28, 28);
+            TBTags.Text = "Tags";
+            TBTags.Click += TBTags_Click;
+            // 
+            // TBTrades
+            // 
+            TBTrades.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBTrades.Image = (System.Drawing.Image)resources.GetObject("TBTrades.Image");
+            TBTrades.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBTrades.Name = "TBTrades";
+            TBTrades.Size = new System.Drawing.Size(28, 28);
+            TBTrades.Text = "Trades";
+            TBTrades.Click += TBTrades_Click;
+            // 
+            // TBSlaves
+            // 
+            TBSlaves.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBSlaves.Image = (System.Drawing.Image)resources.GetObject("TBSlaves.Image");
+            TBSlaves.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBSlaves.Name = "TBSlaves";
+            TBSlaves.Size = new System.Drawing.Size(28, 28);
+            TBSlaves.Text = "Vehicles";
+            TBSlaves.Click += TBSlaves_Click;
+            // 
+            // TBZones
+            // 
+            TBZones.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBZones.Image = (System.Drawing.Image)resources.GetObject("TBZones.Image");
+            TBZones.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBZones.Name = "TBZones";
+            TBZones.Size = new System.Drawing.Size(28, 28);
+            TBZones.Text = "Zones";
+            TBZones.Click += TBZones_Click;
             // 
             // MainForm
             // 
@@ -7642,11 +7894,34 @@
         private System.Windows.Forms.ToolStripMenuItem MMGameObjectsDoodads;
         private System.Windows.Forms.ToolStripMenuItem MMBack;
         private System.Windows.Forms.ToolStripMenuItem MMForward;
-        private System.Windows.Forms.ToolStripMenuItem spheresToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MMSystemSpheres;
         private System.Windows.Forms.ToolStrip TBMain;
         private System.Windows.Forms.ToolStripDropDownButton TBFile;
         private System.Windows.Forms.ToolStripMenuItem TBFileExit;
         private System.Windows.Forms.ToolStripSeparator TBS1;
+        private System.Windows.Forms.ToolStripButton TMBack;
+        private System.Windows.Forms.ToolStripButton TBForward;
+        private System.Windows.Forms.ToolStripSeparator TBS2;
+        private System.Windows.Forms.ToolStripButton TBSelectedData;
+        private System.Windows.Forms.ToolStripButton TBLocalizer;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton TBMap;
+        private System.Windows.Forms.ToolStripButton TBSplit;
+        private System.Windows.Forms.ToolStripButton TBBuffs;
+        private System.Windows.Forms.ToolStripButton TBDoodads;
+        private System.Windows.Forms.ToolStripButton TBFactions;
+        private System.Windows.Forms.ToolStripButton TBItems;
+        private System.Windows.Forms.ToolStripButton TBLoot;
+        private System.Windows.Forms.ToolStripButton TBNpc;
+        private System.Windows.Forms.ToolStripButton TBQuests;
+        private System.Windows.Forms.ToolStripButton TBSchedules;
+        private System.Windows.Forms.ToolStripButton TBSkills;
+        private System.Windows.Forms.ToolStripButton TBSpheres;
+        private System.Windows.Forms.ToolStripButton TBTags;
+        private System.Windows.Forms.ToolStripButton TBTrades;
+        private System.Windows.Forms.ToolStripButton TBSlaves;
+        private System.Windows.Forms.ToolStripButton TBZones;
+        private System.Windows.Forms.ToolStripMenuItem TBFileTables;
     }
 }
 
