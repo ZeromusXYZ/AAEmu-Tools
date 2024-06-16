@@ -1829,7 +1829,7 @@ namespace AAEmu.DBViewer
                     tabHistory.RemoveRange(tabHistoryIndex, tabHistory.Count - tabHistoryIndex - 1);
 
                 tabHistory.Add(tcViewer.SelectedTab);
-                tabHistoryIndex = tabHistory.Count-1;
+                tabHistoryIndex = tabHistory.Count - 1;
             }
         }
 
@@ -1857,12 +1857,22 @@ namespace AAEmu.DBViewer
         private void MMForward_Click(object sender, EventArgs e)
         {
             skipTabHistory = true;
-            if (tabHistoryIndex < tabHistory.Count-1)
+            if (tabHistoryIndex < tabHistory.Count - 1)
             {
                 tabHistoryIndex++;
                 tcViewer.SelectedTab = tabHistory[tabHistoryIndex];
             }
             skipTabHistory = false;
+        }
+
+        private void spheresToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpSpheres;
+        }
+
+        private void TBFileExit_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

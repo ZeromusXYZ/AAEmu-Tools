@@ -30,9 +30,9 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("NPC");
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Slave");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("NPC");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Slave");
             lbTableNames = new System.Windows.Forms.ListBox();
             tcViewer = new System.Windows.Forms.TabControl();
             tpTables = new System.Windows.Forms.TabPage();
@@ -591,9 +591,14 @@
             MMSystemMaps = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemQuests = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemSchedule = new System.Windows.Forms.ToolStripMenuItem();
+            spheresToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemTags = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemTrades = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemZones = new System.Windows.Forms.ToolStripMenuItem();
+            TBMain = new System.Windows.Forms.ToolStrip();
+            TBFile = new System.Windows.Forms.ToolStripDropDownButton();
+            TBFileExit = new System.Windows.Forms.ToolStripMenuItem();
+            TBS1 = new System.Windows.Forms.ToolStripSeparator();
             tcViewer.SuspendLayout();
             tpTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSimple).BeginInit();
@@ -675,6 +680,7 @@
             groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvZones).BeginInit();
             MM.SuspendLayout();
+            TBMain.SuspendLayout();
             SuspendLayout();
             // 
             // lbTableNames
@@ -1349,7 +1355,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 325);
-            splitContainer2.SplitterDistance = 322;
+            splitContainer2.SplitterDistance = 317;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1357,7 +1363,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(231, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(226, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1388,7 +1394,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(314, 294);
+            tvBuffTriggers.Size = new System.Drawing.Size(309, 294);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -4200,9 +4206,9 @@
             tvNPCInfo.Location = new System.Drawing.Point(8, 41);
             tvNPCInfo.Margin = new System.Windows.Forms.Padding(4);
             tvNPCInfo.Name = "tvNPCInfo";
-            treeNode4.Name = "SkillNode";
-            treeNode4.Text = "NPC";
-            tvNPCInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode4 });
+            treeNode1.Name = "SkillNode";
+            treeNode1.Text = "NPC";
+            tvNPCInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
             tvNPCInfo.SelectedImageIndex = 0;
             tvNPCInfo.Size = new System.Drawing.Size(430, 351);
             tvNPCInfo.TabIndex = 31;
@@ -4544,7 +4550,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(404, 513);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(399, 513);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4576,7 +4582,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(689, 503);
+            tvQuestWorkflow.Size = new System.Drawing.Size(684, 503);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -5356,9 +5362,9 @@
             tvSkill.Location = new System.Drawing.Point(7, 7);
             tvSkill.Margin = new System.Windows.Forms.Padding(4);
             tvSkill.Name = "tvSkill";
-            treeNode1.Name = "SkillNode";
-            treeNode1.Text = "Skill";
-            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
+            treeNode2.Name = "SkillNode";
+            treeNode2.Text = "Skill";
+            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
             tvSkill.SelectedImageIndex = 0;
             tvSkill.Size = new System.Drawing.Size(575, 330);
             tvSkill.TabIndex = 0;
@@ -5755,9 +5761,9 @@
             tvSlaveInfo.Location = new System.Drawing.Point(8, 58);
             tvSlaveInfo.Margin = new System.Windows.Forms.Padding(4);
             tvSlaveInfo.Name = "tvSlaveInfo";
-            treeNode2.Name = "SkillNode";
-            treeNode2.Text = "Slave";
-            tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
+            treeNode3.Name = "SkillNode";
+            treeNode3.Text = "Slave";
+            tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode3 });
             tvSlaveInfo.SelectedImageIndex = 0;
             tvSlaveInfo.Size = new System.Drawing.Size(368, 497);
             tvSlaveInfo.TabIndex = 32;
@@ -6823,7 +6829,7 @@
             // 
             // MMSystems
             // 
-            MMSystems.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMSystemFactions, MMSystemItems, MMSystemLoot, MMSystemMaps, MMSystemQuests, MMSystemSchedule, MMSystemTags, MMSystemTrades, MMSystemZones });
+            MMSystems.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMSystemFactions, MMSystemItems, MMSystemLoot, MMSystemMaps, MMSystemQuests, MMSystemSchedule, spheresToolStripMenuItem, MMSystemTags, MMSystemTrades, MMSystemZones });
             MMSystems.Name = "MMSystems";
             MMSystems.Size = new System.Drawing.Size(61, 20);
             MMSystems.Text = "Systems";
@@ -6873,6 +6879,13 @@
             MMSystemSchedule.Text = "Schedule";
             MMSystemSchedule.Click += MMSystemSchedule_Click;
             // 
+            // spheresToolStripMenuItem
+            // 
+            spheresToolStripMenuItem.Name = "spheresToolStripMenuItem";
+            spheresToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            spheresToolStripMenuItem.Text = "Spheres";
+            spheresToolStripMenuItem.Click += spheresToolStripMenuItem_Click;
+            // 
             // MMSystemTags
             // 
             MMSystemTags.Name = "MMSystemTags";
@@ -6894,15 +6907,48 @@
             MMSystemZones.Text = "Zones";
             MMSystemZones.Click += MMSystemZones_Click;
             // 
+            // TBMain
+            // 
+            TBMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { TBFile, TBS1 });
+            TBMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
+            TBMain.Location = new System.Drawing.Point(0, 24);
+            TBMain.Name = "TBMain";
+            TBMain.Size = new System.Drawing.Size(1090, 23);
+            TBMain.TabIndex = 5;
+            TBMain.Text = "toolStrip1";
+            TBMain.Visible = false;
+            // 
+            // TBFile
+            // 
+            TBFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { TBFileExit });
+            TBFile.Image = (System.Drawing.Image)resources.GetObject("TBFile.Image");
+            TBFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBFile.Name = "TBFile";
+            TBFile.Size = new System.Drawing.Size(29, 20);
+            TBFile.Text = "toolStripDropDownButton1";
+            // 
+            // TBFileExit
+            // 
+            TBFileExit.Name = "TBFileExit";
+            TBFileExit.Size = new System.Drawing.Size(180, 22);
+            TBFileExit.Text = "Exit";
+            TBFileExit.Click += TBFileExit_Click;
+            // 
+            // TBS1
+            // 
+            TBS1.Name = "TBS1";
+            TBS1.Size = new System.Drawing.Size(6, 23);
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1090, 629);
+            Controls.Add(TBMain);
             Controls.Add(tcViewer);
             Controls.Add(MM);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
-            MainMenuStrip = MM;
             Margin = new System.Windows.Forms.Padding(4);
             Name = "MainForm";
             Text = "AAEmu.DBViewer";
@@ -7028,6 +7074,8 @@
             ((System.ComponentModel.ISupportInitialize)dgvZones).EndInit();
             MM.ResumeLayout(false);
             MM.PerformLayout();
+            TBMain.ResumeLayout(false);
+            TBMain.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -7594,6 +7642,11 @@
         private System.Windows.Forms.ToolStripMenuItem MMGameObjectsDoodads;
         private System.Windows.Forms.ToolStripMenuItem MMBack;
         private System.Windows.Forms.ToolStripMenuItem MMForward;
+        private System.Windows.Forms.ToolStripMenuItem spheresToolStripMenuItem;
+        private System.Windows.Forms.ToolStrip TBMain;
+        private System.Windows.Forms.ToolStripDropDownButton TBFile;
+        private System.Windows.Forms.ToolStripMenuItem TBFileExit;
+        private System.Windows.Forms.ToolStripSeparator TBS1;
     }
 }
 
