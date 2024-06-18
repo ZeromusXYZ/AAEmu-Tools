@@ -754,6 +754,7 @@ namespace AAEmu.DBViewer
                 LoadTranslations(Properties.Settings.Default.DefaultGameLanguage);
                 loading.ShowInfo("Loading: Custom Translations");
                 AddCustomTranslations();
+                LoadUiTexts();
                 loading.ShowInfo("Loading: Icon info");
                 LoadIcons();
                 loading.ShowInfo("Loading: Factions");
@@ -1409,7 +1410,15 @@ namespace AAEmu.DBViewer
                     var row = dgvLocalized.Rows[line];
                     row.Cells[0].Value = translation.table;
                     row.Cells[1].Value = translation.field;
-                    row.Cells[2].Value = translation.idx.ToString();
+                    var idxString = translation.idx.ToString();
+                    if (translation.table == "ui_texts")
+                    {
+                        if (AADB.DB_UiTexts.TryGetValue(translation.idx, out var uiText))
+                        {
+                            idxString += $" ({uiText.key} : {uiText.category_id})";
+                        }
+                    }
+                    row.Cells[2].Value = idxString;
                     row.Cells[3].Value = translation.value;
                     count++;
                 }

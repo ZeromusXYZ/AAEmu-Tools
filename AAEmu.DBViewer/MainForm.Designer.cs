@@ -58,10 +58,6 @@
             tpLocalizer = new System.Windows.Forms.TabPage();
             label93 = new System.Windows.Forms.Label();
             dgvLocalized = new System.Windows.Forms.DataGridView();
-            Column48 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column49 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column51 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            Column50 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tSearchLocalized = new System.Windows.Forms.TextBox();
             tpMap = new System.Windows.Forms.TabPage();
             btnLoadAAEmuWater = new System.Windows.Forms.Button();
@@ -622,6 +618,10 @@
             TBTrades = new System.Windows.Forms.ToolStripButton();
             TBSlaves = new System.Windows.Forms.ToolStripButton();
             TBZones = new System.Windows.Forms.ToolStripButton();
+            Column48 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column49 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column51 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            Column50 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tcViewer.SuspendLayout();
             tpTables.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSimple).BeginInit();
@@ -1028,30 +1028,6 @@
             dgvLocalized.Size = new System.Drawing.Size(1060, 515);
             dgvLocalized.TabIndex = 11;
             // 
-            // Column48
-            // 
-            Column48.FillWeight = 15F;
-            Column48.HeaderText = "Table";
-            Column48.Name = "Column48";
-            // 
-            // Column49
-            // 
-            Column49.FillWeight = 15F;
-            Column49.HeaderText = "Field";
-            Column49.Name = "Column49";
-            // 
-            // Column51
-            // 
-            Column51.FillWeight = 10F;
-            Column51.HeaderText = "Index";
-            Column51.Name = "Column51";
-            // 
-            // Column50
-            // 
-            Column50.FillWeight = 60F;
-            Column50.HeaderText = "Value";
-            Column50.Name = "Column50";
-            // 
             // tSearchLocalized
             // 
             tSearchLocalized.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
@@ -1378,7 +1354,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 325);
-            splitContainer2.SplitterDistance = 283;
+            splitContainer2.SplitterDistance = 281;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1386,7 +1362,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(192, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(190, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1417,7 +1393,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(275, 294);
+            tvBuffTriggers.Size = new System.Drawing.Size(273, 294);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -4573,7 +4549,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(365, 513);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(363, 513);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4605,7 +4581,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(650, 503);
+            tvQuestWorkflow.Size = new System.Drawing.Size(648, 503);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -7192,6 +7168,30 @@
             TBZones.Text = "Zones";
             TBZones.Click += TBZones_Click;
             // 
+            // Column48
+            // 
+            Column48.FillWeight = 15F;
+            Column48.HeaderText = "Table";
+            Column48.Name = "Column48";
+            // 
+            // Column49
+            // 
+            Column49.FillWeight = 15F;
+            Column49.HeaderText = "Field";
+            Column49.Name = "Column49";
+            // 
+            // Column51
+            // 
+            Column51.FillWeight = 20F;
+            Column51.HeaderText = "Index (ui_texts key)";
+            Column51.Name = "Column51";
+            // 
+            // Column50
+            // 
+            Column50.FillWeight = 50F;
+            Column50.HeaderText = "Value";
+            Column50.Name = "Column50";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -7664,10 +7664,6 @@
         private System.Windows.Forms.TabPage tpLocalizer;
         private System.Windows.Forms.DataGridView dgvLocalized;
         private System.Windows.Forms.TextBox tSearchLocalized;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column48;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column49;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column51;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column50;
         private System.Windows.Forms.Label label93;
         private System.Windows.Forms.TabPage tpV1;
         private System.Windows.Forms.TabPage tpBuffs;
@@ -7922,6 +7918,10 @@
         private System.Windows.Forms.ToolStripButton TBSlaves;
         private System.Windows.Forms.ToolStripButton TBZones;
         private System.Windows.Forms.ToolStripMenuItem TBFileTables;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column48;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column49;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column51;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column50;
     }
 }
 

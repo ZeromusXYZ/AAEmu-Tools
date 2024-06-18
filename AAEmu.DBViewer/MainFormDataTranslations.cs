@@ -276,5 +276,42 @@ namespace AAEmu.DBViewer
             cbItemSearchLanguage.Enabled = (cbItemSearchLanguage.Items.Count > 1);
             Properties.Settings.Default.DefaultGameLanguage = lng;
         }
+
+        private void LoadUiTexts()
+        {
+            AADB.DB_UiTexts.Clear();
+            var catCounter = new Dictionary<long, long>();
+            string sql = "SELECT * FROM ui_texts ORDER BY id ASC";
+
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = sql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        AADB.DB_Icons.Clear();
+                        while (reader.Read())
+                        {
+                            var t = new GameUiTexts();
+
+                            t.id = GetInt64(reader, "id");
+                            t.key = GetString(reader, "key");
+                            t.text = GetString(reader, "text");
+                            t.category_id = GetInt64(reader, "category_id");
+
+                            if (!catCounter.ContainsKey(t.category_id))
+                                catCounter.Add(t.category_id, 1);
+                            
+                            t.InCategoryIdx = catCounter[t.category_id];
+                            catCounter[t.category_id]++;
+
+                            AADB.DB_UiTexts.Add(t.id, t);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

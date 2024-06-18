@@ -1467,6 +1467,17 @@ namespace AAEmu.DBDefs
         LaborPowerMarginLocal = 0x63,       // unused, unused, there are no entries using this
     }
 
+    public class GameUiTexts
+    {
+        public long id = 0;
+        public string key = string.Empty;
+        public string text = string.Empty;
+        public long category_id = 0;
+
+        // Helper
+        public long InCategoryIdx = 0;
+    }
+
 
     static class AADB
     {
@@ -1549,6 +1560,7 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameTowerDefProgKillTargets> DB_TowerDefProgKillTargets = new();
         public static Dictionary<long, GameSpheres> DB_Spheres = new();
         public static Dictionary<long, GameUnitReqs> DB_UnitReqs = new();
+        public static Dictionary<long, GameUiTexts> DB_UiTexts = new();
 
         public static string GetTranslationByID(long idx, string table, string field, string defaultValue = "$NODEFAULT")
         {
