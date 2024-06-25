@@ -704,7 +704,7 @@ namespace AAEmu.DBViewer
 
             var fnt = new Font(Font.FontFamily, 10f / viewScale);
             var br = new System.Drawing.SolidBrush(Color.White);
-            var smallGridSize = 1024; // Cell size (resolution in heightmap is actualy 2m instead of 1m, so here we use 1024 instead of 512)
+            var smallGridSize = 1024; // Cell size (resolution in heightmap is actually 2m instead of 1m, so here we use 1024 instead of 512)
 
             if (int.TryParse(cbUnitSize.Text, out int intSize))
             {
@@ -717,19 +717,30 @@ namespace AAEmu.DBViewer
                 fnt = new Font(Font.FontFamily, 7f / viewScale);
             }
 
+            if (rbGridPaths.Checked)
+            {
+                smallGridSize = 256;
+            }
+
             for (var x = 0; x <= MaxPointX; x += smallGridSize)
             {
                 var gridString = x.ToString();
                 var off = 0;
                 var p = x % 4096 == 0 ? System.Drawing.Pens.LightGray : System.Drawing.Pens.DarkGray;
-                if (rbGridCells.Checked || rbGridGeo.Checked)
+                var lineAnnotationInterval = rbGridPaths.Checked ? 256 : 1024;
+                if (rbGridCells.Checked || rbGridGeo.Checked || rbGridPaths.Checked)
                 {
-                    if (((int)x % 1024) == 0)
+                    if ((x % lineAnnotationInterval) == 0)
                     {
                         if (rbGridCells.Checked)
                         {
                             gridString = (x / 1024).ToString();
                             off = 512;
+                        }
+                        else if (rbGridPaths.Checked)
+                        {
+                            gridString = (x / 256).ToString("000");
+                            off = 128;
                         }
                         else
                         {
@@ -764,14 +775,20 @@ namespace AAEmu.DBViewer
                 var gridString = y.ToString();
                 var off = 0;
                 var p = y % 4096 == 0 ? System.Drawing.Pens.LightGray : System.Drawing.Pens.DarkGray;
-                if (rbGridCells.Checked || rbGridGeo.Checked)
+                var lineAnnotationInterval = rbGridPaths.Checked ? 256 :1024;
+                if (rbGridCells.Checked || rbGridGeo.Checked || rbGridPaths.Checked)
                 {
-                    if (((int)y % 1024) == 0)
+                    if ((y % lineAnnotationInterval) == 0)
                     {
                         if (rbGridCells.Checked)
                         {
                             gridString = (y / 1024).ToString();
                             off = 512;
+                        }
+                        else if (rbGridPaths.Checked)
+                        {
+                            gridString = (y / 256).ToString("000");
+                            off = 128;
                         }
                         else
                         {
@@ -862,7 +879,7 @@ namespace AAEmu.DBViewer
                     DrawMap(g, topMostMap);
 
                 // Draw Grid
-                if (rbGridUnits.Checked || rbGridCells.Checked || rbGridGeo.Checked)
+                if (rbGridUnits.Checked || rbGridCells.Checked || rbGridGeo.Checked || rbGridPaths.Checked)
                     DrawGrid(g);
 
                 // Draw Points of Interest
@@ -1347,6 +1364,7 @@ namespace AAEmu.DBViewer
             rbGridUnits.Checked = Properties.Settings.Default.GridMode == 1;
             rbGridCells.Checked = Properties.Settings.Default.GridMode == 2;
             rbGridGeo.Checked = Properties.Settings.Default.GridMode == 3;
+            rbGridPaths.Checked = Properties.Settings.Default.GridMode == 4;
 
             MapViewZonePathOffsets.LoadOffsetsFromFile();
 
@@ -1404,6 +1422,8 @@ namespace AAEmu.DBViewer
                 Properties.Settings.Default.GridMode = 2;
             if (rbGridGeo.Checked)
                 Properties.Settings.Default.GridMode = 3;
+            if (rbGridPaths.Checked)
+                Properties.Settings.Default.GridMode = 4;
             Properties.Settings.Default.Save();
 
             if (e.CloseReason == CloseReason.UserClosing)

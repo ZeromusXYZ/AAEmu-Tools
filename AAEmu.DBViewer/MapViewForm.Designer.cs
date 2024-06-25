@@ -74,6 +74,7 @@
             tsmPath = new System.Windows.Forms.ToolStripMenuItem();
             tsmMap = new System.Windows.Forms.ToolStripMenuItem();
             tsmCopyToClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            rbGridPaths = new System.Windows.Forms.RadioButton();
             statusBar.SuspendLayout();
             gbTools.SuspendLayout();
             gbGrid.SuspendLayout();
@@ -158,9 +159,9 @@
             gbTools.Controls.Add(cbZoneBorders);
             gbTools.Dock = System.Windows.Forms.DockStyle.Right;
             gbTools.Location = new System.Drawing.Point(605, 0);
-            gbTools.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            gbTools.Margin = new System.Windows.Forms.Padding(4);
             gbTools.Name = "gbTools";
-            gbTools.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            gbTools.Padding = new System.Windows.Forms.Padding(4);
             gbTools.Size = new System.Drawing.Size(128, 541);
             gbTools.TabIndex = 2;
             gbTools.TabStop = false;
@@ -176,7 +177,7 @@
             cbInstanceSelect.FormattingEnabled = true;
             cbInstanceSelect.IntegralHeight = false;
             cbInstanceSelect.Location = new System.Drawing.Point(7, 507);
-            cbInstanceSelect.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            cbInstanceSelect.Margin = new System.Windows.Forms.Padding(4);
             cbInstanceSelect.Name = "cbInstanceSelect";
             cbInstanceSelect.Size = new System.Drawing.Size(114, 24);
             cbInstanceSelect.TabIndex = 12;
@@ -185,16 +186,17 @@
             // gbGrid
             // 
             gbGrid.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            gbGrid.Controls.Add(rbGridPaths);
             gbGrid.Controls.Add(cbUnitSize);
             gbGrid.Controls.Add(rbGridOff);
             gbGrid.Controls.Add(rbGridGeo);
             gbGrid.Controls.Add(rbGridCells);
             gbGrid.Controls.Add(rbGridUnits);
-            gbGrid.Location = new System.Drawing.Point(8, 329);
-            gbGrid.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            gbGrid.Location = new System.Drawing.Point(8, 296);
+            gbGrid.Margin = new System.Windows.Forms.Padding(4);
             gbGrid.Name = "gbGrid";
-            gbGrid.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            gbGrid.Size = new System.Drawing.Size(113, 171);
+            gbGrid.Padding = new System.Windows.Forms.Padding(4);
+            gbGrid.Size = new System.Drawing.Size(113, 204);
             gbGrid.TabIndex = 11;
             gbGrid.TabStop = false;
             gbGrid.Text = "Grid";
@@ -205,7 +207,7 @@
             cbUnitSize.FormattingEnabled = true;
             cbUnitSize.Items.AddRange(new object[] { "1024", "512", "256", "100", "64", "32" });
             cbUnitSize.Location = new System.Drawing.Point(30, 80);
-            cbUnitSize.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            cbUnitSize.Margin = new System.Windows.Forms.Padding(4);
             cbUnitSize.Name = "cbUnitSize";
             cbUnitSize.Size = new System.Drawing.Size(75, 24);
             cbUnitSize.TabIndex = 4;
@@ -216,7 +218,7 @@
             rbGridOff.AutoSize = true;
             rbGridOff.Checked = true;
             rbGridOff.Location = new System.Drawing.Point(9, 23);
-            rbGridOff.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            rbGridOff.Margin = new System.Windows.Forms.Padding(4);
             rbGridOff.Name = "rbGridOff";
             rbGridOff.Size = new System.Drawing.Size(42, 20);
             rbGridOff.TabIndex = 3;
@@ -228,8 +230,8 @@
             // rbGridGeo
             // 
             rbGridGeo.AutoSize = true;
-            rbGridGeo.Location = new System.Drawing.Point(7, 142);
-            rbGridGeo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            rbGridGeo.Location = new System.Drawing.Point(7, 167);
+            rbGridGeo.Margin = new System.Windows.Forms.Padding(4);
             rbGridGeo.Name = "rbGridGeo";
             rbGridGeo.Size = new System.Drawing.Size(46, 20);
             rbGridGeo.TabIndex = 2;
@@ -242,7 +244,7 @@
             // 
             rbGridCells.AutoSize = true;
             rbGridCells.Location = new System.Drawing.Point(7, 113);
-            rbGridCells.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            rbGridCells.Margin = new System.Windows.Forms.Padding(4);
             rbGridCells.Name = "rbGridCells";
             rbGridCells.Size = new System.Drawing.Size(49, 20);
             rbGridCells.TabIndex = 1;
@@ -254,7 +256,7 @@
             // 
             rbGridUnits.AutoSize = true;
             rbGridUnits.Location = new System.Drawing.Point(9, 52);
-            rbGridUnits.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            rbGridUnits.Margin = new System.Windows.Forms.Padding(4);
             rbGridUnits.Name = "rbGridUnits";
             rbGridUnits.Size = new System.Drawing.Size(52, 20);
             rbGridUnits.TabIndex = 0;
@@ -268,7 +270,7 @@
             cbDrawMiniMap.Checked = true;
             cbDrawMiniMap.CheckState = System.Windows.Forms.CheckState.Checked;
             cbDrawMiniMap.Location = new System.Drawing.Point(7, 52);
-            cbDrawMiniMap.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            cbDrawMiniMap.Margin = new System.Windows.Forms.Padding(4);
             cbDrawMiniMap.Name = "cbDrawMiniMap";
             cbDrawMiniMap.Size = new System.Drawing.Size(79, 20);
             cbDrawMiniMap.TabIndex = 10;
@@ -280,7 +282,7 @@
             // 
             cbDrawMainMap.AutoSize = true;
             cbDrawMainMap.Location = new System.Drawing.Point(7, 23);
-            cbDrawMainMap.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            cbDrawMainMap.Margin = new System.Windows.Forms.Padding(4);
             cbDrawMainMap.Name = "cbDrawMainMap";
             cbDrawMainMap.Size = new System.Drawing.Size(71, 20);
             cbDrawMainMap.TabIndex = 9;
@@ -294,7 +296,7 @@
             cbFocus.Checked = true;
             cbFocus.CheckState = System.Windows.Forms.CheckState.Checked;
             cbFocus.Location = new System.Drawing.Point(7, 165);
-            cbFocus.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            cbFocus.Margin = new System.Windows.Forms.Padding(4);
             cbFocus.Name = "cbFocus";
             cbFocus.Size = new System.Drawing.Size(95, 20);
             cbFocus.TabIndex = 3;
@@ -306,7 +308,7 @@
             // 
             cbZoneBorders.AutoSize = true;
             cbZoneBorders.Location = new System.Drawing.Point(7, 108);
-            cbZoneBorders.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            cbZoneBorders.Margin = new System.Windows.Forms.Padding(4);
             cbZoneBorders.Name = "cbZoneBorders";
             cbZoneBorders.Size = new System.Drawing.Size(96, 20);
             cbZoneBorders.TabIndex = 2;
@@ -522,7 +524,7 @@
             pView.ContextMenuStrip = cmsMapInfo;
             pView.Dock = System.Windows.Forms.DockStyle.Fill;
             pView.Location = new System.Drawing.Point(0, 0);
-            pView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            pView.Margin = new System.Windows.Forms.Padding(4);
             pView.Name = "pView";
             pView.Size = new System.Drawing.Size(605, 541);
             pView.TabIndex = 0;
@@ -565,6 +567,18 @@
             tsmCopyToClipboard.Visible = false;
             tsmCopyToClipboard.Click += tsmCopyToClipboard_Click;
             // 
+            // rbGridPaths
+            // 
+            rbGridPaths.AutoSize = true;
+            rbGridPaths.Location = new System.Drawing.Point(7, 140);
+            rbGridPaths.Name = "rbGridPaths";
+            rbGridPaths.Size = new System.Drawing.Size(54, 20);
+            rbGridPaths.TabIndex = 5;
+            rbGridPaths.TabStop = true;
+            rbGridPaths.Text = "Paths";
+            rbGridPaths.UseVisualStyleBackColor = true;
+            rbGridPaths.CheckedChanged += cbOptionsChanged;
+            // 
             // MapViewForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -575,7 +589,7 @@
             Controls.Add(gbTools);
             Controls.Add(statusBar);
             DoubleBuffered = true;
-            Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            Margin = new System.Windows.Forms.Padding(4);
             Name = "MapViewForm";
             Text = "Map View";
             FormClosing += MapViewForm_FormClosing;
@@ -641,5 +655,6 @@
         private System.Windows.Forms.ToolStripMenuItem tsmMap;
         private System.Windows.Forms.ToolStripMenuItem tsmCopyToClipboard;
         public System.Windows.Forms.ComboBox cbInstanceSelect;
+        private System.Windows.Forms.RadioButton rbGridPaths;
     }
 }
