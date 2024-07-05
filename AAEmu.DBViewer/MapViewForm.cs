@@ -537,7 +537,12 @@ namespace AAEmu.DBViewer
 
         private void MapViewOnMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (e.Delta > 0)
+            MapViewOnZoom(e.Delta);
+        }
+
+        private void MapViewOnZoom(int delta)
+        {
+            if (delta > 0)
             {
                 if (viewScale >= 2f)
                     viewScale += 0.25f;
@@ -545,7 +550,7 @@ namespace AAEmu.DBViewer
                     viewScale += 0.025f;
             }
 
-            if (e.Delta < 0)
+            if (delta < 0)
             {
                 if (viewScale >= 2f)
                     viewScale -= 0.25f;
@@ -775,7 +780,7 @@ namespace AAEmu.DBViewer
                 var gridString = y.ToString();
                 var off = 0;
                 var p = y % 4096 == 0 ? System.Drawing.Pens.LightGray : System.Drawing.Pens.DarkGray;
-                var lineAnnotationInterval = rbGridPaths.Checked ? 256 :1024;
+                var lineAnnotationInterval = rbGridPaths.Checked ? 256 : 1024;
                 if (rbGridCells.Checked || rbGridGeo.Checked || rbGridPaths.Checked)
                 {
                     if ((y % lineAnnotationInterval) == 0)
@@ -1443,6 +1448,16 @@ namespace AAEmu.DBViewer
                 else
                     MainForm.CopyToClipBoard(tsmi.Text);
             }
+        }
+
+        private void TsbZoomIn_Click(object sender, EventArgs e)
+        {
+            MapViewOnZoom(1);
+        }
+
+        private void TsbZoomOut_Click(object sender, EventArgs e)
+        {
+            MapViewOnZoom(-1);
         }
     }
 

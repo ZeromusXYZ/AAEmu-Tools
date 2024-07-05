@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MapViewForm));
             statusBar = new System.Windows.Forms.StatusStrip();
             tsslViewOffset = new System.Windows.Forms.ToolStripStatusLabel();
             tsslZoom = new System.Windows.Forms.ToolStripStatusLabel();
@@ -39,6 +40,7 @@
             gbTools = new System.Windows.Forms.GroupBox();
             cbInstanceSelect = new System.Windows.Forms.ComboBox();
             gbGrid = new System.Windows.Forms.GroupBox();
+            rbGridPaths = new System.Windows.Forms.RadioButton();
             cbUnitSize = new System.Windows.Forms.ComboBox();
             rbGridOff = new System.Windows.Forms.RadioButton();
             rbGridGeo = new System.Windows.Forms.RadioButton();
@@ -49,6 +51,9 @@
             cbFocus = new System.Windows.Forms.CheckBox();
             cbZoneBorders = new System.Windows.Forms.CheckBox();
             toolBar = new System.Windows.Forms.ToolStrip();
+            TsbZoomIn = new System.Windows.Forms.ToolStripButton();
+            TsbZoomOut = new System.Windows.Forms.ToolStripButton();
+            toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
             tsbDrawWorld = new System.Windows.Forms.ToolStripButton();
             tsbDrawContinent = new System.Windows.Forms.ToolStripButton();
@@ -74,7 +79,6 @@
             tsmPath = new System.Windows.Forms.ToolStripMenuItem();
             tsmMap = new System.Windows.Forms.ToolStripMenuItem();
             tsmCopyToClipboard = new System.Windows.Forms.ToolStripMenuItem();
-            rbGridPaths = new System.Windows.Forms.RadioButton();
             statusBar.SuspendLayout();
             gbTools.SuspendLayout();
             gbGrid.SuspendLayout();
@@ -87,10 +91,10 @@
             // 
             statusBar.BackColor = System.Drawing.SystemColors.Control;
             statusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { tsslViewOffset, tsslZoom, tsslCoords, tsslRuler, tsslSelectionInfo, tsslPoIInfo });
-            statusBar.Location = new System.Drawing.Point(0, 541);
+            statusBar.Location = new System.Drawing.Point(0, 507);
             statusBar.Name = "statusBar";
             statusBar.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            statusBar.Size = new System.Drawing.Size(733, 25);
+            statusBar.Size = new System.Drawing.Size(733, 24);
             statusBar.TabIndex = 1;
             statusBar.Text = "statusStrip1";
             // 
@@ -100,7 +104,7 @@
             tsslViewOffset.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             tsslViewOffset.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             tsslViewOffset.Name = "tsslViewOffset";
-            tsslViewOffset.Size = new System.Drawing.Size(43, 20);
+            tsslViewOffset.Size = new System.Drawing.Size(43, 19);
             tsslViewOffset.Text = "Offset";
             tsslViewOffset.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             tsslViewOffset.Visible = false;
@@ -110,7 +114,7 @@
             tsslZoom.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom;
             tsslZoom.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             tsslZoom.Name = "tsslZoom";
-            tsslZoom.Size = new System.Drawing.Size(52, 20);
+            tsslZoom.Size = new System.Drawing.Size(53, 19);
             tsslZoom.Text = "Zoom%";
             // 
             // tsslCoords
@@ -119,7 +123,7 @@
             tsslCoords.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             tsslCoords.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             tsslCoords.Name = "tsslCoords";
-            tsslCoords.Size = new System.Drawing.Size(92, 20);
+            tsslCoords.Size = new System.Drawing.Size(92, 19);
             tsslCoords.Text = "-- , -- | 0°N, 0°E";
             tsslCoords.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -129,7 +133,7 @@
             tsslRuler.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             tsslRuler.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             tsslRuler.Name = "tsslRuler";
-            tsslRuler.Size = new System.Drawing.Size(40, 20);
+            tsslRuler.Size = new System.Drawing.Size(40, 19);
             tsslRuler.Text = "-- , --";
             tsslRuler.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -138,7 +142,7 @@
             tsslSelectionInfo.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom;
             tsslSelectionInfo.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             tsslSelectionInfo.Name = "tsslSelectionInfo";
-            tsslSelectionInfo.Size = new System.Drawing.Size(32, 20);
+            tsslSelectionInfo.Size = new System.Drawing.Size(32, 19);
             tsslSelectionInfo.Text = "Info";
             // 
             // tsslPoIInfo
@@ -146,7 +150,7 @@
             tsslPoIInfo.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom;
             tsslPoIInfo.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             tsslPoIInfo.Name = "tsslPoIInfo";
-            tsslPoIInfo.Size = new System.Drawing.Size(28, 20);
+            tsslPoIInfo.Size = new System.Drawing.Size(28, 19);
             tsslPoIInfo.Text = "PoI";
             // 
             // gbTools
@@ -162,7 +166,7 @@
             gbTools.Margin = new System.Windows.Forms.Padding(4);
             gbTools.Name = "gbTools";
             gbTools.Padding = new System.Windows.Forms.Padding(4);
-            gbTools.Size = new System.Drawing.Size(128, 541);
+            gbTools.Size = new System.Drawing.Size(128, 507);
             gbTools.TabIndex = 2;
             gbTools.TabStop = false;
             gbTools.Text = "Options";
@@ -176,10 +180,10 @@
             cbInstanceSelect.Enabled = false;
             cbInstanceSelect.FormattingEnabled = true;
             cbInstanceSelect.IntegralHeight = false;
-            cbInstanceSelect.Location = new System.Drawing.Point(7, 507);
+            cbInstanceSelect.Location = new System.Drawing.Point(7, 475);
             cbInstanceSelect.Margin = new System.Windows.Forms.Padding(4);
             cbInstanceSelect.Name = "cbInstanceSelect";
-            cbInstanceSelect.Size = new System.Drawing.Size(114, 24);
+            cbInstanceSelect.Size = new System.Drawing.Size(114, 23);
             cbInstanceSelect.TabIndex = 12;
             cbInstanceSelect.SelectedIndexChanged += cbOptionsChanged;
             // 
@@ -192,24 +196,36 @@
             gbGrid.Controls.Add(rbGridGeo);
             gbGrid.Controls.Add(rbGridCells);
             gbGrid.Controls.Add(rbGridUnits);
-            gbGrid.Location = new System.Drawing.Point(8, 296);
+            gbGrid.Location = new System.Drawing.Point(8, 278);
             gbGrid.Margin = new System.Windows.Forms.Padding(4);
             gbGrid.Name = "gbGrid";
             gbGrid.Padding = new System.Windows.Forms.Padding(4);
-            gbGrid.Size = new System.Drawing.Size(113, 204);
+            gbGrid.Size = new System.Drawing.Size(113, 191);
             gbGrid.TabIndex = 11;
             gbGrid.TabStop = false;
             gbGrid.Text = "Grid";
+            // 
+            // rbGridPaths
+            // 
+            rbGridPaths.AutoSize = true;
+            rbGridPaths.Location = new System.Drawing.Point(7, 131);
+            rbGridPaths.Name = "rbGridPaths";
+            rbGridPaths.Size = new System.Drawing.Size(54, 19);
+            rbGridPaths.TabIndex = 5;
+            rbGridPaths.TabStop = true;
+            rbGridPaths.Text = "Paths";
+            rbGridPaths.UseVisualStyleBackColor = true;
+            rbGridPaths.CheckedChanged += cbOptionsChanged;
             // 
             // cbUnitSize
             // 
             cbUnitSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             cbUnitSize.FormattingEnabled = true;
             cbUnitSize.Items.AddRange(new object[] { "1024", "512", "256", "100", "64", "32" });
-            cbUnitSize.Location = new System.Drawing.Point(30, 80);
+            cbUnitSize.Location = new System.Drawing.Point(30, 75);
             cbUnitSize.Margin = new System.Windows.Forms.Padding(4);
             cbUnitSize.Name = "cbUnitSize";
-            cbUnitSize.Size = new System.Drawing.Size(75, 24);
+            cbUnitSize.Size = new System.Drawing.Size(75, 23);
             cbUnitSize.TabIndex = 4;
             cbUnitSize.SelectedIndexChanged += cbOptionsChanged;
             // 
@@ -217,10 +233,10 @@
             // 
             rbGridOff.AutoSize = true;
             rbGridOff.Checked = true;
-            rbGridOff.Location = new System.Drawing.Point(9, 23);
+            rbGridOff.Location = new System.Drawing.Point(9, 22);
             rbGridOff.Margin = new System.Windows.Forms.Padding(4);
             rbGridOff.Name = "rbGridOff";
-            rbGridOff.Size = new System.Drawing.Size(42, 20);
+            rbGridOff.Size = new System.Drawing.Size(42, 19);
             rbGridOff.TabIndex = 3;
             rbGridOff.TabStop = true;
             rbGridOff.Text = "Off";
@@ -230,10 +246,10 @@
             // rbGridGeo
             // 
             rbGridGeo.AutoSize = true;
-            rbGridGeo.Location = new System.Drawing.Point(7, 167);
+            rbGridGeo.Location = new System.Drawing.Point(7, 157);
             rbGridGeo.Margin = new System.Windows.Forms.Padding(4);
             rbGridGeo.Name = "rbGridGeo";
-            rbGridGeo.Size = new System.Drawing.Size(46, 20);
+            rbGridGeo.Size = new System.Drawing.Size(46, 19);
             rbGridGeo.TabIndex = 2;
             rbGridGeo.TabStop = true;
             rbGridGeo.Text = "Geo";
@@ -243,10 +259,10 @@
             // rbGridCells
             // 
             rbGridCells.AutoSize = true;
-            rbGridCells.Location = new System.Drawing.Point(7, 113);
+            rbGridCells.Location = new System.Drawing.Point(7, 106);
             rbGridCells.Margin = new System.Windows.Forms.Padding(4);
             rbGridCells.Name = "rbGridCells";
-            rbGridCells.Size = new System.Drawing.Size(49, 20);
+            rbGridCells.Size = new System.Drawing.Size(50, 19);
             rbGridCells.TabIndex = 1;
             rbGridCells.Text = "Cells";
             rbGridCells.UseVisualStyleBackColor = true;
@@ -255,10 +271,10 @@
             // rbGridUnits
             // 
             rbGridUnits.AutoSize = true;
-            rbGridUnits.Location = new System.Drawing.Point(9, 52);
+            rbGridUnits.Location = new System.Drawing.Point(9, 49);
             rbGridUnits.Margin = new System.Windows.Forms.Padding(4);
             rbGridUnits.Name = "rbGridUnits";
-            rbGridUnits.Size = new System.Drawing.Size(52, 20);
+            rbGridUnits.Size = new System.Drawing.Size(52, 19);
             rbGridUnits.TabIndex = 0;
             rbGridUnits.Text = "Units";
             rbGridUnits.UseVisualStyleBackColor = true;
@@ -269,10 +285,10 @@
             cbDrawMiniMap.AutoSize = true;
             cbDrawMiniMap.Checked = true;
             cbDrawMiniMap.CheckState = System.Windows.Forms.CheckState.Checked;
-            cbDrawMiniMap.Location = new System.Drawing.Point(7, 52);
+            cbDrawMiniMap.Location = new System.Drawing.Point(7, 49);
             cbDrawMiniMap.Margin = new System.Windows.Forms.Padding(4);
             cbDrawMiniMap.Name = "cbDrawMiniMap";
-            cbDrawMiniMap.Size = new System.Drawing.Size(79, 20);
+            cbDrawMiniMap.Size = new System.Drawing.Size(80, 19);
             cbDrawMiniMap.TabIndex = 10;
             cbDrawMiniMap.Text = "Road map";
             cbDrawMiniMap.UseVisualStyleBackColor = true;
@@ -281,10 +297,10 @@
             // cbDrawMainMap
             // 
             cbDrawMainMap.AutoSize = true;
-            cbDrawMainMap.Location = new System.Drawing.Point(7, 23);
+            cbDrawMainMap.Location = new System.Drawing.Point(7, 22);
             cbDrawMainMap.Margin = new System.Windows.Forms.Padding(4);
             cbDrawMainMap.Name = "cbDrawMainMap";
-            cbDrawMainMap.Size = new System.Drawing.Size(71, 20);
+            cbDrawMainMap.Size = new System.Drawing.Size(72, 19);
             cbDrawMainMap.TabIndex = 9;
             cbDrawMainMap.Text = "Full map";
             cbDrawMainMap.UseVisualStyleBackColor = true;
@@ -295,10 +311,10 @@
             cbFocus.AutoSize = true;
             cbFocus.Checked = true;
             cbFocus.CheckState = System.Windows.Forms.CheckState.Checked;
-            cbFocus.Location = new System.Drawing.Point(7, 165);
+            cbFocus.Location = new System.Drawing.Point(7, 155);
             cbFocus.Margin = new System.Windows.Forms.Padding(4);
             cbFocus.Name = "cbFocus";
-            cbFocus.Size = new System.Drawing.Size(95, 20);
+            cbFocus.Size = new System.Drawing.Size(95, 19);
             cbFocus.TabIndex = 3;
             cbFocus.Text = "Focus border";
             cbFocus.UseVisualStyleBackColor = true;
@@ -307,10 +323,10 @@
             // cbZoneBorders
             // 
             cbZoneBorders.AutoSize = true;
-            cbZoneBorders.Location = new System.Drawing.Point(7, 108);
+            cbZoneBorders.Location = new System.Drawing.Point(7, 101);
             cbZoneBorders.Margin = new System.Windows.Forms.Padding(4);
             cbZoneBorders.Name = "cbZoneBorders";
-            cbZoneBorders.Size = new System.Drawing.Size(96, 20);
+            cbZoneBorders.Size = new System.Drawing.Size(96, 19);
             cbZoneBorders.TabIndex = 2;
             cbZoneBorders.Text = "Zone borders";
             cbZoneBorders.UseVisualStyleBackColor = true;
@@ -318,12 +334,37 @@
             // 
             // toolBar
             // 
-            toolBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { toolStripLabel3, tsbDrawWorld, tsbDrawContinent, tsbDrawZone, tsbDrawCity, toolStripLabel2, tsbShowPoI, tsbShowPath, tsbShowHousing, tsbShowSubzone, tsbShowQuestSphere, toolStripSeparator1, toolStripLabel1, tsbNamesPoI, tsbNamesPath, tsbNamesHousing, tsbNamesSubzone, tsbNamesQuestSphere, toolStripSeparator2 });
+            toolBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { TsbZoomIn, TsbZoomOut, toolStripSeparator3, toolStripLabel3, tsbDrawWorld, tsbDrawContinent, tsbDrawZone, tsbDrawCity, toolStripLabel2, tsbShowPoI, tsbShowPath, tsbShowHousing, tsbShowSubzone, tsbShowQuestSphere, toolStripSeparator1, toolStripLabel1, tsbNamesPoI, tsbNamesPath, tsbNamesHousing, tsbNamesSubzone, tsbNamesQuestSphere, toolStripSeparator2 });
             toolBar.Location = new System.Drawing.Point(0, 0);
             toolBar.Name = "toolBar";
             toolBar.Size = new System.Drawing.Size(605, 25);
             toolBar.TabIndex = 3;
             toolBar.Text = "toolStrip1";
+            // 
+            // TsbZoomIn
+            // 
+            TsbZoomIn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            TsbZoomIn.Image = (System.Drawing.Image)resources.GetObject("TsbZoomIn.Image");
+            TsbZoomIn.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TsbZoomIn.Name = "TsbZoomIn";
+            TsbZoomIn.Size = new System.Drawing.Size(23, 22);
+            TsbZoomIn.Text = "+";
+            TsbZoomIn.Click += TsbZoomIn_Click;
+            // 
+            // TsbZoomOut
+            // 
+            TsbZoomOut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            TsbZoomOut.Image = (System.Drawing.Image)resources.GetObject("TsbZoomOut.Image");
+            TsbZoomOut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TsbZoomOut.Name = "TsbZoomOut";
+            TsbZoomOut.Size = new System.Drawing.Size(23, 22);
+            TsbZoomOut.Text = "-";
+            TsbZoomOut.Click += TsbZoomOut_Click;
+            // 
+            // toolStripSeparator3
+            // 
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripLabel3
             // 
@@ -455,7 +496,7 @@
             // toolStripLabel1
             // 
             toolStripLabel1.Name = "toolStripLabel1";
-            toolStripLabel1.Size = new System.Drawing.Size(43, 22);
+            toolStripLabel1.Size = new System.Drawing.Size(44, 22);
             toolStripLabel1.Text = "Names";
             // 
             // tsbNamesPoI
@@ -526,7 +567,7 @@
             pView.Location = new System.Drawing.Point(0, 0);
             pView.Margin = new System.Windows.Forms.Padding(4);
             pView.Name = "pView";
-            pView.Size = new System.Drawing.Size(605, 541);
+            pView.Size = new System.Drawing.Size(605, 507);
             pView.TabIndex = 0;
             pView.TabStop = false;
             pView.Click += pView_Click;
@@ -539,51 +580,39 @@
             // 
             cmsMapInfo.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { tsmPoI, tsmPath, tsmMap, tsmCopyToClipboard });
             cmsMapInfo.Name = "cmsMapInfo";
-            cmsMapInfo.Size = new System.Drawing.Size(165, 92);
+            cmsMapInfo.Size = new System.Drawing.Size(167, 92);
             // 
             // tsmPoI
             // 
             tsmPoI.Name = "tsmPoI";
-            tsmPoI.Size = new System.Drawing.Size(164, 22);
+            tsmPoI.Size = new System.Drawing.Size(166, 22);
             tsmPoI.Text = "PoI";
             // 
             // tsmPath
             // 
             tsmPath.Name = "tsmPath";
-            tsmPath.Size = new System.Drawing.Size(164, 22);
+            tsmPath.Size = new System.Drawing.Size(166, 22);
             tsmPath.Text = "Path";
             // 
             // tsmMap
             // 
             tsmMap.Name = "tsmMap";
-            tsmMap.Size = new System.Drawing.Size(164, 22);
+            tsmMap.Size = new System.Drawing.Size(166, 22);
             tsmMap.Text = "Map";
             // 
             // tsmCopyToClipboard
             // 
             tsmCopyToClipboard.Name = "tsmCopyToClipboard";
-            tsmCopyToClipboard.Size = new System.Drawing.Size(164, 22);
+            tsmCopyToClipboard.Size = new System.Drawing.Size(166, 22);
             tsmCopyToClipboard.Text = "CopyToClipboard";
             tsmCopyToClipboard.Visible = false;
             tsmCopyToClipboard.Click += tsmCopyToClipboard_Click;
             // 
-            // rbGridPaths
-            // 
-            rbGridPaths.AutoSize = true;
-            rbGridPaths.Location = new System.Drawing.Point(7, 140);
-            rbGridPaths.Name = "rbGridPaths";
-            rbGridPaths.Size = new System.Drawing.Size(54, 20);
-            rbGridPaths.TabIndex = 5;
-            rbGridPaths.TabStop = true;
-            rbGridPaths.Text = "Paths";
-            rbGridPaths.UseVisualStyleBackColor = true;
-            rbGridPaths.CheckedChanged += cbOptionsChanged;
-            // 
             // MapViewForm
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(733, 566);
+            ClientSize = new System.Drawing.Size(733, 531);
             Controls.Add(toolBar);
             Controls.Add(pView);
             Controls.Add(gbTools);
@@ -656,5 +685,8 @@
         private System.Windows.Forms.ToolStripMenuItem tsmCopyToClipboard;
         public System.Windows.Forms.ComboBox cbInstanceSelect;
         private System.Windows.Forms.RadioButton rbGridPaths;
+        private System.Windows.Forms.ToolStripButton TsbZoomIn;
+        private System.Windows.Forms.ToolStripButton TsbZoomOut;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }
