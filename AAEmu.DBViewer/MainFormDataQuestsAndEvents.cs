@@ -243,11 +243,14 @@ namespace AAEmu.DBViewer
             if (!AADB.DB_Quest_Contexts.TryGetValue(quest_id, out var q))
             {
                 rtQuestText.Text = "";
+                lQuestAddGMCommand.Text = "";
                 btnQuestFindRelatedOnMap.Tag = 0;
                 return;
             }
 
             btnQuestFindRelatedOnMap.Tag = quest_id;
+            lQuestAddGMCommand.Text = $@"/quest add {q.id}";
+
             var rootNode = tvQuestWorkflow.Nodes.Add(q.nameLocalized + " ( " + q.id + " )");
             rootNode.ForeColor = Color.White;
 

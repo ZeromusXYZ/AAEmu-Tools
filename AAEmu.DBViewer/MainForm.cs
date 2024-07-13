@@ -1995,5 +1995,15 @@ namespace AAEmu.DBViewer
         {
             MMFileTables_Click(null, null);
         }
+
+        private void MMFileSettings_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpSettings;
+        }
+
+        private void TBFileSettings_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpSettings;
+        }
     }
 }

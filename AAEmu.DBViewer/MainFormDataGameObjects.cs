@@ -1451,6 +1451,9 @@ namespace AAEmu.DBViewer
                 lDoodadRestrictZoneID.Text = doodad.restrict_zone_id.ToString();
                 btnShowDoodadOnMap.Tag = doodad.id;
 
+                lDoodadAddGMCommand.Text = $@"/doodad spawn {doodad.id}";
+                lDoodadRemoveGMCommand.Text = $@"/despawn doodad {doodad.id} 5";
+
                 if (AADB.DB_Doodad_Groups.TryGetValue(doodad.group_id, out var dGroup))
                 {
                     lDoodadGroupName.Text = dGroup.nameLocalized + " (" + doodad.group_id.ToString() + ")";
@@ -1604,7 +1607,6 @@ namespace AAEmu.DBViewer
                 }
 
                 rootNode.Expand();
-
             }
             else
             {
@@ -1655,6 +1657,9 @@ namespace AAEmu.DBViewer
                 dgvDoodadFuncGroups.Rows.Clear();
 
                 tvDoodadDetails.Nodes.Clear();
+
+                lDoodadAddGMCommand.Text = "";
+                lDoodadRemoveGMCommand.Text = "";
             }
         }
 
