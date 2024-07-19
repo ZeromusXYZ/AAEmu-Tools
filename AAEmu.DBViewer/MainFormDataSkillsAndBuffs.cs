@@ -433,11 +433,17 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
+                        var useDbId = false;
+                        var columnNames = reader.GetColumnNames();
+                        if (columnNames.IndexOf("id") >= 0)
+                            useDbId = true;
+                        var dbId = 0;
 
                         while (reader.Read())
                         {
+                            dbId++;
                             var t = new GameBuffModifier();
-                            t.id = GetInt64(reader, "id");
+                            t.id = useDbId ? GetInt64(reader, "id") : dbId;
                             t.owner_id = GetInt64(reader, "owner_id");
                             t.owner_type = GetString(reader, "owner_type");
                             t.buff_id = GetInt64(reader, "buff_id");
