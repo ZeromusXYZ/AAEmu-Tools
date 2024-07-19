@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using AAEmu.DBDefs;
+using AAEmu.DBViewer.enums;
 using AAEmu.Game.Utils.DB;
 
 namespace AAEmu.DBViewer
@@ -327,12 +328,13 @@ namespace AAEmu.DBViewer
 
         private void LoadBuffs()
         {
-            string sql = "SELECT * FROM buffs ORDER BY id ASC";
-            string triggerSql = "SELECT * FROM buff_triggers ORDER BY id ASC";
-            string npcInitialSql = "SELECT * FROM npc_initial_buffs ORDER BY npc_id ASC";
-            string passiveSql = "SELECT * FROM passive_buffs ORDER BY id ASC";
-            string slavePassiveSql = "SELECT * FROM slave_passive_buffs ORDER BY owner_id ASC";
-            string slaveInitialSql = "SELECT * FROM slave_initial_buffs ORDER BY slave_id ASC";
+            var sql = "SELECT * FROM buffs ORDER BY id ASC";
+            var triggerSql = "SELECT * FROM buff_triggers ORDER BY id ASC";
+            var modifiersSql = "SELECT * FROM buff_modifiers ORDER BY id ASC";
+            var npcInitialSql = "SELECT * FROM npc_initial_buffs ORDER BY npc_id ASC";
+            var passiveSql = "SELECT * FROM passive_buffs ORDER BY id ASC";
+            var slavePassiveSql = "SELECT * FROM slave_passive_buffs ORDER BY owner_id ASC";
+            var slaveInitialSql = "SELECT * FROM slave_initial_buffs ORDER BY slave_id ASC";
 
             using (var connection = SQLite.CreateConnection())
             {
@@ -413,13 +415,39 @@ namespace AAEmu.DBViewer
 
                         while (reader.Read())
                         {
-                            GameBuffTrigger t = new GameBuffTrigger();
+                            var t = new GameBuffTrigger();
                             t.id = GetInt64(reader, "id");
                             t.buff_id = GetInt64(reader, "buff_id");
                             t.event_id = GetInt64(reader, "event_id");
                             t.effect_id = GetInt64(reader, "effect_id");
 
                             AADB.DB_BuffTriggers.Add(t.id, t);
+                        }
+                    }
+                }
+
+                using (var command = connection.CreateCommand())
+                {
+                    AADB.DB_BuffTriggers.Clear();
+                    command.CommandText = modifiersSql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+
+                        while (reader.Read())
+                        {
+                            var t = new GameBuffModifier();
+                            t.id = GetInt64(reader, "id");
+                            t.owner_id = GetInt64(reader, "owner_id");
+                            t.owner_type = GetString(reader, "owner_type");
+                            t.buff_id = GetInt64(reader, "buff_id");
+                            t.tag_id = GetInt64(reader, "tag_id");
+                            t.buff_attribute_id = (BuffAttribute)GetInt64(reader, "buff_attribute_id");
+                            t.unit_modifier_type_id = GetInt64(reader, "unit_modifier_type_id");
+                            t.value = GetInt64(reader, "value");
+                            t.synergy = GetBool(reader, "synergy");
+
+                            AADB.DB_BuffModifiers.Add(t.id, t);
                         }
                     }
                 }
@@ -1241,7 +1269,7 @@ namespace AAEmu.DBViewer
                     case 17: return "Unmount (17)";
                     case 18: return "Kill (18)";
                     case 19: return "DamagedCollision (19)";
-                    case 20: return "Immotality (20)";
+                    case 20: return "Immortality (20)";
                     case 21: return "Time (21)";
                     case 22: return "KillAny (22)";
                     default: return id.ToString();
@@ -1249,6 +1277,64 @@ namespace AAEmu.DBViewer
             }
 
             tvBuffTriggers.Nodes.Clear();
+            // Stat Modifiers
+            var stats = AADB.DB_UnitModifiers.Values.Where(x => x.owner_type == "Buff" && x.owner_id == buff_id).ToList();
+            if (stats.Any())
+            {
+                var statsNode = tvBuffTriggers.Nodes.Add("Stat modifiers");
+                foreach (var unitStat in stats)
+                {
+                    var statNode = statsNode.Nodes.Add($"{unitStat.unit_attribute_id} {unitStat.value}{(unitStat.unit_modifier_type_id != 0 ? "%" : "")}");
+                    if (unitStat.linear_level_bonus > 0)
+                        statNode.Text += $" +Linear Level Bonus: {unitStat.linear_level_bonus}";
+
+                    if (statNode.Text.Contains("health", StringComparison.InvariantCultureIgnoreCase))
+                        statNode.ForeColor = Color.Red;
+                    else
+                    if (statNode.Text.Contains("mana", StringComparison.InvariantCultureIgnoreCase))
+                        statNode.ForeColor = Color.DeepSkyBlue;
+                    else
+                    if (statNode.Text.Contains("armor", StringComparison.InvariantCultureIgnoreCase))
+                        statNode.ForeColor = Color.Yellow;
+                    else
+                    if (statNode.Text.Contains("resist", StringComparison.InvariantCultureIgnoreCase))
+                        statNode.ForeColor = Color.MediumPurple;
+                    else
+                    if (statNode.Text.Contains("speed", StringComparison.InvariantCultureIgnoreCase))
+                        statNode.ForeColor = Color.LawnGreen;
+                    else
+                    if (statNode.Text.Contains("exp", StringComparison.InvariantCultureIgnoreCase))
+                        statNode.ForeColor = Color.WhiteSmoke;
+                }
+            }
+
+
+            // Buff Modifiers
+            var mods = AADB.DB_BuffModifiers.Values.Where(x => x.owner_type == "Buff" && x.owner_id == buff_id).ToList();
+            if (mods.Any())
+            {
+                var modsNode = tvBuffTriggers.Nodes.Add("Modifiers");
+                foreach (var mod in mods)
+                {
+                    TreeNode modNode = null;
+                    if (mod.buff_id > 0)
+                        modNode = AddCustomPropertyNode("buff_id", mod.buff_id.ToString(), false, modsNode);
+                    if (mod.tag_id > 0)
+                        modNode = AddCustomPropertyNode("tag_id", mod.tag_id.ToString(), false, modsNode);
+                    if (modNode == null)
+                        continue; // should never happen
+
+                    modNode.Text = @"With " + modNode.Text;
+
+                    modNode.Nodes.Add($"buff_attribute_id: {mod.buff_attribute_id}");
+                    modNode.Nodes.Add($"value: {mod.value}{(mod.unit_modifier_type_id != 0 ? "%" : "")}");
+                    if (mod.synergy)
+                        modNode.Nodes.Add("synergy");
+                }
+            }
+
+
+            // Buff Triggers
             var triggers = AADB.DB_BuffTriggers.Values.Where(bt => bt.buff_id == buff_id)
                 .GroupBy(bt => bt.event_id, bt => bt).ToDictionary(bt => bt.Key, bt => bt.ToList());
 
@@ -1619,11 +1705,41 @@ namespace AAEmu.DBViewer
                 t.id = useDbId ? reader.GetUInt32("id") : i;
                 t.owner_id = reader.GetUInt32("owner_id");
                 t.owner_type = reader.GetString("owner_type");
-                t.kind_id = (GameUnitReqsKindId)reader.GetUInt32("kind_id");
+                t.kind_id = (GameUnitReqsKind)reader.GetUInt32("kind_id");
                 t.value1 = reader.GetUInt32("value1");
                 t.value2 = reader.GetUInt32("value2");
 
                 AADB.DB_UnitReqs.TryAdd(t.id, t);
+            }
+        }
+
+        private void LoadUnitMods()
+        {
+            AADB.DB_UnitReqs.Clear();
+            using var connection = SQLite.CreateConnection();
+            using var command = connection.CreateCommand();
+            command.CommandText = "SELECT * FROM unit_modifiers";
+            command.Prepare();
+            using var sqliteReader = command.ExecuteReader();
+            using var reader = new SQLiteWrapperReader(sqliteReader);
+            var useDbId = false;
+            var columnNames = reader.GetColumnNames();
+            if (columnNames.IndexOf("id") >= 0)
+                useDbId = true;
+            var i = 0u;
+            while (reader.Read())
+            {
+                var t = new GameUnitModifiers();
+                i++;
+                t.id = useDbId ? reader.GetInt64("id") : i;
+                t.owner_id = reader.GetInt64("owner_id");
+                t.owner_type = reader.GetString("owner_type");
+                t.unit_attribute_id = (UnitAttribute)reader.GetInt64("unit_attribute_id");
+                t.unit_modifier_type_id = reader.GetInt64("unit_modifier_type_id");
+                t.value = reader.GetInt64("value");
+                t.linear_level_bonus = reader.GetInt64("linear_level_bonus");
+
+                AADB.DB_UnitModifiers.TryAdd(t.id, t);
             }
         }
 

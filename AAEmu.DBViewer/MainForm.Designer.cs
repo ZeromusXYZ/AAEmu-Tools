@@ -1383,13 +1383,14 @@
             splitContainer2.Panel1.Controls.Add(cbBuffsHideEmpty);
             splitContainer2.Panel1.Controls.Add(label85);
             splitContainer2.Panel1.Controls.Add(tvBuffTriggers);
+            splitContainer2.Panel1MinSize = 100;
             // 
             // splitContainer2.Panel2
             // 
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 325);
-            splitContainer2.SplitterDistance = 330;
+            splitContainer2.SplitterDistance = 329;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1397,7 +1398,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(239, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(238, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1412,9 +1413,9 @@
             label85.Location = new System.Drawing.Point(4, 6);
             label85.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label85.Name = "label85";
-            label85.Size = new System.Drawing.Size(48, 16);
+            label85.Size = new System.Drawing.Size(99, 16);
             label85.TabIndex = 6;
-            label85.Text = "Triggers";
+            label85.Text = "Stats and Triggers";
             // 
             // tvBuffTriggers
             // 
@@ -1428,7 +1429,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(322, 294);
+            tvBuffTriggers.Size = new System.Drawing.Size(321, 294);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -4620,7 +4621,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(496, 514);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(495, 514);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4652,7 +4653,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(723, 503);
+            tvQuestWorkflow.Size = new System.Drawing.Size(722, 503);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
