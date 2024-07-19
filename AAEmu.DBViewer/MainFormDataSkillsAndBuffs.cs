@@ -330,7 +330,7 @@ namespace AAEmu.DBViewer
         {
             var sql = "SELECT * FROM buffs ORDER BY id ASC";
             var triggerSql = "SELECT * FROM buff_triggers ORDER BY id ASC";
-            var modifiersSql = "SELECT * FROM buff_modifiers ORDER BY id ASC";
+            var modifiersSql = "SELECT * FROM buff_modifiers";
             var npcInitialSql = "SELECT * FROM npc_initial_buffs ORDER BY npc_id ASC";
             var passiveSql = "SELECT * FROM passive_buffs ORDER BY id ASC";
             var slavePassiveSql = "SELECT * FROM slave_passive_buffs ORDER BY owner_id ASC";
@@ -428,7 +428,7 @@ namespace AAEmu.DBViewer
 
                 using (var command = connection.CreateCommand())
                 {
-                    AADB.DB_BuffTriggers.Clear();
+                    AADB.DB_BuffModifiers.Clear();
                     command.CommandText = modifiersSql;
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
