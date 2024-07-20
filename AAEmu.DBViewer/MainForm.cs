@@ -138,6 +138,7 @@ namespace AAEmu.DBViewer
             LoadHistory(Properties.Settings.Default.HistorySearchSkill, cbSkillSearch);
             LoadHistory(Properties.Settings.Default.HistorySearchDoodad, cbSearchDoodads);
             LoadHistory(Properties.Settings.Default.HistorySearchBuff, cbSearchBuffs);
+            LoadHistory(Properties.Settings.Default.HistorySearchSphere, CbSearchSpheres);
             LoadHistory(Properties.Settings.Default.HistorySearchSQL, cbSimpleSQL);
 
             tcViewer.SelectedTab = tpItems;
@@ -152,6 +153,7 @@ namespace AAEmu.DBViewer
             Properties.Settings.Default.HistorySearchSkill = CreateHistory(cbSkillSearch);
             Properties.Settings.Default.HistorySearchDoodad = CreateHistory(cbSearchDoodads);
             Properties.Settings.Default.HistorySearchBuff = CreateHistory(cbSearchBuffs);
+            Properties.Settings.Default.HistorySearchSphere = CreateHistory(CbSearchSpheres);
             Properties.Settings.Default.HistorySearchSQL = CreateHistory(cbSimpleSQL);
             Properties.Settings.Default.Save();
 
@@ -1601,7 +1603,8 @@ namespace AAEmu.DBViewer
                     break;
                 }
             }
-
+            if (DgvSpheres.Rows.Count > 0)
+                AddToSearchHistory(CbSearchSpheres, CbSearchSpheres.Text);
         }
 
         private void ShowDbSphere(long id)
@@ -2005,6 +2008,502 @@ namespace AAEmu.DBViewer
         private void TBFileSettings_Click(object sender, EventArgs e)
         {
             tcViewer.SelectedTab = tpSettings;
+        }
+
+        private void BtnSearchNPC_Click(object sender, EventArgs e)
+        {
+            DoSearchNpc();
+        }
+
+        private void TSearchNPC_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) && (btnSearchNPC.Enabled))
+                BtnSearchNPC_Click(null, null);
+        }
+
+        private void TSearchNPC_TextChanged(object sender, EventArgs e)
+        {
+            btnSearchNPC.Enabled = (cbSearchNPC.Text != string.Empty);
+        }
+
+        private void DgvNpcs_SelectionChanged(object sender, EventArgs e)
+        {
+            DoNpcsSelectionChanged();
+        }
+
+        private void TSearchDoodads_TextChanged(object sender, EventArgs e)
+        {
+            btnSearchDoodads.Enabled = (cbSearchDoodads.Text != string.Empty);
+        }
+
+        private void TSearchDoodads_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                BtnSearchDoodads_Click(null, null);
+        }
+
+        private void BtnSearchDoodads_Click(object sender, EventArgs e)
+        {
+            DoSearchDoodads();
+        }
+
+        private void DgvDoodads_SelectionChanged(object sender, EventArgs e)
+        {
+            DoDoodadsSelectionChanged();
+        }
+
+        private void DgvDoodadFuncGroups_SelectionChanged(object sender, EventArgs e)
+        {
+            DoDoodadFuncGroupsSelectionChanged();
+        }
+
+        private void TvDoodadDetails_DoubleClick(object sender, EventArgs e)
+        {
+            if ((sender is TreeView tv) && (tv.SelectedNode != null))
+                ProcessNodeInfoDoubleClick(tv.SelectedNode);
+        }
+
+        private void CbDoodadWorkflowHideEmpty_CheckedChanged(object sender, EventArgs e)
+        {
+            if (long.TryParse(lDoodadID.Text, out var id))
+                ShowDbDoodad(id);
+        }
+
+        private void BtnSearchSlave_Click(object sender, EventArgs e)
+        {
+            DoSearchSlave();
+        }
+
+        private void TSearchSlave_TextChanged(object sender, EventArgs e)
+        {
+            btnSearchSlave.Enabled = !string.IsNullOrEmpty(tSearchSlave.Text);
+        }
+
+        private void TSearchSlave_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) && (btnSearchSlave.Enabled))
+                BtnSearchSlave_Click(null, null);
+        }
+
+        private void TvNpcInfo_DoubleClick(object sender, EventArgs e)
+        {
+            // In properties the node tag is used internally, so only allow this node double-click if it's not set
+            if ((sender is TreeView tv) && (tv.SelectedNode != null) && (tv.SelectedNode.Tag == null))
+                ProcessNodeInfoDoubleClick(tv.SelectedNode);
+        }
+
+        private void DgvSlaves_SelectionChanged(object sender, EventArgs e)
+        {
+            DoSlavesSelectionChanged();
+        }
+
+        private void TvSlaveInfo_DoubleClick(object sender, EventArgs e)
+        {
+            if ((sender is TreeView tv) && (tv.SelectedNode != null) && (tv.SelectedNode.Tag == null))
+                ProcessNodeInfoDoubleClick(tv.SelectedNode);
+        }
+
+        private void BtnItemSearch_Click(object sender, EventArgs e)
+        {
+            DoItemSearch();
+        }
+
+        private void TItemSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                BtnItemSearch_Click(null, null);
+            }
+        }
+
+        private void DgvItemSearch_SelectionChanged(object sender, EventArgs e)
+        {
+            DoItemSelectionChanged();
+        }
+
+        private void CbItemSearchLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbItemSearchLanguage.Enabled == false)
+                return;
+            cbItemSearchLanguage.Enabled = false;
+            if (cbItemSearchLanguage.Text != Properties.Settings.Default.DefaultGameLanguage)
+            {
+                Properties.Settings.Default.DefaultGameLanguage = cbItemSearchLanguage.Text;
+                LoadServerDB(false);
+            }
+
+            cbItemSearchLanguage.Enabled = true;
+        }
+
+        private void TItemSearch_TextChanged(object sender, EventArgs e)
+        {
+            btnItemSearch.Enabled = (cbItemSearch.Text != string.Empty);
+        }
+
+        private void BtnFindItemInLoot_Click(object sender, EventArgs e)
+        {
+            DoFindItemInLoot();
+        }
+
+        private void TLootSearch_TextChanged(object sender, EventArgs e)
+        {
+            btnLootSearch.Enabled = (tLootSearch.Text != string.Empty);
+        }
+
+        private void DgvLoot_SelectionChanged(object sender, EventArgs e)
+        {
+            DoLootSelectionChanged();
+        }
+
+        private void BtnLootSearch_Click(object sender, EventArgs e)
+        {
+            DoLootSearch();
+        }
+
+        private void TLootSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                BtnLootSearch_Click(null, null);
+            }
+        }
+
+        private void CbItemSearchFilterChanged(object sender, EventArgs e)
+        {
+            if (cbItemSearch.Text.Replace("*", "") == string.Empty)
+            {
+
+                if ((cbItemSearchItemArmorSlotTypeList.SelectedIndex > 0) ||
+                    (cbItemSearchItemCategoryTypeList.SelectedIndex > 0) ||
+                    (cbItemSearchRange.SelectedIndex > 0) ||
+                    (cbItemSearchType.SelectedIndex > 0))
+                    cbItemSearch.Text = "*";
+                else
+                    cbItemSearch.Text = string.Empty;
+            }
+        }
+
+        private void BtnShowNpcLoot_Click(object sender, EventArgs e)
+        {
+            var searchId = (long)((sender as Button)?.Tag ?? 0);
+            if (searchId <= 0)
+                return;
+
+            DoShowNpcLoot(searchId);
+        }
+
+        private void BtnFindLootNpc_Click(object sender, EventArgs e)
+        {
+            var searchId = (long)((sender as Button)?.Tag ?? 0);
+            if (searchId <= 0)
+                return;
+            DoFindLootNpc(searchId);
+        }
+
+        private void TSearchFaction_TextChanged(object sender, EventArgs e)
+        {
+            btnSearchFaction.Enabled = (tSearchFaction.Text != string.Empty);
+        }
+
+        private void BtnSearchFaction_Click(object sender, EventArgs e)
+        {
+            DoSearchFaction();
+        }
+
+        private void TSearchFaction_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                BtnSearchFaction_Click(null, null);
+        }
+
+        private void BtnFactionsAll_Click(object sender, EventArgs e)
+        {
+            DoShowAllFactions();
+        }
+
+        private void DgvFactions_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvFactions.SelectedRows.Count <= 0)
+                return;
+            var row = dgvFactions.SelectedRows[0];
+            if (row.Cells.Count <= 0)
+                return;
+
+            var id = row.Cells[0].Value;
+            if (id != null)
+            {
+                ShowDbFaction(long.Parse(id.ToString() ?? "0"));
+                ShowSelectedData("system_factions", "(id = " + id.ToString() + ")", "id ASC");
+            }
+        }
+
+        private void BtnMap_Click(object sender, EventArgs e)
+        {
+            var map = MapViewForm.GetMap();
+            map.Show();
+        }
+
+        private void BtnShowNPCsOnMap_Click(object sender, EventArgs e)
+        {
+            var searchId = (long)((sender as Button)?.Tag ?? 0);
+            if (searchId <= 0)
+                return;
+            DoShowNPCsOnMap(searchId);
+        }
+
+        private void btnFindTransferPathsInZone_Click(object sender, EventArgs e)
+        {
+            var searchId = (long)((sender as Button)?.Tag ?? 0);
+            if (searchId <= 0)
+                return;
+            DoFindTransferPathsInZone(searchId);
+        }
+
+        private void BtnExportDataForVieweD_Click(object sender, EventArgs e)
+        {
+            DoExportDataForVieweD();
+        }
+
+        private void BtnExportNPCSpawnData_Click(object sender, EventArgs e)
+        {
+            DoExportNpcSpawnData();
+        }
+
+        private void BtnFindAllTransferPaths_Click(object sender, EventArgs e)
+        {
+            DoFindAllTransferPaths();
+        }
+
+        private void BtnFindAllHousing_Click(object sender, EventArgs e)
+        {
+            DoFindAllHousing();
+        }
+
+        private void BtnLoadCustomPaths_Click(object sender, EventArgs e)
+        {
+            DoLoadCustomPaths();
+        }
+
+        private void BtnLoadCustomAAEmuJson_Click(object sender, EventArgs e)
+        {
+            DoLoadCustomAAEmuJson();
+        }
+
+        private void BtnShowEntityAreaShape_Click(object sender, EventArgs e)
+        {
+            DoShowEntityAreaShape();
+        }
+
+        private void LbTradeSource_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DoTradeSourceSelectedIndexChanged();
+        }
+
+        private void LbTradeDestination_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DoTradeDestinationSelectedIndexChanged();
+        }
+
+        private void BtnExportDoodadSpawnData_Click(object sender, EventArgs e)
+        {
+            DoExportDoodadSpawnData();
+        }
+
+        private void BtnSearchTags_Click(object sender, EventArgs e)
+        {
+            DoSearchTags();
+        }
+
+        private void TSearchTags_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                BtnSearchTags_Click(null, null);
+            }
+        }
+
+        private void DgvTags_SelectionChanged(object sender, EventArgs e)
+        {
+            DoTagsSelectionChanged();
+        }
+
+        private void TSearchTags_TextChanged(object sender, EventArgs e)
+        {
+            btnSearchTags.Enabled = (tSearchTags.Text != string.Empty);
+        }
+
+        private void TvTagInfo_DoubleClick(object sender, EventArgs e)
+        {
+            if ((sender is TreeView tv) && (tv.SelectedNode != null) && (tv.SelectedNode.Tag == null))
+                ProcessNodeInfoDoubleClick(tv.SelectedNode);
+        }
+
+        private void BtnLoadAAEmuWater_Click(object sender, EventArgs e)
+        {
+            DoLoadAAEmuWater();
+        }
+
+        private void BtnQuestsSearch_Click(object sender, EventArgs e)
+        {
+            DoQuestsSearch();
+        }
+
+        private void TQuestSearch_TextChanged(object sender, EventArgs e)
+        {
+            btnQuestsSearch.Enabled = (cbQuestSearch.Text != string.Empty);
+        }
+
+        private void TQuestSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                BtnQuestsSearch_Click(null, null);
+            }
+        }
+
+        private void DgvQuests_SelectionChanged(object sender, EventArgs e)
+        {
+            DoQuestsSelectionChanged();
+        }
+
+        private void BtnFindAllQuestSpheres_Click(object sender, EventArgs e)
+        {
+            DoFindAllQuestSpheres();
+        }
+
+        private void BtnQuestFindRelatedOnMap_Click(object sender, EventArgs e)
+        {
+            if ((sender as Button)?.Tag == null)
+                return;
+            var searchId = (long)(((Button)sender).Tag ?? 0);
+            if (searchId <= 0)
+                return;
+
+            DoQuestFindRelatedOnMap(searchId);
+
+        }
+
+        private void TvQuestWorkflow_DoubleClick(object sender, EventArgs e)
+        {
+            if ((sender is TreeView tv) && (tv.SelectedNode != null))
+                ProcessNodeInfoDoubleClick(tv.SelectedNode);
+        }
+
+        private void CbQuestWorkflowHideEmpty_CheckedChanged(object sender, EventArgs e)
+        {
+            if ((dgvQuests.CurrentRow != null) && (dgvQuests.CurrentRow.Cells.Count > 0))
+            {
+                if (long.TryParse(dgvQuests.CurrentRow.Cells[0].Value.ToString(), out var id))
+                    ShowDbQuest(id);
+            }
+        }
+
+        private void LbSchedules_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DoSchedulesSelectedIndexChanged();
+        }
+
+        private void LbSchedulesGame_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DoSchedulesGameSelectedIndexChanged();
+        }
+
+        private void TvSchedule_DoubleClick(object sender, EventArgs e)
+        {
+            ProcessNodeInfoDoubleClick(tvSchedule.SelectedNode);
+        }
+
+        private void LbTowerDefs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DoTowerDefsSelectedIndexChanged();
+        }
+
+        private void TSkillSearch_TextChanged(object sender, EventArgs e)
+        {
+            btnSkillSearch.Enabled = (cbSkillSearch.Text != string.Empty);
+        }
+
+        private void BtnSkillSearch_Click(object sender, EventArgs e)
+        {
+            DoSkillSearch();
+        }
+
+        private void TSkillSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                BtnSkillSearch_Click(null, null);
+            }
+        }
+
+        private void DgvSkills_SelectionChanged(object sender, EventArgs e)
+        {
+            DoSkillsSelectionChanged();
+        }
+
+        private void BtnFindItemSkill_Click(object sender, EventArgs e)
+        {
+            DoFindItemSkill();
+        }
+
+        private void BtnSearchBuffs_Click(object sender, EventArgs e)
+        {
+            DoSearchBuffs();
+        }
+
+        private void TSearchBuffs_TextChanged(object sender, EventArgs e)
+        {
+            btnSearchBuffs.Enabled = (cbSearchBuffs.Text != string.Empty);
+        }
+
+        private void TSearchBuffs_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                BtnSearchBuffs_Click(null, null);
+        }
+
+        private void DgvBuffs_SelectionChanged(object sender, EventArgs e)
+        {
+            DoBuffsSelectionChanged();
+        }
+
+        private void TvSkill_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (e?.Node != null)
+                DoSkillAfterSelect(e.Node);
+        }
+
+        private void TvSkill_DoubleClick(object sender, EventArgs e)
+        {
+            // In properties the node tag is used internally, so only allow this node double-click if it's not set
+            if ((sender is TreeView tv) && (tv.SelectedNode != null) && (tv.SelectedNode.Tag == null))
+                ProcessNodeInfoDoubleClick(tv.SelectedNode);
+        }
+
+        private void TvBuffTriggers_DoubleClick(object sender, EventArgs e)
+        {
+            if ((sender is TreeView tv) && (tv.SelectedNode != null) && (tv.SelectedNode.Tag == null))
+                ProcessNodeInfoDoubleClick(tv.SelectedNode);
+        }
+
+        private void CbBuffsHideEmpty_CheckedChanged(object sender, EventArgs e)
+        {
+            if (long.TryParse(lBuffId.Text, out var id))
+                ShowDbBuff(id);
+        }
+
+        private void BtnCopySkillExecutionTree_Click(object sender, EventArgs e)
+        {
+            CopyToClipBoard($"Skill: {lSkillID.Text} - " + TreeViewToString(tvSkill.Nodes, 0));
+        }
+
+        private void BtnSkillTreeCollapse_Click(object sender, EventArgs e)
+        {
+            tvSkill.CollapseAll();
+            foreach (TreeNode node in tvSkill.Nodes)
+            {
+                node.Expand();
+            }
         }
     }
 }
