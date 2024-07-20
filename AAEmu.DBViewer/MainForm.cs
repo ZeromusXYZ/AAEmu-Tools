@@ -70,6 +70,7 @@ namespace AAEmu.DBViewer
         private void MainForm_Load(object sender, EventArgs e)
         {
             MMVersion.Text = $"Version {Assembly.GetExecutingAssembly().GetName().Version}";
+            lAppVersion.Text = MMVersion.Text;
             MM.Visible = false;
             tcViewer.ItemSize = new Size(0, 1);
 
