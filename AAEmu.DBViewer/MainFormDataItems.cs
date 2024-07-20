@@ -384,13 +384,12 @@ public partial class MainForm
             lItemLevel.Text = item.level.ToString();
             IconIdToLabel(item.icon_id, itemIcon);
             btnFindItemSkill.Enabled = true; // (item.use_skill_id > 0);
-            var gmadditem = cbNewGM.Checked ? "/item add self " : "/additem ";
-            gmadditem += item.id.ToString();
-            gmadditem += " " + item.max_stack_size.ToString();
+            var gmAddItem = "/item add self " + item.id.ToString();
+            gmAddItem += " " + item.max_stack_size.ToString();
             if (item.fixed_grade >= 0)
-                gmadditem += " " + item.fixed_grade.ToString();
+                gmAddItem += " " + item.fixed_grade.ToString();
             lItemTags.Text = TagsAsString(idx, AADB.DB_Tagged_Items);
-            lItemAddGMCommand.Text = gmadditem;
+            lItemAddGMCommand.Text = gmAddItem;
 
             ShowSelectedData("items", "(id = " + idx.ToString() + ")", "id ASC");
         }
@@ -398,14 +397,14 @@ public partial class MainForm
         {
             lItemID.Text = idx.ToString();
             lItemImplId.Text = "";
-            lItemName.Text = "<not found>";
+            lItemName.Text = @"<not found>";
             lItemCategory.Text = "";
             rtItemDesc.Clear();
             lItemLevel.Text = "";
-            itemIcon.Text = "???";
+            itemIcon.Text = @"???";
             btnFindItemSkill.Enabled = false;
-            lItemTags.Text = "???";
-            lItemAddGMCommand.Text = cbNewGM.Checked ? "/item add self ???" : "/additem ???";
+            lItemTags.Text = @"???";
+            lItemAddGMCommand.Text = @"/item add self ???";
         }
     }
 

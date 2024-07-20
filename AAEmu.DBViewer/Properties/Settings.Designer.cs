@@ -262,5 +262,17 @@ namespace AAEmu.DBViewer.Properties {
                 this["HistorySearchSphere"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Profiles {
+            get {
+                return ((string)(this["Profiles"]));
+            }
+            set {
+                this["Profiles"] = value;
+            }
+        }
     }
 }

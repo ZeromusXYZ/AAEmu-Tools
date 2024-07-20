@@ -28,6 +28,7 @@ namespace AAEmu.DBViewer
         private readonly List<TabPage> tabHistory = new();
         private bool skipTabHistory = false;
         private int tabHistoryIndex = 0;
+        private List<SavedProfile> Profiles = new();
 
         public MainForm()
         {
@@ -100,7 +101,9 @@ namespace AAEmu.DBViewer
             foreach (var implId in Enum.GetValues(typeof(GameItemImplId)))
                 cbItemSearchType.Items.Add(((int)implId).ToString() + " - " + implId.ToString());
             cbItemSearchType.SelectedIndex = 0;
-            cbNewGM.Checked = Properties.Settings.Default.NewGMCommands;
+
+            LoadProfiles();
+            SelectCurrentProfile();
 
             if (!LoadServerDB(false))
             {
@@ -155,6 +158,7 @@ namespace AAEmu.DBViewer
             Properties.Settings.Default.HistorySearchBuff = CreateHistory(cbSearchBuffs);
             Properties.Settings.Default.HistorySearchSphere = CreateHistory(CbSearchSpheres);
             Properties.Settings.Default.HistorySearchSQL = CreateHistory(cbSimpleSQL);
+            SaveProfiles();
             Properties.Settings.Default.Save();
 
             if (MapViewForm.ThisForm != null)
@@ -810,43 +814,60 @@ namespace AAEmu.DBViewer
 
         private void BtnFindGameClient_Click(object sender, EventArgs e)
         {
-            if (openGamePakFileDialog.ShowDialog() == DialogResult.OK)
+            _ = DoFindGameClient(true);
+        }
+
+        private bool DoFindGameClient(bool forceDialog)
+        {
+            var openFileName = Properties.Settings.Default.GamePakFileName;
+            if (forceDialog)
             {
-                using (var loading = new LoadingForm())
+                if (openGamePakFileDialog.ShowDialog() != DialogResult.OK)
                 {
-                    loading.Show();
-                    if (pak.IsOpen)
-                    {
-                        loading.ShowInfo("Closing: " + pak.GpFilePath);
-                        pak.ClosePak();
+                    return false;
+                }
 
-                        // TODO: HACK to try and free up as many memomry as possible - https://stackoverflow.com/questions/30622145/free-memory-of-byte
-                        GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                        GC.Collect();
-                    }
+                openFileName = openGamePakFileDialog.FileName;
+            }
 
-                    loading.ShowInfo("Opening: " + Path.GetFileName(openGamePakFileDialog.FileName));
+            if (!File.Exists(openFileName))
+                return false;
 
-                    TryLoadPakKeys(openGamePakFileDialog.FileName);
+            using var loading = new LoadingForm();
+            loading.Show();
+            if (pak.IsOpen)
+            {
+                loading.ShowInfo("Closing: " + pak.GpFilePath);
+                pak.ClosePak();
 
-                    if (pak.OpenPak(openGamePakFileDialog.FileName, true))
-                    {
-                        Properties.Settings.Default.GamePakFileName = openGamePakFileDialog.FileName;
-                        lCurrentPakFile.Text = Properties.Settings.Default.GamePakFileName;
+                // TODO: HACK to try and free up as many memory as possible - https://stackoverflow.com/questions/30622145/free-memory-of-byte
+                GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                GC.Collect();
+            }
 
-                        PrepareWorldXml(true);
-                        if (MapViewForm.ThisForm != null)
-                        {
-                            MapViewForm.ThisForm.Close();
-                            MapViewForm.ThisForm = null;
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Failed to load: " + openGamePakFileDialog.FileName);
-                    }
+            loading.ShowInfo("Opening: " + Path.GetFileName(openFileName));
+
+            TryLoadPakKeys(openFileName);
+
+            if (pak.OpenPak(openFileName, true))
+            {
+                Properties.Settings.Default.GamePakFileName = openFileName;
+                lCurrentPakFile.Text = Properties.Settings.Default.GamePakFileName;
+
+                PrepareWorldXml(true);
+                if (MapViewForm.ThisForm != null)
+                {
+                    MapViewForm.ThisForm.Close();
+                    MapViewForm.ThisForm = null;
                 }
             }
+            else
+            {
+                MessageBox.Show($"Failed to load: {openFileName}");
+                return false;
+            }
+
+            return true;
         }
 
         private void ShowSelectedData(string table, string whereStatement, string orderStatement)
@@ -1495,11 +1516,6 @@ namespace AAEmu.DBViewer
                     map.BringToFront();
                 }
             }
-        }
-
-        private void cbNewGM_CheckedChanged(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.NewGMCommands = cbNewGM.Checked;
         }
 
         private string TreeViewToString(TreeNodeCollection treeView, int depth = 0)
@@ -2504,6 +2520,168 @@ namespace AAEmu.DBViewer
             {
                 node.Expand();
             }
+        }
+
+        private void TBMenuFileSwitchSelect_Click(object sender, EventArgs e)
+        {
+            // Switch profile
+            if ((sender is ToolStripMenuItem tsmi) && (tsmi.Tag is SavedProfile profile))
+            {
+                ApplyProfile(profile);
+            }
+        }
+
+        private void LoadProfiles()
+        {
+            LbProfiles.Items.Clear();
+            var profilesString = Properties.Settings.Default.Profiles;
+            try
+            {
+                Profiles = JsonConvert.DeserializeObject<List<SavedProfile>>(profilesString);
+            }
+            catch
+            {
+                //
+            }
+
+            if (Profiles == null)
+                Profiles = new();
+
+            TBFileSwitchProfileMenu.DropDownItems.Clear();
+
+            foreach (var savedProfile in Profiles)
+            {
+                LbProfiles.Items.Add(savedProfile);
+                var newMenuItem = new ToolStripMenuItem(savedProfile.Name);
+                newMenuItem.Tag = savedProfile;
+                newMenuItem.Click += TBMenuFileSwitchSelect_Click;
+
+                TBFileSwitchProfileMenu.DropDownItems.Add(newMenuItem);
+            }
+        }
+
+        private void SaveProfiles()
+        {
+            try
+            {
+                var profilesString = JsonConvert.SerializeObject(Profiles);
+                Properties.Settings.Default.Profiles = profilesString;
+                Properties.Settings.Default.Save();
+            }
+            catch
+            {
+                // Failed to convert?
+            }
+        }
+
+        private void BtnSaveProfileAs_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(TSaveProfileName.Text))
+            {
+                MessageBox.Show("Name is required");
+                return;
+            }
+
+            if (Profiles.Any(x => x.Name.Equals(TSaveProfileName.Text, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                MessageBox.Show("Name already exists");
+                return;
+            }
+
+
+            var newProfile = new SavedProfile()
+            {
+                Name = TSaveProfileName.Text,
+                ClientDdFile = string.Empty,
+                ServerDdFile = Properties.Settings.Default.DBFileName,
+                GamePakFile = Properties.Settings.Default.GamePakFileName,
+                Locale = Properties.Settings.Default.DefaultGameLanguage
+            };
+
+            Profiles.Add(newProfile);
+            SaveProfiles();
+            LoadProfiles();
+            SelectCurrentProfile();
+        }
+
+        private void SelectCurrentProfile()
+        {
+            foreach (var lbProfilesItem in LbProfiles.Items)
+            {
+                if (lbProfilesItem is not SavedProfile savedProfile)
+                    continue;
+                if (savedProfile.GamePakFile != Properties.Settings.Default.GamePakFileName)
+                    continue;
+                if (savedProfile.ServerDdFile != Properties.Settings.Default.DBFileName)
+                    continue;
+                if (savedProfile.Locale != Properties.Settings.Default.DefaultGameLanguage)
+                    continue;
+                LbProfiles.SelectedItem = lbProfilesItem;
+                break;
+            }
+        }
+
+        private bool ApplyProfile(SavedProfile profile)
+        {
+            var oldServerDb = Properties.Settings.Default.DBFileName;
+            var oldGamePakFile = Properties.Settings.Default.GamePakFileName;
+            var oldLocale = Properties.Settings.Default.DefaultGameLanguage;
+
+            Properties.Settings.Default.DBFileName = profile.ServerDdFile;
+            Properties.Settings.Default.GamePakFileName = profile.GamePakFile;
+            Properties.Settings.Default.DefaultGameLanguage = profile.Locale;
+
+            bool failed = !LoadServerDB(false);
+
+            if (!failed && !DoFindGameClient(false))
+                failed = true;
+
+            if (failed)
+            {
+                // revert settings
+                Properties.Settings.Default.DBFileName = oldServerDb;
+                Properties.Settings.Default.GamePakFileName = oldServerDb;
+                Properties.Settings.Default.DefaultGameLanguage = oldServerDb;
+                LoadServerDB(false);
+                DoFindGameClient(false);
+                MessageBox.Show($"Failed to load profile {profile.Name}");
+                return false;
+            }
+
+            Properties.Settings.Default.Save();
+            return true;
+        }
+
+        private void BtnLoadProfile_Click(object sender, EventArgs e)
+        {
+            if (LbProfiles.SelectedItem is not SavedProfile profile)
+            {
+                MessageBox.Show("No profile selected");
+                return;
+            }
+
+            _ = ApplyProfile(profile);
+        }
+
+        private void BtnDeleteProfile_Click(object sender, EventArgs e)
+        {
+            if (LbProfiles.SelectedItem is not SavedProfile profile)
+            {
+                MessageBox.Show("No profile selected");
+                return;
+            }
+
+            if (MessageBox.Show($"Are you sure you want to remove {profile.Name} ?", "Delete profile", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                return;
+
+            if (!Profiles.Remove(profile))
+            {
+                MessageBox.Show("Failed to remove profile");
+                return;
+            }
+
+            SaveProfiles();
+            LoadProfiles();
         }
     }
 }

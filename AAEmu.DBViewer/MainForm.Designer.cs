@@ -36,7 +36,11 @@
             lbTableNames = new System.Windows.Forms.ListBox();
             tcViewer = new System.Windows.Forms.TabControl();
             tpSettings = new System.Windows.Forms.TabPage();
-            cbNewGM = new System.Windows.Forms.CheckBox();
+            TSaveProfileName = new System.Windows.Forms.TextBox();
+            BtnSaveProfileAs = new System.Windows.Forms.Button();
+            BtnLoadProfile = new System.Windows.Forms.Button();
+            label145 = new System.Windows.Forms.Label();
+            LbProfiles = new System.Windows.Forms.ListBox();
             lCurrentPakFile = new System.Windows.Forms.Label();
             label8 = new System.Windows.Forms.Label();
             btnFindGameClient = new System.Windows.Forms.Button();
@@ -604,7 +608,11 @@
             TBMain = new System.Windows.Forms.ToolStrip();
             TBFile = new System.Windows.Forms.ToolStripDropDownButton();
             TBFileTables = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             TBFileSettings = new System.Windows.Forms.ToolStripMenuItem();
+            TBFileSwitchProfileMenu = new System.Windows.Forms.ToolStripMenuItem();
+            TBMenuFileSwitchSelect = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             TBFileExit = new System.Windows.Forms.ToolStripMenuItem();
             TBS1 = new System.Windows.Forms.ToolStripSeparator();
             TMBack = new System.Windows.Forms.ToolStripButton();
@@ -629,6 +637,7 @@
             TBTrades = new System.Windows.Forms.ToolStripButton();
             TBSlaves = new System.Windows.Forms.ToolStripButton();
             TBZones = new System.Windows.Forms.ToolStripButton();
+            BtnDeleteProfile = new System.Windows.Forms.Button();
             tcViewer.SuspendLayout();
             tpSettings.SuspendLayout();
             tpTables.SuspendLayout();
@@ -761,7 +770,12 @@
             // 
             // tpSettings
             // 
-            tpSettings.Controls.Add(cbNewGM);
+            tpSettings.Controls.Add(BtnDeleteProfile);
+            tpSettings.Controls.Add(TSaveProfileName);
+            tpSettings.Controls.Add(BtnSaveProfileAs);
+            tpSettings.Controls.Add(BtnLoadProfile);
+            tpSettings.Controls.Add(label145);
+            tpSettings.Controls.Add(LbProfiles);
             tpSettings.Controls.Add(lCurrentPakFile);
             tpSettings.Controls.Add(label8);
             tpSettings.Controls.Add(btnFindGameClient);
@@ -775,16 +789,50 @@
             tpSettings.Text = "Settings";
             tpSettings.UseVisualStyleBackColor = true;
             // 
-            // cbNewGM
+            // TSaveProfileName
             // 
-            cbNewGM.AutoSize = true;
-            cbNewGM.Location = new System.Drawing.Point(9, 133);
-            cbNewGM.Margin = new System.Windows.Forms.Padding(4);
-            cbNewGM.Name = "cbNewGM";
-            cbNewGM.Size = new System.Drawing.Size(133, 20);
-            cbNewGM.TabIndex = 23;
-            cbNewGM.Text = "New GM commands";
-            cbNewGM.UseVisualStyleBackColor = true;
+            TSaveProfileName.Location = new System.Drawing.Point(469, 222);
+            TSaveProfileName.Name = "TSaveProfileName";
+            TSaveProfileName.Size = new System.Drawing.Size(209, 23);
+            TSaveProfileName.TabIndex = 29;
+            // 
+            // BtnSaveProfileAs
+            // 
+            BtnSaveProfileAs.Location = new System.Drawing.Point(327, 222);
+            BtnSaveProfileAs.Name = "BtnSaveProfileAs";
+            BtnSaveProfileAs.Size = new System.Drawing.Size(136, 23);
+            BtnSaveProfileAs.TabIndex = 28;
+            BtnSaveProfileAs.Text = "Save profile as";
+            BtnSaveProfileAs.UseVisualStyleBackColor = true;
+            BtnSaveProfileAs.Click += BtnSaveProfileAs_Click;
+            // 
+            // BtnLoadProfile
+            // 
+            BtnLoadProfile.Location = new System.Drawing.Point(327, 193);
+            BtnLoadProfile.Name = "BtnLoadProfile";
+            BtnLoadProfile.Size = new System.Drawing.Size(136, 23);
+            BtnLoadProfile.TabIndex = 27;
+            BtnLoadProfile.Text = "Load profile";
+            BtnLoadProfile.UseVisualStyleBackColor = true;
+            BtnLoadProfile.Click += BtnLoadProfile_Click;
+            // 
+            // label145
+            // 
+            label145.AutoSize = true;
+            label145.Location = new System.Drawing.Point(9, 174);
+            label145.Name = "label145";
+            label145.Size = new System.Drawing.Size(80, 16);
+            label145.TabIndex = 25;
+            label145.Text = "Saved profiles";
+            // 
+            // LbProfiles
+            // 
+            LbProfiles.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            LbProfiles.FormattingEnabled = true;
+            LbProfiles.Location = new System.Drawing.Point(9, 193);
+            LbProfiles.Name = "LbProfiles";
+            LbProfiles.Size = new System.Drawing.Size(312, 388);
+            LbProfiles.TabIndex = 24;
             // 
             // lCurrentPakFile
             // 
@@ -815,6 +863,7 @@
             btnFindGameClient.TabIndex = 20;
             btnFindGameClient.Text = "Locate Client game_pak";
             btnFindGameClient.UseVisualStyleBackColor = true;
+            btnFindGameClient.Click += BtnFindGameClient_Click;
             // 
             // btnOpenServerDB
             // 
@@ -1392,7 +1441,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 325);
-            splitContainer2.SplitterDistance = 325;
+            splitContainer2.SplitterDistance = 318;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1400,7 +1449,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(234, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(227, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1431,7 +1480,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(317, 294);
+            tvBuffTriggers.Size = new System.Drawing.Size(310, 294);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -4627,7 +4676,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(491, 514);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(484, 514);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4659,7 +4708,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(718, 503);
+            tvQuestWorkflow.Size = new System.Drawing.Size(711, 503);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -7014,7 +7063,7 @@
             // TBFile
             // 
             TBFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            TBFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { TBFileTables, TBFileSettings, TBFileExit });
+            TBFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { TBFileTables, toolStripSeparator3, TBFileSettings, TBFileSwitchProfileMenu, toolStripSeparator4, TBFileExit });
             TBFile.Image = (System.Drawing.Image)resources.GetObject("TBFile.Image");
             TBFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             TBFile.Name = "TBFile";
@@ -7024,21 +7073,45 @@
             // TBFileTables
             // 
             TBFileTables.Name = "TBFileTables";
-            TBFileTables.Size = new System.Drawing.Size(127, 24);
+            TBFileTables.Size = new System.Drawing.Size(159, 24);
             TBFileTables.Text = "Tables";
             TBFileTables.Click += TBFileTables_Click;
+            // 
+            // toolStripSeparator3
+            // 
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new System.Drawing.Size(156, 6);
             // 
             // TBFileSettings
             // 
             TBFileSettings.Name = "TBFileSettings";
-            TBFileSettings.Size = new System.Drawing.Size(127, 24);
+            TBFileSettings.Size = new System.Drawing.Size(159, 24);
             TBFileSettings.Text = "Settings";
             TBFileSettings.Click += TBFileSettings_Click;
+            // 
+            // TBFileSwitchProfileMenu
+            // 
+            TBFileSwitchProfileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { TBMenuFileSwitchSelect });
+            TBFileSwitchProfileMenu.Name = "TBFileSwitchProfileMenu";
+            TBFileSwitchProfileMenu.Size = new System.Drawing.Size(159, 24);
+            TBFileSwitchProfileMenu.Text = "Switch profile";
+            // 
+            // TBMenuFileSwitchSelect
+            // 
+            TBMenuFileSwitchSelect.Name = "TBMenuFileSwitchSelect";
+            TBMenuFileSwitchSelect.Size = new System.Drawing.Size(136, 24);
+            TBMenuFileSwitchSelect.Text = "<profile>";
+            TBMenuFileSwitchSelect.Click += TBMenuFileSwitchSelect_Click;
+            // 
+            // toolStripSeparator4
+            // 
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new System.Drawing.Size(156, 6);
             // 
             // TBFileExit
             // 
             TBFileExit.Name = "TBFileExit";
-            TBFileExit.Size = new System.Drawing.Size(127, 24);
+            TBFileExit.Size = new System.Drawing.Size(159, 24);
             TBFileExit.Text = "Exit";
             TBFileExit.Click += TBFileExit_Click;
             // 
@@ -7266,6 +7339,16 @@
             TBZones.Size = new System.Drawing.Size(28, 28);
             TBZones.Text = "Zones";
             TBZones.Click += TBZones_Click;
+            // 
+            // BtnDeleteProfile
+            // 
+            BtnDeleteProfile.Location = new System.Drawing.Point(327, 260);
+            BtnDeleteProfile.Name = "BtnDeleteProfile";
+            BtnDeleteProfile.Size = new System.Drawing.Size(136, 23);
+            BtnDeleteProfile.TabIndex = 30;
+            BtnDeleteProfile.Text = "Delete profile";
+            BtnDeleteProfile.UseVisualStyleBackColor = true;
+            BtnDeleteProfile.Click += BtnDeleteProfile_Click;
             // 
             // MainForm
             // 
@@ -7997,7 +8080,6 @@
         private System.Windows.Forms.Label lDoodadAddGMCommand;
         private System.Windows.Forms.Label lDoodadRemoveGMCommand;
         private System.Windows.Forms.TabPage tpSettings;
-        private System.Windows.Forms.CheckBox cbNewGM;
         private System.Windows.Forms.Label lCurrentPakFile;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btnFindGameClient;
@@ -8007,6 +8089,16 @@
         private System.Windows.Forms.ToolStripMenuItem MMFileSettings;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem TBFileSettings;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem TBFileSwitchProfileMenu;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem TBMenuFileSwitchSelect;
+        private System.Windows.Forms.TextBox TSaveProfileName;
+        private System.Windows.Forms.Button BtnSaveProfileAs;
+        private System.Windows.Forms.Button BtnLoadProfile;
+        private System.Windows.Forms.Label label145;
+        private System.Windows.Forms.ListBox LbProfiles;
+        private System.Windows.Forms.Button BtnDeleteProfile;
     }
 }
 
