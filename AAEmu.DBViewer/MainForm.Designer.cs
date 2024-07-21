@@ -36,6 +36,7 @@
             lbTableNames = new System.Windows.Forms.ListBox();
             tcViewer = new System.Windows.Forms.TabControl();
             tpSettings = new System.Windows.Forms.TabPage();
+            lAppVersion = new System.Windows.Forms.Label();
             BtnDeleteProfile = new System.Windows.Forms.Button();
             TSaveProfileName = new System.Windows.Forms.TextBox();
             BtnSaveProfileAs = new System.Windows.Forms.Button();
@@ -70,6 +71,7 @@
             Column50 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tSearchLocalized = new System.Windows.Forms.TextBox();
             tpMap = new System.Windows.Forms.TabPage();
+            BtnLoadUntMovement = new System.Windows.Forms.Button();
             btnLoadAAEmuWater = new System.Windows.Forms.Button();
             btnShowEntityAreaShape = new System.Windows.Forms.Button();
             btnLoadCustomAAEmuJson = new System.Windows.Forms.Button();
@@ -638,7 +640,13 @@
             TBTrades = new System.Windows.Forms.ToolStripButton();
             TBSlaves = new System.Windows.Forms.ToolStripButton();
             TBZones = new System.Windows.Forms.ToolStripButton();
-            lAppVersion = new System.Windows.Forms.Label();
+            openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
+            openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
+            openFileDialog4 = new System.Windows.Forms.OpenFileDialog();
+            ofdLoadUnitMovementDialog = new System.Windows.Forms.OpenFileDialog();
+            tExportedObjFilter = new System.Windows.Forms.TextBox();
+            label148 = new System.Windows.Forms.Label();
             tcViewer.SuspendLayout();
             tpSettings.SuspendLayout();
             tpTables.SuspendLayout();
@@ -790,6 +798,18 @@
             tpSettings.TabIndex = 19;
             tpSettings.Text = "Settings";
             tpSettings.UseVisualStyleBackColor = true;
+            // 
+            // lAppVersion
+            // 
+            lAppVersion.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            lAppVersion.AutoSize = true;
+            lAppVersion.Location = new System.Drawing.Point(993, 10);
+            lAppVersion.Name = "lAppVersion";
+            lAppVersion.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            lAppVersion.Size = new System.Drawing.Size(81, 16);
+            lAppVersion.TabIndex = 31;
+            lAppVersion.Text = "Version 0.0.0.0";
+            lAppVersion.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // BtnDeleteProfile
             // 
@@ -1137,6 +1157,9 @@
             // 
             // tpMap
             // 
+            tpMap.Controls.Add(label148);
+            tpMap.Controls.Add(tExportedObjFilter);
+            tpMap.Controls.Add(BtnLoadUntMovement);
             tpMap.Controls.Add(btnLoadAAEmuWater);
             tpMap.Controls.Add(btnShowEntityAreaShape);
             tpMap.Controls.Add(btnLoadCustomAAEmuJson);
@@ -1161,12 +1184,23 @@
             tpMap.Text = "Map";
             tpMap.UseVisualStyleBackColor = true;
             // 
+            // BtnLoadUntMovement
+            // 
+            BtnLoadUntMovement.Location = new System.Drawing.Point(285, 288);
+            BtnLoadUntMovement.Margin = new System.Windows.Forms.Padding(4);
+            BtnLoadUntMovement.Name = "BtnLoadUntMovement";
+            BtnLoadUntMovement.Size = new System.Drawing.Size(268, 28);
+            BtnLoadUntMovement.TabIndex = 52;
+            BtnLoadUntMovement.Text = "Load exported unit movement";
+            BtnLoadUntMovement.UseVisualStyleBackColor = true;
+            BtnLoadUntMovement.Click += BtnLoadUntMovement_Click;
+            // 
             // btnLoadAAEmuWater
             // 
             btnLoadAAEmuWater.Location = new System.Drawing.Point(285, 366);
             btnLoadAAEmuWater.Margin = new System.Windows.Forms.Padding(4);
             btnLoadAAEmuWater.Name = "btnLoadAAEmuWater";
-            btnLoadAAEmuWater.Size = new System.Drawing.Size(257, 28);
+            btnLoadAAEmuWater.Size = new System.Drawing.Size(268, 28);
             btnLoadAAEmuWater.TabIndex = 51;
             btnLoadAAEmuWater.Text = "Load AAEmu json water data";
             btnLoadAAEmuWater.UseVisualStyleBackColor = true;
@@ -1453,7 +1487,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 325);
-            splitContainer2.SplitterDistance = 317;
+            splitContainer2.SplitterDistance = 313;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1461,7 +1495,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(226, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(222, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1492,7 +1526,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(309, 294);
+            tvBuffTriggers.Size = new System.Drawing.Size(305, 294);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -4688,7 +4722,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(483, 514);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(479, 514);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4720,7 +4754,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(710, 503);
+            tvQuestWorkflow.Size = new System.Drawing.Size(706, 503);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -6808,12 +6842,14 @@
             // 
             // ofdCustomPaths
             // 
+            ofdCustomPaths.AddToRecent = false;
             ofdCustomPaths.DefaultExt = "xml";
             ofdCustomPaths.Filter = "XML Files|*.xml|All Files|*.*";
             ofdCustomPaths.Title = "Open custom path";
             // 
             // ofdJsonData
             // 
+            ofdJsonData.AddToRecent = false;
             ofdJsonData.DefaultExt = "xml";
             ofdJsonData.Filter = "Json Files|*.json|All Files|*.*";
             ofdJsonData.Title = "Open custom json data";
@@ -7352,17 +7388,55 @@
             TBZones.Text = "Zones";
             TBZones.Click += TBZones_Click;
             // 
-            // lAppVersion
+            // openFileDialog1
             // 
-            lAppVersion.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            lAppVersion.AutoSize = true;
-            lAppVersion.Location = new System.Drawing.Point(993, 10);
-            lAppVersion.Name = "lAppVersion";
-            lAppVersion.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            lAppVersion.Size = new System.Drawing.Size(81, 16);
-            lAppVersion.TabIndex = 31;
-            lAppVersion.Text = "Version 0.0.0.0";
-            lAppVersion.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            openFileDialog1.DefaultExt = "xml";
+            openFileDialog1.Filter = "XML Files|*.xml|All Files|*.*";
+            openFileDialog1.Title = "Open custom path";
+            // 
+            // openFileDialog2
+            // 
+            openFileDialog2.DefaultExt = "xml";
+            openFileDialog2.Filter = "XML Files|*.xml|All Files|*.*";
+            openFileDialog2.Title = "Open custom path";
+            // 
+            // openFileDialog3
+            // 
+            openFileDialog3.DefaultExt = "xml";
+            openFileDialog3.Filter = "XML Files|*.xml|All Files|*.*";
+            openFileDialog3.Title = "Open custom path";
+            // 
+            // openFileDialog4
+            // 
+            openFileDialog4.DefaultExt = "xml";
+            openFileDialog4.Filter = "XML Files|*.xml|All Files|*.*";
+            openFileDialog4.Title = "Open custom path";
+            // 
+            // ofdLoadUnitMovementDialog
+            // 
+            ofdLoadUnitMovementDialog.AddToRecent = false;
+            ofdLoadUnitMovementDialog.DefaultExt = "json";
+            ofdLoadUnitMovementDialog.FileName = "unit_movement.json";
+            ofdLoadUnitMovementDialog.Filter = "JSON Files|*.json|All Files|*.*";
+            ofdLoadUnitMovementDialog.Title = "Open Unit Movement File";
+            // 
+            // tExportedObjFilter
+            // 
+            tExportedObjFilter.Location = new System.Drawing.Point(561, 291);
+            tExportedObjFilter.Margin = new System.Windows.Forms.Padding(4);
+            tExportedObjFilter.Name = "tExportedObjFilter";
+            tExportedObjFilter.Size = new System.Drawing.Size(199, 23);
+            tExportedObjFilter.TabIndex = 53;
+            // 
+            // label148
+            // 
+            label148.AutoSize = true;
+            label148.Location = new System.Drawing.Point(561, 271);
+            label148.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label148.Name = "label148";
+            label148.Size = new System.Drawing.Size(52, 16);
+            label148.TabIndex = 54;
+            label148.Text = "Filter by:";
             // 
             // MainForm
             // 
@@ -8114,6 +8188,14 @@
         private System.Windows.Forms.ListBox LbProfiles;
         private System.Windows.Forms.Button BtnDeleteProfile;
         private System.Windows.Forms.Label lAppVersion;
+        private System.Windows.Forms.Button BtnLoadUntMovement;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog2;
+        private System.Windows.Forms.OpenFileDialog openFileDialog3;
+        private System.Windows.Forms.OpenFileDialog openFileDialog4;
+        private System.Windows.Forms.OpenFileDialog ofdLoadUnitMovementDialog;
+        private System.Windows.Forms.Label label148;
+        private System.Windows.Forms.TextBox tExportedObjFilter;
     }
 }
 

@@ -2003,4 +2003,116 @@ public partial class MainForm
         Cursor = Cursors.Default;
         Application.UseWaitCursor = false;
     }
+    private void DoLoadExportedUnitMovement()
+    {
+        var filter = tExportedObjFilter.Text.Trim();
+        List<MapViewPath> allPaths = new List<MapViewPath>();
+
+        Application.UseWaitCursor = true;
+        Cursor = Cursors.WaitCursor;
+
+        if (ofdLoadUnitMovementDialog.ShowDialog() == DialogResult.OK)
+        {
+            try
+            {
+                var jsonString = File.ReadAllText(ofdLoadUnitMovementDialog.FileName);
+                var jsonObjects = JsonConvert.DeserializeObject<List<UnitMovementData>>(jsonString);
+                var unitMovements = new Dictionary<long, List<UnitMovementData>>();
+                // Group by ObjId into a dictionary
+                foreach (var movement in jsonObjects)
+                {
+                    if (!string.IsNullOrWhiteSpace(filter) && !movement.Id.ToString().Contains(filter))
+                        continue;
+
+                    // Ignore if any of the coords are near zero (moving on a parent object)
+                    if ((movement.X <= 128f) || (movement.Y <= 128f) || (movement.Z >= 4192f))
+                        continue;
+
+
+                    if (!unitMovements.TryGetValue(movement.Id, out var unitMoveList))
+                    {
+                        unitMoveList = new List<UnitMovementData>();
+                        unitMovements.Add(movement.Id, unitMoveList);
+                    }
+                    unitMoveList.Add(movement);
+                }
+
+                foreach (var (objId, moveList)in unitMovements)
+                {
+                    var newPath = new MapViewPath();
+                    newPath.PathName = objId.ToString();
+                    newPath.TypeId = objId;
+                    foreach (var unitMovementData in moveList)
+                    {
+                        newPath.allpoints.Add(new Vector3(unitMovementData.X, unitMovementData.Y, unitMovementData.Z));
+                    }
+                    allPaths.Add(newPath);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                return;
+            }
+            
+        }
+        else
+        {
+            return;
+        }
+
+
+        if (allPaths.Count <= 0)
+            MessageBox.Show("Nothing to show ?");
+        else
+        {
+            var map = MapViewForm.GetMap();
+            map.Show();
+            if (map.GetPathCount() > 0)
+                if (MessageBox.Show("Keep current paths ?", "Add Unit Movement", MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) == DialogResult.No)
+                    map.ClearPaths();
+
+            foreach (var p in allPaths)
+                map.AddPath(p);
+
+            map.FocusAll(false, true, false);
+            map.tsbShowPath.Checked = true;
+        }
+
+        Cursor = Cursors.Default;
+        Application.UseWaitCursor = false;
+
+    }
+
+}
+
+internal class UnitMovementData
+{
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, Required = Required.Always)]
+    public long Id { get; set; }
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, Required = Required.DisallowNull)]
+    public long TemplateId { get; set; }
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, Required = Required.DisallowNull)]
+    public string Name { get; set; } = string.Empty;
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, Required = Required.DisallowNull)]
+    public float X { get; set; } = 0f;
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, Required = Required.Always)]
+    public float Y { get; set; } = 0f;
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, Required = Required.Always)]
+    public float Z { get; set; } = 0f;
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, Required = Required.Always)]
+    public float RotX { get; set; } = 0f;
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, Required = Required.DisallowNull)]
+    public float RotY { get; set; } = 0f;
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, Required = Required.DisallowNull)]
+    public float RotZ { get; set; } = 0f;
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, Required = Required.DisallowNull)]
+    public float VelX { get; set; } = 0f;
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, Required = Required.DisallowNull)]
+    public float VelY { get; set; } = 0f;
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, Required = Required.DisallowNull)]
+    public float VelZ { get; set; } = 0f;
+    [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate, Required = Required.DisallowNull)]
+    public float Scale {get; set; } = 1f;
 }

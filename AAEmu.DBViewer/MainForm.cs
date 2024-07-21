@@ -2684,5 +2684,10 @@ namespace AAEmu.DBViewer
             SaveProfiles();
             LoadProfiles();
         }
+
+        private void BtnLoadUntMovement_Click(object sender, EventArgs e)
+        {
+            DoLoadExportedUnitMovement();
+        }
     }
 }
