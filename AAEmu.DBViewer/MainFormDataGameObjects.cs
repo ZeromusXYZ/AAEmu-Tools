@@ -936,14 +936,24 @@ public partial class MainForm
             {
                 if (AADB.DB_Npc_Spawners.TryGetValue(npcSpawner.npc_spawner_id, out var spawner))
                 {
-                    var spawnerNode = spawnersNode.Nodes.Add("ID:" + npcSpawner.npc_spawner_id + (spawner.activation_state ? " (active)" : string.Empty));
-                    spawnerNode.Nodes.Add($"Category: {spawner.npc_spawner_category_id}");
+                    var spawnerNode = spawnersNode.Nodes.Add($"ID: {npcSpawner.npc_spawner_id} - {(spawner.npc_spawner_category_id == 0 ? "Normal" : "AutoCreated")} {(spawner.activation_state ? " (ActivationState)" : string.Empty)}");
+                    
+                    var npcsToSpawn = AADB.DB_Npc_Spawner_Npcs.Values.Where(x => x.npc_spawner_id == spawner.id).ToList();
+                    if (npcsToSpawn.Any())
+                    {
+                        var npcSpawnNode = spawnerNode.Nodes.Add("Spawns");
+                        foreach (var npcSpawnerNpc in npcsToSpawn)
+                        {
+                            AddCustomPropertyNode("npc_id", npcSpawnerNpc.member_id.ToString(), false, npcSpawnNode);
+                        }
+                    }
+
                     if (!string.IsNullOrWhiteSpace(spawner.name))
                         spawnerNode.Nodes.Add($"Name: {spawner.name}");
                     if (!string.IsNullOrWhiteSpace(spawner.comment))
                         spawnerNode.Nodes.Add($"Comment: {spawner.comment}");
 
-                    spawnerNode.Nodes.Add($"Activation State: {spawner.activation_state}");
+                    // spawnerNode.Nodes.Add($"Activation State: {spawner.activation_state}");
                     spawnerNode.Nodes.Add($"Save Indun: {spawner.save_indun}");
 
                     if (Math.Abs(spawner.spawn_delay_min - spawner.spawn_delay_max) < float.Epsilon)
