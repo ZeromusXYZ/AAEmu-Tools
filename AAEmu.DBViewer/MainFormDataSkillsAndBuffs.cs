@@ -335,6 +335,7 @@ public partial class MainForm
         var passiveSql = "SELECT * FROM passive_buffs ORDER BY id ASC";
         var slavePassiveSql = "SELECT * FROM slave_passive_buffs ORDER BY owner_id ASC";
         var slaveInitialSql = "SELECT * FROM slave_initial_buffs ORDER BY slave_id ASC";
+        var npPassiveSql = "SELECT * FROM np_passive_buffs ORDER BY owner_id ASC";
 
         using (var connection = SQLite.CreateConnection())
         {
@@ -537,6 +538,37 @@ public partial class MainForm
                         t.passive_buff_id = GetInt64(reader, "passive_buff_id");
 
                         AADB.DB_Slave_Passive_Buffs.Add(t.id, t);
+                        indx++;
+                    }
+                }
+            }
+
+            using (var command = connection.CreateCommand())
+            {
+                AADB.DB_Np_Passive_Buffs.Clear();
+                command.CommandText = npPassiveSql;
+                command.Prepare();
+                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                {
+                    List<string> columnNames = null;
+                    var readId = false;
+                    var indx = 1L;
+                    while (reader.Read())
+                    {
+                        // id field is not present after in 3.0.3.0
+                        if (columnNames == null)
+                        {
+                            columnNames = reader.GetColumnNames();
+                            readId = (columnNames.IndexOf("id") >= 0);
+                        }
+
+                        var t = new GameNpPassiveBuff();
+                        t.id = readId ? GetInt64(reader, "id") : indx;
+                        t.owner_id = GetInt64(reader, "owner_id");
+                        t.owner_type = GetString(reader, "owner_type");
+                        t.passive_buff_id = GetInt64(reader, "passive_buff_id");
+
+                        AADB.DB_Np_Passive_Buffs.Add(t.id, t);
                         indx++;
                     }
                 }
@@ -1664,7 +1696,6 @@ public partial class MainForm
 
     private void LoadUnitMods()
     {
-        AADB.DB_UnitReqs.Clear();
         using var connection = SQLite.CreateConnection();
         using var command = connection.CreateCommand();
         command.CommandText = "SELECT * FROM unit_modifiers";

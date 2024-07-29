@@ -1075,8 +1075,27 @@ public partial class MainForm
                 initialBuffsNode.Expand();
             else
                 tvNPCInfo.Nodes.Remove(initialBuffsNode);
+            #endregion
 
+            #region passive_buffs
+            var passiveBuffsNode = tvNPCInfo.Nodes.Add("Passive Buffs");
+            passiveBuffsNode.ImageIndex = 2;
+            passiveBuffsNode.SelectedImageIndex = 2;
+            var npPassiveBuffs = AADB.DB_Np_Passive_Buffs.Values.Where(x => x.owner_id == npc.id && x.owner_type == "Npc").ToList();
 
+            foreach (var npPassiveBuff in npPassiveBuffs)
+            {
+                var passiveBuffs = AADB.DB_Passive_Buffs.Values.Where(x => x.id == npPassiveBuff.passive_buff_id).ToList();
+                foreach (var passiveBuff in passiveBuffs)
+                {
+                    AddCustomPropertyNode("buff_id", passiveBuff.buff_id.ToString(), false, passiveBuffsNode);
+                }
+            }
+
+            if (passiveBuffsNode.Nodes.Count > 0)
+                passiveBuffsNode.Expand();
+            else
+                tvNPCInfo.Nodes.Remove(passiveBuffsNode);
             #endregion
 
             #region loot_drops

@@ -1142,6 +1142,14 @@ namespace AAEmu.DBDefs
         public long buff_id = 0;
     }
 
+    class GameNpPassiveBuff
+    {
+        public long id = 0;
+        public long owner_id = 0;
+        public string owner_type = string.Empty;
+        public long passive_buff_id = 0;
+    }
+
     class GameMountSkill
     {
         public long id = 0;
@@ -1443,6 +1451,7 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameBuffTrigger> DB_BuffTriggers = new Dictionary<long, GameBuffTrigger>();
         public static Dictionary<long, GameBuffModifier> DB_BuffModifiers = new Dictionary<long, GameBuffModifier>();
         public static Dictionary<long, GamePassiveBuff> DB_Passive_Buffs = new Dictionary<long, GamePassiveBuff>();
+        public static Dictionary<long, GameNpPassiveBuff> DB_Np_Passive_Buffs = new ();
         public static Dictionary<long, GameSlavePassiveBuff> DB_Slave_Passive_Buffs = new Dictionary<long, GameSlavePassiveBuff>();
         public static Dictionary<long, GameSlaveInitialBuff> DB_Slave_Initial_Buffs = new Dictionary<long, GameSlaveInitialBuff>();
         public static Dictionary<long, GameTransfers> DB_Transfers = new Dictionary<long, GameTransfers>();
