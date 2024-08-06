@@ -54,7 +54,7 @@
             // 
             tbServerIP.Location = new System.Drawing.Point(23, 28);
             tbServerIP.Name = "tbServerIP";
-            tbServerIP.PlaceholderText = "localhost";
+            tbServerIP.PlaceholderText = "localhost:3306";
             tbServerIP.Size = new System.Drawing.Size(174, 23);
             tbServerIP.TabIndex = 1;
             // 

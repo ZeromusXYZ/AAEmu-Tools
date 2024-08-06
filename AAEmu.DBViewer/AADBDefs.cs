@@ -1117,6 +1117,16 @@ namespace AAEmu.DBDefs
         public string param_template = string.Empty;
     }
 
+    class GameAiCommands
+    {
+        // Actual DB entries
+        public long id = 0;
+        public long cmd_set_id = 0;
+        public long cmd_id = 0;
+        public long param1 = 0;
+        public string param2 = string.Empty;
+    }
+
     class GamePassiveBuff
     {
         public long id = 0;
@@ -1477,6 +1487,7 @@ namespace AAEmu.DBDefs
         public static Dictionary<long, GameNpcInitialBuffs> DB_NpcInitialBuffs = new();
         public static Dictionary<long, GameNpcInteractions> DB_NpcInteractions = new();
         public static Dictionary<long, GameAiFiles> DB_AiFiles = new();
+        public static Dictionary<long, GameAiCommands> DB_AiCommands = new();
         public static Dictionary<long, GameScheduleItem> DB_ScheduleItems = new();
         public static Dictionary<long, GameGameSchedules> DB_GameSchedules = new();
         public static Dictionary<long, GameScheduleQuest> DB_ScheduleQuest = new();

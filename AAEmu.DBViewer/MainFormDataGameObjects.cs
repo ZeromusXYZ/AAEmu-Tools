@@ -335,6 +335,36 @@ public partial class MainForm
             }
         }
 
+        using (var connection = SQLite.CreateConnection())
+        {
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT * FROM ai_commands";
+                command.Prepare();
+                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                {
+                    AADB.DB_AiCommands.Clear();
+
+                    var columns = reader.GetColumnNames();
+                    var useId = columns.Contains("id");
+                    var id = 0u;
+
+                    while (reader.Read())
+                    {
+                        var t = new GameAiCommands();
+                        t.id = useId ? GetInt64(reader, "id") : id;
+                        t.cmd_set_id = GetInt64(reader, "cmd_set_id");
+                        t.cmd_id = GetInt64(reader, "cmd_id");
+                        t.param1 = GetInt64(reader, "param1");
+                        t.param2 = GetString(reader, "param2");
+
+                        id++;
+                        AADB.DB_AiCommands.Add(t.id, t);
+                    }
+                }
+            }
+        }
+
     }
 
     private void LoadDoodads()
@@ -925,6 +955,9 @@ public partial class MainForm
                     tvNPCInfo.Nodes.Add("AI Unknown FileId: " + npc.ai_file_id);
                 }
             }
+
+            // var aiCommands = AADB.DB_AiCommands.Values.Where(x => x.)
+
 
             #region spawners
             // Spawners

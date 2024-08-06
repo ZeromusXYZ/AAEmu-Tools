@@ -2,6 +2,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using AAEmu.DBEditor.utils;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
 using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
@@ -28,7 +29,9 @@ public partial class aaemu_login_context : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var conString = new MySqlConnectionStringBuilder();
-        conString.Server = AAEmu.DBEditor.Properties.Settings.Default.MySQLDB; // "127.0.0.1";
+        var (ip, port) = IpHelper.SplitAsHostAndPort(AAEmu.DBEditor.Properties.Settings.Default.MySQLDB, 3306);
+        conString.Server = ip; // "127.0.0.1";
+        conString.Port = port; // "3306";
         conString.Database = AAEmu.DBEditor.Properties.Settings.Default.MySQLLogin; // "aaemu_login";
         conString.UserID = AAEmu.DBEditor.Properties.Settings.Default.MySQLUser; // "root";
         conString.Password = AAEmu.DBEditor.Properties.Settings.Default.MySQLPassword; // "password";
