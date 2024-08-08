@@ -49,7 +49,7 @@ namespace AAEmu.DBViewer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\\\ArcheAge\\\\Working\\\\game_pak")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\ArcheAge\\Working\\game_pak")]
         public string GamePakFileName {
             get {
                 return ((string)(this["GamePakFileName"]));

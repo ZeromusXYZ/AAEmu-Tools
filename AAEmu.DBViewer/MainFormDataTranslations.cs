@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
-using AAEmu.DBDefs;
+using AAEmu.DBViewer.DbDefs;
 using AAEmu.Game.Utils.DB;
 
 namespace AAEmu.DBViewer;
@@ -11,13 +11,13 @@ public partial class MainForm
     private static void AddCustomTranslation(string table, string field, long idx, string val)
     {
         // Try overriding if empty
-        foreach (var tl in AADB.DB_Translations)
+        foreach (var tl in AaDb.DbTranslations)
         {
-            if ((tl.Value.idx == idx) && (tl.Value.table == table) && (tl.Value.field == field))
+            if ((tl.Value.Idx == idx) && (tl.Value.Table == table) && (tl.Value.Field == field))
             {
-                if (tl.Value.value == string.Empty)
+                if (tl.Value.Value == string.Empty)
                 {
-                    tl.Value.value = val;
+                    tl.Value.Value = val;
                 }
 
                 return;
@@ -26,12 +26,12 @@ public partial class MainForm
 
         // Not in table yet, add it
         GameTranslation t = new GameTranslation();
-        t.idx = idx;
-        t.table = table;
-        t.field = field;
-        t.value = val;
-        string k = t.table + ":" + t.field + ":" + t.idx.ToString();
-        AADB.DB_Translations.Add(k, t);
+        t.Idx = idx;
+        t.Table = table;
+        t.Field = field;
+        t.Value = val;
+        string k = t.Table + ":" + t.Field + ":" + t.Idx.ToString();
+        AaDb.DbTranslations.Add(k, t);
     }
 
     private static void AddCustomTranslations()
@@ -138,46 +138,23 @@ public partial class MainForm
         // End of Custom Translations
     }
 
-    private void GetLanguageSelectFromFiles(string mainDb)
-    {
-        cbItemSearchLanguage.Enabled = false;
-        cbItemSearchLanguage.Items.Clear();
-
-        foreach (var l in possibleLanguageIDs)
-        {
-            var localizedDb = Path.Combine(Path.GetDirectoryName(mainDb), l + Path.GetExtension(mainDb));
-            if (File.Exists(localizedDb))
-            {
-                cbItemSearchLanguage.Items.Add(l);
-            }
-        }
-    }
 
     private void LoadTranslations(string lng)
     {
-        var sql = "SELECT * FROM localized_texts ORDER BY tbl_name, tbl_column_name, idx";
-
         List<string> columnNames = null;
 
-        var overrideDb = "";
-
-        // TODO: If main DB doesn't have a localized_texts table, check if a external DB exists with the language name
-        if (!allTableNames.Contains("localized_texts"))
+        if (AllTableNames.GetValueOrDefault("localized_texts") != SQLite.SQLiteFileName)
         {
-            GetLanguageSelectFromFiles(SQLite.SQLiteFileName);
-            var localizedDb = Path.Combine(Path.GetDirectoryName(SQLite.SQLiteFileName),
-                lng + Path.GetExtension(SQLite.SQLiteFileName));
-            if (File.Exists(localizedDb))
-                overrideDb = localizedDb;
+            return;
         }
 
-        using (var connection = SQLite.CreateConnection(overrideDb))
+        using (var connection = SQLite.CreateConnection())
         {
             using (var command = connection.CreateCommand())
             {
-                AADB.DB_Translations.Clear();
+                AaDb.DbTranslations.Clear();
 
-                command.CommandText = sql;
+                command.CommandText = @"SELECT * FROM localized_texts ORDER BY tbl_name, tbl_column_name, idx";
                 command.Prepare();
                 //command.Parameters.AddWithValue("@lng", lng);
                 using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
@@ -223,13 +200,13 @@ public partial class MainForm
                         }
 
                         GameTranslation t = new GameTranslation();
-                        t.idx = GetInt64(reader, "idx");
-                        t.table = GetString(reader, "tbl_name");
-                        t.field = GetString(reader, "tbl_column_name");
+                        t.Idx = GetInt64(reader, "idx");
+                        t.Table = GetString(reader, "tbl_name");
+                        t.Field = GetString(reader, "tbl_column_name");
 
-                        t.value = GetString(reader, lng);
-                        string k = t.table + ":" + t.field + ":" + t.idx.ToString();
-                        AADB.DB_Translations.Add(k, t);
+                        t.Value = GetString(reader, lng);
+                        string k = t.Table + ":" + t.Field + ":" + t.Idx.ToString();
+                        AaDb.DbTranslations.Add(k, t);
                     }
 
                     Cursor = Cursors.Default;
@@ -239,32 +216,29 @@ public partial class MainForm
             }
         }
 
-        if ((columnNames != null) && (overrideDb == ""))
+        try
         {
-            try
-            {
-                cbItemSearchLanguage.Enabled = false;
+            cbItemSearchLanguage.Enabled = false;
 
-                List<string> availableLng = new List<string>();
-                foreach (var l in possibleLanguageIDs)
-                {
-                    if (columnNames.IndexOf(l) >= 0)
-                        availableLng.Add(l);
-                }
-
-                cbItemSearchLanguage.Items.Clear();
-                for (int i = 0; i < availableLng.Count; i++)
-                {
-                    var l = availableLng[i];
-                    cbItemSearchLanguage.Items.Add(l);
-                    if (l == lng)
-                        cbItemSearchLanguage.SelectedIndex = i;
-                }
-            }
-            catch
+            List<string> availableLng = new List<string>();
+            foreach (var l in PossibleLanguageIDs)
             {
-                // Do nothing
+                if (columnNames.IndexOf(l) >= 0)
+                    availableLng.Add(l);
             }
+
+            cbItemSearchLanguage.Items.Clear();
+            for (int i = 0; i < availableLng.Count; i++)
+            {
+                var l = availableLng[i];
+                cbItemSearchLanguage.Items.Add(l);
+                if (l == lng)
+                    cbItemSearchLanguage.SelectedIndex = i;
+            }
+        }
+        catch
+        {
+            // Do nothing
         }
 
         if (cbItemSearchLanguage.Items.Contains(lng))
@@ -275,38 +249,31 @@ public partial class MainForm
 
     private void LoadUiTexts()
     {
-        AADB.DB_UiTexts.Clear();
+        if (AllTableNames.GetValueOrDefault("ui_texts") != SQLite.SQLiteFileName)
+            return;
         var catCounter = new Dictionary<long, long>();
-        string sql = "SELECT * FROM ui_texts ORDER BY id ASC";
 
-        using (var connection = SQLite.CreateConnection())
+        using var connection = SQLite.CreateConnection();
+        using var command = connection.CreateCommand();
+        command.CommandText = "SELECT * FROM ui_texts ORDER BY id ASC";
+        command.Prepare();
+        using var reader = new SQLiteWrapperReader(command.ExecuteReader());
+        AaDb.DbIcons.Clear();
+        while (reader.Read())
         {
-            using (var command = connection.CreateCommand())
-            {
-                command.CommandText = sql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
-                {
-                    AADB.DB_Icons.Clear();
-                    while (reader.Read())
-                    {
-                        var t = new GameUiTexts();
+            var t = new GameUiTexts();
 
-                        t.id = GetInt64(reader, "id");
-                        t.key = GetString(reader, "key");
-                        t.text = GetString(reader, "text");
-                        t.category_id = GetInt64(reader, "category_id");
+            t.Id = GetInt64(reader, "id");
+            t.Key = GetString(reader, "key");
+            t.Text = GetString(reader, "text");
+            t.CategoryId = GetInt64(reader, "category_id");
 
-                        if (!catCounter.ContainsKey(t.category_id))
-                            catCounter.Add(t.category_id, 1);
+            catCounter.TryAdd(t.CategoryId, 1);
                             
-                        t.InCategoryIdx = catCounter[t.category_id];
-                        catCounter[t.category_id]++;
+            t.InCategoryIdx = catCounter[t.CategoryId];
+            catCounter[t.CategoryId]++;
 
-                        AADB.DB_UiTexts.Add(t.id, t);
-                    }
-                }
-            }
+            AaDb.DbUiTexts.Add(t.Id, t);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using AAEmu.DBDefs;
+using AAEmu.DBViewer.DbDefs;
 
 namespace AAEmu.DBViewer.enums
 {
@@ -63,7 +63,7 @@ namespace AAEmu.DBViewer.enums
         {
             var classNameOffset = AbilityNames.GetClassNameId(ability1, ability2, ability3);
             return classNameOffset >= 0
-            ? AADB.GetTranslationByID(1504 + classNameOffset,"ui_texts", "text","???")
+            ? AaDb.GetTranslationById(1504 + classNameOffset,"ui_texts", "text","???")
             : "Novice";
         }
     }

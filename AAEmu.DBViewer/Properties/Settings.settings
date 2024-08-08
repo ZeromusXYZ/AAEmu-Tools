@@ -9,7 +9,7 @@
       <Value Profile="(Default)">data\compact.sqlite3</Value>
     </Setting>
     <Setting Name="GamePakFileName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\\ArcheAge\\Working\\game_pak</Value>
+      <Value Profile="(Default)">C:\ArcheAge\Working\game_pak</Value>
     </Setting>
     <Setting Name="GridMode" Type="System.Byte" Scope="User">
       <Value Profile="(Default)">1</Value>

@@ -1,5 +1,4 @@
-﻿using AAEmu.DBDefs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -9,6 +8,7 @@ using System.Numerics;
 using System.Windows.Forms;
 using System.Xml;
 using AAEmu.DBViewer.utils;
+using AAEmu.DBViewer.DbDefs;
 
 namespace AAEmu.DBViewer
 {
@@ -91,7 +91,7 @@ namespace AAEmu.DBViewer
 
                 var locale = Properties.Settings.Default.DefaultGameLanguage;
 
-                foreach (var zgv in AADB.DB_Zone_Groups)
+                foreach (var zgv in AaDb.DbZoneGroups)
                 {
                     var zg = zgv.Value;
 
@@ -102,20 +102,20 @@ namespace AAEmu.DBViewer
                     if ((zg.PosAndSize.Width <= 0) || (zg.PosAndSize.Height <= 0))
                         continue;
 
-                    var iref = MapViewHelper.GetRefByImageMapId(zg.image_map);
-                    var mapFileName = zg.name;
+                    var iref = MapViewHelper.GetRefByImageMapId(zg.ImageMap);
+                    var mapFileName = zg.Name;
                     var level = MapLevel.Zone;
                     if (iref != null)
                     {
                         level = iref.Level;
-                        if (MainForm.ThisForm.pak.IsOpen)
+                        if (MainForm.ThisForm.Pak.IsOpen)
                         {
                             var fList = iref.GetPossibleFileNames(locale);
-                            // Here we only check if the name has a valid filename in the pak
+                            // Here we only check if the name has a valid filename in the Pak
                             // When actually loading, this will be repeated again to get the correct file
                             foreach (var fName in fList)
                             {
-                                if (MainForm.ThisForm.pak.FileExists(fName))
+                                if (MainForm.ThisForm.Pak.FileExists(fName))
                                 {
                                     mapFileName = iref.BaseFileName;
                                     break;
@@ -127,17 +127,17 @@ namespace AAEmu.DBViewer
                     if (level < MapLevel.Zone)
                         continue;
 
-                    var m = AddMap(zg.PosAndSize, zg.display_textLocalized + " (" + zg.id.ToString() + ")", mapFileName, level, zg.id);
+                    var m = AddMap(zg.PosAndSize, zg.DisplayTextLocalized + " (" + zg.Id.ToString() + ")", mapFileName, level, zg.Id);
                     //var m = AddMap(zg.PosAndSize, zg.display_textLocalized, "game/ui/map/road/", zg.name + "_road_100", MapLevel.Zone);
 
-                    if (zg.faction_chat_region_id == 2)
+                    if (zg.FactionChatRegionId == 2)
                         m.MapBorderColor = Color.DarkCyan;
-                    if (zg.faction_chat_region_id == 3)
+                    if (zg.FactionChatRegionId == 3)
                         m.MapBorderColor = Color.DarkGreen;
-                    if (zg.faction_chat_region_id == 4)
+                    if (zg.FactionChatRegionId == 4)
                         m.MapBorderColor = Color.DarkRed;
                     // If it has the Rough Sea (Turbulance) buff, it's the ocean, use a blue border
-                    if (zg.buff_id == 7743)
+                    if (zg.BuffId == 7743)
                     {
                         m.MapBorderColor = Color.Navy;
                         // m.MapLevel = MapLevel.Continent;
@@ -365,14 +365,14 @@ namespace AAEmu.DBViewer
 
                             var npc_spawner_npcs = new List<GameNpcSpawnerNpc>();
                             npc_spawner_npcs.Add(new GameNpcSpawnerNpc());
-                            if ((line.Contains("{SPAWNER_ID}")) && (PoI.SourceObject is GameNPC npc))
+                            if ((line.Contains("{SPAWNER_ID}")) && (PoI.SourceObject is GameNpc npc))
                             {
-                                npc_spawner_npcs = AADB.GetNpcSpawnerNpcsByNpcId(npc.id);
+                                npc_spawner_npcs = AaDb.GetNpcSpawnerNpcsByNpcId(npc.Id);
                                 if (npc_spawner_npcs.Count > 0)
                                 {
                                     spawnerEntries.Clear();
                                     foreach (var spawner in npc_spawner_npcs)
-                                        spawnerEntries.Add(spawner.npc_spawner_id);
+                                        spawnerEntries.Add(spawner.NpcSpawnerId);
                                 }
 
 
@@ -388,20 +388,20 @@ namespace AAEmu.DBViewer
                                 s = s.Replace("{RADIUS}", PoI.Radius.ToString());
                                 if (s.Contains("{SPAWNER_ID}"))
                                 {
-                                    if (entry.npc_spawner_id <= 0)
+                                    if (entry.NpcSpawnerId <= 0)
                                         continue; // skip is this entry does not have a spawner
-                                    s = s.Replace("{SPAWNER_ID}", entry.npc_spawner_id.ToString());
+                                    s = s.Replace("{SPAWNER_ID}", entry.NpcSpawnerId.ToString());
 
-                                    if (AADB.DB_Npc_Spawners.TryGetValue(entry.npc_spawner_id, out var spawner))
+                                    if (AaDb.DbNpcSpawners.TryGetValue(entry.NpcSpawnerId, out var spawner))
                                     {
-                                        s = s.Replace("{SPAWNER_MIN_POPULATION}", spawner.min_population.ToString());
-                                        s = s.Replace("{SPAWNER_MAX_POPULATION}", spawner.maxPopulation.ToString());
-                                        s = s.Replace("{SPAWNER_RESPAWN_DELAY_MIN}", spawner.spawn_delay_min.ToString());
-                                        s = s.Replace("{SPAWNER_RESPAWN_DELAY_MAX}", spawner.spawn_delay_max.ToString());
-                                        s = s.Replace("{SPAWNER_START_TIME}", spawner.startTime.ToString());
-                                        s = s.Replace("{SPAWNER_END_TIME}", spawner.endTime.ToString());
-                                        s = s.Replace("{SPAWNER_NAME}", spawner.name);
-                                        s = s.Replace("{SPAWNER_COMMENT}", spawner.comment);
+                                        s = s.Replace("{SPAWNER_MIN_POPULATION}", spawner.MinPopulation.ToString());
+                                        s = s.Replace("{SPAWNER_MAX_POPULATION}", spawner.MaxPopulation.ToString());
+                                        s = s.Replace("{SPAWNER_RESPAWN_DELAY_MIN}", spawner.SpawnDelayMin.ToString());
+                                        s = s.Replace("{SPAWNER_RESPAWN_DELAY_MAX}", spawner.SpawnDelayMax.ToString());
+                                        s = s.Replace("{SPAWNER_START_TIME}", spawner.StartTime.ToString());
+                                        s = s.Replace("{SPAWNER_END_TIME}", spawner.EndTime.ToString());
+                                        s = s.Replace("{SPAWNER_NAME}", spawner.Name);
+                                        s = s.Replace("{SPAWNER_COMMENT}", spawner.Comment);
                                     }
                                 }
                                 s = s.Replace("\\n", "\n");
@@ -465,7 +465,7 @@ namespace AAEmu.DBViewer
             var lastTopMap = topMostMap;
             var lastTopPath = topMostPath;
             var lastTopPoI = topMostPoI;
-            tsslCoords.Text = "X:" + cursorCoords.X.ToString() + " Y:" + cursorCoords.Y.ToString() + " | " + cellCursorText + " | " + AADB.CoordToSextant(cursorCoords.X, cursorCoords.Y);
+            tsslCoords.Text = "X:" + cursorCoords.X.ToString() + " Y:" + cursorCoords.Y.ToString() + " | " + cellCursorText + " | " + AaDb.CoordToSextant(cursorCoords.X, cursorCoords.Y);
             var zoneText = GetCursorZones();
             var pathText = GetCursorPaths();
             var poiText = GetCursorPoI();
@@ -896,17 +896,17 @@ namespace AAEmu.DBViewer
                         if ((tsbNamesPoI.Checked) || p.Equals(topMostPoI))
                         {
                             label = p.Name;
-                            if (p.Equals(topMostPoI) && (p.SourceObject is GameNPC npc))
+                            if (p.Equals(topMostPoI) && (p.SourceObject is GameNpc npc))
                             {
-                                var npc_spawner_npcs = AADB.GetNpcSpawnerNpcsByNpcId(npc.id);
+                                var npc_spawner_npcs = AaDb.GetNpcSpawnerNpcsByNpcId(npc.Id);
 
                                 if (npc_spawner_npcs.Count > 0)
                                 {
                                     if (npc_spawner_npcs.Count == 1)
-                                        label = string.Format("{0}\nSpawner: {1}", label, npc_spawner_npcs[0].npc_spawner_id);
+                                        label = string.Format("{0}\nSpawner: {1}", label, npc_spawner_npcs[0].NpcSpawnerId);
                                     else
                                     {
-                                        var ids = npc_spawner_npcs.Select(a => a.npc_spawner_id).ToList();
+                                        var ids = npc_spawner_npcs.Select(a => a.NpcSpawnerId).ToList();
                                         label = string.Format("{0}\nSpawners: {1}", label, string.Join(", ", ids));
                                     }
                                 }
@@ -966,11 +966,11 @@ namespace AAEmu.DBViewer
 
         private Bitmap PackedImageToBitmap(string packedFileFolder, string packedFileName)
         {
-            if (MainForm.ThisForm.pak.IsOpen)
+            if (MainForm.ThisForm.Pak.IsOpen)
             {
                 var fn = packedFileFolder + packedFileName;
 
-                if (MainForm.ThisForm.pak.FileExists(packedFileFolder + Properties.Settings.Default.DefaultGameLanguage + "/" + packedFileName))
+                if (MainForm.ThisForm.Pak.FileExists(packedFileFolder + Properties.Settings.Default.DefaultGameLanguage + "/" + packedFileName))
                 {
                     fn = packedFileFolder + Properties.Settings.Default.DefaultGameLanguage + "/" + packedFileName;
                 }
@@ -981,13 +981,13 @@ namespace AAEmu.DBViewer
 
         private Bitmap PackedImageToBitmap(string fn)
         {
-            if (MainForm.ThisForm.pak.IsOpen)
+            if (MainForm.ThisForm.Pak.IsOpen)
             {
-                if (MainForm.ThisForm.pak.FileExists(fn))
+                if (MainForm.ThisForm.Pak.FileExists(fn))
                 {
                     try
                     {
-                        var fStream = MainForm.ThisForm.pak.ExportFileAsStream(fn);
+                        var fStream = MainForm.ThisForm.Pak.ExportFileAsStream(fn);
                         return AAEmu.Tools.BitmapUtil.ReadDDSFromStream(fStream);
                     }
                     catch
@@ -1100,12 +1100,12 @@ namespace AAEmu.DBViewer
 
             // MainMap
             var fn = string.Empty;
-            if (MainForm.ThisForm.pak.IsOpen)
+            if (MainForm.ThisForm.Pak.IsOpen)
             {
                 var fList = MapViewImageRef.ListPossibleFileNames(fileName, Properties.Settings.Default.DefaultGameLanguage);
                 foreach (var fName in fList)
                 {
-                    if (MainForm.ThisForm.pak.FileExists(fName))
+                    if (MainForm.ThisForm.Pak.FileExists(fName))
                     {
                         fn = fName;
                         newMap.MapImageFile = fn;
@@ -1133,12 +1133,12 @@ namespace AAEmu.DBViewer
             {
                 newMap.RoadMapOffset = roadRef.Offset;
                 newMap.RoadMapCoords = roadRef.Rect;
-                if (MainForm.ThisForm.pak.IsOpen)
+                if (MainForm.ThisForm.Pak.IsOpen)
                 {
                     var fList = roadRef.GetPossibleFileNames(Properties.Settings.Default.DefaultGameLanguage);
                     foreach (var fName in fList)
                     {
-                        if (MainForm.ThisForm.pak.FileExists(fName))
+                        if (MainForm.ThisForm.Pak.FileExists(fName))
                         {
                             fn = fName;
                             newMap.RoadImageFile = fn;
@@ -1590,11 +1590,11 @@ namespace AAEmu.DBViewer
 
         static public MapViewWorldXML FindInstanceByZoneGroup(long zone_group_id)
         {
-            foreach (var zone in AADB.DB_Zones)
+            foreach (var zone in AaDb.DbZones)
             {
-                if (zone.Value.group_id == zone_group_id)
+                if (zone.Value.GroupId == zone_group_id)
                 {
-                    var inst = FindInstanceByZoneKey(zone.Value.zone_key);
+                    var inst = FindInstanceByZoneKey(zone.Value.ZoneKey);
                     if (inst != null)
                         return inst;
                 }

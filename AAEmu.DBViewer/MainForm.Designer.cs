@@ -30,9 +30,9 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("NPC");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Slave");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("NPC");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Slave");
             lbTableNames = new System.Windows.Forms.ListBox();
             tcViewer = new System.Windows.Forms.TabControl();
             tpSettings = new System.Windows.Forms.TabPage();
@@ -71,6 +71,8 @@
             Column50 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tSearchLocalized = new System.Windows.Forms.TextBox();
             tpMap = new System.Windows.Forms.TabPage();
+            label148 = new System.Windows.Forms.Label();
+            tExportedObjFilter = new System.Windows.Forms.TextBox();
             BtnLoadUntMovement = new System.Windows.Forms.Button();
             btnLoadAAEmuWater = new System.Windows.Forms.Button();
             btnShowEntityAreaShape = new System.Windows.Forms.Button();
@@ -645,8 +647,7 @@
             openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
             openFileDialog4 = new System.Windows.Forms.OpenFileDialog();
             ofdLoadUnitMovementDialog = new System.Windows.Forms.OpenFileDialog();
-            tExportedObjFilter = new System.Windows.Forms.TextBox();
-            label148 = new System.Windows.Forms.Label();
+            BtnAdditionalServerDb = new System.Windows.Forms.Button();
             tcViewer.SuspendLayout();
             tpSettings.SuspendLayout();
             tpTables.SuspendLayout();
@@ -779,6 +780,7 @@
             // 
             // tpSettings
             // 
+            tpSettings.Controls.Add(BtnAdditionalServerDb);
             tpSettings.Controls.Add(lAppVersion);
             tpSettings.Controls.Add(BtnDeleteProfile);
             tpSettings.Controls.Add(TSaveProfileName);
@@ -874,7 +876,7 @@
             lCurrentPakFile.Name = "lCurrentPakFile";
             lCurrentPakFile.Size = new System.Drawing.Size(117, 16);
             lCurrentPakFile.TabIndex = 22;
-            lCurrentPakFile.Text = "<no pak file loaded>";
+            lCurrentPakFile.Text = "<no Pak file loaded>";
             // 
             // label8
             // 
@@ -1184,6 +1186,24 @@
             tpMap.Text = "Map";
             tpMap.UseVisualStyleBackColor = true;
             // 
+            // label148
+            // 
+            label148.AutoSize = true;
+            label148.Location = new System.Drawing.Point(561, 271);
+            label148.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label148.Name = "label148";
+            label148.Size = new System.Drawing.Size(52, 16);
+            label148.TabIndex = 54;
+            label148.Text = "Filter by:";
+            // 
+            // tExportedObjFilter
+            // 
+            tExportedObjFilter.Location = new System.Drawing.Point(561, 291);
+            tExportedObjFilter.Margin = new System.Windows.Forms.Padding(4);
+            tExportedObjFilter.Name = "tExportedObjFilter";
+            tExportedObjFilter.Size = new System.Drawing.Size(199, 23);
+            tExportedObjFilter.TabIndex = 53;
+            // 
             // BtnLoadUntMovement
             // 
             BtnLoadUntMovement.Location = new System.Drawing.Point(285, 288);
@@ -1487,7 +1507,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 325);
-            splitContainer2.SplitterDistance = 313;
+            splitContainer2.SplitterDistance = 312;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1495,7 +1515,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(222, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(221, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1526,7 +1546,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(305, 294);
+            tvBuffTriggers.Size = new System.Drawing.Size(304, 294);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -4365,9 +4385,9 @@
             tvNPCInfo.Location = new System.Drawing.Point(8, 41);
             tvNPCInfo.Margin = new System.Windows.Forms.Padding(4);
             tvNPCInfo.Name = "tvNPCInfo";
-            treeNode1.Name = "SkillNode";
-            treeNode1.Text = "NPC";
-            tvNPCInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
+            treeNode4.Name = "SkillNode";
+            treeNode4.Text = "NPC";
+            tvNPCInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode4 });
             tvNPCInfo.SelectedImageIndex = 0;
             tvNPCInfo.Size = new System.Drawing.Size(430, 351);
             tvNPCInfo.TabIndex = 31;
@@ -4722,7 +4742,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(479, 514);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(478, 514);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4754,7 +4774,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(706, 503);
+            tvQuestWorkflow.Size = new System.Drawing.Size(705, 503);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -5535,9 +5555,9 @@
             tvSkill.Location = new System.Drawing.Point(7, 7);
             tvSkill.Margin = new System.Windows.Forms.Padding(4);
             tvSkill.Name = "tvSkill";
-            treeNode2.Name = "SkillNode";
-            treeNode2.Text = "Skill";
-            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
+            treeNode1.Name = "SkillNode";
+            treeNode1.Text = "Skill";
+            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
             tvSkill.SelectedImageIndex = 0;
             tvSkill.Size = new System.Drawing.Size(575, 327);
             tvSkill.TabIndex = 0;
@@ -5935,9 +5955,9 @@
             tvSlaveInfo.Location = new System.Drawing.Point(8, 58);
             tvSlaveInfo.Margin = new System.Windows.Forms.Padding(4);
             tvSlaveInfo.Name = "tvSlaveInfo";
-            treeNode3.Name = "SkillNode";
-            treeNode3.Text = "Slave";
-            tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode3 });
+            treeNode2.Name = "SkillNode";
+            treeNode2.Text = "Slave";
+            tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
             tvSlaveInfo.SelectedImageIndex = 0;
             tvSlaveInfo.Size = new System.Drawing.Size(368, 497);
             tvSlaveInfo.TabIndex = 32;
@@ -7420,23 +7440,16 @@
             ofdLoadUnitMovementDialog.Filter = "JSON Files|*.json|All Files|*.*";
             ofdLoadUnitMovementDialog.Title = "Open Unit Movement File";
             // 
-            // tExportedObjFilter
+            // BtnAdditionalServerDb
             // 
-            tExportedObjFilter.Location = new System.Drawing.Point(561, 291);
-            tExportedObjFilter.Margin = new System.Windows.Forms.Padding(4);
-            tExportedObjFilter.Name = "tExportedObjFilter";
-            tExportedObjFilter.Size = new System.Drawing.Size(199, 23);
-            tExportedObjFilter.TabIndex = 53;
-            // 
-            // label148
-            // 
-            label148.AutoSize = true;
-            label148.Location = new System.Drawing.Point(561, 271);
-            label148.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            label148.Name = "label148";
-            label148.Size = new System.Drawing.Size(52, 16);
-            label148.TabIndex = 54;
-            label148.Text = "Filter by:";
+            BtnAdditionalServerDb.Location = new System.Drawing.Point(233, 4);
+            BtnAdditionalServerDb.Margin = new System.Windows.Forms.Padding(4);
+            BtnAdditionalServerDb.Name = "BtnAdditionalServerDb";
+            BtnAdditionalServerDb.Size = new System.Drawing.Size(33, 28);
+            BtnAdditionalServerDb.TabIndex = 32;
+            BtnAdditionalServerDb.Text = "+";
+            BtnAdditionalServerDb.UseVisualStyleBackColor = true;
+            BtnAdditionalServerDb.Click += BtnAdditionalServerDb_Click;
             // 
             // MainForm
             // 
@@ -8196,6 +8209,7 @@
         private System.Windows.Forms.OpenFileDialog ofdLoadUnitMovementDialog;
         private System.Windows.Forms.Label label148;
         private System.Windows.Forms.TextBox tExportedObjFilter;
+        private System.Windows.Forms.Button BtnAdditionalServerDb;
     }
 }
 

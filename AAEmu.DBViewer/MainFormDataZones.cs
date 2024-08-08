@@ -4,7 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using AAEmu.DBDefs;
+using AAEmu.DBViewer.DbDefs;
 using AAEmu.Game.Utils.DB;
 
 namespace AAEmu.DBViewer
@@ -14,201 +14,201 @@ namespace AAEmu.DBViewer
         private void LoadZones()
         {
             // Zones
-            string sql = "SELECT * FROM zones ORDER BY id ASC";
-            using (var connection = SQLite.CreateConnection())
+            if (AllTableNames.GetValueOrDefault("zones") == SQLite.SQLiteFileName)
             {
-                using (var command = connection.CreateCommand())
+                using (var connection = SQLite.CreateConnection())
                 {
-                    AADB.DB_Zones.Clear();
-
-                    command.CommandText = sql;
-                    command.Prepare();
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    using (var command = connection.CreateCommand())
                     {
-                        Application.UseWaitCursor = true;
-                        Cursor = Cursors.WaitCursor;
-
-                        var columnNames = reader.GetColumnNames();
-                        bool hasAbox_show = (columnNames.IndexOf("abox_show") > 0);
-
-                        while (reader.Read())
+                        command.CommandText = "SELECT * FROM zones ORDER BY id ASC";
+                        command.Prepare();
+                        using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                         {
-                            GameZone t = new GameZone();
-                            t.id = GetInt64(reader, "id");
-                            t.name = GetString(reader, "name");
-                            t.zone_key = GetInt64(reader, "zone_key");
-                            t.group_id = GetInt64(reader, "group_id");
-                            t.closed = GetBool(reader, "closed");
-                            t.display_text = GetString(reader, "display_text");
-                            t.faction_id = GetInt64(reader, "faction_id");
-                            t.zone_climate_id = GetInt64(reader, "zone_climate_id");
+                            Application.UseWaitCursor = true;
+                            Cursor = Cursors.WaitCursor;
 
-                            if (hasAbox_show)
-                                t.abox_show = GetBool(reader, "abox_show");
-                            else
-                                t.abox_show = false;
+                            var columnNames = reader.GetColumnNames();
+                            bool hasAbox_show = (columnNames.IndexOf("abox_show") > 0);
 
-                            if (t.display_text != string.Empty)
-                                t.display_textLocalized =
-                                    AADB.GetTranslationByID(t.id, "zones", "display_text", t.display_text);
-                            else
-                                t.display_textLocalized = "";
-                            t.SearchString = t.name + " " + t.display_text + " " + t.display_textLocalized;
-                            t.SearchString = t.SearchString.ToLower();
+                            while (reader.Read())
+                            {
+                                GameZone t = new GameZone();
+                                t.Id = GetInt64(reader, "id");
+                                t.Name = GetString(reader, "name");
+                                t.ZoneKey = GetInt64(reader, "zone_key");
+                                t.GroupId = GetInt64(reader, "group_id");
+                                t.Closed = GetBool(reader, "closed");
+                                t.DisplayText = GetString(reader, "display_text");
+                                t.FactionId = GetInt64(reader, "faction_id");
+                                t.ZoneClimateId = GetInt64(reader, "zone_climate_id");
 
-                            AADB.DB_Zones.Add(t.id, t);
+                                if (hasAbox_show)
+                                    t.AboxShow = GetBool(reader, "abox_show");
+                                else
+                                    t.AboxShow = false;
+
+                                if (t.DisplayText != string.Empty)
+                                    t.DisplayTextLocalized =
+                                        AaDb.GetTranslationById(t.Id, "zones", "display_text", t.DisplayText);
+                                else
+                                    t.DisplayTextLocalized = "";
+                                t.SearchString = t.Name + " " + t.DisplayText + " " + t.DisplayTextLocalized;
+                                t.SearchString = t.SearchString.ToLower();
+
+                                AaDb.DbZones.Add(t.Id, t);
+                            }
+
+                            Cursor = Cursors.Default;
+                            Application.UseWaitCursor = false;
+
                         }
-
-                        Cursor = Cursors.Default;
-                        Application.UseWaitCursor = false;
-
                     }
                 }
             }
 
             // Zone_Groups
-            sql = "SELECT * FROM zone_groups ORDER BY id ASC";
-            using (var connection = SQLite.CreateConnection())
+            if (AllTableNames.GetValueOrDefault("zone_groups") == SQLite.SQLiteFileName)
             {
-                using (var command = connection.CreateCommand())
+                using (var connection = SQLite.CreateConnection())
                 {
-                    AADB.DB_Zone_Groups.Clear();
-
-                    command.CommandText = sql;
-                    command.Prepare();
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    using (var command = connection.CreateCommand())
                     {
-                        Application.UseWaitCursor = true;
-                        Cursor = Cursors.WaitCursor;
-
-                        while (reader.Read())
+                        command.CommandText = "SELECT * FROM zone_groups ORDER BY id ASC";
+                        command.Prepare();
+                        using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                         {
-                            GameZone_Groups t = new GameZone_Groups();
-                            t.id = GetInt64(reader, "id");
-                            t.name = GetString(reader, "name");
-                            var x = GetFloat(reader, "x");
-                            var y = GetFloat(reader, "y");
-                            var w = GetFloat(reader, "w");
-                            var h = GetFloat(reader, "h");
-                            t.PosAndSize = new RectangleF(x, y, w, h);
-                            t.image_map = GetInt64(reader, "image_map");
-                            t.sound_id = GetInt64(reader, "sound_id");
-                            t.target_id = GetInt64(reader, "target_id");
-                            t.display_text = GetString(reader, "display_text");
-                            t.faction_chat_region_id = GetInt64(reader, "faction_chat_region_id");
-                            t.sound_pack_id = GetInt64(reader, "sound_pack_id");
-                            t.pirate_desperado = GetBool(reader, "pirate_desperado");
-                            t.fishing_sea_loot_pack_id = GetInt64(reader, "fishing_sea_loot_pack_id");
-                            t.fishing_land_loot_pack_id = GetInt64(reader, "fishing_land_loot_pack_id");
-                            t.buff_id = GetInt64(reader, "buff_id");
+                            Application.UseWaitCursor = true;
+                            Cursor = Cursors.WaitCursor;
 
-                            if (t.display_text != string.Empty)
-                                t.display_textLocalized = AADB.GetTranslationByID(t.id, "zone_groups", "display_text",
-                                    t.display_text);
-                            else
-                                t.display_textLocalized = "";
-                            t.SearchString = t.name + " " + t.display_text + " " + t.display_textLocalized;
-                            t.SearchString = t.SearchString.ToLower();
+                            while (reader.Read())
+                            {
+                                GameZoneGroups t = new GameZoneGroups();
+                                t.Id = GetInt64(reader, "id");
+                                t.Name = GetString(reader, "name");
+                                var x = GetFloat(reader, "x");
+                                var y = GetFloat(reader, "y");
+                                var w = GetFloat(reader, "w");
+                                var h = GetFloat(reader, "h");
+                                t.PosAndSize = new RectangleF(x, y, w, h);
+                                t.ImageMap = GetInt64(reader, "image_map");
+                                t.SoundId = GetInt64(reader, "sound_id");
+                                t.TargetId = GetInt64(reader, "target_id");
+                                t.DisplayText = GetString(reader, "display_text");
+                                t.FactionChatRegionId = GetInt64(reader, "faction_chat_region_id");
+                                t.SoundPackId = GetInt64(reader, "sound_pack_id");
+                                t.PirateDesperado = GetBool(reader, "pirate_desperado");
+                                t.FishingSeaLootPackId = GetInt64(reader, "fishing_sea_loot_pack_id");
+                                t.FishingLandLootPackId = GetInt64(reader, "fishing_land_loot_pack_id");
+                                t.BuffId = GetInt64(reader, "buff_id");
 
-                            AADB.DB_Zone_Groups.Add(t.id, t);
+                                if (t.DisplayText != string.Empty)
+                                    t.DisplayTextLocalized = AaDb.GetTranslationById(t.Id, "zone_groups", "display_text",
+                                        t.DisplayText);
+                                else
+                                    t.DisplayTextLocalized = "";
+                                t.SearchString = t.Name + " " + t.DisplayText + " " + t.DisplayTextLocalized;
+                                t.SearchString = t.SearchString.ToLower();
+
+                                AaDb.DbZoneGroups.Add(t.Id, t);
+                            }
+
+                            Cursor = Cursors.Default;
+                            Application.UseWaitCursor = false;
+
                         }
-
-                        Cursor = Cursors.Default;
-                        Application.UseWaitCursor = false;
-
                     }
                 }
             }
 
             // World_Groups
-            sql = "SELECT * FROM world_groups ORDER BY id ASC";
-            using (var connection = SQLite.CreateConnection())
+            if (AllTableNames.GetValueOrDefault("world_groups") == SQLite.SQLiteFileName)
             {
-                using (var command = connection.CreateCommand())
+                using (var connection = SQLite.CreateConnection())
                 {
-                    AADB.DB_World_Groups.Clear();
-
-                    command.CommandText = sql;
-                    command.Prepare();
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    using (var command = connection.CreateCommand())
                     {
-                        Application.UseWaitCursor = true;
-                        Cursor = Cursors.WaitCursor;
-
-                        while (reader.Read())
+                        command.CommandText = "SELECT * FROM world_groups ORDER BY id ASC";
+                        command.Prepare();
+                        using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                         {
-                            GameWorld_Groups t = new GameWorld_Groups();
-                            t.id = GetInt64(reader, "id");
-                            t.name = GetString(reader, "name");
-                            int x = (int)GetInt64(reader, "x");
-                            int y = (int)GetInt64(reader, "y");
-                            int w = (int)GetInt64(reader, "w");
-                            int h = (int)GetInt64(reader, "h");
-                            int ix = (int)GetInt64(reader, "image_x");
-                            int iy = (int)GetInt64(reader, "image_y");
-                            int iw = (int)GetInt64(reader, "image_w");
-                            int ih = (int)GetInt64(reader, "image_h");
-                            t.PosAndSize = new Rectangle(x, y, w, h);
-                            t.Image_PosAndSize = new Rectangle(ix, iy, iw, ih);
-                            t.image_map = GetInt64(reader, "image_map");
-                            t.target_id = GetInt64(reader, "target_id");
+                            Application.UseWaitCursor = true;
+                            Cursor = Cursors.WaitCursor;
 
-                            t.SearchString = t.name.ToLower();
+                            while (reader.Read())
+                            {
+                                GameWorldGroups t = new GameWorldGroups();
+                                t.Id = GetInt64(reader, "id");
+                                t.Name = GetString(reader, "name");
+                                int x = (int)GetInt64(reader, "x");
+                                int y = (int)GetInt64(reader, "y");
+                                int w = (int)GetInt64(reader, "w");
+                                int h = (int)GetInt64(reader, "h");
+                                int ix = (int)GetInt64(reader, "image_x");
+                                int iy = (int)GetInt64(reader, "image_y");
+                                int iw = (int)GetInt64(reader, "image_w");
+                                int ih = (int)GetInt64(reader, "image_h");
+                                t.PosAndSize = new Rectangle(x, y, w, h);
+                                t.ImagePosAndSize = new Rectangle(ix, iy, iw, ih);
+                                t.ImageMap = GetInt64(reader, "image_map");
+                                t.TargetId = GetInt64(reader, "target_id");
 
-                            AADB.DB_World_Groups.Add(t.id, t);
+                                t.SearchString = t.Name.ToLower();
+
+                                AaDb.DbWorldGroups.Add(t.Id, t);
+                            }
+
+                            Cursor = Cursors.Default;
+                            Application.UseWaitCursor = false;
+
                         }
-
-                        Cursor = Cursors.Default;
-                        Application.UseWaitCursor = false;
-
                     }
                 }
             }
 
             // Conflict Zones
-            sql = "SELECT * FROM conflict_zones ORDER BY zone_group_id ASC";
-            using (var connection = SQLite.CreateConnection())
+            if (AllTableNames.GetValueOrDefault("conflict_zones") == SQLite.SQLiteFileName)
             {
-                using (var command = connection.CreateCommand())
+                using (var connection = SQLite.CreateConnection())
                 {
-                    AADB.DB_ConflictZones.Clear();
-
-                    command.CommandText = sql;
-                    command.Prepare();
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    using (var command = connection.CreateCommand())
                     {
-                        Application.UseWaitCursor = true;
-                        Cursor = Cursors.WaitCursor;
-
-                        while (reader.Read())
+                        command.CommandText = "SELECT * FROM conflict_zones ORDER BY zone_group_id ASC";
+                        command.Prepare();
+                        using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                         {
-                            var t = new GameConflictZones();
-                            t.zone_group_id = GetInt64(reader, "zone_group_id");
-                            t.num_kills_0 = GetInt64(reader, "num_kills_0");
-                            t.num_kills_1 = GetInt64(reader, "num_kills_1");
-                            t.num_kills_2 = GetInt64(reader, "num_kills_2");
-                            t.num_kills_3 = GetInt64(reader, "num_kills_3");
-                            t.num_kills_4 = GetInt64(reader, "num_kills_4");
-                            t.no_kill_min_0 = GetInt64(reader, "no_kill_min_0");
-                            t.no_kill_min_1 = GetInt64(reader, "no_kill_min_1");
-                            t.no_kill_min_2 = GetInt64(reader, "no_kill_min_2");
-                            t.no_kill_min_3 = GetInt64(reader, "no_kill_min_3");
-                            t.no_kill_min_4 = GetInt64(reader, "no_kill_min_4");
-                            t.conflict_min = GetInt64(reader, "conflict_min");
-                            t.war_min = GetInt64(reader, "war_min");
-                            t.peace_min = GetInt64(reader, "peace_min");
-                            t.peace_protected_faction_id = GetInt64(reader, "peace_protected_faction_id");
-                            t.nuia_return_point_id = GetInt64(reader, "nuia_return_point_id");
-                            t.harihara_return_point_id = GetInt64(reader, "harihara_return_point_id");
-                            t.war_tower_def_id = GetInt64(reader, "war_tower_def_id");
-                            t.peace_tower_def_id = GetInt64(reader, "peace_tower_def_id");
-                            t.closed = GetBool(reader, "closed");
+                            Application.UseWaitCursor = true;
+                            Cursor = Cursors.WaitCursor;
 
-                            AADB.DB_ConflictZones.Add(t.zone_group_id, t);
+                            while (reader.Read())
+                            {
+                                var t = new GameConflictZones();
+                                t.ZoneGroupId = GetInt64(reader, "zone_group_id");
+                                t.NumKills0 = GetInt64(reader, "num_kills_0");
+                                t.NumKills1 = GetInt64(reader, "num_kills_1");
+                                t.NumKills2 = GetInt64(reader, "num_kills_2");
+                                t.NumKills3 = GetInt64(reader, "num_kills_3");
+                                t.NumKills4 = GetInt64(reader, "num_kills_4");
+                                t.NoKillMin0 = GetInt64(reader, "no_kill_min_0");
+                                t.NoKillMin1 = GetInt64(reader, "no_kill_min_1");
+                                t.NoKillMin2 = GetInt64(reader, "no_kill_min_2");
+                                t.NoKillMin3 = GetInt64(reader, "no_kill_min_3");
+                                t.NoKillMin4 = GetInt64(reader, "no_kill_min_4");
+                                t.ConflictMin = GetInt64(reader, "conflict_min");
+                                t.WarMin = GetInt64(reader, "war_min");
+                                t.PeaceMin = GetInt64(reader, "peace_min");
+                                t.PeaceProtectedFactionId = GetInt64(reader, "peace_protected_faction_id");
+                                t.NuiaReturnPointId = GetInt64(reader, "nuia_return_point_id");
+                                t.HariharaReturnPointId = GetInt64(reader, "harihara_return_point_id");
+                                t.WarTowerDefId = GetInt64(reader, "war_tower_def_id");
+                                t.PeaceTowerDefId = GetInt64(reader, "peace_tower_def_id");
+                                t.Closed = GetBool(reader, "closed");
+
+                                AaDb.DbConflictZones.Add(t.ZoneGroupId, t);
+                            }
+
+                            Cursor = Cursors.Default;
+                            Application.UseWaitCursor = false;
                         }
-
-                        Cursor = Cursors.Default;
-                        Application.UseWaitCursor = false;
                     }
                 }
             }
@@ -216,55 +216,47 @@ namespace AAEmu.DBViewer
 
         private void LoadZoneGroupBannedTags()
         {
-            var sql = "SELECT * FROM zone_group_banned_tags ORDER BY id ASC";
-
-            using (var connection = SQLite.CreateConnection())
+            if (AllTableNames.GetValueOrDefault("zone_group_banned_tags") == SQLite.SQLiteFileName)
             {
-                using (var command = connection.CreateCommand())
+                using var connection = SQLite.CreateConnection();
+                using var command = connection.CreateCommand();
+                command.CommandText = "SELECT * FROM zone_group_banned_tags ORDER BY id ASC";
+                command.Prepare();
+                using var reader = new SQLiteWrapperReader(command.ExecuteReader());
+                Application.UseWaitCursor = true;
+                Cursor = Cursors.WaitCursor;
+                var colNames = reader.GetColumnNames();
+
+                while (reader.Read())
                 {
-                    AADB.DB_Zone_Group_Banned_Tags.Clear();
-
-                    command.CommandText = sql;
-                    command.Prepare();
-                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    if (!reader.IsDBNull("id"))
                     {
-                        Application.UseWaitCursor = true;
-                        Cursor = Cursors.WaitCursor;
-                        var colNames = reader.GetColumnNames();
-
-                        while (reader.Read())
-                        {
-                            if (!reader.IsDBNull("id"))
-                            {
-                                GameZoneGroupBannedTags t = new GameZoneGroupBannedTags();
-                                t.id = GetInt64(reader, "id");
-                                t.zone_group_id = GetInt64(reader, "zone_group_id");
-                                t.tag_id = GetInt64(reader, "tag_id");
-                                if (colNames.Contains("banned_periods_id"))
-                                    t.banned_periods_id = GetInt64(reader, "banned_periods_id");
-                                else if (colNames.Contains("banned_periods"))
-                                    t.banned_periods_id = GetInt64(reader, "banned_periods");
-                                else
-                                    t.banned_periods_id = 0;
-                                if (colNames.Contains("usage"))
-                                    t.usage = GetString(reader, "usage");
-                                else
-                                    t.usage = String.Empty;
-                                AADB.DB_Zone_Group_Banned_Tags.Add(t.id, t);
-                            }
-                        }
-
-                        Cursor = Cursors.Default;
-                        Application.UseWaitCursor = false;
+                        GameZoneGroupBannedTags t = new GameZoneGroupBannedTags();
+                        t.Id = GetInt64(reader, "id");
+                        t.ZoneGroupId = GetInt64(reader, "zone_group_id");
+                        t.TagId = GetInt64(reader, "tag_id");
+                        if (colNames.Contains("banned_periods_id"))
+                            t.BannedPeriodsId = GetInt64(reader, "banned_periods_id");
+                        else if (colNames.Contains("banned_periods"))
+                            t.BannedPeriodsId = GetInt64(reader, "banned_periods");
+                        else
+                            t.BannedPeriodsId = 0;
+                        if (colNames.Contains("usage"))
+                            t.Usage = GetString(reader, "usage");
+                        else
+                            t.Usage = string.Empty;
+                        AaDb.DbZoneGroupBannedTags.Add(t.Id, t);
                     }
                 }
-            }
 
+                Cursor = Cursors.Default;
+                Application.UseWaitCursor = false;
+            }
         }
 
-        private static GameZone_Groups GetZoneGroupById(long zoneGroupId)
+        private static GameZoneGroups GetZoneGroupById(long zoneGroupId)
         {
-            if (AADB.DB_Zone_Groups.TryGetValue(zoneGroupId, out var zg))
+            if (AaDb.DbZoneGroups.TryGetValue(zoneGroupId, out var zg))
                 return zg;
             else
                 return null;
@@ -274,32 +266,32 @@ namespace AAEmu.DBViewer
         {
             bool blank_zone_groups = false;
             bool blank_world_groups = false;
-            if (AADB.DB_Zones.TryGetValue(idx, out var zone))
+            if (AaDb.DbZones.TryGetValue(idx, out var zone))
             {
                 // From Zones
-                lZoneID.Text = zone.id.ToString();
-                if (zone.closed)
-                    lZoneDisplayName.Text = zone.display_textLocalized + " (closed)";
+                lZoneID.Text = zone.Id.ToString();
+                if (zone.Closed)
+                    lZoneDisplayName.Text = zone.DisplayTextLocalized + " (closed)";
                 else
-                    lZoneDisplayName.Text = zone.display_textLocalized;
-                lZoneName.Text = zone.name;
-                lZoneKey.Text = zone.zone_key.ToString();
-                lZoneGroupID.Text = zone.group_id.ToString();
-                lZoneFactionID.Text = zone.faction_id.ToString();
-                btnFindQuestsInZone.Tag = zone.id;
-                btnFindQuestsInZone.Enabled = (zone.id > 0);
-                btnFindTransferPathsInZone.Tag = zone.zone_key;
+                    lZoneDisplayName.Text = zone.DisplayTextLocalized;
+                lZoneName.Text = zone.Name;
+                lZoneKey.Text = zone.ZoneKey.ToString();
+                lZoneGroupID.Text = zone.GroupId.ToString();
+                lZoneFactionID.Text = zone.FactionId.ToString();
+                btnFindQuestsInZone.Tag = zone.Id;
+                btnFindQuestsInZone.Enabled = (zone.Id > 0);
+                btnFindTransferPathsInZone.Tag = zone.ZoneKey;
 
-                var zg = GetZoneGroupById(zone.group_id);
+                var zg = GetZoneGroupById(zone.GroupId);
                 // From Zone_Groups
                 if (zg != null)
                 {
-                    lZoneGroupsDisplayName.Text = zg.display_textLocalized;
-                    lZoneGroupsName.Text = zg.name;
-                    string zoneNPCFile = zg.GamePakZoneNPCsDat();
-                    if ((pak.IsOpen) && (pak.FileExists(zoneNPCFile)))
+                    lZoneGroupsDisplayName.Text = zg.DisplayTextLocalized;
+                    lZoneGroupsName.Text = zg.Name;
+                    string zoneNPCFile = zg.GamePakZoneNpCsDat();
+                    if ((Pak.IsOpen) && (Pak.FileExists(zoneNPCFile)))
                     {
-                        btnFindNPCsInZone.Tag = zg.id;
+                        btnFindNPCsInZone.Tag = zg.Id;
                         btnFindNPCsInZone.Enabled = true;
                     }
                     else
@@ -309,9 +301,9 @@ namespace AAEmu.DBViewer
                     }
 
                     string zoneDoodadFile = zg.GamePakZoneDoodadsDat();
-                    if ((pak.IsOpen) && (pak.FileExists(zoneDoodadFile)))
+                    if ((Pak.IsOpen) && (Pak.FileExists(zoneDoodadFile)))
                     {
-                        btnFindDoodadsInZone.Tag = zg.id;
+                        btnFindDoodadsInZone.Tag = zg.Id;
                         btnFindDoodadsInZone.Enabled = true;
                     }
                     else
@@ -324,16 +316,16 @@ namespace AAEmu.DBViewer
                                               zg.PosAndSize.Y.ToString("0.0") + "  W:" +
                                               zg.PosAndSize.Width.ToString("0.0") + " H:" +
                                               zg.PosAndSize.Height.ToString("0.0");
-                    lZoneGroupsImageMap.Text = zg.image_map.ToString();
-                    lZoneGroupsSoundID.Text = zg.sound_id.ToString();
-                    lZoneGroupsSoundPackID.Text = zg.sound_pack_id.ToString();
-                    lZoneGroupsTargetID.Text = zg.target_id.ToString();
-                    lZoneGroupsFactionChatID.Text = zg.faction_chat_region_id.ToString();
-                    lZoneGroupsPirateDesperado.Text = zg.pirate_desperado.ToString();
-                    lZoneGroupsBuffID.Text = zg.buff_id.ToString();
-                    if (zg.fishing_sea_loot_pack_id > 0)
+                    lZoneGroupsImageMap.Text = zg.ImageMap.ToString();
+                    lZoneGroupsSoundID.Text = zg.SoundId.ToString();
+                    lZoneGroupsSoundPackID.Text = zg.SoundPackId.ToString();
+                    lZoneGroupsTargetID.Text = zg.TargetId.ToString();
+                    lZoneGroupsFactionChatID.Text = zg.FactionChatRegionId.ToString();
+                    lZoneGroupsPirateDesperado.Text = zg.PirateDesperado.ToString();
+                    lZoneGroupsBuffID.Text = zg.BuffId.ToString();
+                    if (zg.FishingSeaLootPackId > 0)
                     {
-                        btnZoneGroupsSaltWaterFish.Tag = zg.fishing_sea_loot_pack_id;
+                        btnZoneGroupsSaltWaterFish.Tag = zg.FishingSeaLootPackId;
                         btnZoneGroupsSaltWaterFish.Enabled = true;
                     }
                     else
@@ -342,9 +334,9 @@ namespace AAEmu.DBViewer
                         btnZoneGroupsSaltWaterFish.Enabled = false;
                     }
 
-                    if (zg.fishing_land_loot_pack_id > 0)
+                    if (zg.FishingLandLootPackId > 0)
                     {
-                        btnZoneGroupsFreshWaterFish.Tag = zg.fishing_land_loot_pack_id;
+                        btnZoneGroupsFreshWaterFish.Tag = zg.FishingLandLootPackId;
                         btnZoneGroupsFreshWaterFish.Enabled = true;
                     }
                     else
@@ -355,18 +347,18 @@ namespace AAEmu.DBViewer
 
                     var bannedTagsCount = 0;
                     var bannedInfo = string.Empty;
-                    foreach (var b in AADB.DB_Zone_Group_Banned_Tags)
+                    foreach (var b in AaDb.DbZoneGroupBannedTags)
                     {
-                        if (b.Value.zone_group_id == zg.id)
+                        if (b.Value.ZoneGroupId == zg.Id)
                         {
                             bannedTagsCount++;
-                            if (AADB.DB_Tags.TryGetValue(b.Value.tag_id, out var tag))
+                            if (AaDb.DbTags.TryGetValue(b.Value.TagId, out var tag))
                             {
-                                bannedInfo += tag.id + " - " + tag.nameLocalized + "\r\n";
+                                bannedInfo += tag.Id + " - " + tag.NameLocalized + "\r\n";
                             }
                             else
                             {
-                                bannedInfo += tag.id + " - [Unknown Tag]\r\n";
+                                bannedInfo += tag.Id + " - [Unknown Tag]\r\n";
                             }
                         }
                     }
@@ -383,25 +375,25 @@ namespace AAEmu.DBViewer
                     {
                         labelZoneGroupRestrictions.Text = "(" + bannedTagsCount.ToString() + " restrictions)";
                         labelZoneGroupRestrictions.ForeColor = System.Drawing.Color.Red;
-                        labelZoneGroupRestrictions.Tag = zg.id;
+                        labelZoneGroupRestrictions.Tag = zg.Id;
                         mainFormToolTip.ToolTipTitle = "Banned ZoneGroup Tags";
                         mainFormToolTip.SetToolTip(labelZoneGroupRestrictions, bannedInfo);
                     }
 
                     // From World_Group
-                    if (AADB.DB_World_Groups.TryGetValue(zg.target_id, out var wg))
+                    if (AaDb.DbWorldGroups.TryGetValue(zg.TargetId, out var wg))
                     {
-                        lWorldGroupName.Text = wg.name;
+                        lWorldGroupName.Text = wg.Name;
                         lWorldGroupSizeAndPos.Text = "X:" + wg.PosAndSize.X.ToString() + " Y:" +
                                                      wg.PosAndSize.Y.ToString() + "  W:" +
                                                      wg.PosAndSize.Width.ToString() + " H:" +
                                                      wg.PosAndSize.Height.ToString();
-                        lWorldGroupImageSizeAndPos.Text = "X:" + wg.Image_PosAndSize.X.ToString() + " Y:" +
-                                                          wg.Image_PosAndSize.Y.ToString() + "  W:" +
-                                                          wg.Image_PosAndSize.Width.ToString() + " H:" +
-                                                          wg.Image_PosAndSize.Height.ToString();
-                        lWorldGroupImageMap.Text = wg.image_map.ToString();
-                        lWorldGroupTargetID.Text = wg.target_id.ToString();
+                        lWorldGroupImageSizeAndPos.Text = "X:" + wg.ImagePosAndSize.X.ToString() + " Y:" +
+                                                          wg.ImagePosAndSize.Y.ToString() + "  W:" +
+                                                          wg.ImagePosAndSize.Width.ToString() + " H:" +
+                                                          wg.ImagePosAndSize.Height.ToString();
+                        lWorldGroupImageMap.Text = wg.ImageMap.ToString();
+                        lWorldGroupTargetID.Text = wg.TargetId.ToString();
                     }
                     else
                     {
@@ -416,7 +408,7 @@ namespace AAEmu.DBViewer
                 }
 
                 // Other Info
-                var inst = MapViewWorldXML.FindInstanceByZoneKey(zone.zone_key);
+                var inst = MapViewWorldXML.FindInstanceByZoneKey(zone.ZoneKey);
                 if (inst != null)
                     lZoneInstance.Text = inst.WorldName;
                 else
@@ -501,26 +493,26 @@ namespace AAEmu.DBViewer
 
             var first = true;
             dgvZones.Rows.Clear();
-            foreach (var t in AADB.DB_Zones)
+            foreach (var t in AaDb.DbZones)
             {
                 var z = t.Value;
-                if ((z.id == searchId) || (z.zone_key == searchId) || (z.group_id == searchId) ||
+                if ((z.Id == searchId) || (z.ZoneKey == searchId) || (z.GroupId == searchId) ||
                     (z.SearchString.IndexOf(searchText, StringComparison.InvariantCulture) >= 0))
                 {
                     var line = dgvZones.Rows.Add();
                     var row = dgvZones.Rows[line];
 
-                    row.Cells[0].Value = z.id.ToString();
-                    row.Cells[1].Value = z.name;
-                    row.Cells[2].Value = z.group_id.ToString();
-                    row.Cells[3].Value = z.zone_key.ToString();
-                    row.Cells[4].Value = z.display_textLocalized;
-                    row.Cells[5].Value = z.closed.ToString();
+                    row.Cells[0].Value = z.Id.ToString();
+                    row.Cells[1].Value = z.Name;
+                    row.Cells[2].Value = z.GroupId.ToString();
+                    row.Cells[3].Value = z.ZoneKey.ToString();
+                    row.Cells[4].Value = z.DisplayTextLocalized;
+                    row.Cells[5].Value = z.Closed.ToString();
 
                     if (first)
                     {
                         first = false;
-                        ShowDbZone(z.id);
+                        ShowDbZone(z.Id);
                     }
 
                 }
@@ -536,23 +528,23 @@ namespace AAEmu.DBViewer
         {
             var first = true;
             dgvZones.Rows.Clear();
-            foreach (var t in AADB.DB_Zones)
+            foreach (var t in AaDb.DbZones)
             {
                 var z = t.Value;
                 var line = dgvZones.Rows.Add();
                 var row = dgvZones.Rows[line];
 
-                row.Cells[0].Value = z.id.ToString();
-                row.Cells[1].Value = z.name;
-                row.Cells[2].Value = z.group_id.ToString();
-                row.Cells[3].Value = z.zone_key.ToString();
-                row.Cells[4].Value = z.display_textLocalized;
-                row.Cells[5].Value = z.closed.ToString();
+                row.Cells[0].Value = z.Id.ToString();
+                row.Cells[1].Value = z.Name;
+                row.Cells[2].Value = z.GroupId.ToString();
+                row.Cells[3].Value = z.ZoneKey.ToString();
+                row.Cells[4].Value = z.DisplayTextLocalized;
+                row.Cells[5].Value = z.Closed.ToString();
 
                 if (first)
                 {
                     first = false;
-                    ShowDbZone(z.id);
+                    ShowDbZone(z.Id);
                 }
             }
 
@@ -603,10 +595,10 @@ namespace AAEmu.DBViewer
         {
             List<MapSpawnLocation> res = new List<MapSpawnLocation>();
             var zg = GetZoneGroupById(zoneGroupId);
-            if ((zg != null) && (pak.IsOpen) && (pak.FileExists(zg.GamePakZoneNPCsDat(instanceName))))
+            if ((zg != null) && (Pak.IsOpen) && (Pak.FileExists(zg.GamePakZoneNpCsDat(instanceName))))
             {
                 // Open .dat file and read it's contents
-                using (var fs = pak.ExportFileAsStream(zg.GamePakZoneNPCsDat(instanceName)))
+                using (var fs = Pak.ExportFileAsStream(zg.GamePakZoneNpCsDat(instanceName)))
                 {
                     int indexCount = ((int)fs.Length / 16);
                     using (var reader = new BinaryReader(fs))
@@ -659,7 +651,7 @@ namespace AAEmu.DBViewer
                     var zg = GetZoneGroupById(ZoneGroupId);
                     string ZoneGroupFile = string.Empty;
                     if (zg != null)
-                        ZoneGroupFile = zg.GamePakZoneNPCsDat();
+                        ZoneGroupFile = zg.GamePakZoneNpCsDat();
 
                     if (zg != null)
                     {
@@ -674,7 +666,7 @@ namespace AAEmu.DBViewer
                                     MessageBoxIcon.Question) == DialogResult.No)
                                 map.ClearPoI();
 
-                        npcList.AddRange(GetNpcSpawnsInZoneGroup(zg.id, false));
+                        npcList.AddRange(GetNpcSpawnsInZoneGroup(zg.Id, false));
 
                         if (npcList.Count > 0)
                         {
@@ -691,28 +683,28 @@ namespace AAEmu.DBViewer
                                 int c = 0;
                                 foreach (var npc in npcList)
                                 {
-                                    if (AADB.DB_NPCs.TryGetValue(npc.id, out var z))
+                                    if (AaDb.DbNpCs.TryGetValue(npc.id, out var z))
                                     {
                                         var line = dgvNPCs.Rows.Add();
                                         var row = dgvNPCs.Rows[line];
 
-                                        row.Cells[0].Value = z.id.ToString();
-                                        row.Cells[1].Value = z.nameLocalized;
-                                        row.Cells[2].Value = z.level.ToString();
-                                        row.Cells[3].Value = z.npc_kind_id.ToString();
-                                        row.Cells[4].Value = z.npc_grade_id.ToString();
-                                        row.Cells[5].Value = AADB.GetFactionName(z.faction_id, true);
+                                        row.Cells[0].Value = z.Id.ToString();
+                                        row.Cells[1].Value = z.NameLocalized;
+                                        row.Cells[2].Value = z.Level.ToString();
+                                        row.Cells[3].Value = z.NpcKindId.ToString();
+                                        row.Cells[4].Value = z.NpcGradeId.ToString();
+                                        row.Cells[5].Value = AaDb.GetFactionName(z.FactionId, true);
 
-                                        var npc_spawner_npcs = AADB.GetNpcSpawnerNpcsByNpcId(z.id);
+                                        var npc_spawner_npcs = AaDb.GetNpcSpawnerNpcsByNpcId(z.Id);
 
                                         if (npc_spawner_npcs.Count > 0)
                                         {
                                             if (npc_spawner_npcs.Count == 1)
                                                 row.Cells[6].Value = string.Format("Used by 1 spawner, {0}",
-                                                    npc_spawner_npcs[0].npc_spawner_id);
+                                                    npc_spawner_npcs[0].NpcSpawnerId);
                                             else
                                             {
-                                                var ids = npc_spawner_npcs.Select(a => a.npc_spawner_id).ToList();
+                                                var ids = npc_spawner_npcs.Select(a => a.NpcSpawnerId).ToList();
                                                 row.Cells[6].Value = string.Format("Used by {0} spawners, {1}",
                                                     ids.Count,
                                                     string.Join(", ", ids));
@@ -733,7 +725,7 @@ namespace AAEmu.DBViewer
                                         }
 
                                         map.AddPoI(npc.x, npc.y, npc.z,
-                                            z.nameLocalized + " (" + npc.id.ToString() + ")",
+                                            z.NameLocalized + " (" + npc.id.ToString() + ")",
                                             Color.Yellow, 0f, "npc", npc.id, z);
                                     }
                                     else
@@ -775,10 +767,10 @@ namespace AAEmu.DBViewer
                     Cursor = Cursors.WaitCursor;
                     dgvQuests.Hide();
 
-                    foreach (var quest in AADB.DB_Quest_Contexts)
+                    foreach (var quest in AaDb.DbQuestContexts)
                     {
                         var q = quest.Value;
-                        if (q.zone_id == zoneid)
+                        if (q.ZoneId == zoneid)
                         {
                             if (first)
                             {
@@ -789,23 +781,23 @@ namespace AAEmu.DBViewer
                             var line = dgvQuests.Rows.Add();
                             var row = dgvQuests.Rows[line];
 
-                            row.Cells[0].Value = q.id.ToString();
-                            row.Cells[1].Value = q.nameLocalized;
-                            row.Cells[2].Value = q.level.ToString();
-                            if (AADB.DB_Zones.TryGetValue(q.zone_id, out var z))
+                            row.Cells[0].Value = q.Id.ToString();
+                            row.Cells[1].Value = q.NameLocalized;
+                            row.Cells[2].Value = q.Level.ToString();
+                            if (AaDb.DbZones.TryGetValue(q.ZoneId, out var z))
                             {
-                                if (AADB.DB_Zone_Groups.TryGetValue(z.group_id, out var zg))
-                                    row.Cells[3].Value = zg.display_textLocalized;
+                                if (AaDb.DbZoneGroups.TryGetValue(z.GroupId, out var zg))
+                                    row.Cells[3].Value = zg.DisplayTextLocalized;
                                 else
-                                    row.Cells[3].Value = z.display_textLocalized;
+                                    row.Cells[3].Value = z.DisplayTextLocalized;
                             }
                             else
-                                row.Cells[3].Value = q.zone_id.ToString();
+                                row.Cells[3].Value = q.ZoneId.ToString();
 
-                            if (AADB.DB_Quest_Categories.TryGetValue(q.category_id, out var qc))
-                                row.Cells[4].Value = qc.nameLocalized;
+                            if (AaDb.DbQuestCategories.TryGetValue(q.CategoryId, out var qc))
+                                row.Cells[4].Value = qc.NameLocalized;
                             else
-                                row.Cells[4].Value = q.category_id.ToString();
+                                row.Cells[4].Value = q.CategoryId.ToString();
                         }
                     }
 
@@ -828,13 +820,13 @@ namespace AAEmu.DBViewer
             var zoneGroupId = (long)l.Tag;
             var bannedInfo = string.Empty;
             ;
-            foreach (var b in AADB.DB_Zone_Group_Banned_Tags)
+            foreach (var b in AaDb.DbZoneGroupBannedTags)
             {
-                if (b.Value.zone_group_id == zoneGroupId)
+                if (b.Value.ZoneGroupId == zoneGroupId)
                 {
-                    if (AADB.DB_Tags.TryGetValue(b.Value.tag_id, out var tag))
+                    if (AaDb.DbTags.TryGetValue(b.Value.TagId, out var tag))
                     {
-                        bannedInfo += tag.id + " - " + tag.nameLocalized + "\r\n";
+                        bannedInfo += tag.Id + " - " + tag.NameLocalized + "\r\n";
                     }
                 }
             }
@@ -847,10 +839,10 @@ namespace AAEmu.DBViewer
         {
             List<MapSpawnLocation> res = new List<MapSpawnLocation>();
             var zg = GetZoneGroupById(zoneGroupId);
-            if ((zg != null) && (pak.IsOpen) && (pak.FileExists(zg.GamePakZoneDoodadsDat(instanceName))))
+            if ((zg != null) && (Pak.IsOpen) && (Pak.FileExists(zg.GamePakZoneDoodadsDat(instanceName))))
             {
                 // Open .dat file and read it's contents
-                using (var fs = pak.ExportFileAsStream(zg.GamePakZoneDoodadsDat(instanceName)))
+                using (var fs = Pak.ExportFileAsStream(zg.GamePakZoneDoodadsDat(instanceName)))
                 {
                     int indexCount = ((int)fs.Length / 16);
                     using (var reader = new BinaryReader(fs))
@@ -908,19 +900,19 @@ namespace AAEmu.DBViewer
 
             using (var loading = new LoadingForm())
             {
-                loading.ShowInfo("Searching in zones: " + AADB.DB_Zone_Groups.Count.ToString());
+                loading.ShowInfo("Searching in zones: " + AaDb.DbZoneGroups.Count.ToString());
                 loading.Show();
 
                 var zoneCount = 0;
-                foreach (var zgv in AADB.DB_Zone_Groups)
+                foreach (var zgv in AaDb.DbZoneGroups)
                 {
                     var zg = zgv.Value;
                     if (zg != null)
                     {
                         zoneCount++;
                         loading.ShowInfo("Searching in zones: " + zoneCount.ToString() + "/" +
-                                         AADB.DB_Zone_Groups.Count.ToString());
-                        doodadList.AddRange(GetDoodadSpawnsInZoneGroup(zg.id, false));
+                                         AaDb.DbZoneGroups.Count.ToString());
+                        doodadList.AddRange(GetDoodadSpawnsInZoneGroup(zg.Id, false));
                     }
                 }
 
@@ -931,10 +923,10 @@ namespace AAEmu.DBViewer
                     {
                         if (doodad.id != searchId)
                             continue;
-                        if (AADB.DB_Doodad_Almighties.TryGetValue(doodad.id, out var z))
+                        if (AaDb.DbDoodadAlmighties.TryGetValue(doodad.id, out var z))
                         {
                             map.AddPoI(doodad.x, doodad.y, doodad.z,
-                                z.nameLocalized + " (" + doodad.id.ToString() + ")",
+                                z.NameLocalized + " (" + doodad.id.ToString() + ")",
                                 Color.Yellow, 0f, "doodad", doodad.id, z);
                         }
                     }
@@ -958,7 +950,7 @@ namespace AAEmu.DBViewer
             Application.UseWaitCursor = true;
             Cursor = Cursors.WaitCursor;
 
-            foreach (var zv in AADB.DB_Zones)
+            foreach (var zv in AaDb.DbZones)
                 AddSubZones(ref allAreas, zv.Value);
 
             if (allAreas.Count <= 0)
@@ -1009,7 +1001,7 @@ namespace AAEmu.DBViewer
                                 MessageBoxIcon.Question) == DialogResult.No)
                             map.ClearPoI();
 
-                    doodadList.AddRange(GetDoodadSpawnsInZoneGroup(zg.id));
+                    doodadList.AddRange(GetDoodadSpawnsInZoneGroup(zg.Id));
 
                     if (doodadList.Count > 0)
                     {
@@ -1026,19 +1018,19 @@ namespace AAEmu.DBViewer
                             int c = 0;
                             foreach (var doodad in doodadList)
                             {
-                                if (AADB.DB_Doodad_Almighties.TryGetValue(doodad.id, out var z))
+                                if (AaDb.DbDoodadAlmighties.TryGetValue(doodad.id, out var z))
                                 {
                                     var line = dgvDoodads.Rows.Add();
                                     var row = dgvDoodads.Rows[line];
 
-                                    row.Cells[0].Value = z.id.ToString();
-                                    row.Cells[1].Value = z.nameLocalized;
-                                    row.Cells[2].Value = z.mgmt_spawn.ToString();
-                                    row.Cells[3].Value = z.group_id.ToString();
-                                    row.Cells[4].Value = z.percent.ToString();
-                                    row.Cells[5].Value = AADB.GetFactionName(z.faction_id, true);
-                                    row.Cells[6].Value = z.model_kind_id.ToString();
-                                    row.Cells[7].Value = z.model.ToString();
+                                    row.Cells[0].Value = z.Id.ToString();
+                                    row.Cells[1].Value = z.NameLocalized;
+                                    row.Cells[2].Value = z.MgmtSpawn.ToString();
+                                    row.Cells[3].Value = z.GroupId.ToString();
+                                    row.Cells[4].Value = z.Percent.ToString();
+                                    row.Cells[5].Value = AaDb.GetFactionName(z.FactionId, true);
+                                    row.Cells[6].Value = z.ModelKindId.ToString();
+                                    row.Cells[7].Value = z.Model.ToString();
                                     if (doodad.count == 1)
                                         row.Cells[8].Value = string.Format("{0} , {1} = ({2})", doodad.x, doodad.y,
                                             doodad.AsSextant());
@@ -1054,7 +1046,7 @@ namespace AAEmu.DBViewer
                                     }
 
                                     map.AddPoI(doodad.x, doodad.y, doodad.z,
-                                        z.nameLocalized + " (" + doodad.id.ToString() + ")", Color.Yellow, 0f,
+                                        z.NameLocalized + " (" + doodad.id.ToString() + ")", Color.Yellow, 0f,
                                         "doodad",
                                         doodad.id, z);
                                 }

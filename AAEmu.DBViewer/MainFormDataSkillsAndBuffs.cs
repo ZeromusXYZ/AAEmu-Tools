@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using AAEmu.DBDefs;
+using AAEmu.DBViewer.DbDefs;
 using AAEmu.DBViewer.enums;
 using AAEmu.Game.Utils.DB;
 
@@ -14,239 +14,213 @@ public partial class MainForm
 {
     private void LoadSkills()
     {
-        List<string> columnNames = null;
-        bool readWebDesc = false;
-
         Application.UseWaitCursor = true;
         Cursor = Cursors.WaitCursor;
 
         using (var connection = SQLite.CreateConnection())
         {
             // Skills base
-            string sql = "SELECT * FROM skills ORDER BY id ASC";
-            using (var command = connection.CreateCommand())
+            if (AllTableNames.GetValueOrDefault("skills") == SQLite.SQLiteFileName)
             {
-                AADB.DB_Skills.Clear();
-
-                command.CommandText = sql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                using (var command = connection.CreateCommand())
                 {
-
-                    if (columnNames == null)
+                    command.CommandText = "SELECT * FROM skills ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        columnNames = reader.GetColumnNames();
-                        if (columnNames.IndexOf("web_desc") >= 0)
-                            readWebDesc = true;
+                        var columnNames = reader.GetColumnNames();
+                        var readWebDesc = (columnNames.IndexOf("web_desc") >= 0);
+
+                        while (reader.Read())
+                        {
+                            var t = new GameSkills();
+                            t.Id = GetInt64(reader, "id");
+                            t.Name = GetString(reader, "name");
+                            t.Desc = GetString(reader, "desc");
+                            // Added a check for this
+                            if (readWebDesc)
+                                t.WebDesc = GetString(reader, "web_desc");
+                            else
+                                t.WebDesc = string.Empty;
+                            t.Cost = GetInt64(reader, "cost");
+                            t.IconId = GetInt64(reader, "icon_id");
+                            t.Show = GetBool(reader, "show");
+                            t.CooldownTime = GetInt64(reader, "cooldown_time");
+                            t.CastingTime = GetInt64(reader, "casting_time");
+                            t.IgnoreGlobalCooldown = GetBool(reader, "ignore_global_cooldown");
+                            t.EffectDelay = GetInt64(reader, "effect_delay");
+                            t.AbilityId = GetInt64(reader, "ability_id");
+                            t.ManaCost = GetInt64(reader, "mana_cost");
+                            t.TimingId = GetInt64(reader, "timing_id");
+                            t.ConsumeLp = GetInt64(reader, "consume_lp");
+                            t.DefaultGcd = GetBool(reader, "default_gcd");
+                            ;
+                            t.CustomGcd = GetInt64(reader, "custom_gcd");
+                            t.FirstReagentOnly = GetBool(reader, "first_reagent_only");
+                            t.PlotId = GetInt64(reader, "plot_id");
+
+                            t.OrUnitReqs = GetBool(reader, "or_unit_reqs");
+
+                            t.NameLocalized = AaDb.GetTranslationById(t.Id, "skills", "name", t.Name);
+                            t.DescriptionLocalized = AaDb.GetTranslationById(t.Id, "skills", "desc", t.Desc);
+                            if (readWebDesc)
+                                t.WebDescriptionLocalized =
+                                    AaDb.GetTranslationById(t.Id, "skills", "web_desc", t.WebDesc);
+                            else
+                                t.WebDescriptionLocalized = string.Empty;
+
+                            t.SearchString = t.Name + " " + t.Desc + " " + t.NameLocalized + " " +
+                                             t.DescriptionLocalized;
+                            t.SearchString = t.SearchString.ToLower();
+
+                            AaDb.DbSkills.Add(t.Id, t);
+                        }
+
                     }
-
-                    while (reader.Read())
-                    {
-                        var t = new GameSkills();
-                        t.id = GetInt64(reader, "id");
-                        t.name = GetString(reader, "name");
-                        t.desc = GetString(reader, "desc");
-                        // Added a check for this
-                        if (readWebDesc)
-                            t.web_desc = GetString(reader, "web_desc");
-                        else
-                            t.web_desc = string.Empty;
-                        t.cost = GetInt64(reader, "cost");
-                        t.icon_id = GetInt64(reader, "icon_id");
-                        t.show = GetBool(reader, "show");
-                        t.cooldown_time = GetInt64(reader, "cooldown_time");
-                        t.casting_time = GetInt64(reader, "casting_time");
-                        t.ignore_global_cooldown = GetBool(reader, "ignore_global_cooldown");
-                        t.effect_delay = GetInt64(reader, "effect_delay");
-                        t.ability_id = GetInt64(reader, "ability_id");
-                        t.mana_cost = GetInt64(reader, "mana_cost");
-                        t.timing_id = GetInt64(reader, "timing_id");
-                        t.consume_lp = GetInt64(reader, "consume_lp");
-                        t.default_gcd = GetBool(reader, "default_gcd");
-                        ;
-                        t.custom_gcd = GetInt64(reader, "custom_gcd");
-                        t.first_reagent_only = GetBool(reader, "first_reagent_only");
-                        t.plot_id = GetInt64(reader, "plot_id");
-
-                        t.or_unit_reqs = GetBool(reader, "or_unit_reqs");
-
-                        t.nameLocalized = AADB.GetTranslationByID(t.id, "skills", "name", t.name);
-                        t.descriptionLocalized = AADB.GetTranslationByID(t.id, "skills", "desc", t.desc);
-                        if (readWebDesc)
-                            t.webDescriptionLocalized =
-                                AADB.GetTranslationByID(t.id, "skills", "web_desc", t.web_desc);
-                        else
-                            t.webDescriptionLocalized = string.Empty;
-
-                        t.SearchString = t.name + " " + t.desc + " " + t.nameLocalized + " " +
-                                         t.descriptionLocalized;
-                        t.SearchString = t.SearchString.ToLower();
-
-                        AADB.DB_Skills.Add(t.id, t);
-                    }
-
                 }
             }
 
             // Skill Effects
-            sql = "SELECT * FROM skill_effects ORDER BY id ASC";
-            using (var command = connection.CreateCommand())
+            if (AllTableNames.GetValueOrDefault("skill_effects") == SQLite.SQLiteFileName)
             {
-                AADB.DB_Skill_Effects.Clear();
-
-                command.CommandText = sql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                using (var command = connection.CreateCommand())
                 {
-                    while (reader.Read())
+                    command.CommandText = "SELECT * FROM skill_effects ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        var t = new GameSkillEffects();
-                        t.id = GetInt64(reader, "id");
-                        t.skill_id = GetInt64(reader, "skill_id");
-                        t.effect_id = GetInt64(reader, "effect_id");
-                        t.weight = GetInt64(reader, "weight");
-                        t.start_level = GetInt64(reader, "start_level");
-                        t.end_level = GetInt64(reader, "end_level");
-                        t.friendly = GetBool(reader, "friendly");
-                        t.non_friendly = GetBool(reader, "non_friendly");
-                        t.target_buff_tag_id = GetInt64(reader, "target_buff_tag_id");
-                        t.target_nobuff_tag_id = GetInt64(reader, "target_nobuff_tag_id");
-                        t.source_buff_tag_id = GetInt64(reader, "source_buff_tag_id");
-                        t.source_nobuff_tag_id = GetInt64(reader, "source_nobuff_tag_id");
-                        t.chance = GetInt64(reader, "chance");
-                        t.front = GetBool(reader, "front");
-                        t.back = GetBool(reader, "back");
-                        t.target_npc_tag_id = GetInt64(reader, "target_npc_tag_id");
-                        t.application_method_id = GetInt64(reader, "application_method_id");
-                        t.synergy_text = GetBool(reader, "synergy_text");
-                        t.consume_source_item = GetBool(reader, "consume_source_item");
-                        t.consume_item_id = GetInt64(reader, "consume_item_id");
-                        t.consume_item_count = GetInt64(reader, "consume_item_count");
-                        t.always_hit = GetBool(reader, "always_hit");
-                        t.item_set_id = GetInt64(reader, "item_set_id");
-                        t.interaction_success_hit = GetBool(reader, "interaction_success_hit");
-                        AADB.DB_Skill_Effects.Add(t.id, t);
-                    }
+                        while (reader.Read())
+                        {
+                            var t = new GameSkillEffects();
+                            t.Id = GetInt64(reader, "id");
+                            t.SkillId = GetInt64(reader, "skill_id");
+                            t.EffectId = GetInt64(reader, "effect_id");
+                            t.Weight = GetInt64(reader, "weight");
+                            t.StartLevel = GetInt64(reader, "start_level");
+                            t.EndLevel = GetInt64(reader, "end_level");
+                            t.Friendly = GetBool(reader, "friendly");
+                            t.NonFriendly = GetBool(reader, "non_friendly");
+                            t.TargetBuffTagId = GetInt64(reader, "target_buff_tag_id");
+                            t.TargetNoBuffTagId = GetInt64(reader, "target_nobuff_tag_id");
+                            t.SourceBuffTagId = GetInt64(reader, "source_buff_tag_id");
+                            t.SourceNoBuffTagId = GetInt64(reader, "source_nobuff_tag_id");
+                            t.Chance = GetInt64(reader, "chance");
+                            t.Front = GetBool(reader, "front");
+                            t.Back = GetBool(reader, "back");
+                            t.TargetNpcTagId = GetInt64(reader, "target_npc_tag_id");
+                            t.ApplicationMethodId = GetInt64(reader, "application_method_id");
+                            t.SynergyText = GetBool(reader, "synergy_text");
+                            t.ConsumeSourceItem = GetBool(reader, "consume_source_item");
+                            t.ConsumeItemId = GetInt64(reader, "consume_item_id");
+                            t.ConsumeItemCount = GetInt64(reader, "consume_item_count");
+                            t.AlwaysHit = GetBool(reader, "always_hit");
+                            t.ItemSetId = GetInt64(reader, "item_set_id");
+                            t.InteractionSuccessHit = GetBool(reader, "interaction_success_hit");
+                            AaDb.DbSkillEffects.Add(t.Id, t);
+                        }
 
+                    }
                 }
             }
 
             // Effects
-            sql = "SELECT * FROM effects ORDER BY id ASC";
-            using (var command = connection.CreateCommand())
+            if (AllTableNames.GetValueOrDefault("effects") == SQLite.SQLiteFileName)
             {
-                AADB.DB_Effects.Clear();
-
-                command.CommandText = sql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                using (var command = connection.CreateCommand())
                 {
-                    while (reader.Read())
+                    command.CommandText = "SELECT * FROM effects ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        var t = new GameEffects();
-                        t.id = GetInt64(reader, "id");
-                        t.actual_id = GetInt64(reader, "actual_id");
-                        t.actual_type = GetString(reader, "actual_type");
-                        AADB.DB_Effects.Add(t.id, t);
-                    }
+                        while (reader.Read())
+                        {
+                            var t = new GameEffects();
+                            t.Id = GetInt64(reader, "id");
+                            t.ActualId = GetInt64(reader, "actual_id");
+                            t.ActualType = GetString(reader, "actual_type");
+                            AaDb.DbEffects.Add(t.Id, t);
+                        }
 
+                    }
                 }
             }
 
             // Mount Skills
-            sql = "SELECT * FROM mount_skills ORDER BY id ASC";
-            using (var command = connection.CreateCommand())
+            if (AllTableNames.GetValueOrDefault("mount_skills") == SQLite.SQLiteFileName)
             {
-                AADB.DB_Mount_Skills.Clear();
-
-                command.CommandText = sql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                using (var command = connection.CreateCommand())
                 {
-                    columnNames = null;
-                    var readNames = false;
-                    while (reader.Read())
+                    command.CommandText = "SELECT * FROM mount_skills ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
                         // name field is not present after in 3.0.3.0
-                        if (columnNames == null)
-                        {
-                            columnNames = reader.GetColumnNames();
-                            readNames = (columnNames.IndexOf("name") >= 0);
-                        }
+                        var columnNames = reader.GetColumnNames();
+                        var readNames = (columnNames.IndexOf("name") >= 0);
 
-                        var t = new GameMountSkill();
-                        t.id = GetInt64(reader, "id");
-                        if (readNames)
-                            t.name = GetString(reader, "name");
-                        t.skill_id = GetInt64(reader, "skill_id");
-                        AADB.DB_Mount_Skills.Add(t.id, t);
+                        while (reader.Read())
+                        {
+                            var t = new GameMountSkill();
+                            t.Id = GetInt64(reader, "id");
+                            if (readNames)
+                                t.Name = GetString(reader, "name");
+                            t.SkillId = GetInt64(reader, "skill_id");
+                            AaDb.DbMountSkills.Add(t.Id, t);
+                        }
                     }
                 }
             }
 
             // Slave Mount Skills
-            sql = "SELECT * FROM slave_mount_skills ORDER BY slave_id ASC";
-            using (var command = connection.CreateCommand())
+            if (AllTableNames.GetValueOrDefault("slave_mount_skills") == SQLite.SQLiteFileName)
             {
-                AADB.DB_Slave_Mount_Skills.Clear();
-
-                command.CommandText = sql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                using (var command = connection.CreateCommand())
                 {
-                    columnNames = null;
-                    var indx = 1L;
-                    var readId = false;
-                    while (reader.Read())
+                    command.CommandText = "SELECT * FROM slave_mount_skills ORDER BY slave_id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
+                        var columnNames = reader.GetColumnNames();
                         // id field is not present after in 3.0.3.0
-                        if (columnNames == null)
+                        var readId = (columnNames.IndexOf("id") >= 0);
+                        var indx = 1L;
+                        while (reader.Read())
                         {
-                            columnNames = reader.GetColumnNames();
-                            readId = (columnNames.IndexOf("id") >= 0);
+                            var t = new GameSlaveMountSkill();
+                            t.Id = readId ? GetInt64(reader, "id") : indx;
+                            t.SlaveId = GetInt64(reader, "slave_id");
+                            t.MountSkillId = GetInt64(reader, "mount_skill_id");
+                            AaDb.DbSlaveMountSkills.Add(t.Id, t);
+                            indx++;
                         }
-
-                        var t = new GameSlaveMountSkill();
-                        t.id = readId ? GetInt64(reader, "id") : indx;
-                        t.slave_id = GetInt64(reader, "slave_id");
-                        t.mount_skill_id = GetInt64(reader, "mount_skill_id");
-                        AADB.DB_Slave_Mount_Skills.Add(t.id, t);
-                        indx++;
                     }
                 }
             }
 
             // NpSkills
-            if (allTableNames.Contains("np_skills"))
+            if (AllTableNames.GetValueOrDefault("np_skills") == SQLite.SQLiteFileName)
             {
-                sql = "SELECT * FROM np_skills ORDER BY id ASC";
                 using (var command = connection.CreateCommand())
                 {
-                    AADB.DB_NpSkills.Clear();
-
-                    command.CommandText = sql;
+                    command.CommandText = "SELECT * FROM np_skills ORDER BY id ASC";
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
                         while (reader.Read())
                         {
                             var t = new GameNpSkills();
-                            t.id = GetInt64(reader, "id");
-                            t.owner_id = GetInt64(reader, "owner_id");
-                            t.owner_type = GetString(reader, "owner_type"); // They are actually all "Npc"
-                            t.skill_id = GetInt64(reader, "skill_id");
-                            t.skill_use_condition_id = (SkillUseConditionKind)GetInt64(reader, "skill_use_condition_id");
-                            t.skill_use_param1 = GetFloat(reader, "skill_use_param1");
-                            t.skill_use_param2 = GetFloat(reader, "skill_use_param2");
-                            AADB.DB_NpSkills.Add(t.id, t);
+                            t.Id = GetInt64(reader, "id");
+                            t.OwnerId = GetInt64(reader, "owner_id");
+                            t.OwnerType = GetString(reader, "owner_type"); // They are actually all "Npc"
+                            t.SkillId = GetInt64(reader, "skill_id");
+                            t.SkillUseConditionId = (SkillUseConditionKind)GetInt64(reader, "skill_use_condition_id");
+                            t.SkillUseParam1 = GetFloat(reader, "skill_use_param1");
+                            t.SkillUseParam2 = GetFloat(reader, "skill_use_param2");
+                            AaDb.DbNpSkills.Add(t.Id, t);
                         }
 
                     }
                 }
-            }
-            else
-            {
-                AADB.DB_NpSkills.Clear();
             }
         }
 
@@ -256,299 +230,284 @@ public partial class MainForm
 
     private void LoadSkillReagents()
     {
-        string sql = "SELECT * FROM skill_reagents ORDER BY id ASC";
-
-        using (var connection = SQLite.CreateConnection())
+        if (AllTableNames.GetValueOrDefault("skill_reagents") == SQLite.SQLiteFileName)
         {
-            using (var command = connection.CreateCommand())
+            using var connection = SQLite.CreateConnection();
+            using var command = connection.CreateCommand();
+            command.CommandText = "SELECT * FROM skill_reagents ORDER BY id ASC";
+            command.Prepare();
+            using var reader = new SQLiteWrapperReader(command.ExecuteReader());
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+
+            while (reader.Read())
             {
-                AADB.DB_Skill_Reagents.Clear();
+                GameSkillItems t = new GameSkillItems();
+                t.Id = GetInt64(reader, "id");
+                t.SkillId = GetInt64(reader, "skill_id");
+                t.ItemId = GetInt64(reader, "item_id");
+                t.Amount = GetInt64(reader, "amount");
 
-                command.CommandText = sql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
-                {
-                    Application.UseWaitCursor = true;
-                    Cursor = Cursors.WaitCursor;
-
-                    while (reader.Read())
-                    {
-                        GameSkillItems t = new GameSkillItems();
-                        t.id = GetInt64(reader, "id");
-                        t.skill_id = GetInt64(reader, "skill_id");
-                        t.item_id = GetInt64(reader, "item_id");
-                        t.amount = GetInt64(reader, "amount");
-
-                        AADB.DB_Skill_Reagents.Add(t.id, t);
-                    }
-
-                    Cursor = Cursors.Default;
-                    Application.UseWaitCursor = false;
-                }
+                AaDb.DbSkillReagents.Add(t.Id, t);
             }
-        }
 
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+        }
     }
 
     private void LoadSkillProducts()
     {
-        string sql = "SELECT * FROM skill_products ORDER BY id ASC";
-
-        using (var connection = SQLite.CreateConnection())
+        if (AllTableNames.GetValueOrDefault("skill_products") == SQLite.SQLiteFileName)
         {
-            using (var command = connection.CreateCommand())
+            using var connection = SQLite.CreateConnection();
+            using var command = connection.CreateCommand();
+            command.CommandText = "SELECT * FROM skill_products ORDER BY id ASC";
+            command.Prepare();
+            using var reader = new SQLiteWrapperReader(command.ExecuteReader());
+            Application.UseWaitCursor = true;
+            Cursor = Cursors.WaitCursor;
+
+            while (reader.Read())
             {
-                AADB.DB_Skill_Products.Clear();
+                GameSkillItems t = new GameSkillItems();
+                t.Id = GetInt64(reader, "id");
+                t.SkillId = GetInt64(reader, "skill_id");
+                t.ItemId = GetInt64(reader, "item_id");
+                t.Amount = GetInt64(reader, "amount");
 
-                command.CommandText = sql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
-                {
-                    Application.UseWaitCursor = true;
-                    Cursor = Cursors.WaitCursor;
-
-                    while (reader.Read())
-                    {
-                        GameSkillItems t = new GameSkillItems();
-                        t.id = GetInt64(reader, "id");
-                        t.skill_id = GetInt64(reader, "skill_id");
-                        t.item_id = GetInt64(reader, "item_id");
-                        t.amount = GetInt64(reader, "amount");
-
-                        AADB.DB_Skill_Products.Add(t.id, t);
-                    }
-
-                    Cursor = Cursors.Default;
-                    Application.UseWaitCursor = false;
-                }
+                AaDb.DbSkillProducts.Add(t.Id, t);
             }
-        }
 
+            Cursor = Cursors.Default;
+            Application.UseWaitCursor = false;
+        }
     }
 
     private void LoadBuffs()
     {
-        var sql = "SELECT * FROM buffs ORDER BY id ASC";
-        var triggerSql = "SELECT * FROM buff_triggers ORDER BY id ASC";
-        var modifiersSql = "SELECT * FROM buff_modifiers";
-        var npcInitialSql = "SELECT * FROM npc_initial_buffs ORDER BY npc_id ASC";
-        var passiveSql = "SELECT * FROM passive_buffs ORDER BY id ASC";
-        var slavePassiveSql = "SELECT * FROM slave_passive_buffs ORDER BY owner_id ASC";
-        var slaveInitialSql = "SELECT * FROM slave_initial_buffs ORDER BY slave_id ASC";
-        var npPassiveSql = "SELECT * FROM np_passive_buffs ORDER BY owner_id ASC";
-
         using (var connection = SQLite.CreateConnection())
         {
             Application.UseWaitCursor = true;
             Cursor = Cursors.WaitCursor;
 
-            using (var command = connection.CreateCommand())
-            {
-                AADB.DB_Buffs.Clear();
-
-                command.CommandText = sql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
-                {
-                    Application.UseWaitCursor = true;
-                    Cursor = Cursors.WaitCursor;
-
-                    // Get a list of all fields
-                    var cols = reader.GetColumnNames();
-                    // Remove those that we'll specifically load
-                    cols.Remove("id");
-                    cols.Remove("name");
-                    cols.Remove("desc");
-                    cols.Remove("icon_id");
-                    cols.Remove("duration");
-                    cols.Remove("name_tr");
-                    cols.Remove("desc_tr");
-
-                    while (reader.Read())
-                    {
-
-                        GameBuff t = new GameBuff();
-                        t.id = GetInt64(reader, "id");
-                        t.name = GetString(reader, "name");
-                        t.desc = GetString(reader, "desc");
-                        t.icon_id = GetInt64(reader, "icon_id");
-                        t.duration = GetInt64(reader, "duration");
-
-                        t.nameLocalized = AADB.GetTranslationByID(t.id, "buffs", "name", t.name);
-                        t.descLocalized = AADB.GetTranslationByID(t.id, "buffs", "desc", t.desc);
-
-                        t.SearchString = t.name + " " + t.nameLocalized + " " + t.desc + " " + t.descLocalized;
-                        t.SearchString = t.SearchString.ToLower();
-
-                        // Read remaining data
-                        foreach (var c in cols)
-                        {
-                            if (!reader.IsDBNull(c))
-                            {
-                                var v = reader.GetString(c, string.Empty);
-                                var isnumber = double.TryParse(v, NumberStyles.Float, CultureInfo.InvariantCulture,
-                                    out var dVal);
-                                if (isnumber)
-                                {
-                                    if (dVal != 0f)
-                                        t._others.Add(c, v);
-                                }
-                                else if ((v != string.Empty) && (v != "0") && (v != "f") && (v != "NULL") &&
-                                         (v != "--- :null"))
-                                {
-                                    t._others.Add(c, v);
-                                }
-                            }
-                        }
-
-                        AADB.DB_Buffs.Add(t.id, t);
-                    }
-                }
-            }
-
-            using (var command = connection.CreateCommand())
-            {
-                AADB.DB_BuffTriggers.Clear();
-                command.CommandText = triggerSql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
-                {
-
-                    while (reader.Read())
-                    {
-                        var t = new GameBuffTrigger();
-                        t.id = GetInt64(reader, "id");
-                        t.buff_id = GetInt64(reader, "buff_id");
-                        t.event_id = GetInt64(reader, "event_id");
-                        t.effect_id = GetInt64(reader, "effect_id");
-
-                        AADB.DB_BuffTriggers.Add(t.id, t);
-                    }
-                }
-            }
-
-            using (var command = connection.CreateCommand())
-            {
-                AADB.DB_BuffModifiers.Clear();
-                command.CommandText = modifiersSql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
-                {
-                    var useDbId = false;
-                    var columnNames = reader.GetColumnNames();
-                    if (columnNames.IndexOf("id") >= 0)
-                        useDbId = true;
-                    var dbId = 0;
-
-                    while (reader.Read())
-                    {
-                        dbId++;
-                        var t = new GameBuffModifier();
-                        t.id = useDbId ? GetInt64(reader, "id") : dbId;
-                        t.owner_id = GetInt64(reader, "owner_id");
-                        t.owner_type = GetString(reader, "owner_type");
-                        t.buff_id = GetInt64(reader, "buff_id");
-                        t.tag_id = GetInt64(reader, "tag_id");
-                        t.buff_attribute_id = (BuffAttribute)GetInt64(reader, "buff_attribute_id");
-                        t.unit_modifier_type_id = GetInt64(reader, "unit_modifier_type_id");
-                        t.value = GetInt64(reader, "value");
-                        t.synergy = GetBool(reader, "synergy");
-
-                        AADB.DB_BuffModifiers.Add(t.id, t);
-                    }
-                }
-            }
-
-            using (var command = connection.CreateCommand())
-            {
-                AADB.DB_NpcInitialBuffs.Clear();
-                command.CommandText = npcInitialSql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
-                {
-                    List<string> columnNames = null;
-                    var indx = 1L;
-                    var readId = false;
-                    while (reader.Read())
-                    {
-                        // id field is not present after in 3.0.3.0
-                        if (columnNames == null)
-                        {
-                            columnNames = reader.GetColumnNames();
-                            readId = (columnNames.IndexOf("id") >= 0);
-                        }
-
-                        var t = new GameNpcInitialBuffs();
-                        t.id = readId ? GetInt64(reader, "id") : indx;
-                        t.npc_id = GetInt64(reader, "npc_id");
-                        t.buff_id = GetInt64(reader, "buff_id");
-
-                        AADB.DB_NpcInitialBuffs.Add(t.id, t);
-                        indx++;
-                    }
-                }
-            }
-
-            using (var command = connection.CreateCommand())
-            {
-                AADB.DB_Passive_Buffs.Clear();
-                command.CommandText = passiveSql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
-                {
-
-                    while (reader.Read())
-                    {
-                        var t = new GamePassiveBuff();
-                        t.id = GetInt64(reader, "id");
-                        t.ability_id = GetInt64(reader, "ability_id");
-                        t.level = GetInt64(reader, "level");
-                        t.buff_id = GetInt64(reader, "buff_id");
-                        t.req_points = GetInt64(reader, "req_points");
-                        t.active = GetBool(reader, "active");
-
-                        AADB.DB_Passive_Buffs.Add(t.id, t);
-                    }
-                }
-            }
-
-            using (var command = connection.CreateCommand())
-            {
-                AADB.DB_Slave_Passive_Buffs.Clear();
-                command.CommandText = slavePassiveSql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
-                {
-                    List<string> columnNames = null;
-                    var readId = false;
-                    var indx = 1L;
-                    while (reader.Read())
-                    {
-                        // id field is not present after in 3.0.3.0
-                        if (columnNames == null)
-                        {
-                            columnNames = reader.GetColumnNames();
-                            readId = (columnNames.IndexOf("id") >= 0);
-                        }
-
-                        var t = new GameSlavePassiveBuff();
-                        t.id = readId ? GetInt64(reader, "id") : indx;
-                        t.owner_id = GetInt64(reader, "owner_id");
-                        t.owner_type = GetString(reader, "owner_type");
-                        t.passive_buff_id = GetInt64(reader, "passive_buff_id");
-
-                        AADB.DB_Slave_Passive_Buffs.Add(t.id, t);
-                        indx++;
-                    }
-                }
-            }
-
-            AADB.DB_Np_Passive_Buffs.Clear();
-            if (allTableNames.Contains("np_passive_buffs"))
+            if (AllTableNames.GetValueOrDefault("buffs") == SQLite.SQLiteFileName)
             {
                 using (var command = connection.CreateCommand())
                 {
-                    command.CommandText = npPassiveSql;
+                    command.CommandText = "SELECT * FROM buffs ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        // Get a list of all fields
+                        var cols = reader.GetColumnNames();
+                        // Remove those that we'll specifically load
+                        cols.Remove("id");
+                        cols.Remove("name");
+                        cols.Remove("desc");
+                        cols.Remove("icon_id");
+                        cols.Remove("duration");
+                        cols.Remove("name_tr");
+                        cols.Remove("desc_tr");
+
+                        while (reader.Read())
+                        {
+
+                            GameBuff t = new GameBuff();
+                            t.Id = GetInt64(reader, "id");
+                            t.Name = GetString(reader, "name");
+                            t.Desc = GetString(reader, "desc");
+                            t.IconId = GetInt64(reader, "icon_id");
+                            t.Duration = GetInt64(reader, "duration");
+
+                            t.NameLocalized = AaDb.GetTranslationById(t.Id, "buffs", "name", t.Name);
+                            t.DescLocalized = AaDb.GetTranslationById(t.Id, "buffs", "desc", t.Desc);
+
+                            t.SearchString = t.Name + " " + t.NameLocalized + " " + t.Desc + " " + t.DescLocalized;
+                            t.SearchString = t.SearchString.ToLower();
+
+                            // Read remaining data
+                            foreach (var c in cols)
+                            {
+                                if (!reader.IsDBNull(c))
+                                {
+                                    var v = reader.GetString(c, string.Empty);
+                                    var isnumber = double.TryParse(v, NumberStyles.Float, CultureInfo.InvariantCulture,
+                                        out var dVal);
+                                    if (isnumber)
+                                    {
+                                        if (dVal != 0f)
+                                            t.Others.Add(c, v);
+                                    }
+                                    else if ((v != string.Empty) && (v != "0") && (v != "f") && (v != "NULL") &&
+                                             (v != "--- :null"))
+                                    {
+                                        t.Others.Add(c, v);
+                                    }
+                                }
+                            }
+
+                            AaDb.DbBuffs.Add(t.Id, t);
+                        }
+                    }
+                }
+            }
+
+            if (AllTableNames.GetValueOrDefault("buff_triggers") == SQLite.SQLiteFileName)
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM buff_triggers ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+
+                        while (reader.Read())
+                        {
+                            var t = new GameBuffTrigger();
+                            t.Id = GetInt64(reader, "id");
+                            t.BuffId = GetInt64(reader, "buff_id");
+                            t.EventId = GetInt64(reader, "event_id");
+                            t.EffectId = GetInt64(reader, "effect_id");
+
+                            AaDb.DbBuffTriggers.Add(t.Id, t);
+                        }
+                    }
+                }
+            }
+
+            if (AllTableNames.GetValueOrDefault("buff_modifiers") == SQLite.SQLiteFileName)
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM buff_modifiers";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        var useDbId = false;
+                        var columnNames = reader.GetColumnNames();
+                        if (columnNames.IndexOf("id") >= 0)
+                            useDbId = true;
+                        var dbId = 0;
+
+                        while (reader.Read())
+                        {
+                            dbId++;
+                            var t = new GameBuffModifier();
+                            t.Id = useDbId ? GetInt64(reader, "id") : dbId;
+                            t.OwnerId = GetInt64(reader, "owner_id");
+                            t.OwnerType = GetString(reader, "owner_type");
+                            t.BuffId = GetInt64(reader, "buff_id");
+                            t.TagId = GetInt64(reader, "tag_id");
+                            t.BuffAttributeId = (BuffAttribute)GetInt64(reader, "buff_attribute_id");
+                            t.UnitModifierTypeId = GetInt64(reader, "unit_modifier_type_id");
+                            t.Value = GetInt64(reader, "value");
+                            t.Synergy = GetBool(reader, "synergy");
+
+                            AaDb.DbBuffModifiers.Add(t.Id, t);
+                        }
+                    }
+                }
+            }
+
+            if (AllTableNames.GetValueOrDefault("npc_initial_buffs") == SQLite.SQLiteFileName)
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM npc_initial_buffs ORDER BY npc_id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        List<string> columnNames = null;
+                        var indx = 1L;
+                        var readId = false;
+                        while (reader.Read())
+                        {
+                            // id field is not present after in 3.0.3.0
+                            if (columnNames == null)
+                            {
+                                columnNames = reader.GetColumnNames();
+                                readId = (columnNames.IndexOf("id") >= 0);
+                            }
+
+                            var t = new GameNpcInitialBuffs();
+                            t.Id = readId ? GetInt64(reader, "id") : indx;
+                            t.NpcId = GetInt64(reader, "npc_id");
+                            t.BuffId = GetInt64(reader, "buff_id");
+
+                            AaDb.DbNpcInitialBuffs.Add(t.Id, t);
+                            indx++;
+                        }
+                    }
+                }
+            }
+
+            if (AllTableNames.GetValueOrDefault("passive_buffs") == SQLite.SQLiteFileName)
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM passive_buffs ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+
+                        while (reader.Read())
+                        {
+                            var t = new GamePassiveBuff();
+                            t.Id = GetInt64(reader, "id");
+                            t.AbilityId = GetInt64(reader, "ability_id");
+                            t.Level = GetInt64(reader, "level");
+                            t.BuffId = GetInt64(reader, "buff_id");
+                            t.ReqPoints = GetInt64(reader, "req_points");
+                            t.Active = GetBool(reader, "active");
+
+                            AaDb.DbPassiveBuffs.Add(t.Id, t);
+                        }
+                    }
+                }
+            }
+
+            if (AllTableNames.GetValueOrDefault("slave_passive_buffs") == SQLite.SQLiteFileName)
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM slave_passive_buffs ORDER BY owner_id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        List<string> columnNames = null;
+                        var readId = false;
+                        var indx = 1L;
+                        while (reader.Read())
+                        {
+                            // id field is not present after in 3.0.3.0
+                            if (columnNames == null)
+                            {
+                                columnNames = reader.GetColumnNames();
+                                readId = (columnNames.IndexOf("id") >= 0);
+                            }
+
+                            var t = new GameSlavePassiveBuff();
+                            t.Id = readId ? GetInt64(reader, "id") : indx;
+                            t.OwnerId = GetInt64(reader, "owner_id");
+                            t.OwnerType = GetString(reader, "owner_type");
+                            t.PassiveBuffId = GetInt64(reader, "passive_buff_id");
+
+                            AaDb.DbSlavePassiveBuffs.Add(t.Id, t);
+                            indx++;
+                        }
+                    }
+                }
+            }
+
+            if (AllTableNames.GetValueOrDefault("np_passive_buffs") == SQLite.SQLiteFileName)
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM np_passive_buffs ORDER BY owner_id ASC";
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
@@ -565,36 +524,38 @@ public partial class MainForm
                             }
 
                             var t = new GameNpPassiveBuff();
-                            t.id = readId ? GetInt64(reader, "id") : indx;
-                            t.owner_id = GetInt64(reader, "owner_id");
-                            t.owner_type = GetString(reader, "owner_type");
-                            t.passive_buff_id = GetInt64(reader, "passive_buff_id");
+                            t.Id = readId ? GetInt64(reader, "id") : indx;
+                            t.OwnerId = GetInt64(reader, "owner_id");
+                            t.OwnerType = GetString(reader, "owner_type");
+                            t.PassiveBuffId = GetInt64(reader, "passive_buff_id");
 
-                            AADB.DB_Np_Passive_Buffs.Add(t.id, t);
+                            AaDb.DbNpPassiveBuffs.Add(t.Id, t);
                             indx++;
                         }
                     }
                 }
             }
 
-            using (var command = connection.CreateCommand())
+            if (AllTableNames.GetValueOrDefault("slave_initial_buffs") == SQLite.SQLiteFileName)
             {
-                AADB.DB_Slave_Initial_Buffs.Clear();
-                command.CommandText = slaveInitialSql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                using (var command = connection.CreateCommand())
                 {
-                    var indx = 1L;
-                    while (reader.Read())
+                    command.CommandText = "SELECT * FROM slave_initial_buffs ORDER BY slave_id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        var t = new GameSlaveInitialBuff();
-                        //t.id = GetInt64(reader, "id"); no in 3030
-                        t.id = indx;
-                        t.slave_id = GetInt64(reader, "slave_id");
-                        t.buff_id = GetInt64(reader, "buff_id");
+                        var indx = 1L;
+                        while (reader.Read())
+                        {
+                            var t = new GameSlaveInitialBuff();
+                            //t.id = GetInt64(reader, "id"); no in 3030
+                            t.Id = indx;
+                            t.SlaveId = GetInt64(reader, "slave_id");
+                            t.BuffId = GetInt64(reader, "buff_id");
 
-                        AADB.DB_Slave_Initial_Buffs.Add(t.id, t);
-                        indx++;
+                            AaDb.DbSlaveInitialBuffs.Add(t.Id, t);
+                            indx++;
+                        }
                     }
                 }
             }
@@ -608,225 +569,221 @@ public partial class MainForm
     private void LoadPlots()
     {
         // base plots
-        string sql = "SELECT * FROM plots";
-
-        using (var connection = SQLite.CreateConnection())
+        if (AllTableNames.GetValueOrDefault("plots") == SQLite.SQLiteFileName)
         {
-            using (var command = connection.CreateCommand())
+            using (var connection = SQLite.CreateConnection())
             {
-                AADB.DB_Plots.Clear();
-
-                command.CommandText = sql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                using (var command = connection.CreateCommand())
                 {
-                    Application.UseWaitCursor = true;
-                    Cursor = Cursors.WaitCursor;
-
-                    while (reader.Read())
+                    command.CommandText = "SELECT * FROM plots";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
 
-                        var t = new GamePlot();
-                        t.id = GetInt64(reader, "id");
-                        t.name = GetString(reader, "name");
-                        t.target_type_id = GetInt64(reader, "target_type_id");
+                        while (reader.Read())
+                        {
 
-                        AADB.DB_Plots.Add(t.id, t);
+                            var t = new GamePlot();
+                            t.Id = GetInt64(reader, "id");
+                            t.Name = GetString(reader, "name");
+                            t.TargetTypeId = GetInt64(reader, "target_type_id");
+
+                            AaDb.DbPlots.Add(t.Id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
                     }
-
-                    Cursor = Cursors.Default;
-                    Application.UseWaitCursor = false;
                 }
             }
         }
 
         // events
-        sql = "SELECT * FROM plot_events";
-
-        using (var connection = SQLite.CreateConnection())
+        if (AllTableNames.GetValueOrDefault("plot_events") == SQLite.SQLiteFileName)
         {
-            using (var command = connection.CreateCommand())
+            using (var connection = SQLite.CreateConnection())
             {
-                AADB.DB_Plot_Events.Clear();
-
-                command.CommandText = sql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                using (var command = connection.CreateCommand())
                 {
-                    Application.UseWaitCursor = true;
-                    Cursor = Cursors.WaitCursor;
-
-                    while (reader.Read())
+                    command.CommandText = "SELECT * FROM plot_events";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
 
-                        var t = new GamePlotEvent();
-                        t.id = GetInt64(reader, "id");
-                        t.plot_id = GetInt64(reader, "plot_id");
-                        t.postion = GetInt64(reader, "position");
-                        t.name = GetString(reader, "name");
-                        t.source_update_method_id = GetInt64(reader, "source_update_method_id");
-                        t.target_update_method_id = GetInt64(reader, "target_update_method_id");
-                        t.target_update_method_param1 = GetInt64(reader, "target_update_method_param1");
-                        t.target_update_method_param2 = GetInt64(reader, "target_update_method_param2");
-                        t.target_update_method_param3 = GetInt64(reader, "target_update_method_param3");
-                        t.target_update_method_param4 = GetInt64(reader, "target_update_method_param4");
-                        t.target_update_method_param5 = GetInt64(reader, "target_update_method_param5");
-                        t.target_update_method_param6 = GetInt64(reader, "target_update_method_param6");
-                        t.target_update_method_param7 = GetInt64(reader, "target_update_method_param7");
-                        t.target_update_method_param8 = GetInt64(reader, "target_update_method_param8");
-                        t.target_update_method_param9 = GetInt64(reader, "target_update_method_param9");
-                        t.tickets = GetInt64(reader, "tickets");
-                        t.aeo_diminishing = GetBool(reader, "aoe_diminishing");
+                        while (reader.Read())
+                        {
+                            var t = new GamePlotEvent();
+                            t.Id = GetInt64(reader, "id");
+                            t.PlotId = GetInt64(reader, "plot_id");
+                            t.Postion = GetInt64(reader, "position");
+                            t.Name = GetString(reader, "name");
+                            t.SourceUpdateMethodId = GetInt64(reader, "source_update_method_id");
+                            t.TargetUpdateMethodId = GetInt64(reader, "target_update_method_id");
+                            t.TargetUpdateMethodParam1 = GetInt64(reader, "target_update_method_param1");
+                            t.TargetUpdateMethodParam2 = GetInt64(reader, "target_update_method_param2");
+                            t.TargetUpdateMethodParam3 = GetInt64(reader, "target_update_method_param3");
+                            t.TargetUpdateMethodParam4 = GetInt64(reader, "target_update_method_param4");
+                            t.TargetUpdateMethodParam5 = GetInt64(reader, "target_update_method_param5");
+                            t.TargetUpdateMethodParam6 = GetInt64(reader, "target_update_method_param6");
+                            t.TargetUpdateMethodParam7 = GetInt64(reader, "target_update_method_param7");
+                            t.TargetUpdateMethodParam8 = GetInt64(reader, "target_update_method_param8");
+                            t.TargetUpdateMethodParam9 = GetInt64(reader, "target_update_method_param9");
+                            t.Tickets = GetInt64(reader, "tickets");
+                            t.AeoDiminishing = GetBool(reader, "aoe_diminishing");
 
-                        AADB.DB_Plot_Events.Add(t.id, t);
+                            AaDb.DbPlotEvents.Add(t.Id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
                     }
-
-                    Cursor = Cursors.Default;
-                    Application.UseWaitCursor = false;
                 }
             }
         }
 
         // next events
-        sql = "SELECT * FROM plot_next_events";
-        using (var connection = SQLite.CreateConnection())
+        if (AllTableNames.GetValueOrDefault("plot_next_events") == SQLite.SQLiteFileName)
         {
-            using (var command = connection.CreateCommand())
+            using (var connection = SQLite.CreateConnection())
             {
-                AADB.DB_Plot_Next_Events.Clear();
-
-                command.CommandText = sql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                using (var command = connection.CreateCommand())
                 {
-                    Application.UseWaitCursor = true;
-                    Cursor = Cursors.WaitCursor;
-
-                    while (reader.Read())
+                    command.CommandText = "SELECT * FROM plot_next_events";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
 
-                        var t = new GamePlotNextEvent();
-                        t.id = GetInt64(reader, "id");
-                        t.event_id = GetInt64(reader, "event_id");
-                        t.postion = GetInt64(reader, "position");
-                        t.next_event_id = GetInt64(reader, "next_event_id");
-                        t.delay = GetInt64(reader, "delay");
-                        t.speed = GetInt64(reader, "speed");
+                        while (reader.Read())
+                        {
 
-                        AADB.DB_Plot_Next_Events.Add(t.id, t);
+                            var t = new GamePlotNextEvent();
+                            t.Id = GetInt64(reader, "id");
+                            t.EventId = GetInt64(reader, "event_id");
+                            t.Postion = GetInt64(reader, "position");
+                            t.NextEventId = GetInt64(reader, "next_event_id");
+                            t.Delay = GetInt64(reader, "delay");
+                            t.Speed = GetInt64(reader, "speed");
+
+                            AaDb.DbPlotNextEvents.Add(t.Id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
                     }
-
-                    Cursor = Cursors.Default;
-                    Application.UseWaitCursor = false;
                 }
             }
         }
 
         // plot events condition
-        sql = "SELECT * FROM plot_event_conditions";
-        using (var connection = SQLite.CreateConnection())
+        if (AllTableNames.GetValueOrDefault("plot_event_conditions") == SQLite.SQLiteFileName)
         {
-            using (var command = connection.CreateCommand())
+            using (var connection = SQLite.CreateConnection())
             {
-                AADB.DB_Plot_Event_Conditions.Clear();
-
-                command.CommandText = sql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                using (var command = connection.CreateCommand())
                 {
-                    Application.UseWaitCursor = true;
-                    Cursor = Cursors.WaitCursor;
-
-                    while (reader.Read())
+                    command.CommandText = "SELECT * FROM plot_event_conditions";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
 
-                        var t = new GamePlotEventCondition();
-                        t.id = GetInt64(reader, "id");
-                        t.event_id = GetInt64(reader, "event_id");
-                        t.postion = GetInt64(reader, "position");
-                        t.condition_id = GetInt64(reader, "condition_id");
-                        t.source_id = GetInt64(reader, "source_id");
-                        t.target_id = GetInt64(reader, "target_id");
-                        t.notify_failure = GetBool(reader, "notify_failure");
+                        while (reader.Read())
+                        {
 
-                        AADB.DB_Plot_Event_Conditions.Add(t.id, t);
+                            var t = new GamePlotEventCondition();
+                            t.Id = GetInt64(reader, "id");
+                            t.EventId = GetInt64(reader, "event_id");
+                            t.Postion = GetInt64(reader, "position");
+                            t.ConditionId = GetInt64(reader, "condition_id");
+                            t.SourceId = GetInt64(reader, "source_id");
+                            t.TargetId = GetInt64(reader, "target_id");
+                            t.NotifyFailure = GetBool(reader, "notify_failure");
+
+                            AaDb.DbPlotEventConditions.Add(t.Id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
                     }
-
-                    Cursor = Cursors.Default;
-                    Application.UseWaitCursor = false;
                 }
             }
         }
 
         // plot condition
-        sql = "SELECT * FROM plot_conditions";
-        using (var connection = SQLite.CreateConnection())
+        if (AllTableNames.GetValueOrDefault("plot_conditions") == SQLite.SQLiteFileName)
         {
-            using (var command = connection.CreateCommand())
+            using (var connection = SQLite.CreateConnection())
             {
-                AADB.DB_Plot_Conditions.Clear();
-
-                command.CommandText = sql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                using (var command = connection.CreateCommand())
                 {
-                    Application.UseWaitCursor = true;
-                    Cursor = Cursors.WaitCursor;
-
-                    while (reader.Read())
+                    command.CommandText = "SELECT * FROM plot_conditions";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        var t = new GamePlotCondition();
-                        t.id = GetInt64(reader, "id");
-                        t.not_condition = GetBool(reader, "not_condition");
-                        t.kind_id = GetInt64(reader, "kind_id");
-                        t.param1 = GetInt64(reader, "param1");
-                        t.param2 = GetInt64(reader, "param2");
-                        t.param3 = GetInt64(reader, "param3");
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
 
-                        AADB.DB_Plot_Conditions.Add(t.id, t);
+                        while (reader.Read())
+                        {
+                            var t = new GamePlotCondition();
+                            t.Id = GetInt64(reader, "id");
+                            t.NotCondition = GetBool(reader, "not_condition");
+                            t.KindId = GetInt64(reader, "kind_id");
+                            t.Param1 = GetInt64(reader, "param1");
+                            t.Param2 = GetInt64(reader, "param2");
+                            t.Param3 = GetInt64(reader, "param3");
+
+                            AaDb.DbPlotConditions.Add(t.Id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
                     }
-
-                    Cursor = Cursors.Default;
-                    Application.UseWaitCursor = false;
                 }
             }
         }
 
         // plot effects
-        sql = "SELECT * FROM plot_effects";
-        using (var connection = SQLite.CreateConnection())
+        if (AllTableNames.GetValueOrDefault("plot_effects") == SQLite.SQLiteFileName)
         {
-            using (var command = connection.CreateCommand())
+            using (var connection = SQLite.CreateConnection())
             {
-                AADB.DB_Plot_Effects.Clear();
-
-                command.CommandText = sql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                using (var command = connection.CreateCommand())
                 {
-                    Application.UseWaitCursor = true;
-                    Cursor = Cursors.WaitCursor;
-
-                    while (reader.Read())
+                    command.CommandText = "SELECT * FROM plot_effects";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        var t = new GamePlotEffect();
-                        t.id = GetInt64(reader, "id");
-                        t.event_id = GetInt64(reader, "event_id");
-                        t.position = GetInt64(reader, "position");
-                        t.source_id = GetInt64(reader, "source_id");
-                        t.target_id = GetInt64(reader, "target_id");
-                        t.actual_id = GetInt64(reader, "actual_id");
-                        t.actual_type = GetString(reader, "actual_type");
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
 
-                        AADB.DB_Plot_Effects.Add(t.id, t);
+                        while (reader.Read())
+                        {
+                            var t = new GamePlotEffect();
+                            t.Id = GetInt64(reader, "id");
+                            t.EventId = GetInt64(reader, "event_id");
+                            t.Position = GetInt64(reader, "position");
+                            t.SourceId = GetInt64(reader, "source_id");
+                            t.TargetId = GetInt64(reader, "target_id");
+                            t.ActualId = GetInt64(reader, "actual_id");
+                            t.ActualType = GetString(reader, "actual_type");
+
+                            AaDb.DbPlotEffects.Add(t.Id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
                     }
-
-                    Cursor = Cursors.Default;
-                    Application.UseWaitCursor = false;
                 }
             }
         }
-
     }
 
     private static string ConditionTypeName(long id)
@@ -867,83 +824,83 @@ public partial class MainForm
             return;
         }
 
-        var nodeName = nodeNamePrefix + child.id.ToString() + " - " + child.name;
-        if (child.tickets > 1)
-            nodeName = child.tickets.ToString() + " x " + nodeName;
+        var nodeName = nodeNamePrefix + child.Id.ToString() + " - " + child.Name;
+        if (child.Tickets > 1)
+            nodeName = child.Tickets.ToString() + " x " + nodeName;
         var eventNode = new TreeNode(nodeName);
         eventNode.ImageIndex = 1;
         eventNode.SelectedImageIndex = 1;
-        eventNode.Tag = child.id;
+        eventNode.Tag = child.Id;
 
         parent.Nodes.Add(eventNode);
 
         // Does it have conditions ?
-        var plotEventConditions = AADB.DB_Plot_Event_Conditions.Where(pec => pec.Value.event_id == child.id);
+        var plotEventConditions = AaDb.DbPlotEventConditions.Where(pec => pec.Value.EventId == child.Id);
         foreach (var plotEventCondition in plotEventConditions)
         {
-            var eventConditionName = $"Event Condition ({plotEventCondition.Value.condition_id})";
+            var eventConditionName = $"Event Condition ({plotEventCondition.Value.ConditionId})";
             var eventConditionNode = new TreeNode(eventConditionName);
             eventConditionNode.ImageIndex = 3;
             eventConditionNode.SelectedImageIndex = 3;
             eventConditionNode.Tag = 0;
             eventNode.Nodes.Add(eventConditionNode);
-            eventConditionNode.Nodes.Add("Source: " + PlotUpdateMethod(plotEventCondition.Value.source_id));
-            eventConditionNode.Nodes.Add("Target: " + PlotUpdateMethod(plotEventCondition.Value.target_id));
-            eventConditionNode.Nodes.Add("Notify Failure: " + plotEventCondition.Value.notify_failure);
-            if (AADB.DB_Plot_Conditions.TryGetValue(plotEventCondition.Value.condition_id, out var condition))
+            eventConditionNode.Nodes.Add("Source: " + PlotUpdateMethod(plotEventCondition.Value.SourceId));
+            eventConditionNode.Nodes.Add("Target: " + PlotUpdateMethod(plotEventCondition.Value.TargetId));
+            eventConditionNode.Nodes.Add("Notify Failure: " + plotEventCondition.Value.NotifyFailure);
+            if (AaDb.DbPlotConditions.TryGetValue(plotEventCondition.Value.ConditionId, out var condition))
             {
-                eventConditionNode.Text += (condition.not_condition ? " NOT " : " ") + ConditionTypeName(condition.kind_id);
+                eventConditionNode.Text += (condition.NotCondition ? " NOT " : " ") + ConditionTypeName(condition.KindId);
                 // eventConditionNode.Nodes.Add("Condition: " + (condition.not_condition ? "NOT " : "") + ConditionTypeName(condition.kind_id));
-                if (condition.param1 != 0)
-                    eventConditionNode.Nodes.Add("Param1: " + condition.param1);
-                if (condition.param2 != 0)
-                    eventConditionNode.Nodes.Add("Param2: " + condition.param2);
-                if (condition.param3 != 0)
-                    eventConditionNode.Nodes.Add("Param3: " + condition.param3);
+                if (condition.Param1 != 0)
+                    eventConditionNode.Nodes.Add("Param1: " + condition.Param1);
+                if (condition.Param2 != 0)
+                    eventConditionNode.Nodes.Add("Param2: " + condition.Param2);
+                if (condition.Param3 != 0)
+                    eventConditionNode.Nodes.Add("Param3: " + condition.Param3);
             }
         }
 
         // Plot Effects
-        var plotEventEffects = AADB.DB_Plot_Effects.Where(pec => pec.Value.event_id == child.id).OrderBy(pec => pec.Value.position);
+        var plotEventEffects = AaDb.DbPlotEffects.Where(pec => pec.Value.EventId == child.Id).OrderBy(pec => pec.Value.Position);
         foreach (var plotEffect in plotEventEffects)
         {
-            var eventConditionName = $"Plot Effect ({plotEffect.Value.id})";
+            var eventConditionName = $"Plot Effect ({plotEffect.Value.Id})";
             var effectNode = new TreeNode(eventConditionName);
             effectNode.ImageIndex = 2;
             effectNode.SelectedImageIndex = 2;
             effectNode.Tag = 0;
             eventNode.Nodes.Add(effectNode);
-            effectNode.Nodes.Add("Pos: " + plotEffect.Value.position);
-            effectNode.Nodes.Add("Source: " + PlotUpdateMethod(plotEffect.Value.source_id));
-            effectNode.Nodes.Add("Target: " + PlotUpdateMethod(plotEffect.Value.target_id));
+            effectNode.Nodes.Add("Pos: " + plotEffect.Value.Position);
+            effectNode.Nodes.Add("Source: " + PlotUpdateMethod(plotEffect.Value.SourceId));
+            effectNode.Nodes.Add("Target: " + PlotUpdateMethod(plotEffect.Value.TargetId));
             // var actualEffectNode = effectNode.Nodes.Add("Actual Effect: " + plotEffect.Value.actual_type + " (" +plotEffect.Value.actual_id + ")");
 
-            CreatePlotEffectNode(plotEffect.Value.actual_type, plotEffect.Value.actual_id, effectNode, true);
+            CreatePlotEffectNode(plotEffect.Value.ActualType, plotEffect.Value.ActualId, effectNode, true);
         }
 
-        var nextEvents = AADB.DB_Plot_Next_Events.Where(nextEvent => nextEvent.Value.event_id == child.id).OrderBy(p => p.Value.postion);
+        var nextEvents = AaDb.DbPlotNextEvents.Where(nextEvent => nextEvent.Value.EventId == child.Id).OrderBy(p => p.Value.Postion);
         foreach (var n in nextEvents)
         {
-            if (n.Value.next_event_id == n.Value.event_id)
+            if (n.Value.NextEventId == n.Value.EventId)
             {
-                var rNode = eventNode.Nodes.Add("Repeats itself with Delay: " + n.Value.delay + ", Speed: " + n.Value.speed);
+                var rNode = eventNode.Nodes.Add("Repeats itself with Delay: " + n.Value.Delay + ", Speed: " + n.Value.Speed);
                 rNode.ImageIndex = 3;
                 rNode.SelectedImageIndex = rNode.ImageIndex;
             }
             else
-            if (AADB.DB_Plot_Events.TryGetValue(n.Value.next_event_id, out var next))
+            if (AaDb.DbPlotEvents.TryGetValue(n.Value.NextEventId, out var next))
             {
                 //AddPlotEventNode(eventNode, next, depth, "Next Plot Event: ");
 
-                var nextNode = new TreeNode("Next Event Node: " + next.id.ToString() + " - " + next.name);
-                nextNode.Tag = next.id;
+                var nextNode = new TreeNode("Next Event Node: " + next.Id.ToString() + " - " + next.Name);
+                nextNode.Tag = next.Id;
                 nextNode.ImageIndex = 2;
                 nextNode.SelectedImageIndex = nextNode.ImageIndex;
                 eventNode.Nodes.Add(nextNode);
             }
             else
             {
-                var errorNode = new TreeNode("Unknown Next Event: " + n.Value.next_event_id.ToString());
+                var errorNode = new TreeNode("Unknown Next Event: " + n.Value.NextEventId.ToString());
                 errorNode.ImageIndex = 4;
                 errorNode.SelectedImageIndex = 4;
                 errorNode.Tag = 0;
@@ -956,15 +913,15 @@ public partial class MainForm
     private void ShowSkillPlotTree(GameSkills skill)
     {
         tvSkill.Nodes.Clear();
-        var imgId = ilIcons.Images.IndexOfKey(skill.icon_id.ToString());
-        var rootNode = new TreeNode(skill.nameLocalized + $" ( {skill.id} )", imgId, imgId);
+        var imgId = ilIcons.Images.IndexOfKey(skill.IconId.ToString());
+        var rootNode = new TreeNode(skill.NameLocalized + $" ( {skill.Id} )", imgId, imgId);
         rootNode.Tag = 0;
         tvSkill.Nodes.Add(rootNode);
 
-        var requires = GetSkillRequirements(skill.id);
-        var reqNode = AddUnitRequirementNode(requires, skill.or_unit_reqs, tvSkill.Nodes);
+        var requires = GetSkillRequirements(skill.Id);
+        var reqNode = AddUnitRequirementNode(requires, skill.OrUnitReqs, tvSkill.Nodes);
 
-        var skillsProperties = GetCustomTableValues("skills", "id", skill.id.ToString());
+        var skillsProperties = GetCustomTableValues("skills", "id", skill.Id.ToString());
         foreach (var skillsProperty in skillsProperties)
         foreach (var skillsPropertyValue in skillsProperty)
         {
@@ -1002,8 +959,8 @@ public partial class MainForm
             AddCustomPropertyNode("ability_id", ((AbilityType)skill.ability_id).ToString(), true, rootNode);
         */
 
-        var skillEffectsList = from se in AADB.DB_Skill_Effects
-            where se.Value.skill_id == skill.id
+        var skillEffectsList = from se in AaDb.DbSkillEffects
+            where se.Value.SkillId == skill.Id
             select se.Value;
 
         TreeNode effectsRoot = null;
@@ -1013,7 +970,7 @@ public partial class MainForm
             long totalWeight = 0;
             foreach (var skillEffect in skillEffectsList)
             {
-                totalWeight += skillEffect.weight;
+                totalWeight += skillEffect.Weight;
             }
             foreach (var skillEffect in skillEffectsList)
             {
@@ -1025,21 +982,21 @@ public partial class MainForm
                     effectsRoot.Tag = 0;
                 }
 
-                CreateSkillEffectNode(skillEffect.effect_id, effectsRoot, skillEffect.weight, totalWeight, true);
+                CreateSkillEffectNode(skillEffect.EffectId, effectsRoot, skillEffect.Weight, totalWeight, true);
             }
         }
 
 
-        if (AADB.DB_Plots.TryGetValue(skill.plot_id, out var plot))
+        if (AaDb.DbPlots.TryGetValue(skill.PlotId, out var plot))
         {
-            var firstPlotNode = new TreeNode(plot.id.ToString() + " - " + plot.name);
+            var firstPlotNode = new TreeNode(plot.Id.ToString() + " - " + plot.Name);
             firstPlotNode.ImageIndex = 2;
             firstPlotNode.SelectedImageIndex = 2;
-            firstPlotNode.Tag = plot.id;
+            firstPlotNode.Tag = plot.Id;
             tvSkill.Nodes.Add(firstPlotNode);
 
-            var events = AADB.DB_Plot_Events.Where(plotEvent => plotEvent.Value.plot_id == plot.id)
-                .OrderBy(plotEvent => plotEvent.Value.postion);
+            var events = AaDb.DbPlotEvents.Where(plotEvent => plotEvent.Value.PlotId == plot.Id)
+                .OrderBy(plotEvent => plotEvent.Value.Postion);
             foreach (var e in events)
             {
                 AddPlotEventNode(firstPlotNode, e.Value);
@@ -1055,10 +1012,10 @@ public partial class MainForm
     private void CreateSkillEffectNode(long effectId, TreeNode effectsRoot, long thisWeight, long totalWeight, bool hideEmptyProperties)
     {
         var effectTypeText = "???";
-        if (AADB.DB_Effects.TryGetValue(effectId, out var effect))
+        if (AaDb.DbEffects.TryGetValue(effectId, out var effect))
         {
             var rate = (totalWeight > 0 && thisWeight > 0) ? thisWeight * 100f / totalWeight : 100f;
-            effectTypeText = effect.actual_type + " ( " + effect.actual_id.ToString() + " )" + (rate < 100 ? $" {rate:F0}%" : "");
+            effectTypeText = effect.ActualType + " ( " + effect.ActualId.ToString() + " )" + (rate < 100 ? $" {rate:F0}%" : "");
         }
 
         var skillEffectNode = effectsRoot.Nodes.Add(effectTypeText);
@@ -1068,8 +1025,8 @@ public partial class MainForm
 
         if (effect != null)
         {
-            var effectsTableName = FunctionTypeToTableName(effect.actual_type);
-            var effectValuesList = GetCustomTableValues(effectsTableName, "id", effect.actual_id.ToString());
+            var effectsTableName = FunctionTypeToTableName(effect.ActualType);
+            var effectValuesList = GetCustomTableValues(effectsTableName, "id", effect.ActualId.ToString());
             foreach (var effectValues in effectValuesList)
             foreach (var effectValue in effectValues)
             {
@@ -1116,23 +1073,23 @@ public partial class MainForm
 
     private void ShowDbSkill(long idx)
     {
-        if (AADB.DB_Skills.TryGetValue(idx, out var skill))
+        if (AaDb.DbSkills.TryGetValue(idx, out var skill))
         {
             lSkillID.Text = idx.ToString();
-            lSkillName.Text = skill.nameLocalized;
-            lSkillCost.Text = skill.cost.ToString();
-            lSkillMana.Text = skill.mana_cost.ToString();
-            lSkillLabor.Text = skill.consume_lp.ToString();
-            lSkillCooldown.Text = MSToString(skill.cooldown_time);
-            if ((skill.default_gcd) && (!skill.ignore_global_cooldown))
+            lSkillName.Text = skill.NameLocalized;
+            lSkillCost.Text = skill.Cost.ToString();
+            lSkillMana.Text = skill.ManaCost.ToString();
+            lSkillLabor.Text = skill.ConsumeLp.ToString();
+            lSkillCooldown.Text = MSToString(skill.CooldownTime);
+            if ((skill.DefaultGcd) && (!skill.IgnoreGlobalCooldown))
             {
                 lSkillGCD.Text = "Default";
             }
-            else if ((!skill.default_gcd) && (!skill.ignore_global_cooldown))
+            else if ((!skill.DefaultGcd) && (!skill.IgnoreGlobalCooldown))
             {
-                lSkillGCD.Text = MSToString(skill.custom_gcd);
+                lSkillGCD.Text = MSToString(skill.CustomGcd);
             }
-            else if ((!skill.default_gcd) && (skill.ignore_global_cooldown))
+            else if ((!skill.DefaultGcd) && (skill.IgnoreGlobalCooldown))
             {
                 lSkillGCD.Text = "Ignored";
             }
@@ -1142,13 +1099,13 @@ public partial class MainForm
             }
 
             // lSkillGCD.Text = skill.ignore_global_cooldown ? "Ignore" : "Normal";
-            FormattedTextToRichtEdit(skill.descriptionLocalized, rtSkillDescription);
-            IconIdToLabel(skill.icon_id, skillIcon);
-            lSkillTags.Text = TagsAsString(idx, AADB.DB_Tagged_Skills);
+            FormattedTextToRichtEdit(skill.DescriptionLocalized, rtSkillDescription);
+            IconIdToLabel(skill.IconId, skillIcon);
+            lSkillTags.Text = TagsAsString(idx, AaDb.DbTaggedSkills);
 
             ShowSelectedData("skills", "(id = " + idx.ToString() + ")", "id ASC");
 
-            if (skill.first_reagent_only)
+            if (skill.FirstReagentOnly)
             {
                 labelSkillReagents.Text = "Requires either of these items to use";
             }
@@ -1159,45 +1116,45 @@ public partial class MainForm
 
             // Produces
             dgvSkillProducts.Rows.Clear();
-            foreach (var p in AADB.DB_Skill_Products)
+            foreach (var p in AaDb.DbSkillProducts)
             {
-                if (p.Value.skill_id == idx)
+                if (p.Value.SkillId == idx)
                 {
                     var line = dgvSkillProducts.Rows.Add();
                     var row = dgvSkillProducts.Rows[line];
-                    row.Cells[0].Value = p.Value.item_id.ToString();
-                    if (AADB.DB_Items.TryGetValue(p.Value.item_id, out var item))
+                    row.Cells[0].Value = p.Value.ItemId.ToString();
+                    if (AaDb.DbItems.TryGetValue(p.Value.ItemId, out var item))
                     {
-                        row.Cells[1].Value = item.nameLocalized;
+                        row.Cells[1].Value = item.NameLocalized;
                     }
                     else
                     {
                         row.Cells[1].Value = "???";
                     }
 
-                    row.Cells[2].Value = p.Value.amount.ToString();
+                    row.Cells[2].Value = p.Value.Amount.ToString();
                 }
             }
 
             // Reagents
             dgvSkillReagents.Rows.Clear();
-            foreach (var p in AADB.DB_Skill_Reagents)
+            foreach (var p in AaDb.DbSkillReagents)
             {
-                if (p.Value.skill_id == idx)
+                if (p.Value.SkillId == idx)
                 {
                     var line = dgvSkillReagents.Rows.Add();
                     var row = dgvSkillReagents.Rows[line];
-                    row.Cells[0].Value = p.Value.item_id.ToString();
-                    if (AADB.DB_Items.TryGetValue(p.Value.item_id, out var item))
+                    row.Cells[0].Value = p.Value.ItemId.ToString();
+                    if (AaDb.DbItems.TryGetValue(p.Value.ItemId, out var item))
                     {
-                        row.Cells[1].Value = item.nameLocalized;
+                        row.Cells[1].Value = item.NameLocalized;
                     }
                     else
                     {
                         row.Cells[1].Value = "???";
                     }
 
-                    row.Cells[2].Value = p.Value.amount.ToString();
+                    row.Cells[2].Value = p.Value.Amount.ToString();
                 }
             }
 
@@ -1254,7 +1211,7 @@ public partial class MainForm
 
     private void ShowDbBuff(long buff_id)
     {
-        if (!AADB.DB_Buffs.TryGetValue(buff_id, out var b))
+        if (!AaDb.DbBuffs.TryGetValue(buff_id, out var b))
         {
             lBuffId.Text = "???";
             lBuffName.Text = "???";
@@ -1267,20 +1224,20 @@ public partial class MainForm
             return;
         }
 
-        lBuffId.Text = b.id.ToString();
-        lBuffName.Text = b.nameLocalized;
-        lBuffDuration.Text = MSToString(b.duration);
-        lBuffTags.Text = TagsAsString(buff_id, AADB.DB_Tagged_Buffs);
-        IconIdToLabel(b.icon_id, buffIcon);
-        FormattedTextToRichtEdit(b.descLocalized, rtBuffDesc);
+        lBuffId.Text = b.Id.ToString();
+        lBuffName.Text = b.NameLocalized;
+        lBuffDuration.Text = MSToString(b.Duration);
+        lBuffTags.Text = TagsAsString(buff_id, AaDb.DbTaggedBuffs);
+        IconIdToLabel(b.IconId, buffIcon);
+        FormattedTextToRichtEdit(b.DescLocalized, rtBuffDesc);
         ClearBuffTags();
-        foreach (var c in b._others)
+        foreach (var c in b.Others)
         {
             AddBuffTag(c.Key + " = " + c.Value);
         }
 
         lBuffAddGMCommand.Text = "/addbuff " + lBuffId.Text;
-        ShowSelectedData("buffs", "id = " + b.id.ToString(), "id ASC");
+        ShowSelectedData("buffs", "id = " + b.Id.ToString(), "id ASC");
 
         ShowDbBuffTriggers(buff_id);
     }
@@ -1319,15 +1276,15 @@ public partial class MainForm
 
         tvBuffTriggers.Nodes.Clear();
         // Stat Modifiers
-        var stats = AADB.DB_UnitModifiers.Values.Where(x => x.owner_type == "Buff" && x.owner_id == buff_id).ToList();
+        var stats = AaDb.DbUnitModifiers.Values.Where(x => x.OwnerType == "Buff" && x.OwnerId == buff_id).ToList();
         if (stats.Any())
         {
             var statsNode = tvBuffTriggers.Nodes.Add("Stat modifiers");
             foreach (var unitStat in stats)
             {
-                var statNode = statsNode.Nodes.Add($"{unitStat.unit_attribute_id} {unitStat.value}{(unitStat.unit_modifier_type_id != 0 ? "%" : "")}");
-                if (unitStat.linear_level_bonus > 0)
-                    statNode.Text += $" +Linear Level Bonus: {unitStat.linear_level_bonus}";
+                var statNode = statsNode.Nodes.Add($"{unitStat.UnitAttributeId} {unitStat.Value}{(unitStat.UnitModifierTypeId != 0 ? "%" : "")}");
+                if (unitStat.LinearLevelBonus > 0)
+                    statNode.Text += $" +Linear Level Bonus: {unitStat.LinearLevelBonus}";
 
                 if (statNode.Text.Contains("health", StringComparison.InvariantCultureIgnoreCase))
                     statNode.ForeColor = Color.Red;
@@ -1351,33 +1308,33 @@ public partial class MainForm
 
 
         // Buff Modifiers
-        var mods = AADB.DB_BuffModifiers.Values.Where(x => x.owner_type == "Buff" && x.owner_id == buff_id).ToList();
+        var mods = AaDb.DbBuffModifiers.Values.Where(x => x.OwnerType == "Buff" && x.OwnerId == buff_id).ToList();
         if (mods.Any())
         {
             var modsNode = tvBuffTriggers.Nodes.Add("Modifiers");
             foreach (var mod in mods)
             {
                 TreeNode modNode = null;
-                if (mod.buff_id > 0)
-                    modNode = AddCustomPropertyNode("buff_id", mod.buff_id.ToString(), false, modsNode);
-                if (mod.tag_id > 0)
-                    modNode = AddCustomPropertyNode("tag_id", mod.tag_id.ToString(), false, modsNode);
+                if (mod.BuffId > 0)
+                    modNode = AddCustomPropertyNode("buff_id", mod.BuffId.ToString(), false, modsNode);
+                if (mod.TagId > 0)
+                    modNode = AddCustomPropertyNode("tag_id", mod.TagId.ToString(), false, modsNode);
                 if (modNode == null)
                     continue; // should never happen
 
                 modNode.Text = @"With " + modNode.Text;
 
-                modNode.Nodes.Add($"buff_attribute_id: {mod.buff_attribute_id}");
-                modNode.Nodes.Add($"value: {mod.value}{(mod.unit_modifier_type_id != 0 ? "%" : "")}");
-                if (mod.synergy)
+                modNode.Nodes.Add($"buff_attribute_id: {mod.BuffAttributeId}");
+                modNode.Nodes.Add($"value: {mod.Value}{(mod.UnitModifierTypeId != 0 ? "%" : "")}");
+                if (mod.Synergy)
                     modNode.Nodes.Add("synergy");
             }
         }
 
 
         // Buff Triggers
-        var triggers = AADB.DB_BuffTriggers.Values.Where(bt => bt.buff_id == buff_id)
-            .GroupBy(bt => bt.event_id, bt => bt).ToDictionary(bt => bt.Key, bt => bt.ToList());
+        var triggers = AaDb.DbBuffTriggers.Values.Where(bt => bt.BuffId == buff_id)
+            .GroupBy(bt => bt.EventId, bt => bt).ToDictionary(bt => bt.Key, bt => bt.ToList());
 
         foreach (var triggerGrouping in triggers)
         {
@@ -1387,11 +1344,11 @@ public partial class MainForm
 
             foreach (var trigger in triggerGrouping.Value)
             {
-                if (AADB.DB_Effects.TryGetValue(trigger.effect_id, out var effect))
+                if (AaDb.DbEffects.TryGetValue(trigger.EffectId, out var effect))
                 {
                     // var triggerNode = new TreeNode($"{trigger.id} - Effect {trigger.effect_id} ({effect.actual_type} {effect.actual_id})");
                     // groupingNode.Nodes.Add(triggerNode);
-                    CreateSkillEffectNode(effect.id, groupingNode, 0, 0, cbBuffsHideEmpty.Checked);
+                    CreateSkillEffectNode(effect.Id, groupingNode, 0, 0, cbBuffsHideEmpty.Checked);
                 }
             }
         }
@@ -1426,7 +1383,7 @@ public partial class MainForm
         Application.UseWaitCursor = true;
         Cursor = Cursors.WaitCursor;
         dgvSkills.Visible = false;
-        foreach (var skill in AADB.DB_Skills)
+        foreach (var skill in AaDb.DbSkills)
         {
             bool addThis = false;
             if (SearchByID)
@@ -1443,12 +1400,12 @@ public partial class MainForm
             {
                 int line = dgvSkills.Rows.Add();
                 var row = dgvSkills.Rows[line];
-                long itemIdx = skill.Value.id;
+                long itemIdx = skill.Value.Id;
                 if (firstResult < 0)
                     firstResult = itemIdx;
                 row.Cells[0].Value = itemIdx.ToString();
-                row.Cells[1].Value = skill.Value.nameLocalized;
-                row.Cells[2].Value = skill.Value.descriptionLocalized;
+                row.Cells[1].Value = skill.Value.NameLocalized;
+                row.Cells[2].Value = skill.Value.DescriptionLocalized;
                 //row.Cells[3].Value = skill.Value.webDescriptionLocalized;
 
                 if (showFirst)
@@ -1485,39 +1442,39 @@ public partial class MainForm
 
     private void AddSkillLine(long skillIndex)
     {
-        if (AADB.DB_Skills.TryGetValue(skillIndex, out var skill))
+        if (AaDb.DbSkills.TryGetValue(skillIndex, out var skill))
         {
             int line = dgvSkills.Rows.Add();
             var row = dgvSkills.Rows[line];
-            row.Cells[0].Value = skill.id.ToString();
-            row.Cells[1].Value = skill.nameLocalized;
-            row.Cells[2].Value = skill.descriptionLocalized;
+            row.Cells[0].Value = skill.Id.ToString();
+            row.Cells[1].Value = skill.NameLocalized;
+            row.Cells[2].Value = skill.DescriptionLocalized;
 
             if (line == 0)
-                ShowDbSkill(skill.id);
+                ShowDbSkill(skill.Id);
         }
     }
 
     private void ShowDbSkillByItem(long id)
     {
-        if (AADB.DB_Items.TryGetValue(id, out var item))
+        if (AaDb.DbItems.TryGetValue(id, out var item))
         {
             dgvSkills.Rows.Clear();
             dgvSkillReagents.Rows.Clear();
             dgvSkillProducts.Rows.Clear();
-            if (item.use_skill_id > 0)
-                AddSkillLine(item.use_skill_id);
+            if (item.UseSkillId > 0)
+                AddSkillLine(item.UseSkillId);
 
-            foreach (var p in AADB.DB_Skill_Reagents)
+            foreach (var p in AaDb.DbSkillReagents)
             {
-                if (p.Value.item_id == id)
-                    AddSkillLine(p.Value.skill_id);
+                if (p.Value.ItemId == id)
+                    AddSkillLine(p.Value.SkillId);
             }
 
-            foreach (var p in AADB.DB_Skill_Products)
+            foreach (var p in AaDb.DbSkillProducts)
             {
-                if (p.Value.item_id == id)
-                    AddSkillLine(p.Value.skill_id);
+                if (p.Value.ItemId == id)
+                    AddSkillLine(p.Value.SkillId);
             }
 
             cbSkillSearch.Text = string.Empty;
@@ -1557,22 +1514,22 @@ public partial class MainForm
         Cursor = Cursors.WaitCursor;
         dgvBuffs.Rows.Clear();
         int c = 0;
-        foreach (var t in AADB.DB_Buffs)
+        foreach (var t in AaDb.DbBuffs)
         {
             var b = t.Value;
-            if ((b.id == searchID) || (b.SearchString.IndexOf(searchText) >= 0))
+            if ((b.Id == searchID) || (b.SearchString.IndexOf(searchText) >= 0))
             {
                 var line = dgvBuffs.Rows.Add();
                 var row = dgvBuffs.Rows[line];
 
-                row.Cells[0].Value = b.id.ToString();
-                row.Cells[1].Value = b.nameLocalized;
-                row.Cells[2].Value = b.duration > 0 ? MSToString(b.duration, true) : "";
+                row.Cells[0].Value = b.Id.ToString();
+                row.Cells[1].Value = b.NameLocalized;
+                row.Cells[2].Value = b.Duration > 0 ? MSToString(b.Duration, true) : "";
 
                 if (first)
                 {
                     first = false;
-                    ShowDbBuff(b.id);
+                    ShowDbBuff(b.Id);
                 }
 
                 c++;
@@ -1646,31 +1603,33 @@ public partial class MainForm
 
         if ((node == null) || (node.Tag == null))
             return;
-        if (!AADB.DB_Plot_Events.TryGetValue(long.Parse(node.Tag.ToString() ?? "0"), out var plotEvent))
+        if (!AaDb.DbPlotEvents.TryGetValue(long.Parse(node.Tag.ToString() ?? "0"), out var plotEvent))
             return;
 
         lPlotEventSourceUpdate.Text =
-            @"Source Update Method: " + PlotUpdateMethod(plotEvent.source_update_method_id);
+            @"Source Update Method: " + PlotUpdateMethod(plotEvent.SourceUpdateMethodId);
         lPlotEventTargetUpdate.Text =
-            @"Target Update Method: " + PlotUpdateMethod(plotEvent.target_update_method_id);
-        lPlotEventP1.Text = @"1: " + plotEvent.target_update_method_param1.ToString();
-        lPlotEventP2.Text = @"2: " + plotEvent.target_update_method_param2.ToString();
-        lPlotEventP3.Text = @"3: " + plotEvent.target_update_method_param3.ToString();
-        lPlotEventP4.Text = @"4: " + plotEvent.target_update_method_param4.ToString();
-        lPlotEventP5.Text = @"5: " + plotEvent.target_update_method_param5.ToString();
-        lPlotEventP6.Text = @"6: " + plotEvent.target_update_method_param6.ToString();
-        lPlotEventP7.Text = @"7: " + plotEvent.target_update_method_param7.ToString();
-        lPlotEventP8.Text = @"8: " + plotEvent.target_update_method_param8.ToString();
-        lPlotEventP9.Text = @"9: " + plotEvent.target_update_method_param9.ToString();
-        lPlotEventTickets.Text = @"Tickets: " + plotEvent.tickets.ToString();
-        lPlotEventAoE.Text = @"AoE: " + (plotEvent.aeo_diminishing ? "Diminishing" : "Normal");
+            @"Target Update Method: " + PlotUpdateMethod(plotEvent.TargetUpdateMethodId);
+        lPlotEventP1.Text = @"1: " + plotEvent.TargetUpdateMethodParam1.ToString();
+        lPlotEventP2.Text = @"2: " + plotEvent.TargetUpdateMethodParam2.ToString();
+        lPlotEventP3.Text = @"3: " + plotEvent.TargetUpdateMethodParam3.ToString();
+        lPlotEventP4.Text = @"4: " + plotEvent.TargetUpdateMethodParam4.ToString();
+        lPlotEventP5.Text = @"5: " + plotEvent.TargetUpdateMethodParam5.ToString();
+        lPlotEventP6.Text = @"6: " + plotEvent.TargetUpdateMethodParam6.ToString();
+        lPlotEventP7.Text = @"7: " + plotEvent.TargetUpdateMethodParam7.ToString();
+        lPlotEventP8.Text = @"8: " + plotEvent.TargetUpdateMethodParam8.ToString();
+        lPlotEventP9.Text = @"9: " + plotEvent.TargetUpdateMethodParam9.ToString();
+        lPlotEventTickets.Text = @"Tickets: " + plotEvent.Tickets.ToString();
+        lPlotEventAoE.Text = @"AoE: " + (plotEvent.AeoDiminishing ? "Diminishing" : "Normal");
 
-        ShowSelectedData("plot_events", "id == " + plotEvent.id.ToString(), "id");
+        ShowSelectedData("plot_events", "id == " + plotEvent.Id.ToString(), "id");
     }
 
     private void LoadUnitReqs()
     {
-        AADB.DB_UnitReqs.Clear();
+        if (AllTableNames.GetValueOrDefault("unit_reqs") != SQLite.SQLiteFileName)
+            return;
+
         using var connection = SQLite.CreateConnection();
         using var command = connection.CreateCommand();
         command.CommandText = "SELECT * FROM unit_reqs";
@@ -1686,49 +1645,51 @@ public partial class MainForm
         {
             var t = new GameUnitReqs();
             i++;
-            t.id = useDbId ? reader.GetUInt32("id") : i;
-            t.owner_id = reader.GetUInt32("owner_id");
-            t.owner_type = reader.GetString("owner_type");
-            t.kind_id = (GameUnitReqsKind)reader.GetUInt32("kind_id");
-            t.value1 = reader.GetUInt32("value1");
-            t.value2 = reader.GetUInt32("value2");
+            t.Id = useDbId ? reader.GetUInt32("id") : i;
+            t.OwnerId = reader.GetUInt32("owner_id");
+            t.OwnerType = reader.GetString("owner_type");
+            t.KindId = (GameUnitReqsKind)reader.GetUInt32("kind_id");
+            t.Value1 = reader.GetUInt32("value1");
+            t.Value2 = reader.GetUInt32("value2");
 
-            AADB.DB_UnitReqs.TryAdd(t.id, t);
+            AaDb.DbUnitReqs.TryAdd(t.Id, t);
         }
     }
 
     private void LoadUnitMods()
     {
+        if (AllTableNames.GetValueOrDefault("unit_modifiers") != SQLite.SQLiteFileName)
+            return;
+
         using var connection = SQLite.CreateConnection();
         using var command = connection.CreateCommand();
         command.CommandText = "SELECT * FROM unit_modifiers";
         command.Prepare();
         using var sqliteReader = command.ExecuteReader();
         using var reader = new SQLiteWrapperReader(sqliteReader);
-        var useDbId = false;
         var columnNames = reader.GetColumnNames();
-        if (columnNames.IndexOf("id") >= 0)
-            useDbId = true;
+        var useDbId = (columnNames.IndexOf("id") >= 0);
         var i = 0u;
+
         while (reader.Read())
         {
             var t = new GameUnitModifiers();
             i++;
-            t.id = useDbId ? reader.GetInt64("id") : i;
-            t.owner_id = reader.GetInt64("owner_id");
-            t.owner_type = reader.GetString("owner_type");
-            t.unit_attribute_id = (UnitAttribute)reader.GetInt64("unit_attribute_id");
-            t.unit_modifier_type_id = reader.GetInt64("unit_modifier_type_id");
-            t.value = reader.GetInt64("value");
-            t.linear_level_bonus = reader.GetInt64("linear_level_bonus");
+            t.Id = useDbId ? reader.GetInt64("id") : i;
+            t.OwnerId = reader.GetInt64("owner_id");
+            t.OwnerType = reader.GetString("owner_type");
+            t.UnitAttributeId = (UnitAttribute)reader.GetInt64("unit_attribute_id");
+            t.UnitModifierTypeId = reader.GetInt64("unit_modifier_type_id");
+            t.Value = reader.GetInt64("value");
+            t.LinearLevelBonus = reader.GetInt64("linear_level_bonus");
 
-            AADB.DB_UnitModifiers.TryAdd(t.id, t);
+            AaDb.DbUnitModifiers.TryAdd(t.Id, t);
         }
     }
 
     private IEnumerable<GameUnitReqs> GetRequirement(string ownerType, long ownerId)
     {
-        return AADB.DB_UnitReqs.Values.Where(x => x.owner_id == ownerId && x.owner_type == ownerType);
+        return AaDb.DbUnitReqs.Values.Where(x => x.OwnerId == ownerId && x.OwnerType == ownerType);
     }
 
     public List<GameUnitReqs> GetSkillRequirements(long skillId)

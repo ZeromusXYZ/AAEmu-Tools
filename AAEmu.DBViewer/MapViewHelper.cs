@@ -1,4 +1,4 @@
-﻿using AAEmu.DBDefs;
+﻿using AAEmu.DBViewer.DbDefs;
 using AAPacker;
 using System;
 using System.Collections.Generic;
@@ -467,34 +467,34 @@ namespace AAEmu.DBViewer
             AddMiniMapRef(MapLevel.City, 252, 100, "w_lilyut_meadow_west_ronbann_mine", 112, 52, 0, 0, 680, 436);
 
             // Read .g file data for roads
-            if ((MainForm.ThisForm.pak != null) && MainForm.ThisForm.pak.IsOpen)
+            if ((MainForm.ThisForm.Pak != null) && MainForm.ThisForm.Pak.IsOpen)
             {
-                foreach (var zg in AADB.DB_Zone_Groups)
+                foreach (var zg in AaDb.DbZoneGroups)
                 {
-                    var refs = MapViewMiniMapRef.ListPossibleFileNames(zg.Value.name, 100, Properties.Settings.Default.DefaultGameLanguage, ".g");
+                    var refs = MapViewMiniMapRef.ListPossibleFileNames(zg.Value.Name, 100, Properties.Settings.Default.DefaultGameLanguage, ".g");
                     foreach (var r in refs)
-                        if (MainForm.ThisForm.pak.FileExists(r))
-                            LoadGFileFromPak(MainForm.ThisForm.pak, r);
+                        if (MainForm.ThisForm.Pak.FileExists(r))
+                            LoadGFileFromPak(MainForm.ThisForm.Pak, r);
                 }
             }
             // Override refs if needed
-            foreach (var zg in AADB.DB_Zone_Groups)
+            foreach (var zg in AaDb.DbZoneGroups)
             {
-                if (GFileVars.ContainsKey(zg.Value.name + "_road_100.coords.x") &&
-                    GFileVars.ContainsKey(zg.Value.name + "_road_100.coords.y") &&
-                    GFileVars.ContainsKey(zg.Value.name + "_road_100.coords.w") &&
-                    GFileVars.ContainsKey(zg.Value.name + "_road_100.coords.h") &&
-                    GFileVars.ContainsKey(zg.Value.name + "_road_100.offset.x") &&
-                    GFileVars.ContainsKey(zg.Value.name + "_road_100.offset.y"))
+                if (GFileVars.ContainsKey(zg.Value.Name + "_road_100.coords.x") &&
+                    GFileVars.ContainsKey(zg.Value.Name + "_road_100.coords.y") &&
+                    GFileVars.ContainsKey(zg.Value.Name + "_road_100.coords.w") &&
+                    GFileVars.ContainsKey(zg.Value.Name + "_road_100.coords.h") &&
+                    GFileVars.ContainsKey(zg.Value.Name + "_road_100.offset.x") &&
+                    GFileVars.ContainsKey(zg.Value.Name + "_road_100.offset.y"))
                 {
-                    var roadX = GFileValInt(zg.Value.name + "_road_100.coords.x");
-                    var roadY = GFileValInt(zg.Value.name + "_road_100.coords.y");
-                    var roadW = GFileValInt(zg.Value.name + "_road_100.coords.w");
-                    var roadH = GFileValInt(zg.Value.name + "_road_100.coords.h");
-                    var roadXOff = GFileValInt(zg.Value.name + "_road_100.offset.x");
-                    var roadYOff = GFileValInt(zg.Value.name + "_road_100.offset.y");
+                    var roadX = GFileValInt(zg.Value.Name + "_road_100.coords.x");
+                    var roadY = GFileValInt(zg.Value.Name + "_road_100.coords.y");
+                    var roadW = GFileValInt(zg.Value.Name + "_road_100.coords.w");
+                    var roadH = GFileValInt(zg.Value.Name + "_road_100.coords.h");
+                    var roadXOff = GFileValInt(zg.Value.Name + "_road_100.offset.x");
+                    var roadYOff = GFileValInt(zg.Value.Name + "_road_100.offset.y");
 
-                    AddMiniMapRef(MapLevel.Zone, (int)zg.Value.id, 100, zg.Value.name, roadXOff, roadYOff, roadX, roadY, roadW, roadH);
+                    AddMiniMapRef(MapLevel.Zone, (int)zg.Value.Id, 100, zg.Value.Name, roadXOff, roadYOff, roadX, roadY, roadW, roadH);
                 }
             }
 

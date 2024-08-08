@@ -7,7 +7,6 @@ using System.IO;
 using System.Numerics;
 using System.Reflection;
 using AAPacker;
-using AAEmu.DBDefs;
 using AAEmu.Game.Utils.DB;
 using AAEmu.ClipboardHelper;
 using AAEmu.DBViewer.utils;
@@ -15,20 +14,22 @@ using System.Runtime;
 using AAEmu.DBViewer.enums;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
+using AAEmu.DBViewer.DbDefs;
 
 namespace AAEmu.DBViewer
 {
     public partial class MainForm : Form
     {
-        public static MainForm ThisForm;
-        private string defaultTitle;
-        public AAPak pak = new("");
-        private List<string> possibleLanguageIDs = new List<string>();
-        private List<string> allTableNames = new List<string>();
-        private readonly List<TabPage> tabHistory = new();
-        private bool skipTabHistory = false;
-        private int tabHistoryIndex = 0;
-        private List<SavedProfile> Profiles = new();
+        public static MainForm ThisForm { get; set; }
+        private string DefaultTitle { get; set; } = string.Empty;
+        public AAPak Pak { get; set; } = new("");
+        private List<string> PossibleLanguageIDs { get; set; } = [];
+        // TableName, SqliteFileName
+        private Dictionary<string, string> AllTableNames { get; set; } = new();
+        private List<TabPage> TabHistory { get; set; } = new();
+        private bool SkipTabHistory { get; set; } = false;
+        private int TabHistoryIndex { get; set; } = 0;
+        private List<SavedProfile> Profiles { get; set; } = new();
 
         public MainForm()
         {
@@ -55,15 +56,15 @@ namespace AAEmu.DBViewer
                         fs.Read(customKey, 0, 16);
                     }
 
-                    pak.SetCustomKey(customKey);
+                    Pak.SetCustomKey(customKey);
                 }
                 else
-                    pak.SetDefaultKey();
+                    Pak.SetDefaultKey();
             }
             catch
             {
                 // Reset key
-                pak.SetDefaultKey();
+                Pak.SetDefaultKey();
             }
         }
 
@@ -84,16 +85,16 @@ namespace AAEmu.DBViewer
                 Properties.Settings.Default.Save();
             }
 
-            defaultTitle = Text;
-            possibleLanguageIDs.Clear();
-            possibleLanguageIDs.Add("ko");
-            possibleLanguageIDs.Add("ru");
-            possibleLanguageIDs.Add("en_us");
-            possibleLanguageIDs.Add("zh_cn");
-            possibleLanguageIDs.Add("zh_tw");
-            possibleLanguageIDs.Add("de");
-            possibleLanguageIDs.Add("fr");
-            possibleLanguageIDs.Add("ja");
+            DefaultTitle = Text;
+            PossibleLanguageIDs.Clear();
+            PossibleLanguageIDs.Add("ko");
+            PossibleLanguageIDs.Add("ru");
+            PossibleLanguageIDs.Add("en_us");
+            PossibleLanguageIDs.Add("zh_cn");
+            PossibleLanguageIDs.Add("zh_tw");
+            PossibleLanguageIDs.Add("de");
+            PossibleLanguageIDs.Add("fr");
+            PossibleLanguageIDs.Add("ja");
             cbItemSearchRange.SelectedIndex = 0;
             tcDoodads.SelectedTab = tpDoodadWorkflow;
 
@@ -113,26 +114,25 @@ namespace AAEmu.DBViewer
             }
 
 
-            string game_pakFileName = Properties.Settings.Default.GamePakFileName;
-            if (File.Exists(game_pakFileName))
+            var gamePakFileName = Properties.Settings.Default.GamePakFileName;
+            if (File.Exists(gamePakFileName))
             {
-                using (var loading = new LoadingForm())
+                using var loading = new LoadingForm();
+                loading.Text = $@"Loading: {Path.GetFileName(gamePakFileName)}";
+                loading.Show();
+                loading.ShowInfo("Opening: " + Path.GetFileName(gamePakFileName));
+
+                TryLoadPakKeys(gamePakFileName);
+
+                if (Pak.OpenPak(gamePakFileName, true))
                 {
-                    loading.Show();
-                    loading.ShowInfo("Opening: " + Path.GetFileName(game_pakFileName));
+                    Properties.Settings.Default.GamePakFileName = gamePakFileName;
+                    lCurrentPakFile.Text = Properties.Settings.Default.GamePakFileName;
 
-                    TryLoadPakKeys(game_pakFileName);
-
-                    if (pak.OpenPak(game_pakFileName, true))
-                    {
-                        Properties.Settings.Default.GamePakFileName = game_pakFileName;
-                        lCurrentPakFile.Text = Properties.Settings.Default.GamePakFileName;
-
-                        loading.ShowInfo("Loading: World Data");
-                        PrepareWorldXml(true);
-                        loading.ShowInfo("Loading: Quest Sign Sphere Data");
-                        LoadQuestSpheresFromPak();
-                    }
+                    loading.ShowInfo("Loading: World Data");
+                    PrepareWorldXml(true);
+                    loading.ShowInfo("Loading: Quest Sign Sphere Data");
+                    LoadQuestSpheresFromPak();
                 }
             }
 
@@ -165,8 +165,8 @@ namespace AAEmu.DBViewer
             if (MapViewForm.ThisForm != null)
                 MapViewForm.ThisForm.Close();
 
-            if (pak != null)
-                pak.ClosePak();
+            if (Pak != null)
+                Pak.ClosePak();
         }
 
         public IEnumerable<Control> GetAll(Control control, Type type)
@@ -274,12 +274,12 @@ namespace AAEmu.DBViewer
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        allTableNames.Clear();
+                        AllTableNames.Clear();
                         lbTableNames.Items.Clear();
                         while (reader.Read())
                         {
                             var tName = GetString(reader, "name");
-                            allTableNames.Add(tName);
+                            AllTableNames.Add(tName, SQLite.SQLiteFileName);
                             lbTableNames.Items.Add(tName);
                         }
                     }
@@ -374,19 +374,19 @@ namespace AAEmu.DBViewer
                             rt.AppendText(restText.Substring(0, atStart));
                             rt.SelectionColor = Color.Yellow;
                             if ((fieldNameStr == "ITEM_NAME") &&
-                                (AADB.DB_Items.TryGetValue(itemVal, out GameItem item)))
+                                (AaDb.DbItems.TryGetValue(itemVal, out GameItem item)))
                             {
-                                rt.AppendText(item.nameLocalized);
+                                rt.AppendText(item.NameLocalized);
                             }
                             else if ((fieldNameStr == "NPC_NAME") &&
-                                     (AADB.DB_NPCs.TryGetValue(itemVal, out GameNPC npc)))
+                                     (AaDb.DbNpCs.TryGetValue(itemVal, out GameNpc npc)))
                             {
-                                rt.AppendText(npc.nameLocalized);
+                                rt.AppendText(npc.NameLocalized);
                             }
                             else if ((fieldNameStr == "QUEST_NAME") &&
-                                     (AADB.DB_Quest_Contexts.TryGetValue(itemVal, out GameQuestContexts quest)))
+                                     (AaDb.DbQuestContexts.TryGetValue(itemVal, out GameQuestContexts quest)))
                             {
-                                rt.AppendText(quest.nameLocalized);
+                                rt.AppendText(quest.NameLocalized);
                             }
                             else
                             {
@@ -526,8 +526,8 @@ namespace AAEmu.DBViewer
                 {
                     rt.SelectionColor = Color.Yellow;
                     var valueText = restText.Substring(11, nextEndBracket - 11);
-                    if (long.TryParse(valueText, out var value) && (AADB.DB_Items.TryGetValue(value, out var item)))
-                        rt.AppendText(item.nameLocalized);
+                    if (long.TryParse(valueText, out var value) && (AaDb.DbItems.TryGetValue(value, out var item)))
+                        rt.AppendText(item.NameLocalized);
                     else
                         rt.AppendText("@ITEM_NAME(" + valueText + ")");
                     rt.SelectionColor = resetColor;
@@ -538,8 +538,8 @@ namespace AAEmu.DBViewer
                     rt.SelectionColor = Color.Yellow;
                     var valueText = restText.Substring(13, nextEndBracket - 13);
                     if (long.TryParse(valueText, out var value) &&
-                        (AADB.DB_Doodad_Almighties.TryGetValue(value, out var doodad)))
-                        rt.AppendText(doodad.nameLocalized);
+                        (AaDb.DbDoodadAlmighties.TryGetValue(value, out var doodad)))
+                        rt.AppendText(doodad.NameLocalized);
                     else
                         rt.AppendText("@DOODAD_NAME(" + valueText + ")");
                     rt.SelectionColor = resetColor;
@@ -549,8 +549,8 @@ namespace AAEmu.DBViewer
                 {
                     rt.SelectionColor = Color.Yellow;
                     var valueText = restText.Substring(10, nextEndBracket - 10);
-                    if (long.TryParse(valueText, out var value) && (AADB.DB_NPCs.TryGetValue(value, out var npc)))
-                        rt.AppendText(npc.nameLocalized);
+                    if (long.TryParse(valueText, out var value) && (AaDb.DbNpCs.TryGetValue(value, out var npc)))
+                        rt.AppendText(npc.NameLocalized);
                     else
                         rt.AppendText("@NPC_NAME(" + valueText + ")");
                     rt.SelectionColor = resetColor;
@@ -560,8 +560,8 @@ namespace AAEmu.DBViewer
                 {
                     rt.SelectionColor = Color.Yellow;
                     var valueText = restText.Substring(16, nextEndBracket - 16);
-                    if (long.TryParse(valueText, out var value) && (AADB.DB_Quest_Monster_Groups.TryGetValue(value, out var npcGroup)))
-                        rt.AppendText(npcGroup.nameLocalized);
+                    if (long.TryParse(valueText, out var value) && (AaDb.DbQuestMonsterGroups.TryGetValue(value, out var npcGroup)))
+                        rt.AppendText(npcGroup.NameLocalized);
                     else
                         rt.AppendText("@NPC_GROUP_NAME(" + valueText + ")");
                     rt.SelectionColor = resetColor;
@@ -572,8 +572,8 @@ namespace AAEmu.DBViewer
                     rt.SelectionColor = Color.Yellow;
                     var valueText = restText.Substring(12, nextEndBracket - 12);
                     if (long.TryParse(valueText, out var value) &&
-                        (AADB.DB_Quest_Contexts.TryGetValue(value, out var quest)))
-                        rt.AppendText(quest.nameLocalized);
+                        (AaDb.DbQuestContexts.TryGetValue(value, out var quest)))
+                        rt.AppendText(quest.NameLocalized);
                     else
                         rt.AppendText("@QUEST_NAME(" + valueText + ")");
                     rt.SelectionColor = resetColor;
@@ -724,13 +724,43 @@ namespace AAEmu.DBViewer
         private void BtnOpenServerDB_Click(object sender, EventArgs e)
         {
             LoadServerDB(true);
+            UpdateTitleBar();
+        }
+
+        private void UpdateTitleBar()
+        {
+            var sqliteFiles = Properties.Settings.Default.DBFileName.Split(Path.PathSeparator);
+            var titleSqliteFiles = string.Empty;
+
+            var directories = new List<string>();
+            foreach (var sqliteFile in sqliteFiles)
+            {
+                var dir = Path.GetDirectoryName(sqliteFile);
+                if (!directories.Contains(dir))
+                    directories.Add(dir);
+            }
+
+            // If only one directory, then truncate to the file names only, otherwise, the full path
+            foreach (var sqliteFile in sqliteFiles)
+            {
+                if (!string.IsNullOrWhiteSpace(titleSqliteFiles))
+                    titleSqliteFiles += " + ";
+                else
+                if (directories.Count == 1)
+                    titleSqliteFiles += directories[0] + Path.DirectorySeparatorChar;
+                titleSqliteFiles += (directories.Count == 1) ? Path.GetFileName(sqliteFile) : sqliteFile;
+            }
+
+            // Properties.Settings.Default.DBFileName = sqliteFileName;
+            Text = $@"{DefaultTitle} [{tcViewer.SelectedTab?.Text}] - ({Properties.Settings.Default.DefaultGameLanguage}) {titleSqliteFiles}";
         }
 
         private bool LoadServerDB(bool forceDlg)
         {
-            string sqlfile = Properties.Settings.Default.DBFileName;
+            var sqliteFiles = Properties.Settings.Default.DBFileName.Split(Path.PathSeparator);
+            var sqliteFile = sqliteFiles.Length <= 0 ? string.Empty : sqliteFiles[0];
 
-            while (forceDlg || (!File.Exists(sqlfile)))
+            while (forceDlg || (!File.Exists(sqliteFile) && sqliteFiles.Length <= 1))
             {
                 forceDlg = false;
                 if (openDBDlg.ShowDialog() != DialogResult.OK)
@@ -739,77 +769,129 @@ namespace AAEmu.DBViewer
                 }
                 else
                 {
-                    sqlfile = openDBDlg.FileName;
+                    sqliteFile = openDBDlg.FileName;
+                    sqliteFiles = new[] { sqliteFile };
                 }
             }
 
-            SQLite.SQLiteFileName = sqlfile;
+            AaDb.Clear();
+
+            var res = true;
+            if (sqliteFiles.Length == 1)
+            {
+                res = LoadServerDbFile(sqliteFile);
+                if (res)
+                    Properties.Settings.Default.DBFileName = sqliteFile;
+                return res;
+            }
+
+            foreach (var file in sqliteFiles)
+            {
+                res &= LoadServerDbFile(file);
+            }
+            if (res)
+                Properties.Settings.Default.DBFileName = string.Join(Path.PathSeparator, sqliteFiles);
+
+            return res;
+        }
+
+        public bool LoadServerDbFile(string sqliteFileName)
+        {
+            SQLite.SQLiteFileName = sqliteFileName;
 
             var i = cbItemSearchLanguage.Items.IndexOf(Properties.Settings.Default.DefaultGameLanguage);
             cbItemSearchLanguage.SelectedIndex = i;
-            using (var loading = new LoadingForm())
-            {
-                loading.Show();
-                loading.ShowInfo("Loading: Table names");
-                // The table name loading is basically just to check if we can read the DB file
-                LoadTableNames();
-                Properties.Settings.Default.DBFileName = sqlfile;
-                Text = $"{defaultTitle} [{tcViewer.SelectedTab?.Text}] - {Properties.Settings.Default.DBFileName} ({Properties.Settings.Default.DefaultGameLanguage})";
-                // make sure translations are loaded first, other tables depend on it
 
+            using var loading = new LoadingForm();
+            try
+            {
+
+                loading.Text = $@"Loading: {Path.GetFileName(sqliteFileName)}";
+                loading.Show();
+
+                // The table name loading is basically just to check if we can read the DB file
+                loading.ShowInfo("Loading: Table names");
+                LoadTableNames();
+
+                UpdateTitleBar();
+
+                // Make sure translations are loaded first, other tables depend on it
                 loading.ShowInfo("Loading: Translation");
                 LoadTranslations(Properties.Settings.Default.DefaultGameLanguage);
                 loading.ShowInfo("Loading: Custom Translations");
                 AddCustomTranslations();
                 LoadUiTexts();
+
                 loading.ShowInfo("Loading: Icon info");
                 LoadIcons();
+
                 loading.ShowInfo("Loading: Factions");
                 LoadFactions();
+
                 loading.ShowInfo("Loading: Plots");
                 LoadPlots();
+
                 loading.ShowInfo("Loading: Buffs");
                 LoadBuffs();
+
                 loading.ShowInfo("Loading: Transfers");
                 LoadTransfers();
                 LoadTransferPaths();
+
                 loading.ShowInfo("Loading: Tags");
                 LoadTags();
-                LoadZoneGroupBannedTags();
+
                 loading.ShowInfo("Loading: Zones");
+                LoadZoneGroupBannedTags();
                 LoadZones();
+
                 loading.ShowInfo("Loading: Doodads");
                 LoadDoodads();
+
                 loading.ShowInfo("Loading: Items");
                 LoadItemCategories();
                 LoadItems();
                 LoadItemArmors();
                 LoadItemWeapons();
+
                 loading.ShowInfo("Loading: Skills");
                 LoadSkills();
                 LoadSkillReagents();
                 LoadSkillProducts();
                 LoadUnitReqs();
                 LoadUnitMods();
+
                 loading.ShowInfo("Loading: Models");
                 LoadModels();
+
                 loading.ShowInfo("Loading: NPCs");
                 LoadNpcs();
+
                 loading.ShowInfo("Loading: Vehicles");
                 LoadSlaves();
+
                 loading.ShowInfo("Loading: Quests");
                 LoadQuests();
+
                 loading.ShowInfo("Loading: Trades");
                 LoadTrades();
+
                 loading.ShowInfo("Loading: Loot");
                 LoadLoots();
+
                 loading.ShowInfo("Loading: Schedules");
                 LoadSchedules();
+
                 loading.ShowInfo("Loading: Spheres");
                 LoadSpheresFromCompact();
-            }
 
-            return true;
+                return true;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, @"Exception loading DB", MessageBoxButtons.OK);
+                return false;
+            }
         }
 
 
@@ -836,10 +918,10 @@ namespace AAEmu.DBViewer
 
             using var loading = new LoadingForm();
             loading.Show();
-            if (pak.IsOpen)
+            if (Pak.IsOpen)
             {
-                loading.ShowInfo("Closing: " + pak.GpFilePath);
-                pak.ClosePak();
+                loading.ShowInfo("Closing: " + Pak.GpFilePath);
+                Pak.ClosePak();
 
                 // TODO: HACK to try and free up as many memory as possible - https://stackoverflow.com/questions/30622145/free-memory-of-byte
                 GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
@@ -850,7 +932,7 @@ namespace AAEmu.DBViewer
 
             TryLoadPakKeys(openFileName);
 
-            if (pak.OpenPak(openFileName, true))
+            if (Pak.OpenPak(openFileName, true))
             {
                 Properties.Settings.Default.GamePakFileName = openFileName;
                 lCurrentPakFile.Text = Properties.Settings.Default.GamePakFileName;
@@ -873,6 +955,14 @@ namespace AAEmu.DBViewer
 
         private void ShowSelectedData(string table, string whereStatement, string orderStatement)
         {
+            var dbFile = AllTableNames.GetValueOrDefault(table) ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(dbFile) || !File.Exists(dbFile))
+            {
+                labelCurrentDataInfo.Text = $@"{table} not found in {dbFile}, something went wrong";
+                dgvCurrentData.Rows.Clear();
+                return;
+            }
+
             using (var connection = SQLite.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
@@ -901,7 +991,7 @@ namespace AAEmu.DBViewer
                                 row.Cells[0].Value = col;
                                 row.Cells[1].Value = reader.GetValue(col).ToString();
                                 ;
-                                row.Cells[2].Value = AADB.GetTranslationByID(thisID, table, col, " ");
+                                row.Cells[2].Value = AaDb.GetTranslationById(thisID, table, col, " ");
                             }
                         }
 
@@ -1093,7 +1183,7 @@ namespace AAEmu.DBViewer
             var localizedValue = value;
             if (!string.IsNullOrWhiteSpace(rootTypeName) && (rootTypeKey > 0))
             {
-                localizedValue = AADB.GetTranslationByID(rootTypeKey, rootTypeName, key, "");
+                localizedValue = AaDb.GetTranslationById(rootTypeKey, rootTypeName, key, "");
             }
 
             if (!string.IsNullOrWhiteSpace(localizedValue) && (localizedValue != value))
@@ -1127,54 +1217,54 @@ namespace AAEmu.DBViewer
                     res.ForeColor = Color.LightSeaGreen;
                 }
             }
-            else if (key.EndsWith("next_phase") && (AADB.DB_Doodad_Func_Groups.TryGetValue(val, out var nextPhase)))
+            else if (key.EndsWith("next_phase") && (AaDb.DbDoodadFuncGroups.TryGetValue(val, out var nextPhase)))
             {
-                var s = string.IsNullOrWhiteSpace(nextPhase.nameLocalized) ? nextPhase.name : nextPhase.nameLocalized;
+                var s = string.IsNullOrWhiteSpace(nextPhase.NameLocalized) ? nextPhase.Name : nextPhase.NameLocalized;
                 if (!string.IsNullOrEmpty(s))
                     nodeText += " - " + s;
                 res.ForeColor = Color.WhiteSmoke;
             }
-            else if (key.EndsWith("skill_id") && (AADB.DB_Skills.TryGetValue(val, out var skill)))
+            else if (key.EndsWith("skill_id") && (AaDb.DbSkills.TryGetValue(val, out var skill)))
             {
                 res.targetTabPage = tpSkills;
                 res.targetSearchBox = cbSkillSearch;
                 // res.targetSearchText = skill.nameLocalized;
-                res.targetSearchText = skill.id.ToString();
+                res.targetSearchText = skill.Id.ToString();
                 res.targetSearchButton = btnSkillSearch;
                 res.ForeColor = Color.WhiteSmoke;
-                nodeText += " - " + skill.nameLocalized;
-                setCustomIcon = IconIdToLabel(skill.icon_id, null);
+                nodeText += " - " + skill.NameLocalized;
+                setCustomIcon = IconIdToLabel(skill.IconId, null);
             }
-            else if (key.EndsWith("item_id") && (AADB.DB_Items.TryGetValue(val, out var item)))
+            else if (key.EndsWith("item_id") && (AaDb.DbItems.TryGetValue(val, out var item)))
             {
                 res.targetTabPage = tpItems;
                 res.targetSearchBox = cbItemSearch;
                 // res.targetSearchText = item.nameLocalized;
-                res.targetSearchText = item.id.ToString();
+                res.targetSearchText = item.Id.ToString();
                 res.targetSearchButton = btnItemSearch;
                 res.ForeColor = Color.WhiteSmoke;
-                nodeText += " - " + item.nameLocalized;
-                setCustomIcon = IconIdToLabel(item.icon_id, null);
+                nodeText += " - " + item.NameLocalized;
+                setCustomIcon = IconIdToLabel(item.IconId, null);
             }
-            else if (key.EndsWith("doodad_id") && (AADB.DB_Doodad_Almighties.TryGetValue(val, out var doodad)))
+            else if (key.EndsWith("doodad_id") && (AaDb.DbDoodadAlmighties.TryGetValue(val, out var doodad)))
             {
                 res.targetTabPage = tpDoodads;
                 res.targetSearchBox = cbSearchDoodads;
                 // res.targetSearchText = doodad.nameLocalized;
-                res.targetSearchText = doodad.id.ToString();
+                res.targetSearchText = doodad.Id.ToString();
                 res.targetSearchButton = btnSearchDoodads;
                 res.ForeColor = Color.WhiteSmoke;
-                nodeText += " - " + doodad.nameLocalized;
+                nodeText += " - " + doodad.NameLocalized;
             }
-            else if (key.EndsWith("npc_id") && (AADB.DB_NPCs.TryGetValue(val, out var npc)))
+            else if (key.EndsWith("npc_id") && (AaDb.DbNpCs.TryGetValue(val, out var npc)))
             {
                 res.targetTabPage = tpNPCs;
                 res.targetSearchBox = cbSearchNPC;
                 // res.targetSearchText = npc.nameLocalized;
-                res.targetSearchText = npc.id.ToString();
+                res.targetSearchText = npc.Id.ToString();
                 res.targetSearchButton = btnSearchNPC;
                 res.ForeColor = Color.WhiteSmoke;
-                nodeText += " - " + npc.nameLocalized;
+                nodeText += " - " + npc.NameLocalized;
             }
             /*
             else if (key.EndsWith("npc_group_id"))
@@ -1190,106 +1280,106 @@ namespace AAEmu.DBViewer
                 res.ForeColor = Color.Yellow;
             }
             */
-            else if (key.EndsWith("slave_id") && (AADB.DB_Slaves.TryGetValue(val, out var slave)))
+            else if (key.EndsWith("slave_id") && (AaDb.DbSlaves.TryGetValue(val, out var slave)))
             {
                 res.targetTabPage = tpNPCs;
                 // res.targetSearchBox = slave.id.ToString();
-                res.targetSearchText = slave.id.ToString();
+                res.targetSearchText = slave.Id.ToString();
                 res.targetSearchButton = btnSearchSlave;
                 res.ForeColor = Color.WhiteSmoke;
-                nodeText += " - " + slave.nameLocalized;
+                nodeText += " - " + slave.NameLocalized;
             }
-            else if (key.EndsWith("buff_id") && (AADB.DB_Buffs.TryGetValue(val, out var buff)))
+            else if (key.EndsWith("buff_id") && (AaDb.DbBuffs.TryGetValue(val, out var buff)))
             {
                 res.targetTabPage = tpBuffs;
                 res.targetSearchBox = cbSearchBuffs;
                 // res.targetSearchText = buff.nameLocalized;
-                res.targetSearchText = buff.id.ToString();
+                res.targetSearchText = buff.Id.ToString();
                 res.targetSearchButton = btnSearchBuffs;
                 res.ForeColor = Color.WhiteSmoke;
-                nodeText += " - " + buff.nameLocalized;
-                setCustomIcon = IconIdToLabel(buff.icon_id, null);
+                nodeText += " - " + buff.NameLocalized;
+                setCustomIcon = IconIdToLabel(buff.IconId, null);
             }
             else if (key.EndsWith("zone_id"))
             {
-                if (AADB.DB_Zones.TryGetValue(val, out var zone))
+                if (AaDb.DbZones.TryGetValue(val, out var zone))
                 {
                     res.targetTabPage = tpZones;
                     res.targetTextBox = tZonesSearch;
-                    res.targetSearchText = zone.display_textLocalized;
+                    res.targetSearchText = zone.DisplayTextLocalized;
                     res.targetSearchButton = btnSearchZones;
                     res.ForeColor = Color.WhiteSmoke;
-                    nodeText += " - " + zone.display_textLocalized + " (id)";
+                    nodeText += " - " + zone.DisplayTextLocalized + " (id)";
                 }
 
-                var zoneByKey = AADB.DB_Zones.Values.FirstOrDefault(z => z.zone_key == val);
+                var zoneByKey = AaDb.DbZones.Values.FirstOrDefault(z => z.ZoneKey == val);
                 if (zoneByKey != null)
                 {
                     res.targetTabPage = tpZones;
                     res.targetTextBox = tZonesSearch;
-                    res.targetSearchText = zoneByKey.display_textLocalized;
+                    res.targetSearchText = zoneByKey.DisplayTextLocalized;
                     res.targetSearchButton = btnSearchZones;
                     res.ForeColor = Color.WhiteSmoke;
                     if (zone != null)
                         nodeText += " or ";
                     else
                         nodeText += " - ";
-                    nodeText += zoneByKey.display_textLocalized + " (key)";
+                    nodeText += zoneByKey.DisplayTextLocalized + " (key)";
                 }
                 // Some quest related entries use "zone_id" when they instead mean "zone_group_id"
                 // So we add the 2nd part here.
-                if (AADB.DB_Zone_Groups.TryGetValue(val, out var zoneGroup))
+                if (AaDb.DbZoneGroups.TryGetValue(val, out var zoneGroup))
                 {
                     res.targetTabPage = tpZones;
                     res.targetTextBox = tZonesSearch;
-                    res.targetSearchText = zoneGroup.display_textLocalized;
+                    res.targetSearchText = zoneGroup.DisplayTextLocalized;
                     res.targetSearchButton = btnSearchZones;
                     res.ForeColor = Color.WhiteSmoke;
                     if ((zone != null) || (zoneByKey != null))
                         nodeText += " or ";
                     else
                         nodeText += " - ";
-                    nodeText += zoneGroup.display_textLocalized + " (group)";
+                    nodeText += zoneGroup.DisplayTextLocalized + " (group)";
                 }
             }
-            else if (key.EndsWith("zone_group_id") && (AADB.DB_Zone_Groups.TryGetValue(val, out var zoneGroup)))
+            else if (key.EndsWith("zone_group_id") && (AaDb.DbZoneGroups.TryGetValue(val, out var zoneGroup)))
             {
                 res.targetTabPage = tpZones;
                 res.targetTextBox = tZonesSearch;
-                res.targetSearchText = zoneGroup.display_textLocalized;
+                res.targetSearchText = zoneGroup.DisplayTextLocalized;
                 res.targetSearchButton = btnSearchZones;
                 res.ForeColor = Color.WhiteSmoke;
-                nodeText += " - " + zoneGroup.display_textLocalized;
+                nodeText += " - " + zoneGroup.DisplayTextLocalized;
             }
             else if (key.EndsWith("item_category_id") &&
-                     (AADB.DB_ItemsCategories.TryGetValue(val, out var itemCategory)))
+                     (AaDb.DbItemsCategories.TryGetValue(val, out var itemCategory)))
             {
                 res.targetTabPage = tpItems;
                 res.targetSearchBox = cbItemSearch;
-                res.targetSearchText = itemCategory.nameLocalized;
+                res.targetSearchText = itemCategory.NameLocalized;
                 res.targetSearchButton = btnItemSearch;
                 res.ForeColor = Color.WhiteSmoke;
-                nodeText += " - " + itemCategory.nameLocalized;
+                nodeText += " - " + itemCategory.NameLocalized;
             }
-            else if (key.EndsWith("tag_id") && (AADB.DB_Tags.TryGetValue(val, out var tagId)))
+            else if (key.EndsWith("tag_id") && (AaDb.DbTags.TryGetValue(val, out var tagId)))
             {
                 res.targetTabPage = tpTags;
                 res.targetTextBox = tSearchTags;
                 // res.targetSearchText = tagId.nameLocalized;
-                res.targetSearchText = tagId.id.ToString();
+                res.targetSearchText = tagId.Id.ToString();
                 res.targetSearchButton = btnSearchTags;
                 res.ForeColor = Color.WhiteSmoke;
-                nodeText += " - " + tagId.nameLocalized;
+                nodeText += " - " + tagId.NameLocalized;
             }
-            else if (key.EndsWith("sphere_id") && (AADB.DB_Spheres.TryGetValue(val, out var sphere)))
+            else if (key.EndsWith("sphere_id") && (AaDb.DbSpheres.TryGetValue(val, out var sphere)))
             {
                 res.targetTabPage = tpSpheres;
                 res.targetSearchBox = CbSearchSpheres;
                 // res.targetSearchText = npc.nameLocalized;
-                res.targetSearchText = sphere.id.ToString();
+                res.targetSearchText = sphere.Id.ToString();
                 res.targetSearchButton = BtnSearchSpheres;
                 res.ForeColor = Color.WhiteSmoke;
-                nodeText += " - " + sphere.name;
+                nodeText += " - " + sphere.Name;
             }
             else if (key.EndsWith("wi_id"))
             {
@@ -1323,20 +1413,20 @@ namespace AAEmu.DBViewer
                 lootNode.Text = key + ": " + val;
                 lootNode.ForeColor = Color.Yellow;
 
-                var loots = AADB.DB_Loots.Where(l => l.Value.loot_pack_id == val).OrderBy(l => l.Value.group);
+                var loots = AaDb.DbLoots.Where(l => l.Value.LootPackId == val).OrderBy(l => l.Value.Group);
                 foreach (var loot in loots)
                 {
                     var itemNode = new TreeNodeWithInfo();
-                    itemNode.Text = loot.Value.item_id.ToString();
-                    if (AADB.DB_Items.TryGetValue(loot.Value.item_id, out var lItem))
+                    itemNode.Text = loot.Value.ItemId.ToString();
+                    if (AaDb.DbItems.TryGetValue(loot.Value.ItemId, out var lItem))
                     {
                         itemNode.targetTabPage = tpItems;
                         itemNode.targetSearchBox = cbItemSearch;
-                        itemNode.targetSearchText = lItem.nameLocalized;
+                        itemNode.targetSearchText = lItem.NameLocalized;
                         itemNode.targetSearchButton = btnItemSearch;
                         itemNode.ForeColor = Color.WhiteSmoke;
-                        itemNode.Text += " - " + lItem.nameLocalized;
-                        itemNode.SelectedImageIndex = itemNode.ImageIndex = IconIdToLabel(lItem.icon_id, null);
+                        itemNode.Text += " - " + lItem.NameLocalized;
+                        itemNode.SelectedImageIndex = itemNode.ImageIndex = IconIdToLabel(lItem.IconId, null);
                     }
                     else
                     {
@@ -1357,13 +1447,13 @@ namespace AAEmu.DBViewer
                 spawnNode.ForeColor = Color.Yellow;
                 rootNode.Nodes.Add(spawnNode);
 
-                var spawns = AADB.DB_Npc_Spawner_Npcs.Values.Where(x => x.npc_spawner_id == val);
+                var spawns = AaDb.DbNpcSpawnerNpcs.Values.Where(x => x.NpcSpawnerId == val);
                 foreach (var npcSpawnerNpc in spawns)
                 {
-                    if (npcSpawnerNpc.member_type == "Npc")
-                        AddCustomPropertyNode("npc_id", npcSpawnerNpc.member_id.ToString(), false, spawnNode);
-                    if (npcSpawnerNpc.member_type == "NpcGroup")
-                        AddCustomPropertyNode("npc_group_id", npcSpawnerNpc.member_id.ToString(), false, spawnNode);
+                    if (npcSpawnerNpc.MemberType == "Npc")
+                        AddCustomPropertyNode("npc_id", npcSpawnerNpc.MemberId.ToString(), false, spawnNode);
+                    if (npcSpawnerNpc.MemberType == "NpcGroup")
+                        AddCustomPropertyNode("npc_group_id", npcSpawnerNpc.MemberId.ToString(), false, spawnNode);
                 }
 
                 return spawnNode;
@@ -1381,19 +1471,19 @@ namespace AAEmu.DBViewer
                     res.ForeColor = Color.Red;
                 }
             }
-            else if ((key.EndsWith("icon_id") || key.EndsWith("icon1_id") || key.EndsWith("icon2_id")) && AADB.DB_Icons.TryGetValue(val, out var _))
+            else if ((key.EndsWith("icon_id") || key.EndsWith("icon1_id") || key.EndsWith("icon2_id")) && AaDb.DbIcons.TryGetValue(val, out var _))
             {
                 setCustomIcon = IconIdToLabel(val, null);
             }
-            else if (key.EndsWith("quest_id") && (AADB.DB_Quest_Contexts.TryGetValue(val, out var quest)))
+            else if (key.EndsWith("quest_id") && (AaDb.DbQuestContexts.TryGetValue(val, out var quest)))
             {
                 res.targetTabPage = tpQuests;
                 res.targetSearchBox = cbQuestSearch;
                 // res.targetSearchText = buff.nameLocalized;
-                res.targetSearchText = quest.id.ToString();
+                res.targetSearchText = quest.Id.ToString();
                 res.targetSearchButton = btnQuestsSearch;
                 res.ForeColor = Color.WhiteSmoke;
-                nodeText += " - " + quest.nameLocalized;
+                nodeText += " - " + quest.NameLocalized;
             }
 
             res.Text = nodeText;
@@ -1416,11 +1506,11 @@ namespace AAEmu.DBViewer
                 return;
 
             var count = 0;
-            foreach (var i in AADB.DB_Translations)
+            foreach (var i in AaDb.DbTranslations)
             {
                 var translation = i.Value;
-                var tSearchString = "=" + translation.table.ToLower() + "=" + translation.field.ToLower() + "=" +
-                                    translation.idx.ToString() + "=" + translation.value.ToLower() + "=";
+                var tSearchString = "=" + translation.Table.ToLower() + "=" + translation.Field.ToLower() + "=" +
+                                    translation.Idx.ToString() + "=" + translation.Value.ToLower() + "=";
                 var searchOK = true;
                 foreach (var s in sTexts)
                     if (!tSearchString.Contains(s))
@@ -1433,18 +1523,18 @@ namespace AAEmu.DBViewer
                 {
                     int line = dgvLocalized.Rows.Add();
                     var row = dgvLocalized.Rows[line];
-                    row.Cells[0].Value = translation.table;
-                    row.Cells[1].Value = translation.field;
-                    var idxString = translation.idx.ToString();
-                    if (translation.table == "ui_texts")
+                    row.Cells[0].Value = translation.Table;
+                    row.Cells[1].Value = translation.Field;
+                    var idxString = translation.Idx.ToString();
+                    if (translation.Table == "ui_texts")
                     {
-                        if (AADB.DB_UiTexts.TryGetValue(translation.idx, out var uiText))
+                        if (AaDb.DbUiTexts.TryGetValue(translation.Idx, out var uiText))
                         {
-                            idxString += $" ({uiText.key} : {uiText.category_id})";
+                            idxString += $" ({uiText.Key} : {uiText.CategoryId})";
                         }
                     }
                     row.Cells[2].Value = idxString;
-                    row.Cells[3].Value = translation.value;
+                    row.Cells[3].Value = translation.Value;
                     count++;
                 }
 
@@ -1465,13 +1555,13 @@ namespace AAEmu.DBViewer
             if (tFilterTables.Text == string.Empty)
             {
                 lbTableNames.Items.Clear();
-                foreach (var s in allTableNames)
+                foreach (var s in AllTableNames)
                     lbTableNames.Items.Add(s);
             }
             else
             {
                 lbTableNames.Items.Clear();
-                foreach (var s in allTableNames)
+                foreach (var (s, _) in AllTableNames)
                 {
                     if (s.ToLower().Contains(tFilterTables.Text.ToLower()))
                     {
@@ -1588,30 +1678,30 @@ namespace AAEmu.DBViewer
 
             var first = true;
             DgvSpheres.Rows.Clear();
-            foreach (var dbSphere in AADB.DB_Spheres.Values)
+            foreach (var dbSphere in AaDb.DbSpheres.Values)
             {
                 if (
-                    (dbSphere.id != searchId) &&
-                    (dbSphere.sphere_detail_id != searchId) &&
-                    (!dbSphere.name.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)) &&
-                    (!dbSphere.sphere_detail_type.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
+                    (dbSphere.Id != searchId) &&
+                    (dbSphere.SphereDetailId != searchId) &&
+                    (!dbSphere.Name.Contains(searchText, StringComparison.InvariantCultureIgnoreCase)) &&
+                    (!dbSphere.SphereDetailType.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
                     )
                     continue;
 
                 var line = DgvSpheres.Rows.Add();
                 var row = DgvSpheres.Rows[line];
 
-                row.Cells[0].Value = dbSphere.id.ToString();
-                row.Cells[1].Value = dbSphere.name;
-                row.Cells[2].Value = dbSphere.sphere_detail_type;
-                row.Cells[3].Value = dbSphere.sphere_detail_id.ToString();
-                row.Cells[4].Value = dbSphere.enter_or_leave.ToString();
+                row.Cells[0].Value = dbSphere.Id.ToString();
+                row.Cells[1].Value = dbSphere.Name;
+                row.Cells[2].Value = dbSphere.SphereDetailType;
+                row.Cells[3].Value = dbSphere.SphereDetailId.ToString();
+                row.Cells[4].Value = dbSphere.EnterOrLeave.ToString();
 
                 if (first)
                 {
                     first = false;
-                    ShowDbSphere(dbSphere.id);
-                    ShowSelectedData("spheres", "id = " + dbSphere.id.ToString(), "id ASC");
+                    ShowDbSphere(dbSphere.Id);
+                    ShowSelectedData("spheres", "id = " + dbSphere.Id.ToString(), "id ASC");
                 }
 
                 if (DgvSpheres.Rows.Count > 250)
@@ -1627,31 +1717,31 @@ namespace AAEmu.DBViewer
         private void ShowDbSphere(long id)
         {
             TvSpheres.Nodes.Clear();
-            if (!AADB.DB_Spheres.TryGetValue(id, out var sphere))
+            if (!AaDb.DbSpheres.TryGetValue(id, out var sphere))
                 return;
 
-            var rootNode = TvSpheres.Nodes.Add($"{sphere.id} - {sphere.name}");
-            AddCustomPropertyNode("enter_or_leave", sphere.enter_or_leave.ToString(), false, rootNode);
-            AddCustomPropertyNode("trigger_condition_id", sphere.trigger_condition_id.ToString(), false, rootNode);
-            AddCustomPropertyNode("trigger_condition_time", sphere.trigger_condition_time.ToString(), false, rootNode);
-            AddCustomPropertyNode("team_msg", sphere.team_msg, false, rootNode);
+            var rootNode = TvSpheres.Nodes.Add($"{sphere.Id} - {sphere.Name}");
+            AddCustomPropertyNode("enter_or_leave", sphere.EnterOrLeave.ToString(), false, rootNode);
+            AddCustomPropertyNode("trigger_condition_id", sphere.TriggerConditionId.ToString(), false, rootNode);
+            AddCustomPropertyNode("trigger_condition_time", sphere.TriggerConditionTime.ToString(), false, rootNode);
+            AddCustomPropertyNode("team_msg", sphere.TeamMsg, false, rootNode);
 
             // category_id seems to be Quest Category Id?
-            var cat = AADB.DB_Quest_Categories.GetValueOrDefault(sphere.category_id);
-            var catName = cat?.nameLocalized ?? "???";
-            rootNode.Nodes.Add($"category_id: {sphere.category_id} - {catName}");
+            var cat = AaDb.DbQuestCategories.GetValueOrDefault(sphere.CategoryId);
+            var catName = cat?.NameLocalized ?? "???";
+            rootNode.Nodes.Add($"category_id: {sphere.CategoryId} - {catName}");
             // AddCustomPropertyNode("category_id", sphere.category_id.ToString(), false, rootNode);
             // AddCustomPropertyNode("or_unit_reqs", sphere.or_unit_reqs.ToString(), false, rootNode);
-            AddCustomPropertyNode("is_personal_msg", sphere.is_personal_msg.ToString(), false, rootNode);
+            AddCustomPropertyNode("is_personal_msg", sphere.IsPersonalMsg.ToString(), false, rootNode);
 
-            var requires = GetSphereRequirements(sphere.id);
-            var reqNode = AddUnitRequirementNode(requires, sphere.or_unit_reqs, TvSpheres.Nodes);
+            var requires = GetSphereRequirements(sphere.Id);
+            var reqNode = AddUnitRequirementNode(requires, sphere.OrUnitReqs, TvSpheres.Nodes);
 
             var questList = new List<long>();
 
-            var detailNode = rootNode.Nodes.Add($"{sphere.sphere_detail_type} - {sphere.sphere_detail_id}");
-            var detailsTableName = FunctionTypeToTableName(sphere.sphere_detail_type);
-            var effectValuesList = GetCustomTableValues(detailsTableName, "id", sphere.sphere_detail_id.ToString());
+            var detailNode = rootNode.Nodes.Add($"{sphere.SphereDetailType} - {sphere.SphereDetailId}");
+            var detailsTableName = FunctionTypeToTableName(sphere.SphereDetailType);
+            var effectValuesList = GetCustomTableValues(detailsTableName, "id", sphere.SphereDetailId.ToString());
             foreach (var effectValues in effectValuesList)
                 foreach (var effectValue in effectValues)
                 {
@@ -1676,7 +1766,7 @@ namespace AAEmu.DBViewer
                 var questNode = TvSpheres.Nodes.Add("Quests Sign Spheres");
                 foreach (var questId in questList)
                 {
-                    var quests = AADB.PAK_QuestSignSpheres.Where(x => x.QuestId == questId).ToArray();
+                    var quests = AaDb.PakQuestSignSpheres.Where(x => x.QuestId == questId).ToArray();
                     foreach (var questSphereEntry in quests)
                     {
                         var qNode = AddCustomPropertyNode("quest_id", questId.ToString(), false, questNode);
@@ -1687,15 +1777,15 @@ namespace AAEmu.DBViewer
                         var zoneNode = new TreeNodeWithInfo();
                         qNode.Nodes.Add(zoneNode);
                         zoneNode.Text = $"zone_id: {questSphereEntry.ZoneKey}";
-                        var zoneByKey = AADB.DB_Zones.Values.FirstOrDefault(z => z.zone_key == questSphereEntry.ZoneKey);
+                        var zoneByKey = AaDb.DbZones.Values.FirstOrDefault(z => z.ZoneKey == questSphereEntry.ZoneKey);
                         if (zoneByKey != null)
                         {
                             zoneNode.targetTabPage = tpZones;
                             zoneNode.targetTextBox = tZonesSearch;
-                            zoneNode.targetSearchText = zoneByKey.display_textLocalized;
+                            zoneNode.targetSearchText = zoneByKey.DisplayTextLocalized;
                             zoneNode.targetSearchButton = btnSearchZones;
                             zoneNode.ForeColor = Color.WhiteSmoke;
-                            zoneNode.Text += " - " + zoneByKey.display_textLocalized + " (key)";
+                            zoneNode.Text += " - " + zoneByKey.DisplayTextLocalized + " (key)";
 
                             // var zoneGroup = AADB.DB_Zone_Groups.GetValueOrDefault(zoneByKey.group_id);
                             // if (zoneGroup != null)
@@ -1705,13 +1795,13 @@ namespace AAEmu.DBViewer
                         var zonePosNode = new TreeNodeWithInfo();
                         zonePosNode.Text = $"Position: {questSphereEntry.X} , {questSphereEntry.Y} , {questSphereEntry.Z}";
                         zonePosNode.targetPosition = new Vector3(questSphereEntry.X, questSphereEntry.Y, questSphereEntry.Z);
-                        zonePosNode.targetRadius = questSphereEntry.radius;
+                        zonePosNode.targetRadius = questSphereEntry.Radius;
                         zonePosNode.targetWorldName = questSphereEntry.WorldId;
                         zonePosNode.targetSearchText = rootNode.Text;
                         zonePosNode.ForeColor = Color.Aquamarine;
                         qNode.Nodes.Add(zonePosNode);
 
-                        qNode.Nodes.Add($"Radius: {questSphereEntry.radius}");
+                        qNode.Nodes.Add($"Radius: {questSphereEntry.Radius}");
                     }
                 }
 
@@ -1757,7 +1847,7 @@ namespace AAEmu.DBViewer
                 reqNode.ForeColor = Color.Aqua;
                 foreach (var req in requirements)
                 {
-                    reqNode.Nodes.Add($"kind_id: {req.kind_id}, value1: {req.value1}, value2: {req.value2}");
+                    reqNode.Nodes.Add($"kind_id: {req.KindId}, value1: {req.Value1}, value2: {req.Value2}");
                 }
                 reqNode.ExpandAll();
                 return reqNode;
@@ -1853,14 +1943,14 @@ namespace AAEmu.DBViewer
 
         private void tcViewer_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Text = $"{defaultTitle} [{tcViewer.SelectedTab?.Text}] - {Properties.Settings.Default.DBFileName} ({Properties.Settings.Default.DefaultGameLanguage})";
-            if (skipTabHistory == false && tcViewer.SelectedTab != null)
+            UpdateTitleBar();
+            if (SkipTabHistory == false && tcViewer.SelectedTab != null)
             {
-                if (tabHistory.Count > tabHistoryIndex)
-                    tabHistory.RemoveRange(tabHistoryIndex, tabHistory.Count - tabHistoryIndex - 1);
+                if (TabHistory.Count > TabHistoryIndex)
+                    TabHistory.RemoveRange(TabHistoryIndex, TabHistory.Count - TabHistoryIndex - 1);
 
-                tabHistory.Add(tcViewer.SelectedTab);
-                tabHistoryIndex = tabHistory.Count - 1;
+                TabHistory.Add(tcViewer.SelectedTab);
+                TabHistoryIndex = TabHistory.Count - 1;
             }
 
             foreach (ToolStripItem stripItem in TBMain.Items)
@@ -1882,24 +1972,24 @@ namespace AAEmu.DBViewer
 
         private void MMBack_Click(object sender, EventArgs e)
         {
-            skipTabHistory = true;
-            if (tabHistoryIndex > 0)
+            SkipTabHistory = true;
+            if (TabHistoryIndex > 0)
             {
-                tabHistoryIndex--;
-                tcViewer.SelectedTab = tabHistory[tabHistoryIndex];
+                TabHistoryIndex--;
+                tcViewer.SelectedTab = TabHistory[TabHistoryIndex];
             }
-            skipTabHistory = false;
+            SkipTabHistory = false;
         }
 
         private void MMForward_Click(object sender, EventArgs e)
         {
-            skipTabHistory = true;
-            if (tabHistoryIndex < tabHistory.Count - 1)
+            SkipTabHistory = true;
+            if (TabHistoryIndex < TabHistory.Count - 1)
             {
-                tabHistoryIndex++;
-                tcViewer.SelectedTab = tabHistory[tabHistoryIndex];
+                TabHistoryIndex++;
+                tcViewer.SelectedTab = TabHistory[TabHistoryIndex];
             }
-            skipTabHistory = false;
+            SkipTabHistory = false;
         }
 
         private void MMSystemSpheres_Click(object sender, EventArgs e)
@@ -2688,6 +2778,36 @@ namespace AAEmu.DBViewer
         private void BtnLoadUntMovement_Click(object sender, EventArgs e)
         {
             DoLoadExportedUnitMovement();
+        }
+
+        private void BtnAdditionalServerDb_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Do you want to load an additional database file for this profile?", "Add DB", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                return;
+            
+            if (openDBDlg.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+            var oldDbSetting = Properties.Settings.Default.DBFileName;
+            var sqliteFiles = Properties.Settings.Default.DBFileName.Split(Path.PathSeparator).ToList();
+            if (sqliteFiles.Contains(openDBDlg.FileName))
+            {
+                MessageBox.Show($"{openDBDlg.FileName} is already loaded");
+                return;
+            }
+            sqliteFiles.Add(openDBDlg.FileName);
+            Properties.Settings.Default.DBFileName = string.Join(Path.PathSeparator, sqliteFiles);
+            if (LoadServerDB(false))
+            {
+                Properties.Settings.Default.Save();
+            }
+            else
+            {
+                Properties.Settings.Default.DBFileName = oldDbSetting;
+                LoadServerDB(false);
+            }
+            UpdateTitleBar();
         }
     }
 }
