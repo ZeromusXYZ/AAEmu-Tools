@@ -229,6 +229,7 @@ public partial class MainForm
             }
         }
 
+        AADB.DB_Quest_Monster_Groups.Clear();
         using (var connection = SQLite.CreateConnection())
         {
             using (var command = connection.CreateCommand())
@@ -237,8 +238,6 @@ public partial class MainForm
                 command.Prepare();
                 using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                 {
-                    AADB.DB_Quest_Monster_Groups.Clear();
-
                     var readCatId = false;
                     List<string> columnNames = null;
                     while (reader.Read())
@@ -263,6 +262,7 @@ public partial class MainForm
             }
         }
 
+        AADB.DB_Quest_Monster_Npcs.Clear();
         using (var connection = SQLite.CreateConnection())
         {
             using (var command = connection.CreateCommand())
@@ -271,8 +271,6 @@ public partial class MainForm
                 command.Prepare();
                 using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                 {
-                    AADB.DB_Quest_Monster_Npcs.Clear();
-
                     while (reader.Read())
                     {
                         var t = new GameQuestMonsterNpcs();
@@ -287,6 +285,7 @@ public partial class MainForm
             }
         }
 
+        AADB.DB_NpcInteractions.Clear();
         using (var connection = SQLite.CreateConnection())
         {
             using (var command = connection.CreateCommand())
@@ -295,8 +294,6 @@ public partial class MainForm
                 command.Prepare();
                 using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                 {
-                    AADB.DB_NpcInteractions.Clear();
-
                     while (reader.Read())
                     {
                         var t = new GameNpcInteractions();
@@ -311,6 +308,7 @@ public partial class MainForm
             }
         }
 
+        AADB.DB_AiFiles.Clear();
         using (var connection = SQLite.CreateConnection())
         {
             using (var command = connection.CreateCommand())
@@ -319,8 +317,6 @@ public partial class MainForm
                 command.Prepare();
                 using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                 {
-                    AADB.DB_AiFiles.Clear();
-
                     while (reader.Read())
                     {
                         var t = new GameAiFiles();
@@ -360,13 +356,12 @@ public partial class MainForm
                             t.param2 = GetString(reader, "param2");
 
                             id++;
-                            AADB.DB_AiCommands.Add(t.id, t);
+                            _ = AADB.DB_AiCommands.TryAdd(t.id, t);
                         }
                     }
                 }
             }
         }
-
     }
 
     private void LoadDoodads()
