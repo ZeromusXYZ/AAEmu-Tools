@@ -335,31 +335,33 @@ public partial class MainForm
             }
         }
 
-        using (var connection = SQLite.CreateConnection())
+        AADB.DB_AiCommands.Clear();
+        if (allTableNames.Contains("ai_commands"))
         {
-            using (var command = connection.CreateCommand())
+            using (var connection = SQLite.CreateConnection())
             {
-                command.CommandText = "SELECT * FROM ai_commands";
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                using (var command = connection.CreateCommand())
                 {
-                    AADB.DB_AiCommands.Clear();
-
-                    var columns = reader.GetColumnNames();
-                    var useId = columns.Contains("id");
-                    var id = 0u;
-
-                    while (reader.Read())
+                    command.CommandText = "SELECT * FROM ai_commands";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        var t = new GameAiCommands();
-                        t.id = useId ? GetInt64(reader, "id") : id;
-                        t.cmd_set_id = GetInt64(reader, "cmd_set_id");
-                        t.cmd_id = GetInt64(reader, "cmd_id");
-                        t.param1 = GetInt64(reader, "param1");
-                        t.param2 = GetString(reader, "param2");
+                        var columns = reader.GetColumnNames();
+                        var useId = columns.Contains("id");
+                        var id = 0u;
 
-                        id++;
-                        AADB.DB_AiCommands.Add(t.id, t);
+                        while (reader.Read())
+                        {
+                            var t = new GameAiCommands();
+                            t.id = useId ? GetInt64(reader, "id") : id;
+                            t.cmd_set_id = GetInt64(reader, "cmd_set_id");
+                            t.cmd_id = GetInt64(reader, "cmd_id");
+                            t.param1 = GetInt64(reader, "param1");
+                            t.param2 = GetString(reader, "param2");
+
+                            id++;
+                            AADB.DB_AiCommands.Add(t.id, t);
+                        }
                     }
                 }
             }
@@ -1114,8 +1116,9 @@ public partial class MainForm
             var passiveBuffsNode = tvNPCInfo.Nodes.Add("Passive Buffs");
             passiveBuffsNode.ImageIndex = 2;
             passiveBuffsNode.SelectedImageIndex = 2;
-            var npPassiveBuffs = AADB.DB_Np_Passive_Buffs.Values.Where(x => x.owner_id == npc.id && x.owner_type == "Npc").ToList();
 
+            var npPassiveBuffs = AADB.DB_Np_Passive_Buffs.Values.Where(x => x.owner_id == npc.id && x.owner_type == "Npc").ToList();
+            
             foreach (var npPassiveBuff in npPassiveBuffs)
             {
                 var passiveBuffs = AADB.DB_Passive_Buffs.Values.Where(x => x.id == npPassiveBuff.passive_buff_id).ToList();

@@ -543,33 +543,36 @@ public partial class MainForm
                 }
             }
 
-            using (var command = connection.CreateCommand())
+            AADB.DB_Np_Passive_Buffs.Clear();
+            if (allTableNames.Contains("np_passive_buffs"))
             {
-                AADB.DB_Np_Passive_Buffs.Clear();
-                command.CommandText = npPassiveSql;
-                command.Prepare();
-                using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                using (var command = connection.CreateCommand())
                 {
-                    List<string> columnNames = null;
-                    var readId = false;
-                    var indx = 1L;
-                    while (reader.Read())
+                    command.CommandText = npPassiveSql;
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        // id field is not present after in 3.0.3.0
-                        if (columnNames == null)
+                        List<string> columnNames = null;
+                        var readId = false;
+                        var indx = 1L;
+                        while (reader.Read())
                         {
-                            columnNames = reader.GetColumnNames();
-                            readId = (columnNames.IndexOf("id") >= 0);
+                            // id field is not present after in 3.0.3.0
+                            if (columnNames == null)
+                            {
+                                columnNames = reader.GetColumnNames();
+                                readId = (columnNames.IndexOf("id") >= 0);
+                            }
+
+                            var t = new GameNpPassiveBuff();
+                            t.id = readId ? GetInt64(reader, "id") : indx;
+                            t.owner_id = GetInt64(reader, "owner_id");
+                            t.owner_type = GetString(reader, "owner_type");
+                            t.passive_buff_id = GetInt64(reader, "passive_buff_id");
+
+                            AADB.DB_Np_Passive_Buffs.Add(t.id, t);
+                            indx++;
                         }
-
-                        var t = new GameNpPassiveBuff();
-                        t.id = readId ? GetInt64(reader, "id") : indx;
-                        t.owner_id = GetInt64(reader, "owner_id");
-                        t.owner_type = GetString(reader, "owner_type");
-                        t.passive_buff_id = GetInt64(reader, "passive_buff_id");
-
-                        AADB.DB_Np_Passive_Buffs.Add(t.id, t);
-                        indx++;
                     }
                 }
             }
