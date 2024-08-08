@@ -264,26 +264,31 @@ namespace AAEmu.DBViewer
 
         private void LoadTableNames()
         {
-            string sql = "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name ASC";
-
+            var tableList = new List<string>();
             using (var connection = SQLite.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
                 {
-                    command.CommandText = sql;
+                    command.CommandText = "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name ASC";
                     command.Prepare();
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
-                        AllTableNames.Clear();
-                        lbTableNames.Items.Clear();
                         while (reader.Read())
                         {
                             var tName = GetString(reader, "name");
-                            AllTableNames.Add(tName, SQLite.SQLiteFileName);
-                            lbTableNames.Items.Add(tName);
+                            tableList.Add(tName);
                         }
                     }
                 }
+            }
+
+            foreach (var table in tableList)
+            {
+                if (AllTableNames.ContainsKey(table))
+                    continue;
+
+                AllTableNames.Add(table, SQLite.SQLiteFileName);
+                lbTableNames.Items.Add(table);
             }
         }
 
@@ -775,6 +780,7 @@ namespace AAEmu.DBViewer
             }
 
             AaDb.Clear();
+            AllTableNames.Clear();
 
             var res = true;
             if (sqliteFiles.Length == 1)
@@ -782,15 +788,29 @@ namespace AAEmu.DBViewer
                 res = LoadServerDbFile(sqliteFile);
                 if (res)
                     Properties.Settings.Default.DBFileName = sqliteFile;
-                return res;
+                sqliteFiles = new[] { sqliteFile };
+            }
+            else
+            {
+
+                foreach (var file in sqliteFiles)
+                {
+                    res &= LoadServerDbFile(file);
+                }
+
+                if (res)
+                    Properties.Settings.Default.DBFileName = string.Join(Path.PathSeparator, sqliteFiles);
             }
 
-            foreach (var file in sqliteFiles)
+            CbSimpleSqlSourceDb.Items.Clear();
+            foreach (var fileName in sqliteFiles)
             {
-                res &= LoadServerDbFile(file);
+                CbSimpleSqlSourceDb.Items.Add(fileName);
             }
-            if (res)
-                Properties.Settings.Default.DBFileName = string.Join(Path.PathSeparator, sqliteFiles);
+            if (CbSimpleSqlSourceDb.Items.Count > 0)
+                CbSimpleSqlSourceDb.SelectedIndex = 0;
+
+            tFilterTables_TextChanged(null, null);
 
             return res;
         }
@@ -1008,6 +1028,7 @@ namespace AAEmu.DBViewer
             if (lbTableNames.SelectedItem == null)
                 return;
             var tablename = lbTableNames.SelectedItem.ToString();
+            CbSimpleSqlSourceDb.Text = AllTableNames.GetValueOrDefault(tablename) ?? string.Empty;
             cbSimpleSQL.Text = "SELECT * FROM " + tablename + " LIMIT 0, 50";
 
             // BtnSimpleSQL_Click(null, null);
@@ -1020,6 +1041,7 @@ namespace AAEmu.DBViewer
 
             try
             {
+                SQLite.SQLiteFileName = CbSimpleSqlSourceDb.Text;
                 using (var connection = SQLite.CreateConnection())
                 {
                     using (var command = connection.CreateCommand())
@@ -1113,6 +1135,14 @@ namespace AAEmu.DBViewer
         private List<Dictionary<string, string>> GetCustomTableValues(string tableName, string indexName, string searchId)
         {
             var res = new List<Dictionary<string, string>>();
+
+            var dbFile = AllTableNames.GetValueOrDefault(tableName) ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(dbFile) || !File.Exists(dbFile))
+            {
+                return res;
+            }
+
+            SQLite.SQLiteFileName = dbFile;
 
             using (var connection = SQLite.CreateConnection())
             {
@@ -1552,16 +1582,18 @@ namespace AAEmu.DBViewer
         private void tFilterTables_TextChanged(object sender, EventArgs e)
         {
             var lastSelected = lbTableNames.SelectedIndex >= 0 ? lbTableNames.Text : "";
+            var tableNames = AllTableNames.Keys.ToList();
+            tableNames.Sort();
             if (tFilterTables.Text == string.Empty)
             {
                 lbTableNames.Items.Clear();
-                foreach (var s in AllTableNames)
+                foreach (var s in tableNames)
                     lbTableNames.Items.Add(s);
             }
             else
             {
                 lbTableNames.Items.Clear();
-                foreach (var (s, _) in AllTableNames)
+                foreach (var s in tableNames)
                 {
                     if (s.ToLower().Contains(tFilterTables.Text.ToLower()))
                     {

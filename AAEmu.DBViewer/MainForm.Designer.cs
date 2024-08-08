@@ -36,6 +36,7 @@
             lbTableNames = new System.Windows.Forms.ListBox();
             tcViewer = new System.Windows.Forms.TabControl();
             tpSettings = new System.Windows.Forms.TabPage();
+            BtnAdditionalServerDb = new System.Windows.Forms.Button();
             lAppVersion = new System.Windows.Forms.Label();
             BtnDeleteProfile = new System.Windows.Forms.Button();
             TSaveProfileName = new System.Windows.Forms.TextBox();
@@ -647,7 +648,8 @@
             openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
             openFileDialog4 = new System.Windows.Forms.OpenFileDialog();
             ofdLoadUnitMovementDialog = new System.Windows.Forms.OpenFileDialog();
-            BtnAdditionalServerDb = new System.Windows.Forms.Button();
+            CbSimpleSqlSourceDb = new System.Windows.Forms.ComboBox();
+            label149 = new System.Windows.Forms.Label();
             tcViewer.SuspendLayout();
             tpSettings.SuspendLayout();
             tpTables.SuspendLayout();
@@ -801,6 +803,17 @@
             tpSettings.Text = "Settings";
             tpSettings.UseVisualStyleBackColor = true;
             // 
+            // BtnAdditionalServerDb
+            // 
+            BtnAdditionalServerDb.Location = new System.Drawing.Point(233, 4);
+            BtnAdditionalServerDb.Margin = new System.Windows.Forms.Padding(4);
+            BtnAdditionalServerDb.Name = "BtnAdditionalServerDb";
+            BtnAdditionalServerDb.Size = new System.Drawing.Size(33, 28);
+            BtnAdditionalServerDb.TabIndex = 32;
+            BtnAdditionalServerDb.Text = "+";
+            BtnAdditionalServerDb.UseVisualStyleBackColor = true;
+            BtnAdditionalServerDb.Click += BtnAdditionalServerDb_Click;
+            // 
             // lAppVersion
             // 
             lAppVersion.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
@@ -937,6 +950,8 @@
             // tpTables
             // 
             tpTables.BackColor = System.Drawing.Color.Transparent;
+            tpTables.Controls.Add(label149);
+            tpTables.Controls.Add(CbSimpleSqlSourceDb);
             tpTables.Controls.Add(cbSimpleSQL);
             tpTables.Controls.Add(label29);
             tpTables.Controls.Add(tFilterTables);
@@ -956,7 +971,7 @@
             // 
             cbSimpleSQL.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             cbSimpleSQL.FormattingEnabled = true;
-            cbSimpleSQL.Location = new System.Drawing.Point(329, 7);
+            cbSimpleSQL.Location = new System.Drawing.Point(329, 39);
             cbSimpleSQL.Name = "cbSimpleSQL";
             cbSimpleSQL.Size = new System.Drawing.Size(647, 24);
             cbSimpleSQL.TabIndex = 25;
@@ -986,7 +1001,7 @@
             // 
             label41.AutoSize = true;
             label41.ForeColor = System.Drawing.SystemColors.ControlDark;
-            label41.Location = new System.Drawing.Point(329, 42);
+            label41.Location = new System.Drawing.Point(329, 66);
             label41.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label41.Name = "label41";
             label41.Size = new System.Drawing.Size(553, 16);
@@ -996,7 +1011,7 @@
             // btnSimpleSQL
             // 
             btnSimpleSQL.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            btnSimpleSQL.Location = new System.Drawing.Point(982, 5);
+            btnSimpleSQL.Location = new System.Drawing.Point(982, 37);
             btnSimpleSQL.Margin = new System.Windows.Forms.Padding(4);
             btnSimpleSQL.Name = "btnSimpleSQL";
             btnSimpleSQL.Size = new System.Drawing.Size(88, 28);
@@ -1013,13 +1028,13 @@
             dgvSimple.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             dgvSimple.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             dgvSimple.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
-            dgvSimple.Location = new System.Drawing.Point(329, 62);
+            dgvSimple.Location = new System.Drawing.Point(329, 86);
             dgvSimple.Margin = new System.Windows.Forms.Padding(4);
             dgvSimple.MultiSelect = false;
             dgvSimple.Name = "dgvSimple";
             dgvSimple.RowHeadersVisible = false;
             dgvSimple.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            dgvSimple.Size = new System.Drawing.Size(741, 513);
+            dgvSimple.Size = new System.Drawing.Size(741, 489);
             dgvSimple.TabIndex = 9;
             // 
             // tpCurrentRecord
@@ -1507,7 +1522,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 325);
-            splitContainer2.SplitterDistance = 312;
+            splitContainer2.SplitterDistance = 311;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1515,7 +1530,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(221, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(220, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1546,7 +1561,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(304, 294);
+            tvBuffTriggers.Size = new System.Drawing.Size(303, 294);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -4742,7 +4757,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(478, 514);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(477, 514);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4774,7 +4789,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(705, 503);
+            tvQuestWorkflow.Size = new System.Drawing.Size(704, 503);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -7440,16 +7455,25 @@
             ofdLoadUnitMovementDialog.Filter = "JSON Files|*.json|All Files|*.*";
             ofdLoadUnitMovementDialog.Title = "Open Unit Movement File";
             // 
-            // BtnAdditionalServerDb
+            // CbSimpleSqlSourceDb
             // 
-            BtnAdditionalServerDb.Location = new System.Drawing.Point(233, 4);
-            BtnAdditionalServerDb.Margin = new System.Windows.Forms.Padding(4);
-            BtnAdditionalServerDb.Name = "BtnAdditionalServerDb";
-            BtnAdditionalServerDb.Size = new System.Drawing.Size(33, 28);
-            BtnAdditionalServerDb.TabIndex = 32;
-            BtnAdditionalServerDb.Text = "+";
-            BtnAdditionalServerDb.UseVisualStyleBackColor = true;
-            BtnAdditionalServerDb.Click += BtnAdditionalServerDb_Click;
+            CbSimpleSqlSourceDb.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            CbSimpleSqlSourceDb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            CbSimpleSqlSourceDb.FormattingEnabled = true;
+            CbSimpleSqlSourceDb.Location = new System.Drawing.Point(329, 6);
+            CbSimpleSqlSourceDb.Name = "CbSimpleSqlSourceDb";
+            CbSimpleSqlSourceDb.Size = new System.Drawing.Size(647, 24);
+            CbSimpleSqlSourceDb.TabIndex = 26;
+            // 
+            // label149
+            // 
+            label149.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            label149.AutoSize = true;
+            label149.Location = new System.Drawing.Point(982, 11);
+            label149.Name = "label149";
+            label149.Size = new System.Drawing.Size(43, 16);
+            label149.TabIndex = 27;
+            label149.Text = "DB File";
             // 
             // MainForm
             // 
@@ -8210,6 +8234,8 @@
         private System.Windows.Forms.Label label148;
         private System.Windows.Forms.TextBox tExportedObjFilter;
         private System.Windows.Forms.Button BtnAdditionalServerDb;
+        private System.Windows.Forms.Label label149;
+        private System.Windows.Forms.ComboBox CbSimpleSqlSourceDb;
     }
 }
 
