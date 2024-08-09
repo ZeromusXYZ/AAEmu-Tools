@@ -983,6 +983,7 @@ namespace AAEmu.DBViewer
                 return;
             }
 
+            SQLite.SQLiteFileName = dbFile;
             using (var connection = SQLite.CreateConnection())
             {
                 using (var command = connection.CreateCommand())
