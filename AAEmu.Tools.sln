@@ -3,25 +3,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAEmu.DBViewer", "AAEmu.DBViewer\AAEmu.DBViewer.csproj", "{8C6AFF75-052F-48D7-A329-1BFBFCB6DC53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AAEmu.DBViewer", "AAEmu.DBViewer\AAEmu.DBViewer.csproj", "{8C6AFF75-052F-48D7-A329-1BFBFCB6DC53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAEmu.PassGen", "AAEmu.PassGen\AAEmu.PassGen.csproj", "{98751459-5EBE-408A-884C-F4BCC6A61D5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AAEmu.PassGen", "AAEmu.PassGen\AAEmu.PassGen.csproj", "{98751459-5EBE-408A-884C-F4BCC6A61D5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAEmu.ClientDataExporter", "AAEmu.ClientDataExporter\AAEmu.ClientDataExporter.csproj", "{7A0BC9BD-E7A0-444E-BD87-D774E9B13AA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AAEmu.ClientDataExporter", "AAEmu.ClientDataExporter\AAEmu.ClientDataExporter.csproj", "{7A0BC9BD-E7A0-444E-BD87-D774E9B13AA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GReader", "GReader\GReader.csproj", "{A625A164-0621-41CA-84C8-77F64EFF31FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GReader", "GReader\GReader.csproj", "{A625A164-0621-41CA-84C8-77F64EFF31FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AAEmu.DBEditor", "AAEmu.DBEditor\AAEmu.DBEditor.csproj", "{0453661E-8C26-4472-B6C2-432A2FE3432A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AAEmu.DBEditor", "AAEmu.DBEditor\AAEmu.DBEditor.csproj", "{0453661E-8C26-4472-B6C2-432A2FE3432A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitmapUtil", "BitmapUtil\BitmapUtil.csproj", "{016FCBBA-1219-457D-ADCB-F167DF78F631}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BitmapUtil", "BitmapUtil\BitmapUtil.csproj", "{016FCBBA-1219-457D-ADCB-F167DF78F631}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8C6AFF75-052F-48D7-A329-1BFBFCB6DC53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -48,5 +45,12 @@ Global
 		{016FCBBA-1219-457D-ADCB-F167DF78F631}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{016FCBBA-1219-457D-ADCB-F167DF78F631}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{016FCBBA-1219-457D-ADCB-F167DF78F631}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_ConfirmAddLanguageFile = False
+		RESX_AutoCreateNewLanguageFiles = False
 	EndGlobalSection
 EndGlobal

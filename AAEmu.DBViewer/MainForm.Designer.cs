@@ -30,9 +30,9 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("NPC");
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Slave");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("NPC");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Slave");
             lbTableNames = new System.Windows.Forms.ListBox();
             tcViewer = new System.Windows.Forms.TabControl();
             tpSettings = new System.Windows.Forms.TabPage();
@@ -51,6 +51,8 @@
             label2 = new System.Windows.Forms.Label();
             cbItemSearchLanguage = new System.Windows.Forms.ComboBox();
             tpTables = new System.Windows.Forms.TabPage();
+            label149 = new System.Windows.Forms.Label();
+            CbSimpleSqlSourceDb = new System.Windows.Forms.ComboBox();
             cbSimpleSQL = new System.Windows.Forms.ComboBox();
             label29 = new System.Windows.Forms.Label();
             tFilterTables = new System.Windows.Forms.TextBox();
@@ -95,6 +97,13 @@
             btnExportNPCSpawnData = new System.Windows.Forms.Button();
             btnExportDataForVieweD = new System.Windows.Forms.Button();
             lSpace = new System.Windows.Forms.Label();
+            tpAchievements = new System.Windows.Forms.TabPage();
+            LAchievementReward = new System.Windows.Forms.Label();
+            LAchievementIcon = new System.Windows.Forms.Label();
+            RtAchievementInfo = new System.Windows.Forms.RichTextBox();
+            BtnAchievementFilter = new System.Windows.Forms.Button();
+            TSearchAchievements = new System.Windows.Forms.TextBox();
+            TvAchievements = new System.Windows.Forms.TreeView();
             tpBuffs = new System.Windows.Forms.TabPage();
             cbSearchBuffs = new System.Windows.Forms.ComboBox();
             groupBox14 = new System.Windows.Forms.GroupBox();
@@ -601,6 +610,7 @@
             MMGameObjectsVehicles = new System.Windows.Forms.ToolStripMenuItem();
             MMVersion = new System.Windows.Forms.ToolStripMenuItem();
             MMSystems = new System.Windows.Forms.ToolStripMenuItem();
+            MMAchievements = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemFactions = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemItems = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemLoot = new System.Windows.Forms.ToolStripMenuItem();
@@ -629,6 +639,7 @@
             toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             TBMap = new System.Windows.Forms.ToolStripButton();
             TBSplit = new System.Windows.Forms.ToolStripButton();
+            toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             TBBuffs = new System.Windows.Forms.ToolStripButton();
             TBDoodads = new System.Windows.Forms.ToolStripButton();
             TBFactions = new System.Windows.Forms.ToolStripButton();
@@ -648,8 +659,6 @@
             openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
             openFileDialog4 = new System.Windows.Forms.OpenFileDialog();
             ofdLoadUnitMovementDialog = new System.Windows.Forms.OpenFileDialog();
-            CbSimpleSqlSourceDb = new System.Windows.Forms.ComboBox();
-            label149 = new System.Windows.Forms.Label();
             tcViewer.SuspendLayout();
             tpSettings.SuspendLayout();
             tpTables.SuspendLayout();
@@ -660,6 +669,7 @@
             ((System.ComponentModel.ISupportInitialize)dgvLocalized).BeginInit();
             tpMap.SuspendLayout();
             tpV1.SuspendLayout();
+            tpAchievements.SuspendLayout();
             tpBuffs.SuspendLayout();
             groupBox14.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
@@ -756,6 +766,7 @@
             tcViewer.Controls.Add(tpLocalizer);
             tcViewer.Controls.Add(tpMap);
             tcViewer.Controls.Add(tpV1);
+            tcViewer.Controls.Add(tpAchievements);
             tcViewer.Controls.Add(tpBuffs);
             tcViewer.Controls.Add(tpDoodads);
             tcViewer.Controls.Add(tpFactions);
@@ -966,6 +977,26 @@
             tpTables.Size = new System.Drawing.Size(1082, 584);
             tpTables.TabIndex = 0;
             tpTables.Text = "Tables and Settings";
+            // 
+            // label149
+            // 
+            label149.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            label149.AutoSize = true;
+            label149.Location = new System.Drawing.Point(982, 11);
+            label149.Name = "label149";
+            label149.Size = new System.Drawing.Size(43, 16);
+            label149.TabIndex = 27;
+            label149.Text = "DB File";
+            // 
+            // CbSimpleSqlSourceDb
+            // 
+            CbSimpleSqlSourceDb.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            CbSimpleSqlSourceDb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            CbSimpleSqlSourceDb.FormattingEnabled = true;
+            CbSimpleSqlSourceDb.Location = new System.Drawing.Point(329, 6);
+            CbSimpleSqlSourceDb.Name = "CbSimpleSqlSourceDb";
+            CbSimpleSqlSourceDb.Size = new System.Drawing.Size(647, 24);
+            CbSimpleSqlSourceDb.TabIndex = 26;
             // 
             // cbSimpleSQL
             // 
@@ -1449,6 +1480,83 @@
             lSpace.TabIndex = 0;
             lSpace.Text = "Space, the final divider ...";
             // 
+            // tpAchievements
+            // 
+            tpAchievements.Controls.Add(LAchievementReward);
+            tpAchievements.Controls.Add(LAchievementIcon);
+            tpAchievements.Controls.Add(RtAchievementInfo);
+            tpAchievements.Controls.Add(BtnAchievementFilter);
+            tpAchievements.Controls.Add(TSearchAchievements);
+            tpAchievements.Controls.Add(TvAchievements);
+            tpAchievements.Location = new System.Drawing.Point(4, 14);
+            tpAchievements.Name = "tpAchievements";
+            tpAchievements.Padding = new System.Windows.Forms.Padding(3);
+            tpAchievements.Size = new System.Drawing.Size(1082, 584);
+            tpAchievements.TabIndex = 20;
+            tpAchievements.Text = "Achievements";
+            tpAchievements.UseVisualStyleBackColor = true;
+            // 
+            // LAchievementReward
+            // 
+            LAchievementReward.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            LAchievementReward.Location = new System.Drawing.Point(400, 107);
+            LAchievementReward.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            LAchievementReward.Name = "LAchievementReward";
+            LAchievementReward.Size = new System.Drawing.Size(64, 64);
+            LAchievementReward.TabIndex = 13;
+            LAchievementReward.Text = "No Reward";
+            LAchievementReward.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // LAchievementIcon
+            // 
+            LAchievementIcon.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            LAchievementIcon.Location = new System.Drawing.Point(400, 43);
+            LAchievementIcon.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            LAchievementIcon.Name = "LAchievementIcon";
+            LAchievementIcon.Size = new System.Drawing.Size(64, 64);
+            LAchievementIcon.TabIndex = 12;
+            LAchievementIcon.Text = "Icon";
+            LAchievementIcon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // RtAchievementInfo
+            // 
+            RtAchievementInfo.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            RtAchievementInfo.BackColor = System.Drawing.Color.FromArgb(70, 60, 40);
+            RtAchievementInfo.ForeColor = System.Drawing.Color.FromArgb(208, 192, 171);
+            RtAchievementInfo.Location = new System.Drawing.Point(472, 43);
+            RtAchievementInfo.Margin = new System.Windows.Forms.Padding(4);
+            RtAchievementInfo.Name = "RtAchievementInfo";
+            RtAchievementInfo.Size = new System.Drawing.Size(601, 532);
+            RtAchievementInfo.TabIndex = 11;
+            RtAchievementInfo.Text = "";
+            // 
+            // BtnAchievementFilter
+            // 
+            BtnAchievementFilter.Location = new System.Drawing.Point(309, 14);
+            BtnAchievementFilter.Name = "BtnAchievementFilter";
+            BtnAchievementFilter.Size = new System.Drawing.Size(75, 23);
+            BtnAchievementFilter.TabIndex = 2;
+            BtnAchievementFilter.Text = "Filter";
+            BtnAchievementFilter.UseVisualStyleBackColor = true;
+            BtnAchievementFilter.Click += BtnAchievementFilter_Click;
+            // 
+            // TSearchAchievements
+            // 
+            TSearchAchievements.Location = new System.Drawing.Point(8, 14);
+            TSearchAchievements.Name = "TSearchAchievements";
+            TSearchAchievements.Size = new System.Drawing.Size(295, 23);
+            TSearchAchievements.TabIndex = 1;
+            TSearchAchievements.KeyDown += TSearchAchievements_KeyDown;
+            // 
+            // TvAchievements
+            // 
+            TvAchievements.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            TvAchievements.Location = new System.Drawing.Point(8, 43);
+            TvAchievements.Name = "TvAchievements";
+            TvAchievements.Size = new System.Drawing.Size(376, 533);
+            TvAchievements.TabIndex = 0;
+            TvAchievements.AfterSelect += TvAchievements_AfterSelect;
+            // 
             // tpBuffs
             // 
             tpBuffs.Controls.Add(cbSearchBuffs);
@@ -1522,7 +1630,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 325);
-            splitContainer2.SplitterDistance = 311;
+            splitContainer2.SplitterDistance = 295;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1530,7 +1638,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(220, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(204, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(87, 20);
@@ -1561,7 +1669,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(303, 294);
+            tvBuffTriggers.Size = new System.Drawing.Size(287, 294);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -4400,9 +4508,9 @@
             tvNPCInfo.Location = new System.Drawing.Point(8, 41);
             tvNPCInfo.Margin = new System.Windows.Forms.Padding(4);
             tvNPCInfo.Name = "tvNPCInfo";
-            treeNode4.Name = "SkillNode";
-            treeNode4.Text = "NPC";
-            tvNPCInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode4 });
+            treeNode1.Name = "SkillNode";
+            treeNode1.Text = "NPC";
+            tvNPCInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
             tvNPCInfo.SelectedImageIndex = 0;
             tvNPCInfo.Size = new System.Drawing.Size(430, 351);
             tvNPCInfo.TabIndex = 31;
@@ -4757,7 +4865,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(477, 514);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(461, 514);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 27);
@@ -4789,7 +4897,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(704, 503);
+            tvQuestWorkflow.Size = new System.Drawing.Size(688, 503);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -5570,9 +5678,9 @@
             tvSkill.Location = new System.Drawing.Point(7, 7);
             tvSkill.Margin = new System.Windows.Forms.Padding(4);
             tvSkill.Name = "tvSkill";
-            treeNode1.Name = "SkillNode";
-            treeNode1.Text = "Skill";
-            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
+            treeNode2.Name = "SkillNode";
+            treeNode2.Text = "Skill";
+            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
             tvSkill.SelectedImageIndex = 0;
             tvSkill.Size = new System.Drawing.Size(575, 327);
             tvSkill.TabIndex = 0;
@@ -5970,9 +6078,9 @@
             tvSlaveInfo.Location = new System.Drawing.Point(8, 58);
             tvSlaveInfo.Margin = new System.Windows.Forms.Padding(4);
             tvSlaveInfo.Name = "tvSlaveInfo";
-            treeNode2.Name = "SkillNode";
-            treeNode2.Text = "Slave";
-            tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
+            treeNode3.Name = "SkillNode";
+            treeNode3.Text = "Slave";
+            tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode3 });
             tvSlaveInfo.SelectedImageIndex = 0;
             tvSlaveInfo.Size = new System.Drawing.Size(368, 497);
             tvSlaveInfo.TabIndex = 32;
@@ -7053,15 +7161,22 @@
             // 
             // MMSystems
             // 
-            MMSystems.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMSystemFactions, MMSystemItems, MMSystemLoot, MMSystemMaps, MMSystemQuests, MMSystemSchedule, MMSystemSpheres, MMSystemTags, MMSystemTrades, MMSystemZones });
+            MMSystems.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMAchievements, MMSystemFactions, MMSystemItems, MMSystemLoot, MMSystemMaps, MMSystemQuests, MMSystemSchedule, MMSystemSpheres, MMSystemTags, MMSystemTrades, MMSystemZones });
             MMSystems.Name = "MMSystems";
             MMSystems.Size = new System.Drawing.Size(61, 20);
             MMSystems.Text = "Systems";
             // 
+            // MMAchievements
+            // 
+            MMAchievements.Name = "MMAchievements";
+            MMAchievements.Size = new System.Drawing.Size(148, 22);
+            MMAchievements.Text = "Achievements";
+            MMAchievements.Click += MMAchievements_Click;
+            // 
             // MMSystemFactions
             // 
             MMSystemFactions.Name = "MMSystemFactions";
-            MMSystemFactions.Size = new System.Drawing.Size(129, 22);
+            MMSystemFactions.Size = new System.Drawing.Size(148, 22);
             MMSystemFactions.Text = "Factions";
             MMSystemFactions.Click += MMSystemFactions_Click;
             // 
@@ -7069,14 +7184,14 @@
             // 
             MMSystemItems.Name = "MMSystemItems";
             MMSystemItems.ShortcutKeys = System.Windows.Forms.Keys.F7;
-            MMSystemItems.Size = new System.Drawing.Size(129, 22);
+            MMSystemItems.Size = new System.Drawing.Size(148, 22);
             MMSystemItems.Text = "Items";
             MMSystemItems.Click += MMSystemItems_Click;
             // 
             // MMSystemLoot
             // 
             MMSystemLoot.Name = "MMSystemLoot";
-            MMSystemLoot.Size = new System.Drawing.Size(129, 22);
+            MMSystemLoot.Size = new System.Drawing.Size(148, 22);
             MMSystemLoot.Text = "Loot";
             MMSystemLoot.Click += MMSystemLoot_Click;
             // 
@@ -7084,7 +7199,7 @@
             // 
             MMSystemMaps.Name = "MMSystemMaps";
             MMSystemMaps.ShortcutKeys = System.Windows.Forms.Keys.F9;
-            MMSystemMaps.Size = new System.Drawing.Size(129, 22);
+            MMSystemMaps.Size = new System.Drawing.Size(148, 22);
             MMSystemMaps.Text = "Maps";
             MMSystemMaps.Click += MMSystemMaps_Click;
             // 
@@ -7092,42 +7207,42 @@
             // 
             MMSystemQuests.Name = "MMSystemQuests";
             MMSystemQuests.ShortcutKeys = System.Windows.Forms.Keys.F2;
-            MMSystemQuests.Size = new System.Drawing.Size(129, 22);
+            MMSystemQuests.Size = new System.Drawing.Size(148, 22);
             MMSystemQuests.Text = "Quests";
             MMSystemQuests.Click += MMSystemQuests_Click;
             // 
             // MMSystemSchedule
             // 
             MMSystemSchedule.Name = "MMSystemSchedule";
-            MMSystemSchedule.Size = new System.Drawing.Size(129, 22);
+            MMSystemSchedule.Size = new System.Drawing.Size(148, 22);
             MMSystemSchedule.Text = "Schedule";
             MMSystemSchedule.Click += MMSystemSchedule_Click;
             // 
             // MMSystemSpheres
             // 
             MMSystemSpheres.Name = "MMSystemSpheres";
-            MMSystemSpheres.Size = new System.Drawing.Size(129, 22);
+            MMSystemSpheres.Size = new System.Drawing.Size(148, 22);
             MMSystemSpheres.Text = "Spheres";
             MMSystemSpheres.Click += MMSystemSpheres_Click;
             // 
             // MMSystemTags
             // 
             MMSystemTags.Name = "MMSystemTags";
-            MMSystemTags.Size = new System.Drawing.Size(129, 22);
+            MMSystemTags.Size = new System.Drawing.Size(148, 22);
             MMSystemTags.Text = "Tags";
             MMSystemTags.Click += MMSystemTags_Click;
             // 
             // MMSystemTrades
             // 
             MMSystemTrades.Name = "MMSystemTrades";
-            MMSystemTrades.Size = new System.Drawing.Size(129, 22);
+            MMSystemTrades.Size = new System.Drawing.Size(148, 22);
             MMSystemTrades.Text = "Trades";
             MMSystemTrades.Click += MMSystemTrades_Click;
             // 
             // MMSystemZones
             // 
             MMSystemZones.Name = "MMSystemZones";
-            MMSystemZones.Size = new System.Drawing.Size(129, 22);
+            MMSystemZones.Size = new System.Drawing.Size(148, 22);
             MMSystemZones.Text = "Zones";
             MMSystemZones.Click += MMSystemZones_Click;
             // 
@@ -7135,7 +7250,7 @@
             // 
             TBMain.Font = new System.Drawing.Font("Segoe UI Variable Text", 10F);
             TBMain.ImageScalingSize = new System.Drawing.Size(24, 24);
-            TBMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { TBFile, TBS1, TMBack, TBForward, TBS2, TBSelectedData, TBLocalizer, toolStripSeparator1, TBMap, TBSplit, TBBuffs, TBDoodads, TBFactions, TBItems, TBLoot, TBNpc, TBQuests, TBSchedules, TBSkills, TBSpheres, TBTags, TBTrades, TBSlaves, TBZones });
+            TBMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { TBFile, TBS1, TMBack, TBForward, TBS2, TBSelectedData, TBLocalizer, toolStripSeparator1, TBMap, TBSplit, toolStripButton1, TBBuffs, TBDoodads, TBFactions, TBItems, TBLoot, TBNpc, TBQuests, TBSchedules, TBSkills, TBSpheres, TBTags, TBTrades, TBSlaves, TBZones });
             TBMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             TBMain.Location = new System.Drawing.Point(0, 0);
             TBMain.Name = "TBMain";
@@ -7276,6 +7391,16 @@
             TBSplit.Size = new System.Drawing.Size(23, 23);
             TBSplit.Text = "|";
             TBSplit.Click += TBSplit_Click;
+            // 
+            // toolStripButton1
+            // 
+            toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            toolStripButton1.Image = (System.Drawing.Image)resources.GetObject("toolStripButton1.Image");
+            toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripButton1.Name = "toolStripButton1";
+            toolStripButton1.Size = new System.Drawing.Size(28, 28);
+            toolStripButton1.Text = "Achievements";
+            toolStripButton1.Click += toolStripButton1_Click;
             // 
             // TBBuffs
             // 
@@ -7455,26 +7580,6 @@
             ofdLoadUnitMovementDialog.Filter = "JSON Files|*.json|All Files|*.*";
             ofdLoadUnitMovementDialog.Title = "Open Unit Movement File";
             // 
-            // CbSimpleSqlSourceDb
-            // 
-            CbSimpleSqlSourceDb.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            CbSimpleSqlSourceDb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            CbSimpleSqlSourceDb.FormattingEnabled = true;
-            CbSimpleSqlSourceDb.Location = new System.Drawing.Point(329, 6);
-            CbSimpleSqlSourceDb.Name = "CbSimpleSqlSourceDb";
-            CbSimpleSqlSourceDb.Size = new System.Drawing.Size(647, 24);
-            CbSimpleSqlSourceDb.TabIndex = 26;
-            // 
-            // label149
-            // 
-            label149.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            label149.AutoSize = true;
-            label149.Location = new System.Drawing.Point(982, 11);
-            label149.Name = "label149";
-            label149.Size = new System.Drawing.Size(43, 16);
-            label149.TabIndex = 27;
-            label149.Text = "DB File";
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -7505,6 +7610,8 @@
             tpMap.PerformLayout();
             tpV1.ResumeLayout(false);
             tpV1.PerformLayout();
+            tpAchievements.ResumeLayout(false);
+            tpAchievements.PerformLayout();
             tpBuffs.ResumeLayout(false);
             tpBuffs.PerformLayout();
             groupBox14.ResumeLayout(false);
@@ -8236,6 +8343,15 @@
         private System.Windows.Forms.Button BtnAdditionalServerDb;
         private System.Windows.Forms.Label label149;
         private System.Windows.Forms.ComboBox CbSimpleSqlSourceDb;
+        private System.Windows.Forms.TabPage tpAchievements;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripMenuItem MMAchievements;
+        private System.Windows.Forms.TreeView TvAchievements;
+        private System.Windows.Forms.TextBox TSearchAchievements;
+        private System.Windows.Forms.Button BtnAchievementFilter;
+        private System.Windows.Forms.RichTextBox RtAchievementInfo;
+        private System.Windows.Forms.Label LAchievementReward;
+        private System.Windows.Forms.Label LAchievementIcon;
     }
 }
 

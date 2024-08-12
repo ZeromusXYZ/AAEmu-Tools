@@ -3,6 +3,7 @@ using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
@@ -1365,6 +1366,38 @@ public class GameUnitModifiers
     public long LinearLevelBonus = 0;
 }
 
+public class GameAchievements
+{
+    public long Id = 0;
+    public string Name = string.Empty;
+    public string Summary = string.Empty;
+    public string Description = string.Empty;
+    public long CategoryId = 0;
+    public long SubCategoryId = 0;
+    public long ParentAchievementId = 0;
+    public bool IsActive = false;
+    public bool IsHidden = false;
+    public long Priority = 0;
+    public bool OrUnitReqs = false;
+    public bool CompleteOr = false;
+    public long CompleteNum = 0;
+    public long ItemId = 0;
+    public long IconId = 0;
+
+    public string NameLocalized = string.Empty;
+    public string DescriptionLocalized = string.Empty;
+    public string SummaryLocalized = string.Empty;
+    public string SearchString = string.Empty;
+}
+
+public class GameAchievementObjectives
+{
+    public long Id = 0;
+    public long AchievementId = 0;
+    public bool OrUnitReqs = false;
+    public long RecordId = 0;
+}
+
 internal static class AaDb
 {
     public static Dictionary<string, GameTranslation> DbTranslations = new();
@@ -1451,6 +1484,10 @@ internal static class AaDb
     public static Dictionary<long, GameUnitReqs> DbUnitReqs = new();
     public static Dictionary<long, GameUiTexts> DbUiTexts = new();
     public static Dictionary<long, GameUnitModifiers> DbUnitModifiers = new();
+    public static Dictionary<long, GameAchievements> DbAchievements = new();
+    public static Dictionary<long, GameAchievementObjectives> DbAchievementObjectives = new();
+
+    public static Dictionary<long, Dictionary<long, Dictionary<long, GameAchievements>>> CompiledGroupedAchievements = new();
 
     public static void Clear()
     {
@@ -1538,6 +1575,9 @@ internal static class AaDb
         DbUnitReqs = new();
         DbUiTexts = new();
         DbUnitModifiers = new();
+        DbAchievements = new();
+        DbAchievementObjectives = new();
+        CompiledGroupedAchievements = new();
     }
 
     public static string GetTranslationById(long idx, string table, string field, string defaultValue = "$NODEFAULT")
@@ -1558,6 +1598,17 @@ internal static class AaDb
         {
             return res;
         }
+    }
+
+    public static string GetTranslatedUiText(string uiTextKey, long categoryId, string defaultText)
+    {
+        var uiText = DbUiTexts.Values.FirstOrDefault(x => x.Key.Equals(uiTextKey, StringComparison.InvariantCultureIgnoreCase) && x.CategoryId == categoryId);
+        if (uiText == null)
+        {
+            return defaultText;
+        }
+
+        return GetTranslationById(uiText.Id, "ui_texts", "text", defaultText);
     }
 
     public static string GetFactionName(long factionId, bool addId = false)
@@ -1648,7 +1699,7 @@ internal static class AaDb
 
     }
 
-    private static string FloatToCoord(double f)
+    private static string FloatToCoordinates(double f)
     {
         var f1 = Math.Floor(f);
         f -= f1;
@@ -1661,7 +1712,7 @@ internal static class AaDb
         return f1.ToString("0") + "°" + f2.ToString("00") + "'" + f3.ToString("00") + "\"";
     }
 
-    public static string CoordToSextant(float x, float y)
+    public static string CoordinatesToSextant(float x, float y)
     {
         var res = string.Empty;
         // https://www.reddit.com/r/archeage/comments/3dak17/datamining_every_location_of_everything_in/
@@ -1678,7 +1729,7 @@ internal static class AaDb
             res += "W ";
             fx *= -1f;
         }
-        res += FloatToCoord(fx);
+        res += FloatToCoordinates(fx);
         res += " , ";
         // Y - Latitude
         if (fy >= 0f)
@@ -1690,12 +1741,12 @@ internal static class AaDb
             res += "S ";
             fy *= -1f;
         }
-        res += FloatToCoord(fy);
+        res += FloatToCoordinates(fy);
 
         return res;
     }
 
-    public static PointF SextantToCoord(float longitude, float latitude)
+    public static PointF SextantToCoordinates(float longitude, float latitude)
     {
         var ux = (longitude + 21f) * 1024f;
         var uy = (latitude + 28f) * 1024f;

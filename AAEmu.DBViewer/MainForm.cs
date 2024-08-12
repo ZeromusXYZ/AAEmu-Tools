@@ -905,6 +905,9 @@ namespace AAEmu.DBViewer
                 loading.ShowInfo("Loading: Spheres");
                 LoadSpheresFromCompact();
 
+                loading.ShowInfo("Loading: Achievements");
+                LoadAchievements();
+
                 return true;
             }
             catch (Exception e)
@@ -2817,7 +2820,7 @@ namespace AAEmu.DBViewer
         {
             if (MessageBox.Show("Do you want to load an additional database file for this profile?", "Add DB", MessageBoxButtons.YesNo) != DialogResult.Yes)
                 return;
-            
+
             if (openDBDlg.ShowDialog() != DialogResult.OK)
             {
                 return;
@@ -2841,6 +2844,32 @@ namespace AAEmu.DBViewer
                 LoadServerDB(false);
             }
             UpdateTitleBar();
+        }
+
+        private void MMAchievements_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpAchievements;
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            MMAchievements_Click(null, null);
+        }
+
+        private void BtnAchievementFilter_Click(object sender, EventArgs e)
+        {
+            UpdateAchievementTree();
+        }
+
+        private void TSearchAchievements_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                BtnAchievementFilter_Click(null, null);
+        }
+
+        private void TvAchievements_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            ShowDbAchievement(e?.Node?.Tag as GameAchievements);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Security.AccessControl;
 using System.Windows.Forms;
 using System.Xml;
 using AAEmu.DBViewer.DbDefs;
@@ -2074,9 +2075,250 @@ public partial class MainForm
 
         Cursor = Cursors.Default;
         Application.UseWaitCursor = false;
-
     }
 
+    private void LoadAchievements()
+    {
+        if (AllTableNames.GetValueOrDefault("achievements") == SQLite.SQLiteFileName)
+        {
+            using (var connection = SQLite.CreateConnection())
+            {
+                // Achievements
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM achievements ORDER BY priority ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameAchievements();
+                            t.Id = GetInt64(reader, "id");
+                            t.Name = GetString(reader, "name");
+                            t.Summary = GetString(reader, "summary");
+                            t.Description = GetString(reader, "description");
+                            t.CategoryId = GetInt64(reader, "category_id");
+                            t.SubCategoryId = GetInt64(reader, "sub_category_id");
+                            t.ParentAchievementId = GetInt64(reader, "parent_achievement_id");
+                            t.IsActive = GetBool(reader, "is_active");
+                            t.IsHidden = GetBool(reader, "is_hidden");
+                            t.Priority = GetInt64(reader, "priority");
+                            t.OrUnitReqs = GetBool(reader, "or_unit_reqs");
+                            t.CompleteOr = GetBool(reader, "complete_or");
+                            t.CompleteNum = GetInt64(reader, "complete_num");
+                            t.ItemId = GetInt64(reader, "item_id");
+                            t.IconId = GetInt64(reader, "icon_id");
+
+                            t.NameLocalized = AaDb.GetTranslationById(t.Id, "achievements", "name", t.Name);
+                            t.DescriptionLocalized = AaDb.GetTranslationById(t.Id, "achievements", "description", t.Description);
+                            t.SummaryLocalized = AaDb.GetTranslationById(t.Id, "achievements", "summary", t.Summary);
+
+                            t.SearchString = t.Id.ToString() + " " + t.Name + " " + t.Description + " " + t.Summary + " " + 
+                                             t.NameLocalized + " " + t.DescriptionLocalized + " " + t.SummaryLocalized;
+
+                            AaDb.DbAchievements.Add(t.Id, t);
+
+                            if (!AaDb.CompiledGroupedAchievements.TryGetValue(t.CategoryId, out var categoryGroups))
+                            {
+                                categoryGroups = new Dictionary<long, Dictionary<long, GameAchievements>>();
+                                AaDb.CompiledGroupedAchievements.Add(t.CategoryId,categoryGroups);
+                            }
+
+                            if (!categoryGroups.TryGetValue(t.SubCategoryId, out var subCategoryGroups))
+                            {
+                                subCategoryGroups = new Dictionary<long, GameAchievements>();
+                                categoryGroups.Add(t.SubCategoryId, subCategoryGroups);
+                            }
+
+                            subCategoryGroups.TryAdd(t.Id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+
+            }
+        }
+
+        if (AllTableNames.GetValueOrDefault("achievement_objectives") == SQLite.SQLiteFileName)
+        {
+            using (var connection = SQLite.CreateConnection())
+            {
+                // Achievements
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM achievement_objectives ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameAchievementObjectives();
+                            t.Id = GetInt64(reader, "id");
+                            t.AchievementId = GetInt64(reader, "achievement_id");
+                            t.OrUnitReqs = GetBool(reader, "or_unit_reqs");
+                            t.RecordId = GetInt64(reader, "record_id");
+                            AaDb.DbAchievementObjectives.Add(t.Id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+
+            }
+        }
+    }
+
+    private void UpdateAchievementTree()
+    {
+        Application.UseWaitCursor = true;
+        Cursor = Cursors.WaitCursor;
+
+        // ui_texts: achievement_category
+
+        TvAchievements.Nodes.Clear();
+        TvAchievements.ImageList = ilMiniIcons;
+        foreach (var (categoryId, categoryGroup) in AaDb.CompiledGroupedAchievements.OrderBy(x => x.Key))
+        {
+            var catName = AaDb.GetTranslatedUiText($"achievement_category_{categoryId}", 45, $"Category {categoryId}");
+
+            var groupNode = TvAchievements.Nodes.Add(catName);
+            groupNode.ImageIndex = IconIdToLabel(11158, null);
+            groupNode.SelectedImageIndex = groupNode.ImageIndex;
+            foreach (var (subGroupId, subCategoryGroup) in categoryGroup.OrderBy(x => x.Key))
+            {
+                var subCatName = AaDb.GetTranslatedUiText($"achievement_category_{categoryId}_{subGroupId}", 45, $"Sub-Category {subGroupId}");
+
+                var subGroupNode = groupNode.Nodes.Add(subCatName);
+                subGroupNode.ImageIndex = IconIdToLabel(11158, null);
+                subGroupNode.SelectedImageIndex = subGroupNode.ImageIndex;
+                foreach (var (key, achievement) in subCategoryGroup.OrderBy(x => x.Key))
+                {
+                    if (!string.IsNullOrWhiteSpace(TSearchAchievements.Text) && !achievement.SearchString.Contains(TSearchAchievements.Text, StringComparison.InvariantCultureIgnoreCase))
+                        continue;
+
+                    var entryName = $"{key}: {achievement.NameLocalized}";
+
+                    TreeNode parentNode = subGroupNode;
+                    foreach (TreeNode sgn in subGroupNode.Nodes)
+                    {
+                        if (sgn?.Tag is not GameAchievements a)
+                            continue;
+                        if (a.Id == achievement.ParentAchievementId)
+                        {
+                            parentNode = sgn;
+                            break;
+                        }
+                    }
+
+                    var achievementNode = parentNode.Nodes.Add(entryName);
+                    achievementNode.Tag = achievement;
+                    achievementNode.ImageIndex = IconIdToLabel(achievement.IconId, null);
+                    achievementNode.SelectedImageIndex = achievementNode.ImageIndex;
+
+                    //achievementNode.Nodes.Add($"Description: {achievement.DescriptionLocalized}");
+                    //achievementNode.Nodes.Add($"Summary: {achievement.SummaryLocalized}");
+
+                    if (achievement.IsHidden)
+                        achievementNode.ForeColor = Color.LightGray;
+                }
+
+                if (subGroupNode.Nodes.Count <= 0)
+                {
+                    groupNode.Nodes.Remove(subGroupNode);
+                }
+            }
+
+            if (groupNode.Nodes.Count <= 0)
+            {
+                TvAchievements.Nodes.Remove(groupNode);
+            }
+        }
+
+        Cursor = Cursors.Default;
+        Application.UseWaitCursor = false;
+    }
+
+    private void ShowDbAchievement(GameAchievements a)
+    {
+        RtAchievementInfo.Clear();
+        var t = string.Empty;
+        if (a != null)
+        {
+            IconIdToLabel(a.IconId, LAchievementIcon);
+
+            if (AaDb.DbItems.TryGetValue(a.ItemId, out var item))
+            {
+                IconIdToLabel(item.IconId, LAchievementReward);
+            }
+            else
+            {
+                item = null;
+                LAchievementReward.Image = null;
+                LAchievementReward.Text = "No Reward";
+            }
+
+            t = $"|nd;{a.NameLocalized}|r ( {a.Id} )\r" +
+                $"Category: {a.CategoryId} - {a.SubCategoryId}\r" +
+                $"\rSummary:\r" +
+                $"{a.SummaryLocalized}\r" +
+                $"\rDescription:\r" +
+                $"{a.DescriptionLocalized}\r" +
+                $"\r";
+
+            if (item != null)
+            {
+                t += $"Reward:\r|ni;{item.NameLocalized}|r ( {item.Id} )\r" +
+                     $"\r";
+            }
+
+            var objectives = AaDb.DbAchievementObjectives.Values.Where(x => x.AchievementId == a.Id).ToList();
+            if (objectives.Any())
+            {
+                // No idea why CompleteOr == true => ALL of the objectives
+                t += $"{(a.CompleteOr ? "|nd;ALL|r" : "|ni;Any|r")} of objectives{(a.CompleteNum > 1 ? $" x |ni;{a.CompleteNum}|r" : "")}:\r";
+
+                foreach (var objective in objectives)
+                {
+                    t +=
+                        $"Id:{objective.Id}, RecordId: {objective.RecordId} (unit_reqs: {(objective.OrUnitReqs ? "Any" : "ALL")})\r";
+                }
+
+                t += "\r";
+            }
+
+            var requiresAchievements = AaDb.DbAchievements.Values.Where(x => x.ParentAchievementId == a.Id).ToList();
+            if (requiresAchievements.Any())
+            {
+                t += $"|nd;Required|r Achievements:\r";
+
+                foreach (var childAchievement in requiresAchievements)
+                {
+                    t += $"{childAchievement.NameLocalized} ( {childAchievement.Id} ) - {childAchievement.SummaryLocalized}\r";
+                }
+
+                t += "\r";
+            }
+
+        }
+        else
+        {
+            LAchievementIcon.Image = null;
+            LAchievementIcon.Text = "???";
+            LAchievementReward.Image = null;
+            LAchievementReward.Text = "No Reward";
+        }
+
+        FormattedTextToRichtEdit(t, RtAchievementInfo);
+    }
 }
 
 internal class UnitMovementData

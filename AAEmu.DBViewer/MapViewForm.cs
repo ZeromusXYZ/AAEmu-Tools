@@ -465,7 +465,7 @@ namespace AAEmu.DBViewer
             var lastTopMap = topMostMap;
             var lastTopPath = topMostPath;
             var lastTopPoI = topMostPoI;
-            tsslCoords.Text = "X:" + cursorCoords.X.ToString() + " Y:" + cursorCoords.Y.ToString() + " | " + cellCursorText + " | " + AaDb.CoordToSextant(cursorCoords.X, cursorCoords.Y);
+            tsslCoords.Text = "X:" + cursorCoords.X.ToString() + " Y:" + cursorCoords.Y.ToString() + " | " + cellCursorText + " | " + AaDb.CoordinatesToSextant(cursorCoords.X, cursorCoords.Y);
             var zoneText = GetCursorZones();
             var pathText = GetCursorPaths();
             var poiText = GetCursorPoI();
