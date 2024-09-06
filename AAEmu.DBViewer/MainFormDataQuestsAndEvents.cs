@@ -496,12 +496,13 @@ public partial class MainForm
                     {
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
+                        var hasName = (reader.GetColumnNames()?.IndexOf("name") >= 0);
 
                         while (reader.Read())
                         {
                             var t = new GameGameSchedules();
                             t.Id = GetInt64(reader, "id");
-                            t.Name = GetString(reader, "name");
+                            t.Name = hasName ? GetString(reader, "name") : $"ID{t.Id}";
                             t.DayOfWeekId = (AaDayOfWeek)GetInt64(reader, "day_of_week_id");
                             t.StartTime = GetInt64(reader, "start_time");
                             t.StartTimeMin = GetInt64(reader, "start_time_min");

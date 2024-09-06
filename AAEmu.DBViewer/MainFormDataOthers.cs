@@ -2092,6 +2092,8 @@ public partial class MainForm
                     {
                         Application.UseWaitCursor = true;
                         Cursor = Cursors.WaitCursor;
+                        var hasCategory = (reader.GetColumnNames()?.IndexOf("category_id") >= 0);
+                        var hasIsActive = (reader.GetColumnNames()?.IndexOf("is_active") >= 0);
 
                         while (reader.Read())
                         {
@@ -2100,10 +2102,10 @@ public partial class MainForm
                             t.Name = GetString(reader, "name");
                             t.Summary = GetString(reader, "summary");
                             t.Description = GetString(reader, "description");
-                            t.CategoryId = GetInt64(reader, "category_id");
-                            t.SubCategoryId = GetInt64(reader, "sub_category_id");
+                            t.CategoryId = hasCategory ? GetInt64(reader, "category_id") : 0;
+                            t.SubCategoryId = hasCategory ? GetInt64(reader, "sub_category_id") : 0;
                             t.ParentAchievementId = GetInt64(reader, "parent_achievement_id");
-                            t.IsActive = GetBool(reader, "is_active");
+                            t.IsActive = hasIsActive && GetBool(reader, "is_active");
                             t.IsHidden = GetBool(reader, "is_hidden");
                             t.Priority = GetInt64(reader, "priority");
                             t.OrUnitReqs = GetBool(reader, "or_unit_reqs");

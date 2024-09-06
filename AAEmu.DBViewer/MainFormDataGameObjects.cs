@@ -807,6 +807,7 @@ public partial class MainForm
             // comment field is not present after in 3.0.3.0
             var columnNames = reader.GetColumnNames();
             var readComment = (columnNames.IndexOf("comment") >= 0);
+            var readCameraAngle = (columnNames.IndexOf("camera_distance_for_wide_angle") >= 0);
 
             var t = new GameModel();
 
@@ -831,7 +832,7 @@ public partial class MainForm
             t.PlayMountAnimation = GetBool(reader, "play_mount_animation");
             t.Selectable = GetBool(reader, "selectable");
             t.MountPoseId = GetInt64(reader, "mount_pose_id");
-            t.CameraDistanceForWideAngle = GetFloat(reader, "camera_distance_for_wide_angle");
+            t.CameraDistanceForWideAngle = readCameraAngle ? GetFloat(reader, "camera_distance_for_wide_angle") : 0f;
             AaDb.DbModels.Add(t.Id, t);
         }
 

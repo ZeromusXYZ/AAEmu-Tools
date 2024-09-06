@@ -79,6 +79,8 @@ namespace AAEmu.DBViewer
                         {
                             Application.UseWaitCursor = true;
                             Cursor = Cursors.WaitCursor;
+                            var columnNames = reader.GetColumnNames();
+                            var hasImageMap = (columnNames.IndexOf("image_map") >= 0);
 
                             while (reader.Read())
                             {
@@ -90,7 +92,7 @@ namespace AAEmu.DBViewer
                                 var w = GetFloat(reader, "w");
                                 var h = GetFloat(reader, "h");
                                 t.PosAndSize = new RectangleF(x, y, w, h);
-                                t.ImageMap = GetInt64(reader, "image_map");
+                                t.ImageMap = hasImageMap ? GetInt64(reader, "image_map") : 0;
                                 t.SoundId = GetInt64(reader, "sound_id");
                                 t.TargetId = GetInt64(reader, "target_id");
                                 t.DisplayText = GetString(reader, "display_text");
@@ -133,6 +135,8 @@ namespace AAEmu.DBViewer
                         {
                             Application.UseWaitCursor = true;
                             Cursor = Cursors.WaitCursor;
+                            var columnNames = reader.GetColumnNames();
+                            var hasImageMap = (columnNames.IndexOf("image_map") >= 0);
 
                             while (reader.Read())
                             {
@@ -149,7 +153,7 @@ namespace AAEmu.DBViewer
                                 int ih = (int)GetInt64(reader, "image_h");
                                 t.PosAndSize = new Rectangle(x, y, w, h);
                                 t.ImagePosAndSize = new Rectangle(ix, iy, iw, ih);
-                                t.ImageMap = GetInt64(reader, "image_map");
+                                t.ImageMap = hasImageMap ? GetInt64(reader, "image_map") : 0;
                                 t.TargetId = GetInt64(reader, "target_id");
 
                                 t.SearchString = t.Name.ToLower();
