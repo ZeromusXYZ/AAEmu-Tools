@@ -15,6 +15,8 @@ using AAEmu.DBViewer.enums;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
 using AAEmu.DBViewer.DbDefs;
+using System.Globalization;
+using AAEmu.Commons.Utils;
 
 namespace AAEmu.DBViewer
 {
@@ -35,6 +37,51 @@ namespace AAEmu.DBViewer
         {
             InitializeComponent();
             ThisForm = this;
+        }
+
+        private static void LoadCustomReaders()
+        {
+            var customReadersFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ZeromusXYZ", "AAPakEditor");
+            AAPak.ReaderPool.Clear();
+
+            var jsonSettings = new JsonSerializerSettings
+            {
+                Culture = CultureInfo.InvariantCulture,
+                Formatting = Formatting.Indented,
+            };
+            jsonSettings.Converters.Add(new ByteArrayHexConverter());
+
+            var readerSettingsFileName = Path.Combine(customReadersFolder, "readers.json");
+            try
+            {
+                if (File.Exists(readerSettingsFileName))
+                {
+                    var data = JsonConvert.DeserializeObject<List<AAPakFileFormatReader>>(File.ReadAllText(readerSettingsFileName), jsonSettings);
+                    if (data?.Count > 0)
+                        foreach (var r in data)
+                            AAPak.ReaderPool.Add(r);
+                }
+            }
+            catch
+            {
+                // Ignore
+            }
+
+            // Add only default in case of errors
+            if (AAPak.ReaderPool.Count <= 0)
+            {
+                AAPak.ReaderPool.Add(new AAPakFileFormatReader(true));
+                // Write default file to user's settings
+                try
+                {
+                    Directory.CreateDirectory(customReadersFolder);
+                    File.WriteAllText(readerSettingsFileName, JsonConvert.SerializeObject(AAPak.ReaderPool, jsonSettings));
+                }
+                catch
+                {
+                    // Ignore
+                }
+            }
         }
 
         private void TryLoadPakKeys(string fileName)
@@ -74,6 +121,8 @@ namespace AAEmu.DBViewer
             lAppVersion.Text = MMVersion.Text;
             MM.Visible = false;
             tcViewer.ItemSize = new Size(0, 1);
+
+            LoadCustomReaders();
 
             // Update settings if needed
             if (!Properties.Settings.Default.IsUpdated)
@@ -122,7 +171,7 @@ namespace AAEmu.DBViewer
                 loading.Show();
                 loading.ShowInfo("Opening: " + Path.GetFileName(gamePakFileName));
 
-                TryLoadPakKeys(gamePakFileName);
+                // TryLoadPakKeys(gamePakFileName);
 
                 if (Pak.OpenPak(gamePakFileName, true))
                 {
@@ -945,6 +994,7 @@ namespace AAEmu.DBViewer
             {
                 loading.ShowInfo("Closing: " + Pak.GpFilePath);
                 Pak.ClosePak();
+                // LoadCustomReaders();
 
                 // TODO: HACK to try and free up as many memory as possible - https://stackoverflow.com/questions/30622145/free-memory-of-byte
                 GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
@@ -953,7 +1003,7 @@ namespace AAEmu.DBViewer
 
             loading.ShowInfo("Opening: " + Path.GetFileName(openFileName));
 
-            TryLoadPakKeys(openFileName);
+            // TryLoadPakKeys(openFileName);
 
             if (Pak.OpenPak(openFileName, true))
             {
@@ -969,7 +1019,7 @@ namespace AAEmu.DBViewer
             }
             else
             {
-                MessageBox.Show($"Failed to load: {openFileName}");
+                MessageBox.Show($"Failed to load: {openFileName}\n{Pak.LastError}");
                 return false;
             }
 
@@ -1637,7 +1687,8 @@ namespace AAEmu.DBViewer
 
                     if (map.GetPoICount() > 0 && MessageBox.Show("Keep PoI's ?", "", MessageBoxButtons.YesNo) == DialogResult.No)
                         map.ClearPoI();
-                    map.AddPoI(info.targetPosition.X, info.targetPosition.Y, info.targetPosition.Z, info.targetSearchText, Color.Aquamarine, info.targetRadius, "", 0, null);
+                    var tp = info.targetPosition;
+                    map.AddPoI(tp.X, tp.Y, tp.Z, info.targetSearchText, Color.Aquamarine, info.targetRadius, "", 0, null);
 
                     map.FocusAll(true, false, false);
                     map.BringToFront();
@@ -2767,8 +2818,8 @@ namespace AAEmu.DBViewer
             {
                 // revert settings
                 Properties.Settings.Default.DBFileName = oldServerDb;
-                Properties.Settings.Default.GamePakFileName = oldServerDb;
-                Properties.Settings.Default.DefaultGameLanguage = oldServerDb;
+                Properties.Settings.Default.GamePakFileName = oldGamePakFile;
+                Properties.Settings.Default.DefaultGameLanguage = oldLocale;
                 LoadServerDB(false);
                 DoFindGameClient(false);
                 MessageBox.Show($"Failed to load profile {profile.Name}");
