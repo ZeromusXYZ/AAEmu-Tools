@@ -668,6 +668,14 @@ public class GameQuestAct
     public string ActDetailType = string.Empty;
 }
 
+public class GameQuestActConAcceptNpc
+{
+    // TABLE quest_act_con_accept_npcs
+    public long Id = 0;
+    public long NpcId = 0;
+}
+
+
 public class GameQuestComponent
 {
     // TABLE quest_components
@@ -1432,6 +1440,7 @@ internal static class AaDb
     public static Dictionary<long, GameQuestContexts> DbQuestContexts = new();
     public static Dictionary<long, GameQuestContextText> DbQuestContextTexts = new();
     public static Dictionary<long, GameQuestAct> DbQuestActs = new();
+    public static Dictionary<long, GameQuestActConAcceptNpc> DbQuestActConAcceptNpc = new();
     public static Dictionary<long, GameQuestComponent> DbQuestComponents = new();
     public static Dictionary<long, GameQuestComponentText> DbQuestComponentTexts = new();
     public static Dictionary<long, GameTags> DbTags = new();
@@ -1523,6 +1532,7 @@ internal static class AaDb
         DbQuestContexts = new();
         DbQuestContextTexts = new();
         DbQuestActs = new();
+        DbQuestActConAcceptNpc = new();
         DbQuestComponents = new();
         DbQuestComponentTexts = new();
         DbTags = new();

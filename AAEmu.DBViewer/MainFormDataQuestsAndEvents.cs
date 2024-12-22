@@ -130,6 +130,32 @@ public partial class MainForm
                 }
             }
 
+            if (AllTableNames.GetValueOrDefault("quest_act_con_accept_npcs") == SQLite.SQLiteFileName)
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM quest_act_con_accept_npcs ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameQuestActConAcceptNpc();
+                            t.Id = GetInt64(reader, "id");
+                            t.NpcId = GetInt64(reader, "npc_id");
+
+                            AaDb.DbQuestActConAcceptNpc.Add(t.Id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+            }
+
             if (AllTableNames.GetValueOrDefault("quest_components") == SQLite.SQLiteFileName)
             {
                 using (var command = connection.CreateCommand())

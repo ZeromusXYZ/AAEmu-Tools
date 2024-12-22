@@ -1097,6 +1097,35 @@ public partial class MainForm
                 tvNPCInfo.Nodes.Remove(passiveBuffsNode);
             #endregion
 
+            #region npc_quests
+            var questNode = tvNPCInfo.Nodes.Add("Quests");
+            questNode.ImageIndex = 2;
+            questNode.SelectedImageIndex = 2;
+            var allQuestsStartersActsForNpcs = AaDb.DbQuestActConAcceptNpc.Values.Where(x => x.NpcId == npc.Id).ToList();
+            foreach (var actConAcceptNpc in allQuestsStartersActsForNpcs)
+            {
+                var allQuestsStartersForNpcs = AaDb.DbQuestActs.Values.Where(x => x.ActDetailType == "QuestActConAcceptNpc" && x.ActDetailId == actConAcceptNpc.Id).ToList();
+                if (allQuestsStartersForNpcs != null && allQuestsStartersForNpcs.Any())
+                {
+                    foreach (var gameQuestAct in allQuestsStartersForNpcs)
+                    {
+                        var allQuestsForNpcs = AaDb.DbQuestComponents.Values
+                            .Where(x => x.ComponentKindId == 2 && x.Id == gameQuestAct.QuestComponentId).ToList();
+                        if (allQuestsForNpcs != null && allQuestsForNpcs.Any())
+                        {
+                            foreach (var gameQuestComponent in allQuestsForNpcs)
+                            {
+                                AddCustomPropertyNode("quest_id", gameQuestComponent.QuestContextId.ToString(), true,
+                                    questNode);
+                            }
+                        }
+                    }
+                }
+            }
+            if (questNode.Nodes.Count <= 0)
+                tvNPCInfo.Nodes.Remove(questNode);
+            #endregion
+
             #region loot_drops
             btnShowNpcLoot.Tag = npc.Id;
             btnShowNpcLoot.Enabled = AaDb.DbLootPackDroppingNpc.Any(pl => pl.Value.NpcId == npc.Id);
