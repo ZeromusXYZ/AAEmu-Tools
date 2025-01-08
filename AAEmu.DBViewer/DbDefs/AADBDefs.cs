@@ -475,6 +475,10 @@ public class GameWorldGroups
     public Rectangle PosAndSize = new Rectangle();
     public Rectangle ImagePosAndSize = new Rectangle();
 
+    // 10.x (might be earlier)
+    public string MapTargetType = string.Empty;
+    public long MapTargetId = 0;
+
     // Helpers
     public string SearchString = string.Empty;
 }

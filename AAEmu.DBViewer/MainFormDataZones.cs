@@ -137,6 +137,7 @@ namespace AAEmu.DBViewer
                             Cursor = Cursors.WaitCursor;
                             var columnNames = reader.GetColumnNames();
                             var hasImageMap = (columnNames.IndexOf("image_map") >= 0);
+                            var hasMapTargetType = (columnNames.Contains("map_target_type"));
 
                             while (reader.Read())
                             {
@@ -154,7 +155,17 @@ namespace AAEmu.DBViewer
                                 t.PosAndSize = new Rectangle(x, y, w, h);
                                 t.ImagePosAndSize = new Rectangle(ix, iy, iw, ih);
                                 t.ImageMap = hasImageMap ? GetInt64(reader, "image_map") : 0;
-                                t.TargetId = GetInt64(reader, "target_id");
+                                if (hasMapTargetType)
+                                {
+                                    // Newer format
+                                    t.MapTargetId = GetInt64(reader, "map_target_id");
+                                    t.MapTargetType = GetString(reader, "map_target_type");
+                                }
+                                else
+                                {
+                                    // Old format
+                                    t.TargetId = GetInt64(reader, "target_id");
+                                }
 
                                 t.SearchString = t.Name.ToLower();
 

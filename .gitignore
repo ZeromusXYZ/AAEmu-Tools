@@ -398,3 +398,6 @@ FodyWeavers.xsd
 *.sln.iml
 
 AAEmu.DBEditor/data/gamedb/compact.sqlite3
+
+# Published Executables
+.publish/

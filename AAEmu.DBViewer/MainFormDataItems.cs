@@ -12,6 +12,7 @@ public partial class MainForm
 {
     private void LoadItems()
     {
+        var hasItemPriceTable = AllTableNames.GetValueOrDefault("item_prices") == SQLite.SQLiteFileName;
         if (AllTableNames.GetValueOrDefault("items") == SQLite.SQLiteFileName)
         {
             using (var connection = SQLite.CreateConnection())
@@ -27,13 +28,13 @@ public partial class MainForm
 
                         while (reader.Read())
                         {
-                            GameItem t = new GameItem();
+                            var t = new GameItem();
                             t.Id = GetInt64(reader, "id");
                             t.Name = GetString(reader, "name");
                             t.CategoryId = GetInt64(reader, "category_id");
                             t.Description = GetString(reader, "description");
-                            t.Price = GetInt64(reader, "price");
-                            t.Refund = GetInt64(reader, "refund");
+                            t.Price = hasItemPriceTable ? 0 : GetInt64(reader, "price");
+                            t.Refund = hasItemPriceTable ? 0 : GetInt64(reader, "refund");
                             t.MaxStackSize = GetInt64(reader, "max_stack_size");
                             t.IconId = GetInt64(reader, "icon_id");
                             t.Sellable = GetBool(reader, "sellable");

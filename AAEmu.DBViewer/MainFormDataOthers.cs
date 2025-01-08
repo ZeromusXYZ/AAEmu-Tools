@@ -31,6 +31,7 @@ public partial class MainForm
             command.Prepare();
             using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
             {
+                var hasDiplomacyLinkId = reader.GetColumnNames().Contains("diplomacy_link_id");
                 while (reader.Read())
                 {
                     var t = new GameSystemFaction();
@@ -45,7 +46,7 @@ public partial class MainForm
                     t.AggroLink = GetBool(reader, "aggro_link");
                     t.GuardHelp = GetBool(reader, "guard_help");
                     t.IsDiplomacyTgt = GetBool(reader, "is_diplomacy_tgt");
-                    t.DiplomacyLinkId = GetInt64(reader, "diplomacy_link_id");
+                    t.DiplomacyLinkId = hasDiplomacyLinkId ? GetInt64(reader, "diplomacy_link_id") : 0;
 
                     t.NameLocalized = AaDb.GetTranslationById(t.Id, "system_factions", "name", t.Name);
                     t.SearchString = t.Name + " " + t.NameLocalized + " " + t.OwnerName;

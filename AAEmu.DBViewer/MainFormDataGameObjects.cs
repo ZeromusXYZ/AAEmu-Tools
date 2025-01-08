@@ -1098,32 +1098,38 @@ public partial class MainForm
             #endregion
 
             #region npc_quests
-            var questNode = tvNPCInfo.Nodes.Add("Quests");
-            questNode.ImageIndex = 2;
-            questNode.SelectedImageIndex = 2;
             var allQuestsStartersActsForNpcs = AaDb.DbQuestActConAcceptNpc.Values.Where(x => x.NpcId == npc.Id).ToList();
-            foreach (var actConAcceptNpc in allQuestsStartersActsForNpcs)
+            if (allQuestsStartersActsForNpcs.Any())
             {
-                var allQuestsStartersForNpcs = AaDb.DbQuestActs.Values.Where(x => x.ActDetailType == "QuestActConAcceptNpc" && x.ActDetailId == actConAcceptNpc.Id).ToList();
-                if (allQuestsStartersForNpcs != null && allQuestsStartersForNpcs.Any())
+                var questNode = tvNPCInfo.Nodes.Add("Quests");
+                questNode.ImageIndex = 2;
+                questNode.SelectedImageIndex = 2;
+                foreach (var actConAcceptNpc in allQuestsStartersActsForNpcs)
                 {
-                    foreach (var gameQuestAct in allQuestsStartersForNpcs)
+                    var allQuestsStartersForNpcs = AaDb.DbQuestActs.Values.Where(x =>
+                        x.ActDetailType == "QuestActConAcceptNpc" && x.ActDetailId == actConAcceptNpc.Id).ToList();
+                    if (allQuestsStartersForNpcs != null && allQuestsStartersForNpcs.Any())
                     {
-                        var allQuestsForNpcs = AaDb.DbQuestComponents.Values
-                            .Where(x => x.ComponentKindId == 2 && x.Id == gameQuestAct.QuestComponentId).ToList();
-                        if (allQuestsForNpcs != null && allQuestsForNpcs.Any())
+                        foreach (var gameQuestAct in allQuestsStartersForNpcs)
                         {
-                            foreach (var gameQuestComponent in allQuestsForNpcs)
+                            var allQuestsForNpcs = AaDb.DbQuestComponents.Values
+                                .Where(x => x.ComponentKindId == 2 && x.Id == gameQuestAct.QuestComponentId).ToList();
+                            if (allQuestsForNpcs != null && allQuestsForNpcs.Any())
                             {
-                                AddCustomPropertyNode("quest_id", gameQuestComponent.QuestContextId.ToString(), true,
-                                    questNode);
+                                foreach (var gameQuestComponent in allQuestsForNpcs)
+                                {
+                                    AddCustomPropertyNode("quest_id", gameQuestComponent.QuestContextId.ToString(),
+                                        true,
+                                        questNode);
+                                }
                             }
                         }
                     }
                 }
+                if (questNode.Nodes.Count <= 0)
+                    tvNPCInfo.Nodes.Remove(questNode);
             }
-            if (questNode.Nodes.Count <= 0)
-                tvNPCInfo.Nodes.Remove(questNode);
+
             #endregion
 
             #region loot_drops
@@ -1135,14 +1141,21 @@ public partial class MainForm
                 lootNode.ImageIndex = 2;
                 lootNode.SelectedImageIndex = 2;
 
-                var allPacksForNpc = AaDb.DbLootPackDroppingNpc.Where(lp => lp.Value.NpcId == npc.Id).ToList();
+                // Get all packs for this NPC
+                var allPacksForNpc = AaDb.DbLootPackDroppingNpc.Values.Where(lp => lp.NpcId == npc.Id).ToList();
                 //var nonDefaultPackCount = allPacksForNpc.Count(p => p.Value.default_pack == false);
+
+                // Extract just the IDs
+                var usedLootPacks = allPacksForNpc.Select(x => x.LootPackId).ToList();
+
+                //
+                var allLootPackGroups = AaDb.DbLootGroups.Values.Where(x => usedLootPacks.Contains(x.PackId)).ToList();
 
                 // GroupId, (List<GameLoot>, TotalValue)
                 var resultLootGroups = new Dictionary<long, List<GameLoot>>();
 
-                // Check all loot connected to this NPC
-                foreach (var (_, pack) in allPacksForNpc)
+                // Check all loot connected to this NPC and place them according to their group
+                foreach (var pack in allPacksForNpc)
                 {
                     var lootPacks = AaDb.DbLoots.Values.Where(x => x.LootPackId == pack.LootPackId).ToList();
                     if (!lootPacks.Any())
@@ -1163,6 +1176,7 @@ public partial class MainForm
                     }
                 }
 
+                // Get a sorted list of Group IDs
                 var groupKeys = resultLootGroups.Keys.ToList();
                 groupKeys.Sort();
 
@@ -1171,10 +1185,10 @@ public partial class MainForm
                 foreach (var groupId in groupKeys)
                 {
                     var groupName = $"Group {groupId}";
-                    if (groupId == 0)
-                        groupName = "Quest Items";
-                    if (groupId == 1)
-                        groupName = "Always Drop";
+                    //if (groupId == 0)
+                    //    groupName = "Quest Items";
+                    //if (groupId == 1)
+                    //    groupName = "Always Drop";
                     groupNodes.Add(groupId, lootNode.Nodes.Add(groupName));
                 }
 
@@ -1192,6 +1206,9 @@ public partial class MainForm
 
                     foreach (var loot in lootGroup.Value)
                     {
+                        var lootGroupData = allLootPackGroups.FirstOrDefault(x => x.PackId == loot.LootPackId && x.GroupNo == loot.Group);
+
+                        /*
                         var baseDropRate = loot.Group switch
                         {
                             1 => 1f / lootGroup.Value.Count,
@@ -1200,10 +1217,17 @@ public partial class MainForm
                         };
                         if (loot.DropRate == 1)
                             baseDropRate = 1f;
+                        */
+                        var baseDropRate = loot is { DropRate: > 1 }
+                            ? loot.DropRate / 10_000_000f
+                            : 1f;
 
-                        var lootGroupData = AaDb.DbLootGroups.Values.FirstOrDefault(x => x.PackId == loot.LootPackId && x.GroupNo == loot.Group);
+                        // var lootGroupData = AaDb.DbLootGroups.Values.FirstOrDefault(x => x.PackId == loot.LootPackId && x.GroupNo == loot.Group);
 
-                        var groupDropRate = 1f;
+                        var groupDropRate = lootGroupData is { DropRate: > 1 }
+                            ? lootGroupData.DropRate / 100_000f
+                            : 1f;
+                        /*
                         if (lootGroupData != null)
                         {
                             switch (loot.Group)
@@ -1219,6 +1243,7 @@ public partial class MainForm
                                     break;
                             }
                         }
+                        */
                         if (groupDropRate > 1f)
                             groupDropRate = 1f;
 
