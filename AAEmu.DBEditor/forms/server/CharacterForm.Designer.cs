@@ -49,11 +49,13 @@
             chItemCategory = new System.Windows.Forms.ColumnHeader();
             chItemDbId = new System.Windows.Forms.ColumnHeader();
             chItemSlot = new System.Windows.Forms.ColumnHeader();
+            chItemSlotType = new System.Windows.Forms.ColumnHeader();
             gbContainerSelect = new System.Windows.Forms.GroupBox();
+            cbItemContainerTypeSelect = new System.Windows.Forms.ComboBox();
+            radioButton1 = new System.Windows.Forms.RadioButton();
             rbPetGear = new System.Windows.Forms.RadioButton();
             rbSystem = new System.Windows.Forms.RadioButton();
             rbMail = new System.Windows.Forms.RadioButton();
-            rbTrade = new System.Windows.Forms.RadioButton();
             rbWarehouse = new System.Windows.Forms.RadioButton();
             rbInventory = new System.Windows.Forms.RadioButton();
             rbEquipement = new System.Windows.Forms.RadioButton();
@@ -173,6 +175,7 @@
             tpItems.TabIndex = 1;
             tpItems.Text = "Items";
             tpItems.UseVisualStyleBackColor = true;
+            tpItems.Enter += tpItems_Enter;
             // 
             // lContainer
             // 
@@ -186,7 +189,7 @@
             // lvItems
             // 
             lvItems.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            lvItems.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { chItemTemplateId, chItemCount, chItemName, chItemCategory, chItemDbId, chItemSlot });
+            lvItems.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { chItemTemplateId, chItemCount, chItemName, chItemCategory, chItemDbId, chItemSlot, chItemSlotType });
             lvItems.FullRowSelect = true;
             lvItems.GridLines = true;
             lvItems.Items.AddRange(new System.Windows.Forms.ListViewItem[] { listViewItem1 });
@@ -226,15 +229,21 @@
             // chItemSlot
             // 
             chItemSlot.Text = "Slot#";
-            chItemSlot.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             chItemSlot.Width = 80;
+            // 
+            // chItemSlotType
+            // 
+            chItemSlotType.Text = "SlotType";
+            chItemSlotType.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            chItemSlotType.Width = 30;
             // 
             // gbContainerSelect
             // 
+            gbContainerSelect.Controls.Add(cbItemContainerTypeSelect);
+            gbContainerSelect.Controls.Add(radioButton1);
             gbContainerSelect.Controls.Add(rbPetGear);
             gbContainerSelect.Controls.Add(rbSystem);
             gbContainerSelect.Controls.Add(rbMail);
-            gbContainerSelect.Controls.Add(rbTrade);
             gbContainerSelect.Controls.Add(rbWarehouse);
             gbContainerSelect.Controls.Add(rbInventory);
             gbContainerSelect.Controls.Add(rbEquipement);
@@ -245,15 +254,38 @@
             gbContainerSelect.TabStop = false;
             gbContainerSelect.Text = "Container";
             // 
+            // cbItemContainerTypeSelect
+            // 
+            cbItemContainerTypeSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cbItemContainerTypeSelect.FormattingEnabled = true;
+            cbItemContainerTypeSelect.Location = new System.Drawing.Point(528, 21);
+            cbItemContainerTypeSelect.Name = "cbItemContainerTypeSelect";
+            cbItemContainerTypeSelect.Size = new System.Drawing.Size(66, 24);
+            cbItemContainerTypeSelect.TabIndex = 8;
+            cbItemContainerTypeSelect.SelectedIndexChanged += cbItemContainerTypeSelect_SelectedIndexChanged;
+            // 
+            // radioButton1
+            // 
+            radioButton1.AutoSize = true;
+            radioButton1.Location = new System.Drawing.Point(319, 22);
+            radioButton1.Name = "radioButton1";
+            radioButton1.Size = new System.Drawing.Size(67, 20);
+            radioButton1.TabIndex = 7;
+            radioButton1.TabStop = true;
+            radioButton1.Tag = "6";
+            radioButton1.Text = "Auction";
+            radioButton1.UseVisualStyleBackColor = true;
+            radioButton1.CheckedChanged += rbContainers_CheckedChanged;
+            // 
             // rbPetGear
             // 
             rbPetGear.AutoSize = true;
-            rbPetGear.Location = new System.Drawing.Point(446, 22);
+            rbPetGear.Location = new System.Drawing.Point(392, 22);
             rbPetGear.Name = "rbPetGear";
             rbPetGear.Size = new System.Drawing.Size(69, 20);
             rbPetGear.TabIndex = 6;
             rbPetGear.TabStop = true;
-            rbPetGear.Tag = "EquipmentMate";
+            rbPetGear.Tag = "252";
             rbPetGear.Text = "Pet Gear";
             rbPetGear.UseVisualStyleBackColor = true;
             rbPetGear.CheckedChanged += rbContainers_CheckedChanged;
@@ -261,41 +293,28 @@
             // rbSystem
             // 
             rbSystem.AutoSize = true;
-            rbSystem.Location = new System.Drawing.Point(378, 22);
+            rbSystem.Location = new System.Drawing.Point(467, 22);
             rbSystem.Name = "rbSystem";
-            rbSystem.Size = new System.Drawing.Size(62, 20);
+            rbSystem.Size = new System.Drawing.Size(55, 20);
             rbSystem.TabIndex = 5;
             rbSystem.TabStop = true;
-            rbSystem.Tag = "System";
-            rbSystem.Text = "System";
+            rbSystem.Tag = "-1";
+            rbSystem.Text = "Other";
             rbSystem.UseVisualStyleBackColor = true;
             rbSystem.CheckedChanged += rbContainers_CheckedChanged;
             // 
             // rbMail
             // 
             rbMail.AutoSize = true;
-            rbMail.Location = new System.Drawing.Point(324, 22);
+            rbMail.Location = new System.Drawing.Point(265, 22);
             rbMail.Name = "rbMail";
             rbMail.Size = new System.Drawing.Size(48, 20);
             rbMail.TabIndex = 4;
             rbMail.TabStop = true;
-            rbMail.Tag = "Mail";
+            rbMail.Tag = "5";
             rbMail.Text = "Mail";
             rbMail.UseVisualStyleBackColor = true;
             rbMail.CheckedChanged += rbContainers_CheckedChanged;
-            // 
-            // rbTrade
-            // 
-            rbTrade.AutoSize = true;
-            rbTrade.Location = new System.Drawing.Point(265, 22);
-            rbTrade.Name = "rbTrade";
-            rbTrade.Size = new System.Drawing.Size(53, 20);
-            rbTrade.TabIndex = 3;
-            rbTrade.TabStop = true;
-            rbTrade.Tag = "Trade";
-            rbTrade.Text = "Trade";
-            rbTrade.UseVisualStyleBackColor = true;
-            rbTrade.CheckedChanged += rbContainers_CheckedChanged;
             // 
             // rbWarehouse
             // 
@@ -305,7 +324,7 @@
             rbWarehouse.Size = new System.Drawing.Size(84, 20);
             rbWarehouse.TabIndex = 2;
             rbWarehouse.TabStop = true;
-            rbWarehouse.Tag = "Bank";
+            rbWarehouse.Tag = "3";
             rbWarehouse.Text = "Warehouse";
             rbWarehouse.UseVisualStyleBackColor = true;
             rbWarehouse.CheckedChanged += rbContainers_CheckedChanged;
@@ -318,7 +337,7 @@
             rbInventory.Size = new System.Drawing.Size(75, 20);
             rbInventory.TabIndex = 1;
             rbInventory.TabStop = true;
-            rbInventory.Tag = "Inventory";
+            rbInventory.Tag = "2";
             rbInventory.Text = "Inventory";
             rbInventory.UseVisualStyleBackColor = true;
             rbInventory.CheckedChanged += rbContainers_CheckedChanged;
@@ -331,7 +350,7 @@
             rbEquipement.Size = new System.Drawing.Size(82, 20);
             rbEquipement.TabIndex = 0;
             rbEquipement.TabStop = true;
-            rbEquipement.Tag = "Equipment";
+            rbEquipement.Tag = "1";
             rbEquipement.Text = "Equipment";
             rbEquipement.UseVisualStyleBackColor = true;
             rbEquipement.CheckedChanged += rbContainers_CheckedChanged;
@@ -410,7 +429,6 @@
         private System.Windows.Forms.RadioButton rbPetGear;
         private System.Windows.Forms.RadioButton rbSystem;
         private System.Windows.Forms.RadioButton rbMail;
-        private System.Windows.Forms.RadioButton rbTrade;
         private System.Windows.Forms.RadioButton rbWarehouse;
         private System.Windows.Forms.RadioButton rbInventory;
         private System.Windows.Forms.RadioButton rbEquipement;
@@ -426,5 +444,8 @@
         private System.Windows.Forms.TabPage tpOwnedObjects;
         private System.Windows.Forms.TreeView tvOwned;
         private System.Windows.Forms.CheckBox cbIncludeAccountHouses;
+        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.ColumnHeader chItemSlotType;
+        private System.Windows.Forms.ComboBox cbItemContainerTypeSelect;
     }
 }

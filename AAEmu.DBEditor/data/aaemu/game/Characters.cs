@@ -90,6 +90,8 @@ public partial class Characters
 
     public int CrimeRecord { get; set; }
 
+    public int JuryPoint { get; set; }
+
     public int HostileFactionKills { get; set; }
 
     public int PvpHonor { get; set; }
@@ -123,4 +125,9 @@ public partial class Characters
     public int Deleted { get; set; }
 
     public int ReturnDistrict { get; set; }
+
+    /// <summary>
+    /// Time that the character has been online
+    /// </summary>
+    public int OnlineTime { get; set; }
 }

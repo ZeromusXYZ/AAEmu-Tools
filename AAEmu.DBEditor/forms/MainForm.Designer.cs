@@ -257,7 +257,7 @@ namespace AAEmu.DBEditor
             // 
             MMServerAccounts.Enabled = false;
             MMServerAccounts.Name = "MMServerAccounts";
-            MMServerAccounts.Size = new System.Drawing.Size(180, 22);
+            MMServerAccounts.Size = new System.Drawing.Size(129, 22);
             MMServerAccounts.Text = "Accounts";
             MMServerAccounts.Click += MMServerAccounts_Click;
             // 
@@ -265,7 +265,7 @@ namespace AAEmu.DBEditor
             // 
             MMServerCharacters.Enabled = false;
             MMServerCharacters.Name = "MMServerCharacters";
-            MMServerCharacters.Size = new System.Drawing.Size(180, 22);
+            MMServerCharacters.Size = new System.Drawing.Size(129, 22);
             MMServerCharacters.Text = "Characters";
             MMServerCharacters.Click += MMServerCharacters_Click;
             // 
@@ -273,19 +273,19 @@ namespace AAEmu.DBEditor
             // 
             MMServerGuilds.Enabled = false;
             MMServerGuilds.Name = "MMServerGuilds";
-            MMServerGuilds.Size = new System.Drawing.Size(180, 22);
+            MMServerGuilds.Size = new System.Drawing.Size(129, 22);
             MMServerGuilds.Text = "Guilds";
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
+            toolStripMenuItem2.Size = new System.Drawing.Size(126, 6);
             // 
             // MMServerICS
             // 
             MMServerICS.Enabled = false;
             MMServerICS.Name = "MMServerICS";
-            MMServerICS.Size = new System.Drawing.Size(180, 22);
+            MMServerICS.Size = new System.Drawing.Size(129, 22);
             MMServerICS.Text = "Cash Shop";
             MMServerICS.Click += MMServerICS_Click;
             // 

@@ -77,4 +77,9 @@ public partial class Doodads
     /// Doodad specific data
     /// </summary>
     public int Data { get; set; }
+
+    /// <summary>
+    /// farm type for Public Farm
+    /// </summary>
+    public uint? FarmType { get; set; }
 }

@@ -12,6 +12,8 @@ using System.Windows.Forms;
 using AAEmu.DBEditor.utils;
 using AAEmu.DBEditor.data.enums;
 
+#pragma warning disable WFO1000
+
 namespace AAEmu.DBEditor.forms.server
 {
     public partial class AccountsForm : Form
@@ -61,7 +63,7 @@ namespace AAEmu.DBEditor.forms.server
                     selectList.Add(character.AccountId);
                 }
 
-                users = Data.MySqlDb.Login.Users.Where(x => selectList.Contains(x.Id)).ToList();
+                users = Data.MySqlDb.Login.Users.ToList().Where(x => selectList.Contains(x.Id)).ToList();
             }
             dgvUsers.DataSource = users;
 

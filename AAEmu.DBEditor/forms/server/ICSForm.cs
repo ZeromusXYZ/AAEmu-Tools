@@ -3,19 +3,11 @@ using AAEmu.DBEditor.data;
 using AAEmu.DBEditor.data.aaemu.game;
 using AAEmu.DBEditor.forms.client;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace AAEmu.DBEditor.forms.server
 {

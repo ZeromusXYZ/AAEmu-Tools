@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using AAEmu.DBEditor.data;
 using AAEmu.DBEditor.data.aaemu.game;
 using AAEmu.DBEditor.data.enums;
 using AAEmu.DBEditor.utils;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.VisualBasic.Devices;
 
 namespace AAEmu.DBEditor.forms.server
 {
@@ -67,8 +64,12 @@ namespace AAEmu.DBEditor.forms.server
             }
         }
 
-        private void SelectContainer(uint characterId, string slotType)
+        private void SelectContainer(uint characterId, int slotType)
         {
+            if ((slotType < 0) && Enum.TryParse<SlotType>(cbItemContainerTypeSelect.Text, out var n) && (n >= SlotType.None))
+            {
+                slotType = (int)n;
+            }
             var itemContainer = Data.MySqlDb.Game.ItemContainers.FirstOrDefault(x => x.OwnerId == characterId && x.SlotType == slotType);
             lvItems.Items.Clear();
             if (itemContainer == null)
@@ -76,7 +77,7 @@ namespace AAEmu.DBEditor.forms.server
                 lContainer.Text = $"Container not found {slotType}";
                 return;
             }
-            lContainer.Text = $"{itemContainer.SlotType}:{itemContainer.ContainerType} ({itemContainer.ContainerId}), Size: {itemContainer.ContainerSize}";
+            lContainer.Text = $@"{itemContainer.SlotType}:{itemContainer.ContainerType} ({itemContainer.ContainerId}), Size: {itemContainer.ContainerSize}";
 
             var containerItems = Data.MySqlDb.Game.Items.Where(x => x.ContainerId == itemContainer.ContainerId).OrderBy(x => x.Slot);
             var lastSlot = -2;
@@ -97,7 +98,7 @@ namespace AAEmu.DBEditor.forms.server
                 // DbId
                 newItem.SubItems.Add(item.Id.ToString());
                 // Slot
-                if (itemContainer.SlotType == "Equipment")
+                if (itemContainer.SlotType == (int)SlotType.Equipment)
                 {
                     var equipSlot = (EquipmentSlot)item.Slot;
                     newItem.SubItems.Add($"{equipSlot}:{item.Slot}");
@@ -107,20 +108,26 @@ namespace AAEmu.DBEditor.forms.server
                     newItem.SubItems.Add(item.Slot.ToString());
                 }
 
-                if ((lastSlot == item.Slot) && (itemContainer.SlotType != "Mail"))
+                newItem.SubItems.Add($"{item.SlotType}");
+
+                if ((lastSlot == item.Slot) && (itemContainer.SlotType != (int)SlotType.Mail))
                     newItem.ForeColor = Color.Red;
                 lastSlot = item.Slot;
 
                 lvItems.Items.Add(newItem);
             }
             lvItems.View = View.Details;
+
+            lContainer.Text += $@", Count:{lvItems.Items.Count}";
         }
 
         private void rbContainers_CheckedChanged(object sender, EventArgs e)
         {
-            if ((sender is not RadioButton radioButton) || (radioButton.Tag is not string containerType))
+            if ((sender is not RadioButton { Tag: string containerTypeString }))
                 return;
             if (SelectedCharacter == null)
+                return;
+            if (!int.TryParse(containerTypeString, out var containerType))
                 return;
 
             SelectContainer(SelectedCharacter.Id, containerType);
@@ -341,6 +348,30 @@ namespace AAEmu.DBEditor.forms.server
         {
             if (SelectedCharacter != null)
                 PopulateOwnedTab(SelectedCharacter);
+        }
+
+        private void tpItems_Enter(object sender, EventArgs e)
+        {
+            // Populate the custom combo list box
+            cbItemContainerTypeSelect.Items.Clear();
+            if (SelectedCharacter == null)
+                return;
+
+            var itemContainerTypes = Data.MySqlDb.Game.ItemContainers.Where(x => x.OwnerId == SelectedCharacter.Id).ToList().DistinctBy(x => x.SlotType).OrderBy(x => x.SlotType);
+            foreach (var itemContainerType in itemContainerTypes)
+            {
+                var slotTypeName = ((SlotType)itemContainerType.SlotType).ToString();
+                cbItemContainerTypeSelect.Items.Add(slotTypeName);
+            }
+
+            if (cbItemContainerTypeSelect.Items.Count > 0)
+                cbItemContainerTypeSelect.SelectedIndex = 0;
+        }
+
+        private void cbItemContainerTypeSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SelectContainer(SelectedCharacter.Id, -1);
+            rbSystem.Checked = true;
         }
     }
 }

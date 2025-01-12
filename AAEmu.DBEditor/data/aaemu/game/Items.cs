@@ -18,8 +18,6 @@ public partial class Items
 
     public uint ContainerId { get; set; }
 
-    public string SlotType { get; set; }
-
     public int Slot { get; set; }
 
     public int Count { get; set; }
@@ -63,4 +61,9 @@ public partial class Items
     /// Number of charges left
     /// </summary>
     public int ChargeCount { get; set; }
+
+    /// <summary>
+    /// Internal Container Type
+    /// </summary>
+    public int SlotType { get; set; }
 }

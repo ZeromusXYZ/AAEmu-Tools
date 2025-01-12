@@ -10,37 +10,22 @@ namespace AAEmu.DBEditor.data.aaemu.game;
 /// </summary>
 public partial class AuctionHouse
 {
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     public sbyte Duration { get; set; }
 
-    public int ItemId { get; set; }
+    public long ItemId { get; set; }
 
-    public int ObjectId { get; set; }
-
-    public bool Grade { get; set; }
-
-    public bool Flags { get; set; }
+    /// <summary>
+    /// Time when the auction item was put up for sale (in UTC)
+    /// </summary>
+    public DateTime PostDate { get; set; }
 
     public int StackSize { get; set; }
 
-    public bool DetailType { get; set; }
-
-    public DateTime CreationTime { get; set; }
-
     public DateTime EndTime { get; set; }
 
-    public int LifespanMins { get; set; }
-
-    public int Type1 { get; set; }
-
     public sbyte WorldId { get; set; }
-
-    public string UnsecureDateTime { get; set; }
-
-    public string UnpackDateTime { get; set; }
-
-    public sbyte WorldId2 { get; set; }
 
     public int ClientId { get; set; }
 
@@ -50,7 +35,7 @@ public partial class AuctionHouse
 
     public int DirectMoney { get; set; }
 
-    public bool BidWorldId { get; set; }
+    public int BidWorldId { get; set; }
 
     public int BidderId { get; set; }
 

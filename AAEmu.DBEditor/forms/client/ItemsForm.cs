@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using AAEmu.DBEditor.data;
 using AAEmu.DBEditor.data.enums;
 using AAEmu.DBEditor.data.gamedb;
 using AAEmu.DBEditor.utils;
+
+#pragma warning disable WFO1000
 
 namespace AAEmu.DBEditor.forms.client
 {
@@ -19,11 +15,6 @@ namespace AAEmu.DBEditor.forms.client
     {
         public bool IsSelectionDialog { get; set; }
         public Item SelectedItem { get; set; }
-
-        public ItemsForm()
-        {
-            InitializeComponent();
-        }
 
         private void ItemsForm_FormClosed(object sender, FormClosedEventArgs e)
         {

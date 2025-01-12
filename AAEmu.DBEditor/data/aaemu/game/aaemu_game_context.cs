@@ -27,6 +27,8 @@ public partial class aaemu_game_context : DbContext
 
     public virtual DbSet<Blocked> Blocked { get; set; }
 
+    public virtual DbSet<CashShopItem> CashShopItem { get; set; }
+
     public virtual DbSet<Characters> Characters { get; set; }
 
     public virtual DbSet<CompletedQuests> CompletedQuests { get; set; }
@@ -124,6 +126,14 @@ public partial class aaemu_game_context : DbContext
             entity.Property(e => e.Credits)
                 .HasColumnType("int(11)")
                 .HasColumnName("credits");
+            entity.Property(e => e.DivineClockTaken)
+                .HasComment("Number of clicks taken today")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("divine_clock_taken");
+            entity.Property(e => e.DivineClockTime)
+                .HasComment("Time that has been passed already")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("divine_clock_time");
             entity.Property(e => e.Labor)
                 .HasColumnType("int(11)")
                 .HasColumnName("labor");
@@ -207,30 +217,32 @@ public partial class aaemu_game_context : DbContext
                 .UseCollation("utf8_general_ci");
 
             entity.Property(e => e.Id)
-                .HasColumnType("int(11)")
+                .HasColumnType("bigint(20)")
                 .HasColumnName("id");
             entity.Property(e => e.BidMoney)
                 .HasColumnType("int(11)")
                 .HasColumnName("bid_money");
-            entity.Property(e => e.BidWorldId).HasColumnName("bid_world_id");
+            entity.Property(e => e.BidWorldId)
+                .HasColumnType("int(11)")
+                .HasColumnName("bid_world_id");
             entity.Property(e => e.BidderId)
                 .HasColumnType("int(11)")
                 .HasColumnName("bidder_id");
             entity.Property(e => e.BidderName)
                 .IsRequired()
                 .HasMaxLength(45)
-                .HasColumnName("bidder_name");
+                .HasColumnName("bidder_name")
+                .UseCollation("utf8mb4_general_ci")
+                .HasCharSet("utf8mb4");
             entity.Property(e => e.ClientId)
                 .HasColumnType("int(11)")
                 .HasColumnName("client_id");
             entity.Property(e => e.ClientName)
                 .IsRequired()
                 .HasMaxLength(45)
-                .HasColumnName("client_name");
-            entity.Property(e => e.CreationTime)
-                .HasColumnType("datetime")
-                .HasColumnName("creation_time");
-            entity.Property(e => e.DetailType).HasColumnName("detail_type");
+                .HasColumnName("client_name")
+                .UseCollation("utf8mb4_general_ci")
+                .HasCharSet("utf8mb4");
             entity.Property(e => e.DirectMoney)
                 .HasColumnType("int(11)")
                 .HasColumnName("direct_money");
@@ -243,40 +255,23 @@ public partial class aaemu_game_context : DbContext
             entity.Property(e => e.Extra)
                 .HasColumnType("int(11)")
                 .HasColumnName("extra");
-            entity.Property(e => e.Flags).HasColumnName("flags");
-            entity.Property(e => e.Grade).HasColumnName("grade");
             entity.Property(e => e.ItemId)
-                .HasColumnType("int(11)")
+                .HasColumnType("bigint(20)")
                 .HasColumnName("item_id");
-            entity.Property(e => e.LifespanMins)
-                .HasColumnType("int(11)")
-                .HasColumnName("lifespan_mins");
-            entity.Property(e => e.ObjectId)
-                .HasColumnType("int(11)")
-                .HasColumnName("object_id");
+            entity.Property(e => e.PostDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasComment("Time when the auction item was put up for sale (in UTC)")
+                .HasColumnType("datetime")
+                .HasColumnName("post_date");
             entity.Property(e => e.StackSize)
                 .HasColumnType("int(11)")
                 .HasColumnName("stack_size");
             entity.Property(e => e.StartMoney)
                 .HasColumnType("int(11)")
                 .HasColumnName("start_money");
-            entity.Property(e => e.Type1)
-                .HasColumnType("int(11)")
-                .HasColumnName("type_1");
-            entity.Property(e => e.UnpackDateTime)
-                .IsRequired()
-                .HasMaxLength(45)
-                .HasColumnName("unpack_date_time");
-            entity.Property(e => e.UnsecureDateTime)
-                .IsRequired()
-                .HasMaxLength(45)
-                .HasColumnName("unsecure_date_time");
             entity.Property(e => e.WorldId)
                 .HasColumnType("tinyint(4)")
                 .HasColumnName("world_id");
-            entity.Property(e => e.WorldId2)
-                .HasColumnType("tinyint(4)")
-                .HasColumnName("world_id_2");
         });
 
         modelBuilder.Entity<AuditIcsSales>(entity =>
@@ -357,6 +352,150 @@ public partial class aaemu_game_context : DbContext
             entity.Property(e => e.BlockedId)
                 .HasColumnType("int(11)")
                 .HasColumnName("blocked_id");
+        });
+
+        modelBuilder.Entity<CashShopItem>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity
+                .ToTable("cash_shop_item", tb => tb.HasComment("此表来自于代码中的字段并去除重复字段生成。字段名称和内容以代码为准。"))
+                .HasCharSet("utf8")
+                .UseCollation("utf8_general_ci");
+
+            entity.Property(e => e.Id)
+                .HasComment("shop_id")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("id");
+            entity.Property(e => e.BonusType)
+                .HasDefaultValueSql("'0'")
+                .HasComment("赠送类型")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("bonus_type");
+            entity.Property(e => e.BounsCount)
+                .HasDefaultValueSql("'0'")
+                .HasComment("赠送数量")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("bouns_count");
+            entity.Property(e => e.BuyCount)
+                .HasDefaultValueSql("'0'")
+                .HasColumnType("smallint(5) unsigned")
+                .HasColumnName("buy_count");
+            entity.Property(e => e.BuyId)
+                .HasDefaultValueSql("'0'")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("buy_id");
+            entity.Property(e => e.BuyType)
+                .HasDefaultValueSql("'0'")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("buy_type");
+            entity.Property(e => e.CashName)
+                .IsRequired()
+                .HasMaxLength(255)
+                .HasComment("出售名称")
+                .HasColumnName("cash_name");
+            entity.Property(e => e.CmdUi)
+                .HasDefaultValueSql("'0'")
+                .HasComment("是否限制一人一次")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("cmd_ui");
+            entity.Property(e => e.DefaultFlag)
+                .HasDefaultValueSql("'0'")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("default_flag");
+            entity.Property(e => e.DisPrice)
+                .HasDefaultValueSql("'0'")
+                .HasComment("当前售价")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("dis_price");
+            entity.Property(e => e.EndDate)
+                .HasDefaultValueSql("'0001-01-01 00:00:00'")
+                .HasComment("出售截止")
+                .HasColumnType("datetime")
+                .HasColumnName("end_date");
+            entity.Property(e => e.EventDate)
+                .HasDefaultValueSql("'0001-01-01 00:00:00'")
+                .HasComment("活动时间")
+                .HasColumnType("datetime")
+                .HasColumnName("event_date");
+            entity.Property(e => e.EventType)
+                .HasDefaultValueSql("'0'")
+                .HasComment("活动类型")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("event_type");
+            entity.Property(e => e.IsHidden)
+                .HasDefaultValueSql("'0'")
+                .HasComment("是否隐藏")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("is_hidden");
+            entity.Property(e => e.IsSell)
+                .HasDefaultValueSql("'0'")
+                .HasComment("是否出售")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("is_sell");
+            entity.Property(e => e.ItemCount)
+                .HasDefaultValueSql("'1'")
+                .HasComment("捆绑数量")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("item_count");
+            entity.Property(e => e.ItemTemplateId)
+                .HasDefaultValueSql("'0'")
+                .HasComment("物品模板id")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("item_template_id");
+            entity.Property(e => e.LevelMax)
+                .HasDefaultValueSql("'0'")
+                .HasComment("等级限制")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("level_max");
+            entity.Property(e => e.LevelMin)
+                .HasDefaultValueSql("'0'")
+                .HasComment("等级限制")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("level_min");
+            entity.Property(e => e.LimitType)
+                .HasDefaultValueSql("'0'")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("limit_type");
+            entity.Property(e => e.MainTab)
+                .HasDefaultValueSql("'1'")
+                .HasComment("主分类1-6")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("main_tab");
+            entity.Property(e => e.Price)
+                .HasDefaultValueSql("'0'")
+                .HasComment("价格")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("price");
+            entity.Property(e => e.Remain)
+                .HasDefaultValueSql("'0'")
+                .HasComment("剩余数量")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("remain");
+            entity.Property(e => e.SelectType)
+                .HasDefaultValueSql("'0'")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("select_type");
+            entity.Property(e => e.StartDate)
+                .HasDefaultValueSql("'0001-01-01 00:00:00'")
+                .HasComment("出售开始")
+                .HasColumnType("datetime")
+                .HasColumnName("start_date");
+            entity.Property(e => e.SubTab)
+                .HasDefaultValueSql("'1'")
+                .HasComment("子分类1-7")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("sub_tab");
+            entity.Property(e => e.Type)
+                .HasDefaultValueSql("'0'")
+                .HasComment("货币类型")
+                .HasColumnType("tinyint(3) unsigned")
+                .HasColumnName("type");
+            entity.Property(e => e.UniqId)
+                .HasDefaultValueSql("'0'")
+                .HasComment("唯一ID")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("uniq_id");
         });
 
         modelBuilder.Entity<Characters>(entity =>
@@ -454,6 +593,9 @@ public partial class aaemu_game_context : DbContext
             entity.Property(e => e.Hp)
                 .HasColumnType("int(11)")
                 .HasColumnName("hp");
+            entity.Property(e => e.JuryPoint)
+                .HasColumnType("int(11)")
+                .HasColumnName("jury_point");
             entity.Property(e => e.LeaveTime)
                 .HasDefaultValueSql("'0001-01-01 00:00:00'")
                 .HasColumnType("datetime")
@@ -482,6 +624,10 @@ public partial class aaemu_game_context : DbContext
                 .HasDefaultValueSql("'50'")
                 .HasColumnType("tinyint(3) unsigned")
                 .HasColumnName("num_inv_slot");
+            entity.Property(e => e.OnlineTime)
+                .HasComment("Time that the character has been online")
+                .HasColumnType("int(11)")
+                .HasColumnName("online_time");
             entity.Property(e => e.Pitch).HasColumnName("pitch");
             entity.Property(e => e.Point)
                 .HasColumnType("int(11)")
@@ -590,6 +736,11 @@ public partial class aaemu_game_context : DbContext
                 .HasComment("Doodad specific data")
                 .HasColumnType("int(11)")
                 .HasColumnName("data");
+            entity.Property(e => e.FarmType)
+                .HasDefaultValueSql("'0'")
+                .HasComment("farm type for Public Farm")
+                .HasColumnType("int(10) unsigned")
+                .HasColumnName("farm_type");
             entity.Property(e => e.GrowthTime)
                 .HasColumnType("datetime")
                 .HasColumnName("growth_time");
@@ -1057,9 +1208,8 @@ public partial class aaemu_game_context : DbContext
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("owner_id");
             entity.Property(e => e.SlotType)
-                .IsRequired()
                 .HasComment("Internal Container Type")
-                .HasColumnType("enum('Equipment','Inventory','Bank','Trade','Mail','System','EquipmentMate')")
+                .HasColumnType("int(11)")
                 .HasColumnName("slot_type");
         });
 
@@ -1125,8 +1275,8 @@ public partial class aaemu_game_context : DbContext
                 .HasColumnType("int(11)")
                 .HasColumnName("slot");
             entity.Property(e => e.SlotType)
-                .IsRequired()
-                .HasColumnType("enum('Equipment','Inventory','Bank','Trade','Mail','System','EquipmentMate')")
+                .HasComment("Internal Container Type")
+                .HasColumnType("int(11)")
                 .HasColumnName("slot_type");
             entity.Property(e => e.TemplateId)
                 .HasColumnType("int(10) unsigned")

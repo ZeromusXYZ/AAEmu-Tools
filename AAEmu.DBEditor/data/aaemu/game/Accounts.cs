@@ -29,4 +29,14 @@ public partial class Accounts
     public DateTime LastCreditsTick { get; set; }
 
     public DateTime LastLoyaltyTick { get; set; }
+
+    /// <summary>
+    /// Time that has been passed already
+    /// </summary>
+    public uint DivineClockTime { get; set; }
+
+    /// <summary>
+    /// Number of clicks taken today
+    /// </summary>
+    public uint DivineClockTaken { get; set; }
 }
