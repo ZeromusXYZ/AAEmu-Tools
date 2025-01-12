@@ -31,6 +31,13 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AccountsForm));
             dgvUsers = new System.Windows.Forms.DataGridView();
+            idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            usernameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            emailDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            lastLoginDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            lastIpDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            createdAtDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            updatedAtDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             usersBindingSource = new System.Windows.Forms.BindingSource(components);
             lvCharacters = new System.Windows.Forms.ListView();
             ilRaces = new System.Windows.Forms.ImageList(components);
@@ -61,13 +68,6 @@
             tCredits = new System.Windows.Forms.TextBox();
             groupBox2 = new System.Windows.Forms.GroupBox();
             btnSave = new System.Windows.Forms.Button();
-            idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            usernameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            emailDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            lastLoginDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            lastIpDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            createdAtDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            updatedAtDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgvUsers).BeginInit();
             ((System.ComponentModel.ISupportInitialize)usersBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)charactersBindingSource).BeginInit();
@@ -91,6 +91,58 @@
             dgvUsers.Size = new System.Drawing.Size(834, 128);
             dgvUsers.TabIndex = 0;
             dgvUsers.SelectionChanged += dgvUsers_SelectionChanged;
+            // 
+            // idDataGridViewTextBoxColumn
+            // 
+            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
+            idDataGridViewTextBoxColumn.Frozen = true;
+            idDataGridViewTextBoxColumn.HeaderText = "Id";
+            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
+            idDataGridViewTextBoxColumn.ReadOnly = true;
+            idDataGridViewTextBoxColumn.Width = 50;
+            // 
+            // usernameDataGridViewTextBoxColumn
+            // 
+            usernameDataGridViewTextBoxColumn.DataPropertyName = "Username";
+            usernameDataGridViewTextBoxColumn.Frozen = true;
+            usernameDataGridViewTextBoxColumn.HeaderText = "Username";
+            usernameDataGridViewTextBoxColumn.Name = "usernameDataGridViewTextBoxColumn";
+            usernameDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // emailDataGridViewTextBoxColumn
+            // 
+            emailDataGridViewTextBoxColumn.DataPropertyName = "Email";
+            emailDataGridViewTextBoxColumn.HeaderText = "Email";
+            emailDataGridViewTextBoxColumn.Name = "emailDataGridViewTextBoxColumn";
+            emailDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // lastLoginDataGridViewTextBoxColumn
+            // 
+            lastLoginDataGridViewTextBoxColumn.DataPropertyName = "LastLogin";
+            lastLoginDataGridViewTextBoxColumn.HeaderText = "LastLogin";
+            lastLoginDataGridViewTextBoxColumn.Name = "lastLoginDataGridViewTextBoxColumn";
+            lastLoginDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // lastIpDataGridViewTextBoxColumn
+            // 
+            lastIpDataGridViewTextBoxColumn.DataPropertyName = "LastIp";
+            lastIpDataGridViewTextBoxColumn.HeaderText = "LastIp";
+            lastIpDataGridViewTextBoxColumn.Name = "lastIpDataGridViewTextBoxColumn";
+            lastIpDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // createdAtDataGridViewTextBoxColumn
+            // 
+            createdAtDataGridViewTextBoxColumn.DataPropertyName = "CreatedAt";
+            createdAtDataGridViewTextBoxColumn.HeaderText = "CreatedAt";
+            createdAtDataGridViewTextBoxColumn.Name = "createdAtDataGridViewTextBoxColumn";
+            createdAtDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // updatedAtDataGridViewTextBoxColumn
+            // 
+            updatedAtDataGridViewTextBoxColumn.DataPropertyName = "UpdatedAt";
+            updatedAtDataGridViewTextBoxColumn.HeaderText = "UpdatedAt";
+            updatedAtDataGridViewTextBoxColumn.Name = "updatedAtDataGridViewTextBoxColumn";
+            updatedAtDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // usersBindingSource
             // 
@@ -280,6 +332,7 @@
             cbAccessLevel.Name = "cbAccessLevel";
             cbAccessLevel.Size = new System.Drawing.Size(100, 24);
             cbAccessLevel.TabIndex = 7;
+            cbAccessLevel.TextChanged += AccountValueChanged;
             // 
             // label5
             // 
@@ -313,6 +366,7 @@
             tLoyalty.Name = "tLoyalty";
             tLoyalty.Size = new System.Drawing.Size(100, 23);
             tLoyalty.TabIndex = 3;
+            tLoyalty.TextChanged += AccountValueChanged;
             // 
             // label3
             // 
@@ -338,6 +392,7 @@
             tCredits.Name = "tCredits";
             tCredits.Size = new System.Drawing.Size(100, 23);
             tCredits.TabIndex = 0;
+            tCredits.TextChanged += AccountValueChanged;
             // 
             // groupBox2
             // 
@@ -366,58 +421,6 @@
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = true;
             btnSave.Click += btnSave_Click;
-            // 
-            // idDataGridViewTextBoxColumn
-            // 
-            idDataGridViewTextBoxColumn.DataPropertyName = "Id";
-            idDataGridViewTextBoxColumn.Frozen = true;
-            idDataGridViewTextBoxColumn.HeaderText = "Id";
-            idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
-            idDataGridViewTextBoxColumn.ReadOnly = true;
-            idDataGridViewTextBoxColumn.Width = 50;
-            // 
-            // usernameDataGridViewTextBoxColumn
-            // 
-            usernameDataGridViewTextBoxColumn.DataPropertyName = "Username";
-            usernameDataGridViewTextBoxColumn.Frozen = true;
-            usernameDataGridViewTextBoxColumn.HeaderText = "Username";
-            usernameDataGridViewTextBoxColumn.Name = "usernameDataGridViewTextBoxColumn";
-            usernameDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // emailDataGridViewTextBoxColumn
-            // 
-            emailDataGridViewTextBoxColumn.DataPropertyName = "Email";
-            emailDataGridViewTextBoxColumn.HeaderText = "Email";
-            emailDataGridViewTextBoxColumn.Name = "emailDataGridViewTextBoxColumn";
-            emailDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // lastLoginDataGridViewTextBoxColumn
-            // 
-            lastLoginDataGridViewTextBoxColumn.DataPropertyName = "LastLogin";
-            lastLoginDataGridViewTextBoxColumn.HeaderText = "LastLogin";
-            lastLoginDataGridViewTextBoxColumn.Name = "lastLoginDataGridViewTextBoxColumn";
-            lastLoginDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // lastIpDataGridViewTextBoxColumn
-            // 
-            lastIpDataGridViewTextBoxColumn.DataPropertyName = "LastIp";
-            lastIpDataGridViewTextBoxColumn.HeaderText = "LastIp";
-            lastIpDataGridViewTextBoxColumn.Name = "lastIpDataGridViewTextBoxColumn";
-            lastIpDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // createdAtDataGridViewTextBoxColumn
-            // 
-            createdAtDataGridViewTextBoxColumn.DataPropertyName = "CreatedAt";
-            createdAtDataGridViewTextBoxColumn.HeaderText = "CreatedAt";
-            createdAtDataGridViewTextBoxColumn.Name = "createdAtDataGridViewTextBoxColumn";
-            createdAtDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // updatedAtDataGridViewTextBoxColumn
-            // 
-            updatedAtDataGridViewTextBoxColumn.DataPropertyName = "UpdatedAt";
-            updatedAtDataGridViewTextBoxColumn.HeaderText = "UpdatedAt";
-            updatedAtDataGridViewTextBoxColumn.Name = "updatedAtDataGridViewTextBoxColumn";
-            updatedAtDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // AccountsForm
             // 
