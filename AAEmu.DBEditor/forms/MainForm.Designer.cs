@@ -60,6 +60,8 @@ namespace AAEmu.DBEditor
             toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             MMServerICS = new System.Windows.Forms.ToolStripMenuItem();
             MMVersion = new System.Windows.Forms.ToolStripMenuItem();
+            MMTools = new System.Windows.Forms.ToolStripMenuItem();
+            MMToolsAhBot = new System.Windows.Forms.ToolStripMenuItem();
             label3 = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
@@ -87,7 +89,7 @@ namespace AAEmu.DBEditor
             // 
             // MM
             // 
-            MM.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { MMFile, MMClient, MMServer, MMVersion });
+            MM.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { MMFile, MMClient, MMServer, MMVersion, MMTools });
             MM.Location = new System.Drawing.Point(0, 0);
             MM.Name = "MM";
             MM.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
@@ -257,7 +259,7 @@ namespace AAEmu.DBEditor
             // 
             MMServerAccounts.Enabled = false;
             MMServerAccounts.Name = "MMServerAccounts";
-            MMServerAccounts.Size = new System.Drawing.Size(129, 22);
+            MMServerAccounts.Size = new System.Drawing.Size(180, 22);
             MMServerAccounts.Text = "Accounts";
             MMServerAccounts.Click += MMServerAccounts_Click;
             // 
@@ -265,7 +267,7 @@ namespace AAEmu.DBEditor
             // 
             MMServerCharacters.Enabled = false;
             MMServerCharacters.Name = "MMServerCharacters";
-            MMServerCharacters.Size = new System.Drawing.Size(129, 22);
+            MMServerCharacters.Size = new System.Drawing.Size(180, 22);
             MMServerCharacters.Text = "Characters";
             MMServerCharacters.Click += MMServerCharacters_Click;
             // 
@@ -273,19 +275,19 @@ namespace AAEmu.DBEditor
             // 
             MMServerGuilds.Enabled = false;
             MMServerGuilds.Name = "MMServerGuilds";
-            MMServerGuilds.Size = new System.Drawing.Size(129, 22);
+            MMServerGuilds.Size = new System.Drawing.Size(180, 22);
             MMServerGuilds.Text = "Guilds";
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new System.Drawing.Size(126, 6);
+            toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
             // 
             // MMServerICS
             // 
             MMServerICS.Enabled = false;
             MMServerICS.Name = "MMServerICS";
-            MMServerICS.Size = new System.Drawing.Size(129, 22);
+            MMServerICS.Size = new System.Drawing.Size(180, 22);
             MMServerICS.Text = "Cash Shop";
             MMServerICS.Click += MMServerICS_Click;
             // 
@@ -295,6 +297,21 @@ namespace AAEmu.DBEditor
             MMVersion.Name = "MMVersion";
             MMVersion.Size = new System.Drawing.Size(57, 20);
             MMVersion.Text = "Version";
+            // 
+            // MMTools
+            // 
+            MMTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMToolsAhBot });
+            MMTools.Name = "MMTools";
+            MMTools.Size = new System.Drawing.Size(46, 20);
+            MMTools.Text = "&Tools";
+            MMTools.DropDownOpened += MMTools_DropDownOpened;
+            // 
+            // MMToolsAhBot
+            // 
+            MMToolsAhBot.Name = "MMToolsAhBot";
+            MMToolsAhBot.Size = new System.Drawing.Size(180, 22);
+            MMToolsAhBot.Text = "Auction House Bot";
+            MMToolsAhBot.Click += MMToolsAhBot_Click;
             // 
             // label3
             // 
@@ -595,6 +612,8 @@ namespace AAEmu.DBEditor
         private System.Windows.Forms.RadioButton rbLocaleZhTw;
         private System.Windows.Forms.RadioButton rbLocaleZhCn;
         private System.Windows.Forms.ToolStripMenuItem MMVersion;
+        private System.Windows.Forms.ToolStripMenuItem MMTools;
+        private System.Windows.Forms.ToolStripMenuItem MMToolsAhBot;
     }
 }
 

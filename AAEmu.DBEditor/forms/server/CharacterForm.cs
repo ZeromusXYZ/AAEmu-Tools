@@ -6,18 +6,23 @@ using System.Windows.Forms;
 using AAEmu.DBEditor.data;
 using AAEmu.DBEditor.data.aaemu.game;
 using AAEmu.DBEditor.data.enums;
+using AAEmu.DBEditor.data.gamedb;
 using AAEmu.DBEditor.utils;
 
 namespace AAEmu.DBEditor.forms.server
 {
     public partial class CharacterForm : Form
     {
-
         private Characters SelectedCharacter { get; set; }
 
         public CharacterForm()
         {
             InitializeComponent();
+        }
+
+        public Characters GetSelectCharacter()
+        {
+            return SelectedCharacter;
         }
 
         private void CharacterForm_Load(object sender, EventArgs e)
@@ -372,6 +377,11 @@ namespace AAEmu.DBEditor.forms.server
         {
             SelectContainer(SelectedCharacter.Id, -1);
             rbSystem.Checked = true;
+        }
+
+        private void btnSelectionOK_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AAEmu.DBEditor.forms.client;
+using AAEmu.DBEditor.tools.ahbot;
 
 namespace AAEmu.DBEditor
 {
@@ -339,6 +340,16 @@ namespace AAEmu.DBEditor
         {
             var characterForm = new CharacterForm();
             characterForm.Show();
+        }
+
+        private void MMToolsAhBot_Click(object sender, EventArgs e)
+        {
+            AhBotForm.Instance.Show();
+        }
+
+        private void MMTools_DropDownOpened(object sender, EventArgs e)
+        {
+            MMToolsAhBot.Enabled = Data.MySqlDb.IsValid && Data.Server.TableNames.Count > 0;
         }
     }
 }

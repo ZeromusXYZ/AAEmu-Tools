@@ -62,6 +62,7 @@
             tpOwnedObjects = new System.Windows.Forms.TabPage();
             cbIncludeAccountHouses = new System.Windows.Forms.CheckBox();
             tvOwned = new System.Windows.Forms.TreeView();
+            btnSelectionOK = new System.Windows.Forms.Button();
             tcCharacter.SuspendLayout();
             tpServerStats.SuspendLayout();
             tpItems.SuspendLayout();
@@ -391,11 +392,23 @@
             tvOwned.Size = new System.Drawing.Size(606, 339);
             tvOwned.TabIndex = 5;
             // 
+            // btnSelectionOK
+            // 
+            btnSelectionOK.Location = new System.Drawing.Point(124, 9);
+            btnSelectionOK.Name = "btnSelectionOK";
+            btnSelectionOK.Size = new System.Drawing.Size(65, 23);
+            btnSelectionOK.TabIndex = 9;
+            btnSelectionOK.Text = "Select";
+            btnSelectionOK.UseVisualStyleBackColor = true;
+            btnSelectionOK.Visible = false;
+            btnSelectionOK.Click += btnSelectionOK_Click;
+            // 
             // CharacterForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(827, 419);
+            Controls.Add(btnSelectionOK);
             Controls.Add(tcCharacter);
             Controls.Add(label1);
             Controls.Add(lvCharacterList);
@@ -447,5 +460,6 @@
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.ColumnHeader chItemSlotType;
         private System.Windows.Forms.ComboBox cbItemContainerTypeSelect;
+        public System.Windows.Forms.Button btnSelectionOK;
     }
 }
