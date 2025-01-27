@@ -41,11 +41,16 @@
             btnSave = new System.Windows.Forms.Button();
             btnLoadConfig = new System.Windows.Forms.Button();
             tpAhList = new System.Windows.Forms.TabPage();
+            lbAhList = new System.Windows.Forms.ListBox();
+            btnRemoveItem = new System.Windows.Forms.Button();
+            btnUpdateAhItem = new System.Windows.Forms.Button();
+            tListedCount = new System.Windows.Forms.TextBox();
+            label8 = new System.Windows.Forms.Label();
             tStartBid = new System.Windows.Forms.TextBox();
             label7 = new System.Windows.Forms.Label();
-            tSalePriceAll = new System.Windows.Forms.TextBox();
+            tBuyOutPrice = new System.Windows.Forms.TextBox();
             label6 = new System.Windows.Forms.Label();
-            tSaleAmount = new System.Windows.Forms.TextBox();
+            tSaleQuantity = new System.Windows.Forms.TextBox();
             label5 = new System.Windows.Forms.Label();
             cbGrade = new System.Windows.Forms.ComboBox();
             lGrade = new System.Windows.Forms.Label();
@@ -54,10 +59,6 @@
             label4 = new System.Windows.Forms.Label();
             tvAhList = new System.Windows.Forms.TreeView();
             tpLogs = new System.Windows.Forms.TabPage();
-            tListedCount = new System.Windows.Forms.TextBox();
-            label8 = new System.Windows.Forms.Label();
-            btnUpdateAhItem = new System.Windows.Forms.Button();
-            btnRemoveItem = new System.Windows.Forms.Button();
             tcAhBot.SuspendLayout();
             tpSettings.SuspendLayout();
             tpAhList.SuspendLayout();
@@ -189,15 +190,16 @@
             // 
             // tpAhList
             // 
+            tpAhList.Controls.Add(lbAhList);
             tpAhList.Controls.Add(btnRemoveItem);
             tpAhList.Controls.Add(btnUpdateAhItem);
             tpAhList.Controls.Add(tListedCount);
             tpAhList.Controls.Add(label8);
             tpAhList.Controls.Add(tStartBid);
             tpAhList.Controls.Add(label7);
-            tpAhList.Controls.Add(tSalePriceAll);
+            tpAhList.Controls.Add(tBuyOutPrice);
             tpAhList.Controls.Add(label6);
-            tpAhList.Controls.Add(tSaleAmount);
+            tpAhList.Controls.Add(tSaleQuantity);
             tpAhList.Controls.Add(label5);
             tpAhList.Controls.Add(cbGrade);
             tpAhList.Controls.Add(lGrade);
@@ -213,9 +215,53 @@
             tpAhList.Text = "AH";
             tpAhList.UseVisualStyleBackColor = true;
             // 
+            // lbAhList
+            // 
+            lbAhList.FormattingEnabled = true;
+            lbAhList.Location = new System.Drawing.Point(251, 6);
+            lbAhList.Name = "lbAhList";
+            lbAhList.Size = new System.Drawing.Size(185, 356);
+            lbAhList.TabIndex = 16;
+            // 
+            // btnRemoveItem
+            // 
+            btnRemoveItem.Location = new System.Drawing.Point(564, 291);
+            btnRemoveItem.Name = "btnRemoveItem";
+            btnRemoveItem.Size = new System.Drawing.Size(116, 23);
+            btnRemoveItem.TabIndex = 15;
+            btnRemoveItem.Text = "Remove";
+            btnRemoveItem.UseVisualStyleBackColor = true;
+            // 
+            // btnUpdateAhItem
+            // 
+            btnUpdateAhItem.Location = new System.Drawing.Point(442, 291);
+            btnUpdateAhItem.Name = "btnUpdateAhItem";
+            btnUpdateAhItem.Size = new System.Drawing.Size(116, 23);
+            btnUpdateAhItem.TabIndex = 14;
+            btnUpdateAhItem.Text = "Update/Add";
+            btnUpdateAhItem.UseVisualStyleBackColor = true;
+            btnUpdateAhItem.Click += btnUpdateAhItem_Click;
+            // 
+            // tListedCount
+            // 
+            tListedCount.Location = new System.Drawing.Point(451, 235);
+            tListedCount.Name = "tListedCount";
+            tListedCount.Size = new System.Drawing.Size(107, 23);
+            tListedCount.TabIndex = 13;
+            tListedCount.Text = "1";
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new System.Drawing.Point(442, 216);
+            label8.Name = "label8";
+            label8.Size = new System.Drawing.Size(257, 16);
+            label8.TabIndex = 12;
+            label8.Text = "Number of times to keep this entry listed on AH";
+            // 
             // tStartBid
             // 
-            tStartBid.Location = new System.Drawing.Point(486, 178);
+            tStartBid.Location = new System.Drawing.Point(642, 178);
             tStartBid.Name = "tStartBid";
             tStartBid.Size = new System.Drawing.Size(107, 23);
             tStartBid.TabIndex = 11;
@@ -224,41 +270,41 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new System.Drawing.Point(477, 159);
+            label7.Location = new System.Drawing.Point(633, 159);
             label7.Name = "label7";
             label7.Size = new System.Drawing.Size(155, 16);
             label7.TabIndex = 10;
             label7.Text = "Starting Bid (zero to disable)";
             // 
-            // tSalePriceAll
+            // tBuyOutPrice
             // 
-            tSalePriceAll.Location = new System.Drawing.Point(295, 178);
-            tSalePriceAll.Name = "tSalePriceAll";
-            tSalePriceAll.Size = new System.Drawing.Size(107, 23);
-            tSalePriceAll.TabIndex = 9;
-            tSalePriceAll.Text = "10000";
+            tBuyOutPrice.Location = new System.Drawing.Point(451, 178);
+            tBuyOutPrice.Name = "tBuyOutPrice";
+            tBuyOutPrice.Size = new System.Drawing.Size(107, 23);
+            tBuyOutPrice.TabIndex = 9;
+            tBuyOutPrice.Text = "10000";
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new System.Drawing.Point(286, 159);
+            label6.Location = new System.Drawing.Point(442, 159);
             label6.Name = "label6";
             label6.Size = new System.Drawing.Size(111, 16);
             label6.TabIndex = 8;
             label6.Text = "Sale price (buy-out)";
             // 
-            // tSaleAmount
+            // tSaleQuantity
             // 
-            tSaleAmount.Location = new System.Drawing.Point(295, 122);
-            tSaleAmount.Name = "tSaleAmount";
-            tSaleAmount.Size = new System.Drawing.Size(107, 23);
-            tSaleAmount.TabIndex = 7;
-            tSaleAmount.Text = "1";
+            tSaleQuantity.Location = new System.Drawing.Point(451, 122);
+            tSaleQuantity.Name = "tSaleQuantity";
+            tSaleQuantity.Size = new System.Drawing.Size(107, 23);
+            tSaleQuantity.TabIndex = 7;
+            tSaleQuantity.Text = "1";
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new System.Drawing.Point(286, 103);
+            label5.Location = new System.Drawing.Point(442, 103);
             label5.Name = "label5";
             label5.Size = new System.Drawing.Size(124, 16);
             label5.TabIndex = 6;
@@ -268,7 +314,7 @@
             // 
             cbGrade.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             cbGrade.FormattingEnabled = true;
-            cbGrade.Location = new System.Drawing.Point(295, 66);
+            cbGrade.Location = new System.Drawing.Point(451, 66);
             cbGrade.Name = "cbGrade";
             cbGrade.Size = new System.Drawing.Size(183, 24);
             cbGrade.TabIndex = 5;
@@ -277,7 +323,7 @@
             // lGrade
             // 
             lGrade.AutoSize = true;
-            lGrade.Location = new System.Drawing.Point(286, 47);
+            lGrade.Location = new System.Drawing.Point(442, 47);
             lGrade.Name = "lGrade";
             lGrade.Size = new System.Drawing.Size(38, 16);
             lGrade.TabIndex = 4;
@@ -286,7 +332,7 @@
             // lItemId
             // 
             lItemId.AutoSize = true;
-            lItemId.Location = new System.Drawing.Point(295, 22);
+            lItemId.Location = new System.Drawing.Point(451, 22);
             lItemId.Name = "lItemId";
             lItemId.Size = new System.Drawing.Size(59, 16);
             lItemId.TabIndex = 3;
@@ -295,7 +341,7 @@
             // lItemName
             // 
             lItemName.AutoSize = true;
-            lItemName.Location = new System.Drawing.Point(400, 22);
+            lItemName.Location = new System.Drawing.Point(556, 22);
             lItemName.Name = "lItemName";
             lItemName.Size = new System.Drawing.Size(78, 16);
             lItemName.TabIndex = 2;
@@ -304,7 +350,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new System.Drawing.Point(286, 6);
+            label4.Location = new System.Drawing.Point(442, 6);
             label4.Name = "label4";
             label4.Size = new System.Drawing.Size(30, 16);
             label4.TabIndex = 1;
@@ -315,7 +361,7 @@
             tvAhList.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             tvAhList.Location = new System.Drawing.Point(6, 6);
             tvAhList.Name = "tvAhList";
-            tvAhList.Size = new System.Drawing.Size(274, 407);
+            tvAhList.Size = new System.Drawing.Size(239, 407);
             tvAhList.TabIndex = 0;
             tvAhList.AfterSelect += tvAhList_AfterSelect;
             // 
@@ -328,41 +374,6 @@
             tpLogs.TabIndex = 0;
             tpLogs.Text = "Logs";
             tpLogs.UseVisualStyleBackColor = true;
-            // 
-            // tListedCount
-            // 
-            tListedCount.Location = new System.Drawing.Point(295, 235);
-            tListedCount.Name = "tListedCount";
-            tListedCount.Size = new System.Drawing.Size(107, 23);
-            tListedCount.TabIndex = 13;
-            tListedCount.Text = "1";
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Location = new System.Drawing.Point(286, 216);
-            label8.Name = "label8";
-            label8.Size = new System.Drawing.Size(257, 16);
-            label8.TabIndex = 12;
-            label8.Text = "Number of times to keep this entry listed on AH";
-            // 
-            // btnUpdateAhItem
-            // 
-            btnUpdateAhItem.Location = new System.Drawing.Point(286, 291);
-            btnUpdateAhItem.Name = "btnUpdateAhItem";
-            btnUpdateAhItem.Size = new System.Drawing.Size(116, 23);
-            btnUpdateAhItem.TabIndex = 14;
-            btnUpdateAhItem.Text = "Update/Add";
-            btnUpdateAhItem.UseVisualStyleBackColor = true;
-            // 
-            // btnRemoveItem
-            // 
-            btnRemoveItem.Location = new System.Drawing.Point(408, 291);
-            btnRemoveItem.Name = "btnRemoveItem";
-            btnRemoveItem.Size = new System.Drawing.Size(116, 23);
-            btnRemoveItem.TabIndex = 15;
-            btnRemoveItem.Text = "Remove";
-            btnRemoveItem.UseVisualStyleBackColor = true;
             // 
             // AhBotForm
             // 
@@ -406,13 +417,14 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox tStartBid;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox tSalePriceAll;
+        private System.Windows.Forms.TextBox tBuyOutPrice;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox tSaleAmount;
+        private System.Windows.Forms.TextBox tSaleQuantity;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tListedCount;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btnRemoveItem;
         private System.Windows.Forms.Button btnUpdateAhItem;
+        private System.Windows.Forms.ListBox lbAhList;
     }
 }

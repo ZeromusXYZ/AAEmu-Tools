@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AAEmu.DBEditor.data;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +15,7 @@ namespace AAEmu.DBEditor.tools.ahbot
         /// ItemId of listed item
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
-        public long ItemId { get; set; }
+        public int ItemId { get; set; }
 
         /// <summary>
         /// ItemId of listed item
@@ -45,5 +46,13 @@ namespace AAEmu.DBEditor.tools.ahbot
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public long StartBid { get; set; }
+
+        public override string ToString()
+        {
+            var itemNamePart = Data.Server?.LocalizedText?.GetValueOrDefault(("items", "name", ItemId)) ?? $"<item:{ItemId}>";
+            var countPart = Quantity > 1 ? $" x {Quantity}" : "";
+            var gradePart = GradeId > 0 ? $"(grade{GradeId}) " : "";
+            return gradePart + itemNamePart + countPart;
+        }
     }
 }
