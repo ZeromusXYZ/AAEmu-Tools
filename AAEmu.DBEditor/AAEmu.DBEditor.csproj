@@ -17,12 +17,15 @@
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Models\Server\**" />
+    <EmbeddedResource Remove="Models\Server\**" />
+    <None Remove="Models\Server\**" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="AAEmu.DBEditor.ico" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="data\gamedb\" />
-    <Folder Include="Models\Server\Game\" />
-    <Folder Include="Models\Server\Login\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AAPacker" Version="1.1.2" />

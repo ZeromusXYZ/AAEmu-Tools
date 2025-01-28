@@ -4,26 +4,30 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Windows.Forms;
 using AAEmu.DBEditor.data;
 using AAEmu.DBEditor.data.gamedb;
 using AAEmu.DBEditor.forms.server;
+using AAEmu.DBEditor.Models.aaemu.webapi;
+using AAEmu.DBEditor.utils;
 using Newtonsoft.Json;
+using Item = AAEmu.DBEditor.data.gamedb.Item;
 
 namespace AAEmu.DBEditor.tools.ahbot
 {
     public partial class AhBotForm : Form
     {
         private static AhBotForm _instance;
+        public static AhBotForm Instance => _instance ??= new AhBotForm();
+
         private string AhBotCharacter { get; set; }
         private string AhBotAccount { get; set; }
         private Dictionary<long, TreeNode> ItemNodes { get; set; } = [];
         private AhBotSetting Settings { get; set; } = new();
         private AhBotEntry SelectedAhBotItemEntry { get; set; }
         private Item SelectedItem { get; set; }
-
-
-        public static AhBotForm Instance => _instance ??= new AhBotForm();
+        private List<AuctionLot> ServerAhListingCache { get; set; } = [];
 
         public AhBotForm()
         {
@@ -209,7 +213,7 @@ namespace AAEmu.DBEditor.tools.ahbot
             }
             catch (Exception exception)
             {
-                // MessageBox.Show(exception.Message);
+                MessageBox.Show(exception.Message);
             }
         }
 
@@ -231,7 +235,14 @@ namespace AAEmu.DBEditor.tools.ahbot
             // Gray out everything first
             foreach (var (itemId, itemNode) in ItemNodes)
             {
-                itemNode.ForeColor = SystemColors.GrayText;
+                itemNode.ForeColor = Color.LightGray;
+            }
+
+            foreach (var auctionLot in ServerAhListingCache)
+            {
+                if (!ItemNodes.TryGetValue(auctionLot.Item.TemplateId, out var itemNode))
+                    continue;
+                itemNode.ForeColor = Color.DarkBlue;
             }
 
             foreach (var settingsItem in Settings.Items)
@@ -418,6 +429,26 @@ namespace AAEmu.DBEditor.tools.ahbot
             }
 
             tvAhList_AfterSelect(tvAhList, new TreeViewEventArgs(tvAhList.SelectedNode));
+        }
+
+        private void btnQueryServerAH_Click(object sender, EventArgs e)
+        {
+            // TODO: Get this from settings
+            var serverHostName = "127.0.0.1";
+            var queryUrl = $"http://{serverHostName}:1280/api/auction/list";
+
+            var jsonResult = HttpHelper.SimpleGetUriAsString(queryUrl, 5000);
+            //MessageBox.Show(jsonResult);
+            try
+            {
+                var ahListResult = JsonConvert.DeserializeObject<AuctionLotList>(jsonResult);
+                ServerAhListingCache = ahListResult.Items;
+                UpdateFromSettings();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to get AH data from server.\n\nURL: {queryUrl}\n\n{ex.Message}");
+            }
         }
     }
 }

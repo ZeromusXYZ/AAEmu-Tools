@@ -59,6 +59,7 @@
             label4 = new System.Windows.Forms.Label();
             tvAhList = new System.Windows.Forms.TreeView();
             tpLogs = new System.Windows.Forms.TabPage();
+            btnQueryServerAH = new System.Windows.Forms.Button();
             tcAhBot.SuspendLayout();
             tpSettings.SuspendLayout();
             tpAhList.SuspendLayout();
@@ -190,6 +191,7 @@
             // 
             // tpAhList
             // 
+            tpAhList.Controls.Add(btnQueryServerAH);
             tpAhList.Controls.Add(lbAhList);
             tpAhList.Controls.Add(btnRemoveItem);
             tpAhList.Controls.Add(btnUpdateAhItem);
@@ -218,14 +220,14 @@
             // lbAhList
             // 
             lbAhList.FormattingEnabled = true;
-            lbAhList.Location = new System.Drawing.Point(251, 6);
+            lbAhList.Location = new System.Drawing.Point(251, 38);
             lbAhList.Name = "lbAhList";
-            lbAhList.Size = new System.Drawing.Size(185, 356);
+            lbAhList.Size = new System.Drawing.Size(185, 324);
             lbAhList.TabIndex = 16;
             // 
             // btnRemoveItem
             // 
-            btnRemoveItem.Location = new System.Drawing.Point(564, 291);
+            btnRemoveItem.Location = new System.Drawing.Point(564, 323);
             btnRemoveItem.Name = "btnRemoveItem";
             btnRemoveItem.Size = new System.Drawing.Size(116, 23);
             btnRemoveItem.TabIndex = 15;
@@ -234,7 +236,7 @@
             // 
             // btnUpdateAhItem
             // 
-            btnUpdateAhItem.Location = new System.Drawing.Point(442, 291);
+            btnUpdateAhItem.Location = new System.Drawing.Point(442, 323);
             btnUpdateAhItem.Name = "btnUpdateAhItem";
             btnUpdateAhItem.Size = new System.Drawing.Size(116, 23);
             btnUpdateAhItem.TabIndex = 14;
@@ -244,7 +246,7 @@
             // 
             // tListedCount
             // 
-            tListedCount.Location = new System.Drawing.Point(451, 235);
+            tListedCount.Location = new System.Drawing.Point(451, 267);
             tListedCount.Name = "tListedCount";
             tListedCount.Size = new System.Drawing.Size(107, 23);
             tListedCount.TabIndex = 13;
@@ -253,7 +255,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new System.Drawing.Point(442, 216);
+            label8.Location = new System.Drawing.Point(442, 248);
             label8.Name = "label8";
             label8.Size = new System.Drawing.Size(257, 16);
             label8.TabIndex = 12;
@@ -261,7 +263,7 @@
             // 
             // tStartBid
             // 
-            tStartBid.Location = new System.Drawing.Point(642, 178);
+            tStartBid.Location = new System.Drawing.Point(642, 210);
             tStartBid.Name = "tStartBid";
             tStartBid.Size = new System.Drawing.Size(107, 23);
             tStartBid.TabIndex = 11;
@@ -270,7 +272,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new System.Drawing.Point(633, 159);
+            label7.Location = new System.Drawing.Point(633, 191);
             label7.Name = "label7";
             label7.Size = new System.Drawing.Size(155, 16);
             label7.TabIndex = 10;
@@ -278,7 +280,7 @@
             // 
             // tBuyOutPrice
             // 
-            tBuyOutPrice.Location = new System.Drawing.Point(451, 178);
+            tBuyOutPrice.Location = new System.Drawing.Point(451, 210);
             tBuyOutPrice.Name = "tBuyOutPrice";
             tBuyOutPrice.Size = new System.Drawing.Size(107, 23);
             tBuyOutPrice.TabIndex = 9;
@@ -287,7 +289,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new System.Drawing.Point(442, 159);
+            label6.Location = new System.Drawing.Point(442, 191);
             label6.Name = "label6";
             label6.Size = new System.Drawing.Size(111, 16);
             label6.TabIndex = 8;
@@ -295,7 +297,7 @@
             // 
             // tSaleQuantity
             // 
-            tSaleQuantity.Location = new System.Drawing.Point(451, 122);
+            tSaleQuantity.Location = new System.Drawing.Point(451, 154);
             tSaleQuantity.Name = "tSaleQuantity";
             tSaleQuantity.Size = new System.Drawing.Size(107, 23);
             tSaleQuantity.TabIndex = 7;
@@ -304,7 +306,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new System.Drawing.Point(442, 103);
+            label5.Location = new System.Drawing.Point(442, 135);
             label5.Name = "label5";
             label5.Size = new System.Drawing.Size(124, 16);
             label5.TabIndex = 6;
@@ -314,7 +316,7 @@
             // 
             cbGrade.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             cbGrade.FormattingEnabled = true;
-            cbGrade.Location = new System.Drawing.Point(451, 66);
+            cbGrade.Location = new System.Drawing.Point(451, 98);
             cbGrade.Name = "cbGrade";
             cbGrade.Size = new System.Drawing.Size(183, 24);
             cbGrade.TabIndex = 5;
@@ -323,7 +325,7 @@
             // lGrade
             // 
             lGrade.AutoSize = true;
-            lGrade.Location = new System.Drawing.Point(442, 47);
+            lGrade.Location = new System.Drawing.Point(442, 79);
             lGrade.Name = "lGrade";
             lGrade.Size = new System.Drawing.Size(38, 16);
             lGrade.TabIndex = 4;
@@ -332,7 +334,7 @@
             // lItemId
             // 
             lItemId.AutoSize = true;
-            lItemId.Location = new System.Drawing.Point(451, 22);
+            lItemId.Location = new System.Drawing.Point(451, 54);
             lItemId.Name = "lItemId";
             lItemId.Size = new System.Drawing.Size(59, 16);
             lItemId.TabIndex = 3;
@@ -341,7 +343,7 @@
             // lItemName
             // 
             lItemName.AutoSize = true;
-            lItemName.Location = new System.Drawing.Point(556, 22);
+            lItemName.Location = new System.Drawing.Point(556, 54);
             lItemName.Name = "lItemName";
             lItemName.Size = new System.Drawing.Size(78, 16);
             lItemName.TabIndex = 2;
@@ -350,7 +352,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new System.Drawing.Point(442, 6);
+            label4.Location = new System.Drawing.Point(442, 38);
             label4.Name = "label4";
             label4.Size = new System.Drawing.Size(30, 16);
             label4.TabIndex = 1;
@@ -359,9 +361,9 @@
             // tvAhList
             // 
             tvAhList.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            tvAhList.Location = new System.Drawing.Point(6, 6);
+            tvAhList.Location = new System.Drawing.Point(6, 38);
             tvAhList.Name = "tvAhList";
-            tvAhList.Size = new System.Drawing.Size(239, 407);
+            tvAhList.Size = new System.Drawing.Size(239, 375);
             tvAhList.TabIndex = 0;
             tvAhList.AfterSelect += tvAhList_AfterSelect;
             // 
@@ -374,6 +376,16 @@
             tpLogs.TabIndex = 0;
             tpLogs.Text = "Logs";
             tpLogs.UseVisualStyleBackColor = true;
+            // 
+            // btnQueryServerAH
+            // 
+            btnQueryServerAH.Location = new System.Drawing.Point(6, 9);
+            btnQueryServerAH.Name = "btnQueryServerAH";
+            btnQueryServerAH.Size = new System.Drawing.Size(239, 23);
+            btnQueryServerAH.TabIndex = 17;
+            btnQueryServerAH.Text = "Update from server";
+            btnQueryServerAH.UseVisualStyleBackColor = true;
+            btnQueryServerAH.Click += btnQueryServerAH_Click;
             // 
             // AhBotForm
             // 
@@ -426,5 +438,6 @@
         private System.Windows.Forms.Button btnRemoveItem;
         private System.Windows.Forms.Button btnUpdateAhItem;
         private System.Windows.Forms.ListBox lbAhList;
+        private System.Windows.Forms.Button btnQueryServerAH;
     }
 }
