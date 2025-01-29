@@ -4,8 +4,8 @@ using Newtonsoft.Json;
 namespace AAEmu.DBEditor.Models.aaemu.webapi;
 
 [JsonObject(MemberSerialization.OptIn)]
-public class AuctionLotList
+public class JsonAuctionLotList
 {
     [JsonProperty]
-    public List<AuctionLot> Items { get; set; }
+    public List<JsonAuctionLot> Items { get; set; }
 }

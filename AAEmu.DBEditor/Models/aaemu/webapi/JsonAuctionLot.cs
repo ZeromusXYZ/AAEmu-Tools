@@ -4,7 +4,7 @@ using System;
 namespace AAEmu.DBEditor.Models.aaemu.webapi;
 
 [JsonObject(MemberSerialization.OptIn)]
-public class AuctionLot
+public class JsonAuctionLot
 {
     [JsonProperty]
     public ulong Id { get; set; }
@@ -13,7 +13,7 @@ public class AuctionLot
     public byte Duration { get; set; } // 0 is 6 hours, 1 is 12 hours, 2 is 24 hours, 3 is 48 hours
 
     [JsonProperty]
-    public Item Item { get; set; }
+    public JsonItem Item { get; set; }
 
     [JsonProperty]
     public DateTime EndTime { get; set; }

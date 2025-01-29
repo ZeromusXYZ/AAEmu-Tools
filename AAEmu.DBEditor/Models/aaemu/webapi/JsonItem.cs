@@ -5,7 +5,7 @@ using System;
 
 namespace AAEmu.DBEditor.Models.aaemu.webapi;
 
-public class Item
+public class JsonItem
 {
     [JsonProperty]
     public byte WorldId { get; set; }
@@ -20,7 +20,7 @@ public class Item
     public uint TemplateId { get; set; }
         
     [JsonProperty]
-    public virtual uint DetailBytesLength { get; } = 0;
+    public uint DetailBytesLength { get; set; }
 
     [JsonProperty]
     public SlotType SlotType { get; set; }

@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Windows.Forms;
 using AAEmu.DBEditor.data;
 using AAEmu.DBEditor.data.gamedb;
@@ -12,22 +11,21 @@ using AAEmu.DBEditor.forms.server;
 using AAEmu.DBEditor.Models.aaemu.webapi;
 using AAEmu.DBEditor.utils;
 using Newtonsoft.Json;
-using Item = AAEmu.DBEditor.data.gamedb.Item;
 
 namespace AAEmu.DBEditor.tools.ahbot
 {
     public partial class AhBotForm : Form
     {
+        private const string AhBotSettingsFileName = "ahbot.json";
         private static AhBotForm _instance;
         public static AhBotForm Instance => _instance ??= new AhBotForm();
 
-        private string AhBotCharacter { get; set; }
-        private string AhBotAccount { get; set; }
         private Dictionary<long, TreeNode> ItemNodes { get; set; } = [];
-        private AhBotSetting Settings { get; set; } = new();
+        private AhBotSettings Settings { get; set; } = new();
+        private AhBotListingSetting ListingSettings { get; set; } = new();
         private AhBotEntry SelectedAhBotItemEntry { get; set; }
         private Item SelectedItem { get; set; }
-        private List<AuctionLot> ServerAhListingCache { get; set; } = [];
+        private List<JsonAuctionLot> ServerAhListingCache { get; set; } = [];
 
         public AhBotForm()
         {
@@ -50,8 +48,8 @@ namespace AAEmu.DBEditor.tools.ahbot
                     {
                         lAhBotAccount.Text = botAccount.Username;
 
-                        AhBotCharacter = botCharacter.Name;
-                        AhBotAccount = botAccount.Username;
+                        Settings.CharacterName = botCharacter.Name;
+                        Settings.AccountName = botAccount.Username;
                         return;
                     }
                 }
@@ -201,14 +199,64 @@ namespace AAEmu.DBEditor.tools.ahbot
         {
             try
             {
-                var settingsString = File.ReadAllText("ahbot.json");
-                if (!TryDeserializeObject<AhBotSetting>(settingsString, out var res, out var ex))
+                var settingsFile = Path.Combine(Application.StartupPath, AhBotSettingsFileName);
+                if (File.Exists(settingsFile))
                 {
-                    MessageBox.Show(ex.Message);
-                    return;
+                    var settingsString = File.ReadAllText(settingsFile);
+                    if (!TryDeserializeObject<AhBotSettings>(settingsString, out var newSettings, out var ex1))
+                    {
+                        MessageBox.Show(ex1.Message);
+                        return;
+                    }
+
+                    Settings = newSettings;
+
+
+                    if (!string.IsNullOrWhiteSpace(Settings.AccountName) && Data.MySqlDb.Login.Users.Any(x => x.Username == Settings.AccountName))
+                    {
+                        lAhBotAccount.Text = Settings.AccountName;
+                    }
+                    else
+                    {
+                        Settings.AccountName = string.Empty;
+                        lAhBotAccount.Text = @"<no account selected>";
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(Settings.CharacterName) && Data.MySqlDb.Game.Characters.Any(x => x.Name == Settings.CharacterName))
+                    {
+                        lAhBotName.Text = Settings.CharacterName;
+                    }
+                    else
+                    {
+                        Settings.CharacterName = string.Empty;
+                        lAhBotName.Text = @"<no character selected>";
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(Settings.ServerName) && Data.MySqlDb.Login.GameServers.Any(x => x.Name == Settings.ServerName))
+                    {
+                        cbServers.SelectedIndex = cbServers.Items.IndexOf(Settings.ServerName);
+                    }
+                    else
+                    {
+                        Settings.ServerName = string.Empty;
+                        cbServers.SelectedIndex = -1;
+                    }
                 }
 
-                Settings = res;
+                var settingsListingFile = Path.Combine(Settings.ListingsFile);
+                if (File.Exists(settingsListingFile))
+                {
+                    var settingsListingString = File.ReadAllText(settingsListingFile);
+                    if (!TryDeserializeObject<AhBotListingSetting>(settingsListingString, out var resListings,
+                            out var ex2))
+                    {
+                        MessageBox.Show(ex2.Message);
+                        return;
+                    }
+
+                    ListingSettings = resListings;
+                }
+
                 UpdateFromSettings();
             }
             catch (Exception exception)
@@ -222,7 +270,7 @@ namespace AAEmu.DBEditor.tools.ahbot
             var res = JsonConvert.SerializeObject(Settings);
             try
             {
-                File.WriteAllText("ahbot.json", res ?? string.Empty);
+                File.WriteAllText(Path.Combine(Application.StartupPath, AhBotSettingsFileName), res ?? string.Empty);
             }
             catch (Exception ex)
             {
@@ -245,7 +293,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                 itemNode.ForeColor = Color.DarkBlue;
             }
 
-            foreach (var settingsItem in Settings.Items)
+            foreach (var settingsItem in ListingSettings.Items)
             {
                 if (!ItemNodes.TryGetValue(settingsItem.ItemId, out var itemNode))
                     continue;
@@ -301,7 +349,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                     tListedCount.Text = @"1";
                     btnUpdateAhItem.Enabled = true;
 
-                    var ahBotItems = Settings.Items.Where(x => x.ItemId == itemId).ToList();
+                    var ahBotItems = ListingSettings.Items.Where(x => x.ItemId == itemId).ToList();
                     if (ahBotItems.Any())
                     {
                         /*
@@ -425,7 +473,7 @@ namespace AAEmu.DBEditor.tools.ahbot
 
             if (isNewEntry)
             {
-                Settings.Items.Add(thisItem);
+                ListingSettings.Items.Add(thisItem);
             }
 
             tvAhList_AfterSelect(tvAhList, new TreeViewEventArgs(tvAhList.SelectedNode));
@@ -441,7 +489,7 @@ namespace AAEmu.DBEditor.tools.ahbot
             //MessageBox.Show(jsonResult);
             try
             {
-                var ahListResult = JsonConvert.DeserializeObject<AuctionLotList>(jsonResult);
+                var ahListResult = JsonConvert.DeserializeObject<JsonAuctionLotList>(jsonResult);
                 ServerAhListingCache = ahListResult.Items;
                 UpdateFromSettings();
             }
@@ -449,6 +497,11 @@ namespace AAEmu.DBEditor.tools.ahbot
             {
                 MessageBox.Show($"Failed to get AH data from server.\n\nURL: {queryUrl}\n\n{ex.Message}");
             }
+        }
+
+        private void cbServers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Settings.ServerName = cbServers.Text;
         }
     }
 }

@@ -41,6 +41,7 @@
             btnSave = new System.Windows.Forms.Button();
             btnLoadConfig = new System.Windows.Forms.Button();
             tpAhList = new System.Windows.Forms.TabPage();
+            btnQueryServerAH = new System.Windows.Forms.Button();
             lbAhList = new System.Windows.Forms.ListBox();
             btnRemoveItem = new System.Windows.Forms.Button();
             btnUpdateAhItem = new System.Windows.Forms.Button();
@@ -59,7 +60,6 @@
             label4 = new System.Windows.Forms.Label();
             tvAhList = new System.Windows.Forms.TreeView();
             tpLogs = new System.Windows.Forms.TabPage();
-            btnQueryServerAH = new System.Windows.Forms.Button();
             tcAhBot.SuspendLayout();
             tpSettings.SuspendLayout();
             tpAhList.SuspendLayout();
@@ -128,6 +128,7 @@
             cbServers.Name = "cbServers";
             cbServers.Size = new System.Drawing.Size(158, 24);
             cbServers.TabIndex = 7;
+            cbServers.SelectedIndexChanged += cbServers_SelectedIndexChanged;
             // 
             // btnConnect
             // 
@@ -216,6 +217,16 @@
             tpAhList.TabIndex = 1;
             tpAhList.Text = "AH";
             tpAhList.UseVisualStyleBackColor = true;
+            // 
+            // btnQueryServerAH
+            // 
+            btnQueryServerAH.Location = new System.Drawing.Point(6, 9);
+            btnQueryServerAH.Name = "btnQueryServerAH";
+            btnQueryServerAH.Size = new System.Drawing.Size(239, 23);
+            btnQueryServerAH.TabIndex = 17;
+            btnQueryServerAH.Text = "Update from server";
+            btnQueryServerAH.UseVisualStyleBackColor = true;
+            btnQueryServerAH.Click += btnQueryServerAH_Click;
             // 
             // lbAhList
             // 
@@ -376,16 +387,6 @@
             tpLogs.TabIndex = 0;
             tpLogs.Text = "Logs";
             tpLogs.UseVisualStyleBackColor = true;
-            // 
-            // btnQueryServerAH
-            // 
-            btnQueryServerAH.Location = new System.Drawing.Point(6, 9);
-            btnQueryServerAH.Name = "btnQueryServerAH";
-            btnQueryServerAH.Size = new System.Drawing.Size(239, 23);
-            btnQueryServerAH.TabIndex = 17;
-            btnQueryServerAH.Text = "Update from server";
-            btnQueryServerAH.UseVisualStyleBackColor = true;
-            btnQueryServerAH.Click += btnQueryServerAH_Click;
             // 
             // AhBotForm
             // 
