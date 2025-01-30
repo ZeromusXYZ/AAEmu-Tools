@@ -4,12 +4,14 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using AAEmu.DBEditor.data;
 using AAEmu.DBEditor.data.gamedb;
 using AAEmu.DBEditor.forms.server;
 using AAEmu.DBEditor.Models.aaemu.webapi;
 using AAEmu.DBEditor.utils;
+using AAPacker;
 using Newtonsoft.Json;
 
 namespace AAEmu.DBEditor.tools.ahbot
@@ -30,6 +32,14 @@ namespace AAEmu.DBEditor.tools.ahbot
         public AhBotForm()
         {
             InitializeComponent();
+        }
+
+        private void Log(string s)
+        {
+            Invoke(() =>
+            {
+                tLog.Text += $@"[{DateTime.Now:HH:mm:ss}] {s}{Environment.NewLine}";
+            });
         }
 
         private void btnPickAhCharacter_Click(object sender, EventArgs e)
@@ -63,6 +73,7 @@ namespace AAEmu.DBEditor.tools.ahbot
         {
             try
             {
+                Log("Getting game server list");
                 // Populate Servers
                 cbServers.Items.Clear();
                 var serverList = Data.MySqlDb.Login.GameServers.Where(s => s.Hidden == false);
@@ -71,6 +82,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                     cbServers.Items.Add(server.Name);
                 }
 
+                Log("Generating AH categories");
                 // Populate Items List
                 var catA = new Dictionary<long, TreeNode>();
                 var catB = new Dictionary<long, TreeNode>();
@@ -107,6 +119,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                     }
                 }
 
+                Log("Load item grades");
                 // Populate Grades
                 cbGrade.Items.Clear();
                 foreach (var itemGrade in Data.Server.CompactSqlite.ItemGrades.OrderBy(g => g.Id))
@@ -120,6 +133,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                 if (cbGrade.Items.Count > 0)
                     cbGrade.SelectedIndex = cbGrade.Items.Count - 1;
 
+                Log("Populating AH Listing");
                 // Populate Items
                 foreach (var item in Data.Server.CompactSqlite.Items.Where(x =>
                              (x.Price > 1) && (x.Refund > 1) && (x.AuctionACategoryId > 0)))
@@ -129,7 +143,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                     // Localized name
                     var itemName = Data.Server.LocalizedText.GetValueOrDefault(("items", "name", item.Id)) ?? "";
                     // Not translated?
-                    if (string.IsNullOrWhiteSpace(itemName) || itemName.StartsWith("DO NOT TRANSLATE"))
+                    if (string.IsNullOrWhiteSpace(itemName) || itemName.Contains("DO NOT TRANSLATE"))
                         itemName = item.Name;
                     // No name?
                     if (string.IsNullOrWhiteSpace(itemName))
@@ -202,6 +216,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                 var settingsFile = Path.Combine(Application.StartupPath, AhBotSettingsFileName);
                 if (File.Exists(settingsFile))
                 {
+                    Log("Loading AH Bot configuration");
                     var settingsString = File.ReadAllText(settingsFile);
                     if (!TryDeserializeObject<AhBotSettings>(settingsString, out var newSettings, out var ex1))
                     {
@@ -242,10 +257,15 @@ namespace AAEmu.DBEditor.tools.ahbot
                         cbServers.SelectedIndex = -1;
                     }
                 }
+                else
+                {
+                    Log($"AH Bot configuration file not found: {settingsFile}");
+                }
 
                 var settingsListingFile = Path.Combine(Settings.ListingsFile);
                 if (File.Exists(settingsListingFile))
                 {
+                    Log($"Loading AH listing settings from: {settingsListingFile}");
                     var settingsListingString = File.ReadAllText(settingsListingFile);
                     if (!TryDeserializeObject<AhBotListingSetting>(settingsListingString, out var resListings,
                             out var ex2))
@@ -253,8 +273,11 @@ namespace AAEmu.DBEditor.tools.ahbot
                         MessageBox.Show(ex2.Message);
                         return;
                     }
-
                     ListingSettings = resListings;
+                }
+                else
+                {
+                    Log($"Defined listing file not found: {settingsListingFile}");
                 }
 
                 UpdateFromSettings();
@@ -268,12 +291,15 @@ namespace AAEmu.DBEditor.tools.ahbot
         private void btnSave_Click(object sender, EventArgs e)
         {
             var res = JsonConvert.SerializeObject(Settings);
+            var settingsFile = Path.Combine(Application.StartupPath, AhBotSettingsFileName);
             try
             {
-                File.WriteAllText(Path.Combine(Application.StartupPath, AhBotSettingsFileName), res ?? string.Empty);
+                File.WriteAllText(settingsFile, res ?? string.Empty);
+                Log($"Saved settings to: {settingsFile}");
             }
             catch (Exception ex)
             {
+                Log($"Failed to save: {settingsFile}");
                 MessageBox.Show(ex.Message);
             }
         }
@@ -474,6 +500,11 @@ namespace AAEmu.DBEditor.tools.ahbot
             if (isNewEntry)
             {
                 ListingSettings.Items.Add(thisItem);
+                Log($"Added new AH Bot entry for ItemId: {thisItem.ItemId}");
+            }
+            else
+            {
+                Log($"Updated AH Bot entry for ItemId: {thisItem.ItemId}");
             }
 
             tvAhList_AfterSelect(tvAhList, new TreeViewEventArgs(tvAhList.SelectedNode));
@@ -481,27 +512,105 @@ namespace AAEmu.DBEditor.tools.ahbot
 
         private void btnQueryServerAH_Click(object sender, EventArgs e)
         {
+            Log("Updating AH listing from live server");
             // TODO: Get this from settings
             var serverHostName = "127.0.0.1";
             var queryUrl = $"http://{serverHostName}:1280/api/auction/list";
+            try
+            {
+                var server = Data.MySqlDb.Login.GameServers.FirstOrDefault(x => x.Name == Settings.ServerName);
+                if (server == null)
+                {
+                    Log($"Could not find information for server {Settings.ServerName}");
+                    return;
+                }
+
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
 
             var jsonResult = HttpHelper.SimpleGetUriAsString(queryUrl, 5000);
-            //MessageBox.Show(jsonResult);
             try
             {
                 var ahListResult = JsonConvert.DeserializeObject<JsonAuctionLotList>(jsonResult);
                 ServerAhListingCache = ahListResult.Items;
+                Log($"Queried {ServerAhListingCache.Count} entries from the live server");
                 UpdateFromSettings();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Failed to get AH data from server.\n\nURL: {queryUrl}\n\n{ex.Message}");
+                var errorMsg = $"Failed to get AH data from server.\n\nURL: {queryUrl}\n\n{ex.Message}";
+                Log(errorMsg);
+                MessageBox.Show(errorMsg);
             }
         }
 
         private void cbServers_SelectedIndexChanged(object sender, EventArgs e)
         {
             Settings.ServerName = cbServers.Text;
+        }
+
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            // Toggle background worker thread
+            if (!bgwAhCheckLoop.IsBusy)
+            {
+                Log("Starting AH worker");
+                btnConnect.Enabled = false;
+                btnConnect.Text = @"Starting";
+                bgwAhCheckLoop.RunWorkerAsync();
+            }
+            else
+            {
+                if (!bgwAhCheckLoop.CancellationPending)
+                {
+                    Log("Stopping AH worker");
+                    btnConnect.Text = @"Stopping ...";
+                    btnConnect.Enabled = false;
+                    bgwAhCheckLoop.CancelAsync();
+                }
+            }
+        }
+
+        private void bgwAhCheckLoop_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            // Init connection
+            Log("Initializing check loop");
+
+            Invoke(() => 
+            {
+                btnConnect.Text = @"Stop";
+                btnConnect.Enabled = true;
+            });
+            
+            // Main loop
+            while (bgwAhCheckLoop.IsBusy)
+            {
+                // Check own listings
+                Thread.Sleep(1000);
+                if (bgwAhCheckLoop.CancellationPending)
+                    break;
+            }
+            // Clean up
+            Log("Ended check loop");
+        }
+
+        private void bgwAhCheckLoop_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        {
+            //
+        }
+
+        private void bgwAhCheckLoop_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            Invoke(() =>
+            {
+                btnConnect.Text = @"Start";
+                btnConnect.Enabled = true;
+            });
+            Log("AH Worker stopped");
         }
     }
 }

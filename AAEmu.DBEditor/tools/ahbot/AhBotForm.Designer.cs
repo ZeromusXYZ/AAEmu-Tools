@@ -60,9 +60,12 @@
             label4 = new System.Windows.Forms.Label();
             tvAhList = new System.Windows.Forms.TreeView();
             tpLogs = new System.Windows.Forms.TabPage();
+            tLog = new System.Windows.Forms.TextBox();
+            bgwAhCheckLoop = new System.ComponentModel.BackgroundWorker();
             tcAhBot.SuspendLayout();
             tpSettings.SuspendLayout();
             tpAhList.SuspendLayout();
+            tpLogs.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -132,12 +135,13 @@
             // 
             // btnConnect
             // 
-            btnConnect.Location = new System.Drawing.Point(222, 65);
+            btnConnect.Location = new System.Drawing.Point(8, 211);
             btnConnect.Name = "btnConnect";
-            btnConnect.Size = new System.Drawing.Size(160, 43);
+            btnConnect.Size = new System.Drawing.Size(169, 43);
             btnConnect.TabIndex = 8;
-            btnConnect.Text = "Connect";
+            btnConnect.Text = "Start";
             btnConnect.UseVisualStyleBackColor = true;
+            btnConnect.Click += btnConnect_Click;
             // 
             // tcAhBot
             // 
@@ -380,6 +384,7 @@
             // 
             // tpLogs
             // 
+            tpLogs.Controls.Add(tLog);
             tpLogs.Location = new System.Drawing.Point(4, 25);
             tpLogs.Name = "tpLogs";
             tpLogs.Padding = new System.Windows.Forms.Padding(3);
@@ -387,6 +392,24 @@
             tpLogs.TabIndex = 0;
             tpLogs.Text = "Logs";
             tpLogs.UseVisualStyleBackColor = true;
+            // 
+            // tLog
+            // 
+            tLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            tLog.Font = new System.Drawing.Font("Consolas", 9F);
+            tLog.Location = new System.Drawing.Point(3, 3);
+            tLog.Multiline = true;
+            tLog.Name = "tLog";
+            tLog.Size = new System.Drawing.Size(786, 415);
+            tLog.TabIndex = 0;
+            // 
+            // bgwAhCheckLoop
+            // 
+            bgwAhCheckLoop.WorkerReportsProgress = true;
+            bgwAhCheckLoop.WorkerSupportsCancellation = true;
+            bgwAhCheckLoop.DoWork += bgwAhCheckLoop_DoWork;
+            bgwAhCheckLoop.ProgressChanged += bgwAhCheckLoop_ProgressChanged;
+            bgwAhCheckLoop.RunWorkerCompleted += bgwAhCheckLoop_RunWorkerCompleted;
             // 
             // AhBotForm
             // 
@@ -403,6 +426,8 @@
             tpSettings.PerformLayout();
             tpAhList.ResumeLayout(false);
             tpAhList.PerformLayout();
+            tpLogs.ResumeLayout(false);
+            tpLogs.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -440,5 +465,7 @@
         private System.Windows.Forms.Button btnUpdateAhItem;
         private System.Windows.Forms.ListBox lbAhList;
         private System.Windows.Forms.Button btnQueryServerAH;
+        private System.ComponentModel.BackgroundWorker bgwAhCheckLoop;
+        private System.Windows.Forms.TextBox tLog;
     }
 }
