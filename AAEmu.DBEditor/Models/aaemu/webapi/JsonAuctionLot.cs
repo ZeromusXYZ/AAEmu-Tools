@@ -1,5 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using AAEmu.DBEditor.utils;
+using AAEmu.DBEditor.data;
 
 namespace AAEmu.DBEditor.Models.aaemu.webapi;
 
@@ -65,4 +68,12 @@ public class JsonAuctionLot
 
     // [JsonProperty]
     // public int MaxStack { get; set; } // added in 3+
+    public override string ToString()
+    {
+        var itemNamePart = Data.Server?.LocalizedText?.GetValueOrDefault(("items", "name", Item.TemplateId)) ?? $"<item:{Item.TemplateId}>";
+        var countPart = Item?.Count > 1 ? $" x {Item?.Count}" : "";
+        var gradePart = (Data.Server?.LocalizedText?.GetValueOrDefault(("item_grades", "name", Item?.Grade ?? 0)) ?? $"<grade:{Item?.Grade ?? 0}>") + " ";
+        return $"(DB:{Id}) {gradePart}{itemNamePart}{countPart}";
+        // return $"{Id}, Item:{Item.TemplateId}, Grade: {Item.Grade} x {Item.Count} @ {AaTextHelper.CopperToString(DirectMoney)}";
+    }
 }

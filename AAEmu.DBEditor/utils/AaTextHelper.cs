@@ -16,7 +16,7 @@ namespace AAEmu.DBEditor.utils
         /// </summary>
         /// <param name="formattedText"></param>
         /// <param name="rt"></param>
-        public static void FormattedTextToRichtEdit(string formattedText, RichTextBox rt)
+        public static void FormattedTextToRichText(string formattedText, RichTextBox rt)
         {
             rt.Text = string.Empty;
             rt.SelectionColor = rt.ForeColor;
@@ -71,7 +71,7 @@ namespace AAEmu.DBEditor.utils
                 }
                 else if (restText.StartsWith("|c")) // hexcode color
                 {
-                    rt.SelectionColor = HexStringToARGBColor(restText.Substring(2, 8));
+                    rt.SelectionColor = HexStringToArgbColor(restText.Substring(2, 8));
                     restText = restText.Substring(10);
                 }
                 else if (restText.StartsWith("@ITEM_NAME(") && (nextEndBracket > 11))
@@ -148,26 +148,26 @@ namespace AAEmu.DBEditor.utils
         /// <summary>
         /// Convert a hex string to a .NET Color object.
         /// </summary>
-        /// <param name="hexColor">a hex string: "FFFFFFFF", "00000000"</param>
-        public static Color HexStringToARGBColor(string hexARGB)
+        /// <param name="hexArgb">a hex string: "FFFFFFFF", "00000000"</param>
+        public static Color HexStringToArgbColor(string hexArgb)
         {
             string a;
             string r;
             string g;
             string b;
-            if (hexARGB.Length == 8)
+            if (hexArgb.Length == 8)
             {
-                a = hexARGB.Substring(0, 2);
-                r = hexARGB.Substring(2, 2);
-                g = hexARGB.Substring(4, 2);
-                b = hexARGB.Substring(6, 2);
+                a = hexArgb.Substring(0, 2);
+                r = hexArgb.Substring(2, 2);
+                g = hexArgb.Substring(4, 2);
+                b = hexArgb.Substring(6, 2);
             }
-            else if (hexARGB.Length == 6)
+            else if (hexArgb.Length == 6)
             {
-                a = hexARGB.Substring(0, 2);
-                r = hexARGB.Substring(2, 2);
-                g = hexARGB.Substring(4, 2);
-                b = hexARGB.Substring(6, 2);
+                a = hexArgb.Substring(0, 2);
+                r = hexArgb.Substring(2, 2);
+                g = hexArgb.Substring(4, 2);
+                b = hexArgb.Substring(6, 2);
             }
             else
             {
@@ -195,6 +195,11 @@ namespace AAEmu.DBEditor.utils
             return color;
         }
 
+        /// <summary>
+        /// Converts copper coins count to a more human friendly string notation
+        /// </summary>
+        /// <param name="amount"></param>
+        /// <returns></returns>
         public static string CopperToString(long amount)
         {
             var gold = amount;
@@ -202,13 +207,24 @@ namespace AAEmu.DBEditor.utils
             gold /= 100;
             var silver = gold % 100;
             gold /= 100;
+
+            var res = string.Empty;
             if (gold > 0)
-                return $"{gold} g {silver} s {copper} c";
-
+                res += $"{gold}g";
             if (silver > 0)
-                return $"{silver} s {copper} c";
+            {
+                if (res.Length > 0)
+                    res += " ";
+                res += $"{silver}s";
+            }
+            if (copper > 0 || amount < 100)
+            {
+                if (res.Length > 0)
+                    res += " ";
+                res += $"{copper}c";
+            }
 
-            return $"{copper} c";
+            return res;
         }
     }
 }

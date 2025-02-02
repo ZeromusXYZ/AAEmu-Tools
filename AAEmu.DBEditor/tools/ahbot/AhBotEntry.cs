@@ -47,11 +47,14 @@ namespace AAEmu.DBEditor.tools.ahbot
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         public long StartBid { get; set; }
 
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        public string Comment { get; set; } = string.Empty;
+
         public override string ToString()
         {
             var itemNamePart = Data.Server?.LocalizedText?.GetValueOrDefault(("items", "name", ItemId)) ?? $"<item:{ItemId}>";
             var countPart = Quantity > 1 ? $" x {Quantity}" : "";
-            var gradePart = GradeId > 0 ? $"(grade{GradeId}) " : "";
+            var gradePart = (Data.Server?.LocalizedText?.GetValueOrDefault(("item_grades", "name", GradeId)) ?? $"<grade:{GradeId}>") + " ";
             return gradePart + itemNamePart + countPart;
         }
     }

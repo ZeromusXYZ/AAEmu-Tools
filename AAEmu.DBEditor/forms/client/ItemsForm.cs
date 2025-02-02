@@ -180,7 +180,7 @@ namespace AAEmu.DBEditor.forms.client
             var desc = Data.Server.GetText("items", "description", (long)item.Id, item.Description);
             // TODO: Add stats or equip effects to description
 
-            AaTextHelper.FormattedTextToRichtEdit(desc, rtItemDesc);
+            AaTextHelper.FormattedTextToRichText(desc, rtItemDesc);
 
             lItemIcon.ImageIndex = lvi.ImageIndex;
             lItemIcon.Text = lItemIcon.ImageIndex > 0 ? "" : "not found";

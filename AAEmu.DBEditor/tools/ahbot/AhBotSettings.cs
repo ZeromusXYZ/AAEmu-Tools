@@ -10,4 +10,6 @@ public class AhBotSettings
     [JsonProperty] public string AccountName { get; set; } = string.Empty;
     [JsonProperty] public string ServerName { get; set; } = string.Empty;
     [JsonProperty] public string ListingsFile { get; set; } = DefaultAhBotListingsFileName;
+    [JsonProperty] public long TotalEarned { get; set; }
+    [JsonProperty] public long TotalSalesCount { get; set; }
 }
