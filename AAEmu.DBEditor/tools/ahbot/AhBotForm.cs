@@ -12,7 +12,6 @@ using AAEmu.DBEditor.data.gamedb;
 using AAEmu.DBEditor.forms.server;
 using AAEmu.DBEditor.Models.aaemu.webapi;
 using AAEmu.DBEditor.utils;
-using AAPacker;
 using Newtonsoft.Json;
 
 namespace AAEmu.DBEditor.tools.ahbot
@@ -170,7 +169,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                     }
                 }
 
-                btnLoadConfig.PerformClick();
+                LoadSettings();
             }
             catch (Exception exception)
             {
@@ -209,6 +208,11 @@ namespace AAEmu.DBEditor.tools.ahbot
         }
 
         private void btnLoadConfig_Click(object sender, EventArgs e)
+        {
+            LoadSettings();
+        }
+
+        private void LoadSettings()
         {
             try
             {
@@ -292,6 +296,11 @@ namespace AAEmu.DBEditor.tools.ahbot
         }
 
         private void btnSave_Click(object sender, EventArgs e)
+        {
+            SaveSettings();
+        }
+
+        private void SaveSettings()
         {
             var res = JsonConvert.SerializeObject(Settings);
             var settingsFile = Path.Combine(Application.StartupPath, AhBotSettingsFileName);
@@ -539,7 +548,7 @@ namespace AAEmu.DBEditor.tools.ahbot
             }
 
             tvAhList_AfterSelect(tvAhList, new TreeViewEventArgs(tvAhList.SelectedNode));
-            btnSave.PerformClick();
+            SaveSettings();
         }
 
         private void btnQueryServerAH_Click(object sender, EventArgs e)
@@ -840,10 +849,11 @@ namespace AAEmu.DBEditor.tools.ahbot
                             // If it was a return mail (fail or cancel), destroy the items
                             var trashItems = mailToDelete.MailType is MailType.AucOffCancel or MailType.AucOffFail;
                             TryDeleteMail(deleteMailUrl, mailToDelete.Id, mailToDelete.SenderId, mailToDelete.ReceiverId, trashItems);
+                            Settings.TotalSalesCount++;
                         }
 
                         Settings.TotalEarned += totalReward;
-                        btnSave.PerformClick();
+                        SaveSettings();
                     }
                 }
             }
@@ -938,7 +948,7 @@ namespace AAEmu.DBEditor.tools.ahbot
             SelectedAhBotItemEntry = null;
             btnUpdateAhItem.Enabled = false;
             tvAhList_AfterSelect(tvAhList, new TreeViewEventArgs(tvAhList.SelectedNode));
-            btnSave.PerformClick();
+            SaveSettings();
         }
     }
 }

@@ -1,0 +1,158 @@
+{
+	"Items": [
+		{
+			"ItemEntryCount": 1,
+			"ItemId": 26634,
+			"Price": 50000,
+			"Quantity": 1,
+			"StartBid": 5000
+		},
+		{
+			"GradeId": 9,
+			"ItemEntryCount": 1,
+			"ItemId": 31409,
+			"Price": 25000000,
+			"Quantity": 1,
+			"StartBid": 22500000
+		},
+		{
+			"Comment": "",
+			"ItemEntryCount": 5,
+			"ItemId": 8017,
+			"Price": 50000,
+			"Quantity": 300,
+			"StartBid": 47500
+		},
+		{
+			"Comment": "",
+			"ItemEntryCount": 5,
+			"ItemId": 8008,
+			"Price": 50000,
+			"Quantity": 300,
+			"StartBid": 47500
+		},
+		{
+			"ItemEntryCount": 3,
+			"ItemId": 8337,
+			"Price": 100000,
+			"Quantity": 100,
+			"StartBid": 85000
+		},
+		{
+			"ItemEntryCount": 3,
+			"ItemId": 8348,
+			"Price": 100000,
+			"Quantity": 100,
+			"StartBid": 85000
+		},
+		{
+			"Comment": "",
+			"ItemEntryCount": 1,
+			"ItemId": 8022,
+			"Price": 50000,
+			"Quantity": 300,
+			"StartBid": 47500
+		},
+		{
+			"Comment": "",
+			"ItemEntryCount": 1,
+			"ItemId": 8023,
+			"Price": 100000,
+			"Quantity": 100,
+			"StartBid": 98500
+		},
+		{
+			"Comment": "",
+			"ItemEntryCount": 1,
+			"ItemId": 8027,
+			"Price": 200000,
+			"Quantity": 100,
+			"StartBid": 197500
+		},
+		{
+			"Comment": "",
+			"ItemEntryCount": 1,
+			"ItemId": 1386,
+			"Price": 500000,
+			"Quantity": 25,
+			"StartBid": 495000
+		},
+		{
+			"Comment": "",
+			"ItemEntryCount": 1,
+			"ItemId": 2201,
+			"Price": 100000,
+			"Quantity": 50,
+			"StartBid": 97500
+		},
+		{
+			"Comment": "",
+			"ItemEntryCount": 1,
+			"ItemId": 3411,
+			"Price": 100000,
+			"Quantity": 100,
+			"StartBid": 98500
+		},
+		{
+			"Comment": "",
+			"ItemEntryCount": 1,
+			"ItemId": 8007,
+			"Price": 50000,
+			"Quantity": 300,
+			"StartBid": 47500
+		},
+		{
+			"Comment": "",
+			"ItemEntryCount": 1,
+			"ItemId": 8053,
+			"Price": 150000,
+			"Quantity": 300,
+			"StartBid": 145000
+		},
+		{
+			"Comment": "",
+			"ItemEntryCount": 1,
+			"ItemId": 8357,
+			"Price": 150000,
+			"Quantity": 1000,
+			"StartBid": 145000
+		},
+		{
+			"ItemEntryCount": 3,
+			"ItemId": 16327,
+			"Price": 100000,
+			"Quantity": 100,
+			"StartBid": 85000
+		},
+		{
+			"ItemEntryCount": 3,
+			"ItemId": 8256,
+			"Price": 100000,
+			"Quantity": 100,
+			"StartBid": 85000
+		},
+		{
+			"ItemEntryCount": 1,
+			"ItemId": 8000055,
+			"Price": 500000,
+			"Quantity": 1
+		},
+		{
+			"Comment": "",
+			"ItemEntryCount": 1,
+			"ItemId": 15709,
+			"Price": 4000000,
+			"Quantity": 1,
+			"StartBid": 3950000
+		},
+		{
+			"Comment": "",
+			"ItemEntryCount": 3,
+			"ItemId": 8318,
+			"Price": 100000,
+			"Quantity": 100,
+			"StartBid": 85000
+		}
+	],
+	"Name": "Example"
+}
