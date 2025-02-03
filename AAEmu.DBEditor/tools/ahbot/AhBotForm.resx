@@ -117,6 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="textBox1.Text" xml:space="preserve">
+    <value>To use the Auction Bot, you will first need to create a character to use on your server.
+Make sure to have this character on it's own account (not required, but recommended)
+
+When done come back here and select that character to be used as the AH Bot as well as the server you want it to run on.
+
+Use the AH tab to set up your items you want the bot to list for people at what price and how many.
+
+When done, press the Start button here to start running the bot. It will remain active until it encounters a error, you stop it, or you close this window or program.
+</value>
+  </data>
   <metadata name="bgwAhCheckLoop.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>

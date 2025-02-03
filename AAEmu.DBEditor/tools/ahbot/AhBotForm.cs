@@ -19,6 +19,12 @@ namespace AAEmu.DBEditor.tools.ahbot
     public partial class AhBotForm : Form
     {
         private const string AhBotSettingsFileName = "ahbot.json";
+        private const string ApiAuctionList = "/api/auction/list";
+        private const string ApiAuctionGenerate = "/api/auction/generate";
+        private const string ApiMailList = "/api/mail/list";
+        private const string ApiMailDelete = "/api/mail/delete";
+        private const int WebApiDefaultPort = 1280;
+
         private static AhBotForm _instance;
         public static AhBotForm Instance => _instance ??= new AhBotForm();
 
@@ -29,6 +35,7 @@ namespace AAEmu.DBEditor.tools.ahbot
         private Item SelectedItem { get; set; }
         private List<JsonAuctionLot> ServerAhListingCache { get; set; } = [];
         private bool CloseWhenDone { get; set; }
+        private bool SkipSaving { get; set; }
 
         public AhBotForm()
         {
@@ -58,6 +65,7 @@ namespace AAEmu.DBEditor.tools.ahbot
 
                         Settings.CharacterName = botCharacter.Name;
                         Settings.AccountName = botAccount.Username;
+                        SaveSettings();
                         return;
                     }
                 }
@@ -69,6 +77,7 @@ namespace AAEmu.DBEditor.tools.ahbot
 
         private void AhBotForm_Load(object sender, EventArgs e)
         {
+            SkipSaving = true;
             try
             {
                 Log("Getting game server list");
@@ -170,11 +179,13 @@ namespace AAEmu.DBEditor.tools.ahbot
                 }
 
                 LoadSettings();
+                UpdateFromSettings();
             }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message);
             }
+            SkipSaving = false;
         }
 
         private void AhBotForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -188,7 +199,7 @@ namespace AAEmu.DBEditor.tools.ahbot
 
             if (string.IsNullOrWhiteSpace(json))
             {
-                error = new ArgumentException("NullOrWhiteSpace", nameof(json));
+                error = new ArgumentException(@"NullOrWhiteSpace", nameof(json));
                 return false;
             }
 
@@ -268,7 +279,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                     Log($"AH Bot configuration file not found: {settingsFile}");
                 }
 
-                var settingsListingFile = Path.Combine(Settings.ListingsFile);
+                var settingsListingFile = Path.Combine(Application.StartupPath, Settings.ListingsFile);
                 if (File.Exists(settingsListingFile))
                 {
                     Log($"Loading AH listing settings from: {settingsListingFile}");
@@ -302,11 +313,13 @@ namespace AAEmu.DBEditor.tools.ahbot
 
         private void SaveSettings()
         {
+            if (SkipSaving)
+                return;
             var res = JsonConvert.SerializeObject(Settings);
             var settingsFile = Path.Combine(Application.StartupPath, AhBotSettingsFileName);
             try
             {
-                File.WriteAllText(settingsFile, res ?? string.Empty);
+                File.WriteAllText(settingsFile, res);
                 Log($"Saved settings to: {settingsFile}");
             }
             catch (Exception ex)
@@ -319,7 +332,7 @@ namespace AAEmu.DBEditor.tools.ahbot
             var settingsListFile = Path.Combine(Application.StartupPath, Settings.ListingsFile);
             try
             {
-                File.WriteAllText(settingsListFile, resListing ?? string.Empty);
+                File.WriteAllText(settingsListFile, resListing);
                 Log($"Saved Listing to: {settingsListFile}");
             }
             catch (Exception ex)
@@ -329,10 +342,13 @@ namespace AAEmu.DBEditor.tools.ahbot
             }
         }
 
+        /// <summary>
+        /// Updates the colors of the nodes in the AH TreeView
+        /// </summary>
         private void UpdateFromSettings()
         {
             // Gray out everything first
-            foreach (var (itemId, itemNode) in ItemNodes)
+            foreach (var (_, itemNode) in ItemNodes)
             {
                 itemNode.ForeColor = Color.LightGray;
             }
@@ -366,6 +382,7 @@ namespace AAEmu.DBEditor.tools.ahbot
             {
                 lGrade.ForeColor = SystemColors.ControlText;
             }
+            UpdateItemIcon();
         }
 
         private void tvAhList_AfterSelect(object sender, TreeViewEventArgs e)
@@ -396,25 +413,16 @@ namespace AAEmu.DBEditor.tools.ahbot
                     }
 
                     tSaleQuantity.Text = item.MaxStackSize.ToString();
-                    tBuyOutPrice.Text = item.Price.ToString();
-                    tStartBid.Text = item.Refund.ToString();
                     tListedCount.Text = @"1";
+                    tBuyOutPrice.Text = (item.Price * item.MaxStackSize).ToString();
+                    tStartBid.Text = (item.Refund * item.MaxStackSize).ToString();
+                    lStackMax.Text = $@"/ {item.MaxStackSize}";
                     tComment.Text = string.Empty;
                     btnUpdateAhItem.Enabled = true;
 
                     var ahBotItems = ListingSettings.Items.Where(x => x.ItemId == itemId).ToList();
                     if (ahBotItems.Any())
                     {
-                        /*
-                        cbGrade.SelectedIndex = ahBotItem.GradeId;
-                        tSaleQuantity.Text = ahBotItem.Quantity.ToString(CultureInfo.InvariantCulture);
-                        tSalePriceAll.Text = ahBotItem.Price.ToString(CultureInfo.InvariantCulture);
-                        tStartBid.Text = ahBotItem.StartBid.ToString(CultureInfo.InvariantCulture);
-                        tListedCount.Text = ahBotItem.ItemEntryCount.ToString(CultureInfo.InvariantCulture);
-                        SelectedAhBotItemEntry = ahBotItem;
-                        btnRemoveItem.Enabled = true;
-                        */
-
                         lbAhList.Items.Clear();
                         foreach (var ahBotItem in ahBotItems)
                         {
@@ -448,7 +456,7 @@ namespace AAEmu.DBEditor.tools.ahbot
 
             if (SelectedItem == null)
             {
-                MessageBox.Show("No item selected");
+                MessageBox.Show(@"No item selected");
                 return;
             }
 
@@ -465,59 +473,60 @@ namespace AAEmu.DBEditor.tools.ahbot
             if (!int.TryParse(tSaleQuantity.Text, NumberStyles.Integer, CultureInfo.InvariantCulture,
                     out var newQuantity))
             {
-                MessageBox.Show("Invalid Quantity field");
+                MessageBox.Show(@"Invalid Quantity field");
                 return;
             }
 
             if (!long.TryParse(tBuyOutPrice.Text, NumberStyles.Integer, CultureInfo.InvariantCulture,
                     out var newBuyOutPrice))
             {
-                MessageBox.Show("Invalid buy-out price");
+                MessageBox.Show(@"Invalid buy-out price");
                 return;
             }
 
             if (!long.TryParse(tStartBid.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out var newStartBid))
             {
-                MessageBox.Show("Invalid starting bid price");
+                MessageBox.Show(@"Invalid starting bid price");
                 return;
             }
 
             if (!int.TryParse(tListedCount.Text, NumberStyles.Integer, CultureInfo.InvariantCulture,
                     out var newListedCount))
             {
-                MessageBox.Show("Invalid listing count field");
+                MessageBox.Show(@"Invalid listing count field");
                 return;
             }
 
             if ((newQuantity < 1) || (newQuantity > SelectedItem.MaxStackSize))
             {
-                MessageBox.Show($"Quantity for {itemName} must be between 1 and {SelectedItem.MaxStackSize}");
+                MessageBox.Show($@"Quantity for {itemName} must be between 1 and {SelectedItem.MaxStackSize}");
                 return;
             }
 
             if (newBuyOutPrice < SelectedItem.Refund)
             {
                 MessageBox.Show(
-                    $"Buyout price for {itemName} must be at least the refund price of {SelectedItem.Refund}");
+                    $@"Buyout price for {itemName} must be at least the refund price of {SelectedItem.Refund}");
                 return;
             }
 
             if (newStartBid >= newBuyOutPrice)
             {
-                MessageBox.Show($"Starting bid must be lower than the buyout price");
+                MessageBox.Show(@"Starting bid must be lower than the buyout price");
                 return;
             }
 
             if (newListedCount < 1)
             {
-                MessageBox.Show($"You must at least put up one listing");
+                MessageBox.Show(@"You must at least put up one listing");
                 return;
             }
 
-            if (newListedCount > 9)
+            if (newListedCount > 5)
             {
                 if (MessageBox.Show(
-                        $"You really need {newListedCount} entries listed for this item (max recommended is 9)", "",
+                        $@"You really need {newListedCount} entries listed for this item (max recommended is 5)",
+                        @"Add AH Listing",
                         MessageBoxButtons.YesNo) != DialogResult.Yes)
                     return;
             }
@@ -549,17 +558,11 @@ namespace AAEmu.DBEditor.tools.ahbot
 
             tvAhList_AfterSelect(tvAhList, new TreeViewEventArgs(tvAhList.SelectedNode));
             SaveSettings();
+            UpdateFromSettings();
         }
 
         private void btnQueryServerAH_Click(object sender, EventArgs e)
         {
-            CheckAndUpdateAhBotEntries();
-        }
-        private void CheckAndUpdateAhBotEntries()
-        {
-            Log("Updating AH listing from live server");
-            // TODO: Get this from settings
-            var serverHostName = "127.0.0.1";
             try
             {
                 var server = Data.MySqlDb.Login.GameServers.FirstOrDefault(x => x.Name == Settings.ServerName);
@@ -569,32 +572,72 @@ namespace AAEmu.DBEditor.tools.ahbot
                     return;
                 }
 
+                var queryUrl = $"http://{server.Host}:{WebApiDefaultPort}{ApiAuctionList}";
+                UpdateLiveAhCache(queryUrl);
+            }
+            catch (Exception exception)
+            {
+                Log(exception.Message);
+                MessageBox.Show(exception.Message);
+            }
+        }
+
+        private bool UpdateLiveAhCache(string url)
+        {
+            try
+            {
+                var jsonResult = HttpHelper.SimpleGetUriAsString(url);
+                var ahListResult = JsonConvert.DeserializeObject<JsonAuctionLotList>(jsonResult);
+                ServerAhListingCache = ahListResult.Items;
+                Log($"Queried {ServerAhListingCache.Count} entries from the live server");
+            }
+            catch (Exception ex)
+            {
+                ServerAhListingCache.Clear();
+                Log($"Queried from the live server failed, clearing cache! : {ex.Message}");
+                return false;
+            }
+            UpdateFromSettings();
+            return true;
+        }
+
+        private bool CheckAndUpdateAhBotEntries()
+        {
+            Log("Updating AH listing from live server");
+            // TODO: Get this from settings
+            string serverHostName;
+            var serverPort = WebApiDefaultPort;
+            try
+            {
+                var server = Data.MySqlDb.Login.GameServers.FirstOrDefault(x => x.Name == Settings.ServerName);
+                if (server == null)
+                {
+                    Log($"Could not find information for server {Settings.ServerName}");
+                    return false;
+                }
+
                 serverHostName = server.Host;
             }
             catch (Exception exception)
             {
                 Log(exception.Message);
                 MessageBox.Show(exception.Message);
-                return;
+                return false;
             }
 
             var character = Data.MySqlDb.Game.Characters.FirstOrDefault(x => x.Name == Settings.CharacterName);
             if (character == null)
             {
                 Log($"Unable to find {Settings.CharacterName}");
-                return;
+                return false;
             }
 
-            var queryUrl = $"http://{serverHostName}:1280/api/auction/list";
-            var generateUrl = $"http://{serverHostName}:1280/api/auction/generate";
-            var ahBotCharacterId = 39;
+            var queryUrl = $"http://{serverHostName}:{serverPort}{ApiAuctionList}";
+            var generateUrl = $"http://{serverHostName}:{serverPort}{ApiAuctionGenerate}";
             try
             {
-                var jsonResult = HttpHelper.SimpleGetUriAsString(queryUrl, 5000);
-                var ahListResult = JsonConvert.DeserializeObject<JsonAuctionLotList>(jsonResult);
-                ServerAhListingCache = ahListResult.Items;
-                Log($"Queried {ServerAhListingCache.Count} entries from the live server");
-                UpdateFromSettings();
+                if (!UpdateLiveAhCache(queryUrl))
+                    return false;
 
                 // Generate list of items to add
                 var toAdd = new List<JsonAhGenerateItemRequest>();
@@ -618,7 +661,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                 }
 
                 // Remove the request that are still up from the list
-                foreach (var liveLot in ahListResult.Items)
+                foreach (var liveLot in ServerAhListingCache)
                 {
                     var toFind = toAdd.FirstOrDefault(x =>
                         x.ItemTemplateId == liveLot.Item.TemplateId &&
@@ -628,7 +671,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                         x.BuyNowPrice == liveLot.DirectMoney);
                     if (toFind != null)
                     {
-                        var removedListEntry = toAdd.Remove(toFind);
+                        _ = toAdd.Remove(toFind);
                     }
                 }
 
@@ -637,7 +680,7 @@ namespace AAEmu.DBEditor.tools.ahbot
 
                 foreach (var generateItem in toAdd)
                 {
-                    var addRequest = HttpHelper.SimplePostJsonUriAsString(generateUrl, generateItem);
+                    _ = HttpHelper.SimplePostJsonUriAsString(generateUrl, generateItem);
                 }
 
             }
@@ -646,12 +689,16 @@ namespace AAEmu.DBEditor.tools.ahbot
                 var errorMsg = $"Failed to get AH data from server.\n\nURL: {queryUrl}\n\n{ex.Message}";
                 Log(errorMsg);
                 MessageBox.Show(errorMsg);
+                return false;
             }
+
+            return true;
         }
 
         private void cbServers_SelectedIndexChanged(object sender, EventArgs e)
         {
             Settings.ServerName = cbServers.Text;
+            SaveSettings();
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -663,6 +710,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                 btnConnect.Enabled = false;
                 btnConnect.Text = @"Starting";
                 bgwAhCheckLoop.RunWorkerAsync();
+                tcAhBot.SelectedTab = tpLogs;
             }
             else
             {
@@ -685,6 +733,7 @@ namespace AAEmu.DBEditor.tools.ahbot
             {
                 btnConnect.Text = @"Stop";
                 btnConnect.Enabled = true;
+                btnQueryServerAH.Enabled = false;
             });
 
             // Main loop
@@ -694,12 +743,14 @@ namespace AAEmu.DBEditor.tools.ahbot
                 {
                     // Check own listings
                     // Update listed items
-                    CheckAndUpdateAhBotEntries();
+                    if (!CheckAndUpdateAhBotEntries())
+                        break;
                     if (bgwAhCheckLoop.CancellationPending)
                         break;
 
                     // Take rewards/cancellations
-                    TryCheckMails();
+                    if (!TryCheckMails())
+                        break;
                     if (bgwAhCheckLoop.CancellationPending)
                         break;
 
@@ -733,6 +784,7 @@ namespace AAEmu.DBEditor.tools.ahbot
             {
                 btnConnect.Text = @"Start";
                 btnConnect.Enabled = true;
+                btnQueryServerAH.Enabled = true;
             });
             Log("AH Worker stopped");
             if (CloseWhenDone)
@@ -755,30 +807,31 @@ namespace AAEmu.DBEditor.tools.ahbot
             TryCheckMails();
         }
 
-        private void TryCheckMails()
+        private bool TryCheckMails()
         {
             Log("Query mails");
             if (string.IsNullOrWhiteSpace(Settings.CharacterName))
             {
                 Log("No character selected");
-                return;
+                return false;
             }
 
             var character = Data.MySqlDb.Game.Characters.FirstOrDefault(x => x.Name == Settings.CharacterName);
             if (character == null)
             {
                 Log($"Unable to find {Settings.CharacterName}");
-                return;
+                return false;
             }
 
-            var serverHostName = "127.0.0.1";
+            string serverHostName;
+            var serverPort = WebApiDefaultPort;
             try
             {
                 var server = Data.MySqlDb.Login.GameServers.FirstOrDefault(x => x.Name == Settings.ServerName);
                 if (server == null)
                 {
                     Log($"Could not find information for server {Settings.ServerName}");
-                    return;
+                    return false;
                 }
 
                 serverHostName = server.Host;
@@ -787,11 +840,11 @@ namespace AAEmu.DBEditor.tools.ahbot
             {
                 Log(exception.Message);
                 MessageBox.Show(exception.Message);
-                return;
+                return false;
             }
 
-            var listMailUrl = $"http://{serverHostName}:1280/api/mail/list";
-            var deleteMailUrl = $"http://{serverHostName}:1280/api/mail/delete";
+            var listMailUrl = $"http://{serverHostName}:{serverPort}{ApiMailList}";
+            var deleteMailUrl = $"http://{serverHostName}:{serverPort}{ApiMailDelete}";
 
             var request = new JsonListMailRequest()
             {
@@ -806,7 +859,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                 if (res == null || res.MailItems == null)
                 {
                     Log($"Server returned invalid data for {Settings.CharacterName} ({request.CharacterId})");
-                    return;
+                    return false;
                 }
 
                 // Check if any of the mails were AH related
@@ -814,10 +867,10 @@ namespace AAEmu.DBEditor.tools.ahbot
                 var mailsRewards = new Dictionary<long, long>();
                 foreach (var mail in res.MailItems)
                 {
-                    
+
                     switch (mail.MailType)
                     {
-                        case MailType.AucOffSuccess: // Item sold, yeay!
+                        case MailType.AucOffSuccess: // Item sold, yay!
                         case MailType.AucOffFail: // Didn't sell this time T.T
                         case MailType.AucOffCancel: // Shouldn't be cancelled unless this is manually done by the server owner
                             // Order server to delete the mail
@@ -860,7 +913,9 @@ namespace AAEmu.DBEditor.tools.ahbot
             catch (Exception ex)
             {
                 Log(ex.Message);
+                return false;
             }
+            return true;
         }
 
         private void TryDeleteMail(string url, long mailId, uint senderId, uint receiverId, bool trashItemsAsWell)
@@ -879,25 +934,52 @@ namespace AAEmu.DBEditor.tools.ahbot
 
         private void tBuyOutPrice_TextChanged(object sender, EventArgs e)
         {
+            if (!long.TryParse(tSaleQuantity.Text, out var count))
+                count = 1;
+
             if (long.TryParse(tBuyOutPrice.Text, out var val))
             {
                 lBuyOutPreview.Text = AaTextHelper.CopperToString(val);
+
+                if (long.TryParse(tStartBid.Text, out var sBid) && val > 0 && sBid > 0)
+                {
+                    var rate = (float)sBid / (float)val * 100f;
+                    lListingInfo.Text = $@"Starting bid is {rate:F1}% of buy-out (unit {AaTextHelper.CopperToString(sBid / count)})"";";
+                }
+                else
+                {
+                    lListingInfo.Text = @"?";
+                }
             }
             else
             {
                 lBuyOutPreview.Text = @"Invalid";
+                lListingInfo.Text = @"?";
             }
         }
 
         private void tStartBid_TextChanged(object sender, EventArgs e)
         {
+            if (!long.TryParse(tSaleQuantity.Text, out var count))
+                count = 1;
+
             if (long.TryParse(tStartBid.Text, out var val))
             {
                 lStartBidPreview.Text = AaTextHelper.CopperToString(val);
+                if (long.TryParse(tBuyOutPrice.Text, out var sBuy) && val > 0 && sBuy > 0)
+                {
+                    var rate = (float)val / (float)sBuy * 100f;
+                    lListingInfo.Text = $@"Starting bid is {rate:F1}% of buy-out (unit {AaTextHelper.CopperToString(val / count)})";
+                }
+                else
+                {
+                    lListingInfo.Text = @"?";
+                }
             }
             else
             {
                 lStartBidPreview.Text = @"Invalid";
+                lListingInfo.Text = @"?";
             }
 
         }
@@ -913,42 +995,74 @@ namespace AAEmu.DBEditor.tools.ahbot
             btnUpdateAhItem.Enabled = false;
             btnRemoveItem.Enabled = false;
             var item = Data.Server.CompactSqlite.Items.FirstOrDefault(x => x.Id == SelectedAhBotItemEntry.ItemId);
-            if (item != null)
-            {
-                SelectedItem = item;
-                lItemId.Text = item.Id.ToString();
-                lItemName.Text = Data.Server.LocalizedText.GetValueOrDefault(("items", "name", item.Id)) ?? "<error>";
-                if (item.FixedGrade >= 0)
-                {
-                    cbGrade.SelectedIndex = (int)(item.FixedGrade ?? 0);
-                    cbGrade.Enabled = false;
-                }
-                else
-                {
-                    cbGrade.SelectedIndex = SelectedAhBotItemEntry.GradeId;
-                    cbGrade.Enabled = true;
-                }
+            if (item == null)
+                return;
 
-                tSaleQuantity.Text = SelectedAhBotItemEntry.Quantity.ToString();
-                tBuyOutPrice.Text = SelectedAhBotItemEntry.Price.ToString();
-                tStartBid.Text = SelectedAhBotItemEntry.StartBid.ToString();
-                tListedCount.Text = SelectedAhBotItemEntry.ItemEntryCount.ToString();
-                tComment.Text = SelectedAhBotItemEntry.Comment;
-                btnUpdateAhItem.Enabled = true;
-                btnRemoveItem.Enabled = true;
+            SelectedItem = item;
+            lItemId.Text = item.Id.ToString();
+            lItemName.Text = Data.Server.LocalizedText.GetValueOrDefault(("items", "name", item.Id)) ?? "<error>";
+            if (item.FixedGrade >= 0)
+            {
+                cbGrade.SelectedIndex = (int)(item.FixedGrade ?? 0);
+                cbGrade.Enabled = false;
             }
+            else
+            {
+                cbGrade.SelectedIndex = SelectedAhBotItemEntry.GradeId;
+                cbGrade.Enabled = true;
+            }
+
+            tSaleQuantity.Text = SelectedAhBotItemEntry.Quantity.ToString();
+            tBuyOutPrice.Text = SelectedAhBotItemEntry.Price.ToString();
+            tStartBid.Text = SelectedAhBotItemEntry.StartBid.ToString();
+            tListedCount.Text = SelectedAhBotItemEntry.ItemEntryCount.ToString();
+            tComment.Text = SelectedAhBotItemEntry.Comment;
+            btnUpdateAhItem.Enabled = true;
+            btnRemoveItem.Enabled = true;
         }
 
         private void btnRemoveItem_Click(object sender, EventArgs e)
         {
             if (SelectedAhBotItemEntry == null)
                 return;
+
             btnRemoveItem.Enabled = false;
             ListingSettings.Items.Remove(SelectedAhBotItemEntry);
             SelectedAhBotItemEntry = null;
             btnUpdateAhItem.Enabled = false;
             tvAhList_AfterSelect(tvAhList, new TreeViewEventArgs(tvAhList.SelectedNode));
             SaveSettings();
+            UpdateFromSettings();
+        }
+
+        private void lItemId_TextChanged(object sender, EventArgs e)
+        {
+            UpdateItemIcon();
+        }
+
+        private void UpdateItemIcon()
+        {
+            lItemIcon.ImageList = Data.Client.Icons;
+            lItemIcon.ImageIndex = -1;
+            lItemIcon.Text = @"???";
+
+            var grade = Data.Server.CompactSqlite.ItemGrades.FirstOrDefault(x => x.Id == cbGrade.SelectedIndex);
+            if (grade != null)
+            {
+                lItemIcon.BackColor = lGrade.ForeColor = int.TryParse(grade.ColorArgb, NumberStyles.HexNumber,
+                    CultureInfo.InvariantCulture, out var hexColor)
+                    ? Color.FromArgb(hexColor)
+                    : SystemColors.Control;
+            }
+            else
+            {
+                lItemIcon.BackColor = SystemColors.Control;
+            }
+
+            if (!long.TryParse(lItemId.Text, out var itemId))
+                return;
+            lItemIcon.ImageIndex = Data.Client.GetIconIndexByItemTemplateId(itemId);
+            lItemIcon.Text = lItemIcon.ImageIndex > 0 ? "" : "not found";
         }
     }
 }

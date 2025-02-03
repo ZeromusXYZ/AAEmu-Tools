@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AhBotForm));
             label1 = new System.Windows.Forms.Label();
             lAhBotName = new System.Windows.Forms.Label();
             btnPickAhCharacter = new System.Windows.Forms.Button();
@@ -38,11 +39,17 @@
             btnConnect = new System.Windows.Forms.Button();
             tcAhBot = new System.Windows.Forms.TabControl();
             tpSettings = new System.Windows.Forms.TabPage();
+            textBox1 = new System.Windows.Forms.TextBox();
             btnCleanMails = new System.Windows.Forms.Button();
             btnSave = new System.Windows.Forms.Button();
             btnLoadConfig = new System.Windows.Forms.Button();
             tpAhList = new System.Windows.Forms.TabPage();
             gbItemEntrySettings = new System.Windows.Forms.GroupBox();
+            lItemIcon = new System.Windows.Forms.Label();
+            lListingInfo = new System.Windows.Forms.Label();
+            lStackMax = new System.Windows.Forms.Label();
+            tComment = new System.Windows.Forms.TextBox();
+            label11 = new System.Windows.Forms.Label();
             lStartBidPreview = new System.Windows.Forms.Label();
             lBuyOutPreview = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
@@ -69,8 +76,6 @@
             tpLogs = new System.Windows.Forms.TabPage();
             tLog = new System.Windows.Forms.TextBox();
             bgwAhCheckLoop = new System.ComponentModel.BackgroundWorker();
-            label11 = new System.Windows.Forms.Label();
-            tComment = new System.Windows.Forms.TextBox();
             tcAhBot.SuspendLayout();
             tpSettings.SuspendLayout();
             tpAhList.SuspendLayout();
@@ -145,9 +150,9 @@
             // 
             // btnConnect
             // 
-            btnConnect.Location = new System.Drawing.Point(8, 211);
+            btnConnect.Location = new System.Drawing.Point(423, 9);
             btnConnect.Name = "btnConnect";
-            btnConnect.Size = new System.Drawing.Size(169, 43);
+            btnConnect.Size = new System.Drawing.Size(275, 99);
             btnConnect.TabIndex = 8;
             btnConnect.Text = "Start";
             btnConnect.UseVisualStyleBackColor = true;
@@ -167,6 +172,7 @@
             // 
             // tpSettings
             // 
+            tpSettings.Controls.Add(textBox1);
             tpSettings.Controls.Add(btnCleanMails);
             tpSettings.Controls.Add(btnSave);
             tpSettings.Controls.Add(btnLoadConfig);
@@ -185,34 +191,48 @@
             tpSettings.Text = "Settings";
             tpSettings.UseVisualStyleBackColor = true;
             // 
+            // textBox1
+            // 
+            textBox1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            textBox1.Location = new System.Drawing.Point(8, 179);
+            textBox1.Multiline = true;
+            textBox1.Name = "textBox1";
+            textBox1.ReadOnly = true;
+            textBox1.Size = new System.Drawing.Size(776, 234);
+            textBox1.TabIndex = 13;
+            textBox1.Text = resources.GetString("textBox1.Text");
+            // 
             // btnCleanMails
             // 
-            btnCleanMails.Location = new System.Drawing.Point(222, 211);
+            btnCleanMails.Location = new System.Drawing.Point(358, 116);
             btnCleanMails.Name = "btnCleanMails";
-            btnCleanMails.Size = new System.Drawing.Size(152, 23);
+            btnCleanMails.Size = new System.Drawing.Size(169, 23);
             btnCleanMails.TabIndex = 12;
             btnCleanMails.Text = "Check Mails";
             btnCleanMails.UseVisualStyleBackColor = true;
+            btnCleanMails.Visible = false;
             btnCleanMails.Click += btnCleanMails_Click;
             // 
             // btnSave
             // 
-            btnSave.Location = new System.Drawing.Point(8, 172);
+            btnSave.Location = new System.Drawing.Point(183, 116);
             btnSave.Name = "btnSave";
             btnSave.Size = new System.Drawing.Size(169, 23);
             btnSave.TabIndex = 11;
             btnSave.Text = "Save Configuration";
             btnSave.UseVisualStyleBackColor = true;
+            btnSave.Visible = false;
             btnSave.Click += btnSave_Click;
             // 
             // btnLoadConfig
             // 
-            btnLoadConfig.Location = new System.Drawing.Point(8, 143);
+            btnLoadConfig.Location = new System.Drawing.Point(8, 116);
             btnLoadConfig.Name = "btnLoadConfig";
             btnLoadConfig.Size = new System.Drawing.Size(169, 23);
             btnLoadConfig.TabIndex = 10;
             btnLoadConfig.Text = "Load Configuration";
             btnLoadConfig.UseVisualStyleBackColor = true;
+            btnLoadConfig.Visible = false;
             btnLoadConfig.Click += btnLoadConfig_Click;
             // 
             // tpAhList
@@ -235,6 +255,9 @@
             // gbItemEntrySettings
             // 
             gbItemEntrySettings.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            gbItemEntrySettings.Controls.Add(lItemIcon);
+            gbItemEntrySettings.Controls.Add(lListingInfo);
+            gbItemEntrySettings.Controls.Add(lStackMax);
             gbItemEntrySettings.Controls.Add(tComment);
             gbItemEntrySettings.Controls.Add(label11);
             gbItemEntrySettings.Controls.Add(lStartBidPreview);
@@ -254,17 +277,64 @@
             gbItemEntrySettings.Controls.Add(label8);
             gbItemEntrySettings.Controls.Add(label7);
             gbItemEntrySettings.Controls.Add(tStartBid);
-            gbItemEntrySettings.Location = new System.Drawing.Point(442, 14);
+            gbItemEntrySettings.Location = new System.Drawing.Point(442, 9);
             gbItemEntrySettings.Name = "gbItemEntrySettings";
-            gbItemEntrySettings.Size = new System.Drawing.Size(336, 398);
+            gbItemEntrySettings.Size = new System.Drawing.Size(336, 403);
             gbItemEntrySettings.TabIndex = 21;
             gbItemEntrySettings.TabStop = false;
-            gbItemEntrySettings.Text = "Item Settings";
+            gbItemEntrySettings.Text = "Item listing settings";
+            // 
+            // lItemIcon
+            // 
+            lItemIcon.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            lItemIcon.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            lItemIcon.Location = new System.Drawing.Point(251, 19);
+            lItemIcon.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lItemIcon.Name = "lItemIcon";
+            lItemIcon.Size = new System.Drawing.Size(78, 78);
+            lItemIcon.TabIndex = 29;
+            lItemIcon.Text = "???";
+            lItemIcon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lListingInfo
+            // 
+            lListingInfo.AutoSize = true;
+            lListingInfo.Location = new System.Drawing.Point(6, 258);
+            lListingInfo.Name = "lListingInfo";
+            lListingInfo.Size = new System.Drawing.Size(12, 16);
+            lListingInfo.TabIndex = 21;
+            lListingInfo.Text = "?";
+            // 
+            // lStackMax
+            // 
+            lStackMax.AutoSize = true;
+            lStackMax.Location = new System.Drawing.Point(137, 132);
+            lStackMax.Name = "lStackMax";
+            lStackMax.Size = new System.Drawing.Size(20, 16);
+            lStackMax.TabIndex = 20;
+            lStackMax.Text = "/ 1";
+            // 
+            // tComment
+            // 
+            tComment.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            tComment.Location = new System.Drawing.Point(15, 295);
+            tComment.Name = "tComment";
+            tComment.Size = new System.Drawing.Size(315, 23);
+            tComment.TabIndex = 19;
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new System.Drawing.Point(6, 276);
+            label11.Name = "label11";
+            label11.Size = new System.Drawing.Size(58, 16);
+            label11.TabIndex = 18;
+            label11.Text = "Comment";
             // 
             // lStartBidPreview
             // 
             lStartBidPreview.AutoSize = true;
-            lStartBidPreview.Location = new System.Drawing.Point(168, 217);
+            lStartBidPreview.Location = new System.Drawing.Point(128, 234);
             lStartBidPreview.Name = "lStartBidPreview";
             lStartBidPreview.Size = new System.Drawing.Size(19, 16);
             lStartBidPreview.TabIndex = 17;
@@ -273,7 +343,7 @@
             // lBuyOutPreview
             // 
             lBuyOutPreview.AutoSize = true;
-            lBuyOutPreview.Location = new System.Drawing.Point(15, 215);
+            lBuyOutPreview.Location = new System.Drawing.Point(128, 188);
             lBuyOutPreview.Name = "lBuyOutPreview";
             lBuyOutPreview.Size = new System.Drawing.Size(19, 16);
             lBuyOutPreview.TabIndex = 16;
@@ -291,7 +361,7 @@
             // lItemName
             // 
             lItemName.AutoSize = true;
-            lItemName.Location = new System.Drawing.Point(120, 35);
+            lItemName.Location = new System.Drawing.Point(15, 35);
             lItemName.Name = "lItemName";
             lItemName.Size = new System.Drawing.Size(78, 16);
             lItemName.TabIndex = 2;
@@ -300,16 +370,17 @@
             // lItemId
             // 
             lItemId.AutoSize = true;
-            lItemId.Location = new System.Drawing.Point(15, 35);
+            lItemId.Location = new System.Drawing.Point(42, 19);
             lItemId.Name = "lItemId";
             lItemId.Size = new System.Drawing.Size(59, 16);
             lItemId.TabIndex = 3;
             lItemId.Text = "<item id>";
+            lItemId.TextChanged += lItemId_TextChanged;
             // 
             // lGrade
             // 
             lGrade.AutoSize = true;
-            lGrade.Location = new System.Drawing.Point(6, 60);
+            lGrade.Location = new System.Drawing.Point(6, 54);
             lGrade.Name = "lGrade";
             lGrade.Size = new System.Drawing.Size(38, 16);
             lGrade.TabIndex = 4;
@@ -319,16 +390,16 @@
             // 
             cbGrade.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             cbGrade.FormattingEnabled = true;
-            cbGrade.Location = new System.Drawing.Point(15, 79);
+            cbGrade.Location = new System.Drawing.Point(15, 73);
             cbGrade.Name = "cbGrade";
-            cbGrade.Size = new System.Drawing.Size(183, 24);
+            cbGrade.Size = new System.Drawing.Size(229, 24);
             cbGrade.TabIndex = 5;
             cbGrade.SelectedIndexChanged += cbGrade_SelectedIndexChanged;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new System.Drawing.Point(6, 116);
+            label5.Location = new System.Drawing.Point(6, 110);
             label5.Name = "label5";
             label5.Size = new System.Drawing.Size(124, 16);
             label5.TabIndex = 6;
@@ -337,7 +408,7 @@
             // btnRemoveItem
             // 
             btnRemoveItem.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            btnRemoveItem.Location = new System.Drawing.Point(128, 369);
+            btnRemoveItem.Location = new System.Drawing.Point(128, 374);
             btnRemoveItem.Name = "btnRemoveItem";
             btnRemoveItem.Size = new System.Drawing.Size(116, 23);
             btnRemoveItem.TabIndex = 15;
@@ -347,7 +418,7 @@
             // 
             // tSaleQuantity
             // 
-            tSaleQuantity.Location = new System.Drawing.Point(15, 135);
+            tSaleQuantity.Location = new System.Drawing.Point(15, 129);
             tSaleQuantity.Name = "tSaleQuantity";
             tSaleQuantity.Size = new System.Drawing.Size(107, 23);
             tSaleQuantity.TabIndex = 7;
@@ -356,7 +427,7 @@
             // btnUpdateAhItem
             // 
             btnUpdateAhItem.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            btnUpdateAhItem.Location = new System.Drawing.Point(6, 369);
+            btnUpdateAhItem.Location = new System.Drawing.Point(6, 374);
             btnUpdateAhItem.Name = "btnUpdateAhItem";
             btnUpdateAhItem.Size = new System.Drawing.Size(116, 23);
             btnUpdateAhItem.TabIndex = 14;
@@ -367,16 +438,16 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new System.Drawing.Point(6, 172);
+            label6.Location = new System.Drawing.Point(6, 166);
             label6.Name = "label6";
-            label6.Size = new System.Drawing.Size(111, 16);
+            label6.Size = new System.Drawing.Size(193, 16);
             label6.TabIndex = 8;
-            label6.Text = "Sale price (buy-out)";
+            label6.Text = "Sale price (buy-out, zero to disable)";
             // 
             // tListedCount
             // 
             tListedCount.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            tListedCount.Location = new System.Drawing.Point(15, 340);
+            tListedCount.Location = new System.Drawing.Point(15, 345);
             tListedCount.Name = "tListedCount";
             tListedCount.Size = new System.Drawing.Size(107, 23);
             tListedCount.TabIndex = 13;
@@ -384,7 +455,7 @@
             // 
             // tBuyOutPrice
             // 
-            tBuyOutPrice.Location = new System.Drawing.Point(15, 191);
+            tBuyOutPrice.Location = new System.Drawing.Point(15, 185);
             tBuyOutPrice.Name = "tBuyOutPrice";
             tBuyOutPrice.Size = new System.Drawing.Size(107, 23);
             tBuyOutPrice.TabIndex = 9;
@@ -395,7 +466,7 @@
             // 
             label8.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             label8.AutoSize = true;
-            label8.Location = new System.Drawing.Point(6, 321);
+            label8.Location = new System.Drawing.Point(6, 326);
             label8.Name = "label8";
             label8.Size = new System.Drawing.Size(257, 16);
             label8.TabIndex = 12;
@@ -404,15 +475,15 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new System.Drawing.Point(159, 172);
+            label7.Location = new System.Drawing.Point(6, 212);
             label7.Name = "label7";
-            label7.Size = new System.Drawing.Size(155, 16);
+            label7.Size = new System.Drawing.Size(68, 16);
             label7.TabIndex = 10;
-            label7.Text = "Starting Bid (zero to disable)";
+            label7.Text = "Starting Bid";
             // 
             // tStartBid
             // 
-            tStartBid.Location = new System.Drawing.Point(168, 191);
+            tStartBid.Location = new System.Drawing.Point(15, 231);
             tStartBid.Name = "tStartBid";
             tStartBid.Size = new System.Drawing.Size(107, 23);
             tStartBid.TabIndex = 11;
@@ -452,7 +523,7 @@
             btnQueryServerAH.Name = "btnQueryServerAH";
             btnQueryServerAH.Size = new System.Drawing.Size(239, 23);
             btnQueryServerAH.TabIndex = 17;
-            btnQueryServerAH.Text = "Update from server";
+            btnQueryServerAH.Text = "Update live stats";
             btnQueryServerAH.UseVisualStyleBackColor = true;
             btnQueryServerAH.Click += btnQueryServerAH_Click;
             // 
@@ -503,23 +574,6 @@
             bgwAhCheckLoop.DoWork += bgwAhCheckLoop_DoWork;
             bgwAhCheckLoop.ProgressChanged += bgwAhCheckLoop_ProgressChanged;
             bgwAhCheckLoop.RunWorkerCompleted += bgwAhCheckLoop_RunWorkerCompleted;
-            // 
-            // label11
-            // 
-            label11.AutoSize = true;
-            label11.Location = new System.Drawing.Point(6, 234);
-            label11.Name = "label11";
-            label11.Size = new System.Drawing.Size(58, 16);
-            label11.TabIndex = 18;
-            label11.Text = "Comment";
-            // 
-            // tComment
-            // 
-            tComment.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            tComment.Location = new System.Drawing.Point(15, 253);
-            tComment.Name = "tComment";
-            tComment.Size = new System.Drawing.Size(315, 23);
-            tComment.TabIndex = 19;
             // 
             // AhBotForm
             // 
@@ -589,5 +643,9 @@
         private System.Windows.Forms.Label lStartBidPreview;
         private System.Windows.Forms.TextBox tComment;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label lStackMax;
+        private System.Windows.Forms.Label lListingInfo;
+        private System.Windows.Forms.Label lItemIcon;
     }
 }
