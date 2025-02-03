@@ -544,6 +544,10 @@ namespace AAEmu.DBEditor.tools.ahbot
 
         private void btnQueryServerAH_Click(object sender, EventArgs e)
         {
+            CheckAndUpdateAhBotEntries();
+        }
+        private void CheckAndUpdateAhBotEntries()
+        {
             Log("Updating AH listing from live server");
             // TODO: Get this from settings
             var serverHostName = "127.0.0.1";
@@ -565,7 +569,16 @@ namespace AAEmu.DBEditor.tools.ahbot
                 return;
             }
 
+            var character = Data.MySqlDb.Game.Characters.FirstOrDefault(x => x.Name == Settings.CharacterName);
+            if (character == null)
+            {
+                Log($"Unable to find {Settings.CharacterName}");
+                return;
+            }
+
             var queryUrl = $"http://{serverHostName}:1280/api/auction/list";
+            var generateUrl = $"http://{serverHostName}:1280/api/auction/generate";
+            var ahBotCharacterId = 39;
             try
             {
                 var jsonResult = HttpHelper.SimpleGetUriAsString(queryUrl, 5000);
@@ -573,6 +586,51 @@ namespace AAEmu.DBEditor.tools.ahbot
                 ServerAhListingCache = ahListResult.Items;
                 Log($"Queried {ServerAhListingCache.Count} entries from the live server");
                 UpdateFromSettings();
+
+                // Generate list of items to add
+                var toAdd = new List<JsonAhGenerateItemRequest>();
+                foreach (var listingSettingsItem in ListingSettings.Items)
+                {
+                    // Generate a list of all possible requests (create multiple entries for those that require multiple listings)
+                    for (var count = 0; count < listingSettingsItem.ItemEntryCount; count++)
+                    {
+                        toAdd.Add(new JsonAhGenerateItemRequest()
+                        {
+                            BuyNowPrice = listingSettingsItem.Price,
+                            ClientId = character.Id,
+                            ClientName = character.Name,
+                            Duration = 3,
+                            GradeId = listingSettingsItem.GradeId,
+                            ItemTemplateId = listingSettingsItem.ItemId,
+                            Quantity = listingSettingsItem.Quantity,
+                            StartPrice = listingSettingsItem.StartBid,
+                        });
+                    }
+                }
+
+                // Remove the request that are still up from the list
+                foreach (var liveLot in ahListResult.Items)
+                {
+                    var toFind = toAdd.FirstOrDefault(x =>
+                        x.ItemTemplateId == liveLot.Item.TemplateId &&
+                        x.GradeId == liveLot.Item.Grade &&
+                        x.ClientId == liveLot.ClientId &&
+                        x.Quantity == liveLot.Item.Count &&
+                        x.BuyNowPrice == liveLot.DirectMoney);
+                    if (toFind != null)
+                    {
+                        var removedListEntry = toAdd.Remove(toFind);
+                    }
+                }
+
+                if (toAdd.Count > 0)
+                    Log($"Adding {toAdd.Count} entries to live server");
+
+                foreach (var generateItem in toAdd)
+                {
+                    var addRequest = HttpHelper.SimplePostJsonUriAsString(generateUrl, generateItem);
+                }
+
             }
             catch (Exception ex)
             {
@@ -621,26 +679,33 @@ namespace AAEmu.DBEditor.tools.ahbot
             });
 
             // Main loop
-            while (bgwAhCheckLoop.IsBusy)
+            try
             {
-                // Check own listings
-                // Update listed items
-                btnQueryServerAH.PerformClick();
-                if (bgwAhCheckLoop.CancellationPending)
-                    break;
-
-                // Take rewards/cancellations
-                TryCheckMails();
-                if (bgwAhCheckLoop.CancellationPending)
-                    break;
-
-                // Wait a bit
-                for (var i = 0; i < 15; i++)
+                while (bgwAhCheckLoop.IsBusy)
                 {
-                    Thread.Sleep(1000);
+                    // Check own listings
+                    // Update listed items
+                    CheckAndUpdateAhBotEntries();
                     if (bgwAhCheckLoop.CancellationPending)
                         break;
+
+                    // Take rewards/cancellations
+                    TryCheckMails();
+                    if (bgwAhCheckLoop.CancellationPending)
+                        break;
+
+                    // Wait a bit
+                    for (var i = 0; i < 30; i++)
+                    {
+                        Thread.Sleep(1000);
+                        if (bgwAhCheckLoop.CancellationPending)
+                            break;
+                    }
                 }
+            }
+            catch (Exception exception)
+            {
+                Log($"Ah Loop Exception: {exception.Message}");
             }
 
             // Clean up
@@ -716,7 +781,8 @@ namespace AAEmu.DBEditor.tools.ahbot
                 return;
             }
 
-            var queryUrl = $"http://{serverHostName}:1280/mail/list";
+            var listMailUrl = $"http://{serverHostName}:1280/api/mail/list";
+            var deleteMailUrl = $"http://{serverHostName}:1280/api/mail/delete";
 
             var request = new JsonListMailRequest()
             {
@@ -725,7 +791,8 @@ namespace AAEmu.DBEditor.tools.ahbot
 
             try
             {
-                var jsonRes = HttpHelper.SimplePostJsonUriAsString(queryUrl, request);
+                // Get list of mails for this Ah Bot character
+                var jsonRes = HttpHelper.SimplePostJsonUriAsString(listMailUrl, request);
                 var res = JsonConvert.DeserializeObject<JsonListMailResponseItems>(jsonRes);
                 if (res == null || res.MailItems == null)
                 {
@@ -733,11 +800,12 @@ namespace AAEmu.DBEditor.tools.ahbot
                     return;
                 }
 
-                // mailId, copper coins
+                // Check if any of the mails were AH related
+                // Dictionary<mailId, copperCoins>
                 var mailsRewards = new Dictionary<long, long>();
                 foreach (var mail in res.MailItems)
                 {
-                    Log($"Mail Id:{mail.Id}, Type:{mail.MailType}, {mail.SenderName} ({mail.SenderId}) -> {mail.ReceiverName} ({mail.ReceiverId}), Title: {mail.Title}");
+                    
                     switch (mail.MailType)
                     {
                         case MailType.AucOffSuccess: // Item sold, yeay!
@@ -745,20 +813,58 @@ namespace AAEmu.DBEditor.tools.ahbot
                         case MailType.AucOffCancel: // Shouldn't be cancelled unless this is manually done by the server owner
                             // Order server to delete the mail
                             mailsRewards.Add(mail.Id, mail.CopperCoins);
+                            Log($"Mail Id:{mail.Id}, Type:{mail.MailType}, {mail.SenderName} ({mail.SenderId}) -> {mail.ReceiverName} ({mail.ReceiverId}), Title: {mail.Title}");
                             break;
                         default:
                             // For all other cases, we just keep the mail on the server.
                             break;
                     }
                 }
-                Log($"Found {res.MailItems.Count} mail(s) for {Settings.CharacterName}, {mailsRewards.Count} need to be processed");
-                var totalReward = mailsRewards.Values.Sum(x => x);
-                Log($"Total earned amount for this check is {totalReward}");
+
+                // If we found new AH result mails, process them
+                if (mailsRewards.Count > 0)
+                {
+                    Log($"Found {res.MailItems.Count} mail(s) for {Settings.CharacterName}, {mailsRewards.Count} need to be processed");
+                    var totalReward = mailsRewards.Values.Sum(x => x);
+                    if (totalReward > 0)
+                    {
+                        Log($"Earned amount for this check: {AaTextHelper.CopperToString(totalReward)}");
+
+                        // Delete relevant mails
+                        foreach (var (mailId, _) in mailsRewards)
+                        {
+                            var mailToDelete = res.MailItems.FirstOrDefault(x => x.Id == mailId);
+                            if (mailToDelete == null)
+                                continue; // Shouldn't happen
+
+                            // If it was a return mail (fail or cancel), destroy the items
+                            var trashItems = mailToDelete.MailType is MailType.AucOffCancel or MailType.AucOffFail;
+                            TryDeleteMail(deleteMailUrl, mailToDelete.Id, mailToDelete.SenderId, mailToDelete.ReceiverId, trashItems);
+                        }
+
+                        Settings.TotalEarned += totalReward;
+                        btnSave.PerformClick();
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Log(ex.Message);
             }
+        }
+
+        private void TryDeleteMail(string url, long mailId, uint senderId, uint receiverId, bool trashItemsAsWell)
+        {
+            var deleteRequest = new JsonDeleteMailRequest()
+            {
+                MailId = mailId,
+                SenderId = senderId,
+                ReceiverId = receiverId,
+                TrashItems = trashItemsAsWell,
+            };
+
+            _ = HttpHelper.SimplePostJsonUriAsString(url, deleteRequest);
+            // TODO: Report errors if any
         }
 
         private void tBuyOutPrice_TextChanged(object sender, EventArgs e)
