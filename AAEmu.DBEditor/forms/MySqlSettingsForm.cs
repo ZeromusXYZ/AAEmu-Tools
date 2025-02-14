@@ -12,6 +12,8 @@ namespace AAEmu.DBEditor.forms
 
         private void MySqlSettingsForm_Load(object sender, EventArgs e)
         {
+            MainForm.Self.AddOwnedForm(this);
+
             tbServerIP.Text = AAEmu.DBEditor.Properties.Settings.Default.MySQLDB;
             tbUsername.Text = AAEmu.DBEditor.Properties.Settings.Default.MySQLUser;
             tbPassword.Text = AAEmu.DBEditor.Properties.Settings.Default.MySQLPassword;

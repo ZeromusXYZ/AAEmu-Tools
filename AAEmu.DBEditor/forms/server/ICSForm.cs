@@ -28,6 +28,7 @@ namespace AAEmu.DBEditor.forms.server
         private void ICSForm_Load(object sender, EventArgs e)
         {
             MainForm.Self.AddOwnedForm(this);
+
             Text += $" ({Data.Server.GetText("ui_texts", "text", 4961, "ICS")})";
             SelectedSKU = null;
             SelectedShopItem = null;

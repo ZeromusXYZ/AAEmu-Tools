@@ -28,4 +28,11 @@ public partial class Users
     public ulong CreatedAt { get; set; }
 
     public ulong UpdatedAt { get; set; }
+
+    public uint Banned { get; set; }
+
+    /// <summary>
+    /// Ban reason to report back
+    /// </summary>
+    public uint BanReason { get; set; }
 }

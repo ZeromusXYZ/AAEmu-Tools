@@ -58,6 +58,8 @@
             label1 = new System.Windows.Forms.Label();
             tUserFilter = new System.Windows.Forms.TextBox();
             groupBox1 = new System.Windows.Forms.GroupBox();
+            cbBanReason = new System.Windows.Forms.ComboBox();
+            cbBanned = new System.Windows.Forms.CheckBox();
             cbAccessLevel = new System.Windows.Forms.ComboBox();
             label5 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
@@ -309,6 +311,8 @@
             // groupBox1
             // 
             groupBox1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            groupBox1.Controls.Add(cbBanReason);
+            groupBox1.Controls.Add(cbBanned);
             groupBox1.Controls.Add(cbAccessLevel);
             groupBox1.Controls.Add(label5);
             groupBox1.Controls.Add(label4);
@@ -323,6 +327,28 @@
             groupBox1.TabIndex = 10;
             groupBox1.TabStop = false;
             groupBox1.Text = "Account Game Details";
+            // 
+            // cbBanReason
+            // 
+            cbBanReason.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            cbBanReason.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cbBanReason.FormattingEnabled = true;
+            cbBanReason.Location = new System.Drawing.Point(83, 48);
+            cbBanReason.Name = "cbBanReason";
+            cbBanReason.Size = new System.Drawing.Size(745, 24);
+            cbBanReason.TabIndex = 10;
+            cbBanReason.SelectedIndexChanged += AccountValueChanged;
+            // 
+            // cbBanned
+            // 
+            cbBanned.AutoSize = true;
+            cbBanned.Location = new System.Drawing.Point(11, 50);
+            cbBanned.Name = "cbBanned";
+            cbBanned.Size = new System.Drawing.Size(66, 20);
+            cbBanned.TabIndex = 9;
+            cbBanned.Text = "Banned";
+            cbBanned.UseVisualStyleBackColor = true;
+            cbBanned.CheckedChanged += AccountValueChanged;
             // 
             // cbAccessLevel
             // 
@@ -495,5 +521,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn lastIpDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn createdAtDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn updatedAtDataGridViewTextBoxColumn;
+        private System.Windows.Forms.CheckBox cbBanned;
+        private System.Windows.Forms.ComboBox cbBanReason;
     }
 }

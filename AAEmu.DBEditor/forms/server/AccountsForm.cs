@@ -34,6 +34,18 @@ namespace AAEmu.DBEditor.forms.server
         private void AccountsForm_Load(object sender, EventArgs e)
         {
             MainForm.Self.AddOwnedForm(this);
+
+            // Populate Ban Reasons ComboBox
+            cbBanReason.Items.Clear();
+            var reasons = Data.Server.CompactSqlite.UiTexts.Where(x => x.CategoryId == 2).OrderBy(x => x.Id);
+            foreach (var reason in reasons)
+            {
+                cbBanReason.Items.Add($"{cbBanReason.Items.Count:D2}:{reason.Key} => {Data.Server.GetText("ui_texts", "text", (reason.Id ?? 0), $"?")}");
+            }
+            if (cbBanReason.Items.Count > 0)
+                cbBanReason.SelectedIndex = 0;
+
+            // Update list
             UpdateList("");
         }
 
@@ -125,6 +137,8 @@ namespace AAEmu.DBEditor.forms.server
 
             SelectedAccount = account;
             Data.MySqlDb.Login.Users.Entry(SelectedAccount).Reload();
+            cbBanned.Checked = account.Banned > 0;
+            cbBanReason.SelectedIndex = account.BanReason < cbBanReason.Items.Count ? (int)account.BanReason : 0;
 
             var gameAccount = Data.MySqlDb.Game.Accounts.FirstOrDefault(x => x.AccountId == accountId);
             SelectedGameAccount = gameAccount;
@@ -368,6 +382,7 @@ namespace AAEmu.DBEditor.forms.server
                 {
                     try
                     {
+                        // Game Account
                         Data.MySqlDb.Game.Accounts.Entry(SelectedGameAccount).Reload();
                         SelectedGameAccount.Labor = newLabor;
                         SelectedGameAccount.Credits = newCredits;
@@ -375,6 +390,13 @@ namespace AAEmu.DBEditor.forms.server
                         SelectedGameAccount.AccessLevel = newAccountAccessLevel;
                         Data.MySqlDb.Game.Accounts.Update(SelectedGameAccount);
                         Data.MySqlDb.Game.SaveChanges();
+
+                        // Login Account
+                        Data.MySqlDb.Login.Users.Entry(SelectedAccount).Reload();
+                        SelectedAccount.Banned = cbBanned.Checked ? 1u : 0;
+                        SelectedAccount.BanReason = cbBanReason.SelectedIndex >= 0 ? (uint)cbBanReason.SelectedIndex : 0;
+                        Data.MySqlDb.Login.Users.Update(SelectedAccount);
+                        Data.MySqlDb.Login.SaveChanges();
                     }
                     catch (Exception ex)
                     {

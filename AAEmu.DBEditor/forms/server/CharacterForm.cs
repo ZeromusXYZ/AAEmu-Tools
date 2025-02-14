@@ -27,6 +27,8 @@ namespace AAEmu.DBEditor.forms.server
 
         private void CharacterForm_Load(object sender, EventArgs e)
         {
+            MainForm.Self.AddOwnedForm(this);
+
             lvItems.Items.Clear();
             lvItems.SmallImageList = Data.Client.Icons16;
             lvItems.LargeImageList = Data.Client.Icons32;

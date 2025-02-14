@@ -77,6 +77,8 @@ namespace AAEmu.DBEditor.tools.ahbot
 
         private void AhBotForm_Load(object sender, EventArgs e)
         {
+            MainForm.Self.AddOwnedForm(this);
+
             SkipSaving = true;
             try
             {
