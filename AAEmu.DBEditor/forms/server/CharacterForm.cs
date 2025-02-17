@@ -319,6 +319,8 @@ namespace AAEmu.DBEditor.forms.server
                 {
                     var item = Data.Server.GetItem(vehicleItem.TemplateId);
                     vehicleNode.Nodes.Add($"({vehicleItem.Id}) Item {Data.Server.GetText("items", "name", (long)item.Id, item.Name)} ({item.Id})");
+                    if (vehicleItem.Ucc > 0)
+                        vehicleNode.Nodes.Add($"UCC: {vehicleItem.Ucc}");
                 }
                 vehicleNode.Nodes.Add($"Pos: {vehicle.X:F0}, {vehicle.Y:F0}, {vehicle.Z:F0}");
                 vehicleNode.Nodes.Add($"{vehicle.Hp} HP, {vehicle.Mp} MP");
@@ -331,6 +333,10 @@ namespace AAEmu.DBEditor.forms.server
                         doodadNode.Nodes.Add($"Parent: {doodad.ParentDoodad}");
                     doodadNode.Nodes.Add($"AttachPoint: {doodad.AttachPoint}");
                     doodadNode.Nodes.Add($"Pos: {doodad.X:F1}, {doodad.Y:F1}, {doodad.Z:F1}");
+                    if (doodad.ItemId > 0)
+                        doodadNode.Nodes.Add($"Item: {doodad.ItemId}");
+                    if (doodad.ItemTemplateId > 0)
+                        doodadNode.Nodes.Add($"ItemTemplate: ({doodad.ItemTemplateId}) {Data.Server.GetText("items", "name", (long)doodad.ItemTemplateId, "???")}");
                 }
 
                 var slaves = Data.MySqlDb.Game.Slaves.Where(x => (x.OwnerType == 2) && (x.OwnerId == vehicle.Id));
