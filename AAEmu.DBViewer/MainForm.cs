@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using AAEmu.DBViewer.DbDefs;
 using System.Globalization;
 using AAEmu.Commons.Utils;
+using Newtonsoft.Json.Linq;
 
 namespace AAEmu.DBViewer
 {
@@ -1248,6 +1249,162 @@ namespace AAEmu.DBViewer
             return (string.IsNullOrWhiteSpace(value) || (value == "0") || (value == "<null>") || (value == "f"));
         }
 
+        private TreeNode AddCustomPropertyNodeForLootPack(long packId, TreeNode rootNode)
+        {
+            var res = new TreeNodeWithInfo();
+            var setCustomIcon = -1;
+            var nodeText = $"loot_pack_id: {packId}";
+            res.Text = nodeText;
+            res.ForeColor = Color.Yellow;
+
+            var loots = AaDb.DbLoots.Values.Where(l => l.LootPackId == packId).OrderBy(l => l.Group).ToList();
+            if (!loots.Any())
+            {
+                res.Text += " missing";
+                res.ForeColor = Color.Red;
+                rootNode.Nodes.Add(res);
+                return res;
+            }
+            var showGroups = loots.DistinctBy(x => x.Group).Count() > 1;
+            var groupNodes = new Dictionary<long, TreeNode>();
+
+            foreach (var loot in loots)
+            {
+                var groupDropRate = string.Empty;
+                var isInGroup =
+                    AaDb.DbLootGroups.Values.FirstOrDefault(x => x.PackId == packId && x.GroupNo == loot.Group);
+                var allLootsInGroup = loots.Where(l => l.Group == loot.Group);
+                var totalWeightOfGroup = allLootsInGroup.Count() > 1 ? allLootsInGroup.Sum(x => x.DropRate) : 0;
+                if (isInGroup != null)
+                {
+                    var groupRate = isInGroup.DropRate / 1_000_000f * 100f;
+                    if (groupRate > 100f)
+                    {
+                        groupDropRate = $"Group {isInGroup.GroupNo} @ 100%+ ({isInGroup.DropRate})";
+                    }
+                    else if (isInGroup.DropRate == 1)
+                    {
+                        groupDropRate = $"Group {isInGroup.GroupNo} always ({isInGroup.DropRate})";
+                    }
+                    else if (groupRate < 5f)
+                    {
+                        groupDropRate = $"Group {isInGroup.GroupNo}@ {groupRate:F2}% ({isInGroup.DropRate})";
+                    }
+                    else
+                    {
+                        groupDropRate = $"Group {isInGroup.GroupNo}@ {groupRate:F0}% ({isInGroup.DropRate})";
+                    }
+
+                    var isVocationGroup = AaDb.DbLootActAbilityGroups.Values.FirstOrDefault(x =>
+                        x.LootPackId == packId && x.LootGroupId == isInGroup.GroupNo);
+                    if (isVocationGroup != null)
+                    {
+                        groupDropRate += $" VocationDice ({isVocationGroup.MinDice}~{isVocationGroup.MaxDice}) ";
+                    }
+                }
+
+                TreeNode nodeForGroup = res;
+                if (showGroups)
+                {
+                    if (groupNodes.TryGetValue(loot.Group, out var oldNode))
+                    {
+                        nodeForGroup = oldNode;
+                    }
+                    else
+                    {
+                        nodeForGroup = res.Nodes.Add(groupDropRate);
+                        groupNodes.Add(loot.Group, nodeForGroup);
+                    }
+                }
+
+
+                var dropRate = "??%";
+                var itemNode = new TreeNodeWithInfo();
+                itemNode.Text = loot.ItemId.ToString();
+                if (AaDb.DbItems.TryGetValue(loot.ItemId, out var lItem))
+                {
+                    itemNode.targetTabPage = tpItems;
+                    itemNode.targetSearchBox = cbItemSearch;
+                    itemNode.targetSearchText = lItem.NameLocalized;
+                    itemNode.targetSearchButton = btnItemSearch;
+                    itemNode.ForeColor = Color.WhiteSmoke;
+                    itemNode.Text += " - " + lItem.NameLocalized;
+                    itemNode.SelectedImageIndex = itemNode.ImageIndex = IconIdToLabel(lItem.IconId, null);
+                }
+                else
+                {
+                    itemNode.Text = " - ???";
+                    itemNode.ForeColor = Color.Red;
+                }
+
+                var itemRate = 0f;
+                if (totalWeightOfGroup > 0)
+                {
+                    itemRate = (float)loot.DropRate / (float)totalWeightOfGroup * 100f;
+                }
+                else
+                {
+                    itemRate = (float)loot.DropRate / 10_000_000f * 100f;
+                }
+
+                if (loot.DropRate == 1)
+                {
+                    dropRate = "Always";
+                }
+                else if (itemRate > 100f)
+                {
+                    dropRate = "100%+";
+                }
+                else if (itemRate < 5f) 
+                {
+                    itemRate = MathF.Min(itemRate, 100f);
+                    dropRate = $"{itemRate:F2}%";
+                }
+                else
+                {
+                    itemRate = MathF.Min(itemRate, 100f);
+                    dropRate = $"{itemRate:F0}%";
+                }
+
+                var amount = string.Empty;
+                if (loot.ItemId == 500)
+                {
+                    if (loot.MaxAmount > loot.MinAmount)
+                    {
+                        amount = $" x {CopperToValuta(loot.MinAmount)} ~ {CopperToValuta(loot.MaxAmount)}";
+                    }
+                    else if (loot.MaxAmount > 1)
+                    {
+                        amount = $" x {CopperToValuta(loot.MaxAmount)}";
+                    }
+                }
+                else
+                {
+                    if (loot.MaxAmount > loot.MinAmount)
+                    {
+                        amount = $" x {loot.MinAmount}~{loot.MaxAmount}";
+                    }
+                    else if (loot.MaxAmount > 1)
+                    {
+                        amount = $" x {loot.MaxAmount}";
+                    }
+                }
+
+                itemNode.Text = dropRate + " " + itemNode.Text + amount;
+
+                nodeForGroup.Nodes.Add(itemNode);
+            }
+
+            rootNode.Nodes.Add(res);
+            if ((rootNode?.TreeView?.ImageList != null) && (setCustomIcon >= 0))
+            {
+                res.ImageIndex = setCustomIcon;
+                res.SelectedImageIndex = setCustomIcon;
+            }
+
+            return res;
+        }
+
         private TreeNode AddCustomPropertyNode(string key, string value, bool hideNull, TreeNode rootNode)
         {
             if (hideNull && IsCustomPropertyEmpty(value))
@@ -1493,6 +1650,8 @@ namespace AAEmu.DBViewer
             }
             else if (key.EndsWith("loot_pack_id"))
             {
+                var lootNode = AddCustomPropertyNodeForLootPack(val, rootNode);
+                /*
                 var lootNode = new TreeNodeWithInfo();
                 lootNode.Text = key + ": " + val;
                 lootNode.ForeColor = Color.Yellow;
@@ -1522,6 +1681,7 @@ namespace AAEmu.DBViewer
                 }
 
                 rootNode.Nodes.Add(lootNode);
+                */
                 return lootNode;
             }
             else if (key.EndsWith("spawner_id"))

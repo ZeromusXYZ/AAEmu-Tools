@@ -1145,6 +1145,11 @@ public partial class MainForm
                 var allPacksForNpc = AaDb.DbLootPackDroppingNpc.Values.Where(lp => lp.NpcId == npc.Id).ToList();
                 //var nonDefaultPackCount = allPacksForNpc.Count(p => p.Value.default_pack == false);
 
+                foreach (var gameLootPackDroppingNpc in allPacksForNpc)
+                {
+                    AddCustomPropertyNodeForLootPack(gameLootPackDroppingNpc.LootPackId, lootNode);
+                }
+                /*
                 // Extract just the IDs
                 var usedLootPacks = allPacksForNpc.Select(x => x.LootPackId).ToList();
 
@@ -1208,42 +1213,14 @@ public partial class MainForm
                     {
                         var lootGroupData = allLootPackGroups.FirstOrDefault(x => x.PackId == loot.LootPackId && x.GroupNo == loot.Group);
 
-                        /*
-                        var baseDropRate = loot.Group switch
-                        {
-                            1 => 1f / lootGroup.Value.Count,
-                            4 => 1f,
-                            _ => loot.DropRate / (float)totalWeight,
-                        };
-                        if (loot.DropRate == 1)
-                            baseDropRate = 1f;
-                        */
                         var baseDropRate = loot is { DropRate: > 1 }
                             ? loot.DropRate / 10_000_000f
                             : 1f;
 
-                        // var lootGroupData = AaDb.DbLootGroups.Values.FirstOrDefault(x => x.PackId == loot.LootPackId && x.GroupNo == loot.Group);
-
                         var groupDropRate = lootGroupData is { DropRate: > 1 }
                             ? lootGroupData.DropRate / 100_000f
                             : 1f;
-                        /*
-                        if (lootGroupData != null)
-                        {
-                            switch (loot.Group)
-                            {
-                                case 1:
-                                    groupDropRate = 1f;
-                                    break;
-                                case 4:
-                                    groupDropRate = (lootGroupData.DropRate / 10_000_000f);
-                                    break;
-                                default:
-                                    groupDropRate = (lootGroupData.DropRate / 10_000f);
-                                    break;
-                            }
-                        }
-                        */
+
                         if (groupDropRate > 1f)
                             groupDropRate = 1f;
 
@@ -1263,6 +1240,7 @@ public partial class MainForm
                     }
 
                 }
+                */
 
                 lootNode.ExpandAll();
                 if (cbNpcCollapseLoot.Checked)
