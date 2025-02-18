@@ -63,7 +63,7 @@ namespace AAEmu.DBEditor.forms.server
 
         private void FillSKUList()
         {
-            var skus = Data.MySqlDb.Game.IcsSkus.OrderByDescending(x => x.Sku).ToList();
+            var skus = Data.MySqlDb.GetGame().IcsSkus.OrderByDescending(x => x.Sku).ToList();
             lvSKUs.BeginUpdate();
             lvSKUs.Items.Clear();
             lvSKUs.SmallImageList = Data.Client.Icons32;
@@ -131,7 +131,7 @@ namespace AAEmu.DBEditor.forms.server
 
         private void FillShopItemList()
         {
-            var shopItems = Data.MySqlDb.Game.IcsShopItems.OrderByDescending(x => x.ShopId).ToList();
+            var shopItems = Data.MySqlDb.GetGame().IcsShopItems.OrderByDescending(x => x.ShopId).ToList();
             tvShopItems.BeginUpdate();
             tvShopItems.Nodes.Clear();
             tvShopItems.ImageList = Data.Client.Icons32;
@@ -139,7 +139,7 @@ namespace AAEmu.DBEditor.forms.server
             cbSKUShopEntryId.Items.Add("0");
             foreach (var shopItem in shopItems)
             {
-                var subSKUs = Data.MySqlDb.Game.IcsSkus.Where(x => x.ShopId == shopItem.ShopId).OrderBy(x => x.Position).ToList();
+                var subSKUs = Data.MySqlDb.GetGame().IcsSkus.Where(x => x.ShopId == shopItem.ShopId).OrderBy(x => x.Position).ToList();
                 if (IsShopItemFilteredOut(tFilterShopItem.Text, shopItem, subSKUs))
                     continue;
 
@@ -255,14 +255,14 @@ namespace AAEmu.DBEditor.forms.server
         private void FillShopTabsPickList()
         {
             // Filter Left Side
-            var shopItems = Data.MySqlDb.Game.IcsShopItems.OrderByDescending(x => x.ShopId).ToList();
+            var shopItems = Data.MySqlDb.GetGame().IcsShopItems.OrderByDescending(x => x.ShopId).ToList();
             lvMenuShopItemList.BeginUpdate();
             lvMenuShopItemList.Items.Clear();
             lvMenuShopItemList.SmallImageList = Data.Client.Icons32;
             lvMenuShopItemList.LargeImageList = Data.Client.Icons32;
             foreach (var shopItem in shopItems)
             {
-                var subSKUs = Data.MySqlDb.Game.IcsSkus.Where(x => x.ShopId == shopItem.ShopId).OrderBy(x => x.Position).ToList();
+                var subSKUs = Data.MySqlDb.GetGame().IcsSkus.Where(x => x.ShopId == shopItem.ShopId).OrderBy(x => x.Position).ToList();
                 if (IsShopItemFilteredOut(tFilterMenuShopItemList.Text, shopItem, subSKUs))
                     continue;
 
@@ -337,16 +337,16 @@ namespace AAEmu.DBEditor.forms.server
             subMenu++;
 
             // Grab tab's contents
-            var tabItems = Data.MySqlDb.Game.IcsMenu.Where(x => (x.MainTab == mainMenu) && (x.SubTab == subMenu)).OrderBy(x => x.TabPos).ToList();
+            var tabItems = Data.MySqlDb.GetGame().IcsMenu.Where(x => (x.MainTab == mainMenu) && (x.SubTab == subMenu)).OrderBy(x => x.TabPos).ToList();
             lPageCount.Text = Math.Ceiling(tabItems.Count * 1f / itemPerPage).ToString() + " page(s)";
             foreach (var menuItem in tabItems)
             {
                 // Grab the entry's shopItem
-                var shopItem = Data.MySqlDb.Game.IcsShopItems.FirstOrDefault(x => x.ShopId == menuItem.ShopId);
+                var shopItem = Data.MySqlDb.GetGame().IcsShopItems.FirstOrDefault(x => x.ShopId == menuItem.ShopId);
                 if (shopItem == null)
                     continue; // Not found? Ignore!
 
-                var subSKUs = Data.MySqlDb.Game.IcsSkus.Where(x => x.ShopId == shopItem.ShopId).OrderBy(x => x.Position).ToList();
+                var subSKUs = Data.MySqlDb.GetGame().IcsSkus.Where(x => x.ShopId == shopItem.ShopId).OrderBy(x => x.Position).ToList();
 
                 var displayName = shopItem.Name;
                 var displayItemId = shopItem.DisplayItemId;
@@ -543,7 +543,7 @@ namespace AAEmu.DBEditor.forms.server
 
         private void btnSKUGetNewId_Click(object sender, EventArgs e)
         {
-            var lastSku = Data.MySqlDb.Game.IcsSkus.OrderBy(x => x.Sku).Reverse().FirstOrDefault();
+            var lastSku = Data.MySqlDb.GetGame().IcsSkus.OrderBy(x => x.Sku).Reverse().FirstOrDefault();
             if (lastSku == null)
             {
                 tSKUSKU.Text = "1000000";
@@ -573,7 +573,7 @@ namespace AAEmu.DBEditor.forms.server
                 if (shopItemId == 0)
                 {
                     // Create new default shop for this SKU
-                    var lastShopItem = Data.MySqlDb.Game.IcsShopItems.OrderBy(x => x.ShopId).Reverse().FirstOrDefault();
+                    var lastShopItem = Data.MySqlDb.GetGame().IcsShopItems.OrderBy(x => x.ShopId).Reverse().FirstOrDefault();
                     if (lastShopItem == null)
                     {
                         shopItemId = 2000000;
@@ -584,7 +584,7 @@ namespace AAEmu.DBEditor.forms.server
                     }
                     var newShopItem = new IcsShopItems();
                     newShopItem.ShopId = shopItemId;
-                    Data.MySqlDb.Game.IcsShopItems.Add(newShopItem);
+                    Data.MySqlDb.GetGame().IcsShopItems.Add(newShopItem);
                 }
 
                 EnterPlaceholderText(tSKUSKU);
@@ -620,7 +620,7 @@ namespace AAEmu.DBEditor.forms.server
                 EnterPlaceholderText(tSKUBonusItemCount);
                 SelectedSKU.BonusItemCount = uint.Parse(tSKUBonusItemCount.Text);
 
-                if (Data.MySqlDb.Game.SaveChanges() <= 0)
+                if (Data.MySqlDb.GetGame().SaveChanges() <= 0)
                 {
                     MessageBox.Show("Failed to save SKU changes to DB");
                     return;
@@ -644,7 +644,7 @@ namespace AAEmu.DBEditor.forms.server
                 return;
             newSku.Sku = newSkuSku;// Set this so we won't have duplicate keys
 
-            Data.MySqlDb.Game.IcsSkus.Add(newSku);
+            Data.MySqlDb.GetGame().IcsSkus.Add(newSku);
             SelectedSKU = newSku;
             btnSKUUpdate_Click(null, null); // Call our regular update function to fill and save the rest.
         }
@@ -778,7 +778,7 @@ namespace AAEmu.DBEditor.forms.server
 
         private void btnNewShopItemId_Click(object sender, EventArgs e)
         {
-            var lastShopItem = Data.MySqlDb.Game.IcsShopItems.OrderBy(x => x.ShopId).Reverse().FirstOrDefault();
+            var lastShopItem = Data.MySqlDb.GetGame().IcsShopItems.OrderBy(x => x.ShopId).Reverse().FirstOrDefault();
             if (lastShopItem == null)
             {
                 tShopItemShopId.Text = "2000000";
@@ -799,7 +799,7 @@ namespace AAEmu.DBEditor.forms.server
                 // Critical check if remaining count changed (ask user if they want to continue)
                 var oldCount = SelectedShopItem.Remaining;
                 var newCount = int.Parse(tShopItemRemaining.Text);
-                Data.MySqlDb.Game.IcsShopItems.Entry(SelectedShopItem).Reload();
+                Data.MySqlDb.GetGame().IcsShopItems.Entry(SelectedShopItem).Reload();
                 if (SelectedShopItem.Remaining != oldCount)
                 {
                     if (MessageBox.Show(
@@ -845,7 +845,7 @@ namespace AAEmu.DBEditor.forms.server
                 }
 
 
-                if (Data.MySqlDb.Game.SaveChanges() <= 0)
+                if (Data.MySqlDb.GetGame().SaveChanges() <= 0)
                 {
                     MessageBox.Show("Failed to save Shop Item changes to DB");
                     return;
@@ -867,7 +867,7 @@ namespace AAEmu.DBEditor.forms.server
             var newShopItem = new IcsShopItems();
             newShopItem.ShopId = uint.Parse(tShopItemShopId.Text); // Set this so we won't have duplicate keys
 
-            Data.MySqlDb.Game.IcsShopItems.Add(newShopItem);
+            Data.MySqlDb.GetGame().IcsShopItems.Add(newShopItem);
             SelectedShopItem = newShopItem;
             btnShopItemUpdate_Click(null, null); // Call our regular update function to fill and save the rest.
         }
@@ -968,7 +968,7 @@ namespace AAEmu.DBEditor.forms.server
                 }
 
                 RePageTabPage();
-                if (Data.MySqlDb.Game.SaveChanges() <= 0)
+                if (Data.MySqlDb.GetGame().SaveChanges() <= 0)
                 {
                     MessageBox.Show("Failed to save menu move changes to DB");
                     return;
@@ -985,7 +985,7 @@ namespace AAEmu.DBEditor.forms.server
             newIcsMenu.SubTab = (byte)(cbSubMenu.SelectedIndex + 1);
             newIcsMenu.TabPos = 9999;
             newIcsMenu.ShopId = shopItem.ShopId;
-            Data.MySqlDb.Game.IcsMenu.Add(newIcsMenu);
+            Data.MySqlDb.GetGame().IcsMenu.Add(newIcsMenu);
 
             var newItem = new ListViewItem();
             newItem.Text = shopItem.ShopId.ToString();
@@ -1003,7 +1003,7 @@ namespace AAEmu.DBEditor.forms.server
             }
             RePageTabPage();
 
-            if (Data.MySqlDb.Game.SaveChanges() <= 0)
+            if (Data.MySqlDb.GetGame().SaveChanges() <= 0)
             {
                 MessageBox.Show("Failed to save menu add changes to DB");
                 return;
@@ -1105,8 +1105,8 @@ namespace AAEmu.DBEditor.forms.server
             if (menuItem == null)
                 return;
 
-            Data.MySqlDb.Game.IcsMenu.Remove(menuItem);
-            Data.MySqlDb.Game.SaveChanges();
+            Data.MySqlDb.GetGame().IcsMenu.Remove(menuItem);
+            Data.MySqlDb.GetGame().SaveChanges();
             FillShopTabsPage();
         }
 
@@ -1174,15 +1174,15 @@ namespace AAEmu.DBEditor.forms.server
             {
                 if (lvMenuItemsTab.Items.Count > 0)
                 {
-                    Data.MySqlDb.Game.IcsMenu.Where(x => (x.MainTab == mainMenu) && (x.SubTab == subMenu)).ExecuteDelete();
-                    Data.MySqlDb.Game.SaveChanges();
+                    Data.MySqlDb.GetGame().IcsMenu.Where(x => (x.MainTab == mainMenu) && (x.SubTab == subMenu)).ExecuteDelete();
+                    Data.MySqlDb.GetGame().SaveChanges();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Failed to delete old data: " + ex.Message, "", MessageBoxButtons.OK);
             }
-            var allItemsOfThisMenu = Data.MySqlDb.Game.IcsMenu.Where(x => (x.MainTab == mainMenu)).OrderBy(x => x.SubTab).ThenBy(x => x.TabPos).ToList();
+            var allItemsOfThisMenu = Data.MySqlDb.GetGame().IcsMenu.Where(x => (x.MainTab == mainMenu)).OrderBy(x => x.SubTab).ThenBy(x => x.TabPos).ToList();
             var newPos = 0;
             foreach (var item in allItemsOfThisMenu)
             {
@@ -1192,12 +1192,12 @@ namespace AAEmu.DBEditor.forms.server
                 newItem.TabPos = newPos;
                 newItem.ShopId = item.ShopId;
 
-                Data.MySqlDb.Game.IcsMenu.Add(newItem);
+                Data.MySqlDb.GetGame().IcsMenu.Add(newItem);
                 newPos++;
             }
             try
             {
-                Data.MySqlDb.Game.SaveChanges();
+                Data.MySqlDb.GetGame().SaveChanges();
             }
             catch (Exception ex)
             {
@@ -1220,8 +1220,8 @@ namespace AAEmu.DBEditor.forms.server
             {
                 if (lvMenuItemsTab.Items.Count > 0)
                 {
-                    Data.MySqlDb.Game.IcsMenu.Where(x => (x.MainTab == mainMenu) && (x.SubTab == subMenu)).ExecuteDelete();
-                    Data.MySqlDb.Game.SaveChanges();
+                    Data.MySqlDb.GetGame().IcsMenu.Where(x => (x.MainTab == mainMenu) && (x.SubTab == subMenu)).ExecuteDelete();
+                    Data.MySqlDb.GetGame().SaveChanges();
                 }
             }
             catch (Exception ex)
@@ -1229,12 +1229,12 @@ namespace AAEmu.DBEditor.forms.server
                 MessageBox.Show("Failed to delete old data: " + ex.Message, "", MessageBoxButtons.OK);
             }
 
-            var allNewItems = Data.MySqlDb.Game.IcsMenu.OrderBy(x => x.MainTab).ThenBy(x => x.SubTab).ThenBy(x => x.TabPos).ToList();
+            var allNewItems = Data.MySqlDb.GetGame().IcsMenu.OrderBy(x => x.MainTab).ThenBy(x => x.SubTab).ThenBy(x => x.TabPos).ToList();
             var newItemsToAdd = new List<uint>();
 
             foreach (var item in allNewItems)
             {
-                var shopItem = Data.MySqlDb.Game.IcsShopItems.FirstOrDefault(x => x.ShopId == item.ShopId);
+                var shopItem = Data.MySqlDb.GetGame().IcsShopItems.FirstOrDefault(x => x.ShopId == item.ShopId);
                 if (shopItem == null)
                     continue;
 
@@ -1242,7 +1242,7 @@ namespace AAEmu.DBEditor.forms.server
                 if (newItemsToAdd.Contains(shopItem.ShopId))
                     continue;
 
-                var skus = Data.MySqlDb.Game.IcsSkus.Where(x => x.ShopId == shopItem.ShopId).ToList();
+                var skus = Data.MySqlDb.GetGame().IcsSkus.Where(x => x.ShopId == shopItem.ShopId).ToList();
                 foreach (var sku in skus)
                 {
                     if (sku.EventType == 4)
@@ -1263,12 +1263,12 @@ namespace AAEmu.DBEditor.forms.server
                 newItem.TabPos = newPos;
                 newItem.ShopId = item;
 
-                Data.MySqlDb.Game.IcsMenu.Add(newItem);
+                Data.MySqlDb.GetGame().IcsMenu.Add(newItem);
                 newPos++;
             }
             try
             {
-                Data.MySqlDb.Game.SaveChanges();
+                Data.MySqlDb.GetGame().SaveChanges();
             }
             catch (Exception ex)
             {
@@ -1291,8 +1291,8 @@ namespace AAEmu.DBEditor.forms.server
             {
                 if (lvMenuItemsTab.Items.Count > 0)
                 {
-                    Data.MySqlDb.Game.IcsMenu.Where(x => (x.MainTab == mainMenu) && (x.SubTab == subMenu)).ExecuteDelete();
-                    Data.MySqlDb.Game.SaveChanges();
+                    Data.MySqlDb.GetGame().IcsMenu.Where(x => (x.MainTab == mainMenu) && (x.SubTab == subMenu)).ExecuteDelete();
+                    Data.MySqlDb.GetGame().SaveChanges();
                 }
             }
             catch (Exception ex)
@@ -1300,12 +1300,12 @@ namespace AAEmu.DBEditor.forms.server
                 MessageBox.Show("Failed to delete old data: " + ex.Message, "", MessageBoxButtons.OK);
             }
 
-            var allNewItems = Data.MySqlDb.Game.IcsMenu.OrderBy(x => x.MainTab).ThenBy(x => x.SubTab).ThenBy(x => x.TabPos).ToList();
+            var allNewItems = Data.MySqlDb.GetGame().IcsMenu.OrderBy(x => x.MainTab).ThenBy(x => x.SubTab).ThenBy(x => x.TabPos).ToList();
             var newItemsToAdd = new List<uint>();
 
             foreach (var item in allNewItems)
             {
-                var shopItem = Data.MySqlDb.Game.IcsShopItems.FirstOrDefault(x => x.ShopId == item.ShopId);
+                var shopItem = Data.MySqlDb.GetGame().IcsShopItems.FirstOrDefault(x => x.ShopId == item.ShopId);
                 if (shopItem == null)
                     continue;
 
@@ -1326,12 +1326,12 @@ namespace AAEmu.DBEditor.forms.server
                 newItem.TabPos = newPos;
                 newItem.ShopId = item;
 
-                Data.MySqlDb.Game.IcsMenu.Add(newItem);
+                Data.MySqlDb.GetGame().IcsMenu.Add(newItem);
                 newPos++;
             }
             try
             {
-                Data.MySqlDb.Game.SaveChanges();
+                Data.MySqlDb.GetGame().SaveChanges();
             }
             catch (Exception ex)
             {

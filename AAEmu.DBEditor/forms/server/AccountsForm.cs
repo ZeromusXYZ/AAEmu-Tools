@@ -67,7 +67,7 @@ namespace AAEmu.DBEditor.forms.server
                         continue;
                     selectList.Add(user.Id);
                 }
-                var characterNameList = Data.MySqlDb.Game.Characters.Where(x => x.Name.ToLower().Contains(fLower)).ToList();
+                var characterNameList = Data.MySqlDb.GetGame().Characters.Where(x => x.Name.ToLower().Contains(fLower)).ToList();
                 foreach (var character in characterNameList)
                 {
                     if (selectList.Contains(character.AccountId))
@@ -140,11 +140,11 @@ namespace AAEmu.DBEditor.forms.server
             cbBanned.Checked = account.Banned > 0;
             cbBanReason.SelectedIndex = account.BanReason < cbBanReason.Items.Count ? (int)account.BanReason : 0;
 
-            var gameAccount = Data.MySqlDb.Game.Accounts.FirstOrDefault(x => x.AccountId == accountId);
+            var gameAccount = Data.MySqlDb.GetGame().Accounts.FirstOrDefault(x => x.AccountId == accountId);
             SelectedGameAccount = gameAccount;
             if (gameAccount != null)
             {
-                Data.MySqlDb.Game.Accounts.Entry(SelectedGameAccount).Reload();
+                Data.MySqlDb.GetGame().Accounts.Entry(SelectedGameAccount).Reload();
                 tLabor.Text = gameAccount.Labor.ToString(CultureInfo.InvariantCulture);
                 tCredits.Text = gameAccount.Credits.ToString(CultureInfo.InvariantCulture);
                 tLoyalty.Text = gameAccount.Loyalty.ToString(CultureInfo.InvariantCulture);
@@ -162,7 +162,7 @@ namespace AAEmu.DBEditor.forms.server
             tLoyalty.Enabled = (gameAccount != null);
             cbAccessLevel.Enabled = (gameAccount != null);
 
-            var characters = Data.MySqlDb.Game.Characters.Where(x => x.AccountId == accountId).ToList();
+            var characters = Data.MySqlDb.GetGame().Characters.Where(x => x.AccountId == accountId).ToList();
             if (characters.Count <= 0)
             {
                 lvCharacters.Items.Add("No Characters").ImageIndex = 0;
@@ -299,7 +299,7 @@ namespace AAEmu.DBEditor.forms.server
             if (SelectedAccount == null)
                 return;
 
-            if (Data.MySqlDb.Game.Characters.Any(x => x.AccountId == SelectedAccount.Id))
+            if (Data.MySqlDb.GetGame().Characters.Any(x => x.AccountId == SelectedAccount.Id))
             {
                 MessageBox.Show($"It's not allowed to delete accounts that still have characters attached!");
                 return;
@@ -383,13 +383,13 @@ namespace AAEmu.DBEditor.forms.server
                     try
                     {
                         // Game Account
-                        Data.MySqlDb.Game.Accounts.Entry(SelectedGameAccount).Reload();
+                        Data.MySqlDb.GetGame().Accounts.Entry(SelectedGameAccount).Reload();
                         SelectedGameAccount.Labor = newLabor;
                         SelectedGameAccount.Credits = newCredits;
                         SelectedGameAccount.Loyalty = newLoyalty;
                         SelectedGameAccount.AccessLevel = newAccountAccessLevel;
-                        Data.MySqlDb.Game.Accounts.Update(SelectedGameAccount);
-                        Data.MySqlDb.Game.SaveChanges();
+                        Data.MySqlDb.GetGame().Accounts.Update(SelectedGameAccount);
+                        Data.MySqlDb.GetGame().SaveChanges();
 
                         // Login Account
                         Data.MySqlDb.Login.Users.Entry(SelectedAccount).Reload();

@@ -255,7 +255,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                     }
 
                     if (!string.IsNullOrWhiteSpace(Settings.CharacterName) &&
-                        Data.MySqlDb.Game.Characters.Any(x => x.Name == Settings.CharacterName))
+                        Data.MySqlDb.GetGame().Characters.Any(x => x.Name == Settings.CharacterName))
                     {
                         lAhBotName.Text = Settings.CharacterName;
                     }
@@ -627,7 +627,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                 return false;
             }
 
-            var character = Data.MySqlDb.Game.Characters.FirstOrDefault(x => x.Name == Settings.CharacterName);
+            var character = Data.MySqlDb.GetGame().Characters.FirstOrDefault(x => x.Name == Settings.CharacterName);
             if (character == null)
             {
                 Log($"Unable to find {Settings.CharacterName}");
@@ -818,7 +818,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                 return false;
             }
 
-            var character = Data.MySqlDb.Game.Characters.FirstOrDefault(x => x.Name == Settings.CharacterName);
+            var character = Data.MySqlDb.GetGame().Characters.FirstOrDefault(x => x.Name == Settings.CharacterName);
             if (character == null)
             {
                 Log($"Unable to find {Settings.CharacterName}");

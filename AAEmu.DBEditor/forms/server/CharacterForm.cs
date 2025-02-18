@@ -44,7 +44,7 @@ namespace AAEmu.DBEditor.forms.server
         private void tFilter_TextChanged(object sender, EventArgs e)
         {
             var filterLowerCase = tFilter.Text.ToLower();
-            var characters = Data.MySqlDb.Game.Characters.Where(x => (x.Name.ToLower() + x.Id.ToString()).Contains(filterLowerCase));
+            var characters = Data.MySqlDb.GetGame().Characters.Where(x => (x.Name.ToLower() + x.Id.ToString()).Contains(filterLowerCase));
             lvCharacterList.Clear();
             foreach (var character in characters)
             {
@@ -77,7 +77,7 @@ namespace AAEmu.DBEditor.forms.server
             {
                 slotType = (int)n;
             }
-            var itemContainer = Data.MySqlDb.Game.ItemContainers.FirstOrDefault(x => x.OwnerId == characterId && x.SlotType == slotType);
+            var itemContainer = Data.MySqlDb.GetGame().ItemContainers.FirstOrDefault(x => x.OwnerId == characterId && x.SlotType == slotType);
             lvItems.Items.Clear();
             if (itemContainer == null)
             {
@@ -86,7 +86,7 @@ namespace AAEmu.DBEditor.forms.server
             }
             lContainer.Text = $@"{itemContainer.SlotType}:{itemContainer.ContainerType} ({itemContainer.ContainerId}), Size: {itemContainer.ContainerSize}";
 
-            var containerItems = Data.MySqlDb.Game.Items.Where(x => x.ContainerId == itemContainer.ContainerId).OrderBy(x => x.Slot);
+            var containerItems = Data.MySqlDb.GetGame().Items.Where(x => x.ContainerId == itemContainer.ContainerId).OrderBy(x => x.Slot);
             var lastSlot = -2;
             foreach (var item in containerItems)
             {
@@ -176,7 +176,7 @@ namespace AAEmu.DBEditor.forms.server
 
             // Class
             var classNode = rootNode.Nodes.Add($"Lv {character.Level} - {AbilityNames.GetClassName(character.Ability1, character.Ability2, character.Ability3)} ({character.GetClassName()})");
-            var abilities = Data.MySqlDb.Game.Abilities.Where(x => x.Owner == character.Id);
+            var abilities = Data.MySqlDb.GetGame().Abilities.Where(x => x.Owner == character.Id);
             foreach (var ability in abilities)
             {
                 var abilityName = Data.Server.GetText("ui_texts", "text", 1110 + ability.Id, "<" + ability.Id + ">");
@@ -197,7 +197,7 @@ namespace AAEmu.DBEditor.forms.server
 
             // Vocation Skills
             var vocationNode = rootNode.Nodes.Add($"Vocation ({character.VocationPoint} badges)");
-            var actAbilities = Data.MySqlDb.Game.Actabilities.Where(x => x.Owner == character.Id).OrderBy(x => x.Id);
+            var actAbilities = Data.MySqlDb.GetGame().Actabilities.Where(x => x.Owner == character.Id).OrderBy(x => x.Id);
             foreach (var actAbility in actAbilities)
             {
                 if (actAbility.Point <= 0)
@@ -226,9 +226,9 @@ namespace AAEmu.DBEditor.forms.server
             var housingNode = tvOwned.Nodes.Add($"Houses and Farms");
             List<Housings> houses;
             if (cbIncludeAccountHouses.Checked)
-                houses = Data.MySqlDb.Game.Housings.Where(x => x.AccountId == character.AccountId).ToList();
+                houses = Data.MySqlDb.GetGame().Housings.Where(x => x.AccountId == character.AccountId).ToList();
             else
-                houses = Data.MySqlDb.Game.Housings.Where(x => x.Owner == character.Id).ToList();
+                houses = Data.MySqlDb.GetGame().Housings.Where(x => x.Owner == character.Id).ToList();
             foreach (var house in houses)
             {
                 var houseNode = housingNode.Nodes.Add($"{house.Name} ({house.Id})");
@@ -238,13 +238,13 @@ namespace AAEmu.DBEditor.forms.server
                 }
                 else
                 {
-                    var ownerCharacter = Data.MySqlDb.Game.Characters.FirstOrDefault(x => x.Id == house.Owner);
+                    var ownerCharacter = Data.MySqlDb.GetGame().Characters.FirstOrDefault(x => x.Id == house.Owner);
                     houseNode.Nodes.Add($"Owner: {ownerCharacter?.Name ?? "<none>"} ({ownerCharacter?.Id ?? 0})");
                 }
 
                 if (house.CoOwner != house.Owner)
                 {
-                    var coOwnerCharacter = Data.MySqlDb.Game.Characters.FirstOrDefault(x => x.Id == house.CoOwner);
+                    var coOwnerCharacter = Data.MySqlDb.GetGame().Characters.FirstOrDefault(x => x.Id == house.CoOwner);
                     houseNode.Nodes.Add($"Co-Owner: {coOwnerCharacter?.Name ?? "<none>"} ({coOwnerCharacter?.Id ?? 0})");
                 }
 
@@ -255,12 +255,12 @@ namespace AAEmu.DBEditor.forms.server
             // Pets
             #region pets
             var petsNode = tvOwned.Nodes.Add("Pets");
-            var pets = Data.MySqlDb.Game.Mates.Where(x => x.Owner == character.Id).ToList();
+            var pets = Data.MySqlDb.GetGame().Mates.Where(x => x.Owner == character.Id).ToList();
             foreach (var pet in pets)
             {
                 var petNode = petsNode.Nodes.Add($"{pet.Name} ({pet.Id}) Lv {pet.Level} ");
 
-                var petItem = Data.MySqlDb.Game.Items.FirstOrDefault(x => x.Id == pet.ItemId);
+                var petItem = Data.MySqlDb.GetGame().Items.FirstOrDefault(x => x.Id == pet.ItemId);
                 if (petItem == null)
                 {
                     petNode.Nodes.Add($"Item {pet.ItemId} - Orphaned").ForeColor = Color.Red;
@@ -275,10 +275,10 @@ namespace AAEmu.DBEditor.forms.server
                 petNode.Nodes.Add($"Exp {pet.Xp}");
 
                 var gearNode = petNode.Nodes.Add($"Equipment");
-                var petGearContainer = Data.MySqlDb.Game.ItemContainers.FirstOrDefault(x => x.MateId == pet.Id);
+                var petGearContainer = Data.MySqlDb.GetGame().ItemContainers.FirstOrDefault(x => x.MateId == pet.Id);
                 if (petGearContainer != null)
                 {
-                    var petGears = Data.MySqlDb.Game.Items.Where(x => x.ContainerId == petGearContainer.ContainerId);
+                    var petGears = Data.MySqlDb.GetGame().Items.Where(x => x.ContainerId == petGearContainer.ContainerId);
                     if (petGears.Any())
                     {
                         foreach (var petGear in petGears)
@@ -305,11 +305,11 @@ namespace AAEmu.DBEditor.forms.server
             // Vehicles
             #region vehicles
             var vehiclesNode = tvOwned.Nodes.Add($"Vehicles");
-            var vehicles = Data.MySqlDb.Game.Slaves.Where(x => x.OwnerId == character.Id && x.OwnerType == 0 && x.Summoner == character.Id).ToList();
+            var vehicles = Data.MySqlDb.GetGame().Slaves.Where(x => x.OwnerId == character.Id && x.OwnerType == 0 && x.Summoner == character.Id).ToList();
             foreach (var vehicle in vehicles)
             {
                 var vehicleNode = vehiclesNode.Nodes.Add($"{vehicle.Name} ({vehicle.Id})");
-                var vehicleItem = Data.MySqlDb.Game.Items.FirstOrDefault(x => x.Id == vehicle.ItemId);
+                var vehicleItem = Data.MySqlDb.GetGame().Items.FirstOrDefault(x => x.Id == vehicle.ItemId);
                 if (vehicleItem == null)
                 {
                     vehicleNode.Nodes.Add($"Item {vehicle.ItemId} - Orphaned").ForeColor = Color.Red;
@@ -325,7 +325,7 @@ namespace AAEmu.DBEditor.forms.server
                 vehicleNode.Nodes.Add($"Pos: {vehicle.X:F0}, {vehicle.Y:F0}, {vehicle.Z:F0}");
                 vehicleNode.Nodes.Add($"{vehicle.Hp} HP, {vehicle.Mp} MP");
                 var childrenNode = vehicleNode.Nodes.Add($"Persistent Children");
-                var doodads = Data.MySqlDb.Game.Doodads.Where(x => (x.OwnerType == 2) && (x.HouseId == vehicle.Id));
+                var doodads = Data.MySqlDb.GetGame().Doodads.Where(x => (x.OwnerType == 2) && (x.HouseId == vehicle.Id));
                 foreach (var doodad in doodads)
                 {
                     var doodadNode = childrenNode.Nodes.Add($"Doodad {doodad.Id} {Data.Server.GetText("doodad_almighties", "name", doodad.TemplateId, $"<{doodad.TemplateId}>", true)} ({doodad.TemplateId})");
@@ -339,7 +339,7 @@ namespace AAEmu.DBEditor.forms.server
                         doodadNode.Nodes.Add($"ItemTemplate: ({doodad.ItemTemplateId}) {Data.Server.GetText("items", "name", (long)doodad.ItemTemplateId, "???")}");
                 }
 
-                var slaves = Data.MySqlDb.Game.Slaves.Where(x => (x.OwnerType == 2) && (x.OwnerId == vehicle.Id));
+                var slaves = Data.MySqlDb.GetGame().Slaves.Where(x => (x.OwnerType == 2) && (x.OwnerId == vehicle.Id));
                 foreach (var slave in slaves)
                 {
                     var slaveNode = childrenNode.Nodes.Add($"Slave {slave.Id} {slave.Name} ({slave.TemplateId})");
@@ -370,7 +370,7 @@ namespace AAEmu.DBEditor.forms.server
             if (SelectedCharacter == null)
                 return;
 
-            var itemContainerTypes = Data.MySqlDb.Game.ItemContainers.Where(x => x.OwnerId == SelectedCharacter.Id).ToList().DistinctBy(x => x.SlotType).OrderBy(x => x.SlotType);
+            var itemContainerTypes = Data.MySqlDb.GetGame().ItemContainers.Where(x => x.OwnerId == SelectedCharacter.Id).ToList().DistinctBy(x => x.SlotType).OrderBy(x => x.SlotType);
             foreach (var itemContainerType in itemContainerTypes)
             {
                 var slotTypeName = ((SlotType)itemContainerType.SlotType).ToString();

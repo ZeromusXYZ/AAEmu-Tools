@@ -14,6 +14,11 @@ namespace AAEmu.DBEditor.data
         public aaemu_game_context Game { get; private set; }
         public aaemu_login_context Login { get; private set; }
 
+        public aaemu_game_context GetGame()
+        {
+            return new aaemu_game_context();
+        }
+
         public AAEmuDB()
         {
             //
