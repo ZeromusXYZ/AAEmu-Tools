@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -1271,8 +1272,7 @@ namespace AAEmu.DBViewer
             foreach (var loot in loots)
             {
                 var groupDropRate = string.Empty;
-                var isInGroup =
-                    AaDb.DbLootGroups.Values.FirstOrDefault(x => x.PackId == packId && x.GroupNo == loot.Group);
+                var isInGroup = AaDb.DbLootGroups.Values.FirstOrDefault(x => x.PackId == packId && x.GroupNo == loot.Group);
                 var allLootsInGroup = loots.Where(l => l.Group == loot.Group);
                 var totalWeightOfGroup = allLootsInGroup.Count() > 1 ? allLootsInGroup.Sum(x => x.DropRate) : 0;
                 if (isInGroup != null)
@@ -1312,6 +1312,8 @@ namespace AAEmu.DBViewer
                     }
                     else
                     {
+                        if (string.IsNullOrWhiteSpace(groupDropRate))
+                            groupDropRate = "No group";
                         nodeForGroup = res.Nodes.Add(groupDropRate);
                         groupNodes.Add(loot.Group, nodeForGroup);
                     }
@@ -1340,14 +1342,16 @@ namespace AAEmu.DBViewer
                 var itemRate = 0f;
                 if (totalWeightOfGroup > 0)
                 {
+                    // Weighted
                     itemRate = (float)loot.DropRate / (float)totalWeightOfGroup * 100f;
                 }
                 else
                 {
+                    // Raw
                     itemRate = (float)loot.DropRate / 10_000_000f * 100f;
                 }
 
-                if (loot.DropRate == 1)
+                if (loot.AlwaysDrop)
                 {
                     dropRate = "Always";
                 }
@@ -1393,6 +1397,53 @@ namespace AAEmu.DBViewer
                 itemNode.Text = dropRate + " " + itemNode.Text + amount;
 
                 nodeForGroup.Nodes.Add(itemNode);
+
+                if (isInGroup != null && isInGroup.ItemGradeDistributionId > 0)
+                {
+                    if (AaDb.DbItemGradeDistributions.TryGetValue(isInGroup.ItemGradeDistributionId, out var gradeDistribution))
+                    {
+                        var totalWeight = gradeDistribution.Weights.Values.Sum();
+                        foreach (var (gradeId, weight) in gradeDistribution.Weights)
+                        {
+                            if (weight <= 0)
+                                continue;
+                            var gradeRate = (float)weight / (float)totalWeight * 100f;
+                            if (AaDb.DbItemGrades.TryGetValue(gradeId, out var grade))
+                            {
+                                var gradeNode = itemNode.Nodes.Add($"Grade: {grade.NameLocalized} ({gradeId}) @ {gradeRate:F0}%");
+                                gradeNode.ForeColor = grade.ColorArgb;
+                                gradeNode.SelectedImageIndex = gradeNode.ImageIndex = IconIdToLabel(grade.IconId, null);
+                            }
+                            else
+                            {
+                                itemNode.Nodes.Add($"Grade: Invalid ({gradeId}) ").ForeColor = Color.Red;
+                            }
+
+                        }
+                        
+                    }
+                    else
+                    {
+                        itemNode.Nodes.Add("Unknown grade distribution").ForeColor = Color.Red;
+                    }
+                    
+                }
+                else if (loot.GradeId > 0)
+                {
+                    var grade = AaDb.DbItemGrades.GetValueOrDefault(loot.GradeId);
+
+                    var gradeText = $"Grade: {grade?.NameLocalized ?? ""} ({loot.GradeId})";
+                    if (grade != null)
+                    {
+                        var gradeNode = itemNode.Nodes.Add(gradeText);
+                        gradeNode.ForeColor = grade.ColorArgb;
+                        gradeNode.SelectedImageIndex = gradeNode.ImageIndex = IconIdToLabel(grade.IconId, null);
+                    }
+                    else
+                    {
+                        itemNode.Nodes.Add(gradeText);
+                    }
+                }
             }
 
             rootNode.Nodes.Add(res);

@@ -1410,6 +1410,47 @@ public class GameAchievementObjectives
     public long RecordId = 0;
 }
 
+public class GameItemGrades
+{
+    public long Id = 0;
+    public string Name = string.Empty;
+    public long GradeOrder = 0;
+    public Color ColorArgb = Color.Black;
+    /*
+    public Color ColorArgbSecond = Color.Black;
+    */
+    public long IconId = 0;
+    public long StatMultiplier = 0;
+    public long RefundMultiplier = 0;
+    public float VarHoldableDps = 0f;
+    public float VarHoldableArmor = 0f;
+    public float VarHoldableMagicDps = 0f;
+    public float VarWearableArmor = 0f;
+    public float VarWearableMagicResistance = 0f;
+    public float VarHoldableHealDps = 0f;
+    public float DurabilityValue = 0f;
+    public long UpgradeRatio = 0;
+    /*
+    public long GradeEnchantSuccessRatio = 0;
+    public long GradeEnchantGreatSuccessRatio = 0;
+    public long GradeEnchantBreakRatio = 0;
+    public long GradeEnchantDowngradeRatio = 0;
+    public long GradeEnchantCost = 0;
+    public long GradeEnchantDowngradeMin = 0;
+    public long GradeEnchantDowngradeMax = 0;
+    public long CurrencyId = 0;
+    */
+
+    public string NameLocalized = string.Empty;
+}
+
+public class GameItemGradeDistributions
+{
+    public long Id = 0;
+    // public string Name = string.Empty;
+    public Dictionary<long, long> Weights = new();
+}
+
 internal static class AaDb
 {
     public static Dictionary<string, GameTranslation> DbTranslations = new();
@@ -1499,6 +1540,8 @@ internal static class AaDb
     public static Dictionary<long, GameUnitModifiers> DbUnitModifiers = new();
     public static Dictionary<long, GameAchievements> DbAchievements = new();
     public static Dictionary<long, GameAchievementObjectives> DbAchievementObjectives = new();
+    public static Dictionary<long, GameItemGrades> DbItemGrades = new();
+    public static Dictionary<long, GameItemGradeDistributions> DbItemGradeDistributions = new();
 
     public static Dictionary<long, Dictionary<long, Dictionary<long, GameAchievements>>> CompiledGroupedAchievements = new();
 
@@ -1591,6 +1634,9 @@ internal static class AaDb
         DbUnitModifiers = new();
         DbAchievements = new();
         DbAchievementObjectives = new();
+        DbItemGrades = new();
+        DbItemGradeDistributions = new();
+
         CompiledGroupedAchievements = new();
     }
 

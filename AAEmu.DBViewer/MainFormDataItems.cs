@@ -13,6 +13,114 @@ public partial class MainForm
     private void LoadItems()
     {
         var hasItemPriceTable = AllTableNames.GetValueOrDefault("item_prices") == SQLite.SQLiteFileName;
+
+        if (AllTableNames.GetValueOrDefault("item_grades") == SQLite.SQLiteFileName)
+        {
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM item_grades ORDER BY grade_order ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameItemGrades();
+                            t.Id = GetInt64(reader, "id");
+                            t.Name = GetString(reader, "name");
+
+                            var colArgbString = GetString(reader, "color_argb");
+                            if (int.TryParse(colArgbString, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var colArgb))
+                                t.ColorArgb = Color.FromArgb(colArgb);
+
+                            /*
+                            var colArgbSecondString = GetString(reader, "color_argb_second");
+                            if (int.TryParse(colArgbSecondString, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var colArgbSecond))
+                                t.ColorArgbSecond = Color.FromArgb(colArgbSecond);
+                            */
+
+                            t.GradeOrder = GetInt64(reader, "grade_order");
+                            t.IconId = GetInt64(reader, "icon_id");
+                            t.StatMultiplier = GetInt64(reader, "stat_multiplier");
+                            t.RefundMultiplier = GetInt64(reader, "refund_multiplier");
+                            t.VarHoldableDps = GetFloat(reader, "var_holdable_dps");
+                            t.VarHoldableArmor = GetFloat(reader, "var_holdable_armor");
+                            t.VarHoldableMagicDps = GetFloat(reader, "var_holdable_magic_dps");
+                            t.VarWearableArmor = GetFloat(reader, "var_wearable_armor");
+                            t.VarWearableMagicResistance = GetFloat(reader, "var_wearable_magic_resistance");
+                            t.VarHoldableHealDps = GetFloat(reader, "var_holdable_heal_dps");
+                            t.DurabilityValue = GetFloat(reader, "durability_value");
+                            t.UpgradeRatio = GetInt64(reader, "upgrade_ratio");
+                            /*
+                            t.GradeEnchantSuccessRatio = GetInt64(reader, "grade_enchant_success_ratio");
+                            t.GradeEnchantGreatSuccessRatio = GetInt64(reader, "grade_enchant_great_success_ratio");
+                            t.GradeEnchantBreakRatio = GetInt64(reader, "grade_enchant_break_ratio");
+                            t.GradeEnchantDowngradeRatio = GetInt64(reader, "grade_enchant_downgrade_ratio");
+                            t.GradeEnchantCost = GetInt64(reader, "grade_enchant_cost");
+                            t.GradeEnchantDowngradeMin = GetInt64(reader, "grade_enchant_downgrade_min");
+                            t.GradeEnchantDowngradeMax = GetInt64(reader, "grade_enchant_downgrade_max");
+                            t.CurrencyId = GetInt64(reader, "currency_id");
+                            */
+
+                            t.NameLocalized = AaDb.GetTranslationById(t.Id, "item_grades", "name", t.Name);
+                            AaDb.DbItemGrades.Add(t.Id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+
+                    }
+                }
+            }
+        }
+
+        if (AllTableNames.GetValueOrDefault("item_grade_distributions") == SQLite.SQLiteFileName)
+        {
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM item_grade_distributions ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        var columns = reader.GetColumnNames();
+
+                        while (reader.Read())
+                        {
+                            var t = new GameItemGradeDistributions();
+                            t.Id = GetInt64(reader, "id");
+                            // t.Name = GetString(reader, "name");
+
+                            foreach (var column in columns)
+                            {
+                                if (column.StartsWith("weight_"))
+                                {
+                                    if (long.TryParse(column[7..], out var weightId))
+                                    {
+                                        t.Weights.TryAdd(weightId, GetInt64(reader, $"weight_{weightId}"));
+                                    }
+                                }
+                            }
+
+                            AaDb.DbItemGradeDistributions.Add(t.Id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+
+                    }
+                }
+            }
+        }
+
         if (AllTableNames.GetValueOrDefault("items") == SQLite.SQLiteFileName)
         {
             using (var connection = SQLite.CreateConnection())
