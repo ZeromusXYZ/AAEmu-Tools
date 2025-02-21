@@ -16,6 +16,11 @@ namespace AAEmu.DBEditor.forms.client
         public bool IsSelectionDialog { get; set; }
         public Item SelectedItem { get; set; }
 
+        public ItemsForm()
+        {
+            InitializeComponent();
+        }
+
         private void ItemsForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Dispose();
