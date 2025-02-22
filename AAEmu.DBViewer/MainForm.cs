@@ -2881,8 +2881,26 @@ namespace AAEmu.DBViewer
         private void TvSkill_DoubleClick(object sender, EventArgs e)
         {
             // In properties the node tag is used internally, so only allow this node double-click if it's not set
-            if ((sender is TreeView tv) && (tv.SelectedNode != null) && (tv.SelectedNode.Tag == null))
-                ProcessNodeInfoDoubleClick(tv.SelectedNode);
+            if ((sender is TreeView tv) && (tv.SelectedNode != null))
+            {
+                if (tv.SelectedNode.Tag == null)
+                {
+                    ProcessNodeInfoDoubleClick(tv.SelectedNode);
+                }
+                else if (tv.SelectedNode is TreeNodeWithPlotEventReference plotRef)
+                {
+                    // Find this event
+                    foreach (var treeNode in TreeViewExtension.Collect(tv.Nodes))
+                    {
+                        if (treeNode is TreeNodeWithPlotEventReference plotEventRef &&
+                            plotEventRef.ThisEventId == plotRef.TargetEventId)
+                        {
+                            tv.SelectedNode = plotEventRef;
+                            return;
+                        }
+                    }
+                }
+            }
         }
 
         private void TvBuffTriggers_DoubleClick(object sender, EventArgs e)

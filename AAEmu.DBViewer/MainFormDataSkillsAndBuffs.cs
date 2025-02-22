@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using AAEmu.DBViewer.DbDefs;
 using AAEmu.DBViewer.enums;
+using AAEmu.DBViewer.utils;
 using AAEmu.Game.Utils.DB;
 
 namespace AAEmu.DBViewer;
@@ -827,7 +828,9 @@ public partial class MainForm
         var nodeName = nodeNamePrefix + child.Id.ToString() + " - " + child.Name;
         if (child.Tickets > 1)
             nodeName = child.Tickets.ToString() + " x " + nodeName;
-        var eventNode = new TreeNode(nodeName);
+        var eventNode = new TreeNodeWithPlotEventReference();
+        eventNode.ThisEventId = child.Id;
+        eventNode.Text = nodeName;
         eventNode.ImageIndex = 1;
         eventNode.SelectedImageIndex = 1;
         eventNode.Tag = child.Id;
@@ -840,6 +843,7 @@ public partial class MainForm
         {
             var eventConditionName = $"Event Condition ({plotEventCondition.Value.ConditionId})";
             var eventConditionNode = new TreeNode(eventConditionName);
+            eventConditionNode.Text = eventConditionName;
             eventConditionNode.ImageIndex = 3;
             eventConditionNode.SelectedImageIndex = 3;
             eventConditionNode.Tag = 0;
@@ -892,7 +896,9 @@ public partial class MainForm
             {
                 //AddPlotEventNode(eventNode, next, depth, "Next Plot Event: ");
 
-                var nextNode = new TreeNode("Next Event Node: " + next.Id.ToString() + " - " + next.Name);
+                var nextNode = new TreeNodeWithPlotEventReference();
+                nextNode.Text = $@"Next Event Node: {next.Id} - {next.Name}";
+                nextNode.TargetEventId = next.Id;
                 nextNode.Tag = next.Id;
                 nextNode.ImageIndex = 2;
                 nextNode.SelectedImageIndex = nextNode.ImageIndex;
@@ -959,33 +965,28 @@ public partial class MainForm
             AddCustomPropertyNode("ability_id", ((AbilityType)skill.ability_id).ToString(), true, rootNode);
         */
 
-        var skillEffectsList = from se in AaDb.DbSkillEffects
-            where se.Value.SkillId == skill.Id
-            select se.Value;
+        var skillEffectsList = AaDb.DbSkillEffects.Where(se => se.Value.SkillId == skill.Id).Select(se => se.Value).ToList();
 
         TreeNode effectsRoot = null;
 
-        if (skillEffectsList != null)
+        long totalWeight = 0;
+        foreach (var skillEffect in skillEffectsList)
         {
-            long totalWeight = 0;
-            foreach (var skillEffect in skillEffectsList)
-            {
-                totalWeight += skillEffect.Weight;
-            }
-            foreach (var skillEffect in skillEffectsList)
-            {
-                if (effectsRoot == null)
-                {
-                    effectsRoot = tvSkill.Nodes.Add("Effects");
-                    effectsRoot.ImageIndex = 2;
-                    effectsRoot.SelectedImageIndex = 2;
-                    effectsRoot.Tag = 0;
-                }
-
-                CreateSkillEffectNode(skillEffect.EffectId, effectsRoot, skillEffect.Weight, totalWeight, true);
-            }
+            totalWeight += skillEffect.Weight;
         }
 
+        foreach (var skillEffect in skillEffectsList)
+        {
+            if (effectsRoot == null)
+            {
+                effectsRoot = tvSkill.Nodes.Add("Effects");
+                effectsRoot.ImageIndex = 2;
+                effectsRoot.SelectedImageIndex = 2;
+                effectsRoot.Tag = 0;
+            }
+
+            CreateSkillEffectNode(skillEffect.EffectId, effectsRoot, skillEffect.Weight, totalWeight, true);
+        }
 
         if (AaDb.DbPlots.TryGetValue(skill.PlotId, out var plot))
         {
