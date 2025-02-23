@@ -469,6 +469,9 @@
             lPlotEventP2 = new System.Windows.Forms.Label();
             lPlotEventP1 = new System.Windows.Forms.Label();
             tvSkill = new System.Windows.Forms.TreeView();
+            cmPlotBookmarks = new System.Windows.Forms.ContextMenuStrip(components);
+            tsmiPlotBookmarkHeader = new System.Windows.Forms.ToolStripMenuItem();
+            tssPlotBookmark1 = new System.Windows.Forms.ToolStripSeparator();
             tpSpheres = new System.Windows.Forms.TabPage();
             TvSpheres = new System.Windows.Forms.TreeView();
             CbSearchSpheres = new System.Windows.Forms.ComboBox();
@@ -728,6 +731,7 @@
             ((System.ComponentModel.ISupportInitialize)dgvSkillReagents).BeginInit();
             tpSkillExecution.SuspendLayout();
             gbSkillPlotEventInfo.SuspendLayout();
+            cmPlotBookmarks.SuspendLayout();
             tpSpheres.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)DgvSpheres).BeginInit();
             tpTags.SuspendLayout();
@@ -1629,7 +1633,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 305);
-            splitContainer2.SplitterDistance = 293;
+            splitContainer2.SplitterDistance = 290;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1637,7 +1641,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(201, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(198, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(88, 19);
@@ -1668,7 +1672,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(285, 276);
+            tvBuffTriggers.Size = new System.Drawing.Size(282, 276);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -2865,7 +2869,7 @@
             tpDoodadFunctions.Margin = new System.Windows.Forms.Padding(4);
             tpDoodadFunctions.Name = "tpDoodadFunctions";
             tpDoodadFunctions.Padding = new System.Windows.Forms.Padding(4);
-            tpDoodadFunctions.Size = new System.Drawing.Size(391, 512);
+            tpDoodadFunctions.Size = new System.Drawing.Size(391, 510);
             tpDoodadFunctions.TabIndex = 2;
             tpDoodadFunctions.Text = "Functions";
             tpDoodadFunctions.UseVisualStyleBackColor = true;
@@ -3170,7 +3174,7 @@
             tpDoodadTools.Margin = new System.Windows.Forms.Padding(4);
             tpDoodadTools.Name = "tpDoodadTools";
             tpDoodadTools.Padding = new System.Windows.Forms.Padding(4);
-            tpDoodadTools.Size = new System.Drawing.Size(391, 512);
+            tpDoodadTools.Size = new System.Drawing.Size(391, 510);
             tpDoodadTools.TabIndex = 3;
             tpDoodadTools.Text = "Tools";
             tpDoodadTools.UseVisualStyleBackColor = true;
@@ -3179,7 +3183,7 @@
             // 
             lDoodadRemoveGMCommand.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lDoodadRemoveGMCommand.AutoSize = true;
-            lDoodadRemoveGMCommand.Location = new System.Drawing.Point(8, 429);
+            lDoodadRemoveGMCommand.Location = new System.Drawing.Point(8, 427);
             lDoodadRemoveGMCommand.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lDoodadRemoveGMCommand.Name = "lDoodadRemoveGMCommand";
             lDoodadRemoveGMCommand.Size = new System.Drawing.Size(90, 15);
@@ -3190,7 +3194,7 @@
             // 
             lDoodadAddGMCommand.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lDoodadAddGMCommand.AutoSize = true;
-            lDoodadAddGMCommand.Location = new System.Drawing.Point(8, 455);
+            lDoodadAddGMCommand.Location = new System.Drawing.Point(8, 453);
             lDoodadAddGMCommand.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lDoodadAddGMCommand.Name = "lDoodadAddGMCommand";
             lDoodadAddGMCommand.Size = new System.Drawing.Size(90, 15);
@@ -3201,7 +3205,7 @@
             // 
             btnShowDoodadOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             btnShowDoodadOnMap.ForeColor = System.Drawing.Color.Black;
-            btnShowDoodadOnMap.Location = new System.Drawing.Point(7, 473);
+            btnShowDoodadOnMap.Location = new System.Drawing.Point(7, 471);
             btnShowDoodadOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnShowDoodadOnMap.Name = "btnShowDoodadOnMap";
             btnShowDoodadOnMap.Size = new System.Drawing.Size(376, 25);
@@ -3218,7 +3222,7 @@
             tpDoodadWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tpDoodadWorkflow.Name = "tpDoodadWorkflow";
             tpDoodadWorkflow.Padding = new System.Windows.Forms.Padding(4);
-            tpDoodadWorkflow.Size = new System.Drawing.Size(391, 512);
+            tpDoodadWorkflow.Size = new System.Drawing.Size(391, 510);
             tpDoodadWorkflow.TabIndex = 4;
             tpDoodadWorkflow.Text = "Workflow";
             tpDoodadWorkflow.UseVisualStyleBackColor = true;
@@ -3227,7 +3231,7 @@
             // 
             cbDoodadWorkflowHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             cbDoodadWorkflowHideEmpty.AutoSize = true;
-            cbDoodadWorkflowHideEmpty.Location = new System.Drawing.Point(7, 482);
+            cbDoodadWorkflowHideEmpty.Location = new System.Drawing.Point(7, 480);
             cbDoodadWorkflowHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbDoodadWorkflowHideEmpty.Name = "cbDoodadWorkflowHideEmpty";
             cbDoodadWorkflowHideEmpty.Size = new System.Drawing.Size(124, 19);
@@ -3245,7 +3249,7 @@
             tvDoodadDetails.Location = new System.Drawing.Point(7, 7);
             tvDoodadDetails.Margin = new System.Windows.Forms.Padding(4);
             tvDoodadDetails.Name = "tvDoodadDetails";
-            tvDoodadDetails.Size = new System.Drawing.Size(375, 468);
+            tvDoodadDetails.Size = new System.Drawing.Size(375, 466);
             tvDoodadDetails.TabIndex = 0;
             tvDoodadDetails.DoubleClick += TvDoodadDetails_DoubleClick;
             // 
@@ -4864,7 +4868,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(459, 482);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(456, 482);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 25);
@@ -4896,7 +4900,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(686, 472);
+            tvQuestWorkflow.Size = new System.Drawing.Size(683, 472);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -5369,7 +5373,7 @@
             tpSkillItems.Margin = new System.Windows.Forms.Padding(4);
             tpSkillItems.Name = "tpSkillItems";
             tpSkillItems.Padding = new System.Windows.Forms.Padding(4);
-            tpSkillItems.Size = new System.Drawing.Size(591, 512);
+            tpSkillItems.Size = new System.Drawing.Size(591, 510);
             tpSkillItems.TabIndex = 1;
             tpSkillItems.Text = "Items?";
             tpSkillItems.UseVisualStyleBackColor = true;
@@ -5383,7 +5387,7 @@
             dgvSkillProducts.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             dgvSkillProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvSkillProducts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { dataGridViewTextBoxColumn9, dataGridViewTextBoxColumn10, dataGridViewTextBoxColumn11 });
-            dgvSkillProducts.Location = new System.Drawing.Point(9, 346);
+            dgvSkillProducts.Location = new System.Drawing.Point(9, 344);
             dgvSkillProducts.Margin = new System.Windows.Forms.Padding(4);
             dgvSkillProducts.Name = "dgvSkillProducts";
             dgvSkillProducts.ReadOnly = true;
@@ -5429,7 +5433,7 @@
             dgvSkillReagents.ReadOnly = true;
             dgvSkillReagents.RowHeadersVisible = false;
             dgvSkillReagents.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            dgvSkillReagents.Size = new System.Drawing.Size(573, 292);
+            dgvSkillReagents.Size = new System.Drawing.Size(573, 290);
             dgvSkillReagents.TabIndex = 7;
             // 
             // dataGridViewTextBoxColumn6
@@ -5458,7 +5462,7 @@
             // 
             label13.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             label13.AutoSize = true;
-            label13.Location = new System.Drawing.Point(7, 327);
+            label13.Location = new System.Drawing.Point(7, 325);
             label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label13.Name = "label13";
             label13.Size = new System.Drawing.Size(119, 15);
@@ -5673,6 +5677,7 @@
             // 
             tvSkill.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             tvSkill.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            tvSkill.ContextMenuStrip = cmPlotBookmarks;
             tvSkill.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             tvSkill.ImageIndex = 0;
             tvSkill.ImageList = ilMiniIcons;
@@ -5688,6 +5693,25 @@
             tvSkill.TabIndex = 0;
             tvSkill.AfterSelect += TvSkill_AfterSelect;
             tvSkill.DoubleClick += TvSkill_DoubleClick;
+            // 
+            // cmPlotBookmarks
+            // 
+            cmPlotBookmarks.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { tsmiPlotBookmarkHeader, tssPlotBookmark1 });
+            cmPlotBookmarks.Name = "cmPlotBookmarks";
+            cmPlotBookmarks.Size = new System.Drawing.Size(181, 54);
+            cmPlotBookmarks.Opening += cmPlotBookmarks_Opening;
+            cmPlotBookmarks.ItemClicked += cmPlotBookmarks_ItemClicked;
+            // 
+            // tsmiPlotBookmarkHeader
+            // 
+            tsmiPlotBookmarkHeader.Name = "tsmiPlotBookmarkHeader";
+            tsmiPlotBookmarkHeader.Size = new System.Drawing.Size(180, 22);
+            tsmiPlotBookmarkHeader.Text = "Goto";
+            // 
+            // tssPlotBookmark1
+            // 
+            tssPlotBookmark1.Name = "tssPlotBookmark1";
+            tssPlotBookmark1.Size = new System.Drawing.Size(177, 6);
             // 
             // tpSpheres
             // 
@@ -7699,6 +7723,7 @@
             tpSkillExecution.ResumeLayout(false);
             gbSkillPlotEventInfo.ResumeLayout(false);
             gbSkillPlotEventInfo.PerformLayout();
+            cmPlotBookmarks.ResumeLayout(false);
             tpSpheres.ResumeLayout(false);
             tpSpheres.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)DgvSpheres).EndInit();
@@ -8356,6 +8381,9 @@
         private System.Windows.Forms.RichTextBox RtAchievementInfo;
         private System.Windows.Forms.Label LAchievementReward;
         private System.Windows.Forms.Label LAchievementIcon;
+        private System.Windows.Forms.ContextMenuStrip cmPlotBookmarks;
+        private System.Windows.Forms.ToolStripMenuItem tsmiPlotBookmarkHeader;
+        private System.Windows.Forms.ToolStripSeparator tssPlotBookmark1;
     }
 }
 

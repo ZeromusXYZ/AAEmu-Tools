@@ -1359,7 +1359,7 @@ namespace AAEmu.DBViewer
                 {
                     dropRate = "100%+";
                 }
-                else if (itemRate < 5f) 
+                else if (itemRate < 5f)
                 {
                     itemRate = MathF.Min(itemRate, 100f);
                     dropRate = $"{itemRate:F2}%";
@@ -1420,13 +1420,13 @@ namespace AAEmu.DBViewer
                             }
 
                         }
-                        
+
                     }
                     else
                     {
                         itemNode.Nodes.Add("Unknown grade distribution").ForeColor = Color.Red;
                     }
-                    
+
                 }
                 else if (loot.GradeId > 0)
                 {
@@ -2893,11 +2893,17 @@ namespace AAEmu.DBViewer
                     foreach (var treeNode in TreeViewExtension.Collect(tv.Nodes))
                     {
                         if (treeNode is TreeNodeWithPlotEventReference plotEventRef &&
+                            plotEventRef.ThisEventId > 0 &&
                             plotEventRef.ThisEventId == plotRef.TargetEventId)
                         {
                             tv.SelectedNode = plotEventRef;
                             return;
                         }
+                    }
+
+                    if (plotRef.ThisEventId > 0)
+                    {
+                        cmPlotBookmarks.Show();
                     }
                 }
             }
@@ -3150,6 +3156,53 @@ namespace AAEmu.DBViewer
         private void TvAchievements_AfterSelect(object sender, TreeViewEventArgs e)
         {
             ShowDbAchievement(e?.Node?.Tag as GameAchievements);
+        }
+
+        private void cmPlotBookmarks_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var tv = tvSkill;
+            // Update menu items
+            if ((tv.SelectedNode is TreeNodeWithPlotEventReference thisPlotEvent))
+            {
+                if (thisPlotEvent.ThisEventId <= 0)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
+                // Update header
+                cmPlotBookmarks.Items[0].Tag = thisPlotEvent;
+                cmPlotBookmarks.Items[0].Text = $@"{thisPlotEvent.ThisEventId} is called from";
+
+                // Remove old entries
+                for (var i = cmPlotBookmarks.Items.Count - 1; i >= 2; i--)
+                {
+                    cmPlotBookmarks.Items.RemoveAt(i);
+                }
+
+                // Find this event
+                foreach (var treeNode in TreeViewExtension.Collect(tv.Nodes))
+                {
+                    if (treeNode is TreeNodeWithPlotEventReference plotEventRef &&
+                        plotEventRef.Parent is TreeNodeWithPlotEventReference parentNode &&
+                        plotEventRef.TargetEventId == thisPlotEvent.ThisEventId)
+                    {
+                        cmPlotBookmarks.Items.Add($"Event {parentNode.Text}").Tag = plotEventRef;
+                    }
+                }
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void cmPlotBookmarks_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            if (e.ClickedItem?.Tag is TreeNodeWithPlotEventReference refNode)
+            {
+                refNode.TreeView.SelectedNode = refNode;
+            }
         }
     }
 }
