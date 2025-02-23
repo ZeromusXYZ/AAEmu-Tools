@@ -804,7 +804,7 @@ public partial class MainForm
             case 11: return "Range (11)";
             case 12: return "Variable (12)";
             case 13: return "UnitAttrib (13)";
-            case 14: return "Actability (14)";
+            case 14: return "ActAbility (14)";
             case 15: return "Stealth (15)";
             case 16: return "Visible (16)";
             case 17: return "ABLevel (17)";
@@ -854,13 +854,52 @@ public partial class MainForm
             if (AaDb.DbPlotConditions.TryGetValue(plotEventCondition.Value.ConditionId, out var condition))
             {
                 eventConditionNode.Text += (condition.NotCondition ? " NOT " : " ") + ConditionTypeName(condition.KindId);
-                // eventConditionNode.Nodes.Add("Condition: " + (condition.not_condition ? "NOT " : "") + ConditionTypeName(condition.kind_id));
-                if (condition.Param1 != 0)
-                    eventConditionNode.Nodes.Add("Param1: " + condition.Param1);
-                if (condition.Param2 != 0)
-                    eventConditionNode.Nodes.Add("Param2: " + condition.Param2);
-                if (condition.Param3 != 0)
-                    eventConditionNode.Nodes.Add("Param3: " + condition.Param3);
+                var compareCondition = condition.KindId is 1 or 12 or 13 or 14;
+                if (compareCondition)
+                {
+                    var param1Name = string.Empty;
+                    if (condition.KindId == 1)
+                        param1Name = "Level ";
+                    if (condition.KindId == 12)
+                        param1Name = "VAR";
+                    if (condition.KindId == 13)
+                        param1Name = ((UnitAttribute)condition.Param1).ToString()+ @" ";
+                    if (condition.KindId == 14)
+                        param1Name = ((ActAbilityType)condition.Param1).ToString() + @" ";
+
+                    var pNode = eventConditionNode.Nodes.Add($"Param1: {param1Name}({condition.Param1})");
+                    switch (condition.Param2)
+                    {
+                        case 1: // ==
+                            pNode.Text += @" = " + condition.Param3;
+                            break;
+                        case 2: // > x
+                            pNode.Text += @" > " + condition.Param3;
+                            break;
+                        case 3: // >= x
+                            pNode.Text += @" >= " + condition.Param3;
+                            break;
+                        case 4: // < x
+                            pNode.Text += @" < " + condition.Param3;
+                            break;
+                        case 5: // <= x
+                            pNode.Text += @" <= " + condition.Param3;
+                            break;
+                        default:
+                            pNode.Text += $@" (operation {condition.Param2}?) " + condition.Param3;
+                            break;
+                    }
+                }
+                else
+                {
+                    // eventConditionNode.Nodes.Add("Condition: " + (condition.not_condition ? "NOT " : "") + ConditionTypeName(condition.kind_id));
+                    if (condition.Param1 != 0)
+                        eventConditionNode.Nodes.Add("Param1: " + condition.Param1);
+                    if (condition.Param2 != 0)
+                        eventConditionNode.Nodes.Add("Param2: " + condition.Param2);
+                    if (condition.Param3 != 0)
+                        eventConditionNode.Nodes.Add("Param3: " + condition.Param3);
+                }
             }
         }
 
