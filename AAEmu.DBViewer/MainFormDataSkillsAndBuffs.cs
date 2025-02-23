@@ -857,7 +857,7 @@ public partial class MainForm
                 var compareCondition = condition.KindId is 1 or 12 or 13 or 14;
                 if (compareCondition)
                 {
-                    var param1Name = string.Empty;
+                    var param1Name = "Param1: ";
                     if (condition.KindId == 1)
                         param1Name = "Level ";
                     if (condition.KindId == 12)
@@ -867,7 +867,7 @@ public partial class MainForm
                     if (condition.KindId == 14)
                         param1Name = ((ActAbilityType)condition.Param1).ToString() + @" ";
 
-                    var pNode = eventConditionNode.Nodes.Add($"Param1: {param1Name}({condition.Param1})");
+                    var pNode = eventConditionNode.Nodes.Add($"{param1Name}({condition.Param1})");
                     switch (condition.Param2)
                     {
                         case 1: // ==
