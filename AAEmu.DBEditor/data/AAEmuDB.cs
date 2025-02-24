@@ -1,8 +1,7 @@
-﻿using AAEmu.DBEditor.data.aaemu.game;
-using AAEmu.DBEditor.data.aaemu.login;
-using System;
+﻿using System;
 using System.Linq;
-using System.Windows.Forms;
+using AAEmu.DBEditor.data.aaemu.game;
+using AAEmu.DBEditor.data.aaemu.login;
 
 namespace AAEmu.DBEditor.data
 {
@@ -11,8 +10,8 @@ namespace AAEmu.DBEditor.data
         public bool IsValid { get; set; }
         public string LastError { get; private set; }
 
-        public aaemu_game_context Game { get; private set; }
-        public aaemu_login_context Login { get; private set; }
+        public GameContext Game { get; private set; }
+        public LoginContext Login { get; private set; }
 
         public AAEmuDB()
         {
@@ -25,8 +24,8 @@ namespace AAEmu.DBEditor.data
             LastError = string.Empty;
             try
             {
-                Game = new aaemu_game_context();
-                Login = new aaemu_login_context();
+                Game = new GameContext();
+                Login = new LoginContext();
                 _ = Game.Characters.FirstOrDefault();
                 _ = Login.Users.FirstOrDefault();
                 IsValid = true;

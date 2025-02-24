@@ -1,12 +1,12 @@
 ﻿{
    "CodeGenerationMode": 4,
-   "ContextClassName": "aaemu_login_context",
+   "ContextClassName": "GameContext",
    "ContextNamespace": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
    "ModelNamespace": null,
    "OutputContextPath": null,
-   "OutputPath": "data\/aaemu\/login",
+   "OutputPath": "data\/aaemu\/game",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "AAEmu.DBEditor",
    "Schemas": null,
@@ -15,11 +15,150 @@
    "T4TemplatePath": null,
    "Tables": [
       {
-         "Name": "game_servers",
+         "Name": "abilities",
          "ObjectType": 0
       },
       {
-         "Name": "users",
+         "Name": "accounts",
+         "ObjectType": 0
+      },
+      {
+         "Name": "actabilities",
+         "ObjectType": 0
+      },
+      {
+         "Name": "appellations",
+         "ObjectType": 0
+      },
+      {
+         "Name": "auction_house",
+         "ObjectType": 0
+      },
+      {
+         "Name": "audit_char_sus",
+         "ObjectType": 0
+      },
+      {
+         "Name": "audit_ics_sales",
+         "ObjectType": 0
+      },
+      {
+         "Name": "blocked",
+         "ObjectType": 0
+      },
+      {
+         "Name": "characters",
+         "ObjectType": 0
+      },
+      {
+         "Name": "completed_quests",
+         "ObjectType": 0
+      },
+      {
+         "Name": "doodads",
+         "ObjectType": 0
+      },
+      {
+         "Name": "expedition_members",
+         "ObjectType": 0
+      },
+      {
+         "Name": "expedition_role_policies",
+         "ObjectType": 0
+      },
+      {
+         "ExcludedColumns": [
+            "level",
+            "exp",
+            "protect_time",
+            "war_deposit",
+            "daily_exp",
+            "last_exp_update_time",
+            "is_level_update",
+            "interest",
+            "motd_title",
+            "motd_content",
+            "win",
+            "lose",
+            "draw"
+         ],
+         "Name": "expeditions",
+         "ObjectType": 0
+      },
+      {
+         "Name": "family_members",
+         "ObjectType": 0
+      },
+      {
+         "Name": "friends",
+         "ObjectType": 0
+      },
+      {
+         "Name": "housings",
+         "ObjectType": 0
+      },
+      {
+         "Name": "ics_menu",
+         "ObjectType": 0
+      },
+      {
+         "Name": "ics_shop_items",
+         "ObjectType": 0
+      },
+      {
+         "Name": "ics_skus",
+         "ObjectType": 0
+      },
+      {
+         "Name": "item_containers",
+         "ObjectType": 0
+      },
+      {
+         "Name": "items",
+         "ObjectType": 0
+      },
+      {
+         "Name": "mails",
+         "ObjectType": 0
+      },
+      {
+         "Name": "mates",
+         "ObjectType": 0
+      },
+      {
+         "Name": "music",
+         "ObjectType": 0
+      },
+      {
+         "Name": "options",
+         "ObjectType": 0
+      },
+      {
+         "Name": "portal_book_coords",
+         "ObjectType": 0
+      },
+      {
+         "Name": "portal_visited_district",
+         "ObjectType": 0
+      },
+      {
+         "Name": "quests",
+         "ObjectType": 0
+      },
+      {
+         "Name": "skills",
+         "ObjectType": 0
+      },
+      {
+         "Name": "slaves",
+         "ObjectType": 0
+      },
+      {
+         "Name": "uccs",
+         "ObjectType": 0
+      },
+      {
+         "Name": "updates",
          "ObjectType": 0
       }
    ],
@@ -36,6 +175,7 @@
    "UseHandleBars": false,
    "UseHierarchyId": false,
    "UseInflector": false,
+   "UseInternalAccessModifiersForSprocsAndFunctions": false,
    "UseLegacyPluralizer": false,
    "UseManyToManyEntity": false,
    "UseNoDefaultConstructor": false,

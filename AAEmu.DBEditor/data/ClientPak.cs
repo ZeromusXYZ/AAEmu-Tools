@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using AAEmu.DBEditor.Properties;
+using AAEmu.DBEditor.utils;
 using AAPacker;
+using Newtonsoft.Json;
 
 namespace AAEmu.DBEditor.data
 {
@@ -72,8 +77,62 @@ namespace AAEmu.DBEditor.data
             return true;
         }
 
+        private static void LoadCustomReaders()
+        {
+            var customReadersFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ZeromusXYZ", "AAPakEditor");
+            AAPak.ReaderPool.Clear();
+
+            var jsonSettings = new JsonSerializerSettings
+            {
+                Culture = CultureInfo.InvariantCulture,
+                Formatting = Formatting.Indented,
+            };
+            jsonSettings.Converters.Add(new ByteArrayHexConverter());
+
+            var readerSettingsFileName = Path.Combine(customReadersFolder, "readers.json");
+            try
+            {
+                if (File.Exists(readerSettingsFileName))
+                {
+                    var data = JsonConvert.DeserializeObject<List<AAPakFileFormatReader>>(File.ReadAllText(readerSettingsFileName), jsonSettings);
+                    if (data?.Count > 0)
+                        foreach (var r in data)
+                            AAPak.ReaderPool.Add(r);
+                }
+            }
+            catch
+            {
+                // Ignore
+            }
+
+            // Add only default in case of errors
+            if (AAPak.ReaderPool.Count <= 0)
+            {
+                AAPak.ReaderPool.Add(new AAPakFileFormatReader(true));
+                // Write default file to user's settings
+                try
+                {
+                    Directory.CreateDirectory(customReadersFolder);
+                    File.WriteAllText(readerSettingsFileName, JsonConvert.SerializeObject(AAPak.ReaderPool, jsonSettings));
+                }
+                catch
+                {
+                    // Ignore
+                }
+            }
+        }
+
         public bool Open(string fileName)
         {
+            try
+            {
+                LoadCustomReaders();
+            }
+            catch
+            {
+                //
+            }
+
             if ((Pak != null) && (Pak.IsOpen))
             {
                 MainForm.Self.UpdateProgress("Closing Client Pak ...");

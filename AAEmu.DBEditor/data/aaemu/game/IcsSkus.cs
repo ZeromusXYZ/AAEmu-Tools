@@ -67,4 +67,6 @@ public partial class IcsSkus
     /// Amount of bonus items included
     /// </summary>
     public uint BonusItemCount { get; set; }
+
+    public uint PayItemType { get; set; }
 }

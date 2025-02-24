@@ -10,7 +10,7 @@ namespace AAEmu.DBEditor.data.aaemu.game;
 /// </summary>
 public partial class Accounts
 {
-    public int AccountId { get; set; }
+    public ulong AccountId { get; set; }
 
     public int AccessLevel { get; set; }
 
@@ -29,14 +29,4 @@ public partial class Accounts
     public DateTime LastCreditsTick { get; set; }
 
     public DateTime LastLoyaltyTick { get; set; }
-
-    /// <summary>
-    /// Time that has been passed already
-    /// </summary>
-    public uint DivineClockTime { get; set; }
-
-    /// <summary>
-    /// Number of clicks taken today
-    /// </summary>
-    public uint DivineClockTaken { get; set; }
 }

@@ -86,11 +86,11 @@
             dgvUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvUsers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { idDataGridViewTextBoxColumn, usernameDataGridViewTextBoxColumn, emailDataGridViewTextBoxColumn, lastLoginDataGridViewTextBoxColumn, lastIpDataGridViewTextBoxColumn, createdAtDataGridViewTextBoxColumn, updatedAtDataGridViewTextBoxColumn });
             dgvUsers.DataSource = usersBindingSource;
-            dgvUsers.Location = new System.Drawing.Point(12, 59);
+            dgvUsers.Location = new System.Drawing.Point(12, 55);
             dgvUsers.MultiSelect = false;
             dgvUsers.Name = "dgvUsers";
             dgvUsers.ReadOnly = true;
-            dgvUsers.Size = new System.Drawing.Size(834, 128);
+            dgvUsers.Size = new System.Drawing.Size(834, 120);
             dgvUsers.TabIndex = 0;
             dgvUsers.SelectionChanged += dgvUsers_SelectionChanged;
             // 
@@ -154,9 +154,9 @@
             // 
             lvCharacters.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lvCharacters.LargeImageList = ilRaces;
-            lvCharacters.Location = new System.Drawing.Point(6, 22);
+            lvCharacters.Location = new System.Drawing.Point(6, 21);
             lvCharacters.Name = "lvCharacters";
-            lvCharacters.Size = new System.Drawing.Size(250, 185);
+            lvCharacters.Size = new System.Drawing.Size(250, 174);
             lvCharacters.TabIndex = 1;
             lvCharacters.UseCompatibleStateImageBehavior = false;
             lvCharacters.SelectedIndexChanged += lvCharacters_SelectedIndexChanged;
@@ -167,23 +167,22 @@
             ilRaces.ImageStream = (System.Windows.Forms.ImageListStreamer)resources.GetObject("ilRaces.ImageStream");
             ilRaces.TransparentColor = System.Drawing.Color.Transparent;
             ilRaces.Images.SetKeyName(0, "none.png");
-            ilRaces.Images.SetKeyName(1, "nuian-male.png");
+            ilRaces.Images.SetKeyName(1, "nuian-male-05.png");
             ilRaces.Images.SetKeyName(2, "none.png");
-            ilRaces.Images.SetKeyName(3, "none.png");
-            ilRaces.Images.SetKeyName(4, "elf-male.png");
-            ilRaces.Images.SetKeyName(5, "harani-male.png");
-            ilRaces.Images.SetKeyName(6, "firran-male.png");
+            ilRaces.Images.SetKeyName(3, "dwarf-male-04.png");
+            ilRaces.Images.SetKeyName(4, "elf-male-06.png");
+            ilRaces.Images.SetKeyName(5, "harani-male-06.png");
+            ilRaces.Images.SetKeyName(6, "firran-male-07.png");
             ilRaces.Images.SetKeyName(7, "none.png");
-            ilRaces.Images.SetKeyName(8, "none.png");
-            ilRaces.Images.SetKeyName(9, "none.png");
-            ilRaces.Images.SetKeyName(10, "nuian-female.png");
-            ilRaces.Images.SetKeyName(11, "none.png");
-            ilRaces.Images.SetKeyName(12, "none.png");
-            ilRaces.Images.SetKeyName(13, "elf-female.png");
-            ilRaces.Images.SetKeyName(14, "harani-female.png");
-            ilRaces.Images.SetKeyName(15, "firran-female.png");
-            ilRaces.Images.SetKeyName(16, "none.png");
-            ilRaces.Images.SetKeyName(17, "none.png");
+            ilRaces.Images.SetKeyName(8, "warborn-male-01.png");
+            ilRaces.Images.SetKeyName(9, "nuian-female-07.png");
+            ilRaces.Images.SetKeyName(10, "none.png");
+            ilRaces.Images.SetKeyName(11, "dwarf-female-01.png");
+            ilRaces.Images.SetKeyName(12, "elf-female-03.png");
+            ilRaces.Images.SetKeyName(13, "harani-female-04.png");
+            ilRaces.Images.SetKeyName(14, "firran-female-04.png");
+            ilRaces.Images.SetKeyName(15, "none.png");
+            ilRaces.Images.SetKeyName(16, "warborn-female-01.png");
             // 
             // charactersBindingSource
             // 
@@ -192,9 +191,9 @@
             // pbCharacter
             // 
             pbCharacter.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            pbCharacter.Location = new System.Drawing.Point(262, 22);
+            pbCharacter.Location = new System.Drawing.Point(262, 21);
             pbCharacter.Name = "pbCharacter";
-            pbCharacter.Size = new System.Drawing.Size(64, 64);
+            pbCharacter.Size = new System.Drawing.Size(70, 70);
             pbCharacter.TabIndex = 2;
             pbCharacter.TabStop = false;
             // 
@@ -202,7 +201,7 @@
             // 
             lCharacterName.AutoSize = true;
             lCharacterName.Font = new System.Drawing.Font("Segoe UI Variable Text", 9F, System.Drawing.FontStyle.Bold);
-            lCharacterName.Location = new System.Drawing.Point(332, 22);
+            lCharacterName.Location = new System.Drawing.Point(338, 21);
             lCharacterName.Name = "lCharacterName";
             lCharacterName.Size = new System.Drawing.Size(53, 16);
             lCharacterName.TabIndex = 3;
@@ -211,27 +210,27 @@
             // lLevel
             // 
             lLevel.AutoSize = true;
-            lLevel.Location = new System.Drawing.Point(332, 38);
+            lLevel.Location = new System.Drawing.Point(338, 36);
             lLevel.Name = "lLevel";
-            lLevel.Size = new System.Drawing.Size(116, 16);
+            lLevel.Size = new System.Drawing.Size(116, 15);
             lLevel.TabIndex = 4;
             lLevel.Text = "<level/race/gender>";
             // 
             // lClass
             // 
             lClass.AutoSize = true;
-            lClass.Location = new System.Drawing.Point(332, 54);
+            lClass.Location = new System.Drawing.Point(338, 51);
             lClass.Name = "lClass";
-            lClass.Size = new System.Drawing.Size(48, 16);
+            lClass.Size = new System.Drawing.Size(48, 15);
             lClass.TabIndex = 5;
             lClass.Text = "<class>";
             // 
             // lMoney
             // 
             lMoney.AutoSize = true;
-            lMoney.Location = new System.Drawing.Point(332, 70);
+            lMoney.Location = new System.Drawing.Point(338, 66);
             lMoney.Name = "lMoney";
-            lMoney.Size = new System.Drawing.Size(59, 16);
+            lMoney.Size = new System.Drawing.Size(60, 15);
             lMoney.TabIndex = 6;
             lMoney.Text = "<money>";
             // 
@@ -255,53 +254,53 @@
             // MenuAccountNew
             // 
             MenuAccountNew.Name = "MenuAccountNew";
-            MenuAccountNew.Size = new System.Drawing.Size(169, 22);
+            MenuAccountNew.Size = new System.Drawing.Size(171, 22);
             MenuAccountNew.Text = "&New";
             MenuAccountNew.Click += MenuAccountNew_Click;
             // 
             // AccountS1
             // 
             AccountS1.Name = "AccountS1";
-            AccountS1.Size = new System.Drawing.Size(166, 6);
+            AccountS1.Size = new System.Drawing.Size(168, 6);
             // 
             // AccountUsername
             // 
             AccountUsername.Name = "AccountUsername";
-            AccountUsername.Size = new System.Drawing.Size(169, 22);
+            AccountUsername.Size = new System.Drawing.Size(171, 22);
             AccountUsername.Text = "Change Username";
             AccountUsername.Click += AccountUsername_Click;
             // 
             // AccountPassword
             // 
             AccountPassword.Name = "AccountPassword";
-            AccountPassword.Size = new System.Drawing.Size(169, 22);
+            AccountPassword.Size = new System.Drawing.Size(171, 22);
             AccountPassword.Text = "Change &Password";
             AccountPassword.Click += AccountPassword_Click;
             // 
             // AccountS2
             // 
             AccountS2.Name = "AccountS2";
-            AccountS2.Size = new System.Drawing.Size(166, 6);
+            AccountS2.Size = new System.Drawing.Size(168, 6);
             // 
             // AccountDelete
             // 
             AccountDelete.Name = "AccountDelete";
-            AccountDelete.Size = new System.Drawing.Size(169, 22);
+            AccountDelete.Size = new System.Drawing.Size(171, 22);
             AccountDelete.Text = "Delete";
             AccountDelete.Click += AccountDelete_Click;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(12, 33);
+            label1.Location = new System.Drawing.Point(12, 31);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(36, 16);
+            label1.Size = new System.Drawing.Size(36, 15);
             label1.TabIndex = 8;
             label1.Text = "Filter:";
             // 
             // tUserFilter
             // 
-            tUserFilter.Location = new System.Drawing.Point(54, 30);
+            tUserFilter.Location = new System.Drawing.Point(54, 28);
             tUserFilter.Name = "tUserFilter";
             tUserFilter.PlaceholderText = "account or character name";
             tUserFilter.Size = new System.Drawing.Size(208, 23);
@@ -321,9 +320,9 @@
             groupBox1.Controls.Add(label3);
             groupBox1.Controls.Add(label2);
             groupBox1.Controls.Add(tCredits);
-            groupBox1.Location = new System.Drawing.Point(12, 193);
+            groupBox1.Location = new System.Drawing.Point(12, 181);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new System.Drawing.Size(834, 80);
+            groupBox1.Size = new System.Drawing.Size(834, 75);
             groupBox1.TabIndex = 10;
             groupBox1.TabStop = false;
             groupBox1.Text = "Account Game Details";
@@ -333,18 +332,18 @@
             cbBanReason.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             cbBanReason.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             cbBanReason.FormattingEnabled = true;
-            cbBanReason.Location = new System.Drawing.Point(83, 48);
+            cbBanReason.Location = new System.Drawing.Point(83, 45);
             cbBanReason.Name = "cbBanReason";
-            cbBanReason.Size = new System.Drawing.Size(745, 24);
+            cbBanReason.Size = new System.Drawing.Size(745, 23);
             cbBanReason.TabIndex = 10;
             cbBanReason.SelectedIndexChanged += AccountValueChanged;
             // 
             // cbBanned
             // 
             cbBanned.AutoSize = true;
-            cbBanned.Location = new System.Drawing.Point(11, 50);
+            cbBanned.Location = new System.Drawing.Point(11, 47);
             cbBanned.Name = "cbBanned";
-            cbBanned.Size = new System.Drawing.Size(66, 20);
+            cbBanned.Size = new System.Drawing.Size(66, 19);
             cbBanned.TabIndex = 9;
             cbBanned.Text = "Banned";
             cbBanned.UseVisualStyleBackColor = true;
@@ -354,33 +353,33 @@
             // 
             cbAccessLevel.FormattingEnabled = true;
             cbAccessLevel.Items.AddRange(new object[] { "0", "50", "100" });
-            cbAccessLevel.Location = new System.Drawing.Point(552, 19);
+            cbAccessLevel.Location = new System.Drawing.Point(552, 18);
             cbAccessLevel.Name = "cbAccessLevel";
-            cbAccessLevel.Size = new System.Drawing.Size(100, 24);
+            cbAccessLevel.Size = new System.Drawing.Size(100, 23);
             cbAccessLevel.TabIndex = 7;
             cbAccessLevel.TextChanged += AccountValueChanged;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new System.Drawing.Point(473, 23);
+            label5.Location = new System.Drawing.Point(473, 22);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(73, 16);
+            label5.Size = new System.Drawing.Size(73, 15);
             label5.TabIndex = 6;
             label5.Text = "Access Level";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new System.Drawing.Point(6, 23);
+            label4.Location = new System.Drawing.Point(6, 22);
             label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(37, 16);
+            label4.Size = new System.Drawing.Size(37, 15);
             label4.TabIndex = 5;
             label4.Text = "Labor";
             // 
             // tLabor
             // 
-            tLabor.Location = new System.Drawing.Point(55, 19);
+            tLabor.Location = new System.Drawing.Point(55, 18);
             tLabor.Name = "tLabor";
             tLabor.Size = new System.Drawing.Size(100, 23);
             tLabor.TabIndex = 4;
@@ -388,7 +387,7 @@
             // 
             // tLoyalty
             // 
-            tLoyalty.Location = new System.Drawing.Point(367, 20);
+            tLoyalty.Location = new System.Drawing.Point(367, 19);
             tLoyalty.Name = "tLoyalty";
             tLoyalty.Size = new System.Drawing.Size(100, 23);
             tLoyalty.TabIndex = 3;
@@ -397,24 +396,24 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(316, 23);
+            label3.Location = new System.Drawing.Point(316, 22);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(45, 16);
+            label3.Size = new System.Drawing.Size(45, 15);
             label3.TabIndex = 2;
             label3.Text = "Loyalty";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(161, 23);
+            label2.Location = new System.Drawing.Point(161, 22);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(43, 16);
+            label2.Size = new System.Drawing.Size(44, 15);
             label2.TabIndex = 1;
             label2.Text = "Credits";
             // 
             // tCredits
             // 
-            tCredits.Location = new System.Drawing.Point(210, 20);
+            tCredits.Location = new System.Drawing.Point(210, 19);
             tCredits.Name = "tCredits";
             tCredits.Size = new System.Drawing.Size(100, 23);
             tCredits.TabIndex = 0;
@@ -429,9 +428,9 @@
             groupBox2.Controls.Add(lClass);
             groupBox2.Controls.Add(lvCharacters);
             groupBox2.Controls.Add(lMoney);
-            groupBox2.Location = new System.Drawing.Point(12, 279);
+            groupBox2.Location = new System.Drawing.Point(12, 262);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new System.Drawing.Size(834, 213);
+            groupBox2.Size = new System.Drawing.Size(834, 200);
             groupBox2.TabIndex = 11;
             groupBox2.TabStop = false;
             groupBox2.Text = "Character Details";
@@ -440,9 +439,9 @@
             // 
             btnSave.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             btnSave.Enabled = false;
-            btnSave.Location = new System.Drawing.Point(771, 30);
+            btnSave.Location = new System.Drawing.Point(771, 28);
             btnSave.Name = "btnSave";
-            btnSave.Size = new System.Drawing.Size(75, 23);
+            btnSave.Size = new System.Drawing.Size(75, 22);
             btnSave.TabIndex = 12;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = true;
@@ -450,9 +449,9 @@
             // 
             // AccountsForm
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(858, 504);
+            ClientSize = new System.Drawing.Size(858, 472);
             Controls.Add(btnSave);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);

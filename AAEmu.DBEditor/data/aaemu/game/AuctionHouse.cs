@@ -21,8 +21,9 @@ public partial class AuctionHouse
     /// </summary>
     public DateTime PostDate { get; set; }
 
-    public int StackSize { get; set; }
-
+    /// <summary>
+    /// Time when the sale period ends (in UTC)
+    /// </summary>
     public DateTime EndTime { get; set; }
 
     public sbyte WorldId { get; set; }
@@ -35,6 +36,8 @@ public partial class AuctionHouse
 
     public int DirectMoney { get; set; }
 
+    public int ChargePercent { get; set; }
+
     public int BidWorldId { get; set; }
 
     public int BidderId { get; set; }
@@ -44,4 +47,8 @@ public partial class AuctionHouse
     public int BidMoney { get; set; }
 
     public int Extra { get; set; }
+
+    public int MinStack { get; set; }
+
+    public int MaxStack { get; set; }
 }

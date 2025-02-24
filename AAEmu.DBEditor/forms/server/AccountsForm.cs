@@ -1,6 +1,4 @@
 ﻿using AAEmu.DBEditor.data;
-using AAEmu.DBEditor.data.aaemu.game;
-using AAEmu.DBEditor.data.aaemu.login;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -9,6 +7,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
+using AAEmu.DBEditor.data.aaemu.game;
+using AAEmu.DBEditor.data.aaemu.login;
 using AAEmu.DBEditor.utils;
 using AAEmu.DBEditor.data.enums;
 
@@ -140,7 +140,7 @@ namespace AAEmu.DBEditor.forms.server
             cbBanned.Checked = account.Banned > 0;
             cbBanReason.SelectedIndex = account.BanReason < cbBanReason.Items.Count ? (int)account.BanReason : 0;
 
-            var gameAccount = Data.MySqlDb.Game.Accounts.FirstOrDefault(x => x.AccountId == accountId);
+            var gameAccount = Data.MySqlDb.Game.Accounts.FirstOrDefault(x => x.AccountId == (ulong)accountId);
             SelectedGameAccount = gameAccount;
             if (gameAccount != null)
             {
@@ -172,7 +172,7 @@ namespace AAEmu.DBEditor.forms.server
             foreach (var character in characters)
             {
                 var icon = lvCharacters.Items.Add(character.Name);
-                icon.ImageIndex = character.Race + (character.Gender == 2 ? 9 : 0); // I'm too lazy to optimize the icons in the list
+                icon.ImageIndex = character.Race + (character.Gender == 2 ? 8 : 0); // I'm too lazy to optimize the icons in the list
                 icon.Tag = character;
                 if (character.Deleted > 0)
                 {

@@ -81,5 +81,5 @@ public partial class Doodads
     /// <summary>
     /// farm type for Public Farm
     /// </summary>
-    public uint? FarmType { get; set; }
+    public int FarmType { get; set; }
 }

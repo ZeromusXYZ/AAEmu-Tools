@@ -26,6 +26,18 @@ namespace AAEmu.DBEditor.data
             return defaultText;
         }
 
+        public string GetUiText(int categoryId, string keyName, string defaultText, bool defaultIfEmpty = true)
+        {
+            keyName = keyName.ToLower();
+            var uiText = CompactSqlite.UiTexts.FirstOrDefault(x => x.CategoryId == categoryId && x.Key == keyName);
+            if (uiText == null)
+                return defaultText;
+            if (LocalizedText.TryGetValue(("ui_texts", "text", uiText.Id), out var v))
+                return defaultIfEmpty && string.IsNullOrWhiteSpace(v) ? defaultText : v ?? defaultText;
+            return defaultText;
+        }
+
+
         public Dictionary<long, Item> ItemCache { get; set; } = new();
 
         public bool ReloadLocale()

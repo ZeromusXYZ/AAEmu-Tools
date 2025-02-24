@@ -82,9 +82,11 @@ namespace AAEmu.DBEditor
             rbLocaleRu = new System.Windows.Forms.RadioButton();
             rbLocaleKo = new System.Windows.Forms.RadioButton();
             rbLocaleEnUs = new System.Windows.Forms.RadioButton();
+            gbLoadingProgress = new System.Windows.Forms.GroupBox();
             MM.SuspendLayout();
             statusStrip1.SuspendLayout();
             gbLocale.SuspendLayout();
+            gbLoadingProgress.SuspendLayout();
             SuspendLayout();
             // 
             // MM
@@ -107,58 +109,58 @@ namespace AAEmu.DBEditor
             // MMFileOpenServer
             // 
             MMFileOpenServer.Name = "MMFileOpenServer";
-            MMFileOpenServer.Size = new System.Drawing.Size(181, 22);
+            MMFileOpenServer.Size = new System.Drawing.Size(183, 22);
             MMFileOpenServer.Text = "Open Server DB ...";
             MMFileOpenServer.Click += MMFileOpenServer_Click;
             // 
             // MMFileOpenClient
             // 
             MMFileOpenClient.Name = "MMFileOpenClient";
-            MMFileOpenClient.Size = new System.Drawing.Size(181, 22);
+            MMFileOpenClient.Size = new System.Drawing.Size(183, 22);
             MMFileOpenClient.Text = "Open Game Client ...";
             MMFileOpenClient.Click += MMFileOpenClient_Click;
             // 
             // MMFileOpenMySQL
             // 
             MMFileOpenMySQL.Name = "MMFileOpenMySQL";
-            MMFileOpenMySQL.Size = new System.Drawing.Size(181, 22);
+            MMFileOpenMySQL.Size = new System.Drawing.Size(183, 22);
             MMFileOpenMySQL.Text = "Open MySQL DB ...";
             MMFileOpenMySQL.Click += MMFileOpenMySQL_Click;
             // 
             // MMFileS1
             // 
             MMFileS1.Name = "MMFileS1";
-            MMFileS1.Size = new System.Drawing.Size(178, 6);
+            MMFileS1.Size = new System.Drawing.Size(180, 6);
             // 
             // MMFileSettings
             // 
             MMFileSettings.Enabled = false;
             MMFileSettings.Name = "MMFileSettings";
-            MMFileSettings.Size = new System.Drawing.Size(181, 22);
+            MMFileSettings.Size = new System.Drawing.Size(183, 22);
             MMFileSettings.Text = "Settings ...";
             // 
             // MMFileS3
             // 
             MMFileS3.Name = "MMFileS3";
-            MMFileS3.Size = new System.Drawing.Size(178, 6);
+            MMFileS3.Size = new System.Drawing.Size(180, 6);
             // 
             // MMFileReload
             // 
             MMFileReload.Name = "MMFileReload";
-            MMFileReload.Size = new System.Drawing.Size(181, 22);
+            MMFileReload.Size = new System.Drawing.Size(183, 22);
             MMFileReload.Text = "Reload";
             MMFileReload.Click += MMFileReload_Click;
             // 
             // MMFileS2
             // 
             MMFileS2.Name = "MMFileS2";
-            MMFileS2.Size = new System.Drawing.Size(178, 6);
+            MMFileS2.Size = new System.Drawing.Size(180, 6);
             // 
             // MMFileExit
             // 
             MMFileExit.Name = "MMFileExit";
             MMFileExit.ShortcutKeys = System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4;
-            MMFileExit.Size = new System.Drawing.Size(181, 22);
+            MMFileExit.Size = new System.Drawing.Size(183, 22);
             MMFileExit.Text = "E&xit";
             MMFileExit.Click += MMFileExit_Click;
             // 
@@ -166,7 +168,7 @@ namespace AAEmu.DBEditor
             // 
             MMClient.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMClientMap, MMClientS1, MMClientItems, MMClientDoodads, MMClientNPCs, MMClientSkills, MMClientZones, MMClientBuffs, MMClientFactions, MMClientQuests, MMClientLoot });
             MMClient.Name = "MMClient";
-            MMClient.Size = new System.Drawing.Size(49, 20);
+            MMClient.Size = new System.Drawing.Size(50, 20);
             MMClient.Text = "Client";
             MMClient.DropDownOpened += MMClient_DropDownOpened;
             // 
@@ -259,7 +261,7 @@ namespace AAEmu.DBEditor
             // 
             MMServerAccounts.Enabled = false;
             MMServerAccounts.Name = "MMServerAccounts";
-            MMServerAccounts.Size = new System.Drawing.Size(180, 22);
+            MMServerAccounts.Size = new System.Drawing.Size(130, 22);
             MMServerAccounts.Text = "Accounts";
             MMServerAccounts.Click += MMServerAccounts_Click;
             // 
@@ -267,7 +269,7 @@ namespace AAEmu.DBEditor
             // 
             MMServerCharacters.Enabled = false;
             MMServerCharacters.Name = "MMServerCharacters";
-            MMServerCharacters.Size = new System.Drawing.Size(180, 22);
+            MMServerCharacters.Size = new System.Drawing.Size(130, 22);
             MMServerCharacters.Text = "Characters";
             MMServerCharacters.Click += MMServerCharacters_Click;
             // 
@@ -275,19 +277,19 @@ namespace AAEmu.DBEditor
             // 
             MMServerGuilds.Enabled = false;
             MMServerGuilds.Name = "MMServerGuilds";
-            MMServerGuilds.Size = new System.Drawing.Size(180, 22);
+            MMServerGuilds.Size = new System.Drawing.Size(130, 22);
             MMServerGuilds.Text = "Guilds";
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
+            toolStripMenuItem2.Size = new System.Drawing.Size(127, 6);
             // 
             // MMServerICS
             // 
             MMServerICS.Enabled = false;
             MMServerICS.Name = "MMServerICS";
-            MMServerICS.Size = new System.Drawing.Size(180, 22);
+            MMServerICS.Size = new System.Drawing.Size(130, 22);
             MMServerICS.Text = "Cash Shop";
             MMServerICS.Click += MMServerICS_Click;
             // 
@@ -302,74 +304,74 @@ namespace AAEmu.DBEditor
             // 
             MMTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMToolsAhBot });
             MMTools.Name = "MMTools";
-            MMTools.Size = new System.Drawing.Size(46, 20);
+            MMTools.Size = new System.Drawing.Size(47, 20);
             MMTools.Text = "&Tools";
             MMTools.DropDownOpened += MMTools_DropDownOpened;
             // 
             // MMToolsAhBot
             // 
             MMToolsAhBot.Name = "MMToolsAhBot";
-            MMToolsAhBot.Size = new System.Drawing.Size(180, 22);
+            MMToolsAhBot.Size = new System.Drawing.Size(174, 22);
             MMToolsAhBot.Text = "Auction House Bot";
             MMToolsAhBot.Click += MMToolsAhBot_Click;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(86, 35);
+            label3.Location = new System.Drawing.Point(7, 19);
             label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(60, 16);
+            label3.Size = new System.Drawing.Size(60, 15);
             label3.TabIndex = 3;
             label3.Text = "Server DB:";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(86, 64);
+            label2.Location = new System.Drawing.Point(7, 46);
             label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(64, 16);
+            label2.Size = new System.Drawing.Size(65, 15);
             label2.TabIndex = 4;
             label2.Text = "Client PAK:";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new System.Drawing.Point(86, 93);
+            label4.Location = new System.Drawing.Point(7, 73);
             label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(48, 16);
+            label4.Size = new System.Drawing.Size(48, 15);
             label4.TabIndex = 5;
             label4.Text = "MySQL:";
             // 
             // lMySQLServer
             // 
             lMySQLServer.AutoSize = true;
-            lMySQLServer.Location = new System.Drawing.Point(189, 93);
+            lMySQLServer.Location = new System.Drawing.Point(87, 73);
             lMySQLServer.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lMySQLServer.Name = "lMySQLServer";
-            lMySQLServer.Size = new System.Drawing.Size(50, 16);
+            lMySQLServer.Size = new System.Drawing.Size(52, 15);
             lMySQLServer.TabIndex = 8;
             lMySQLServer.Text = "127.0.0.1";
             // 
             // lClientPak
             // 
             lClientPak.AutoSize = true;
-            lClientPak.Location = new System.Drawing.Point(189, 64);
+            lClientPak.Location = new System.Drawing.Point(87, 46);
             lClientPak.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lClientPak.Name = "lClientPak";
-            lClientPak.Size = new System.Drawing.Size(50, 16);
+            lClientPak.Size = new System.Drawing.Size(50, 15);
             lClientPak.TabIndex = 7;
             lClientPak.Text = "<none>";
             // 
             // lServerDB
             // 
             lServerDB.AutoSize = true;
-            lServerDB.Location = new System.Drawing.Point(189, 35);
+            lServerDB.Location = new System.Drawing.Point(87, 19);
             lServerDB.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lServerDB.Name = "lServerDB";
-            lServerDB.Size = new System.Drawing.Size(50, 16);
+            lServerDB.Size = new System.Drawing.Size(50, 15);
             lServerDB.TabIndex = 6;
             lServerDB.Text = "<none>";
             // 
@@ -393,16 +395,16 @@ namespace AAEmu.DBEditor
             TestPanel.BackColor = System.Drawing.SystemColors.Control;
             TestPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             TestPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            TestPanel.Location = new System.Drawing.Point(14, 33);
+            TestPanel.Location = new System.Drawing.Point(16, 35);
             TestPanel.Margin = new System.Windows.Forms.Padding(4);
             TestPanel.Name = "TestPanel";
-            TestPanel.Size = new System.Drawing.Size(64, 64);
+            TestPanel.Size = new System.Drawing.Size(70, 70);
             TestPanel.TabIndex = 11;
             // 
             // statusStrip1
             // 
             statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { sbL1 });
-            statusStrip1.Location = new System.Drawing.Point(0, 207);
+            statusStrip1.Location = new System.Drawing.Point(0, 226);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
             statusStrip1.Size = new System.Drawing.Size(856, 22);
@@ -425,9 +427,9 @@ namespace AAEmu.DBEditor
             gbLocale.Controls.Add(rbLocaleRu);
             gbLocale.Controls.Add(rbLocaleKo);
             gbLocale.Controls.Add(rbLocaleEnUs);
-            gbLocale.Location = new System.Drawing.Point(14, 115);
+            gbLocale.Location = new System.Drawing.Point(91, 27);
             gbLocale.Name = "gbLocale";
-            gbLocale.Size = new System.Drawing.Size(246, 77);
+            gbLocale.Size = new System.Drawing.Size(260, 78);
             gbLocale.TabIndex = 13;
             gbLocale.TabStop = false;
             gbLocale.Text = "Client Language";
@@ -436,9 +438,9 @@ namespace AAEmu.DBEditor
             // 
             rbLocaleFr.AutoSize = true;
             rbLocaleFr.Enabled = false;
-            rbLocaleFr.Location = new System.Drawing.Point(200, 23);
+            rbLocaleFr.Location = new System.Drawing.Point(200, 22);
             rbLocaleFr.Name = "rbLocaleFr";
-            rbLocaleFr.Size = new System.Drawing.Size(33, 20);
+            rbLocaleFr.Size = new System.Drawing.Size(33, 19);
             rbLocaleFr.TabIndex = 7;
             rbLocaleFr.Text = "fr";
             rbLocaleFr.UseVisualStyleBackColor = true;
@@ -448,9 +450,9 @@ namespace AAEmu.DBEditor
             // 
             rbLocaleDe.AutoSize = true;
             rbLocaleDe.Enabled = false;
-            rbLocaleDe.Location = new System.Drawing.Point(139, 23);
+            rbLocaleDe.Location = new System.Drawing.Point(139, 22);
             rbLocaleDe.Name = "rbLocaleDe";
-            rbLocaleDe.Size = new System.Drawing.Size(38, 20);
+            rbLocaleDe.Size = new System.Drawing.Size(38, 19);
             rbLocaleDe.TabIndex = 6;
             rbLocaleDe.Text = "de";
             rbLocaleDe.UseVisualStyleBackColor = true;
@@ -460,9 +462,9 @@ namespace AAEmu.DBEditor
             // 
             rbLocaleJa.AutoSize = true;
             rbLocaleJa.Enabled = false;
-            rbLocaleJa.Location = new System.Drawing.Point(200, 51);
+            rbLocaleJa.Location = new System.Drawing.Point(200, 48);
             rbLocaleJa.Name = "rbLocaleJa";
-            rbLocaleJa.Size = new System.Drawing.Size(34, 20);
+            rbLocaleJa.Size = new System.Drawing.Size(34, 19);
             rbLocaleJa.TabIndex = 5;
             rbLocaleJa.Text = "ja";
             rbLocaleJa.UseVisualStyleBackColor = true;
@@ -472,9 +474,9 @@ namespace AAEmu.DBEditor
             // 
             rbLocaleZhTw.AutoSize = true;
             rbLocaleZhTw.Enabled = false;
-            rbLocaleZhTw.Location = new System.Drawing.Point(139, 51);
+            rbLocaleZhTw.Location = new System.Drawing.Point(139, 48);
             rbLocaleZhTw.Name = "rbLocaleZhTw";
-            rbLocaleZhTw.Size = new System.Drawing.Size(55, 20);
+            rbLocaleZhTw.Size = new System.Drawing.Size(55, 19);
             rbLocaleZhTw.TabIndex = 4;
             rbLocaleZhTw.Text = "zh_tw";
             rbLocaleZhTw.UseVisualStyleBackColor = true;
@@ -484,9 +486,9 @@ namespace AAEmu.DBEditor
             // 
             rbLocaleZhCn.AutoSize = true;
             rbLocaleZhCn.Enabled = false;
-            rbLocaleZhCn.Location = new System.Drawing.Point(78, 51);
+            rbLocaleZhCn.Location = new System.Drawing.Point(78, 48);
             rbLocaleZhCn.Name = "rbLocaleZhCn";
-            rbLocaleZhCn.Size = new System.Drawing.Size(55, 20);
+            rbLocaleZhCn.Size = new System.Drawing.Size(55, 19);
             rbLocaleZhCn.TabIndex = 3;
             rbLocaleZhCn.Text = "zh_cn";
             rbLocaleZhCn.UseVisualStyleBackColor = true;
@@ -496,9 +498,9 @@ namespace AAEmu.DBEditor
             // 
             rbLocaleRu.AutoSize = true;
             rbLocaleRu.Enabled = false;
-            rbLocaleRu.Location = new System.Drawing.Point(78, 23);
+            rbLocaleRu.Location = new System.Drawing.Point(78, 22);
             rbLocaleRu.Name = "rbLocaleRu";
-            rbLocaleRu.Size = new System.Drawing.Size(36, 20);
+            rbLocaleRu.Size = new System.Drawing.Size(36, 19);
             rbLocaleRu.TabIndex = 2;
             rbLocaleRu.Text = "ru";
             rbLocaleRu.UseVisualStyleBackColor = true;
@@ -507,9 +509,9 @@ namespace AAEmu.DBEditor
             // rbLocaleKo
             // 
             rbLocaleKo.AutoSize = true;
-            rbLocaleKo.Location = new System.Drawing.Point(6, 23);
+            rbLocaleKo.Location = new System.Drawing.Point(6, 22);
             rbLocaleKo.Name = "rbLocaleKo";
-            rbLocaleKo.Size = new System.Drawing.Size(38, 20);
+            rbLocaleKo.Size = new System.Drawing.Size(38, 19);
             rbLocaleKo.TabIndex = 1;
             rbLocaleKo.Text = "ko";
             rbLocaleKo.UseVisualStyleBackColor = true;
@@ -520,29 +522,40 @@ namespace AAEmu.DBEditor
             rbLocaleEnUs.AutoSize = true;
             rbLocaleEnUs.Checked = true;
             rbLocaleEnUs.Enabled = false;
-            rbLocaleEnUs.Location = new System.Drawing.Point(6, 51);
+            rbLocaleEnUs.Location = new System.Drawing.Point(6, 48);
             rbLocaleEnUs.Name = "rbLocaleEnUs";
-            rbLocaleEnUs.Size = new System.Drawing.Size(55, 20);
+            rbLocaleEnUs.Size = new System.Drawing.Size(55, 19);
             rbLocaleEnUs.TabIndex = 0;
             rbLocaleEnUs.TabStop = true;
             rbLocaleEnUs.Text = "en_us";
             rbLocaleEnUs.UseVisualStyleBackColor = true;
             rbLocaleEnUs.CheckedChanged += rbLocale_CheckedChanged;
             // 
+            // gbLoadingProgress
+            // 
+            gbLoadingProgress.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            gbLoadingProgress.Controls.Add(label3);
+            gbLoadingProgress.Controls.Add(label2);
+            gbLoadingProgress.Controls.Add(label4);
+            gbLoadingProgress.Controls.Add(lServerDB);
+            gbLoadingProgress.Controls.Add(lClientPak);
+            gbLoadingProgress.Controls.Add(lMySQLServer);
+            gbLoadingProgress.Location = new System.Drawing.Point(14, 115);
+            gbLoadingProgress.Name = "gbLoadingProgress";
+            gbLoadingProgress.Size = new System.Drawing.Size(830, 101);
+            gbLoadingProgress.TabIndex = 15;
+            gbLoadingProgress.TabStop = false;
+            gbLoadingProgress.Text = "Status";
+            // 
             // MainForm
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(856, 229);
+            ClientSize = new System.Drawing.Size(856, 248);
+            Controls.Add(gbLoadingProgress);
             Controls.Add(gbLocale);
             Controls.Add(statusStrip1);
             Controls.Add(TestPanel);
-            Controls.Add(lMySQLServer);
-            Controls.Add(lClientPak);
-            Controls.Add(lServerDB);
-            Controls.Add(label4);
-            Controls.Add(label2);
-            Controls.Add(label3);
             Controls.Add(MM);
             Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = MM;
@@ -556,6 +569,8 @@ namespace AAEmu.DBEditor
             statusStrip1.PerformLayout();
             gbLocale.ResumeLayout(false);
             gbLocale.PerformLayout();
+            gbLoadingProgress.ResumeLayout(false);
+            gbLoadingProgress.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -614,6 +629,7 @@ namespace AAEmu.DBEditor
         private System.Windows.Forms.ToolStripMenuItem MMVersion;
         private System.Windows.Forms.ToolStripMenuItem MMTools;
         private System.Windows.Forms.ToolStripMenuItem MMToolsAhBot;
+        private System.Windows.Forms.GroupBox gbLoadingProgress;
     }
 }
 

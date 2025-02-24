@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AAEmu.DBEditor.data.enums;
 
 namespace AAEmu.DBEditor.data.aaemu.game
 {
@@ -12,15 +13,15 @@ namespace AAEmu.DBEditor.data.aaemu.game
         {
             switch (this.Race)
             {
-                case 1: return DBEditor.data.Data.Server.GetText("ui_texts", "text", 1105, "<Nuian>");
-                case 2: return DBEditor.data.Data.Server.GetText("ui_texts", "text", 2490, "<Fairy>");
-                case 3: return "<Dwarf>";
-                case 4: return DBEditor.data.Data.Server.GetText("ui_texts", "text", 1107, "<Elf>");
-                case 5: return DBEditor.data.Data.Server.GetText("ui_texts","text", 2178, "<Harani>");
-                case 6: return DBEditor.data.Data.Server.GetText("ui_texts", "text", 1106, "<Firran>");
-                case 7: return "<Returned>";
-                case 8: return "<Warborn>";
-                default: return "Unknown Race";
+                case 1: return Data.Server.GetUiText(47, "nuian", "<Nuian>");
+                case 2: return Data.Server.GetUiText(47, "fairy", "<Fairy>");
+                case 3: return Data.Server.GetUiText(47, "dwarf", "<Dwarf>");
+                case 4: return Data.Server.GetUiText(47, "elf", "<Elf>");
+                case 5: return Data.Server.GetUiText(47, "hariharan", "<Harani>");
+                case 6: return Data.Server.GetUiText(47, "ferre", "<Firran>");
+                case 7: return Data.Server.GetUiText(47, "returned", "<Returned>");
+                case 8: return Data.Server.GetUiText(47, "warborn", "<Warborn>");
+                default: return "<Unknown Race>";
             }
         }
 
@@ -30,18 +31,20 @@ namespace AAEmu.DBEditor.data.aaemu.game
             {
                 case 1: return DBEditor.data.Data.Server.GetText("ui_texts", "text", 1108, "<Male>");
                 case 2: return DBEditor.data.Data.Server.GetText("ui_texts", "text", 1109, "<Female>");
-                default: return "<No Gender>";
+                default:
+                    return "???";
             }
         }
 
         public string GetClassName()
         {
-            var s = DBEditor.data.Data.Server.GetText("ui_texts", "text", 1110 + this.Ability1, "<" + this.Ability1 + ">");
-            if (this.Ability2 != 11)
-                s += "  " + DBEditor.data.Data.Server.GetText("ui_texts", "text", 1110 + this.Ability2, "<" + this.Ability2 + ">");
+            var max = AbilityNames.GetMaxClassId();
+            var s = AbilityNames.GetClassName(this.Ability1);
+            if (this.Ability2 > 0 && this.Ability2 <= max)
+                s += "  " + AbilityNames.GetClassName(this.Ability2);
 
-            if (this.Ability3 != 11)
-                s += "  " + DBEditor.data.Data.Server.GetText("ui_texts", "text", 1110 + this.Ability3, "<" + this.Ability3 + ">");
+            if (this.Ability3 > 0 && this.Ability3 <= max)
+                s += "  " + AbilityNames.GetClassName(this.Ability3);
 
             return s;
         }

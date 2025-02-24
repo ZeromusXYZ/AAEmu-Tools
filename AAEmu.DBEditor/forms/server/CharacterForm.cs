@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using AAEmu.DBEditor.data;
 using AAEmu.DBEditor.data.aaemu.game;
 using AAEmu.DBEditor.data.enums;
-using AAEmu.DBEditor.data.gamedb;
 using AAEmu.DBEditor.utils;
 
 namespace AAEmu.DBEditor.forms.server
@@ -56,7 +55,7 @@ namespace AAEmu.DBEditor.forms.server
                     break;
                 }
                 var characterEntry = lvCharacterList.Items.Add(character.Name);
-                characterEntry.ImageIndex = character.Race + (character.Gender == 2 ? 9 : 0);
+                characterEntry.ImageIndex = character.Race + (character.Gender == 2 ? 8 : 0);
                 characterEntry.Tag = character;
                 if (character.Deleted > 0)
                 {
@@ -94,14 +93,14 @@ namespace AAEmu.DBEditor.forms.server
                 var newItem = new ListViewItem();
                 newItem.Tag = itemEntry;
                 // TemplateId
-                newItem.Text = itemEntry.Id.ToString();
-                newItem.ImageIndex = Data.Client.GetIconIndexByItemTemplateId((long)itemEntry.Id);
+                newItem.Text = itemEntry?.Id.ToString() ?? $"{item.TemplateId}?";
+                newItem.ImageIndex = itemEntry != null ? Data.Client.GetIconIndexByItemTemplateId((long)(itemEntry.Id)) : -1;
                 // Count
                 newItem.SubItems.Add(item.Count == 1 ? string.Empty : item.Count.ToString());
                 // Name
-                newItem.SubItems.Add(Data.Server.GetText("items", "name", (long)itemEntry.Id, itemEntry.Name));
+                newItem.SubItems.Add(itemEntry != null ? Data.Server.GetText("items", "name", (long)itemEntry.Id, itemEntry.Name) : $"Item {item.TemplateId}");
                 // Category
-                newItem.SubItems.Add(Data.Server.GetText("item_categories", "name", (long)itemEntry.CategoryId, itemEntry.CategoryId.ToString()));
+                newItem.SubItems.Add(itemEntry != null ? Data.Server.GetText("item_categories", "name", (long)itemEntry.CategoryId, itemEntry.CategoryId.ToString()):"???");
                 // DbId
                 newItem.SubItems.Add(item.Id.ToString());
                 // Slot

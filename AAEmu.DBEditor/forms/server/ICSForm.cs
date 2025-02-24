@@ -1,6 +1,4 @@
-﻿using AAEmu.DBEditor;
-using AAEmu.DBEditor.data;
-using AAEmu.DBEditor.data.aaemu.game;
+﻿using AAEmu.DBEditor.data;
 using AAEmu.DBEditor.forms.client;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,6 +6,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using AAEmu.DBEditor.data.aaemu.game;
 
 namespace AAEmu.DBEditor.forms.server
 {

@@ -29,5 +29,8 @@
     <Setting Name="IsUpdated" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="ServerVersion" Type="System.String" Scope="User">
+      <Value Profile="(Default)">r208022_1520</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

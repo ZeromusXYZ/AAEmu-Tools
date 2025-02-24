@@ -15,6 +15,11 @@ public partial class ItemContainers
     public string ContainerType { get; set; }
 
     /// <summary>
+    /// Internal Container Type
+    /// </summary>
+    public int SlotType { get; set; }
+
+    /// <summary>
     /// Maximum Container Size
     /// </summary>
     public int ContainerSize { get; set; }
@@ -28,9 +33,4 @@ public partial class ItemContainers
     /// Owning Mate Id
     /// </summary>
     public uint MateId { get; set; }
-
-    /// <summary>
-    /// Internal Container Type
-    /// </summary>
-    public int SlotType { get; set; }
 }
