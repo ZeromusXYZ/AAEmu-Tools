@@ -88,21 +88,30 @@ namespace AAEmu.DBEditor
 
         private bool OpenServerDbTask()
         {
-            var res = true;
-            if (!Data.Server.OpenDB(AAEmu.DBEditor.Properties.Settings.Default.ServerDB))
+            try
             {
-                UpdateProgress("Opening ServerDB failed");
-                res = false;
-                UpdateLabel(lServerDB, AAEmu.DBEditor.Properties.Settings.Default.ServerDB + " <failed to load>");
+                var res = true;
+                if (!Data.Server.OpenDB(AAEmu.DBEditor.Properties.Settings.Default.ServerDB))
+                {
+                    UpdateProgress("Opening ServerDB failed");
+                    res = false;
+                    UpdateLabel(lServerDB, AAEmu.DBEditor.Properties.Settings.Default.ServerDB + " <failed to load>");
+                }
+                else
+                {
+                    UpdateProgress("ServerDB loaded");
+                    UpdateLabel(lServerDB,
+                        Data.Server.FileName + " <" + Data.Server.TableNames.Count.ToString() + " tables>");
+                    AAEmu.DBEditor.Properties.Settings.Default.Save();
+                    Data.Server.LoadDbCache();
+                }
+                return res;
             }
-            else
+            catch (Exception e)
             {
-                UpdateProgress("ServerDB loaded");
-                UpdateLabel(lServerDB, Data.Server.FileName + " <" + Data.Server.TableNames.Count.ToString() + " tables>");
-                AAEmu.DBEditor.Properties.Settings.Default.Save();
-                Data.Server.LoadDbCache();
+                UpdateLabel(lServerDB, $"<failed to load> {e.Message}");
+                return false;
             }
-            return res;
         }
 
         private bool OpenClientPakTask()

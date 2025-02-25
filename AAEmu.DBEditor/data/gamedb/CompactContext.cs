@@ -70,11 +70,11 @@ public partial class CompactContext : DbContext
 
     //public virtual DbSet<AttachAnim> AttachAnims { get; set; }
 
-    public virtual DbSet<AuctionACategory> AuctionACategories { get; set; }
+    //public virtual DbSet<AuctionACategory> AuctionACategories { get; set; }
 
-    public virtual DbSet<AuctionBCategory> AuctionBCategories { get; set; }
+    //public virtual DbSet<AuctionBCategory> AuctionBCategories { get; set; }
 
-    public virtual DbSet<AuctionCCategory> AuctionCCategories { get; set; }
+    //public virtual DbSet<AuctionCCategory> AuctionCCategories { get; set; }
 
     //public virtual DbSet<BagExpand> BagExpands { get; set; }
 
@@ -2012,6 +2012,7 @@ public partial class CompactContext : DbContext
             entity.Property(e => e.OwnerType).HasColumnName("owner_type");
         });
 
+        /*
         modelBuilder.Entity<AuctionACategory>(entity =>
         {
             entity
@@ -2053,6 +2054,7 @@ public partial class CompactContext : DbContext
                 .HasColumnType("INT")
                 .HasColumnName("parent_category_id");
         });
+        */
 
         modelBuilder.Entity<BagExpand>(entity =>
         {
@@ -8598,7 +8600,9 @@ public partial class CompactContext : DbContext
             entity.Property(e => e.Id)
                 .HasColumnType("INT")
                 .HasColumnName("id");
+            /*
             entity.Property(e => e.Name).HasColumnName("name");
+            */
         });
 
         modelBuilder.Entity<IgnoreText>(entity =>
@@ -8928,9 +8932,11 @@ public partial class CompactContext : DbContext
             entity.Property(e => e.Gradable)
                 .HasColumnType("NUM")
                 .HasColumnName("gradable");
+            /*
             entity.Property(e => e.GradeEnchantable)
                 .HasColumnType("NUM")
                 .HasColumnName("grade_enchantable");
+            */
             entity.Property(e => e.HonorPrice)
                 .HasColumnType("INT")
                 .HasColumnName("honor_price");
@@ -8970,9 +8976,11 @@ public partial class CompactContext : DbContext
             entity.Property(e => e.MaxStackSize)
                 .HasColumnType("INT")
                 .HasColumnName("max_stack_size");
+            /*
             entity.Property(e => e.MilestoneId)
                 .HasColumnType("INT")
                 .HasColumnName("milestone_id");
+            */
             entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.NotifyUi)
                 .HasColumnType("NUM")
@@ -9001,9 +9009,11 @@ public partial class CompactContext : DbContext
             entity.Property(e => e.SpecialtyZoneId)
                 .HasColumnType("INT")
                 .HasColumnName("specialty_zone_id");
+            /*
             entity.Property(e => e.Translate)
                 .HasColumnType("NUM")
-                .HasColumnName("translate");
+                .HasColumnName("translate")
+            */
             entity.Property(e => e.UseOrEquipmentSoundId)
                 .HasColumnType("INT")
                 .HasColumnName("use_or_equipment_sound_id");
@@ -9358,16 +9368,20 @@ public partial class CompactContext : DbContext
             entity.Property(e => e.Impl1Id)
                 .HasColumnType("INT")
                 .HasColumnName("impl1_id");
+            /*
             entity.Property(e => e.Impl2Id)
                 .HasColumnType("INT")
                 .HasColumnName("impl2_id");
+            */
             entity.Property(e => e.ItemGroupId)
                 .HasColumnType("INT")
                 .HasColumnName("item_group_id");
             entity.Property(e => e.Name).HasColumnName("name");
+            /*
             entity.Property(e => e.PickupSoundId)
                 .HasColumnType("INT")
                 .HasColumnName("pickup_sound_id");
+            */
             entity.Property(e => e.ProcessedStateId)
                 .HasColumnType("INT")
                 .HasColumnName("processed_state_id");
@@ -9631,11 +9645,14 @@ public partial class CompactContext : DbContext
 
             entity.Property(e => e.ColorArgb).HasColumnName("color_argb");
             entity.Property(e => e.ColorArgbSecond).HasColumnName("color_argb_second");
+            /*
             entity.Property(e => e.Comments).HasColumnName("comments");
             entity.Property(e => e.CurrencyId)
                 .HasColumnType("INT")
                 .HasColumnName("currency_id");
+            */
             entity.Property(e => e.DurabilityValue).HasColumnName("durability_value");
+            /*
             entity.Property(e => e.GradeEnchantBreakRatio)
                 .HasColumnType("INT")
                 .HasColumnName("grade_enchant_break_ratio");
@@ -9657,6 +9674,7 @@ public partial class CompactContext : DbContext
             entity.Property(e => e.GradeEnchantSuccessRatio)
                 .HasColumnType("INT")
                 .HasColumnName("grade_enchant_success_ratio");
+            */
             entity.Property(e => e.GradeOrder)
                 .HasColumnType("INT")
                 .HasColumnName("grade_order");

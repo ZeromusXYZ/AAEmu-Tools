@@ -37,7 +37,7 @@ public partial class Item
 
     public long? PickupSoundId { get; set; }
 
-    public long? MilestoneId { get; set; }
+    //public long? MilestoneId { get; set; }
 
     public long? BuffId { get; set; }
 
@@ -63,7 +63,7 @@ public partial class Item
 
     public long? LevelRequirement { get; set; }
 
-    public string Comment { get; set; }
+    //public string Comment { get; set; }
 
     public long? AuctionACategoryId { get; set; }
 
@@ -83,7 +83,7 @@ public partial class Item
 
     public long? ActabilityRequirement { get; set; }
 
-    public byte[] GradeEnchantable { get; set; }
+    //public byte[] GradeEnchantable { get; set; }
 
     public long? CharGenderId { get; set; }
 
@@ -95,7 +95,7 @@ public partial class Item
 
     public long? OverIconId { get; set; }
 
-    public byte[] Translate { get; set; }
+    //public byte[] Translate { get; set; }
 
     public byte[] AutoRegisterToActionbar { get; set; }
 }

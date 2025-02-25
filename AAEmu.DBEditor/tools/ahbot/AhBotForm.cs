@@ -13,6 +13,7 @@ using AAEmu.DBEditor.forms.server;
 using AAEmu.DBEditor.Models.aaemu.webapi;
 using AAEmu.DBEditor.utils;
 using Newtonsoft.Json;
+using static Microsoft.EntityFrameworkCore.Query.Internal.ExpressionTreeFuncletizer;
 
 namespace AAEmu.DBEditor.tools.ahbot
 {
@@ -98,6 +99,35 @@ namespace AAEmu.DBEditor.tools.ahbot
                 var catC = new Dictionary<long, TreeNode>();
                 tvAhList.Nodes.Clear();
                 ItemNodes.Clear();
+                var itemsWithAhCats = Data.Server.CompactSqlite.Items.Where(x => x.AuctionACategoryId > 0 && x.AuctionBCategoryId > 0 && x.AuctionCCategoryId > 0).OrderBy(x => x.AuctionACategoryId).ToList();
+
+                // Base AH Category A
+                foreach (var aItem in itemsWithAhCats.DistinctBy(x => x.AuctionACategoryId))
+                {
+                    catA.Add((aItem.AuctionACategoryId ?? 0), tvAhList.Nodes.Add("A"+(aItem.AuctionACategoryId ?? 0)));
+                }
+
+                // Base AH Category B
+                foreach (var (catAKey, catANode) in catA)
+                {
+                    var thisCatBResults = itemsWithAhCats.Where(x => x.AuctionACategoryId == catAKey).OrderBy(x => x.AuctionBCategoryId).DistinctBy(x => x.AuctionBCategoryId);
+                    foreach (var bItem in thisCatBResults)
+                    {
+                        catB.Add(bItem.AuctionBCategoryId ?? 0, catANode.Nodes.Add("B" + (bItem.AuctionBCategoryId ?? 0)));
+                    }
+                }
+
+                // Base AH Category C
+                foreach (var (catBKey, catBNode) in catB)
+                {
+                    var thisCatCResults = itemsWithAhCats.Where(x => x.AuctionBCategoryId == catBKey).OrderBy(x => x.AuctionCCategoryId).DistinctBy(x => x.AuctionCCategoryId);
+                    foreach (var cItem in thisCatCResults)
+                    {
+                        catC.Add(cItem.AuctionCCategoryId ?? 0, catBNode.Nodes.Add("C" + (cItem.AuctionCCategoryId ?? 0)));
+                    }
+                }
+
+                /*
                 // AH Category A
                 foreach (var compactSqliteAuctionACategory in Data.Server.CompactSqlite.AuctionACategories.OrderBy(x =>
                              x.Id))
@@ -127,6 +157,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                         catC.Add(auctionCCategory.Id ?? 0, catBNode.Nodes.Add(auctionCCategory.Name));
                     }
                 }
+                */
 
                 Log("Load item grades");
                 // Populate Grades

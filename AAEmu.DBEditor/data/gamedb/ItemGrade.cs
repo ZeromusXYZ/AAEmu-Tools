@@ -23,7 +23,7 @@ public partial class ItemGrade
 
     public string ColorArgb { get; set; }
 
-    public string Comments { get; set; }
+    //public string Comments { get; set; }
 
     public double? DurabilityValue { get; set; }
 
@@ -37,21 +37,21 @@ public partial class ItemGrade
 
     public long? RefundMultiplier { get; set; }
 
-    public long? GradeEnchantSuccessRatio { get; set; }
+    //public long? GradeEnchantSuccessRatio { get; set; }
 
-    public long? GradeEnchantGreatSuccessRatio { get; set; }
+    //public long? GradeEnchantGreatSuccessRatio { get; set; }
 
-    public long? GradeEnchantBreakRatio { get; set; }
+    //public long? GradeEnchantBreakRatio { get; set; }
 
-    public long? GradeEnchantDowngradeRatio { get; set; }
+    //public long? GradeEnchantDowngradeRatio { get; set; }
 
-    public long? GradeEnchantCost { get; set; }
+    //public long? GradeEnchantCost { get; set; }
 
     public double? VarHoldableHealDps { get; set; }
 
-    public long? GradeEnchantDowngradeMin { get; set; }
+    //public long? GradeEnchantDowngradeMin { get; set; }
 
-    public long? GradeEnchantDowngradeMax { get; set; }
+    //public long? GradeEnchantDowngradeMax { get; set; }
 
-    public long? CurrencyId { get; set; }
+    //public long? CurrencyId { get; set; }
 }

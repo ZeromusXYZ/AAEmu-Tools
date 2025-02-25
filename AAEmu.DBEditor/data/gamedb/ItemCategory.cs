@@ -15,9 +15,9 @@ public partial class ItemCategory
 
     public long? Impl1Id { get; set; }
 
-    public long? Impl2Id { get; set; }
+    //public long? Impl2Id { get; set; }
 
-    public long? PickupSoundId { get; set; }
+    //public long? PickupSoundId { get; set; }
 
     public long? CategoryOrder { get; set; }
 

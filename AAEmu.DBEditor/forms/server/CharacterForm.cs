@@ -171,6 +171,7 @@ namespace AAEmu.DBEditor.forms.server
         {
             tvStats.Nodes.Clear();
             var rootNode = tvStats.Nodes.Add($"{character.Name} ({character.Id})");
+            // Faction
             rootNode.Nodes.Add($"{Data.Server.GetText("system_factions", "name", character.FactionId, "<" + character.FactionId + ">")} ({character.FactionId})");
 
             // Class
@@ -178,7 +179,7 @@ namespace AAEmu.DBEditor.forms.server
             var abilities = Data.MySqlDb.Game.Abilities.Where(x => x.Owner == character.Id);
             foreach (var ability in abilities)
             {
-                var abilityName = Data.Server.GetText("ui_texts", "text", 1110 + ability.Id, "<" + ability.Id + ">");
+                var abilityName = AbilityNames.GetClassName((sbyte)ability.Id);
                 var abilityNode = classNode.Nodes.Add($"Lv {GetLevel(ability.Exp)} {abilityName} ({ability.Id}), Exp {ability.Exp}");
                 if ((ability.Id == character.Ability1) || (ability.Id == character.Ability2) || (ability.Id == character.Ability3))
                     abilityNode.NodeFont = new Font(tvStats.Font, FontStyle.Bold);
