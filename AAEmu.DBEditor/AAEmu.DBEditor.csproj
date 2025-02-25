@@ -17,15 +17,9 @@
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Models\aaemu\game2\**" />
-    <Compile Remove="Models\aaemu\r208022_1250\**" />
-    <Compile Remove="Models\Server\**" />
-    <EmbeddedResource Remove="Models\aaemu\game2\**" />
-    <EmbeddedResource Remove="Models\aaemu\r208022_1250\**" />
-    <EmbeddedResource Remove="Models\Server\**" />
-    <None Remove="Models\aaemu\game2\**" />
-    <None Remove="Models\aaemu\r208022_1250\**" />
-    <None Remove="Models\Server\**" />
+    <Compile Remove="Models\aaemu\NewFolder\**" />
+    <EmbeddedResource Remove="Models\aaemu\NewFolder\**" />
+    <None Remove="Models\aaemu\NewFolder\**" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AAEmu.DBEditor.ico" />

@@ -9,64 +9,66 @@ public partial class CompactContext : DbContext
 {
     public CompactContext()
     {
+        //
     }
 
     public CompactContext(DbContextOptions<CompactContext> options)
         : base(options)
     {
+        //
     }
 
-    public virtual DbSet<AcceptQuestEffect> AcceptQuestEffects { get; set; }
+    //public virtual DbSet<AcceptQuestEffect> AcceptQuestEffects { get; set; }
 
-    public virtual DbSet<AccountAttributeEffect> AccountAttributeEffects { get; set; }
+    //public virtual DbSet<AccountAttributeEffect> AccountAttributeEffects { get; set; }
 
-    public virtual DbSet<Achievement> Achievements { get; set; }
+    //public virtual DbSet<Achievement> Achievements { get; set; }
 
-    public virtual DbSet<AchievementObjective> AchievementObjectives { get; set; }
+    //public virtual DbSet<AchievementObjective> AchievementObjectives { get; set; }
 
-    public virtual DbSet<ActabilityCategory> ActabilityCategories { get; set; }
+    //public virtual DbSet<ActabilityCategory> ActabilityCategories { get; set; }
 
-    public virtual DbSet<ActabilityGroup> ActabilityGroups { get; set; }
+    //public virtual DbSet<ActabilityGroup> ActabilityGroups { get; set; }
 
-    public virtual DbSet<ActorModel> ActorModels { get; set; }
+    //public virtual DbSet<ActorModel> ActorModels { get; set; }
 
-    public virtual DbSet<AggroEffect> AggroEffects { get; set; }
+    //public virtual DbSet<AggroEffect> AggroEffects { get; set; }
 
-    public virtual DbSet<AggroLink> AggroLinks { get; set; }
+    //public virtual DbSet<AggroLink> AggroLinks { get; set; }
 
-    public virtual DbSet<AiCommand> AiCommands { get; set; }
+    //public virtual DbSet<AiCommand> AiCommands { get; set; }
 
-    public virtual DbSet<AiCommandSet> AiCommandSets { get; set; }
+    //public virtual DbSet<AiCommandSet> AiCommandSets { get; set; }
 
-    public virtual DbSet<AiEvent> AiEvents { get; set; }
+    //public virtual DbSet<AiEvent> AiEvents { get; set; }
 
-    public virtual DbSet<AiFile> AiFiles { get; set; }
+    //public virtual DbSet<AiFile> AiFiles { get; set; }
 
-    public virtual DbSet<AllowToEquipSlafe> AllowToEquipSlaves { get; set; }
+    //public virtual DbSet<AllowToEquipSlafe> AllowToEquipSlaves { get; set; }
 
-    public virtual DbSet<AllowToEquipSlot> AllowToEquipSlots { get; set; }
+    //public virtual DbSet<AllowToEquipSlot> AllowToEquipSlots { get; set; }
 
-    public virtual DbSet<AllowedNameChar> AllowedNameChars { get; set; }
+    //public virtual DbSet<AllowedNameChar> AllowedNameChars { get; set; }
 
-    public virtual DbSet<Anim> Anims { get; set; }
+    //public virtual DbSet<Anim> Anims { get; set; }
 
-    public virtual DbSet<AnimAction> AnimActions { get; set; }
+    //public virtual DbSet<AnimAction> AnimActions { get; set; }
 
-    public virtual DbSet<AnimRule> AnimRules { get; set; }
+    //public virtual DbSet<AnimRule> AnimRules { get; set; }
 
-    public virtual DbSet<AoeDiminishing> AoeDiminishings { get; set; }
+    //public virtual DbSet<AoeDiminishing> AoeDiminishings { get; set; }
 
-    public virtual DbSet<AoeShape> AoeShapes { get; set; }
+    //public virtual DbSet<AoeShape> AoeShapes { get; set; }
 
-    public virtual DbSet<Appellation> Appellations { get; set; }
+    //public virtual DbSet<Appellation> Appellations { get; set; }
 
-    public virtual DbSet<AreaEventCheckNpc> AreaEventCheckNpcs { get; set; }
+    //public virtual DbSet<AreaEventCheckNpc> AreaEventCheckNpcs { get; set; }
 
-    public virtual DbSet<ArmorAsset> ArmorAssets { get; set; }
+    //public virtual DbSet<ArmorAsset> ArmorAssets { get; set; }
 
-    public virtual DbSet<ArmorGradeBuff> ArmorGradeBuffs { get; set; }
+    //public virtual DbSet<ArmorGradeBuff> ArmorGradeBuffs { get; set; }
 
-    public virtual DbSet<AttachAnim> AttachAnims { get; set; }
+    //public virtual DbSet<AttachAnim> AttachAnims { get; set; }
 
     public virtual DbSet<AuctionACategory> AuctionACategories { get; set; }
 
@@ -74,1308 +76,1301 @@ public partial class CompactContext : DbContext
 
     public virtual DbSet<AuctionCCategory> AuctionCCategories { get; set; }
 
-    public virtual DbSet<BagExpand> BagExpands { get; set; }
+    //public virtual DbSet<BagExpand> BagExpands { get; set; }
 
-    public virtual DbSet<BattleField> BattleFields { get; set; }
+    //public virtual DbSet<BattleField> BattleFields { get; set; }
 
-    public virtual DbSet<BattleFieldBuff> BattleFieldBuffs { get; set; }
+    //public virtual DbSet<BattleFieldBuff> BattleFieldBuffs { get; set; }
 
-    public virtual DbSet<BlockedChildDoodad> BlockedChildDoodads { get; set; }
+    //public virtual DbSet<BlockedChildDoodad> BlockedChildDoodads { get; set; }
 
-    public virtual DbSet<BlockedText> BlockedTexts { get; set; }
+    //public virtual DbSet<BlockedText> BlockedTexts { get; set; }
 
-    public virtual DbSet<BodyDiffuseMap> BodyDiffuseMaps { get; set; }
+    //public virtual DbSet<BodyDiffuseMap> BodyDiffuseMaps { get; set; }
 
-    public virtual DbSet<Book> Books { get; set; }
+    //public virtual DbSet<Book> Books { get; set; }
 
-    public virtual DbSet<BookElem> BookElems { get; set; }
+    //public virtual DbSet<BookElem> BookElems { get; set; }
 
-    public virtual DbSet<BookPage> BookPages { get; set; }
+    //public virtual DbSet<BookPage> BookPages { get; set; }
 
-    public virtual DbSet<BookPageContent> BookPageContents { get; set; }
+    //public virtual DbSet<BookPageContent> BookPageContents { get; set; }
 
-    public virtual DbSet<Bubble> Bubbles { get; set; }
+    //public virtual DbSet<Bubble> Bubbles { get; set; }
 
-    public virtual DbSet<BubbleChat> BubbleChats { get; set; }
+    //public virtual DbSet<BubbleChat> BubbleChats { get; set; }
 
-    public virtual DbSet<BubbleEffect> BubbleEffects { get; set; }
+    //public virtual DbSet<BubbleEffect> BubbleEffects { get; set; }
 
-    public virtual DbSet<Buff> Buffs { get; set; }
+    //public virtual DbSet<Buff> Buffs { get; set; }
 
-    public virtual DbSet<BuffBreaker> BuffBreakers { get; set; }
+    //public virtual DbSet<BuffBreaker> BuffBreakers { get; set; }
 
-    public virtual DbSet<BuffEffect> BuffEffects { get; set; }
+    //public virtual DbSet<BuffEffect> BuffEffects { get; set; }
 
-    public virtual DbSet<BuffModifier> BuffModifiers { get; set; }
+    //public virtual DbSet<BuffModifier> BuffModifiers { get; set; }
 
-    public virtual DbSet<BuffMountSkill> BuffMountSkills { get; set; }
+    //public virtual DbSet<BuffMountSkill> BuffMountSkills { get; set; }
 
-    public virtual DbSet<BuffSkill> BuffSkills { get; set; }
+    //public virtual DbSet<BuffSkill> BuffSkills { get; set; }
 
-    public virtual DbSet<BuffTickEffect> BuffTickEffects { get; set; }
+    //public virtual DbSet<BuffTickEffect> BuffTickEffects { get; set; }
 
-    public virtual DbSet<BuffTolerance> BuffTolerances { get; set; }
+    //public virtual DbSet<BuffTolerance> BuffTolerances { get; set; }
 
-    public virtual DbSet<BuffToleranceStep> BuffToleranceSteps { get; set; }
+    //public virtual DbSet<BuffToleranceStep> BuffToleranceSteps { get; set; }
 
-    public virtual DbSet<BuffTrigger> BuffTriggers { get; set; }
+    //public virtual DbSet<BuffTrigger> BuffTriggers { get; set; }
 
-    public virtual DbSet<BuffUnitModifier> BuffUnitModifiers { get; set; }
+    //public virtual DbSet<BuffUnitModifier> BuffUnitModifiers { get; set; }
 
-    public virtual DbSet<ChangeEquipmentBuff> ChangeEquipmentBuffs { get; set; }
+    //public virtual DbSet<ChangeEquipmentBuff> ChangeEquipmentBuffs { get; set; }
 
-    public virtual DbSet<CharRecord> CharRecords { get; set; }
+    //public virtual DbSet<CharRecord> CharRecords { get; set; }
 
-    public virtual DbSet<Character> Characters { get; set; }
+    //public virtual DbSet<Character> Characters { get; set; }
 
-    public virtual DbSet<CharacterBuff> CharacterBuffs { get; set; }
+    //public virtual DbSet<CharacterBuff> CharacterBuffs { get; set; }
 
-    public virtual DbSet<CharacterCustomizingHairAsset> CharacterCustomizingHairAssets { get; set; }
+    //public virtual DbSet<CharacterCustomizingHairAsset> CharacterCustomizingHairAssets { get; set; }
 
-    public virtual DbSet<CharacterEquipPack> CharacterEquipPacks { get; set; }
+    //public virtual DbSet<CharacterEquipPack> CharacterEquipPacks { get; set; }
 
-    public virtual DbSet<CharacterPStatLimit> CharacterPStatLimits { get; set; }
+    //public virtual DbSet<CharacterPStatLimit> CharacterPStatLimits { get; set; }
 
-    public virtual DbSet<CharacterSupply> CharacterSupplies { get; set; }
+    //public virtual DbSet<CharacterSupply> CharacterSupplies { get; set; }
 
-    public virtual DbSet<ChatCommand> ChatCommands { get; set; }
+    //public virtual DbSet<ChatCommand> ChatCommands { get; set; }
 
-    public virtual DbSet<ChatSpamRule> ChatSpamRules { get; set; }
+    //public virtual DbSet<ChatSpamRule> ChatSpamRules { get; set; }
 
-    public virtual DbSet<ChatSpamRuleDetail> ChatSpamRuleDetails { get; set; }
+    //public virtual DbSet<ChatSpamRuleDetail> ChatSpamRuleDetails { get; set; }
 
-    public virtual DbSet<Cinema> Cinemas { get; set; }
+    //public virtual DbSet<Cinema> Cinemas { get; set; }
 
-    public virtual DbSet<CinemaCaption> CinemaCaptions { get; set; }
+    //public virtual DbSet<CinemaCaption> CinemaCaptions { get; set; }
 
-    public virtual DbSet<CinemaEffect> CinemaEffects { get; set; }
+    //public virtual DbSet<CinemaEffect> CinemaEffects { get; set; }
 
-    public virtual DbSet<CinemaSubtitle> CinemaSubtitles { get; set; }
+    //public virtual DbSet<CinemaSubtitle> CinemaSubtitles { get; set; }
 
-    public virtual DbSet<CleanupUccEffect> CleanupUccEffects { get; set; }
+    //public virtual DbSet<CleanupUccEffect> CleanupUccEffects { get; set; }
 
-    public virtual DbSet<Climate> Climates { get; set; }
+    //public virtual DbSet<Climate> Climates { get; set; }
 
-    public virtual DbSet<CombatBuff> CombatBuffs { get; set; }
+    //public virtual DbSet<CombatBuff> CombatBuffs { get; set; }
 
-    public virtual DbSet<CombatSound> CombatSounds { get; set; }
+    //public virtual DbSet<CombatSound> CombatSounds { get; set; }
 
-    public virtual DbSet<CommonFarm> CommonFarms { get; set; }
+    //public virtual DbSet<CommonFarm> CommonFarms { get; set; }
 
-    public virtual DbSet<ConflictZone> ConflictZones { get; set; }
+    //public virtual DbSet<ConflictZone> ConflictZones { get; set; }
 
-    public virtual DbSet<Constant> Constants { get; set; }
+    //public virtual DbSet<Constant> Constants { get; set; }
 
-    public virtual DbSet<ContentConfig> ContentConfigs { get; set; }
+    //public virtual DbSet<ContentConfig> ContentConfigs { get; set; }
 
-    public virtual DbSet<ConversionEffect> ConversionEffects { get; set; }
+    //public virtual DbSet<ConversionEffect> ConversionEffects { get; set; }
 
-    public virtual DbSet<Craft> Crafts { get; set; }
+    //public virtual DbSet<Craft> Crafts { get; set; }
 
-    public virtual DbSet<CraftEffect> CraftEffects { get; set; }
+    //public virtual DbSet<CraftEffect> CraftEffects { get; set; }
 
-    public virtual DbSet<CraftMaterial> CraftMaterials { get; set; }
+    //public virtual DbSet<CraftMaterial> CraftMaterials { get; set; }
 
-    public virtual DbSet<CraftPack> CraftPacks { get; set; }
+    //public virtual DbSet<CraftPack> CraftPacks { get; set; }
 
-    public virtual DbSet<CraftPackCraft> CraftPackCrafts { get; set; }
+    //public virtual DbSet<CraftPackCraft> CraftPackCrafts { get; set; }
 
-    public virtual DbSet<CraftProduct> CraftProducts { get; set; }
+    //public virtual DbSet<CraftProduct> CraftProducts { get; set; }
 
-    public virtual DbSet<CurrencyConfig> CurrencyConfigs { get; set; }
+    //public virtual DbSet<CurrencyConfig> CurrencyConfigs { get; set; }
 
-    public virtual DbSet<CustomDualMaterial> CustomDualMaterials { get; set; }
+    //public virtual DbSet<CustomDualMaterial> CustomDualMaterials { get; set; }
 
-    public virtual DbSet<CustomFacePreset> CustomFacePresets { get; set; }
+    //public virtual DbSet<CustomFacePreset> CustomFacePresets { get; set; }
 
-    public virtual DbSet<CustomFontColor> CustomFontColors { get; set; }
+    //public virtual DbSet<CustomFontColor> CustomFontColors { get; set; }
 
-    public virtual DbSet<CustomHairTexture> CustomHairTextures { get; set; }
+    //public virtual DbSet<CustomHairTexture> CustomHairTextures { get; set; }
 
-    public virtual DbSet<DamageEffect> DamageEffects { get; set; }
+    //public virtual DbSet<DamageEffect> DamageEffects { get; set; }
 
-    public virtual DbSet<DdcmsMergeProtectInfo> DdcmsMergeProtectInfos { get; set; }
+    //public virtual DbSet<DdcmsMergeProtectInfo> DdcmsMergeProtectInfos { get; set; }
 
-    public virtual DbSet<DecoActabilityGroup> DecoActabilityGroups { get; set; }
+    //public virtual DbSet<DecoActabilityGroup> DecoActabilityGroups { get; set; }
 
-    public virtual DbSet<DefaultActionBarAction> DefaultActionBarActions { get; set; }
+    //public virtual DbSet<DefaultActionBarAction> DefaultActionBarActions { get; set; }
 
-    public virtual DbSet<DefaultInventoryTab> DefaultInventoryTabs { get; set; }
+    //public virtual DbSet<DefaultInventoryTab> DefaultInventoryTabs { get; set; }
 
-    public virtual DbSet<DefaultInventoryTabGroup> DefaultInventoryTabGroups { get; set; }
+    //public virtual DbSet<DefaultInventoryTabGroup> DefaultInventoryTabGroups { get; set; }
 
-    public virtual DbSet<DefaultSkill> DefaultSkills { get; set; }
+    //public virtual DbSet<DefaultSkill> DefaultSkills { get; set; }
 
-    public virtual DbSet<Demo> Demos { get; set; }
+    //public virtual DbSet<Demo> Demos { get; set; }
 
-    public virtual DbSet<DemoBag> DemoBags { get; set; }
+    //public virtual DbSet<DemoBag> DemoBags { get; set; }
 
-    public virtual DbSet<DemoBagItem> DemoBagItems { get; set; }
+    //public virtual DbSet<DemoBagItem> DemoBagItems { get; set; }
 
-    public virtual DbSet<DemoChar> DemoChars { get; set; }
+    //public virtual DbSet<DemoChar> DemoChars { get; set; }
 
-    public virtual DbSet<DemoEquip> DemoEquips { get; set; }
+    //public virtual DbSet<DemoEquip> DemoEquips { get; set; }
 
-    public virtual DbSet<DemoEquipItem> DemoEquipItems { get; set; }
+    //public virtual DbSet<DemoEquipItem> DemoEquipItems { get; set; }
 
-    public virtual DbSet<DemoLoc> DemoLocs { get; set; }
+    //public virtual DbSet<DemoLoc> DemoLocs { get; set; }
 
-    public virtual DbSet<DispelEffect> DispelEffects { get; set; }
+    //public virtual DbSet<DispelEffect> DispelEffects { get; set; }
 
-    public virtual DbSet<District> Districts { get; set; }
+    //public virtual DbSet<District> Districts { get; set; }
 
-    public virtual DbSet<DistrictReturnPoint> DistrictReturnPoints { get; set; }
+    //public virtual DbSet<DistrictReturnPoint> DistrictReturnPoints { get; set; }
 
-    public virtual DbSet<DoodadAlmighty> DoodadAlmighties { get; set; }
+    //public virtual DbSet<DoodadAlmighty> DoodadAlmighties { get; set; }
 
-    public virtual DbSet<DoodadBundle> DoodadBundles { get; set; }
+    //public virtual DbSet<DoodadBundle> DoodadBundles { get; set; }
 
-    public virtual DbSet<DoodadBundleDoodad> DoodadBundleDoodads { get; set; }
+    //public virtual DbSet<DoodadBundleDoodad> DoodadBundleDoodads { get; set; }
 
-    public virtual DbSet<DoodadFamily> DoodadFamilies { get; set; }
+    //public virtual DbSet<DoodadFamily> DoodadFamilies { get; set; }
 
-    public virtual DbSet<DoodadFunc> DoodadFuncs { get; set; }
+    //public virtual DbSet<DoodadFunc> DoodadFuncs { get; set; }
 
-    public virtual DbSet<DoodadFuncAnimate> DoodadFuncAnimates { get; set; }
+    //public virtual DbSet<DoodadFuncAnimate> DoodadFuncAnimates { get; set; }
 
-    public virtual DbSet<DoodadFuncAreaTrigger> DoodadFuncAreaTriggers { get; set; }
+    //public virtual DbSet<DoodadFuncAreaTrigger> DoodadFuncAreaTriggers { get; set; }
 
-    public virtual DbSet<DoodadFuncAttachment> DoodadFuncAttachments { get; set; }
+    //public virtual DbSet<DoodadFuncAttachment> DoodadFuncAttachments { get; set; }
 
-    public virtual DbSet<DoodadFuncAuctionUi> DoodadFuncAuctionUis { get; set; }
+    //public virtual DbSet<DoodadFuncAuctionUi> DoodadFuncAuctionUis { get; set; }
 
-    public virtual DbSet<DoodadFuncBankUi> DoodadFuncBankUis { get; set; }
+    //public virtual DbSet<DoodadFuncBankUi> DoodadFuncBankUis { get; set; }
 
-    public virtual DbSet<DoodadFuncBinding> DoodadFuncBindings { get; set; }
+    //public virtual DbSet<DoodadFuncBinding> DoodadFuncBindings { get; set; }
 
-    public virtual DbSet<DoodadFuncBubble> DoodadFuncBubbles { get; set; }
+    //public virtual DbSet<DoodadFuncBubble> DoodadFuncBubbles { get; set; }
 
-    public virtual DbSet<DoodadFuncBuff> DoodadFuncBuffs { get; set; }
+    //public virtual DbSet<DoodadFuncBuff> DoodadFuncBuffs { get; set; }
 
-    public virtual DbSet<DoodadFuncButcher> DoodadFuncButchers { get; set; }
+    //public virtual DbSet<DoodadFuncButcher> DoodadFuncButchers { get; set; }
 
-    public virtual DbSet<DoodadFuncBuyFish> DoodadFuncBuyFishes { get; set; }
+    //public virtual DbSet<DoodadFuncBuyFish> DoodadFuncBuyFishes { get; set; }
 
-    public virtual DbSet<DoodadFuncBuyFishItem> DoodadFuncBuyFishItems { get; set; }
+    //public virtual DbSet<DoodadFuncBuyFishItem> DoodadFuncBuyFishItems { get; set; }
 
-    public virtual DbSet<DoodadFuncBuyFishModel> DoodadFuncBuyFishModels { get; set; }
+    //public virtual DbSet<DoodadFuncBuyFishModel> DoodadFuncBuyFishModels { get; set; }
 
-    public virtual DbSet<DoodadFuncBuyFishModelItem> DoodadFuncBuyFishModelItems { get; set; }
+    //public virtual DbSet<DoodadFuncBuyFishModelItem> DoodadFuncBuyFishModelItems { get; set; }
 
-    public virtual DbSet<DoodadFuncCatch> DoodadFuncCatches { get; set; }
+    //public virtual DbSet<DoodadFuncCatch> DoodadFuncCatches { get; set; }
 
-    public virtual DbSet<DoodadFuncCerealHarvest> DoodadFuncCerealHarvests { get; set; }
+    //public virtual DbSet<DoodadFuncCerealHarvest> DoodadFuncCerealHarvests { get; set; }
 
-    public virtual DbSet<DoodadFuncCleanupLogicLink> DoodadFuncCleanupLogicLinks { get; set; }
+    //public virtual DbSet<DoodadFuncCleanupLogicLink> DoodadFuncCleanupLogicLinks { get; set; }
 
-    public virtual DbSet<DoodadFuncClimateReact> DoodadFuncClimateReacts { get; set; }
+    //public virtual DbSet<DoodadFuncClimateReact> DoodadFuncClimateReacts { get; set; }
 
-    public virtual DbSet<DoodadFuncClimb> DoodadFuncClimbs { get; set; }
+    //public virtual DbSet<DoodadFuncClimb> DoodadFuncClimbs { get; set; }
 
-    public virtual DbSet<DoodadFuncClout> DoodadFuncClouts { get; set; }
+    //public virtual DbSet<DoodadFuncClout> DoodadFuncClouts { get; set; }
 
-    public virtual DbSet<DoodadFuncCloutEffect> DoodadFuncCloutEffects { get; set; }
+    //public virtual DbSet<DoodadFuncCloutEffect> DoodadFuncCloutEffects { get; set; }
 
-    public virtual DbSet<DoodadFuncCoffer> DoodadFuncCoffers { get; set; }
+    //public virtual DbSet<DoodadFuncCoffer> DoodadFuncCoffers { get; set; }
 
-    public virtual DbSet<DoodadFuncCofferPerm> DoodadFuncCofferPerms { get; set; }
+    //public virtual DbSet<DoodadFuncCofferPerm> DoodadFuncCofferPerms { get; set; }
 
-    public virtual DbSet<DoodadFuncConditionalUse> DoodadFuncConditionalUses { get; set; }
+    //public virtual DbSet<DoodadFuncConditionalUse> DoodadFuncConditionalUses { get; set; }
 
-    public virtual DbSet<DoodadFuncConsumeChanger> DoodadFuncConsumeChangers { get; set; }
+    //public virtual DbSet<DoodadFuncConsumeChanger> DoodadFuncConsumeChangers { get; set; }
 
-    public virtual DbSet<DoodadFuncConsumeChangerItem> DoodadFuncConsumeChangerItems { get; set; }
+    //public virtual DbSet<DoodadFuncConsumeChangerItem> DoodadFuncConsumeChangerItems { get; set; }
 
-    public virtual DbSet<DoodadFuncConsumeChangerModel> DoodadFuncConsumeChangerModels { get; set; }
+    //public virtual DbSet<DoodadFuncConsumeChangerModel> DoodadFuncConsumeChangerModels { get; set; }
 
-    public virtual DbSet<DoodadFuncConsumeChangerModelItem> DoodadFuncConsumeChangerModelItems { get; set; }
+    //public virtual DbSet<DoodadFuncConsumeChangerModelItem> DoodadFuncConsumeChangerModelItems { get; set; }
 
-    public virtual DbSet<DoodadFuncConsumeItem> DoodadFuncConsumeItems { get; set; }
+    //public virtual DbSet<DoodadFuncConsumeItem> DoodadFuncConsumeItems { get; set; }
 
-    public virtual DbSet<DoodadFuncConvertFish> DoodadFuncConvertFishes { get; set; }
+    //public virtual DbSet<DoodadFuncConvertFish> DoodadFuncConvertFishes { get; set; }
 
-    public virtual DbSet<DoodadFuncConvertFishItem> DoodadFuncConvertFishItems { get; set; }
+    //public virtual DbSet<DoodadFuncConvertFishItem> DoodadFuncConvertFishItems { get; set; }
 
-    public virtual DbSet<DoodadFuncCraftAct> DoodadFuncCraftActs { get; set; }
+    //public virtual DbSet<DoodadFuncCraftAct> DoodadFuncCraftActs { get; set; }
 
-    public virtual DbSet<DoodadFuncCraftCancel> DoodadFuncCraftCancels { get; set; }
+    //public virtual DbSet<DoodadFuncCraftCancel> DoodadFuncCraftCancels { get; set; }
 
-    public virtual DbSet<DoodadFuncCraftDirect> DoodadFuncCraftDirects { get; set; }
+    //public virtual DbSet<DoodadFuncCraftDirect> DoodadFuncCraftDirects { get; set; }
 
-    public virtual DbSet<DoodadFuncCraftGetItem> DoodadFuncCraftGetItems { get; set; }
+    //public virtual DbSet<DoodadFuncCraftGetItem> DoodadFuncCraftGetItems { get; set; }
 
-    public virtual DbSet<DoodadFuncCraftGradeRatio> DoodadFuncCraftGradeRatios { get; set; }
+    //public virtual DbSet<DoodadFuncCraftGradeRatio> DoodadFuncCraftGradeRatios { get; set; }
 
-    public virtual DbSet<DoodadFuncCraftInfo> DoodadFuncCraftInfos { get; set; }
+    //public virtual DbSet<DoodadFuncCraftInfo> DoodadFuncCraftInfos { get; set; }
 
-    public virtual DbSet<DoodadFuncCraftPack> DoodadFuncCraftPacks { get; set; }
+    //public virtual DbSet<DoodadFuncCraftPack> DoodadFuncCraftPacks { get; set; }
 
-    public virtual DbSet<DoodadFuncCraftStart> DoodadFuncCraftStarts { get; set; }
+    //public virtual DbSet<DoodadFuncCraftStart> DoodadFuncCraftStarts { get; set; }
 
-    public virtual DbSet<DoodadFuncCraftStartCraft> DoodadFuncCraftStartCrafts { get; set; }
+    //public virtual DbSet<DoodadFuncCraftStartCraft> DoodadFuncCraftStartCrafts { get; set; }
 
-    public virtual DbSet<DoodadFuncCropHarvest> DoodadFuncCropHarvests { get; set; }
+    //public virtual DbSet<DoodadFuncCropHarvest> DoodadFuncCropHarvests { get; set; }
 
-    public virtual DbSet<DoodadFuncCrystalCollect> DoodadFuncCrystalCollects { get; set; }
+    //public virtual DbSet<DoodadFuncCrystalCollect> DoodadFuncCrystalCollects { get; set; }
 
-    public virtual DbSet<DoodadFuncCutdown> DoodadFuncCutdowns { get; set; }
+    //public virtual DbSet<DoodadFuncCutdown> DoodadFuncCutdowns { get; set; }
 
-    public virtual DbSet<DoodadFuncCutdowning> DoodadFuncCutdownings { get; set; }
+    //public virtual DbSet<DoodadFuncCutdowning> DoodadFuncCutdownings { get; set; }
 
-    public virtual DbSet<DoodadFuncDairyCollect> DoodadFuncDairyCollects { get; set; }
+    //public virtual DbSet<DoodadFuncDairyCollect> DoodadFuncDairyCollects { get; set; }
 
-    public virtual DbSet<DoodadFuncDeclareSiege> DoodadFuncDeclareSieges { get; set; }
+    //public virtual DbSet<DoodadFuncDeclareSiege> DoodadFuncDeclareSieges { get; set; }
 
-    public virtual DbSet<DoodadFuncDig> DoodadFuncDigs { get; set; }
+    //public virtual DbSet<DoodadFuncDig> DoodadFuncDigs { get; set; }
 
-    public virtual DbSet<DoodadFuncDigTerrain> DoodadFuncDigTerrains { get; set; }
+    //public virtual DbSet<DoodadFuncDigTerrain> DoodadFuncDigTerrains { get; set; }
 
-    public virtual DbSet<DoodadFuncDyeingredientCollect> DoodadFuncDyeingredientCollects { get; set; }
+    //public virtual DbSet<DoodadFuncDyeingredientCollect> DoodadFuncDyeingredientCollects { get; set; }
 
-    public virtual DbSet<DoodadFuncEnterInstance> DoodadFuncEnterInstances { get; set; }
+    //public virtual DbSet<DoodadFuncEnterInstance> DoodadFuncEnterInstances { get; set; }
 
-    public virtual DbSet<DoodadFuncEnterSysInstance> DoodadFuncEnterSysInstances { get; set; }
+    //public virtual DbSet<DoodadFuncEnterSysInstance> DoodadFuncEnterSysInstances { get; set; }
 
-    public virtual DbSet<DoodadFuncEvidenceItemLoot> DoodadFuncEvidenceItemLoots { get; set; }
+    //public virtual DbSet<DoodadFuncEvidenceItemLoot> DoodadFuncEvidenceItemLoots { get; set; }
 
-    public virtual DbSet<DoodadFuncExchange> DoodadFuncExchanges { get; set; }
+    //public virtual DbSet<DoodadFuncExchange> DoodadFuncExchanges { get; set; }
 
-    public virtual DbSet<DoodadFuncExchangeItem> DoodadFuncExchangeItems { get; set; }
+    //public virtual DbSet<DoodadFuncExchangeItem> DoodadFuncExchangeItems { get; set; }
 
-    public virtual DbSet<DoodadFuncExitIndun> DoodadFuncExitInduns { get; set; }
+    //public virtual DbSet<DoodadFuncExitIndun> DoodadFuncExitInduns { get; set; }
 
-    public virtual DbSet<DoodadFuncFakeUse> DoodadFuncFakeUses { get; set; }
+    //public virtual DbSet<DoodadFuncFakeUse> DoodadFuncFakeUses { get; set; }
 
-    public virtual DbSet<DoodadFuncFeed> DoodadFuncFeeds { get; set; }
+    //public virtual DbSet<DoodadFuncFeed> DoodadFuncFeeds { get; set; }
 
-    public virtual DbSet<DoodadFuncFiberCollect> DoodadFuncFiberCollects { get; set; }
+    //public virtual DbSet<DoodadFuncFiberCollect> DoodadFuncFiberCollects { get; set; }
 
-    public virtual DbSet<DoodadFuncFinal> DoodadFuncFinals { get; set; }
+    //public virtual DbSet<DoodadFuncFinal> DoodadFuncFinals { get; set; }
 
-    public virtual DbSet<DoodadFuncFishSchool> DoodadFuncFishSchools { get; set; }
+    //public virtual DbSet<DoodadFuncFishSchool> DoodadFuncFishSchools { get; set; }
 
-    public virtual DbSet<DoodadFuncFruitPick> DoodadFuncFruitPicks { get; set; }
+    //public virtual DbSet<DoodadFuncFruitPick> DoodadFuncFruitPicks { get; set; }
 
-    public virtual DbSet<DoodadFuncGassExtract> DoodadFuncGassExtracts { get; set; }
+    //public virtual DbSet<DoodadFuncGassExtract> DoodadFuncGassExtracts { get; set; }
 
-    public virtual DbSet<DoodadFuncGroup> DoodadFuncGroups { get; set; }
+    //public virtual DbSet<DoodadFuncGroup> DoodadFuncGroups { get; set; }
 
-    public virtual DbSet<DoodadFuncGrowth> DoodadFuncGrowths { get; set; }
+    //public virtual DbSet<DoodadFuncGrowth> DoodadFuncGrowths { get; set; }
 
-    public virtual DbSet<DoodadFuncHarvest> DoodadFuncHarvests { get; set; }
+    //public virtual DbSet<DoodadFuncHarvest> DoodadFuncHarvests { get; set; }
 
-    public virtual DbSet<DoodadFuncHouseFarm> DoodadFuncHouseFarms { get; set; }
+    //public virtual DbSet<DoodadFuncHouseFarm> DoodadFuncHouseFarms { get; set; }
 
-    public virtual DbSet<DoodadFuncHousingArea> DoodadFuncHousingAreas { get; set; }
+    //public virtual DbSet<DoodadFuncHousingArea> DoodadFuncHousingAreas { get; set; }
 
-    public virtual DbSet<DoodadFuncHunger> DoodadFuncHungers { get; set; }
+    //public virtual DbSet<DoodadFuncHunger> DoodadFuncHungers { get; set; }
 
-    public virtual DbSet<DoodadFuncInsertCounter> DoodadFuncInsertCounters { get; set; }
+    //public virtual DbSet<DoodadFuncInsertCounter> DoodadFuncInsertCounters { get; set; }
 
-    public virtual DbSet<DoodadFuncLivestockGrowth> DoodadFuncLivestockGrowths { get; set; }
+    //public virtual DbSet<DoodadFuncLivestockGrowth> DoodadFuncLivestockGrowths { get; set; }
 
-    public virtual DbSet<DoodadFuncLogic> DoodadFuncLogics { get; set; }
+    //public virtual DbSet<DoodadFuncLogic> DoodadFuncLogics { get; set; }
 
-    public virtual DbSet<DoodadFuncLogicDisplay> DoodadFuncLogicDisplays { get; set; }
+    //public virtual DbSet<DoodadFuncLogicDisplay> DoodadFuncLogicDisplays { get; set; }
 
-    public virtual DbSet<DoodadFuncLogicFamilyProvider> DoodadFuncLogicFamilyProviders { get; set; }
+    //public virtual DbSet<DoodadFuncLogicFamilyProvider> DoodadFuncLogicFamilyProviders { get; set; }
 
-    public virtual DbSet<DoodadFuncLogicFamilySubscriber> DoodadFuncLogicFamilySubscribers { get; set; }
+    //public virtual DbSet<DoodadFuncLogicFamilySubscriber> DoodadFuncLogicFamilySubscribers { get; set; }
 
-    public virtual DbSet<DoodadFuncLootItem> DoodadFuncLootItems { get; set; }
+    //public virtual DbSet<DoodadFuncLootItem> DoodadFuncLootItems { get; set; }
 
-    public virtual DbSet<DoodadFuncLootPack> DoodadFuncLootPacks { get; set; }
+    //public virtual DbSet<DoodadFuncLootPack> DoodadFuncLootPacks { get; set; }
 
-    public virtual DbSet<DoodadFuncMachinePartsCollect> DoodadFuncMachinePartsCollects { get; set; }
+    //public virtual DbSet<DoodadFuncMachinePartsCollect> DoodadFuncMachinePartsCollects { get; set; }
 
-    public virtual DbSet<DoodadFuncMedicalingredientMine> DoodadFuncMedicalingredientMines { get; set; }
+    //public virtual DbSet<DoodadFuncMedicalingredientMine> DoodadFuncMedicalingredientMines { get; set; }
 
-    public virtual DbSet<DoodadFuncMould> DoodadFuncMoulds { get; set; }
+    //public virtual DbSet<DoodadFuncMould> DoodadFuncMoulds { get; set; }
 
-    public virtual DbSet<DoodadFuncMouldItem> DoodadFuncMouldItems { get; set; }
+    //public virtual DbSet<DoodadFuncMouldItem> DoodadFuncMouldItems { get; set; }
 
-    public virtual DbSet<DoodadFuncMow> DoodadFuncMows { get; set; }
+    //public virtual DbSet<DoodadFuncMow> DoodadFuncMows { get; set; }
 
-    public virtual DbSet<DoodadFuncNaviDonation> DoodadFuncNaviDonations { get; set; }
+    //public virtual DbSet<DoodadFuncNaviDonation> DoodadFuncNaviDonations { get; set; }
 
-    public virtual DbSet<DoodadFuncNaviMarkPosToMap> DoodadFuncNaviMarkPosToMaps { get; set; }
+    //public virtual DbSet<DoodadFuncNaviMarkPosToMap> DoodadFuncNaviMarkPosToMaps { get; set; }
 
-    public virtual DbSet<DoodadFuncNaviNaming> DoodadFuncNaviNamings { get; set; }
+    //public virtual DbSet<DoodadFuncNaviNaming> DoodadFuncNaviNamings { get; set; }
 
-    public virtual DbSet<DoodadFuncNaviOpenBounty> DoodadFuncNaviOpenBounties { get; set; }
+    //public virtual DbSet<DoodadFuncNaviOpenBounty> DoodadFuncNaviOpenBounties { get; set; }
 
-    public virtual DbSet<DoodadFuncNaviOpenMailbox> DoodadFuncNaviOpenMailboxes { get; set; }
+    //public virtual DbSet<DoodadFuncNaviOpenMailbox> DoodadFuncNaviOpenMailboxes { get; set; }
 
-    public virtual DbSet<DoodadFuncNaviOpenPortal> DoodadFuncNaviOpenPortals { get; set; }
+    //public virtual DbSet<DoodadFuncNaviOpenPortal> DoodadFuncNaviOpenPortals { get; set; }
 
-    public virtual DbSet<DoodadFuncNaviRemove> DoodadFuncNaviRemoves { get; set; }
+    //public virtual DbSet<DoodadFuncNaviRemove> DoodadFuncNaviRemoves { get; set; }
 
-    public virtual DbSet<DoodadFuncNaviRemoveTimer> DoodadFuncNaviRemoveTimers { get; set; }
+    //public virtual DbSet<DoodadFuncNaviRemoveTimer> DoodadFuncNaviRemoveTimers { get; set; }
 
-    public virtual DbSet<DoodadFuncNaviTeleport> DoodadFuncNaviTeleports { get; set; }
+    //public virtual DbSet<DoodadFuncNaviTeleport> DoodadFuncNaviTeleports { get; set; }
 
-    public virtual DbSet<DoodadFuncOpenFarmInfo> DoodadFuncOpenFarmInfos { get; set; }
+    //public virtual DbSet<DoodadFuncOpenFarmInfo> DoodadFuncOpenFarmInfos { get; set; }
 
-    public virtual DbSet<DoodadFuncOpenPaper> DoodadFuncOpenPapers { get; set; }
+    //public virtual DbSet<DoodadFuncOpenPaper> DoodadFuncOpenPapers { get; set; }
 
-    public virtual DbSet<DoodadFuncOreMine> DoodadFuncOreMines { get; set; }
+    //public virtual DbSet<DoodadFuncOreMine> DoodadFuncOreMines { get; set; }
 
-    public virtual DbSet<DoodadFuncParentInfo> DoodadFuncParentInfos { get; set; }
+    //public virtual DbSet<DoodadFuncParentInfo> DoodadFuncParentInfos { get; set; }
 
-    public virtual DbSet<DoodadFuncParrot> DoodadFuncParrots { get; set; }
+    //public virtual DbSet<DoodadFuncParrot> DoodadFuncParrots { get; set; }
 
-    public virtual DbSet<DoodadFuncPlantCollect> DoodadFuncPlantCollects { get; set; }
+    //public virtual DbSet<DoodadFuncPlantCollect> DoodadFuncPlantCollects { get; set; }
 
-    public virtual DbSet<DoodadFuncPlayFlowGraph> DoodadFuncPlayFlowGraphs { get; set; }
+    //public virtual DbSet<DoodadFuncPlayFlowGraph> DoodadFuncPlayFlowGraphs { get; set; }
 
-    public virtual DbSet<DoodadFuncPulse> DoodadFuncPulses { get; set; }
+    //public virtual DbSet<DoodadFuncPulse> DoodadFuncPulses { get; set; }
 
-    public virtual DbSet<DoodadFuncPulseTrigger> DoodadFuncPulseTriggers { get; set; }
+    //public virtual DbSet<DoodadFuncPulseTrigger> DoodadFuncPulseTriggers { get; set; }
 
-    public virtual DbSet<DoodadFuncPurchase> DoodadFuncPurchases { get; set; }
+    //public virtual DbSet<DoodadFuncPurchase> DoodadFuncPurchases { get; set; }
 
-    public virtual DbSet<DoodadFuncPurchaseSiegeTicket> DoodadFuncPurchaseSiegeTickets { get; set; }
+    //public virtual DbSet<DoodadFuncPurchaseSiegeTicket> DoodadFuncPurchaseSiegeTickets { get; set; }
 
-    public virtual DbSet<DoodadFuncPuzzleIn> DoodadFuncPuzzleIns { get; set; }
+    //public virtual DbSet<DoodadFuncPuzzleIn> DoodadFuncPuzzleIns { get; set; }
 
-    public virtual DbSet<DoodadFuncPuzzleOut> DoodadFuncPuzzleOuts { get; set; }
+    //public virtual DbSet<DoodadFuncPuzzleOut> DoodadFuncPuzzleOuts { get; set; }
 
-    public virtual DbSet<DoodadFuncPuzzleRoll> DoodadFuncPuzzleRolls { get; set; }
+    //public virtual DbSet<DoodadFuncPuzzleRoll> DoodadFuncPuzzleRolls { get; set; }
 
-    public virtual DbSet<DoodadFuncQuest> DoodadFuncQuests { get; set; }
+    //public virtual DbSet<DoodadFuncQuest> DoodadFuncQuests { get; set; }
 
-    public virtual DbSet<DoodadFuncRatioChange> DoodadFuncRatioChanges { get; set; }
+    //public virtual DbSet<DoodadFuncRatioChange> DoodadFuncRatioChanges { get; set; }
 
-    public virtual DbSet<DoodadFuncRatioRespawn> DoodadFuncRatioRespawns { get; set; }
+    //public virtual DbSet<DoodadFuncRatioRespawn> DoodadFuncRatioRespawns { get; set; }
 
-    public virtual DbSet<DoodadFuncRecoverItem> DoodadFuncRecoverItems { get; set; }
+    //public virtual DbSet<DoodadFuncRecoverItem> DoodadFuncRecoverItems { get; set; }
 
-    public virtual DbSet<DoodadFuncRemoveInstance> DoodadFuncRemoveInstances { get; set; }
+    //public virtual DbSet<DoodadFuncRemoveInstance> DoodadFuncRemoveInstances { get; set; }
 
-    public virtual DbSet<DoodadFuncRemoveItem> DoodadFuncRemoveItems { get; set; }
+    //public virtual DbSet<DoodadFuncRemoveItem> DoodadFuncRemoveItems { get; set; }
 
-    public virtual DbSet<DoodadFuncRenewItem> DoodadFuncRenewItems { get; set; }
+    //public virtual DbSet<DoodadFuncRenewItem> DoodadFuncRenewItems { get; set; }
 
-    public virtual DbSet<DoodadFuncReqBattleField> DoodadFuncReqBattleFields { get; set; }
+    //public virtual DbSet<DoodadFuncReqBattleField> DoodadFuncReqBattleFields { get; set; }
 
-    public virtual DbSet<DoodadFuncRequireItem> DoodadFuncRequireItems { get; set; }
+    //public virtual DbSet<DoodadFuncRequireItem> DoodadFuncRequireItems { get; set; }
 
-    public virtual DbSet<DoodadFuncRequireQuest> DoodadFuncRequireQuests { get; set; }
+    //public virtual DbSet<DoodadFuncRequireQuest> DoodadFuncRequireQuests { get; set; }
 
-    public virtual DbSet<DoodadFuncRespawn> DoodadFuncRespawns { get; set; }
+    //public virtual DbSet<DoodadFuncRespawn> DoodadFuncRespawns { get; set; }
 
-    public virtual DbSet<DoodadFuncRockMine> DoodadFuncRockMines { get; set; }
+    //public virtual DbSet<DoodadFuncRockMine> DoodadFuncRockMines { get; set; }
 
-    public virtual DbSet<DoodadFuncSeedCollect> DoodadFuncSeedCollects { get; set; }
+    //public virtual DbSet<DoodadFuncSeedCollect> DoodadFuncSeedCollects { get; set; }
 
-    public virtual DbSet<DoodadFuncShear> DoodadFuncShears { get; set; }
+    //public virtual DbSet<DoodadFuncShear> DoodadFuncShears { get; set; }
 
-    public virtual DbSet<DoodadFuncSiegePeriod> DoodadFuncSiegePeriods { get; set; }
+    //public virtual DbSet<DoodadFuncSiegePeriod> DoodadFuncSiegePeriods { get; set; }
 
-    public virtual DbSet<DoodadFuncSign> DoodadFuncSigns { get; set; }
+    //public virtual DbSet<DoodadFuncSign> DoodadFuncSigns { get; set; }
 
-    public virtual DbSet<DoodadFuncSkillHit> DoodadFuncSkillHits { get; set; }
+    //public virtual DbSet<DoodadFuncSkillHit> DoodadFuncSkillHits { get; set; }
 
-    public virtual DbSet<DoodadFuncSkinOff> DoodadFuncSkinOffs { get; set; }
+    //public virtual DbSet<DoodadFuncSkinOff> DoodadFuncSkinOffs { get; set; }
 
-    public virtual DbSet<DoodadFuncSoilCollect> DoodadFuncSoilCollects { get; set; }
+    //public virtual DbSet<DoodadFuncSoilCollect> DoodadFuncSoilCollects { get; set; }
 
-    public virtual DbSet<DoodadFuncSpawnGimmick> DoodadFuncSpawnGimmicks { get; set; }
+    //public virtual DbSet<DoodadFuncSpawnGimmick> DoodadFuncSpawnGimmicks { get; set; }
 
-    public virtual DbSet<DoodadFuncSpawnMgmt> DoodadFuncSpawnMgmts { get; set; }
+    //public virtual DbSet<DoodadFuncSpawnMgmt> DoodadFuncSpawnMgmts { get; set; }
 
-    public virtual DbSet<DoodadFuncSpiceCollect> DoodadFuncSpiceCollects { get; set; }
+    //public virtual DbSet<DoodadFuncSpiceCollect> DoodadFuncSpiceCollects { get; set; }
 
-    public virtual DbSet<DoodadFuncStampMaker> DoodadFuncStampMakers { get; set; }
+    //public virtual DbSet<DoodadFuncStampMaker> DoodadFuncStampMakers { get; set; }
 
-    public virtual DbSet<DoodadFuncStoreUi> DoodadFuncStoreUis { get; set; }
+    //public virtual DbSet<DoodadFuncStoreUi> DoodadFuncStoreUis { get; set; }
 
-    public virtual DbSet<DoodadFuncTimer> DoodadFuncTimers { get; set; }
+    //public virtual DbSet<DoodadFuncTimer> DoodadFuncTimers { get; set; }
 
-    public virtual DbSet<DoodadFuncTod> DoodadFuncTods { get; set; }
+    //public virtual DbSet<DoodadFuncTod> DoodadFuncTods { get; set; }
 
-    public virtual DbSet<DoodadFuncTreeByproductsCollect> DoodadFuncTreeByproductsCollects { get; set; }
+    //public virtual DbSet<DoodadFuncTreeByproductsCollect> DoodadFuncTreeByproductsCollects { get; set; }
 
-    public virtual DbSet<DoodadFuncUccImprint> DoodadFuncUccImprints { get; set; }
+    //public virtual DbSet<DoodadFuncUccImprint> DoodadFuncUccImprints { get; set; }
 
-    public virtual DbSet<DoodadFuncUse> DoodadFuncUses { get; set; }
+    //public virtual DbSet<DoodadFuncUse> DoodadFuncUses { get; set; }
 
-    public virtual DbSet<DoodadFuncVegetationGrowth> DoodadFuncVegetationGrowths { get; set; }
+    //public virtual DbSet<DoodadFuncVegetationGrowth> DoodadFuncVegetationGrowths { get; set; }
 
-    public virtual DbSet<DoodadFuncWaterVolume> DoodadFuncWaterVolumes { get; set; }
+    //public virtual DbSet<DoodadFuncWaterVolume> DoodadFuncWaterVolumes { get; set; }
 
-    public virtual DbSet<DoodadFuncZoneReact> DoodadFuncZoneReacts { get; set; }
+    //public virtual DbSet<DoodadFuncZoneReact> DoodadFuncZoneReacts { get; set; }
 
-    public virtual DbSet<DoodadGroup> DoodadGroups { get; set; }
+    //public virtual DbSet<DoodadGroup> DoodadGroups { get; set; }
 
-    public virtual DbSet<DoodadModifier> DoodadModifiers { get; set; }
+    //public virtual DbSet<DoodadModifier> DoodadModifiers { get; set; }
 
-    public virtual DbSet<DoodadPhaseFunc> DoodadPhaseFuncs { get; set; }
+    //public virtual DbSet<DoodadPhaseFunc> DoodadPhaseFuncs { get; set; }
 
-    public virtual DbSet<DoodadPlaceSkin> DoodadPlaceSkins { get; set; }
+    //public virtual DbSet<DoodadPlaceSkin> DoodadPlaceSkins { get; set; }
 
-    public virtual DbSet<DyeableItem> DyeableItems { get; set; }
+    //public virtual DbSet<DyeableItem> DyeableItems { get; set; }
 
-    public virtual DbSet<DyeingColor> DyeingColors { get; set; }
+    //public virtual DbSet<DyeingColor> DyeingColors { get; set; }
 
-    public virtual DbSet<DynamicUnitModifier> DynamicUnitModifiers { get; set; }
+    //public virtual DbSet<DynamicUnitModifier> DynamicUnitModifiers { get; set; }
 
-    public virtual DbSet<Effect> Effects { get; set; }
+    //public virtual DbSet<Effect> Effects { get; set; }
 
-    public virtual DbSet<EmblemPattern> EmblemPatterns { get; set; }
+    //public virtual DbSet<EmblemPattern> EmblemPatterns { get; set; }
 
-    public virtual DbSet<EquipItemAttrModifier> EquipItemAttrModifiers { get; set; }
+    //public virtual DbSet<EquipItemAttrModifier> EquipItemAttrModifiers { get; set; }
 
-    public virtual DbSet<EquipItemSet> EquipItemSets { get; set; }
+    //public virtual DbSet<EquipItemSet> EquipItemSets { get; set; }
 
-    public virtual DbSet<EquipItemSetBonuse> EquipItemSetBonuses { get; set; }
+    //public virtual DbSet<EquipItemSetBonuse> EquipItemSetBonuses { get; set; }
 
-    public virtual DbSet<EquipPackBodyPart> EquipPackBodyParts { get; set; }
+    //public virtual DbSet<EquipPackBodyPart> EquipPackBodyParts { get; set; }
 
-    public virtual DbSet<EquipPackCloth> EquipPackCloths { get; set; }
+    //public virtual DbSet<EquipPackCloth> EquipPackCloths { get; set; }
 
-    public virtual DbSet<EquipPackWeapon> EquipPackWeapons { get; set; }
+    //public virtual DbSet<EquipPackWeapon> EquipPackWeapons { get; set; }
 
-    public virtual DbSet<EquipSlotEnchantingCost> EquipSlotEnchantingCosts { get; set; }
+    //public virtual DbSet<EquipSlotEnchantingCost> EquipSlotEnchantingCosts { get; set; }
 
-    public virtual DbSet<EquipSlotGroup> EquipSlotGroups { get; set; }
+    //public virtual DbSet<EquipSlotGroup> EquipSlotGroups { get; set; }
 
-    public virtual DbSet<EquipSlotGroupMap> EquipSlotGroupMaps { get; set; }
+    //public virtual DbSet<EquipSlotGroupMap> EquipSlotGroupMaps { get; set; }
 
-    public virtual DbSet<ExpandExpertLimit> ExpandExpertLimits { get; set; }
+    //public virtual DbSet<ExpandExpertLimit> ExpandExpertLimits { get; set; }
 
-    public virtual DbSet<ExpertLimit> ExpertLimits { get; set; }
+    //public virtual DbSet<ExpertLimit> ExpertLimits { get; set; }
 
-    public virtual DbSet<ExpressText> ExpressTexts { get; set; }
+    //public virtual DbSet<ExpressText> ExpressTexts { get; set; }
 
-    public virtual DbSet<FaceDecalAsset> FaceDecalAssets { get; set; }
+    //public virtual DbSet<FaceDecalAsset> FaceDecalAssets { get; set; }
 
-    public virtual DbSet<FaceDiffuseMap> FaceDiffuseMaps { get; set; }
+    //public virtual DbSet<FaceDiffuseMap> FaceDiffuseMaps { get; set; }
 
-    public virtual DbSet<FaceEyelashMap> FaceEyelashMaps { get; set; }
+    //public virtual DbSet<FaceEyelashMap> FaceEyelashMaps { get; set; }
 
-    public virtual DbSet<FaceNormalMap> FaceNormalMaps { get; set; }
+    //public virtual DbSet<FaceNormalMap> FaceNormalMaps { get; set; }
 
-    public virtual DbSet<FactionChatRegion> FactionChatRegions { get; set; }
+    //public virtual DbSet<FactionChatRegion> FactionChatRegions { get; set; }
 
-    public virtual DbSet<FarmGroup> FarmGroups { get; set; }
+    //public virtual DbSet<FarmGroup> FarmGroups { get; set; }
 
-    public virtual DbSet<FarmGroupDoodad> FarmGroupDoodads { get; set; }
+    //public virtual DbSet<FarmGroupDoodad> FarmGroupDoodads { get; set; }
 
-    public virtual DbSet<FishDetail> FishDetails { get; set; }
+    //public virtual DbSet<FishDetail> FishDetails { get; set; }
 
-    public virtual DbSet<FlyingStateChangeEffect> FlyingStateChangeEffects { get; set; }
+    //public virtual DbSet<FlyingStateChangeEffect> FlyingStateChangeEffects { get; set; }
 
-    public virtual DbSet<Formula> Formulas { get; set; }
+    //public virtual DbSet<Formula> Formulas { get; set; }
 
-    public virtual DbSet<FxCamFov> FxCamFovs { get; set; }
+    //public virtual DbSet<FxCamFov> FxCamFovs { get; set; }
 
-    public virtual DbSet<FxCga> FxCgas { get; set; }
+    //public virtual DbSet<FxCga> FxCgas { get; set; }
 
-    public virtual DbSet<FxCgf> FxCgfs { get; set; }
+    //public virtual DbSet<FxCgf> FxCgfs { get; set; }
 
-    public virtual DbSet<FxChr> FxChrs { get; set; }
+    //public virtual DbSet<FxChr> FxChrs { get; set; }
 
-    public virtual DbSet<FxDecal> FxDecals { get; set; }
+    //public virtual DbSet<FxDecal> FxDecals { get; set; }
 
-    public virtual DbSet<FxGroup> FxGroups { get; set; }
+    //public virtual DbSet<FxGroup> FxGroups { get; set; }
 
-    public virtual DbSet<FxGroupFxItem> FxGroupFxItems { get; set; }
+    //public virtual DbSet<FxGroupFxItem> FxGroupFxItems { get; set; }
 
-    public virtual DbSet<FxItem> FxItems { get; set; }
+    //public virtual DbSet<FxItem> FxItems { get; set; }
 
-    public virtual DbSet<FxMaterial> FxMaterials { get; set; }
+    //public virtual DbSet<FxMaterial> FxMaterials { get; set; }
 
-    public virtual DbSet<FxMotionBlur> FxMotionBlurs { get; set; }
+    //public virtual DbSet<FxMotionBlur> FxMotionBlurs { get; set; }
 
-    public virtual DbSet<FxParticle> FxParticles { get; set; }
+    //public virtual DbSet<FxParticle> FxParticles { get; set; }
 
-    public virtual DbSet<FxRope> FxRopes { get; set; }
+    //public virtual DbSet<FxRope> FxRopes { get; set; }
 
-    public virtual DbSet<FxShakeCamera> FxShakeCameras { get; set; }
+    //public virtual DbSet<FxShakeCamera> FxShakeCameras { get; set; }
 
-    public virtual DbSet<FxSound> FxSounds { get; set; }
+    //public virtual DbSet<FxSound> FxSounds { get; set; }
 
-    public virtual DbSet<FxVoice> FxVoices { get; set; }
+    //public virtual DbSet<FxVoice> FxVoices { get; set; }
 
-    public virtual DbSet<GainLootPackItemEffect> GainLootPackItemEffects { get; set; }
+    //public virtual DbSet<GainLootPackItemEffect> GainLootPackItemEffects { get; set; }
 
-    public virtual DbSet<GameRuleEvent> GameRuleEvents { get; set; }
+    //public virtual DbSet<GameRuleEvent> GameRuleEvents { get; set; }
 
-    public virtual DbSet<GameRuleSet> GameRuleSets { get; set; }
+    //public virtual DbSet<GameRuleSet> GameRuleSets { get; set; }
 
-    public virtual DbSet<GameSchedule> GameSchedules { get; set; }
+    //public virtual DbSet<GameSchedule> GameSchedules { get; set; }
 
-    public virtual DbSet<GameScheduleDoodad> GameScheduleDoodads { get; set; }
+    //public virtual DbSet<GameScheduleDoodad> GameScheduleDoodads { get; set; }
 
-    public virtual DbSet<GameScheduleQuest> GameScheduleQuests { get; set; }
+    //public virtual DbSet<GameScheduleQuest> GameScheduleQuests { get; set; }
 
-    public virtual DbSet<GameScheduleSpawner> GameScheduleSpawners { get; set; }
+    //public virtual DbSet<GameScheduleSpawner> GameScheduleSpawners { get; set; }
 
-    public virtual DbSet<GameScoreRule> GameScoreRules { get; set; }
+    //public virtual DbSet<GameScoreRule> GameScoreRules { get; set; }
 
-    public virtual DbSet<GameStance> GameStances { get; set; }
+    //public virtual DbSet<GameStance> GameStances { get; set; }
 
-    public virtual DbSet<GemVisualEffect> GemVisualEffects { get; set; }
+    //public virtual DbSet<GemVisualEffect> GemVisualEffects { get; set; }
 
-    public virtual DbSet<Gimmick> Gimmicks { get; set; }
+    //public virtual DbSet<Gimmick> Gimmicks { get; set; }
 
-    public virtual DbSet<GrammarTag> GrammarTags { get; set; }
+    //public virtual DbSet<GrammarTag> GrammarTags { get; set; }
 
-    public virtual DbSet<GrammarTagNoneType> GrammarTagNoneTypes { get; set; }
+    //public virtual DbSet<GrammarTagNoneType> GrammarTagNoneTypes { get; set; }
 
-    public virtual DbSet<GuardTowerSetting> GuardTowerSettings { get; set; }
+    //public virtual DbSet<GuardTowerSetting> GuardTowerSettings { get; set; }
 
-    public virtual DbSet<GuardTowerStep> GuardTowerSteps { get; set; }
+    //public virtual DbSet<GuardTowerStep> GuardTowerSteps { get; set; }
 
-    public virtual DbSet<HairColor> HairColors { get; set; }
+    //public virtual DbSet<HairColor> HairColors { get; set; }
 
-    public virtual DbSet<HealEffect> HealEffects { get; set; }
+    //public virtual DbSet<HealEffect> HealEffects { get; set; }
 
-    public virtual DbSet<Holdable> Holdables { get; set; }
+    //public virtual DbSet<Holdable> Holdables { get; set; }
 
-    public virtual DbSet<Hotkey> Hotkeys { get; set; }
+    //public virtual DbSet<Hotkey> Hotkeys { get; set; }
 
-    public virtual DbSet<Housing> Housings { get; set; }
+    //public virtual DbSet<Housing> Housings { get; set; }
 
-    public virtual DbSet<HousingArea> HousingAreas { get; set; }
+    //public virtual DbSet<HousingArea> HousingAreas { get; set; }
 
-    public virtual DbSet<HousingBindingDoodad> HousingBindingDoodads { get; set; }
+    //public virtual DbSet<HousingBindingDoodad> HousingBindingDoodads { get; set; }
 
-    public virtual DbSet<HousingBuildStep> HousingBuildSteps { get; set; }
+    //public virtual DbSet<HousingBuildStep> HousingBuildSteps { get; set; }
 
-    public virtual DbSet<HousingDecoLimit> HousingDecoLimits { get; set; }
+    //public virtual DbSet<HousingDecoLimit> HousingDecoLimits { get; set; }
 
-    public virtual DbSet<HousingDecoLimitElem> HousingDecoLimitElems { get; set; }
+    //public virtual DbSet<HousingDecoLimitElem> HousingDecoLimitElems { get; set; }
 
-    public virtual DbSet<HousingDecoration> HousingDecorations { get; set; }
+    //public virtual DbSet<HousingDecoration> HousingDecorations { get; set; }
 
-    public virtual DbSet<HousingGroup> HousingGroups { get; set; }
+    //public virtual DbSet<HousingGroup> HousingGroups { get; set; }
 
-    public virtual DbSet<HousingGroupCategory> HousingGroupCategories { get; set; }
+    //public virtual DbSet<HousingGroupCategory> HousingGroupCategories { get; set; }
 
     public virtual DbSet<Icon> Icons { get; set; }
 
-    public virtual DbSet<IgnoreText> IgnoreTexts { get; set; }
+    //public virtual DbSet<IgnoreText> IgnoreTexts { get; set; }
 
-    public virtual DbSet<ImprintUccEffect> ImprintUccEffects { get; set; }
+    //public virtual DbSet<ImprintUccEffect> ImprintUccEffects { get; set; }
 
-    public virtual DbSet<ImpulseEffect> ImpulseEffects { get; set; }
+    //public virtual DbSet<ImpulseEffect> ImpulseEffects { get; set; }
 
-    public virtual DbSet<IndunAction> IndunActions { get; set; }
+    //public virtual DbSet<IndunAction> IndunActions { get; set; }
 
-    public virtual DbSet<IndunActionChangeDoodadPhase> IndunActionChangeDoodadPhases { get; set; }
+    //public virtual DbSet<IndunActionChangeDoodadPhase> IndunActionChangeDoodadPhases { get; set; }
 
-    public virtual DbSet<IndunActionRemoveTaggedNpc> IndunActionRemoveTaggedNpcs { get; set; }
+    //public virtual DbSet<IndunActionRemoveTaggedNpc> IndunActionRemoveTaggedNpcs { get; set; }
 
-    public virtual DbSet<IndunActionSetRoomCleared> IndunActionSetRoomCleareds { get; set; }
+    //public virtual DbSet<IndunActionSetRoomCleared> IndunActionSetRoomCleareds { get; set; }
 
-    public virtual DbSet<IndunEvent> IndunEvents { get; set; }
+    //public virtual DbSet<IndunEvent> IndunEvents { get; set; }
 
-    public virtual DbSet<IndunEventDoodadSpawned> IndunEventDoodadSpawneds { get; set; }
+    //public virtual DbSet<IndunEventDoodadSpawned> IndunEventDoodadSpawneds { get; set; }
 
-    public virtual DbSet<IndunEventNoAliveChInRoom> IndunEventNoAliveChInRooms { get; set; }
+    //public virtual DbSet<IndunEventNoAliveChInRoom> IndunEventNoAliveChInRooms { get; set; }
 
-    public virtual DbSet<IndunEventNpcCombatEnded> IndunEventNpcCombatEndeds { get; set; }
+    //public virtual DbSet<IndunEventNpcCombatEnded> IndunEventNpcCombatEndeds { get; set; }
 
-    public virtual DbSet<IndunEventNpcCombatStarted> IndunEventNpcCombatStarteds { get; set; }
+    //public virtual DbSet<IndunEventNpcCombatStarted> IndunEventNpcCombatStarteds { get; set; }
 
-    public virtual DbSet<IndunEventNpcKilled> IndunEventNpcKilleds { get; set; }
+    //public virtual DbSet<IndunEventNpcKilled> IndunEventNpcKilleds { get; set; }
 
-    public virtual DbSet<IndunEventNpcSpawned> IndunEventNpcSpawneds { get; set; }
+    //public virtual DbSet<IndunEventNpcSpawned> IndunEventNpcSpawneds { get; set; }
 
-    public virtual DbSet<IndunRoom> IndunRooms { get; set; }
+    //public virtual DbSet<IndunRoom> IndunRooms { get; set; }
 
-    public virtual DbSet<IndunRoomSphere> IndunRoomSpheres { get; set; }
+    //public virtual DbSet<IndunRoomSphere> IndunRoomSpheres { get; set; }
 
-    public virtual DbSet<IndunZone> IndunZones { get; set; }
+    //public virtual DbSet<IndunZone> IndunZones { get; set; }
 
-    public virtual DbSet<InstrumentSound> InstrumentSounds { get; set; }
+    //public virtual DbSet<InstrumentSound> InstrumentSounds { get; set; }
 
-    public virtual DbSet<InteractionEffect> InteractionEffects { get; set; }
+    //public virtual DbSet<InteractionEffect> InteractionEffects { get; set; }
 
     public virtual DbSet<Item> Items { get; set; }
 
-    public virtual DbSet<ItemAcceptQuest> ItemAcceptQuests { get; set; }
+    //public virtual DbSet<ItemAcceptQuest> ItemAcceptQuests { get; set; }
 
-    public virtual DbSet<ItemAccessory> ItemAccessories { get; set; }
+    //public virtual DbSet<ItemAccessory> ItemAccessories { get; set; }
 
-    public virtual DbSet<ItemArmor> ItemArmors { get; set; }
+    //public virtual DbSet<ItemArmor> ItemArmors { get; set; }
 
-    public virtual DbSet<ItemArmorAsset> ItemArmorAssets { get; set; }
+    //public virtual DbSet<ItemArmorAsset> ItemArmorAssets { get; set; }
 
-    public virtual DbSet<ItemAsset> ItemAssets { get; set; }
+    //public virtual DbSet<ItemAsset> ItemAssets { get; set; }
 
-    public virtual DbSet<ItemBackpack> ItemBackpacks { get; set; }
+    //public virtual DbSet<ItemBackpack> ItemBackpacks { get; set; }
 
-    public virtual DbSet<ItemBag> ItemBags { get; set; }
+    //public virtual DbSet<ItemBag> ItemBags { get; set; }
 
-    public virtual DbSet<ItemBodyPart> ItemBodyParts { get; set; }
+    //public virtual DbSet<ItemBodyPart> ItemBodyParts { get; set; }
 
-    public virtual DbSet<ItemCapScale> ItemCapScales { get; set; }
+    //public virtual DbSet<ItemCapScale> ItemCapScales { get; set; }
 
-    public virtual DbSet<ItemCapScaleForbid> ItemCapScaleForbids { get; set; }
+    //public virtual DbSet<ItemCapScaleForbid> ItemCapScaleForbids { get; set; }
 
     public virtual DbSet<ItemCategory> ItemCategories { get; set; }
 
-    public virtual DbSet<ItemConfig> ItemConfigs { get; set; }
+    //public virtual DbSet<ItemConfig> ItemConfigs { get; set; }
 
-    public virtual DbSet<ItemConv> ItemConvs { get; set; }
+    //public virtual DbSet<ItemConv> ItemConvs { get; set; }
 
-    public virtual DbSet<ItemConvPpack> ItemConvPpacks { get; set; }
+    //public virtual DbSet<ItemConvPpack> ItemConvPpacks { get; set; }
 
-    public virtual DbSet<ItemConvPpackMember> ItemConvPpackMembers { get; set; }
+    //public virtual DbSet<ItemConvPpackMember> ItemConvPpackMembers { get; set; }
 
-    public virtual DbSet<ItemConvProduct> ItemConvProducts { get; set; }
+    //public virtual DbSet<ItemConvProduct> ItemConvProducts { get; set; }
 
-    public virtual DbSet<ItemConvReagent> ItemConvReagents { get; set; }
+    //public virtual DbSet<ItemConvReagent> ItemConvReagents { get; set; }
 
-    public virtual DbSet<ItemConvReagentFilter> ItemConvReagentFilters { get; set; }
+    //public virtual DbSet<ItemConvReagentFilter> ItemConvReagentFilters { get; set; }
 
-    public virtual DbSet<ItemConvRpack> ItemConvRpacks { get; set; }
+    //public virtual DbSet<ItemConvRpack> ItemConvRpacks { get; set; }
 
-    public virtual DbSet<ItemConvRpackMember> ItemConvRpackMembers { get; set; }
+    //public virtual DbSet<ItemConvRpackMember> ItemConvRpackMembers { get; set; }
 
-    public virtual DbSet<ItemConvSet> ItemConvSets { get; set; }
+    //public virtual DbSet<ItemConvSet> ItemConvSets { get; set; }
 
-    public virtual DbSet<ItemDyeing> ItemDyeings { get; set; }
+    //public virtual DbSet<ItemDyeing> ItemDyeings { get; set; }
 
-    public virtual DbSet<ItemEnchantingGem> ItemEnchantingGems { get; set; }
+    //public virtual DbSet<ItemEnchantingGem> ItemEnchantingGems { get; set; }
 
     public virtual DbSet<ItemGrade> ItemGrades { get; set; }
 
-    public virtual DbSet<ItemGradeBuff> ItemGradeBuffs { get; set; }
+    //public virtual DbSet<ItemGradeBuff> ItemGradeBuffs { get; set; }
 
-    public virtual DbSet<ItemGradeDistribution> ItemGradeDistributions { get; set; }
+    //public virtual DbSet<ItemGradeDistribution> ItemGradeDistributions { get; set; }
 
-    public virtual DbSet<ItemGradeEnchantingSupport> ItemGradeEnchantingSupports { get; set; }
+    //public virtual DbSet<ItemGradeEnchantingSupport> ItemGradeEnchantingSupports { get; set; }
 
-    public virtual DbSet<ItemGradeSkill> ItemGradeSkills { get; set; }
+    //public virtual DbSet<ItemGradeSkill> ItemGradeSkills { get; set; }
 
-    public virtual DbSet<ItemGroup> ItemGroups { get; set; }
+    //public virtual DbSet<ItemGroup> ItemGroups { get; set; }
 
-    public virtual DbSet<ItemHousing> ItemHousings { get; set; }
+    //public virtual DbSet<ItemHousing> ItemHousings { get; set; }
 
-    public virtual DbSet<ItemHousingDecoration> ItemHousingDecorations { get; set; }
+    //public virtual DbSet<ItemHousingDecoration> ItemHousingDecorations { get; set; }
 
-    public virtual DbSet<ItemLookConvert> ItemLookConverts { get; set; }
+    //public virtual DbSet<ItemLookConvert> ItemLookConverts { get; set; }
 
-    public virtual DbSet<ItemLookConvertHoldable> ItemLookConvertHoldables { get; set; }
+    //public virtual DbSet<ItemLookConvertHoldable> ItemLookConvertHoldables { get; set; }
 
-    public virtual DbSet<ItemLookConvertRequiredItem> ItemLookConvertRequiredItems { get; set; }
+    //public virtual DbSet<ItemLookConvertRequiredItem> ItemLookConvertRequiredItems { get; set; }
 
-    public virtual DbSet<ItemLookConvertWearable> ItemLookConvertWearables { get; set; }
+    //public virtual DbSet<ItemLookConvertWearable> ItemLookConvertWearables { get; set; }
 
-    public virtual DbSet<ItemOpenPaper> ItemOpenPapers { get; set; }
+    //public virtual DbSet<ItemOpenPaper> ItemOpenPapers { get; set; }
 
-    public virtual DbSet<ItemProc> ItemProcs { get; set; }
+    //public virtual DbSet<ItemProc> ItemProcs { get; set; }
 
-    public virtual DbSet<ItemProcBinding> ItemProcBindings { get; set; }
+    //public virtual DbSet<ItemProcBinding> ItemProcBindings { get; set; }
 
-    public virtual DbSet<ItemRecipe> ItemRecipes { get; set; }
+    //public virtual DbSet<ItemRecipe> ItemRecipes { get; set; }
 
-    public virtual DbSet<ItemSecureException> ItemSecureExceptions { get; set; }
+    //public virtual DbSet<ItemSecureException> ItemSecureExceptions { get; set; }
 
-    public virtual DbSet<ItemSet> ItemSets { get; set; }
+    //public virtual DbSet<ItemSet> ItemSets { get; set; }
 
-    public virtual DbSet<ItemSetItem> ItemSetItems { get; set; }
+    //public virtual DbSet<ItemSetItem> ItemSetItems { get; set; }
 
-    public virtual DbSet<ItemShipyard> ItemShipyards { get; set; }
+    //public virtual DbSet<ItemShipyard> ItemShipyards { get; set; }
 
-    public virtual DbSet<ItemSlaveEquipment> ItemSlaveEquipments { get; set; }
+    //public virtual DbSet<ItemSlaveEquipment> ItemSlaveEquipments { get; set; }
 
-    public virtual DbSet<ItemSocket> ItemSockets { get; set; }
+    //public virtual DbSet<ItemSocket> ItemSockets { get; set; }
 
-    public virtual DbSet<ItemSocketChance> ItemSocketChances { get; set; }
+    //public virtual DbSet<ItemSocketChance> ItemSocketChances { get; set; }
 
-    public virtual DbSet<ItemSocketLevelLimit> ItemSocketLevelLimits { get; set; }
+    //public virtual DbSet<ItemSocketLevelLimit> ItemSocketLevelLimits { get; set; }
 
-    public virtual DbSet<ItemSocketNumLimit> ItemSocketNumLimits { get; set; }
+    //public virtual DbSet<ItemSocketNumLimit> ItemSocketNumLimits { get; set; }
 
-    public virtual DbSet<ItemSpawnDoodad> ItemSpawnDoodads { get; set; }
+    //public virtual DbSet<ItemSpawnDoodad> ItemSpawnDoodads { get; set; }
 
-    public virtual DbSet<ItemSummonMate> ItemSummonMates { get; set; }
+    //public virtual DbSet<ItemSummonMate> ItemSummonMates { get; set; }
 
-    public virtual DbSet<ItemSummonSlafe> ItemSummonSlaves { get; set; }
+    //public virtual DbSet<ItemSummonSlafe> ItemSummonSlaves { get; set; }
 
-    public virtual DbSet<ItemTool> ItemTools { get; set; }
+    //public virtual DbSet<ItemTool> ItemTools { get; set; }
 
-    public virtual DbSet<ItemWeapon> ItemWeapons { get; set; }
+    //public virtual DbSet<ItemWeapon> ItemWeapons { get; set; }
 
-    public virtual DbSet<KillNpcWithoutCorpseEffect> KillNpcWithoutCorpseEffects { get; set; }
+    //public virtual DbSet<KillNpcWithoutCorpseEffect> KillNpcWithoutCorpseEffects { get; set; }
 
     public virtual DbSet<Level> Levels { get; set; }
 
-    public virtual DbSet<LinearFunc> LinearFuncs { get; set; }
+    //public virtual DbSet<LinearFunc> LinearFuncs { get; set; }
 
     public virtual DbSet<LocalizedText> LocalizedTexts { get; set; }
 
-    public virtual DbSet<Loot> Loots { get; set; }
+    //public virtual DbSet<Loot> Loots { get; set; }
 
-    public virtual DbSet<LootActabilityGroup> LootActabilityGroups { get; set; }
+    //public virtual DbSet<LootActabilityGroup> LootActabilityGroups { get; set; }
 
-    public virtual DbSet<LootGroup> LootGroups { get; set; }
+    //public virtual DbSet<LootGroup> LootGroups { get; set; }
 
-    public virtual DbSet<LootPackDroppingNpc> LootPackDroppingNpcs { get; set; }
+    //public virtual DbSet<LootPackDroppingNpc> LootPackDroppingNpcs { get; set; }
 
-    public virtual DbSet<ManaBurnEffect> ManaBurnEffects { get; set; }
+    //public virtual DbSet<ManaBurnEffect> ManaBurnEffects { get; set; }
 
-    public virtual DbSet<ManualFunc> ManualFuncs { get; set; }
+    //public virtual DbSet<ManualFunc> ManualFuncs { get; set; }
 
-    public virtual DbSet<MateEquipPack> MateEquipPacks { get; set; }
+    //public virtual DbSet<MateEquipPack> MateEquipPacks { get; set; }
 
-    public virtual DbSet<MateEquipPackGroup> MateEquipPackGroups { get; set; }
+    //public virtual DbSet<MateEquipPackGroup> MateEquipPackGroups { get; set; }
 
-    public virtual DbSet<MateEquipPackItem> MateEquipPackItems { get; set; }
+    //public virtual DbSet<MateEquipPackItem> MateEquipPackItems { get; set; }
 
-    public virtual DbSet<MateEquipSlotPack> MateEquipSlotPacks { get; set; }
+    //public virtual DbSet<MateEquipSlotPack> MateEquipSlotPacks { get; set; }
 
-    public virtual DbSet<Merchant> Merchants { get; set; }
+    //public virtual DbSet<Merchant> Merchants { get; set; }
 
-    public virtual DbSet<MerchantGood> MerchantGoods { get; set; }
+    //public virtual DbSet<MerchantGood> MerchantGoods { get; set; }
 
-    public virtual DbSet<MerchantPack> MerchantPacks { get; set; }
+    //public virtual DbSet<MerchantPack> MerchantPacks { get; set; }
 
-    public virtual DbSet<MerchantPriceRatio> MerchantPriceRatios { get; set; }
+    //public virtual DbSet<MerchantPriceRatio> MerchantPriceRatios { get; set; }
 
-    public virtual DbSet<MineJewelRate> MineJewelRates { get; set; }
+    //public virtual DbSet<MineJewelRate> MineJewelRates { get; set; }
 
-    public virtual DbSet<Model> Models { get; set; }
+    //public virtual DbSet<Model> Models { get; set; }
 
-    public virtual DbSet<ModelAttachPointString> ModelAttachPointStrings { get; set; }
+    //public virtual DbSet<ModelAttachPointString> ModelAttachPointStrings { get; set; }
 
-    public virtual DbSet<ModelBinding> ModelBindings { get; set; }
+    //public virtual DbSet<ModelBinding> ModelBindings { get; set; }
 
-    public virtual DbSet<ModelQuestCamera> ModelQuestCameras { get; set; }
+    //public virtual DbSet<ModelQuestCamera> ModelQuestCameras { get; set; }
 
-    public virtual DbSet<Mould> Moulds { get; set; }
+    //public virtual DbSet<Mould> Moulds { get; set; }
 
-    public virtual DbSet<MouldPack> MouldPacks { get; set; }
+    //public virtual DbSet<MouldPack> MouldPacks { get; set; }
 
-    public virtual DbSet<MouldPackItem> MouldPackItems { get; set; }
+    //public virtual DbSet<MouldPackItem> MouldPackItems { get; set; }
 
-    public virtual DbSet<MountAttachedSkill> MountAttachedSkills { get; set; }
+    //public virtual DbSet<MountAttachedSkill> MountAttachedSkills { get; set; }
 
-    public virtual DbSet<MountSkill> MountSkills { get; set; }
+    //public virtual DbSet<MountSkill> MountSkills { get; set; }
 
-    public virtual DbSet<MoveToRezPointEffect> MoveToRezPointEffects { get; set; }
+    //public virtual DbSet<MoveToRezPointEffect> MoveToRezPointEffects { get; set; }
 
-    public virtual DbSet<MusicNoteLimit> MusicNoteLimits { get; set; }
+    //public virtual DbSet<MusicNoteLimit> MusicNoteLimits { get; set; }
 
-    public virtual DbSet<NpPassiveBuff> NpPassiveBuffs { get; set; }
+    //public virtual DbSet<NpPassiveBuff> NpPassiveBuffs { get; set; }
 
-    public virtual DbSet<NpSkill> NpSkills { get; set; }
+    //public virtual DbSet<NpSkill> NpSkills { get; set; }
 
-    public virtual DbSet<Npc> Npcs { get; set; }
+    //public virtual DbSet<Npc> Npcs { get; set; }
 
-    public virtual DbSet<NpcAggroLink> NpcAggroLinks { get; set; }
+    //public virtual DbSet<NpcAggroLink> NpcAggroLinks { get; set; }
 
-    public virtual DbSet<NpcAiParam> NpcAiParams { get; set; }
+    //public virtual DbSet<NpcAiParam> NpcAiParams { get; set; }
 
-    public virtual DbSet<NpcChatBubble> NpcChatBubbles { get; set; }
+    //public virtual DbSet<NpcChatBubble> NpcChatBubbles { get; set; }
 
-    public virtual DbSet<NpcControlEffect> NpcControlEffects { get; set; }
+    //public virtual DbSet<NpcControlEffect> NpcControlEffects { get; set; }
 
-    public virtual DbSet<NpcDoodadBinding> NpcDoodadBindings { get; set; }
+    //public virtual DbSet<NpcDoodadBinding> NpcDoodadBindings { get; set; }
 
-    public virtual DbSet<NpcInitialBuff> NpcInitialBuffs { get; set; }
+    //public virtual DbSet<NpcInitialBuff> NpcInitialBuffs { get; set; }
 
-    public virtual DbSet<NpcInteraction> NpcInteractions { get; set; }
+    //public virtual DbSet<NpcInteraction> NpcInteractions { get; set; }
 
-    public virtual DbSet<NpcInteractionSet> NpcInteractionSets { get; set; }
+    //public virtual DbSet<NpcInteractionSet> NpcInteractionSets { get; set; }
 
-    public virtual DbSet<NpcMountSkill> NpcMountSkills { get; set; }
+    //public virtual DbSet<NpcMountSkill> NpcMountSkills { get; set; }
 
-    public virtual DbSet<NpcNickname> NpcNicknames { get; set; }
+    //public virtual DbSet<NpcNickname> NpcNicknames { get; set; }
 
-    public virtual DbSet<NpcPosture> NpcPostures { get; set; }
+    //public virtual DbSet<NpcPosture> NpcPostures { get; set; }
 
-    public virtual DbSet<NpcPostureSet> NpcPostureSets { get; set; }
+    //public virtual DbSet<NpcPostureSet> NpcPostureSets { get; set; }
 
-    public virtual DbSet<NpcSpawner> NpcSpawners { get; set; }
+    //public virtual DbSet<NpcSpawner> NpcSpawners { get; set; }
 
-    public virtual DbSet<NpcSpawnerDespawnEffect> NpcSpawnerDespawnEffects { get; set; }
+    //public virtual DbSet<NpcSpawnerDespawnEffect> NpcSpawnerDespawnEffects { get; set; }
 
-    public virtual DbSet<NpcSpawnerNpc> NpcSpawnerNpcs { get; set; }
+    //public virtual DbSet<NpcSpawnerNpc> NpcSpawnerNpcs { get; set; }
 
-    public virtual DbSet<NpcSpawnerSpawnEffect> NpcSpawnerSpawnEffects { get; set; }
+    //public virtual DbSet<NpcSpawnerSpawnEffect> NpcSpawnerSpawnEffects { get; set; }
 
-    public virtual DbSet<OpenPortalEffect> OpenPortalEffects { get; set; }
+    //public virtual DbSet<OpenPortalEffect> OpenPortalEffects { get; set; }
 
-    public virtual DbSet<OpenPortalInlandReagent> OpenPortalInlandReagents { get; set; }
+    //public virtual DbSet<OpenPortalInlandReagent> OpenPortalInlandReagents { get; set; }
 
-    public virtual DbSet<OpenPortalOutlandReagent> OpenPortalOutlandReagents { get; set; }
+    //public virtual DbSet<OpenPortalOutlandReagent> OpenPortalOutlandReagents { get; set; }
 
-    public virtual DbSet<PassiveBuff> PassiveBuffs { get; set; }
+    //public virtual DbSet<PassiveBuff> PassiveBuffs { get; set; }
 
-    public virtual DbSet<PcbangBuff> PcbangBuffs { get; set; }
+    //public virtual DbSet<PcbangBuff> PcbangBuffs { get; set; }
 
-    public virtual DbSet<PhysicalEnchantAbility> PhysicalEnchantAbilities { get; set; }
+    //public virtual DbSet<PhysicalEnchantAbility> PhysicalEnchantAbilities { get; set; }
 
-    public virtual DbSet<PhysicalExplosionEffect> PhysicalExplosionEffects { get; set; }
+    //public virtual DbSet<PhysicalExplosionEffect> PhysicalExplosionEffects { get; set; }
 
-    public virtual DbSet<PlayLogEffect> PlayLogEffects { get; set; }
+    //public virtual DbSet<PlayLogEffect> PlayLogEffects { get; set; }
 
-    public virtual DbSet<Plot> Plots { get; set; }
+    //public virtual DbSet<Plot> Plots { get; set; }
 
-    public virtual DbSet<PlotAoeCondition> PlotAoeConditions { get; set; }
+    //public virtual DbSet<PlotAoeCondition> PlotAoeConditions { get; set; }
 
-    public virtual DbSet<PlotCondition> PlotConditions { get; set; }
+    //public virtual DbSet<PlotCondition> PlotConditions { get; set; }
 
-    public virtual DbSet<PlotEffect> PlotEffects { get; set; }
+    //public virtual DbSet<PlotEffect> PlotEffects { get; set; }
 
-    public virtual DbSet<PlotEvent> PlotEvents { get; set; }
+    //public virtual DbSet<PlotEvent> PlotEvents { get; set; }
 
-    public virtual DbSet<PlotEventCondition> PlotEventConditions { get; set; }
+    //public virtual DbSet<PlotEventCondition> PlotEventConditions { get; set; }
 
-    public virtual DbSet<PlotNextEvent> PlotNextEvents { get; set; }
+    //public virtual DbSet<PlotNextEvent> PlotNextEvents { get; set; }
 
-    public virtual DbSet<PreCompletedAchievement> PreCompletedAchievements { get; set; }
+    //public virtual DbSet<PreCompletedAchievement> PreCompletedAchievements { get; set; }
 
-    public virtual DbSet<PrefabElement> PrefabElements { get; set; }
+    //public virtual DbSet<PrefabElement> PrefabElements { get; set; }
 
-    public virtual DbSet<PrefabModel> PrefabModels { get; set; }
+    //public virtual DbSet<PrefabModel> PrefabModels { get; set; }
 
-    public virtual DbSet<PremiumBenefit> PremiumBenefits { get; set; }
+    //public virtual DbSet<PremiumBenefit> PremiumBenefits { get; set; }
 
-    public virtual DbSet<PremiumConfig> PremiumConfigs { get; set; }
+    //public virtual DbSet<PremiumConfig> PremiumConfigs { get; set; }
 
-    public virtual DbSet<PremiumGrade> PremiumGrades { get; set; }
+    //public virtual DbSet<PremiumGrade> PremiumGrades { get; set; }
 
-    public virtual DbSet<PremiumPoint> PremiumPoints { get; set; }
+    //public virtual DbSet<PremiumPoint> PremiumPoints { get; set; }
 
-    public virtual DbSet<PriestBuff> PriestBuffs { get; set; }
+    //public virtual DbSet<PriestBuff> PriestBuffs { get; set; }
 
-    public virtual DbSet<Projectile> Projectiles { get; set; }
+    //public virtual DbSet<Projectile> Projectiles { get; set; }
 
-    public virtual DbSet<PutDownBackpackEffect> PutDownBackpackEffects { get; set; }
+    //public virtual DbSet<PutDownBackpackEffect> PutDownBackpackEffects { get; set; }
 
-    public virtual DbSet<QuestAct> QuestActs { get; set; }
+    //public virtual DbSet<QuestAct> QuestActs { get; set; }
 
-    public virtual DbSet<QuestActCheckCompleteComponent> QuestActCheckCompleteComponents { get; set; }
+    //public virtual DbSet<QuestActCheckCompleteComponent> QuestActCheckCompleteComponents { get; set; }
 
-    public virtual DbSet<QuestActCheckDistance> QuestActCheckDistances { get; set; }
+    //public virtual DbSet<QuestActCheckDistance> QuestActCheckDistances { get; set; }
 
-    public virtual DbSet<QuestActCheckGuard> QuestActCheckGuards { get; set; }
+    //public virtual DbSet<QuestActCheckGuard> QuestActCheckGuards { get; set; }
 
-    public virtual DbSet<QuestActCheckSphere> QuestActCheckSpheres { get; set; }
+    //public virtual DbSet<QuestActCheckSphere> QuestActCheckSpheres { get; set; }
 
-    public virtual DbSet<QuestActCheckTimer> QuestActCheckTimers { get; set; }
+    //public virtual DbSet<QuestActCheckTimer> QuestActCheckTimers { get; set; }
 
-    public virtual DbSet<QuestActConAcceptBuff> QuestActConAcceptBuffs { get; set; }
+    //public virtual DbSet<QuestActConAcceptBuff> QuestActConAcceptBuffs { get; set; }
 
-    public virtual DbSet<QuestActConAcceptComponent> QuestActConAcceptComponents { get; set; }
+    //public virtual DbSet<QuestActConAcceptComponent> QuestActConAcceptComponents { get; set; }
 
-    public virtual DbSet<QuestActConAcceptDoodad> QuestActConAcceptDoodads { get; set; }
+    //public virtual DbSet<QuestActConAcceptDoodad> QuestActConAcceptDoodads { get; set; }
 
-    public virtual DbSet<QuestActConAcceptItem> QuestActConAcceptItems { get; set; }
+    //public virtual DbSet<QuestActConAcceptItem> QuestActConAcceptItems { get; set; }
 
-    public virtual DbSet<QuestActConAcceptItemEquip> QuestActConAcceptItemEquips { get; set; }
+    //public virtual DbSet<QuestActConAcceptItemEquip> QuestActConAcceptItemEquips { get; set; }
 
-    public virtual DbSet<QuestActConAcceptItemGain> QuestActConAcceptItemGains { get; set; }
+    //public virtual DbSet<QuestActConAcceptItemGain> QuestActConAcceptItemGains { get; set; }
 
-    public virtual DbSet<QuestActConAcceptLevelUp> QuestActConAcceptLevelUps { get; set; }
+    //public virtual DbSet<QuestActConAcceptLevelUp> QuestActConAcceptLevelUps { get; set; }
 
-    public virtual DbSet<QuestActConAcceptNpc> QuestActConAcceptNpcs { get; set; }
+    //public virtual DbSet<QuestActConAcceptNpc> QuestActConAcceptNpcs { get; set; }
 
-    public virtual DbSet<QuestActConAcceptNpcEmotion> QuestActConAcceptNpcEmotions { get; set; }
+    //public virtual DbSet<QuestActConAcceptNpcEmotion> QuestActConAcceptNpcEmotions { get; set; }
 
-    public virtual DbSet<QuestActConAcceptNpcKill> QuestActConAcceptNpcKills { get; set; }
+    //public virtual DbSet<QuestActConAcceptNpcKill> QuestActConAcceptNpcKills { get; set; }
 
-    public virtual DbSet<QuestActConAcceptSkill> QuestActConAcceptSkills { get; set; }
+    //public virtual DbSet<QuestActConAcceptSkill> QuestActConAcceptSkills { get; set; }
 
-    public virtual DbSet<QuestActConAcceptSphere> QuestActConAcceptSpheres { get; set; }
+    //public virtual DbSet<QuestActConAcceptSphere> QuestActConAcceptSpheres { get; set; }
 
-    public virtual DbSet<QuestActConAutoComplete> QuestActConAutoCompletes { get; set; }
+    //public virtual DbSet<QuestActConAutoComplete> QuestActConAutoCompletes { get; set; }
 
-    public virtual DbSet<QuestActConFail> QuestActConFails { get; set; }
+    //public virtual DbSet<QuestActConFail> QuestActConFails { get; set; }
 
-    public virtual DbSet<QuestActConReportDoodad> QuestActConReportDoodads { get; set; }
+    //public virtual DbSet<QuestActConReportDoodad> QuestActConReportDoodads { get; set; }
 
-    public virtual DbSet<QuestActConReportJournal> QuestActConReportJournals { get; set; }
+    //public virtual DbSet<QuestActConReportJournal> QuestActConReportJournals { get; set; }
 
-    public virtual DbSet<QuestActConReportNpc> QuestActConReportNpcs { get; set; }
+    //public virtual DbSet<QuestActConReportNpc> QuestActConReportNpcs { get; set; }
 
-    public virtual DbSet<QuestActEtcItemObtain> QuestActEtcItemObtains { get; set; }
+    //public virtual DbSet<QuestActEtcItemObtain> QuestActEtcItemObtains { get; set; }
 
-    public virtual DbSet<QuestActObjAbilityLevel> QuestActObjAbilityLevels { get; set; }
+    //public virtual DbSet<QuestActObjAbilityLevel> QuestActObjAbilityLevels { get; set; }
 
-    public virtual DbSet<QuestActObjAggro> QuestActObjAggros { get; set; }
+    //public virtual DbSet<QuestActObjAggro> QuestActObjAggros { get; set; }
 
-    public virtual DbSet<QuestActObjAlias> QuestActObjAliases { get; set; }
+    //public virtual DbSet<QuestActObjAlias> QuestActObjAliases { get; set; }
 
-    public virtual DbSet<QuestActObjCinema> QuestActObjCinemas { get; set; }
+    //public virtual DbSet<QuestActObjCinema> QuestActObjCinemas { get; set; }
 
-    public virtual DbSet<QuestActObjCompleteQuest> QuestActObjCompleteQuests { get; set; }
+    //public virtual DbSet<QuestActObjCompleteQuest> QuestActObjCompleteQuests { get; set; }
 
-    public virtual DbSet<QuestActObjCondition> QuestActObjConditions { get; set; }
+    //public virtual DbSet<QuestActObjCondition> QuestActObjConditions { get; set; }
 
-    public virtual DbSet<QuestActObjCraft> QuestActObjCrafts { get; set; }
+    //public virtual DbSet<QuestActObjCraft> QuestActObjCrafts { get; set; }
 
-    public virtual DbSet<QuestActObjDistance> QuestActObjDistances { get; set; }
+    //public virtual DbSet<QuestActObjDistance> QuestActObjDistances { get; set; }
 
-    public virtual DbSet<QuestActObjDoodadPhaseCheck> QuestActObjDoodadPhaseChecks { get; set; }
+    //public virtual DbSet<QuestActObjDoodadPhaseCheck> QuestActObjDoodadPhaseChecks { get; set; }
 
-    public virtual DbSet<QuestActObjEffectFire> QuestActObjEffectFires { get; set; }
+    //public virtual DbSet<QuestActObjEffectFire> QuestActObjEffectFires { get; set; }
 
-    public virtual DbSet<QuestActObjExpressFire> QuestActObjExpressFires { get; set; }
+    //public virtual DbSet<QuestActObjExpressFire> QuestActObjExpressFires { get; set; }
 
-    public virtual DbSet<QuestActObjInteraction> QuestActObjInteractions { get; set; }
+    //public virtual DbSet<QuestActObjInteraction> QuestActObjInteractions { get; set; }
 
-    public virtual DbSet<QuestActObjItemGather> QuestActObjItemGathers { get; set; }
+    //public virtual DbSet<QuestActObjItemGather> QuestActObjItemGathers { get; set; }
 
-    public virtual DbSet<QuestActObjItemGroupGather> QuestActObjItemGroupGathers { get; set; }
+    //public virtual DbSet<QuestActObjItemGroupGather> QuestActObjItemGroupGathers { get; set; }
 
-    public virtual DbSet<QuestActObjItemGroupUse> QuestActObjItemGroupUses { get; set; }
+    //public virtual DbSet<QuestActObjItemGroupUse> QuestActObjItemGroupUses { get; set; }
 
-    public virtual DbSet<QuestActObjItemUse> QuestActObjItemUses { get; set; }
+    //public virtual DbSet<QuestActObjItemUse> QuestActObjItemUses { get; set; }
 
-    public virtual DbSet<QuestActObjLevel> QuestActObjLevels { get; set; }
+    //public virtual DbSet<QuestActObjLevel> QuestActObjLevels { get; set; }
 
-    public virtual DbSet<QuestActObjMateLevel> QuestActObjMateLevels { get; set; }
+    //public virtual DbSet<QuestActObjMateLevel> QuestActObjMateLevels { get; set; }
 
-    public virtual DbSet<QuestActObjMonsterGroupHunt> QuestActObjMonsterGroupHunts { get; set; }
+    //public virtual DbSet<QuestActObjMonsterGroupHunt> QuestActObjMonsterGroupHunts { get; set; }
 
-    public virtual DbSet<QuestActObjMonsterHunt> QuestActObjMonsterHunts { get; set; }
+    //public virtual DbSet<QuestActObjMonsterHunt> QuestActObjMonsterHunts { get; set; }
 
-    public virtual DbSet<QuestActObjSendMail> QuestActObjSendMails { get; set; }
+    //public virtual DbSet<QuestActObjSendMail> QuestActObjSendMails { get; set; }
 
-    public virtual DbSet<QuestActObjSphere> QuestActObjSpheres { get; set; }
+    //public virtual DbSet<QuestActObjSphere> QuestActObjSpheres { get; set; }
 
-    public virtual DbSet<QuestActObjTalk> QuestActObjTalks { get; set; }
+    //public virtual DbSet<QuestActObjTalk> QuestActObjTalks { get; set; }
 
-    public virtual DbSet<QuestActObjTalkNpcGroup> QuestActObjTalkNpcGroups { get; set; }
+    //public virtual DbSet<QuestActObjTalkNpcGroup> QuestActObjTalkNpcGroups { get; set; }
 
-    public virtual DbSet<QuestActObjZoneKill> QuestActObjZoneKills { get; set; }
+    //public virtual DbSet<QuestActObjZoneKill> QuestActObjZoneKills { get; set; }
 
-    public virtual DbSet<QuestActObjZoneMonsterHunt> QuestActObjZoneMonsterHunts { get; set; }
+    //public virtual DbSet<QuestActObjZoneMonsterHunt> QuestActObjZoneMonsterHunts { get; set; }
 
-    public virtual DbSet<QuestActObjZoneNpcTalk> QuestActObjZoneNpcTalks { get; set; }
+    //public virtual DbSet<QuestActObjZoneNpcTalk> QuestActObjZoneNpcTalks { get; set; }
 
-    public virtual DbSet<QuestActObjZoneQuestComplete> QuestActObjZoneQuestCompletes { get; set; }
+    //public virtual DbSet<QuestActObjZoneQuestComplete> QuestActObjZoneQuestCompletes { get; set; }
 
-    public virtual DbSet<QuestActSupplyAaPoint> QuestActSupplyAaPoints { get; set; }
+    //public virtual DbSet<QuestActSupplyAaPoint> QuestActSupplyAaPoints { get; set; }
 
-    public virtual DbSet<QuestActSupplyAppellation> QuestActSupplyAppellations { get; set; }
+    //public virtual DbSet<QuestActSupplyAppellation> QuestActSupplyAppellations { get; set; }
 
-    public virtual DbSet<QuestActSupplyCopper> QuestActSupplyCoppers { get; set; }
+    //public virtual DbSet<QuestActSupplyCopper> QuestActSupplyCoppers { get; set; }
 
-    public virtual DbSet<QuestActSupplyCrimePoint> QuestActSupplyCrimePoints { get; set; }
+    //public virtual DbSet<QuestActSupplyCrimePoint> QuestActSupplyCrimePoints { get; set; }
 
-    public virtual DbSet<QuestActSupplyExp> QuestActSupplyExps { get; set; }
+    //public virtual DbSet<QuestActSupplyExp> QuestActSupplyExps { get; set; }
 
-    public virtual DbSet<QuestActSupplyHonorPoint> QuestActSupplyHonorPoints { get; set; }
+    //public virtual DbSet<QuestActSupplyHonorPoint> QuestActSupplyHonorPoints { get; set; }
 
-    public virtual DbSet<QuestActSupplyInteraction> QuestActSupplyInteractions { get; set; }
+    //public virtual DbSet<QuestActSupplyInteraction> QuestActSupplyInteractions { get; set; }
 
-    public virtual DbSet<QuestActSupplyItem> QuestActSupplyItems { get; set; }
+    //public virtual DbSet<QuestActSupplyItem> QuestActSupplyItems { get; set; }
 
-    public virtual DbSet<QuestActSupplyJuryPoint> QuestActSupplyJuryPoints { get; set; }
+    //public virtual DbSet<QuestActSupplyJuryPoint> QuestActSupplyJuryPoints { get; set; }
 
-    public virtual DbSet<QuestActSupplyLivingPoint> QuestActSupplyLivingPoints { get; set; }
+    //public virtual DbSet<QuestActSupplyLivingPoint> QuestActSupplyLivingPoints { get; set; }
 
-    public virtual DbSet<QuestActSupplyLp> QuestActSupplyLps { get; set; }
+    //public virtual DbSet<QuestActSupplyLp> QuestActSupplyLps { get; set; }
 
-    public virtual DbSet<QuestActSupplyRemoveItem> QuestActSupplyRemoveItems { get; set; }
+    //public virtual DbSet<QuestActSupplyRemoveItem> QuestActSupplyRemoveItems { get; set; }
 
-    public virtual DbSet<QuestActSupplySelectiveItem> QuestActSupplySelectiveItems { get; set; }
+    //public virtual DbSet<QuestActSupplySelectiveItem> QuestActSupplySelectiveItems { get; set; }
 
-    public virtual DbSet<QuestActSupplySkill> QuestActSupplySkills { get; set; }
+    //public virtual DbSet<QuestActSupplySkill> QuestActSupplySkills { get; set; }
 
-    public virtual DbSet<QuestCamera> QuestCameras { get; set; }
+    //public virtual DbSet<QuestCamera> QuestCameras { get; set; }
 
-    public virtual DbSet<QuestCategory> QuestCategories { get; set; }
+    //public virtual DbSet<QuestCategory> QuestCategories { get; set; }
 
-    public virtual DbSet<QuestChatBubble> QuestChatBubbles { get; set; }
+    //public virtual DbSet<QuestChatBubble> QuestChatBubbles { get; set; }
 
-    public virtual DbSet<QuestComponent> QuestComponents { get; set; }
+    //public virtual DbSet<QuestComponent> QuestComponents { get; set; }
 
-    public virtual DbSet<QuestComponentText> QuestComponentTexts { get; set; }
+    //public virtual DbSet<QuestComponentText> QuestComponentTexts { get; set; }
 
-    public virtual DbSet<QuestContext> QuestContexts { get; set; }
+    //public virtual DbSet<QuestContext> QuestContexts { get; set; }
 
-    public virtual DbSet<QuestContextText> QuestContextTexts { get; set; }
+    //public virtual DbSet<QuestContextText> QuestContextTexts { get; set; }
 
-    public virtual DbSet<QuestItemGroup> QuestItemGroups { get; set; }
+    //public virtual DbSet<QuestItemGroup> QuestItemGroups { get; set; }
 
-    public virtual DbSet<QuestItemGroupItem> QuestItemGroupItems { get; set; }
+    //public virtual DbSet<QuestItemGroupItem> QuestItemGroupItems { get; set; }
 
-    public virtual DbSet<QuestMail> QuestMails { get; set; }
+    //public virtual DbSet<QuestMail> QuestMails { get; set; }
 
-    public virtual DbSet<QuestMailAttachment> QuestMailAttachments { get; set; }
+    //public virtual DbSet<QuestMailAttachment> QuestMailAttachments { get; set; }
 
-    public virtual DbSet<QuestMailAttachmentItem> QuestMailAttachmentItems { get; set; }
+    //public virtual DbSet<QuestMailAttachmentItem> QuestMailAttachmentItems { get; set; }
 
-    public virtual DbSet<QuestMailSend> QuestMailSends { get; set; }
+    //public virtual DbSet<QuestMailSend> QuestMailSends { get; set; }
 
-    public virtual DbSet<QuestMonsterGroup> QuestMonsterGroups { get; set; }
+    //public virtual DbSet<QuestMonsterGroup> QuestMonsterGroups { get; set; }
 
-    public virtual DbSet<QuestMonsterNpc> QuestMonsterNpcs { get; set; }
+    //public virtual DbSet<QuestMonsterNpc> QuestMonsterNpcs { get; set; }
 
-    public virtual DbSet<QuestName> QuestNames { get; set; }
+    //public virtual DbSet<QuestName> QuestNames { get; set; }
 
-    public virtual DbSet<QuestSupply> QuestSupplies { get; set; }
+    //public virtual DbSet<QuestSupply> QuestSupplies { get; set; }
 
-    public virtual DbSet<QuestTask> QuestTasks { get; set; }
+    //public virtual DbSet<QuestTask> QuestTasks { get; set; }
 
-    public virtual DbSet<QuestTaskQuest> QuestTaskQuests { get; set; }
+    //public virtual DbSet<QuestTaskQuest> QuestTaskQuests { get; set; }
 
-    public virtual DbSet<RaceTrack> RaceTracks { get; set; }
+    //public virtual DbSet<RaceTrack> RaceTracks { get; set; }
 
-    public virtual DbSet<RaceTrackShape> RaceTrackShapes { get; set; }
+    //public virtual DbSet<RaceTrackShape> RaceTrackShapes { get; set; }
 
-    public virtual DbSet<Rank> Ranks { get; set; }
+    //public virtual DbSet<Rank> Ranks { get; set; }
 
-    public virtual DbSet<RankReward> RankRewards { get; set; }
+    //public virtual DbSet<RankReward> RankRewards { get; set; }
 
-    public virtual DbSet<RankRewardLink> RankRewardLinks { get; set; }
+    //public virtual DbSet<RankRewardLink> RankRewardLinks { get; set; }
 
-    public virtual DbSet<RankScope> RankScopes { get; set; }
+    //public virtual DbSet<RankScope> RankScopes { get; set; }
 
-    public virtual DbSet<RankScopeLink> RankScopeLinks { get; set; }
+    //public virtual DbSet<RankScopeLink> RankScopeLinks { get; set; }
 
-    public virtual DbSet<RecoverExpEffect> RecoverExpEffects { get; set; }
+    //public virtual DbSet<RecoverExpEffect> RecoverExpEffects { get; set; }
 
-    public virtual DbSet<RepairSlaveEffect> RepairSlaveEffects { get; set; }
+    //public virtual DbSet<RepairSlaveEffect> RepairSlaveEffects { get; set; }
 
-    public virtual DbSet<RepairableSlafe> RepairableSlaves { get; set; }
+    //public virtual DbSet<RepairableSlafe> RepairableSlaves { get; set; }
 
-    public virtual DbSet<ReplaceChat> ReplaceChats { get; set; }
+    //public virtual DbSet<ReplaceChat> ReplaceChats { get; set; }
 
-    public virtual DbSet<ReplaceChatKey> ReplaceChatKeys { get; set; }
+    //public virtual DbSet<ReplaceChatKey> ReplaceChatKeys { get; set; }
 
-    public virtual DbSet<ReplaceChatText> ReplaceChatTexts { get; set; }
+    //public virtual DbSet<ReplaceChatText> ReplaceChatTexts { get; set; }
 
-    public virtual DbSet<ReportCrimeEffect> ReportCrimeEffects { get; set; }
+    //public virtual DbSet<ReportCrimeEffect> ReportCrimeEffects { get; set; }
 
-    public virtual DbSet<ResetAoeDiminishingEffect> ResetAoeDiminishingEffects { get; set; }
+    //public virtual DbSet<ResetAoeDiminishingEffect> ResetAoeDiminishingEffects { get; set; }
 
-    public virtual DbSet<RestoreManaEffect> RestoreManaEffects { get; set; }
+    //public virtual DbSet<RestoreManaEffect> RestoreManaEffects { get; set; }
 
-    public virtual DbSet<ResurrectionWaitingTime> ResurrectionWaitingTimes { get; set; }
+    //public virtual DbSet<ResurrectionWaitingTime> ResurrectionWaitingTimes { get; set; }
 
-    public virtual DbSet<ReturnPoint> ReturnPoints { get; set; }
+    //public virtual DbSet<ReturnPoint> ReturnPoints { get; set; }
 
-    public virtual DbSet<ScheduleItem> ScheduleItems { get; set; }
+    //public virtual DbSet<ScheduleItem> ScheduleItems { get; set; }
 
-    public virtual DbSet<SchemaMigration> SchemaMigrations { get; set; }
+    //public virtual DbSet<SchemaMigration> SchemaMigrations { get; set; }
 
-    public virtual DbSet<ScopedFEffect> ScopedFEffects { get; set; }
+    //public virtual DbSet<ScopedFEffect> ScopedFEffects { get; set; }
 
-    public virtual DbSet<ShipModel> ShipModels { get; set; }
+    //public virtual DbSet<ShipModel> ShipModels { get; set; }
 
-    public virtual DbSet<Shipyard> Shipyards { get; set; }
+    //public virtual DbSet<Shipyard> Shipyards { get; set; }
 
-    public virtual DbSet<ShipyardReward> ShipyardRewards { get; set; }
+    //public virtual DbSet<ShipyardReward> ShipyardRewards { get; set; }
 
-    public virtual DbSet<ShipyardStep> ShipyardSteps { get; set; }
+    //public virtual DbSet<ShipyardStep> ShipyardSteps { get; set; }
 
-    public virtual DbSet<SiegeItem> SiegeItems { get; set; }
+    //public virtual DbSet<SiegeItem> SiegeItems { get; set; }
 
-    public virtual DbSet<SiegePlan> SiegePlans { get; set; }
+    //public virtual DbSet<SiegePlan> SiegePlans { get; set; }
 
-    public virtual DbSet<SiegeSetting> SiegeSettings { get; set; }
+    //public virtual DbSet<SiegeSetting> SiegeSettings { get; set; }
 
-    public virtual DbSet<SiegeTicketOffensePrice> SiegeTicketOffensePrices { get; set; }
+    //public virtual DbSet<SiegeTicketOffensePrice> SiegeTicketOffensePrices { get; set; }
 
-    public virtual DbSet<SiegeZone> SiegeZones { get; set; }
+    //public virtual DbSet<SiegeZone> SiegeZones { get; set; }
 
-    public virtual DbSet<Skill> Skills { get; set; }
+    //public virtual DbSet<Skill> Skills { get; set; }
 
-    public virtual DbSet<SkillController> SkillControllers { get; set; }
+    //public virtual DbSet<SkillController> SkillControllers { get; set; }
 
-    public virtual DbSet<SkillEffect> SkillEffects { get; set; }
+    //public virtual DbSet<SkillEffect> SkillEffects { get; set; }
 
-    public virtual DbSet<SkillModifier> SkillModifiers { get; set; }
+    //public virtual DbSet<SkillModifier> SkillModifiers { get; set; }
 
-    public virtual DbSet<SkillProduct> SkillProducts { get; set; }
+    //public virtual DbSet<SkillProduct> SkillProducts { get; set; }
 
-    public virtual DbSet<SkillReagent> SkillReagents { get; set; }
+    //public virtual DbSet<SkillReagent> SkillReagents { get; set; }
 
-    public virtual DbSet<SkillReq> SkillReqs { get; set; }
+    //public virtual DbSet<SkillReq> SkillReqs { get; set; }
 
-    public virtual DbSet<SkillReqSkill> SkillReqSkills { get; set; }
+    //public virtual DbSet<SkillReqSkill> SkillReqSkills { get; set; }
 
-    public virtual DbSet<SkillReqSkillTag> SkillReqSkillTags { get; set; }
+    //public virtual DbSet<SkillReqSkillTag> SkillReqSkillTags { get; set; }
 
-    public virtual DbSet<SkillSynergyIcon> SkillSynergyIcons { get; set; }
+    //public virtual DbSet<SkillSynergyIcon> SkillSynergyIcons { get; set; }
 
-    public virtual DbSet<SkillVisualGroup> SkillVisualGroups { get; set; }
+    //public virtual DbSet<SkillVisualGroup> SkillVisualGroups { get; set; }
 
-    public virtual DbSet<SkinColor> SkinColors { get; set; }
+    //public virtual DbSet<SkinColor> SkinColors { get; set; }
 
-    public virtual DbSet<Slafe> Slaves { get; set; }
+    //public virtual DbSet<Slafe> Slaves { get; set; }
 
-    public virtual DbSet<SlashCommand> SlashCommands { get; set; }
+    //public virtual DbSet<SlashCommand> SlashCommands { get; set; }
 
-    public virtual DbSet<SlashFunction> SlashFunctions { get; set; }
+    //public virtual DbSet<SlashFunction> SlashFunctions { get; set; }
 
-    public virtual DbSet<SlaveBinding> SlaveBindings { get; set; }
+    //public virtual DbSet<SlaveBinding> SlaveBindings { get; set; }
 
-    public virtual DbSet<SlaveCustomizing> SlaveCustomizings { get; set; }
+    //public virtual DbSet<SlaveCustomizing> SlaveCustomizings { get; set; }
 
-    public virtual DbSet<SlaveCustomizingEquipSlot> SlaveCustomizingEquipSlots { get; set; }
+    //public virtual DbSet<SlaveCustomizingEquipSlot> SlaveCustomizingEquipSlots { get; set; }
 
-    public virtual DbSet<SlaveDoodadBinding> SlaveDoodadBindings { get; set; }
+    //public virtual DbSet<SlaveDoodadBinding> SlaveDoodadBindings { get; set; }
 
-    public virtual DbSet<SlaveDropDoodad> SlaveDropDoodads { get; set; }
+    //public virtual DbSet<SlaveDropDoodad> SlaveDropDoodads { get; set; }
 
-    public virtual DbSet<SlaveEquipPack> SlaveEquipPacks { get; set; }
+    //public virtual DbSet<SlaveEquipPack> SlaveEquipPacks { get; set; }
 
-    public virtual DbSet<SlaveEquipSlot> SlaveEquipSlots { get; set; }
+    //public virtual DbSet<SlaveEquipSlot> SlaveEquipSlots { get; set; }
 
-    public virtual DbSet<SlaveEquipmentEquipSlotPack> SlaveEquipmentEquipSlotPacks { get; set; }
+    //public virtual DbSet<SlaveEquipmentEquipSlotPack> SlaveEquipmentEquipSlotPacks { get; set; }
 
-    public virtual DbSet<SlaveHealingPointDoodad> SlaveHealingPointDoodads { get; set; }
+    //public virtual DbSet<SlaveHealingPointDoodad> SlaveHealingPointDoodads { get; set; }
 
-    public virtual DbSet<SlaveInitialBuff> SlaveInitialBuffs { get; set; }
+    //public virtual DbSet<SlaveInitialBuff> SlaveInitialBuffs { get; set; }
 
-    public virtual DbSet<SlaveInitialItem> SlaveInitialItems { get; set; }
+    //public virtual DbSet<SlaveInitialItem> SlaveInitialItems { get; set; }
 
-    public virtual DbSet<SlaveInitialItemPack> SlaveInitialItemPacks { get; set; }
+    //public virtual DbSet<SlaveInitialItemPack> SlaveInitialItemPacks { get; set; }
 
-    public virtual DbSet<SlaveMountSkill> SlaveMountSkills { get; set; }
+    //public virtual DbSet<SlaveMountSkill> SlaveMountSkills { get; set; }
 
-    public virtual DbSet<SlavePassiveBuff> SlavePassiveBuffs { get; set; }
+    //public virtual DbSet<SlavePassiveBuff> SlavePassiveBuffs { get; set; }
 
-    public virtual DbSet<Sound> Sounds { get; set; }
+    //public virtual DbSet<Sound> Sounds { get; set; }
 
-    public virtual DbSet<SoundPack> SoundPacks { get; set; }
+    //public virtual DbSet<SoundPack> SoundPacks { get; set; }
 
-    public virtual DbSet<SoundPackItem> SoundPackItems { get; set; }
+    //public virtual DbSet<SoundPackItem> SoundPackItems { get; set; }
 
-    public virtual DbSet<SpawnEffect> SpawnEffects { get; set; }
+    //public virtual DbSet<SpawnEffect> SpawnEffects { get; set; }
 
-    public virtual DbSet<SpawnFishEffect> SpawnFishEffects { get; set; }
+    //public virtual DbSet<SpawnFishEffect> SpawnFishEffects { get; set; }
 
-    public virtual DbSet<SpawnGimmickEffect> SpawnGimmickEffects { get; set; }
+    //public virtual DbSet<SpawnGimmickEffect> SpawnGimmickEffects { get; set; }
 
-    public virtual DbSet<SpecialEffect> SpecialEffects { get; set; }
+    //public virtual DbSet<SpecialEffect> SpecialEffects { get; set; }
 
-    public virtual DbSet<Specialty> Specialties { get; set; }
+    //public virtual DbSet<Specialty> Specialties { get; set; }
 
-    public virtual DbSet<SpecialtyBundle> SpecialtyBundles { get; set; }
+    //public virtual DbSet<SpecialtyBundle> SpecialtyBundles { get; set; }
 
-    public virtual DbSet<SpecialtyBundleItem> SpecialtyBundleItems { get; set; }
+    //public virtual DbSet<SpecialtyBundleItem> SpecialtyBundleItems { get; set; }
 
-    public virtual DbSet<SpecialtyNpc> SpecialtyNpcs { get; set; }
+    //public virtual DbSet<SpecialtyNpc> SpecialtyNpcs { get; set; }
 
-    public virtual DbSet<Sphere> Spheres { get; set; }
+    //public virtual DbSet<Sphere> Spheres { get; set; }
 
-    public virtual DbSet<SphereAcceptQuest> SphereAcceptQuests { get; set; }
+    //public virtual DbSet<SphereAcceptQuest> SphereAcceptQuests { get; set; }
 
-    public virtual DbSet<SphereAcceptQuestQuest> SphereAcceptQuestQuests { get; set; }
+    //public virtual DbSet<SphereAcceptQuestQuest> SphereAcceptQuestQuests { get; set; }
 
-    public virtual DbSet<SphereBubble> SphereBubbles { get; set; }
+    //public virtual DbSet<SphereBubble> SphereBubbles { get; set; }
 
-    public virtual DbSet<SphereBuff> SphereBuffs { get; set; }
+    //public virtual DbSet<SphereBuff> SphereBuffs { get; set; }
 
-    public virtual DbSet<SphereChatBubble> SphereChatBubbles { get; set; }
+    //public virtual DbSet<SphereChatBubble> SphereChatBubbles { get; set; }
 
-    public virtual DbSet<SphereDoodadInteract> SphereDoodadInteracts { get; set; }
+    //public virtual DbSet<SphereDoodadInteract> SphereDoodadInteracts { get; set; }
 
-    public virtual DbSet<SphereQuest> SphereQuests { get; set; }
+    //public virtual DbSet<SphereQuest> SphereQuests { get; set; }
 
-    public virtual DbSet<SphereQuestMail> SphereQuestMails { get; set; }
+    //public virtual DbSet<SphereQuestMail> SphereQuestMails { get; set; }
 
-    public virtual DbSet<SphereSkill> SphereSkills { get; set; }
+    //public virtual DbSet<SphereSkill> SphereSkills { get; set; }
 
-    public virtual DbSet<SphereSound> SphereSounds { get; set; }
+    //public virtual DbSet<SphereSound> SphereSounds { get; set; }
 
-    public virtual DbSet<SubZone> SubZones { get; set; }
+    //public virtual DbSet<SubZone> SubZones { get; set; }
 
-    public virtual DbSet<SystemFaction> SystemFactions { get; set; }
+    //public virtual DbSet<SystemFaction> SystemFactions { get; set; }
 
-    public virtual DbSet<SystemFactionRelation> SystemFactionRelations { get; set; }
+    //public virtual DbSet<SystemFactionRelation> SystemFactionRelations { get; set; }
 
-    public virtual DbSet<Tag> Tags { get; set; }
+    //public virtual DbSet<Tag> Tags { get; set; }
 
-    public virtual DbSet<TaggedBuff> TaggedBuffs { get; set; }
+    //public virtual DbSet<TaggedBuff> TaggedBuffs { get; set; }
 
-    public virtual DbSet<TaggedItem> TaggedItems { get; set; }
+    //public virtual DbSet<TaggedItem> TaggedItems { get; set; }
 
-    public virtual DbSet<TaggedNpc> TaggedNpcs { get; set; }
+    //public virtual DbSet<TaggedNpc> TaggedNpcs { get; set; }
 
-    public virtual DbSet<TaggedSkill> TaggedSkills { get; set; }
+    //public virtual DbSet<TaggedSkill> TaggedSkills { get; set; }
 
-    public virtual DbSet<Taxation> Taxations { get; set; }
+    //public virtual DbSet<Taxation> Taxations { get; set; }
 
-    public virtual DbSet<TooltipSkillEffect> TooltipSkillEffects { get; set; }
+    //public virtual DbSet<TooltipSkillEffect> TooltipSkillEffects { get; set; }
 
-    public virtual DbSet<TotalCharacterCustom> TotalCharacterCustoms { get; set; }
+    //public virtual DbSet<TotalCharacterCustom> TotalCharacterCustoms { get; set; }
 
-    public virtual DbSet<TowerDef> TowerDefs { get; set; }
+    //public virtual DbSet<TowerDef> TowerDefs { get; set; }
 
-    public virtual DbSet<TowerDefProg> TowerDefProgs { get; set; }
+    //public virtual DbSet<TowerDefProg> TowerDefProgs { get; set; }
 
-    public virtual DbSet<TowerDefProgKillTarget> TowerDefProgKillTargets { get; set; }
+    //public virtual DbSet<TowerDefProgKillTarget> TowerDefProgKillTargets { get; set; }
 
-    public virtual DbSet<TowerDefProgSpawnTarget> TowerDefProgSpawnTargets { get; set; }
+    //public virtual DbSet<TowerDefProgSpawnTarget> TowerDefProgSpawnTargets { get; set; }
 
-    public virtual DbSet<TrainCraftEffect> TrainCraftEffects { get; set; }
+    //public virtual DbSet<TrainCraftEffect> TrainCraftEffects { get; set; }
 
-    public virtual DbSet<TrainCraftRankEffect> TrainCraftRankEffects { get; set; }
+    //public virtual DbSet<TrainCraftRankEffect> TrainCraftRankEffects { get; set; }
 
-    public virtual DbSet<Transfer> Transfers { get; set; }
+    //public virtual DbSet<Transfer> Transfers { get; set; }
 
-    public virtual DbSet<TransferBinding> TransferBindings { get; set; }
+    //public virtual DbSet<TransferBinding> TransferBindings { get; set; }
 
-    public virtual DbSet<TransferBindingDoodad> TransferBindingDoodads { get; set; }
+    //public virtual DbSet<TransferBindingDoodad> TransferBindingDoodads { get; set; }
 
-    public virtual DbSet<TransferPath> TransferPaths { get; set; }
+    //public virtual DbSet<TransferPath> TransferPaths { get; set; }
 
-    public virtual DbSet<UccApplicable> UccApplicables { get; set; }
+    //public virtual DbSet<UccApplicable> UccApplicables { get; set; }
 
     public virtual DbSet<UiText> UiTexts { get; set; }
 
-    public virtual DbSet<UnitAttributeLimit> UnitAttributeLimits { get; set; }
+    //public virtual DbSet<UnitAttributeLimit> UnitAttributeLimits { get; set; }
 
-    public virtual DbSet<UnitFormula> UnitFormulas { get; set; }
+    //public virtual DbSet<UnitFormula> UnitFormulas { get; set; }
 
-    public virtual DbSet<UnitFormulaVariable> UnitFormulaVariables { get; set; }
+    //public virtual DbSet<UnitFormulaVariable> UnitFormulaVariables { get; set; }
 
-    public virtual DbSet<UnitModifier> UnitModifiers { get; set; }
+    //public virtual DbSet<UnitModifier> UnitModifiers { get; set; }
 
-    public virtual DbSet<UnitReq> UnitReqs { get; set; }
+    //public virtual DbSet<UnitReq> UnitReqs { get; set; }
 
-    public virtual DbSet<VehicleModel> VehicleModels { get; set; }
+    //public virtual DbSet<VehicleModel> VehicleModels { get; set; }
 
-    public virtual DbSet<Wearable> Wearables { get; set; }
+    //public virtual DbSet<Wearable> Wearables { get; set; }
 
-    public virtual DbSet<WearableFormula> WearableFormulas { get; set; }
+    //public virtual DbSet<WearableFormula> WearableFormulas { get; set; }
 
-    public virtual DbSet<WearableKind> WearableKinds { get; set; }
+    //public virtual DbSet<WearableKind> WearableKinds { get; set; }
 
-    public virtual DbSet<WearableSlot> WearableSlots { get; set; }
+    //public virtual DbSet<WearableSlot> WearableSlots { get; set; }
 
-    public virtual DbSet<WiDetail> WiDetails { get; set; }
+    //public virtual DbSet<WiDetail> WiDetails { get; set; }
 
-    public virtual DbSet<WiGroup> WiGroups { get; set; }
+    //public virtual DbSet<WiGroup> WiGroups { get; set; }
 
-    public virtual DbSet<WiGroupWi> WiGroupWis { get; set; }
+    //public virtual DbSet<WiGroupWi> WiGroupWis { get; set; }
 
-    public virtual DbSet<WorldGroup> WorldGroups { get; set; }
+    //public virtual DbSet<WorldGroup> WorldGroups { get; set; }
 
-    public virtual DbSet<WorldSpecConfig> WorldSpecConfigs { get; set; }
+    //public virtual DbSet<WorldSpecConfig> WorldSpecConfigs { get; set; }
 
-    public virtual DbSet<WorldVarDefault> WorldVarDefaults { get; set; }
+    //public virtual DbSet<WorldVarDefault> WorldVarDefaults { get; set; }
 
-    public virtual DbSet<Zone> Zones { get; set; }
+    //public virtual DbSet<Zone> Zones { get; set; }
 
-    public virtual DbSet<ZoneClimate> ZoneClimates { get; set; }
+    //public virtual DbSet<ZoneClimate> ZoneClimates { get; set; }
 
-    public virtual DbSet<ZoneClimateElem> ZoneClimateElems { get; set; }
+    //public virtual DbSet<ZoneClimateElem> ZoneClimateElems { get; set; }
 
-    public virtual DbSet<ZoneGroup> ZoneGroups { get; set; }
+    //public virtual DbSet<ZoneGroup> ZoneGroups { get; set; }
 
-    public virtual DbSet<ZoneGroupBannedTag> ZoneGroupBannedTags { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var conString = new SqliteConnectionStringBuilder();
-        conString.DataSource = AAEmu.DBEditor.Properties.Settings.Default.ServerDB;
-        optionsBuilder.UseSqlite(conString.ConnectionString);
-    }
+    //public virtual DbSet<ZoneGroupBannedTag> ZoneGroupBannedTags { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -8882,7 +8877,6 @@ public partial class CompactContext : DbContext
         modelBuilder.Entity<Item>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
-            // entity.HasNoKey().ToTable("items");
 
             entity.Property(e => e.ActabilityGroupId)
                 .HasColumnType("INT")
@@ -8914,7 +8908,7 @@ public partial class CompactContext : DbContext
             entity.Property(e => e.CharGenderId)
                 .HasColumnType("INT")
                 .HasColumnName("char_gender_id");
-            entity.Property(e => e.Comment).HasColumnName("comment");
+            //entity.Property(e => e.Comment).HasColumnName("comment");
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Disenchantable)
                 .HasColumnType("NUM")
@@ -10389,12 +10383,14 @@ public partial class CompactContext : DbContext
             entity
                 .HasNoKey()
                 .ToTable("localized_texts");
-
+            /*
             entity.Property(e => e.De).HasColumnName("de");
             entity.Property(e => e.DeVer)
                 .HasColumnType("INT")
                 .HasColumnName("de_ver");
+            */
             entity.Property(e => e.EnUs).HasColumnName("en_us");
+            /*
             entity.Property(e => e.EnUsVer)
                 .HasColumnType("INT")
                 .HasColumnName("en_us_ver");
@@ -10405,9 +10401,11 @@ public partial class CompactContext : DbContext
             entity.Property(e => e.Id)
                 .HasColumnType("INT")
                 .HasColumnName("id");
+            */
             entity.Property(e => e.Idx)
                 .HasColumnType("INT")
                 .HasColumnName("idx");
+            /*
             entity.Property(e => e.Ja).HasColumnName("ja");
             entity.Property(e => e.JaVer)
                 .HasColumnType("INT")
@@ -10420,8 +10418,10 @@ public partial class CompactContext : DbContext
             entity.Property(e => e.RuVer)
                 .HasColumnType("INT")
                 .HasColumnName("ru_ver");
+            */
             entity.Property(e => e.TblColumnName).HasColumnName("tbl_column_name");
             entity.Property(e => e.TblName).HasColumnName("tbl_name");
+            /*
             entity.Property(e => e.ZhCn).HasColumnName("zh_cn");
             entity.Property(e => e.ZhCnVer)
                 .HasColumnType("INT")
@@ -10430,6 +10430,7 @@ public partial class CompactContext : DbContext
             entity.Property(e => e.ZhTwVer)
                 .HasColumnType("INT")
                 .HasColumnName("zh_tw_ver");
+            */
         });
 
         modelBuilder.Entity<Loot>(entity =>
