@@ -2,6 +2,7 @@
 using System.Linq;
 using AAEmu.DBEditor.data.aaemu.game;
 using AAEmu.DBEditor.data.aaemu.login;
+using MySqlConnector;
 
 namespace AAEmu.DBEditor.data
 {
@@ -29,6 +30,18 @@ namespace AAEmu.DBEditor.data
                 _ = Game.Characters.FirstOrDefault();
                 _ = Login.Users.FirstOrDefault();
                 IsValid = true;
+            }
+            catch (MySqlException mySqlEx)
+            {
+                switch (mySqlEx.ErrorCode)
+                {
+                    case MySqlErrorCode.AccessDenied:
+                        LastError = $"Access denied, check your username and password";
+                        break;
+                    default:
+                        LastError = $"{mySqlEx.ErrorCode}: {mySqlEx.Message}";
+                        break;
+                }
             }
             catch (Exception ex)
             {
