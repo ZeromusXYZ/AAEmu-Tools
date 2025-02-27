@@ -98,7 +98,7 @@ namespace AAEmu.DBEditor.tools.ahbot
 
                 tvAhList.Nodes.Clear();
                 ItemNodes.Clear();
-                var itemsWithAhCats = Data.Server.CompactSqlite.Items.Where(x => x.AuctionACategoryId > 0 && x.AuctionBCategoryId > 0 && x.AuctionCCategoryId > 0).OrderBy(x => x.AuctionACategoryId).ToList();
+                var itemsWithAhCats = Data.Server.CompactSqlite.Items.Where(x => x.AuctionACategoryId > 0).OrderBy(x => x.AuctionACategoryId).ToList();
 
                 foreach (var item in itemsWithAhCats)
                 {
@@ -147,6 +147,38 @@ namespace AAEmu.DBEditor.tools.ahbot
                         cats.Add(targetKeyC, catCNode);
                     }
 
+                    /*
+                    // Get actual cat (it should be the same as catCNode above)
+                    if (!cats.TryGetValue(targetKeyC, out var thisCat))
+                    {
+                        // Failed to create categories?
+                        continue;
+                    }
+
+                    // Add the item
+                    // Localized name
+                    var itemName = Data.Server.LocalizedText.GetValueOrDefault(("items", "name", item.Id)) ?? item.Name;
+                    // Not translated?
+                    if (string.IsNullOrWhiteSpace(itemName) || itemName.Contains("DO NOT TRANSLATE"))
+                        itemName = item.Name;
+                    // No name?
+                    if (string.IsNullOrWhiteSpace(itemName))
+                        itemName = $"<item {item.Id}>";
+
+                    var itemNode = thisCat.Nodes.Add(itemName);
+                    itemNode.Tag = (item.Id ?? 0);
+                    itemNode.ForeColor = SystemColors.GrayText;
+                    ItemNodes.Add(item.Id ?? 0, itemNode);
+                    */
+                }
+
+                foreach (var item in itemsWithAhCats)
+                {
+                    if (item.BindId == 2) // Bind on Pickup item can technically not be sold on AH
+                        continue;
+
+                    var targetKeyC = TreeNodeForAhCategory.MakeKey(item.AuctionACategoryId, item.AuctionBCategoryId, item.AuctionCCategoryId);
+
                     // Get actual cat (it should be the same as catCNode above)
                     if (!cats.TryGetValue(targetKeyC, out var thisCat))
                     {
@@ -169,38 +201,6 @@ namespace AAEmu.DBEditor.tools.ahbot
                     itemNode.ForeColor = SystemColors.GrayText;
                     ItemNodes.Add(item.Id ?? 0, itemNode);
                 }
-
-                /*
-                // AH Category A
-                foreach (var compactSqliteAuctionACategory in Data.Server.CompactSqlite.AuctionACategories.OrderBy(x =>
-                             x.Id))
-                {
-                    catA.Add((compactSqliteAuctionACategory.Id ?? 0),
-                        tvAhList.Nodes.Add(compactSqliteAuctionACategory.Name));
-                }
-
-                // AH Category B
-                foreach (var (catAKey, catANode) in catA)
-                {
-                    var thisCatBResults = Data.Server.CompactSqlite.AuctionBCategories
-                        .Where(x => x.ParentCategoryId == catAKey).OrderBy(x => x.Id);
-                    foreach (var auctionBCategory in thisCatBResults)
-                    {
-                        catB.Add(auctionBCategory.Id ?? 0, catANode.Nodes.Add(auctionBCategory.Name));
-                    }
-                }
-
-                // AH Category C
-                foreach (var (catBKey, catBNode) in catB)
-                {
-                    var thisCatCResults = Data.Server.CompactSqlite.AuctionCCategories
-                        .Where(x => x.ParentCategoryId == catBKey).OrderBy(x => x.Id);
-                    foreach (var auctionCCategory in thisCatCResults)
-                    {
-                        catC.Add(auctionCCategory.Id ?? 0, catBNode.Nodes.Add(auctionCCategory.Name));
-                    }
-                }
-                */
 
                 Log("Load item grades");
                 // Populate Grades
