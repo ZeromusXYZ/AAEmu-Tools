@@ -94,37 +94,80 @@ namespace AAEmu.DBEditor.tools.ahbot
 
                 Log("Generating AH categories");
                 // Populate Items List
-                var catA = new Dictionary<long, TreeNode>();
-                var catB = new Dictionary<long, TreeNode>();
-                var catC = new Dictionary<long, TreeNode>();
+                var cats = new Dictionary<long, TreeNodeForAhCategory>();
+
                 tvAhList.Nodes.Clear();
                 ItemNodes.Clear();
                 var itemsWithAhCats = Data.Server.CompactSqlite.Items.Where(x => x.AuctionACategoryId > 0 && x.AuctionBCategoryId > 0 && x.AuctionCCategoryId > 0).OrderBy(x => x.AuctionACategoryId).ToList();
 
-                // Base AH Category A
-                foreach (var aItem in itemsWithAhCats.DistinctBy(x => x.AuctionACategoryId))
+                foreach (var item in itemsWithAhCats)
                 {
-                    catA.Add((aItem.AuctionACategoryId ?? 0), tvAhList.Nodes.Add("A"+(aItem.AuctionACategoryId ?? 0)));
-                }
+                    if (item.BindId == 2) // Bind on Pickup item can technically not be sold on AH
+                        continue;
 
-                // Base AH Category B
-                foreach (var (catAKey, catANode) in catA)
-                {
-                    var thisCatBResults = itemsWithAhCats.Where(x => x.AuctionACategoryId == catAKey).OrderBy(x => x.AuctionBCategoryId).DistinctBy(x => x.AuctionBCategoryId);
-                    foreach (var bItem in thisCatBResults)
-                    {
-                        catB.Add(bItem.AuctionBCategoryId ?? 0, catANode.Nodes.Add("B" + (bItem.AuctionBCategoryId ?? 0)));
-                    }
-                }
+                    var targetKeyA = TreeNodeForAhCategory.MakeKey(item.AuctionACategoryId, 0, 0);
+                    var targetKeyB = TreeNodeForAhCategory.MakeKey(item.AuctionACategoryId, item.AuctionBCategoryId, 0);
+                    var targetKeyC = TreeNodeForAhCategory.MakeKey(item.AuctionACategoryId, item.AuctionBCategoryId, item.AuctionCCategoryId);
 
-                // Base AH Category C
-                foreach (var (catBKey, catBNode) in catB)
-                {
-                    var thisCatCResults = itemsWithAhCats.Where(x => x.AuctionBCategoryId == catBKey).OrderBy(x => x.AuctionCCategoryId).DistinctBy(x => x.AuctionCCategoryId);
-                    foreach (var cItem in thisCatCResults)
+                    // TODO: Find where the category names are stored in later versions
+                    // Make sure the categories exist
+                    // Cat A
+                    if (!cats.TryGetValue(targetKeyA, out var catANode))
                     {
-                        catC.Add(cItem.AuctionCCategoryId ?? 0, catBNode.Nodes.Add("C" + (cItem.AuctionCCategoryId ?? 0)));
+                        catANode = new TreeNodeForAhCategory();
+                        catANode.CategoryA = item.AuctionACategoryId ?? 0;
+                        catANode.CategoryB = 0;//item.AuctionBCategoryId ?? 0;
+                        catANode.CategoryC = 0;//item.AuctionCCategoryId ?? 0;
+                        catANode.Text = $@"A{catANode.CategoryA}";
+                        tvAhList.Nodes.Add(catANode);
+                        cats.Add(targetKeyA, catANode);
                     }
+
+                    // Cat B
+                    if (!cats.TryGetValue(targetKeyB, out var catBNode))
+                    {
+                        catBNode = new TreeNodeForAhCategory();
+                        catBNode.CategoryA = item.AuctionACategoryId ?? 0;
+                        catBNode.CategoryB = item.AuctionBCategoryId ?? 0;
+                        catBNode.CategoryC = 0;//item.AuctionCCategoryId ?? 0;
+                        catBNode.Text = $@"B{catBNode.CategoryB}";
+                        catANode.Nodes.Add(catBNode);
+                        cats.Add(targetKeyB, catBNode);
+                    }
+
+                    // Cat C
+                    if (!cats.TryGetValue(targetKeyC, out var catCNode))
+                    {
+                        catCNode = new TreeNodeForAhCategory();
+                        catCNode.CategoryA = item.AuctionACategoryId ?? 0;
+                        catCNode.CategoryB = item.AuctionBCategoryId ?? 0;
+                        catCNode.CategoryC = item.AuctionCCategoryId ?? 0;
+                        catCNode.Text = $@"C{catCNode.CategoryC}";
+                        catBNode.Nodes.Add(catCNode);
+                        cats.Add(targetKeyC, catCNode);
+                    }
+
+                    // Get actual cat (it should be the same as catCNode above)
+                    if (!cats.TryGetValue(targetKeyC, out var thisCat))
+                    {
+                        // Failed to create categories?
+                        continue;
+                    }
+
+                    // Add the item
+                    // Localized name
+                    var itemName = Data.Server.LocalizedText.GetValueOrDefault(("items", "name", item.Id)) ?? item.Name;
+                    // Not translated?
+                    if (string.IsNullOrWhiteSpace(itemName) || itemName.Contains("DO NOT TRANSLATE"))
+                        itemName = item.Name;
+                    // No name?
+                    if (string.IsNullOrWhiteSpace(itemName))
+                        itemName = $"<item {item.Id}>";
+
+                    var itemNode = thisCat.Nodes.Add(itemName);
+                    itemNode.Tag = (item.Id ?? 0);
+                    itemNode.ForeColor = SystemColors.GrayText;
+                    ItemNodes.Add(item.Id ?? 0, itemNode);
                 }
 
                 /*
@@ -173,6 +216,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                 if (cbGrade.Items.Count > 0)
                     cbGrade.SelectedIndex = cbGrade.Items.Count - 1;
 
+                /*
                 Log("Populating AH Listing");
                 // Populate Items
                 foreach (var item in Data.Server.CompactSqlite.Items.Where(x =>
@@ -210,7 +254,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                         ItemNodes.Add(item.Id ?? 0, itemNode);
                     }
                 }
-
+                */
                 LoadSettings();
                 UpdateFromSettings();
             }
