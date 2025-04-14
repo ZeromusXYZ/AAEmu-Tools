@@ -72,7 +72,7 @@
             // 
             // tFilter
             // 
-            tFilter.Location = new System.Drawing.Point(12, 32);
+            tFilter.Location = new System.Drawing.Point(12, 30);
             tFilter.Name = "tFilter";
             tFilter.PlaceholderText = "<filter by name or ID>";
             tFilter.Size = new System.Drawing.Size(177, 23);
@@ -85,11 +85,10 @@
             lvCharacterList.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lvCharacterList.BackColor = System.Drawing.SystemColors.Window;
             lvCharacterList.FullRowSelect = true;
-            lvCharacterList.LargeImageList = ilRaces;
-            lvCharacterList.Location = new System.Drawing.Point(12, 61);
+            lvCharacterList.Location = new System.Drawing.Point(12, 57);
             lvCharacterList.MultiSelect = false;
             lvCharacterList.Name = "lvCharacterList";
-            lvCharacterList.Size = new System.Drawing.Size(177, 346);
+            lvCharacterList.Size = new System.Drawing.Size(177, 325);
             lvCharacterList.SmallImageList = ilRaces;
             lvCharacterList.TabIndex = 6;
             lvCharacterList.TileSize = new System.Drawing.Size(255, 64);
@@ -103,30 +102,29 @@
             ilRaces.ImageStream = (System.Windows.Forms.ImageListStreamer)resources.GetObject("ilRaces.ImageStream");
             ilRaces.TransparentColor = System.Drawing.Color.Transparent;
             ilRaces.Images.SetKeyName(0, "none.png");
-            ilRaces.Images.SetKeyName(1, "nuian-male.png");
+            ilRaces.Images.SetKeyName(1, "nuian-male-05.png");
             ilRaces.Images.SetKeyName(2, "none.png");
-            ilRaces.Images.SetKeyName(3, "none.png");
-            ilRaces.Images.SetKeyName(4, "elf-male.png");
-            ilRaces.Images.SetKeyName(5, "harani-male.png");
-            ilRaces.Images.SetKeyName(6, "firran-male.png");
+            ilRaces.Images.SetKeyName(3, "dwarf-male-04.png");
+            ilRaces.Images.SetKeyName(4, "elf-male-06.png");
+            ilRaces.Images.SetKeyName(5, "harani-male-06.png");
+            ilRaces.Images.SetKeyName(6, "firran-male-07.png");
             ilRaces.Images.SetKeyName(7, "none.png");
-            ilRaces.Images.SetKeyName(8, "none.png");
-            ilRaces.Images.SetKeyName(9, "none.png");
-            ilRaces.Images.SetKeyName(10, "nuian-female.png");
-            ilRaces.Images.SetKeyName(11, "none.png");
-            ilRaces.Images.SetKeyName(12, "none.png");
-            ilRaces.Images.SetKeyName(13, "elf-female.png");
-            ilRaces.Images.SetKeyName(14, "harani-female.png");
-            ilRaces.Images.SetKeyName(15, "firran-female.png");
-            ilRaces.Images.SetKeyName(16, "none.png");
-            ilRaces.Images.SetKeyName(17, "none.png");
+            ilRaces.Images.SetKeyName(8, "warborn-male-01.png");
+            ilRaces.Images.SetKeyName(9, "nuian-female-07.png");
+            ilRaces.Images.SetKeyName(10, "none.png");
+            ilRaces.Images.SetKeyName(11, "dwarf-female-01.png");
+            ilRaces.Images.SetKeyName(12, "elf-female-03.png");
+            ilRaces.Images.SetKeyName(13, "harani-female-04.png");
+            ilRaces.Images.SetKeyName(14, "firran-female-04.png");
+            ilRaces.Images.SetKeyName(15, "none.png");
+            ilRaces.Images.SetKeyName(16, "warborn-female-01.png");
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(12, 9);
+            label1.Location = new System.Drawing.Point(12, 8);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(33, 16);
+            label1.Size = new System.Drawing.Size(33, 15);
             label1.TabIndex = 7;
             label1.Text = "Filter";
             // 
@@ -136,19 +134,19 @@
             tcCharacter.Controls.Add(tpServerStats);
             tcCharacter.Controls.Add(tpItems);
             tcCharacter.Controls.Add(tpOwnedObjects);
-            tcCharacter.Location = new System.Drawing.Point(195, 9);
+            tcCharacter.Location = new System.Drawing.Point(195, 8);
             tcCharacter.Name = "tcCharacter";
             tcCharacter.SelectedIndex = 0;
-            tcCharacter.Size = new System.Drawing.Size(620, 398);
+            tcCharacter.Size = new System.Drawing.Size(620, 373);
             tcCharacter.TabIndex = 8;
             // 
             // tpServerStats
             // 
             tpServerStats.Controls.Add(tvStats);
-            tpServerStats.Location = new System.Drawing.Point(4, 25);
+            tpServerStats.Location = new System.Drawing.Point(4, 24);
             tpServerStats.Name = "tpServerStats";
             tpServerStats.Padding = new System.Windows.Forms.Padding(3);
-            tpServerStats.Size = new System.Drawing.Size(612, 369);
+            tpServerStats.Size = new System.Drawing.Size(612, 345);
             tpServerStats.TabIndex = 0;
             tpServerStats.Text = "Stats";
             tpServerStats.UseVisualStyleBackColor = true;
@@ -161,7 +159,7 @@
             treeNode1.Name = "Node0";
             treeNode1.Text = "Select a character in the list on the left ...";
             tvStats.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
-            tvStats.Size = new System.Drawing.Size(606, 363);
+            tvStats.Size = new System.Drawing.Size(606, 339);
             tvStats.TabIndex = 4;
             // 
             // tpItems
@@ -169,10 +167,10 @@
             tpItems.Controls.Add(lContainer);
             tpItems.Controls.Add(lvItems);
             tpItems.Controls.Add(gbContainerSelect);
-            tpItems.Location = new System.Drawing.Point(4, 25);
+            tpItems.Location = new System.Drawing.Point(4, 24);
             tpItems.Name = "tpItems";
             tpItems.Padding = new System.Windows.Forms.Padding(3);
-            tpItems.Size = new System.Drawing.Size(612, 369);
+            tpItems.Size = new System.Drawing.Size(612, 345);
             tpItems.TabIndex = 1;
             tpItems.Text = "Items";
             tpItems.UseVisualStyleBackColor = true;
@@ -181,9 +179,9 @@
             // lContainer
             // 
             lContainer.AutoSize = true;
-            lContainer.Location = new System.Drawing.Point(6, 63);
+            lContainer.Location = new System.Drawing.Point(6, 59);
             lContainer.Name = "lContainer";
-            lContainer.Size = new System.Drawing.Size(58, 16);
+            lContainer.Size = new System.Drawing.Size(59, 15);
             lContainer.TabIndex = 2;
             lContainer.Text = "Container";
             // 
@@ -194,10 +192,10 @@
             lvItems.FullRowSelect = true;
             lvItems.GridLines = true;
             lvItems.Items.AddRange(new System.Windows.Forms.ListViewItem[] { listViewItem1 });
-            lvItems.Location = new System.Drawing.Point(6, 82);
+            lvItems.Location = new System.Drawing.Point(6, 77);
             lvItems.MultiSelect = false;
             lvItems.Name = "lvItems";
-            lvItems.Size = new System.Drawing.Size(600, 281);
+            lvItems.Size = new System.Drawing.Size(600, 264);
             lvItems.TabIndex = 1;
             lvItems.UseCompatibleStateImageBehavior = false;
             lvItems.View = System.Windows.Forms.View.Details;
@@ -250,7 +248,7 @@
             gbContainerSelect.Controls.Add(rbEquipement);
             gbContainerSelect.Location = new System.Drawing.Point(6, 6);
             gbContainerSelect.Name = "gbContainerSelect";
-            gbContainerSelect.Size = new System.Drawing.Size(600, 54);
+            gbContainerSelect.Size = new System.Drawing.Size(600, 51);
             gbContainerSelect.TabIndex = 0;
             gbContainerSelect.TabStop = false;
             gbContainerSelect.Text = "Container";
@@ -259,18 +257,18 @@
             // 
             cbItemContainerTypeSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             cbItemContainerTypeSelect.FormattingEnabled = true;
-            cbItemContainerTypeSelect.Location = new System.Drawing.Point(528, 21);
+            cbItemContainerTypeSelect.Location = new System.Drawing.Point(528, 20);
             cbItemContainerTypeSelect.Name = "cbItemContainerTypeSelect";
-            cbItemContainerTypeSelect.Size = new System.Drawing.Size(66, 24);
+            cbItemContainerTypeSelect.Size = new System.Drawing.Size(66, 23);
             cbItemContainerTypeSelect.TabIndex = 8;
             cbItemContainerTypeSelect.SelectedIndexChanged += cbItemContainerTypeSelect_SelectedIndexChanged;
             // 
             // radioButton1
             // 
             radioButton1.AutoSize = true;
-            radioButton1.Location = new System.Drawing.Point(319, 22);
+            radioButton1.Location = new System.Drawing.Point(319, 21);
             radioButton1.Name = "radioButton1";
-            radioButton1.Size = new System.Drawing.Size(67, 20);
+            radioButton1.Size = new System.Drawing.Size(67, 19);
             radioButton1.TabIndex = 7;
             radioButton1.TabStop = true;
             radioButton1.Tag = "6";
@@ -281,9 +279,9 @@
             // rbPetGear
             // 
             rbPetGear.AutoSize = true;
-            rbPetGear.Location = new System.Drawing.Point(392, 22);
+            rbPetGear.Location = new System.Drawing.Point(392, 21);
             rbPetGear.Name = "rbPetGear";
-            rbPetGear.Size = new System.Drawing.Size(69, 20);
+            rbPetGear.Size = new System.Drawing.Size(69, 19);
             rbPetGear.TabIndex = 6;
             rbPetGear.TabStop = true;
             rbPetGear.Tag = "252";
@@ -294,9 +292,9 @@
             // rbSystem
             // 
             rbSystem.AutoSize = true;
-            rbSystem.Location = new System.Drawing.Point(467, 22);
+            rbSystem.Location = new System.Drawing.Point(467, 21);
             rbSystem.Name = "rbSystem";
-            rbSystem.Size = new System.Drawing.Size(55, 20);
+            rbSystem.Size = new System.Drawing.Size(55, 19);
             rbSystem.TabIndex = 5;
             rbSystem.TabStop = true;
             rbSystem.Tag = "-1";
@@ -307,9 +305,9 @@
             // rbMail
             // 
             rbMail.AutoSize = true;
-            rbMail.Location = new System.Drawing.Point(265, 22);
+            rbMail.Location = new System.Drawing.Point(265, 21);
             rbMail.Name = "rbMail";
-            rbMail.Size = new System.Drawing.Size(48, 20);
+            rbMail.Size = new System.Drawing.Size(48, 19);
             rbMail.TabIndex = 4;
             rbMail.TabStop = true;
             rbMail.Tag = "5";
@@ -320,9 +318,9 @@
             // rbWarehouse
             // 
             rbWarehouse.AutoSize = true;
-            rbWarehouse.Location = new System.Drawing.Point(175, 22);
+            rbWarehouse.Location = new System.Drawing.Point(175, 21);
             rbWarehouse.Name = "rbWarehouse";
-            rbWarehouse.Size = new System.Drawing.Size(84, 20);
+            rbWarehouse.Size = new System.Drawing.Size(84, 19);
             rbWarehouse.TabIndex = 2;
             rbWarehouse.TabStop = true;
             rbWarehouse.Tag = "3";
@@ -333,9 +331,9 @@
             // rbInventory
             // 
             rbInventory.AutoSize = true;
-            rbInventory.Location = new System.Drawing.Point(94, 22);
+            rbInventory.Location = new System.Drawing.Point(94, 21);
             rbInventory.Name = "rbInventory";
-            rbInventory.Size = new System.Drawing.Size(75, 20);
+            rbInventory.Size = new System.Drawing.Size(75, 19);
             rbInventory.TabIndex = 1;
             rbInventory.TabStop = true;
             rbInventory.Tag = "2";
@@ -346,9 +344,9 @@
             // rbEquipement
             // 
             rbEquipement.AutoSize = true;
-            rbEquipement.Location = new System.Drawing.Point(6, 22);
+            rbEquipement.Location = new System.Drawing.Point(6, 21);
             rbEquipement.Name = "rbEquipement";
-            rbEquipement.Size = new System.Drawing.Size(82, 20);
+            rbEquipement.Size = new System.Drawing.Size(83, 19);
             rbEquipement.TabIndex = 0;
             rbEquipement.TabStop = true;
             rbEquipement.Tag = "1";
@@ -360,10 +358,10 @@
             // 
             tpOwnedObjects.Controls.Add(cbIncludeAccountHouses);
             tpOwnedObjects.Controls.Add(tvOwned);
-            tpOwnedObjects.Location = new System.Drawing.Point(4, 25);
+            tpOwnedObjects.Location = new System.Drawing.Point(4, 24);
             tpOwnedObjects.Name = "tpOwnedObjects";
             tpOwnedObjects.Padding = new System.Windows.Forms.Padding(3);
-            tpOwnedObjects.Size = new System.Drawing.Size(612, 369);
+            tpOwnedObjects.Size = new System.Drawing.Size(612, 345);
             tpOwnedObjects.TabIndex = 2;
             tpOwnedObjects.Text = "Owned";
             tpOwnedObjects.UseVisualStyleBackColor = true;
@@ -375,7 +373,7 @@
             cbIncludeAccountHouses.CheckState = System.Windows.Forms.CheckState.Checked;
             cbIncludeAccountHouses.Location = new System.Drawing.Point(3, 3);
             cbIncludeAccountHouses.Name = "cbIncludeAccountHouses";
-            cbIncludeAccountHouses.Size = new System.Drawing.Size(221, 20);
+            cbIncludeAccountHouses.Size = new System.Drawing.Size(221, 19);
             cbIncludeAccountHouses.TabIndex = 6;
             cbIncludeAccountHouses.Text = "Include other houses on this account";
             cbIncludeAccountHouses.UseVisualStyleBackColor = true;
@@ -384,19 +382,19 @@
             // tvOwned
             // 
             tvOwned.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            tvOwned.Location = new System.Drawing.Point(3, 27);
+            tvOwned.Location = new System.Drawing.Point(3, 25);
             tvOwned.Name = "tvOwned";
             treeNode2.Name = "Node0";
             treeNode2.Text = "Select a character in the list on the left ...";
             tvOwned.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
-            tvOwned.Size = new System.Drawing.Size(606, 339);
+            tvOwned.Size = new System.Drawing.Size(606, 318);
             tvOwned.TabIndex = 5;
             // 
             // btnSelectionOK
             // 
-            btnSelectionOK.Location = new System.Drawing.Point(124, 9);
+            btnSelectionOK.Location = new System.Drawing.Point(124, 8);
             btnSelectionOK.Name = "btnSelectionOK";
-            btnSelectionOK.Size = new System.Drawing.Size(65, 23);
+            btnSelectionOK.Size = new System.Drawing.Size(65, 22);
             btnSelectionOK.TabIndex = 9;
             btnSelectionOK.Text = "Select";
             btnSelectionOK.UseVisualStyleBackColor = true;
@@ -405,9 +403,9 @@
             // 
             // CharacterForm
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(827, 419);
+            ClientSize = new System.Drawing.Size(827, 393);
             Controls.Add(btnSelectionOK);
             Controls.Add(tcCharacter);
             Controls.Add(label1);

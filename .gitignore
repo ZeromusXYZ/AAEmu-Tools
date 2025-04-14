@@ -401,3 +401,6 @@ AAEmu.DBEditor/data/gamedb/compact.sqlite3
 
 # Published Executables
 .publish/
+
+# idea
+.idea/

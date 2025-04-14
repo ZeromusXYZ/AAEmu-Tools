@@ -119,6 +119,11 @@ namespace AAEmu.DBEditor.tools.ahbot
                         catANode.CategoryB = 0;//item.AuctionBCategoryId ?? 0;
                         catANode.CategoryC = 0;//item.AuctionCCategoryId ?? 0;
                         catANode.Text = $@"A{catANode.CategoryA}";
+                        var uiKey = catANode.GetUiTextKey();
+                        if (!string.IsNullOrWhiteSpace(uiKey))
+                        {
+                            catANode.Text = Data.Server.GetUiText(107, uiKey, catANode.Text, true);
+                        }
                         tvAhList.Nodes.Add(catANode);
                         cats.Add(targetKeyA, catANode);
                     }
@@ -131,6 +136,11 @@ namespace AAEmu.DBEditor.tools.ahbot
                         catBNode.CategoryB = item.AuctionBCategoryId ?? 0;
                         catBNode.CategoryC = 0;//item.AuctionCCategoryId ?? 0;
                         catBNode.Text = $@"B{catBNode.CategoryB}";
+                        var uiKey = catBNode.GetUiTextKey();
+                        if (!string.IsNullOrWhiteSpace(uiKey))
+                        {
+                            catBNode.Text = Data.Server.GetUiText(107, uiKey, catBNode.Text, true);
+                        }
                         catANode.Nodes.Add(catBNode);
                         cats.Add(targetKeyB, catBNode);
                     }
@@ -143,6 +153,11 @@ namespace AAEmu.DBEditor.tools.ahbot
                         catCNode.CategoryB = item.AuctionBCategoryId ?? 0;
                         catCNode.CategoryC = item.AuctionCCategoryId ?? 0;
                         catCNode.Text = $@"C{catCNode.CategoryC}";
+                        var uiKey = catCNode.GetUiTextKey();
+                        if (!string.IsNullOrWhiteSpace(uiKey))
+                        {
+                            catCNode.Text = Data.Server.GetUiText(107, uiKey, catCNode.Text, true);
+                        }
                         catBNode.Nodes.Add(catCNode);
                         cats.Add(targetKeyC, catCNode);
                     }

@@ -1024,7 +1024,7 @@ public partial class MainForm
                 effectsRoot.Tag = 0;
             }
 
-            CreateSkillEffectNode(skillEffect.EffectId, effectsRoot, skillEffect.Weight, totalWeight, true);
+            CreateSkillEffectNode(skillEffect.EffectId, effectsRoot, skillEffect, totalWeight, true);
         }
 
         if (AaDb.DbPlots.TryGetValue(skill.PlotId, out var plot))
@@ -1049,16 +1049,45 @@ public partial class MainForm
         tvSkill.SelectedNode = rootNode;
     }
 
-    private void CreateSkillEffectNode(long effectId, TreeNode effectsRoot, long thisWeight, long totalWeight, bool hideEmptyProperties)
+    private void CreateSkillEffectNode(long effectId, TreeNode effectsRoot, GameSkillEffects thisEffect, long totalWeight, bool hideEmptyProperties)
     {
         var effectTypeText = "???";
+
         if (AaDb.DbEffects.TryGetValue(effectId, out var effect))
         {
-            var rate = (totalWeight > 0 && thisWeight > 0) ? thisWeight * 100f / totalWeight : 100f;
+            var rate = (totalWeight > 0 && thisEffect.Weight > 0) ? thisEffect.Weight * 100f / totalWeight : 100f;
             effectTypeText = effect.ActualType + " ( " + effect.ActualId.ToString() + " )" + (rate < 100 ? $" {rate:F0}%" : "");
         }
 
         var skillEffectNode = effectsRoot.Nodes.Add(effectTypeText);
+
+        var effectCondition = string.Empty;
+        if (thisEffect?.StartLevel > 1 || thisEffect?.EndLevel < 99)
+        {
+            effectCondition = $"@Level {thisEffect.StartLevel} ~ {thisEffect.EndLevel} ";
+        }
+        if ((thisEffect?.Friendly ?? false) || (thisEffect?.NonFriendly ?? false))
+        {
+            effectCondition += @"  targets ";
+        }
+        if (thisEffect?.Friendly ?? false)
+        {
+            effectCondition += @"friendly ";
+        }
+        if (thisEffect?.NonFriendly ?? false)
+        {
+            effectCondition += @"non-friendly";
+        }
+
+        if (!string.IsNullOrWhiteSpace(effectCondition))
+        {
+            var conditionsNode = skillEffectNode.Nodes.Add(effectCondition);
+            conditionsNode.ImageIndex = 3;
+            conditionsNode.SelectedImageIndex = conditionsNode.ImageIndex;
+            conditionsNode.Tag = 0;
+        }
+
+
         skillEffectNode.ImageIndex = 2;
         skillEffectNode.SelectedImageIndex = 2;
         skillEffectNode.Tag = 0;
@@ -1388,7 +1417,7 @@ public partial class MainForm
                 {
                     // var triggerNode = new TreeNode($"{trigger.id} - Effect {trigger.effect_id} ({effect.actual_type} {effect.actual_id})");
                     // groupingNode.Nodes.Add(triggerNode);
-                    CreateSkillEffectNode(effect.Id, groupingNode, 0, 0, cbBuffsHideEmpty.Checked);
+                    CreateSkillEffectNode(effect.Id, groupingNode, null, 0, cbBuffsHideEmpty.Checked);
                 }
             }
         }
