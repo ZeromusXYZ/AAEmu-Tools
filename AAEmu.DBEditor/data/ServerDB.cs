@@ -137,5 +137,11 @@ namespace AAEmu.DBEditor.data
                 return item;
             return null;
         }
+
+        public bool UiTextExists(string keyName)
+        {
+            keyName = keyName.ToLower();
+            return CompactSqlite.UiTexts.Any(x => x.Key == keyName);
+        }
     }
 }
