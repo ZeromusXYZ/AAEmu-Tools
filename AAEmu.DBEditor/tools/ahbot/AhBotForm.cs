@@ -13,7 +13,6 @@ using AAEmu.DBEditor.forms.server;
 using AAEmu.DBEditor.Models.aaemu.webapi;
 using AAEmu.DBEditor.utils;
 using Newtonsoft.Json;
-using static Microsoft.EntityFrameworkCore.Query.Internal.ExpressionTreeFuncletizer;
 
 namespace AAEmu.DBEditor.tools.ahbot
 {
@@ -957,17 +956,22 @@ namespace AAEmu.DBEditor.tools.ahbot
                 // Check if any of the mails were AH related
                 // Dictionary<mailId, copperCoins>
                 var mailsRewards = new Dictionary<long, long>();
+                var mailsFailed = new Dictionary<long, long>();
                 foreach (var mail in res.MailItems)
                 {
 
                     switch (mail.MailType)
                     {
                         case MailType.AucOffSuccess: // Item sold, yay!
-                        case MailType.AucOffFail: // Didn't sell this time T.T
-                        case MailType.AucOffCancel: // Shouldn't be cancelled unless this is manually done by the server owner
                             // Order server to delete the mail
                             mailsRewards.Add(mail.Id, mail.CopperCoins);
                             Log($"Mail Id:{mail.Id}, Type:{mail.MailType}, {mail.SenderName} ({mail.SenderId}) -> {mail.ReceiverName} ({mail.ReceiverId}), Title: {mail.Title}");
+                            break;
+                        case MailType.AucOffFail: // Didn't sell this time T.T
+                        case MailType.AucOffCancel: // Shouldn't be cancelled unless this is manually done by the server owner
+                            // Order server to delete the mail
+                            mailsFailed.Add(mail.Id, mail.CopperCoins);
+                            // Log($"Mail Id:{mail.Id}, Type:{mail.MailType}, {mail.SenderName} ({mail.SenderId}) -> {mail.ReceiverName} ({mail.ReceiverId}), Title: {mail.Title}");
                             break;
                         default:
                             // For all other cases, we just keep the mail on the server.
@@ -978,18 +982,21 @@ namespace AAEmu.DBEditor.tools.ahbot
                 // If we found new AH result mails, process them
                 if (mailsRewards.Count > 0)
                 {
-                    Log($"Found {res.MailItems.Count} mail(s) for {Settings.CharacterName}, {mailsRewards.Count} need to be processed");
+                    Log(
+                        $"Found {res.MailItems.Count} mail(s) for {Settings.CharacterName}, {mailsRewards.Count} need to be processed");
                     var totalReward = mailsRewards.Values.Sum(x => x);
                     if (totalReward > 0)
                     {
                         Log($"Earned amount for this check: {AaTextHelper.CopperToString(totalReward)}");
 
                         // Delete relevant mails
-                        foreach (var (mailId, _) in mailsRewards)
+                        foreach (var (mailId, coins) in mailsRewards)
                         {
                             var mailToDelete = res.MailItems.FirstOrDefault(x => x.Id == mailId);
                             if (mailToDelete == null)
                                 continue; // Shouldn't happen
+                            if (coins <= 0)
+                                continue; // Ignore failed sales
 
                             // If it was a return mail (fail or cancel), destroy the items
                             var trashItems = mailToDelete.MailType is MailType.AucOffCancel or MailType.AucOffFail;
@@ -1000,6 +1007,25 @@ namespace AAEmu.DBEditor.tools.ahbot
                         Settings.TotalEarned += totalReward;
                         SaveSettings();
                     }
+                }
+
+                if (mailsFailed.Count > 0)
+                {
+                    Log($"Trying to delete {mailsFailed.Count} mail(s) containing failed auction notices");
+                    // Delete relevant mails when no coins earned (failed sales)
+                    foreach (var (mailId, coins) in mailsFailed)
+                    {
+                        if (coins != 0)
+                            continue;
+                        var mailToDelete = res.MailItems.FirstOrDefault(x => x.Id == mailId);
+                        if (mailToDelete == null)
+                            continue; // Shouldn't happen
+
+                        // If it was a return mail (fail or cancel), destroy the items
+                        var trashItems = mailToDelete.MailType is MailType.AucOffCancel or MailType.AucOffFail;
+                        TryDeleteMail(deleteMailUrl, mailToDelete.Id, mailToDelete.SenderId, mailToDelete.ReceiverId, trashItems);
+                    }
+                    Log($"Done deleting {mailsFailed.Count} mail(s)");
                 }
             }
             catch (Exception ex)
@@ -1020,7 +1046,8 @@ namespace AAEmu.DBEditor.tools.ahbot
                 TrashItems = trashItemsAsWell,
             };
 
-            _ = HttpHelper.SimplePostJsonUriAsString(url, deleteRequest);
+            var res = HttpHelper.SimplePostJsonUriAsString(url, deleteRequest);
+            Log(res);
             // TODO: Report errors if any
         }
 
@@ -1155,6 +1182,11 @@ namespace AAEmu.DBEditor.tools.ahbot
                 return;
             lItemIcon.ImageIndex = Data.Client.GetIconIndexByItemTemplateId(itemId);
             lItemIcon.Text = lItemIcon.ImageIndex > 0 ? "" : "not found";
+        }
+
+        private void BtnClearLog_Click(object sender, EventArgs e)
+        {
+            tLog.Clear();
         }
     }
 }

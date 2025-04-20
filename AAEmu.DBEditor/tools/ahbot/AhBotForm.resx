@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="textBox1.Text" xml:space="preserve">
+  <data name="AhBotTextBoxInfo.Text" xml:space="preserve">
     <value>To use the Auction Bot, you will first need to create a character to use on your server.
 Make sure to have this character on it's own account (not required, but recommended)
 

@@ -39,7 +39,7 @@
             btnConnect = new System.Windows.Forms.Button();
             tcAhBot = new System.Windows.Forms.TabControl();
             tpSettings = new System.Windows.Forms.TabPage();
-            textBox1 = new System.Windows.Forms.TextBox();
+            AhBotTextBoxInfo = new System.Windows.Forms.TextBox();
             btnCleanMails = new System.Windows.Forms.Button();
             btnSave = new System.Windows.Forms.Button();
             btnLoadConfig = new System.Windows.Forms.Button();
@@ -76,36 +76,39 @@
             tpLogs = new System.Windows.Forms.TabPage();
             tLog = new System.Windows.Forms.TextBox();
             bgwAhCheckLoop = new System.ComponentModel.BackgroundWorker();
+            panel1 = new System.Windows.Forms.Panel();
+            BtnClearLog = new System.Windows.Forms.Button();
             tcAhBot.SuspendLayout();
             tpSettings.SuspendLayout();
             tpAhList.SuspendLayout();
             gbItemEntrySettings.SuspendLayout();
             tpLogs.SuspendLayout();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(8, 9);
+            label1.Location = new System.Drawing.Point(8, 8);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(141, 16);
+            label1.Size = new System.Drawing.Size(142, 15);
             label1.TabIndex = 1;
             label1.Text = "Character the Bot runs on";
             // 
             // lAhBotName
             // 
             lAhBotName.AutoSize = true;
-            lAhBotName.Location = new System.Drawing.Point(42, 31);
+            lAhBotName.Location = new System.Drawing.Point(42, 29);
             lAhBotName.Name = "lAhBotName";
-            lAhBotName.Size = new System.Drawing.Size(135, 16);
+            lAhBotName.Size = new System.Drawing.Size(135, 15);
             lAhBotName.TabIndex = 2;
             lAhBotName.Text = "<no character selected>";
             // 
             // btnPickAhCharacter
             // 
-            btnPickAhCharacter.Location = new System.Drawing.Point(8, 28);
+            btnPickAhCharacter.Location = new System.Drawing.Point(8, 26);
             btnPickAhCharacter.Name = "btnPickAhCharacter";
-            btnPickAhCharacter.Size = new System.Drawing.Size(28, 23);
+            btnPickAhCharacter.Size = new System.Drawing.Size(28, 22);
             btnPickAhCharacter.TabIndex = 3;
             btnPickAhCharacter.Text = "...";
             btnPickAhCharacter.UseVisualStyleBackColor = true;
@@ -114,27 +117,27 @@
             // lAhBotAccount
             // 
             lAhBotAccount.AutoSize = true;
-            lAhBotAccount.Location = new System.Drawing.Point(222, 31);
+            lAhBotAccount.Location = new System.Drawing.Point(222, 29);
             lAhBotAccount.Name = "lAhBotAccount";
-            lAhBotAccount.Size = new System.Drawing.Size(129, 16);
+            lAhBotAccount.Size = new System.Drawing.Size(129, 15);
             lAhBotAccount.TabIndex = 4;
             lAhBotAccount.Text = "<no account selected>";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(222, 9);
+            label2.Location = new System.Drawing.Point(222, 8);
             label2.Name = "label2";
-            label2.Size = new System.Drawing.Size(152, 16);
+            label2.Size = new System.Drawing.Size(152, 15);
             label2.TabIndex = 5;
             label2.Text = "Account the bot will run on";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new System.Drawing.Point(8, 65);
+            label3.Location = new System.Drawing.Point(8, 61);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(39, 16);
+            label3.Size = new System.Drawing.Size(39, 15);
             label3.TabIndex = 6;
             label3.Text = "Server";
             // 
@@ -142,17 +145,17 @@
             // 
             cbServers.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             cbServers.FormattingEnabled = true;
-            cbServers.Location = new System.Drawing.Point(19, 84);
+            cbServers.Location = new System.Drawing.Point(19, 79);
             cbServers.Name = "cbServers";
-            cbServers.Size = new System.Drawing.Size(158, 24);
+            cbServers.Size = new System.Drawing.Size(158, 23);
             cbServers.TabIndex = 7;
             cbServers.SelectedIndexChanged += cbServers_SelectedIndexChanged;
             // 
             // btnConnect
             // 
-            btnConnect.Location = new System.Drawing.Point(423, 9);
+            btnConnect.Location = new System.Drawing.Point(423, 8);
             btnConnect.Name = "btnConnect";
-            btnConnect.Size = new System.Drawing.Size(275, 99);
+            btnConnect.Size = new System.Drawing.Size(275, 93);
             btnConnect.TabIndex = 8;
             btnConnect.Text = "Start";
             btnConnect.UseVisualStyleBackColor = true;
@@ -167,12 +170,12 @@
             tcAhBot.Location = new System.Drawing.Point(0, 0);
             tcAhBot.Name = "tcAhBot";
             tcAhBot.SelectedIndex = 0;
-            tcAhBot.Size = new System.Drawing.Size(800, 450);
+            tcAhBot.Size = new System.Drawing.Size(800, 422);
             tcAhBot.TabIndex = 10;
             // 
             // tpSettings
             // 
-            tpSettings.Controls.Add(textBox1);
+            tpSettings.Controls.Add(AhBotTextBoxInfo);
             tpSettings.Controls.Add(btnCleanMails);
             tpSettings.Controls.Add(btnSave);
             tpSettings.Controls.Add(btnLoadConfig);
@@ -184,29 +187,29 @@
             tpSettings.Controls.Add(cbServers);
             tpSettings.Controls.Add(lAhBotAccount);
             tpSettings.Controls.Add(label3);
-            tpSettings.Location = new System.Drawing.Point(4, 25);
+            tpSettings.Location = new System.Drawing.Point(4, 24);
             tpSettings.Name = "tpSettings";
-            tpSettings.Size = new System.Drawing.Size(792, 421);
+            tpSettings.Size = new System.Drawing.Size(792, 394);
             tpSettings.TabIndex = 2;
             tpSettings.Text = "Settings";
             tpSettings.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // AhBotTextBoxInfo
             // 
-            textBox1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            textBox1.Location = new System.Drawing.Point(8, 179);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.ReadOnly = true;
-            textBox1.Size = new System.Drawing.Size(776, 234);
-            textBox1.TabIndex = 13;
-            textBox1.Text = resources.GetString("textBox1.Text");
+            AhBotTextBoxInfo.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            AhBotTextBoxInfo.Location = new System.Drawing.Point(8, 168);
+            AhBotTextBoxInfo.Multiline = true;
+            AhBotTextBoxInfo.Name = "AhBotTextBoxInfo";
+            AhBotTextBoxInfo.ReadOnly = true;
+            AhBotTextBoxInfo.Size = new System.Drawing.Size(776, 220);
+            AhBotTextBoxInfo.TabIndex = 13;
+            AhBotTextBoxInfo.Text = resources.GetString("AhBotTextBoxInfo.Text");
             // 
             // btnCleanMails
             // 
-            btnCleanMails.Location = new System.Drawing.Point(358, 116);
+            btnCleanMails.Location = new System.Drawing.Point(358, 109);
             btnCleanMails.Name = "btnCleanMails";
-            btnCleanMails.Size = new System.Drawing.Size(169, 23);
+            btnCleanMails.Size = new System.Drawing.Size(169, 22);
             btnCleanMails.TabIndex = 12;
             btnCleanMails.Text = "Check Mails";
             btnCleanMails.UseVisualStyleBackColor = true;
@@ -215,9 +218,9 @@
             // 
             // btnSave
             // 
-            btnSave.Location = new System.Drawing.Point(183, 116);
+            btnSave.Location = new System.Drawing.Point(183, 109);
             btnSave.Name = "btnSave";
-            btnSave.Size = new System.Drawing.Size(169, 23);
+            btnSave.Size = new System.Drawing.Size(169, 22);
             btnSave.TabIndex = 11;
             btnSave.Text = "Save Configuration";
             btnSave.UseVisualStyleBackColor = true;
@@ -226,9 +229,9 @@
             // 
             // btnLoadConfig
             // 
-            btnLoadConfig.Location = new System.Drawing.Point(8, 116);
+            btnLoadConfig.Location = new System.Drawing.Point(8, 109);
             btnLoadConfig.Name = "btnLoadConfig";
-            btnLoadConfig.Size = new System.Drawing.Size(169, 23);
+            btnLoadConfig.Size = new System.Drawing.Size(169, 22);
             btnLoadConfig.TabIndex = 10;
             btnLoadConfig.Text = "Load Configuration";
             btnLoadConfig.UseVisualStyleBackColor = true;
@@ -244,10 +247,10 @@
             tpAhList.Controls.Add(btnQueryServerAH);
             tpAhList.Controls.Add(lbAhList);
             tpAhList.Controls.Add(tvAhList);
-            tpAhList.Location = new System.Drawing.Point(4, 25);
+            tpAhList.Location = new System.Drawing.Point(4, 24);
             tpAhList.Name = "tpAhList";
             tpAhList.Padding = new System.Windows.Forms.Padding(3);
-            tpAhList.Size = new System.Drawing.Size(792, 421);
+            tpAhList.Size = new System.Drawing.Size(792, 394);
             tpAhList.TabIndex = 1;
             tpAhList.Text = "AH";
             tpAhList.UseVisualStyleBackColor = true;
@@ -277,9 +280,9 @@
             gbItemEntrySettings.Controls.Add(label8);
             gbItemEntrySettings.Controls.Add(label7);
             gbItemEntrySettings.Controls.Add(tStartBid);
-            gbItemEntrySettings.Location = new System.Drawing.Point(442, 9);
+            gbItemEntrySettings.Location = new System.Drawing.Point(442, 8);
             gbItemEntrySettings.Name = "gbItemEntrySettings";
-            gbItemEntrySettings.Size = new System.Drawing.Size(336, 403);
+            gbItemEntrySettings.Size = new System.Drawing.Size(336, 378);
             gbItemEntrySettings.TabIndex = 21;
             gbItemEntrySettings.TabStop = false;
             gbItemEntrySettings.Text = "Item listing settings";
@@ -288,10 +291,10 @@
             // 
             lItemIcon.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             lItemIcon.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            lItemIcon.Location = new System.Drawing.Point(251, 19);
+            lItemIcon.Location = new System.Drawing.Point(251, 18);
             lItemIcon.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lItemIcon.Name = "lItemIcon";
-            lItemIcon.Size = new System.Drawing.Size(78, 78);
+            lItemIcon.Size = new System.Drawing.Size(78, 73);
             lItemIcon.TabIndex = 29;
             lItemIcon.Text = "???";
             lItemIcon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -299,25 +302,25 @@
             // lListingInfo
             // 
             lListingInfo.AutoSize = true;
-            lListingInfo.Location = new System.Drawing.Point(6, 258);
+            lListingInfo.Location = new System.Drawing.Point(6, 242);
             lListingInfo.Name = "lListingInfo";
-            lListingInfo.Size = new System.Drawing.Size(12, 16);
+            lListingInfo.Size = new System.Drawing.Size(12, 15);
             lListingInfo.TabIndex = 21;
             lListingInfo.Text = "?";
             // 
             // lStackMax
             // 
             lStackMax.AutoSize = true;
-            lStackMax.Location = new System.Drawing.Point(137, 132);
+            lStackMax.Location = new System.Drawing.Point(137, 124);
             lStackMax.Name = "lStackMax";
-            lStackMax.Size = new System.Drawing.Size(20, 16);
+            lStackMax.Size = new System.Drawing.Size(21, 15);
             lStackMax.TabIndex = 20;
             lStackMax.Text = "/ 1";
             // 
             // tComment
             // 
             tComment.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            tComment.Location = new System.Drawing.Point(15, 295);
+            tComment.Location = new System.Drawing.Point(15, 277);
             tComment.Name = "tComment";
             tComment.Size = new System.Drawing.Size(315, 23);
             tComment.TabIndex = 19;
@@ -325,54 +328,54 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new System.Drawing.Point(6, 276);
+            label11.Location = new System.Drawing.Point(6, 259);
             label11.Name = "label11";
-            label11.Size = new System.Drawing.Size(58, 16);
+            label11.Size = new System.Drawing.Size(61, 15);
             label11.TabIndex = 18;
             label11.Text = "Comment";
             // 
             // lStartBidPreview
             // 
             lStartBidPreview.AutoSize = true;
-            lStartBidPreview.Location = new System.Drawing.Point(128, 234);
+            lStartBidPreview.Location = new System.Drawing.Point(128, 219);
             lStartBidPreview.Name = "lStartBidPreview";
-            lStartBidPreview.Size = new System.Drawing.Size(19, 16);
+            lStartBidPreview.Size = new System.Drawing.Size(19, 15);
             lStartBidPreview.TabIndex = 17;
             lStartBidPreview.Text = "0c";
             // 
             // lBuyOutPreview
             // 
             lBuyOutPreview.AutoSize = true;
-            lBuyOutPreview.Location = new System.Drawing.Point(128, 188);
+            lBuyOutPreview.Location = new System.Drawing.Point(128, 176);
             lBuyOutPreview.Name = "lBuyOutPreview";
-            lBuyOutPreview.Size = new System.Drawing.Size(19, 16);
+            lBuyOutPreview.Size = new System.Drawing.Size(19, 15);
             lBuyOutPreview.TabIndex = 16;
             lBuyOutPreview.Text = "0c";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new System.Drawing.Point(6, 19);
+            label4.Location = new System.Drawing.Point(6, 18);
             label4.Name = "label4";
-            label4.Size = new System.Drawing.Size(30, 16);
+            label4.Size = new System.Drawing.Size(31, 15);
             label4.TabIndex = 1;
             label4.Text = "Item";
             // 
             // lItemName
             // 
             lItemName.AutoSize = true;
-            lItemName.Location = new System.Drawing.Point(15, 35);
+            lItemName.Location = new System.Drawing.Point(15, 33);
             lItemName.Name = "lItemName";
-            lItemName.Size = new System.Drawing.Size(78, 16);
+            lItemName.Size = new System.Drawing.Size(80, 15);
             lItemName.TabIndex = 2;
             lItemName.Text = "<item name>";
             // 
             // lItemId
             // 
             lItemId.AutoSize = true;
-            lItemId.Location = new System.Drawing.Point(42, 19);
+            lItemId.Location = new System.Drawing.Point(42, 18);
             lItemId.Name = "lItemId";
-            lItemId.Size = new System.Drawing.Size(59, 16);
+            lItemId.Size = new System.Drawing.Size(60, 15);
             lItemId.TabIndex = 3;
             lItemId.Text = "<item id>";
             lItemId.TextChanged += lItemId_TextChanged;
@@ -380,9 +383,9 @@
             // lGrade
             // 
             lGrade.AutoSize = true;
-            lGrade.Location = new System.Drawing.Point(6, 54);
+            lGrade.Location = new System.Drawing.Point(6, 51);
             lGrade.Name = "lGrade";
-            lGrade.Size = new System.Drawing.Size(38, 16);
+            lGrade.Size = new System.Drawing.Size(38, 15);
             lGrade.TabIndex = 4;
             lGrade.Text = "Grade";
             // 
@@ -390,27 +393,27 @@
             // 
             cbGrade.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             cbGrade.FormattingEnabled = true;
-            cbGrade.Location = new System.Drawing.Point(15, 73);
+            cbGrade.Location = new System.Drawing.Point(15, 68);
             cbGrade.Name = "cbGrade";
-            cbGrade.Size = new System.Drawing.Size(229, 24);
+            cbGrade.Size = new System.Drawing.Size(229, 23);
             cbGrade.TabIndex = 5;
             cbGrade.SelectedIndexChanged += cbGrade_SelectedIndexChanged;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new System.Drawing.Point(6, 110);
+            label5.Location = new System.Drawing.Point(6, 103);
             label5.Name = "label5";
-            label5.Size = new System.Drawing.Size(124, 16);
+            label5.Size = new System.Drawing.Size(126, 15);
             label5.TabIndex = 6;
             label5.Text = "Item amount per entry";
             // 
             // btnRemoveItem
             // 
             btnRemoveItem.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            btnRemoveItem.Location = new System.Drawing.Point(128, 374);
+            btnRemoveItem.Location = new System.Drawing.Point(128, 351);
             btnRemoveItem.Name = "btnRemoveItem";
-            btnRemoveItem.Size = new System.Drawing.Size(116, 23);
+            btnRemoveItem.Size = new System.Drawing.Size(116, 22);
             btnRemoveItem.TabIndex = 15;
             btnRemoveItem.Text = "Remove";
             btnRemoveItem.UseVisualStyleBackColor = true;
@@ -418,7 +421,7 @@
             // 
             // tSaleQuantity
             // 
-            tSaleQuantity.Location = new System.Drawing.Point(15, 129);
+            tSaleQuantity.Location = new System.Drawing.Point(15, 121);
             tSaleQuantity.Name = "tSaleQuantity";
             tSaleQuantity.Size = new System.Drawing.Size(107, 23);
             tSaleQuantity.TabIndex = 7;
@@ -427,9 +430,9 @@
             // btnUpdateAhItem
             // 
             btnUpdateAhItem.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            btnUpdateAhItem.Location = new System.Drawing.Point(6, 374);
+            btnUpdateAhItem.Location = new System.Drawing.Point(6, 351);
             btnUpdateAhItem.Name = "btnUpdateAhItem";
-            btnUpdateAhItem.Size = new System.Drawing.Size(116, 23);
+            btnUpdateAhItem.Size = new System.Drawing.Size(116, 22);
             btnUpdateAhItem.TabIndex = 14;
             btnUpdateAhItem.Text = "Update/Add";
             btnUpdateAhItem.UseVisualStyleBackColor = true;
@@ -438,16 +441,16 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new System.Drawing.Point(6, 166);
+            label6.Location = new System.Drawing.Point(6, 156);
             label6.Name = "label6";
-            label6.Size = new System.Drawing.Size(193, 16);
+            label6.Size = new System.Drawing.Size(193, 15);
             label6.TabIndex = 8;
             label6.Text = "Sale price (buy-out, zero to disable)";
             // 
             // tListedCount
             // 
             tListedCount.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            tListedCount.Location = new System.Drawing.Point(15, 345);
+            tListedCount.Location = new System.Drawing.Point(15, 323);
             tListedCount.Name = "tListedCount";
             tListedCount.Size = new System.Drawing.Size(107, 23);
             tListedCount.TabIndex = 13;
@@ -455,7 +458,7 @@
             // 
             // tBuyOutPrice
             // 
-            tBuyOutPrice.Location = new System.Drawing.Point(15, 185);
+            tBuyOutPrice.Location = new System.Drawing.Point(15, 173);
             tBuyOutPrice.Name = "tBuyOutPrice";
             tBuyOutPrice.Size = new System.Drawing.Size(107, 23);
             tBuyOutPrice.TabIndex = 9;
@@ -466,24 +469,24 @@
             // 
             label8.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             label8.AutoSize = true;
-            label8.Location = new System.Drawing.Point(6, 326);
+            label8.Location = new System.Drawing.Point(6, 306);
             label8.Name = "label8";
-            label8.Size = new System.Drawing.Size(257, 16);
+            label8.Size = new System.Drawing.Size(259, 15);
             label8.TabIndex = 12;
             label8.Text = "Number of times to keep this entry listed on AH";
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new System.Drawing.Point(6, 212);
+            label7.Location = new System.Drawing.Point(6, 199);
             label7.Name = "label7";
-            label7.Size = new System.Drawing.Size(68, 16);
+            label7.Size = new System.Drawing.Size(68, 15);
             label7.TabIndex = 10;
             label7.Text = "Starting Bid";
             // 
             // tStartBid
             // 
-            tStartBid.Location = new System.Drawing.Point(15, 231);
+            tStartBid.Location = new System.Drawing.Point(15, 217);
             tStartBid.Name = "tStartBid";
             tStartBid.Size = new System.Drawing.Size(107, 23);
             tStartBid.TabIndex = 11;
@@ -493,9 +496,9 @@
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new System.Drawing.Point(251, 229);
+            label10.Location = new System.Drawing.Point(251, 215);
             label10.Name = "label10";
-            label10.Size = new System.Drawing.Size(92, 16);
+            label10.Size = new System.Drawing.Size(93, 15);
             label10.TabIndex = 20;
             label10.Text = "Currently on AH";
             // 
@@ -503,25 +506,25 @@
             // 
             lbAhLiveList.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             lbAhLiveList.FormattingEnabled = true;
-            lbAhLiveList.Location = new System.Drawing.Point(251, 248);
+            lbAhLiveList.Location = new System.Drawing.Point(251, 232);
             lbAhLiveList.Name = "lbAhLiveList";
-            lbAhLiveList.Size = new System.Drawing.Size(185, 164);
+            lbAhLiveList.Size = new System.Drawing.Size(185, 154);
             lbAhLiveList.TabIndex = 19;
             // 
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new System.Drawing.Point(255, 14);
+            label9.Location = new System.Drawing.Point(255, 13);
             label9.Name = "label9";
-            label9.Size = new System.Drawing.Size(90, 16);
+            label9.Size = new System.Drawing.Size(90, 15);
             label9.TabIndex = 18;
             label9.Text = "Bot List settings";
             // 
             // btnQueryServerAH
             // 
-            btnQueryServerAH.Location = new System.Drawing.Point(6, 9);
+            btnQueryServerAH.Location = new System.Drawing.Point(6, 8);
             btnQueryServerAH.Name = "btnQueryServerAH";
-            btnQueryServerAH.Size = new System.Drawing.Size(239, 23);
+            btnQueryServerAH.Size = new System.Drawing.Size(239, 22);
             btnQueryServerAH.TabIndex = 17;
             btnQueryServerAH.Text = "Update live stats";
             btnQueryServerAH.UseVisualStyleBackColor = true;
@@ -531,40 +534,41 @@
             // 
             lbAhList.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             lbAhList.FormattingEnabled = true;
-            lbAhList.Location = new System.Drawing.Point(251, 38);
+            lbAhList.Location = new System.Drawing.Point(251, 36);
             lbAhList.Name = "lbAhList";
-            lbAhList.Size = new System.Drawing.Size(185, 180);
+            lbAhList.Size = new System.Drawing.Size(185, 169);
             lbAhList.TabIndex = 16;
             lbAhList.SelectedIndexChanged += lbAhList_SelectedIndexChanged;
             // 
             // tvAhList
             // 
             tvAhList.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            tvAhList.Location = new System.Drawing.Point(6, 38);
+            tvAhList.Location = new System.Drawing.Point(6, 36);
             tvAhList.Name = "tvAhList";
-            tvAhList.Size = new System.Drawing.Size(239, 375);
+            tvAhList.Size = new System.Drawing.Size(239, 352);
             tvAhList.TabIndex = 0;
             tvAhList.AfterSelect += tvAhList_AfterSelect;
             // 
             // tpLogs
             // 
+            tpLogs.Controls.Add(panel1);
             tpLogs.Controls.Add(tLog);
-            tpLogs.Location = new System.Drawing.Point(4, 25);
+            tpLogs.Location = new System.Drawing.Point(4, 24);
             tpLogs.Name = "tpLogs";
             tpLogs.Padding = new System.Windows.Forms.Padding(3);
-            tpLogs.Size = new System.Drawing.Size(792, 421);
+            tpLogs.Size = new System.Drawing.Size(792, 394);
             tpLogs.TabIndex = 0;
             tpLogs.Text = "Logs";
             tpLogs.UseVisualStyleBackColor = true;
             // 
             // tLog
             // 
-            tLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            tLog.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             tLog.Font = new System.Drawing.Font("Consolas", 9F);
             tLog.Location = new System.Drawing.Point(3, 3);
             tLog.Multiline = true;
             tLog.Name = "tLog";
-            tLog.Size = new System.Drawing.Size(786, 415);
+            tLog.Size = new System.Drawing.Size(781, 340);
             tLog.TabIndex = 0;
             // 
             // bgwAhCheckLoop
@@ -575,11 +579,31 @@
             bgwAhCheckLoop.ProgressChanged += bgwAhCheckLoop_ProgressChanged;
             bgwAhCheckLoop.RunWorkerCompleted += bgwAhCheckLoop_RunWorkerCompleted;
             // 
+            // panel1
+            // 
+            panel1.Controls.Add(BtnClearLog);
+            panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            panel1.Location = new System.Drawing.Point(3, 349);
+            panel1.Name = "panel1";
+            panel1.Size = new System.Drawing.Size(786, 42);
+            panel1.TabIndex = 1;
+            // 
+            // BtnClearLog
+            // 
+            BtnClearLog.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
+            BtnClearLog.Location = new System.Drawing.Point(5, 14);
+            BtnClearLog.Name = "BtnClearLog";
+            BtnClearLog.Size = new System.Drawing.Size(114, 23);
+            BtnClearLog.TabIndex = 0;
+            BtnClearLog.Text = "Clear";
+            BtnClearLog.UseVisualStyleBackColor = true;
+            BtnClearLog.Click += BtnClearLog_Click;
+            // 
             // AhBotForm
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(800, 450);
+            ClientSize = new System.Drawing.Size(800, 422);
             Controls.Add(tcAhBot);
             Name = "AhBotForm";
             Text = "Auction House Bot";
@@ -595,6 +619,7 @@
             gbItemEntrySettings.PerformLayout();
             tpLogs.ResumeLayout(false);
             tpLogs.PerformLayout();
+            panel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -643,9 +668,11 @@
         private System.Windows.Forms.Label lStartBidPreview;
         private System.Windows.Forms.TextBox tComment;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox AhBotTextBoxInfo;
         private System.Windows.Forms.Label lStackMax;
         private System.Windows.Forms.Label lListingInfo;
         private System.Windows.Forms.Label lItemIcon;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button BtnClearLog;
     }
 }
