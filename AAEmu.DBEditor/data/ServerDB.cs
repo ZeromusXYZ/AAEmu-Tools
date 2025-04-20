@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace AAEmu.DBEditor.data
 {
@@ -40,25 +41,25 @@ namespace AAEmu.DBEditor.data
 
         public Dictionary<long, Item> ItemCache { get; set; } = new();
 
-        public bool ReloadLocale()
+        public bool ReloadLocale(CompactContext context)
         {
             LocalizedText.Clear();
             try
             {
-                var locals = CompactSqlite.LocalizedTexts.ToList();
+                var locals = context.LocalizedTexts.ToList();
                 foreach (var localize in locals)
                 {
                     var s = localize.EnUs;// localize.Ko;
                     switch (AAEmu.DBEditor.Properties.Settings.Default.ClientLanguage.ToLower())
                     {
-                        //case "ko": s = localize.Ko; break;
+                        case "ko": s = localize.Ko; break;
                         case "en_us": s = localize.EnUs; break;
-                        //case "ru": s = localize.Ru; break;
-                        //case "de": s = localize.De; break;
-                        //case "fr": s = localize.Fr; break;
-                        //case "zh_cn": s = localize.ZhCn; break;
-                        //case "zh_tw": s = localize.ZhTw; break;
-                        //case "ja": s = localize.Ja; break;
+                        case "ru": s = localize.Ru; break;
+                        case "de": s = localize.De; break;
+                        case "fr": s = localize.Fr; break;
+                        case "zh_cn": s = localize.ZhCn; break;
+                        case "zh_tw": s = localize.ZhTw; break;
+                        case "ja": s = localize.Ja; break;
                     }
                     LocalizedText.Add(new(localize.TblName, localize.TblColumnName, localize.Idx), s);
                 }
@@ -110,11 +111,14 @@ namespace AAEmu.DBEditor.data
                 if (TableNames.Count > 0)
                     this.fileName = fileName;
 
-                CompactSqlite = new CompactContext();
+                CompactSqlite?.Dispose();
+                CompactSqlite = null;
+                var tempContext = new CompactContext();
                 try
                 {
-                    if (!ReloadLocale())
+                    if (!ReloadLocale(tempContext))
                         return false;
+                    CompactSqlite = tempContext;
                 }
                 catch
                 {

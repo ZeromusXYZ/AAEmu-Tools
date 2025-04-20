@@ -13,7 +13,7 @@ public partial class LocalizedText
 
     public long? Idx { get; set; }
 
-    //public string Ko { get; set; }
+    public string Ko { get; set; }
 
     //public long? KoVer { get; set; }
 
@@ -21,27 +21,27 @@ public partial class LocalizedText
 
     //public long? EnUsVer { get; set; }
 
-    //public string ZhCn { get; set; }
+    public string ZhCn { get; set; }
 
     //public long? ZhCnVer { get; set; }
 
-    //public string Ja { get; set; }
+    public string Ja { get; set; }
 
     //public long? JaVer { get; set; }
 
-    //public string Ru { get; set; }
+    public string Ru { get; set; }
 
     //public long? RuVer { get; set; }
 
-    //public string ZhTw { get; set; }
+    public string ZhTw { get; set; }
 
     //public long? ZhTwVer { get; set; }
 
-    //public string De { get; set; }
+    public string De { get; set; }
 
     //public long? DeVer { get; set; }
 
-    //public string Fr { get; set; }
+    public string Fr { get; set; }
 
     //public long? FrVer { get; set; }
 }

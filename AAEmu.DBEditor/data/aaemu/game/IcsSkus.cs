@@ -68,5 +68,5 @@ public partial class IcsSkus
     /// </summary>
     public uint BonusItemCount { get; set; }
 
-    public uint PayItemType { get; set; }
+    //public uint PayItemType { get; set; }
 }

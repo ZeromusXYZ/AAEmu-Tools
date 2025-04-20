@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,23 @@ public partial class CompactContext : DbContext
         : base(options)
     {
         //
+    }
+
+    private bool CheckIfColumnOnTableExists(string table, string column)
+    {
+        var options = new DbContextOptionsBuilder();
+        this.OnConfiguring(options);
+        using var tempContext = new DbContext(options.Options);
+        var result = tempContext.Database.SqlQuery<string>($@"SELECT name FROM pragma_table_info('localized_texts')").ToList();
+        return result.Contains(column);
+    }
+
+    private List<string> GetTableFieldNames(string table)
+    {
+        var options = new DbContextOptionsBuilder();
+        this.OnConfiguring(options);
+        using var tempContext = new DbContext(options.Options);
+        return tempContext.Database.SqlQuery<string>($@"SELECT name FROM pragma_table_info('localized_texts')").ToList();
     }
 
     //public virtual DbSet<AcceptQuestEffect> AcceptQuestEffects { get; set; }
@@ -10396,59 +10414,110 @@ public partial class CompactContext : DbContext
                 .HasColumnName("start_value");
         });
 
+        var localeFields = GetTableFieldNames("localized_texts");
         modelBuilder.Entity<LocalizedText>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("localized_texts");
-            /*
-            entity.Property(e => e.De).HasColumnName("de");
-            entity.Property(e => e.DeVer)
-                .HasColumnType("INT")
-                .HasColumnName("de_ver");
-            */
-            entity.Property(e => e.EnUs).HasColumnName("en_us");
-            /*
-            entity.Property(e => e.EnUsVer)
-                .HasColumnType("INT")
-                .HasColumnName("en_us_ver");
-            entity.Property(e => e.Fr).HasColumnName("fr");
-            entity.Property(e => e.FrVer)
-                .HasColumnType("INT")
-                .HasColumnName("fr_ver");
-            entity.Property(e => e.Id)
-                .HasColumnType("INT")
-                .HasColumnName("id");
-            */
-            entity.Property(e => e.Idx)
-                .HasColumnType("INT")
-                .HasColumnName("idx");
-            /*
-            entity.Property(e => e.Ja).HasColumnName("ja");
-            entity.Property(e => e.JaVer)
-                .HasColumnType("INT")
-                .HasColumnName("ja_ver");
-            entity.Property(e => e.Ko).HasColumnName("ko");
-            entity.Property(e => e.KoVer)
-                .HasColumnType("INT")
-                .HasColumnName("ko_ver");
-            entity.Property(e => e.Ru).HasColumnName("ru");
-            entity.Property(e => e.RuVer)
-                .HasColumnType("INT")
-                .HasColumnName("ru_ver");
-            */
+            entity.HasNoKey().ToTable("localized_texts");
+            // entity.Property(e => e.Id).HasColumnType("INT").HasColumnName("id");
             entity.Property(e => e.TblColumnName).HasColumnName("tbl_column_name");
             entity.Property(e => e.TblName).HasColumnName("tbl_name");
-            /*
-            entity.Property(e => e.ZhCn).HasColumnName("zh_cn");
-            entity.Property(e => e.ZhCnVer)
-                .HasColumnType("INT")
-                .HasColumnName("zh_cn_ver");
-            entity.Property(e => e.ZhTw).HasColumnName("zh_tw");
-            entity.Property(e => e.ZhTwVer)
-                .HasColumnType("INT")
-                .HasColumnName("zh_tw_ver");
-            */
+            entity.Property(e => e.Idx).HasColumnType("INT").HasColumnName("idx");
+
+            // DE
+            if (localeFields.Contains("de"))
+            {
+                entity.Property(e => e.De).HasColumnName("de");
+                // entity.Property(e => e.DeVer).HasColumnType("INT").HasColumnName("de_ver");
+            }
+            else
+            {
+                entity.Ignore(e => e.De);
+                // entity.Ignore(e => e.DeVer);
+            }
+
+            // EN_US
+            if (localeFields.Contains("en_us"))
+            {
+                entity.Property(e => e.EnUs).HasColumnName("en_us");
+                // entity.Property(e => e.EnUsVer).HasColumnType("INT").HasColumnName("en_us_ver");
+            }
+            else
+            {
+                entity.Ignore(e => e.EnUs);
+                // entity.Ignore(e => e.EnUsVer);
+            }
+
+            // FR
+            if (localeFields.Contains("fr"))
+            {
+                entity.Property(e => e.Fr).HasColumnName("fr");
+                // entity.Property(e => e.FrVer).HasColumnType("INT").HasColumnName("fr_ver");
+            }
+            else
+            {
+                entity.Ignore(e => e.Fr);
+                // entity.Ignore(e => e.FrVer);
+            }
+
+            // JA
+            if (localeFields.Contains("ja"))
+            {
+                entity.Property(e => e.Ja).HasColumnName("ja");
+                // entity.Property(e => e.JaVer).HasColumnType("INT").HasColumnName("ja_ver");
+            }
+            else
+            {
+                entity.Ignore(e => e.Ja);
+                // entity.Ignore(e => e.JaVer);
+            }
+
+            // KO
+            if (localeFields.Contains("ko"))
+            {
+                entity.Property(e => e.Ko).HasColumnName("ko");
+                // entity.Property(e => e.KoVer).HasColumnType("INT").HasColumnName("ko_ver");
+            }
+            else
+            {
+                entity.Ignore(e => e.Ko);
+                // entity.Ignore(e => e.KoVer);
+            }
+
+            // RU
+            if (localeFields.Contains("ru"))
+            {
+                entity.Property(e => e.Ru).HasColumnName("ru");
+                //entity.Property(e => e.RuVer).HasColumnType("INT").HasColumnName("ru_ver");
+            }
+            else
+            {
+                entity.Ignore(e => e.Ru);
+                // entity.Ignore(e => e.RuVer);
+            }
+
+            // ZH_CN
+            if (localeFields.Contains("zh_cn"))
+            {
+                entity.Property(e => e.ZhCn).HasColumnName("zh_cn");
+                //entity.Property(e => e.ZhCnVer).HasColumnType("INT").HasColumnName("zh_cn_ver");
+            }
+            else
+            {
+                entity.Ignore(e => e.ZhCn);
+                // entity.Ignore(e => e.ZhCnVer);
+            }
+
+            // ZH_TW
+            if (localeFields.Contains("zh_tw"))
+            {
+                entity.Property(e => e.ZhTw).HasColumnName("zh_tw");
+                //entity.Property(e => e.ZhTwVer).HasColumnType("INT").HasColumnName("zh_tw_ver");
+            }
+            else
+            {
+                entity.Ignore(e => e.ZhTw);
+                // entity.Ignore(e => e.ZhTwVer);
+            }
         });
 
         modelBuilder.Entity<Loot>(entity =>

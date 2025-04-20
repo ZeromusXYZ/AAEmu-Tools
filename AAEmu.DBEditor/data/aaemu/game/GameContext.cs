@@ -1055,9 +1055,11 @@ public partial class GameContext : DbContext
                 .HasComment("Item that is for sale")
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("item_id");
+            /*
             entity.Property(e => e.PayItemType)
                 .HasColumnType("int(10) unsigned")
                 .HasColumnName("pay_item_type");
+            */
             entity.Property(e => e.Position)
                 .HasComment("Used for display order inside the item details")
                 .HasColumnType("int(10)")
