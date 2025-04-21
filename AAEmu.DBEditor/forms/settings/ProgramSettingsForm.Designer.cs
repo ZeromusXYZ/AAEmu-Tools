@@ -357,6 +357,7 @@
             Controls.Add(groupBox1);
             MinimumSize = new System.Drawing.Size(620, 420);
             Name = "ProgramSettingsForm";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             Text = "Program Settings";
             Load += ProgramSettingsForm_Load;
             groupBox1.ResumeLayout(false);

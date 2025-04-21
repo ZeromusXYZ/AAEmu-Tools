@@ -117,6 +117,7 @@ namespace AAEmu.DBEditor.forms
         private void ProgramSettingsForm_Load(object sender, EventArgs e)
         {
             RevertSettings();
+            BringToFront();
         }
 
         public ProgramSettings GenerateProgramSettingsFromDialog()

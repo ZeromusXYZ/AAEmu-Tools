@@ -14,12 +14,12 @@ public partial class LoginContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var conString = new MySqlConnectionStringBuilder();
-        var (ip, port) = IpHelper.SplitAsHostAndPort(AAEmu.DBEditor.Properties.Settings.Default.MySQLDB, 3306);
+        var (ip, port) = IpHelper.SplitAsHostAndPort(ProgramSettings.Instance.MySqlDb, 3306);
         conString.Server = ip; // "127.0.0.1";
         conString.Port = port; // "3306";
-        conString.Database = AAEmu.DBEditor.Properties.Settings.Default.MySQLLogin; // "aaemu_login";
-        conString.UserID = AAEmu.DBEditor.Properties.Settings.Default.MySQLUser; // "root";
-        conString.Password = AAEmu.DBEditor.Properties.Settings.Default.MySQLPassword; // "password";
+        conString.Database = ProgramSettings.Instance.MySqlLogin; // "aaemu_login";
+        conString.UserID = ProgramSettings.Instance.MySqlUser; // "root";
+        conString.Password = ProgramSettings.Instance.MySqlPassword; // "password";
         optionsBuilder.UseMySql(conString.ConnectionString,
             Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.12-mysql"));
     }

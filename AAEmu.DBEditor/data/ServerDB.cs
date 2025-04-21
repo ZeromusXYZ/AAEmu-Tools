@@ -50,7 +50,7 @@ namespace AAEmu.DBEditor.data
                 foreach (var localize in locals)
                 {
                     var s = localize.EnUs;// localize.Ko;
-                    switch (AAEmu.DBEditor.Properties.Settings.Default.ClientLanguage.ToLower())
+                    switch (ProgramSettings.Instance.ClientLanguage.ToLower())
                     {
                         case "ko": s = localize.Ko; break;
                         case "en_us": s = localize.EnUs; break;

@@ -42,9 +42,16 @@ public class ProgramSettings
         return false;
     }
 
+    /// <summary>
+    /// Gets the path that we use to store settings and creates it if it doesn't exist yet
+    /// </summary>
+    /// <returns></returns>
     public static string GetSettingsFolder()
     {
-        return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ZeromusXYZ", "AAEmu.DBEditor");
+        var targetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ZeromusXYZ", "AAEmu.DBEditor");
+        if (!Directory.Exists(targetPath))
+            Directory.CreateDirectory(targetPath);
+        return targetPath;
     }
 
     public string ClientPak { get; set; } = string.Empty;

@@ -10,7 +10,7 @@ public partial class CompactContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var conString = new SqliteConnectionStringBuilder();
-        conString.DataSource = AAEmu.DBEditor.Properties.Settings.Default.ServerDB;
+        conString.DataSource = ProgramSettings.Instance.ServerDb;
         optionsBuilder.UseSqlite(conString.ConnectionString);
     }
 }

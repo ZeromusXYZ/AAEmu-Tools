@@ -11,6 +11,7 @@ using AAEmu.DBEditor.data.gamedb;
 using AAEmu.DBEditor.forms.client;
 using AAEmu.DBEditor.tools.ahbot;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace AAEmu.DBEditor
 {
@@ -20,6 +21,7 @@ namespace AAEmu.DBEditor
         public const string NewSettingsFile = "new_settings.json";
         public static MainForm Self;
         public Task ValidateFilesTask;
+        private bool StartupComplete = false;
 
         public MainForm()
         {
@@ -95,18 +97,18 @@ namespace AAEmu.DBEditor
             try
             {
                 var res = true;
-                if (!Data.Server.OpenDB(AAEmu.DBEditor.Properties.Settings.Default.ServerDB))
+                if (!Data.Server.OpenDB(ProgramSettings.Instance.ServerDb))
                 {
                     UpdateProgress("Opening ServerDB failed");
                     res = false;
-                    UpdateLabel(lServerDB, AAEmu.DBEditor.Properties.Settings.Default.ServerDB + " <failed to load>");
+                    UpdateLabel(lServerDB, ProgramSettings.Instance.ServerDb + " <failed to load>");
                 }
                 else
                 {
                     UpdateProgress("ServerDB loaded");
                     UpdateLabel(lServerDB,
                         Data.Server.FileName + " <" + Data.Server.TableNames.Count.ToString() + " tables>");
-                    AAEmu.DBEditor.Properties.Settings.Default.Save();
+                    // AAEmu.DBEditor.Properties.Settings.Default.Save();
                     Data.Server.LoadDbCache();
                 }
                 return res;
@@ -122,13 +124,13 @@ namespace AAEmu.DBEditor
         {
             var res = true;
             UpdateProgress("Loading Client Pak File ...");
-            if (string.IsNullOrWhiteSpace(AAEmu.DBEditor.Properties.Settings.Default.ClientPak) || !File.Exists(AAEmu.DBEditor.Properties.Settings.Default.ClientPak))
+            if (string.IsNullOrWhiteSpace(ProgramSettings.Instance.ClientPak) || !File.Exists(ProgramSettings.Instance.ClientPak))
             {
                 UpdateLabel(lClientPak, "<not defined>");
                 TestPanel.BackgroundImage = null;
             }
             else
-            if (File.Exists(AAEmu.DBEditor.Properties.Settings.Default.ClientPak) && !Data.Client.Open(AAEmu.DBEditor.Properties.Settings.Default.ClientPak))
+            if (File.Exists(ProgramSettings.Instance.ClientPak) && !Data.Client.Open(ProgramSettings.Instance.ClientPak))
             {
                 UpdateProgress("Loading Client Pak File failed");
                 res = false;
@@ -151,7 +153,7 @@ namespace AAEmu.DBEditor
             Data.MySqlDb.Initialize();
             if (Data.MySqlDb.IsValid)
             {
-                UpdateLabel(lMySQLServer, AAEmu.DBEditor.Properties.Settings.Default.MySQLDB + " - " + AAEmu.DBEditor.Properties.Settings.Default.MySQLLogin + " - " + AAEmu.DBEditor.Properties.Settings.Default.MySQLGame);
+                UpdateLabel(lMySQLServer, ProgramSettings.Instance.MySqlDb + " - " + ProgramSettings.Instance.MySqlLogin + " - " + ProgramSettings.Instance.MySqlGame);
                 AAEmu.DBEditor.Properties.Settings.Default.Save();
                 UpdateProgress("MySQL loaded");
             }
@@ -202,6 +204,7 @@ namespace AAEmu.DBEditor
         private void MainForm_Load(object sender, EventArgs e)
         {
             // Update settings if needed
+            /*
             if (!Properties.Settings.Default.IsUpdated)
             {
                 Properties.Settings.Default.Upgrade();
@@ -210,6 +213,7 @@ namespace AAEmu.DBEditor
                 Properties.Settings.Default.IsUpdated = true;
                 Properties.Settings.Default.Save();
             }
+            */
 
             var newSettingsFile = Path.Combine(ProgramSettings.GetSettingsFolder(), NewSettingsFile);
             var settingsFile = Path.Combine(ProgramSettings.GetSettingsFolder(), SettingsFile);
@@ -227,20 +231,38 @@ namespace AAEmu.DBEditor
             }
 
             MainForm.Self = this;
-            MMVersion.Text = "Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            MMVersion.Text = $@"Version {Assembly.GetExecutingAssembly().GetName().Version}";
+
+            // Set the radio buttons for locale
+            rbLocaleEnUs.Checked = ProgramSettings.Instance.ClientLanguage == "en_us";
+            rbLocaleRu.Checked = ProgramSettings.Instance.ClientLanguage == "ru";
+            rbLocaleKo.Checked = ProgramSettings.Instance.ClientLanguage == "ko";
+            rbLocaleFr.Checked = ProgramSettings.Instance.ClientLanguage == "fr";
+            rbLocaleDe.Checked = ProgramSettings.Instance.ClientLanguage == "de";
+            rbLocaleJa.Checked = ProgramSettings.Instance.ClientLanguage == "ja";
+            rbLocaleZhTw.Checked = ProgramSettings.Instance.ClientLanguage == "zh_tw";
+            rbLocaleZhCn.Checked = ProgramSettings.Instance.ClientLanguage == "zh_cn";
+
             Data.Initialize();
             ValidateFilesTask = new Task(new Action(delegate
             {
                 var res = ValidateFiles();
-                // If valid copy the new settings file and delete it
+                // If valid, copy the new settings file and delete it
                 if (res && File.Exists(newSettingsFile))
                 {
                     ProgramSettings.SaveToFile(ProgramSettings.Instance, settingsFile);
                     File.Delete(newSettingsFile);
                 }
+                else if (!File.Exists(settingsFile))
+                {
+                    // Open settings dialog if there is no settings file yet
+                    // Requires invoke to actually make it pop up on top
+                    Invoke(new Action(delegate { MMFileSettings.PerformClick(); }));
+                }
             }));
             ValidateFilesTask.Start();
             UpdateLocaleButtons();
+            StartupComplete = true;
         }
 
         private void MMFileOpenServer_Click(object sender, EventArgs e)
@@ -250,17 +272,17 @@ namespace AAEmu.DBEditor
 
             if (ofdServerDB.ShowDialog() == DialogResult.OK)
             {
-                var oldServerDB = AAEmu.DBEditor.Properties.Settings.Default.ServerDB;
-                AAEmu.DBEditor.Properties.Settings.Default.ServerDB = ofdServerDB.FileName;
+                var oldServerDB = ProgramSettings.Instance.ServerDb;
+                ProgramSettings.Instance.ServerDb = ofdServerDB.FileName;
                 if (!OpenServerDbTask())
                 {
-                    AAEmu.DBEditor.Properties.Settings.Default.ServerDB = oldServerDB;
+                    ProgramSettings.Instance.ServerDb = oldServerDB;
                     // AAEmu.DBEditor.Properties.Settings.Default.Save();
                 }
                 else
                 {
-                    AAEmu.DBEditor.Properties.Settings.Default.ServerDB = Data.Server.FileName;
-                    AAEmu.DBEditor.Properties.Settings.Default.Save();
+                    ProgramSettings.Instance.ServerDb = Data.Server.FileName;
+                    // AAEmu.DBEditor.Properties.Settings.Default.Save();
                 }
             }
         }
@@ -272,18 +294,18 @@ namespace AAEmu.DBEditor
 
             if (ofdClientPak.ShowDialog() == DialogResult.OK)
             {
-                var oldPak = AAEmu.DBEditor.Properties.Settings.Default.ClientPak;
-                AAEmu.DBEditor.Properties.Settings.Default.ClientPak = ofdClientPak.FileName;
+                var oldPak = ProgramSettings.Instance.ClientPak;
+                ProgramSettings.Instance.ClientPak = ofdClientPak.FileName;
                 Data.Client.Initialize();
                 if (!OpenClientPakTask())
                 {
-                    AAEmu.DBEditor.Properties.Settings.Default.ClientPak = oldPak;
+                    ProgramSettings.Instance.ClientPak = oldPak;
                     // AAEmu.DBEditor.Properties.Settings.Default.Save();
                 }
                 else
                 {
-                    AAEmu.DBEditor.Properties.Settings.Default.ClientPak = Data.Client.FileName;
-                    AAEmu.DBEditor.Properties.Settings.Default.Save();
+                    ProgramSettings.Instance.ClientPak = Data.Client.FileName;
+                    // AAEmu.DBEditor.Properties.Settings.Default.Save();
                 }
             }
         }
@@ -350,15 +372,25 @@ namespace AAEmu.DBEditor
             if (sender is not RadioButton rbLocale)
                 return;
 
+            if (!StartupComplete)
+                return;
+
             if (rbLocale.Checked)
             {
-                AAEmu.DBEditor.Properties.Settings.Default.ClientLanguage = rbLocale.Text;
-                AAEmu.DBEditor.Properties.Settings.Default.Save();
+                ProgramSettings.Instance.ClientLanguage = rbLocale.Text;
+                // AAEmu.DBEditor.Properties.Settings.Default.Save();
                 UpdateProgress("Updated Locale, reloading from DB ...");
                 if (Data.Server.ReloadLocale(Data.Server.CompactSqlite))
+                {
                     UpdateProgress($"Locale updated to {rbLocale.Text}.");
+                    // Only save settings if this button was enabled by the locale loader, otherwise ignore
+                    if (rbLocale.Enabled)
+                        ProgramSettings.SaveToFile(ProgramSettings.Instance, Path.Combine(ProgramSettings.GetSettingsFolder(), SettingsFile));
+                }
                 else
+                {
                     UpdateProgress($"Failed to update locale to {rbLocale.Text}!");
+                }
             }
         }
 
