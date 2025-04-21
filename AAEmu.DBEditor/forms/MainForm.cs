@@ -7,11 +7,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using AAEmu.DBEditor.data.gamedb;
 using AAEmu.DBEditor.forms.client;
 using AAEmu.DBEditor.tools.ahbot;
 using System.Diagnostics;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace AAEmu.DBEditor
 {
@@ -21,7 +19,7 @@ namespace AAEmu.DBEditor
         public const string NewSettingsFile = "new_settings.json";
         public static MainForm Self;
         public Task ValidateFilesTask;
-        private bool StartupComplete = false;
+        private bool _startupComplete = false;
 
         public MainForm()
         {
@@ -262,7 +260,7 @@ namespace AAEmu.DBEditor
             }));
             ValidateFilesTask.Start();
             UpdateLocaleButtons();
-            StartupComplete = true;
+            _startupComplete = true;
         }
 
         private void MMFileOpenServer_Click(object sender, EventArgs e)
@@ -272,11 +270,11 @@ namespace AAEmu.DBEditor
 
             if (ofdServerDB.ShowDialog() == DialogResult.OK)
             {
-                var oldServerDB = ProgramSettings.Instance.ServerDb;
+                var oldServerDb = ProgramSettings.Instance.ServerDb;
                 ProgramSettings.Instance.ServerDb = ofdServerDB.FileName;
                 if (!OpenServerDbTask())
                 {
-                    ProgramSettings.Instance.ServerDb = oldServerDB;
+                    ProgramSettings.Instance.ServerDb = oldServerDb;
                     // AAEmu.DBEditor.Properties.Settings.Default.Save();
                 }
                 else
@@ -310,26 +308,23 @@ namespace AAEmu.DBEditor
             }
         }
 
-        public void UpdateProgress(string Name, int pos = 0, int max = 0)
+        public void UpdateProgress(string name, int pos = 0, int max = 0)
         {
             var percent = (int)Math.Round((double)pos / (double)max * 100f);
-            Invoke(new Action(delegate
+            Invoke(delegate
             {
-                if (max > 0)
-                    sbL1.Text = Name + " " + percent.ToString() + "%";
-                else
-                    sbL1.Text = Name;
+                sbL1.Text = max > 0 ? $@"{name} {percent}%" : name;
                 sbL1.Invalidate();
-            }));
+            });
         }
 
         public void UpdateLabel(Label label, string text)
         {
-            Invoke(new Action(delegate
+            Invoke(delegate
             {
                 label.Text = text;
                 label.Invalidate();
-            }));
+            });
         }
 
         private void MMClientMap_Click(object sender, EventArgs e)
@@ -372,7 +367,7 @@ namespace AAEmu.DBEditor
             if (sender is not RadioButton rbLocale)
                 return;
 
-            if (!StartupComplete)
+            if (!_startupComplete)
                 return;
 
             if (rbLocale.Checked)
@@ -460,17 +455,17 @@ namespace AAEmu.DBEditor
             var newProcess = new ProcessStartInfo(exeFile, string.Empty);
             newProcess.UseShellExecute = true;
             // newProcess.Verb = "runas";
-            bool startOK = false;
+            bool startOk;
             try
             {
                 Process.Start(newProcess);
-                startOK = true;
+                startOk = true;
             }
             catch
             {
-                startOK = false;
+                startOk = false;
             }
-            return startOK;
+            return startOk;
         }
     }
 }
