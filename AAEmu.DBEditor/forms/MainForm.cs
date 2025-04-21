@@ -10,11 +10,14 @@ using System.Windows.Forms;
 using AAEmu.DBEditor.data.gamedb;
 using AAEmu.DBEditor.forms.client;
 using AAEmu.DBEditor.tools.ahbot;
+using System.Diagnostics;
 
 namespace AAEmu.DBEditor
 {
     public partial class MainForm : Form
     {
+        public const string SettingsFile = "settings.json";
+        public const string NewSettingsFile = "new_settings.json";
         public static MainForm Self;
         public Task ValidateFilesTask;
 
@@ -183,9 +186,13 @@ namespace AAEmu.DBEditor
             Invoke(new Action(delegate { UpdateLocaleButtons(); }));
 
             if (res)
+            {
                 UpdateProgress("Done");
+            }
             else
+            {
                 UpdateProgress("Loading failed");
+            }
 
             ValidateFilesTask = null;
 
@@ -204,12 +211,33 @@ namespace AAEmu.DBEditor
                 Properties.Settings.Default.Save();
             }
 
+            var newSettingsFile = Path.Combine(ProgramSettings.GetSettingsFolder(), NewSettingsFile);
+            var settingsFile = Path.Combine(ProgramSettings.GetSettingsFolder(), SettingsFile);
+            var settingsToLoad = settingsFile;
+            // Load new settings if it exists
+            if (File.Exists(newSettingsFile))
+            {
+                settingsToLoad = newSettingsFile;
+            }
+
+            var loadedSettings = ProgramSettings.LoadFromFile(settingsToLoad);
+            if (loadedSettings != null)
+            {
+                ProgramSettings.Instance = loadedSettings;
+            }
+
             MainForm.Self = this;
             MMVersion.Text = "Version " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Data.Initialize();
             ValidateFilesTask = new Task(new Action(delegate
             {
-                ValidateFiles();
+                var res = ValidateFiles();
+                // If valid copy the new settings file and delete it
+                if (res && File.Exists(newSettingsFile))
+                {
+                    ProgramSettings.SaveToFile(ProgramSettings.Instance, settingsFile);
+                    File.Delete(newSettingsFile);
+                }
             }));
             ValidateFilesTask.Start();
             UpdateLocaleButtons();
@@ -360,6 +388,57 @@ namespace AAEmu.DBEditor
         private void MMTools_DropDownOpened(object sender, EventArgs e)
         {
             MMToolsAhBot.Enabled = Data.MySqlDb.IsValid && Data.Server.TableNames.Count > 0;
+        }
+
+        private void MMFileSettings_Click(object sender, EventArgs e)
+        {
+            using var settingsForm = new ProgramSettingsForm();
+            if (settingsForm.ShowDialog() == DialogResult.OK)
+            {
+                var newSettings = settingsForm.GenerateProgramSettingsFromDialog();
+                if (!ProgramSettings.SaveToFile(newSettings,
+                        Path.Combine(ProgramSettings.GetSettingsFolder(), NewSettingsFile)))
+                {
+                    MessageBox.Show("Failed to save new setttings");
+                    return;
+                }
+                if (MessageBox.Show($"Settings have changed, a restart is required.{Environment.NewLine}" +
+                                    $"Do you want to restart now?", "Settings", MessageBoxButtons.YesNo) ==
+                    DialogResult.Yes)
+                {
+
+                    if (RestartProgram())
+                        Close();
+                }
+            }
+        }
+
+        private bool RestartProgram()
+        {
+            if (!CloseAllForms())
+                return false;
+
+            var exeFile = Environment.ProcessPath ?? string.Empty;
+            if (!File.Exists(exeFile))
+            {
+                MessageBox.Show($"I no longer exist ?{Environment.NewLine}{exeFile}");
+                return false;
+            }
+
+            var newProcess = new ProcessStartInfo(exeFile, string.Empty);
+            newProcess.UseShellExecute = true;
+            // newProcess.Verb = "runas";
+            bool startOK = false;
+            try
+            {
+                Process.Start(newProcess);
+                startOK = true;
+            }
+            catch
+            {
+                startOK = false;
+            }
+            return startOK;
         }
     }
 }

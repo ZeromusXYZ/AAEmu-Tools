@@ -108,6 +108,7 @@ namespace AAEmu.DBEditor
             // 
             // MMFileOpenServer
             // 
+            MMFileOpenServer.Enabled = false;
             MMFileOpenServer.Name = "MMFileOpenServer";
             MMFileOpenServer.Size = new System.Drawing.Size(183, 22);
             MMFileOpenServer.Text = "Open Server DB ...";
@@ -115,6 +116,7 @@ namespace AAEmu.DBEditor
             // 
             // MMFileOpenClient
             // 
+            MMFileOpenClient.Enabled = false;
             MMFileOpenClient.Name = "MMFileOpenClient";
             MMFileOpenClient.Size = new System.Drawing.Size(183, 22);
             MMFileOpenClient.Text = "Open Game Client ...";
@@ -122,6 +124,7 @@ namespace AAEmu.DBEditor
             // 
             // MMFileOpenMySQL
             // 
+            MMFileOpenMySQL.Enabled = false;
             MMFileOpenMySQL.Name = "MMFileOpenMySQL";
             MMFileOpenMySQL.Size = new System.Drawing.Size(183, 22);
             MMFileOpenMySQL.Text = "Open MySQL DB ...";
@@ -134,10 +137,10 @@ namespace AAEmu.DBEditor
             // 
             // MMFileSettings
             // 
-            MMFileSettings.Enabled = false;
             MMFileSettings.Name = "MMFileSettings";
             MMFileSettings.Size = new System.Drawing.Size(183, 22);
             MMFileSettings.Text = "Settings ...";
+            MMFileSettings.Click += MMFileSettings_Click;
             // 
             // MMFileS3
             // 
