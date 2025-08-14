@@ -1451,6 +1451,21 @@ public class GameItemGradeDistributions
     public Dictionary<long, long> Weights = new();
 }
 
+public class GameMerchants
+{
+    public long Id = 0;
+    public long NpcId = 0;
+    public long MerchantPackId = 0;
+}
+
+public class GameMerchantGoods
+{
+    public long Id = 0;
+    public long MerchantPackId = 0;
+    public long ItemId = 0;
+    public long GradeId = 0;
+}
+
 internal static class AaDb
 {
     public static Dictionary<string, GameTranslation> DbTranslations = new();
@@ -1542,6 +1557,8 @@ internal static class AaDb
     public static Dictionary<long, GameAchievementObjectives> DbAchievementObjectives = new();
     public static Dictionary<long, GameItemGrades> DbItemGrades = new();
     public static Dictionary<long, GameItemGradeDistributions> DbItemGradeDistributions = new();
+    public static Dictionary<long, GameMerchants> DbMerchants = new();
+    public static Dictionary<long, GameMerchantGoods> DbMerchantGoods = new();
 
     public static Dictionary<long, Dictionary<long, Dictionary<long, GameAchievements>>> CompiledGroupedAchievements = new();
 
@@ -1636,6 +1653,8 @@ internal static class AaDb
         DbAchievementObjectives = new();
         DbItemGrades = new();
         DbItemGradeDistributions = new();
+        DbMerchants = new();
+        DbMerchantGoods = new();
 
         CompiledGroupedAchievements = new();
     }

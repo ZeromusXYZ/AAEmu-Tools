@@ -938,6 +938,9 @@ namespace AAEmu.DBViewer
                 loading.ShowInfo("Loading: NPCs");
                 LoadNpcs();
 
+                loading.ShowInfo("Loading: Shops");
+                LoadShops();
+
                 loading.ShowInfo("Loading: Vehicles");
                 LoadSlaves();
 

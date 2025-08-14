@@ -364,6 +364,61 @@ public partial class MainForm
             }
         }
     }
+    
+    private void LoadShops()
+    {
+        if (AllTableNames.GetValueOrDefault("merchants") == SQLite.SQLiteFileName)
+        {
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM merchants ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        while (reader.Read())
+                        {
+                            var t = new GameMerchants();
+                            // Actual DB entries
+                            t.Id = GetInt64(reader, "id");
+                            t.NpcId = GetInt64(reader, "npc_id");
+                            t.MerchantPackId = GetInt64(reader, "merchant_pack_id");
+
+                            AaDb.DbMerchants.Add(t.Id, t);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (AllTableNames.GetValueOrDefault("merchant_goods") == SQLite.SQLiteFileName)
+        {
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM merchant_goods ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        while (reader.Read())
+                        {
+                            var t = new GameMerchantGoods();
+                            // Actual DB entries
+                            t.Id = GetInt64(reader, "id");
+                            t.MerchantPackId = GetInt64(reader, "merchant_pack_id");
+                            t.ItemId = GetInt64(reader, "item_id");
+                            t.GradeId = GetInt64(reader, "grade_id");
+
+                            AaDb.DbMerchantGoods.Add(t.Id, t);
+                        }
+                    }
+                }
+            }
+        }
+
+    }
 
     private void LoadDoodads()
     {
@@ -1008,7 +1063,23 @@ public partial class MainForm
             if (npc.Expedition)
                 interactionNode.Nodes.Add("Guild Manager");
             if (npc.Merchant)
-                interactionNode.Nodes.Add("Merchant");
+            {
+                var merchantNode = interactionNode.Nodes.Add("Merchant");
+                var shops = AaDb.DbMerchants.Values.Where(n => n.NpcId == npc.Id);
+                foreach (var shop in shops)
+                {
+                    var shopNode = merchantNode.Nodes.Add($"Merchant Pack: {shop.MerchantPackId}");
+                    var shopItems = AaDb.DbMerchantGoods.Values.Where(m => m.MerchantPackId == shop.MerchantPackId);
+                    foreach (var shopItem in shopItems)
+                    {
+                        var itemNode = AddCustomPropertyNode("item_id", shopItem.ItemId.ToString(), false, shopNode);
+                        if (shopItem.GradeId > 0)
+                            itemNode.Text += $" - {(AaDb.DbItemGrades.GetValueOrDefault(shopItem.GradeId)?.NameLocalized ?? $"grade {shopItem.GradeId}")}";
+                    }
+
+                }
+            }
+
             if (npc.Priest)
                 interactionNode.Nodes.Add("Priest");
             if (npc.Repairman)
