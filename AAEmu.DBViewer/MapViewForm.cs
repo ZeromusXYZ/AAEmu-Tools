@@ -35,6 +35,7 @@ namespace AAEmu.DBViewer
         private List<MapViewPath> subzone = new List<MapViewPath>();
         private List<MapViewPoI> quest_sign_sphere = new List<MapViewPoI>();
         private RectangleF FocusBorder = new RectangleF();
+        private List<MapViewMap> cursorZoneList = new List<MapViewMap>();
 
         public Point ViewOffset { get => viewOffset; set { viewOffset = value; updateStatusBar(); } }
 
@@ -161,7 +162,8 @@ namespace AAEmu.DBViewer
         {
             MapViewMap newTopMap = null;
             var res = string.Empty;
-            var cursorZones = new List<MapViewMap>();
+            cursorZoneList.Clear();
+            // var cursorZones = new List<MapViewMap>();
             foreach (var map in allmaps)
             {
                 if (map.MapLevel <= MapLevel.Continent)
@@ -169,17 +171,17 @@ namespace AAEmu.DBViewer
                 if (map.InstanceName != cbInstanceSelect.Text)
                     continue;
                 if (map.ZoneCoords.Contains(cursorCoords))
-                    cursorZones.Add(map);
+                    cursorZoneList.Add(map);
             }
 
             // Check if cursor is still inside the current zone
-            if (cursorZones.Contains(topMostMap) && (topMostMap != null))
+            if (cursorZoneList.Contains(topMostMap) && (topMostMap != null))
             {
                 // Leave everthing as is
             }
             else
             {
-                foreach (var z in cursorZones)
+                foreach (var z in cursorZoneList)
                 {
                     if (newTopMap == null)
                     {
@@ -197,7 +199,7 @@ namespace AAEmu.DBViewer
                 topMostMap = newTopMap;
             }
 
-            foreach (var z in cursorZones)
+            foreach (var z in cursorZoneList)
             {
                 if (z == topMostMap)
                     res += "[" + z.Name + "], ";
@@ -317,6 +319,8 @@ namespace AAEmu.DBViewer
                             s = s.Replace("{INSTANCE}", map.InstanceName);
                             s = s.Replace("{ZONEGROUP}", map.ZoneGroup.ToString());
                             s = s.Replace("{COORDS}", map.ZoneCoords.ToString());
+                            var inZoneOff = $"{(int)(cursorCoords.X - map.ZoneCoords.X)}, {(int)(cursorCoords.Y - map.ZoneCoords.Y)}";
+                            s = s.Replace("{INZONECOORDS}", inZoneOff);
                             s = s.Replace("\\n", "\n");
                             var vals = s.Split(';');
                             if (vals.Length != 2)
@@ -487,12 +491,27 @@ namespace AAEmu.DBViewer
 
                 if (!AddMenuItems(tsmMap, topMostMap))
                 {
-                    AddMenuItem(tsmMap, "Name: " + topMostMap.Name, topMostMap.Name);
-                    AddMenuItem(tsmMap, "ZoneGroup: " + topMostMap.ZoneGroup.ToString(), topMostMap.ZoneGroup.ToString());
-                    AddMenuItem(tsmMap, "Instance: " + topMostMap.InstanceName, topMostMap.InstanceName);
+                    AddMenuItem(tsmMap, $"Name: {topMostMap.Name}", topMostMap.Name);
+                    AddMenuItem(tsmMap, $"ZoneGroup: {topMostMap.ZoneGroup}", topMostMap.ZoneGroup.ToString());
+                    AddMenuItem(tsmMap, $"Instance: {topMostMap.InstanceName}", topMostMap.InstanceName);
                 }
 
                 tsmMap.Enabled = true;
+
+                foreach (var map in cursorZoneList)
+                {
+                    if (map == topMostMap)
+                        continue;
+
+                    AddMenuItem(tsmMap, "---", "");
+
+                    if (!AddMenuItems(tsmMap, map))
+                    {
+                        AddMenuItem(tsmMap, $"Name: {map.Name}", map.Name);
+                        AddMenuItem(tsmMap, $"ZoneGroup: {map.ZoneGroup}", map.ZoneGroup.ToString());
+                        AddMenuItem(tsmMap, $"Instance: {map.InstanceName}", map.InstanceName);
+                    }
+                }
             }
 
             tsmPath.DropDownItems.Clear();
@@ -1466,7 +1485,7 @@ namespace AAEmu.DBViewer
     public class MapViewWorldXML
     {
         static public MapViewWorldXML main_world;
-        static public List<MapViewWorldXML> instances;
+        static public List<MapViewWorldXML> instances = [];
         public XmlDocument _xml;
         public Dictionary<long, MapViewWorldXMLZoneInfo> zones = new Dictionary<long, MapViewWorldXMLZoneInfo>();
         public string WorldName = string.Empty;

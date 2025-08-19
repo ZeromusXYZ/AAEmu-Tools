@@ -1085,7 +1085,7 @@ public partial class MainForm
             if (npc.Repairman)
                 interactionNode.Nodes.Add("Repairs");
             if (npc.SkillTrainer)
-                interactionNode.Nodes.Add("Skillmanager");
+                interactionNode.Nodes.Add("Skill Manager");
             if (npc.Specialty)
                 interactionNode.Nodes.Add("Speciality");
             if (npc.Stabler)
