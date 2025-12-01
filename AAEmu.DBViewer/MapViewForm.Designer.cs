@@ -53,7 +53,9 @@
             toolBar = new System.Windows.Forms.ToolStrip();
             TsbZoomIn = new System.Windows.Forms.ToolStripButton();
             TsbZoomOut = new System.Windows.Forms.ToolStripButton();
-            toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            TsbCenterMap = new System.Windows.Forms.ToolStripSeparator();
+            toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             toolStripLabel3 = new System.Windows.Forms.ToolStripLabel();
             tsbDrawWorld = new System.Windows.Forms.ToolStripButton();
             tsbDrawContinent = new System.Windows.Forms.ToolStripButton();
@@ -334,7 +336,7 @@
             // 
             // toolBar
             // 
-            toolBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { TsbZoomIn, TsbZoomOut, toolStripSeparator3, toolStripLabel3, tsbDrawWorld, tsbDrawContinent, tsbDrawZone, tsbDrawCity, toolStripLabel2, tsbShowPoI, tsbShowPath, tsbShowHousing, tsbShowSubzone, tsbShowQuestSphere, toolStripSeparator1, toolStripLabel1, tsbNamesPoI, tsbNamesPath, tsbNamesHousing, tsbNamesSubzone, tsbNamesQuestSphere, toolStripSeparator2 });
+            toolBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { TsbZoomIn, TsbZoomOut, TsbCenterMap, toolStripButton1, toolStripSeparator4, toolStripLabel3, tsbDrawWorld, tsbDrawContinent, tsbDrawZone, tsbDrawCity, toolStripLabel2, tsbShowPoI, tsbShowPath, tsbShowHousing, tsbShowSubzone, tsbShowQuestSphere, toolStripSeparator1, toolStripLabel1, tsbNamesPoI, tsbNamesPath, tsbNamesHousing, tsbNamesSubzone, tsbNamesQuestSphere, toolStripSeparator2 });
             toolBar.Location = new System.Drawing.Point(0, 0);
             toolBar.Name = "toolBar";
             toolBar.Size = new System.Drawing.Size(605, 25);
@@ -361,10 +363,26 @@
             TsbZoomOut.Text = "-";
             TsbZoomOut.Click += TsbZoomOut_Click;
             // 
-            // toolStripSeparator3
+            // TsbCenterMap
             // 
-            toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            TsbCenterMap.Name = "TsbCenterMap";
+            TsbCenterMap.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButton1
+            // 
+            toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            toolStripButton1.Image = (System.Drawing.Image)resources.GetObject("toolStripButton1.Image");
+            toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            toolStripButton1.Name = "toolStripButton1";
+            toolStripButton1.Size = new System.Drawing.Size(30, 22);
+            toolStripButton1.Text = ">|<";
+            toolStripButton1.ToolTipText = "Center Map";
+            toolStripButton1.Click += toolStripButton1_Click;
+            // 
+            // toolStripSeparator4
+            // 
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripLabel3
             // 
@@ -580,30 +598,30 @@
             // 
             cmsMapInfo.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { tsmPoI, tsmPath, tsmMap, tsmCopyToClipboard });
             cmsMapInfo.Name = "cmsMapInfo";
-            cmsMapInfo.Size = new System.Drawing.Size(167, 92);
+            cmsMapInfo.Size = new System.Drawing.Size(168, 92);
             // 
             // tsmPoI
             // 
             tsmPoI.Name = "tsmPoI";
-            tsmPoI.Size = new System.Drawing.Size(166, 22);
+            tsmPoI.Size = new System.Drawing.Size(167, 22);
             tsmPoI.Text = "PoI";
             // 
             // tsmPath
             // 
             tsmPath.Name = "tsmPath";
-            tsmPath.Size = new System.Drawing.Size(166, 22);
+            tsmPath.Size = new System.Drawing.Size(167, 22);
             tsmPath.Text = "Path";
             // 
             // tsmMap
             // 
             tsmMap.Name = "tsmMap";
-            tsmMap.Size = new System.Drawing.Size(166, 22);
+            tsmMap.Size = new System.Drawing.Size(167, 22);
             tsmMap.Text = "Map";
             // 
             // tsmCopyToClipboard
             // 
             tsmCopyToClipboard.Name = "tsmCopyToClipboard";
-            tsmCopyToClipboard.Size = new System.Drawing.Size(166, 22);
+            tsmCopyToClipboard.Size = new System.Drawing.Size(167, 22);
             tsmCopyToClipboard.Text = "CopyToClipboard";
             tsmCopyToClipboard.Visible = false;
             tsmCopyToClipboard.Click += tsmCopyToClipboard_Click;
@@ -687,6 +705,8 @@
         private System.Windows.Forms.RadioButton rbGridPaths;
         private System.Windows.Forms.ToolStripButton TsbZoomIn;
         private System.Windows.Forms.ToolStripButton TsbZoomOut;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripSeparator TsbCenterMap;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
     }
 }

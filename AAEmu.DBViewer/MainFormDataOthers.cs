@@ -1951,7 +1951,27 @@ public partial class MainForm
                                 mvp.Color = Color.LightCyan;
                         }
 
-                        mvp.allpoints.AddRange(w.Points);
+                        var lastV = Vector3.Zero;
+                        foreach (var v3 in w.Points)
+                        {
+                            if (lastV == Vector3.Zero)
+                            {
+                                lastV = v3;
+                                mvp.allpoints.Add(v3);
+                            }
+                            else
+                            {
+                                if ((lastV - v3).Length() > 1024f)
+                                {
+                                    mvp.Color = Color.DarkSlateBlue;
+                                }
+                                else
+                                {
+                                    mvp.allpoints.Add(v3);
+                                }
+                            }
+                        }
+                        
 
                         if ((w.AreaType == WaterBodyAreaType.LineArray) && (mvp.allpoints.Count > 2) && (mvp.allpoints[^1].Equals(mvp.allpoints[0])))
                             mvp.allpoints.RemoveAt(mvp.allpoints.Count - 1);

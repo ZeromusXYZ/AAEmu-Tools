@@ -970,10 +970,8 @@ public partial class MainForm
                             {
                                 // Parse the floats with NumberStyles.Float and CultureInfo.InvariantCulture or we get all sorts of
                                 // weird stuff with the decimal points depending on the user's language settings
-                                qse.X = zoneOffX + float.Parse(posString[0], NumberStyles.Float,
-                                    CultureInfo.InvariantCulture);
-                                qse.Y = zoneOffY + float.Parse(posString[1], NumberStyles.Float,
-                                    CultureInfo.InvariantCulture);
+                                qse.X = zoneOffX + float.Parse(posString[0], NumberStyles.Float, CultureInfo.InvariantCulture);
+                                qse.Y = zoneOffY + float.Parse(posString[1], NumberStyles.Float, CultureInfo.InvariantCulture);
                                 qse.Z = float.Parse(posString[2], NumberStyles.Float, CultureInfo.InvariantCulture);
                             }
 
