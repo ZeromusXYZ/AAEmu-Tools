@@ -63,7 +63,7 @@ namespace AAEmu.DBEditor.forms.server
                     characterEntry.ForeColor = Color.Red;
                 }
                 else
-                if (character.DeleteTime > DateTime.MinValue)
+                if (character.DeleteTime != null && character.DeleteTime > DateTime.MinValue)
                 {
                     characterEntry.ForeColor = Color.Purple;
                 }
@@ -269,7 +269,7 @@ namespace AAEmu.DBEditor.forms.server
                 else
                 {
                     var item = Data.Server.GetItem(petItem.TemplateId);
-                    petNode.Nodes.Add($"({petItem.Id}) {Data.Server.GetText("items", "name", (long)item.Id, item.Name)} ({item.Id})");
+                    petNode.Nodes.Add($"({petItem.Id}) {Data.Server.GetText("items", "name", (long)(item?.Id ?? 0), item?.Name ?? "")} ({item?.Id})");
                 }
 
                 petNode.Nodes.Add($"Exp {pet.Xp}");
@@ -284,7 +284,7 @@ namespace AAEmu.DBEditor.forms.server
                         foreach (var petGear in petGears)
                         {
                             var item = Data.Server.GetItem(petGear.TemplateId);
-                            gearNode.Nodes.Add($"Item {Data.Server.GetText("items", "name", (long)item.Id, item.Name)} ({petGear.Id})");
+                            gearNode.Nodes.Add($"Item {Data.Server.GetText("items", "name", (long)(item?.Id ?? 0), item?.Name ?? "")} ({petGear?.Id})");
                         }
                     }
                     else

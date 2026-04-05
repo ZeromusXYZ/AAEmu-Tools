@@ -863,6 +863,8 @@ namespace AAEmu.DBViewer
 
             tFilterTables_TextChanged(null, null);
 
+            UpdateStaticEntries();
+
             return res;
         }
 
@@ -3205,6 +3207,34 @@ namespace AAEmu.DBViewer
             if (e.ClickedItem?.Tag is TreeNodeWithPlotEventReference refNode)
             {
                 refNode.TreeView.SelectedNode = refNode;
+            }
+        }
+
+        private void TBVendors_Click(object sender, EventArgs e)
+        {
+            MMSystemVendors_Click(null, null);
+        }
+
+        private void MMSystemVendors_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpVendors;
+        }
+
+        private void UpdateStaticEntries()
+        {
+            // Vendor Pack Types
+            clbVendorTypes.Items.Clear();
+            foreach (var vendorType in GameMerchantPacks.MerchantPackTypes.OrderBy(x => x))
+            {
+                var vendorTypeName = $"Vendor type {vendorType}";
+                switch (vendorType)
+                {
+                    case 0: vendorTypeName = "Normal shop"; break;
+                    case 1: vendorTypeName = "Honor vendor"; break;
+                    case 2: vendorTypeName = "Siege vendor"; break;
+                    case 3: vendorTypeName = "Fishing Vessel vendor"; break;
+                }
+                clbVendorTypes.Items.Add(vendorTypeName, false);
             }
         }
     }

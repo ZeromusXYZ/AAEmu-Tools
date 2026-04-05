@@ -180,7 +180,7 @@ namespace AAEmu.DBEditor.forms.server
                     icon.ForeColor = Color.Red;
                 }
                 else
-                if (character.DeleteTime > DateTime.MinValue)
+                if (character.DeleteTime != null && character.DeleteTime > DateTime.MinValue)
                 {
                     icon.ForeColor = Color.Purple;
                 }

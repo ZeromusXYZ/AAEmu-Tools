@@ -1,10 +1,8 @@
 ﻿using AAEmu.DBViewer.enums;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace AAEmu.DBViewer.DbDefs;
@@ -1466,6 +1464,22 @@ public class GameMerchantGoods
     public long GradeId = 0;
 }
 
+public class GameMerchantPacks
+{
+    public long Id = 0;
+    public string Name = string.Empty;
+    public long OwnerNpcId = 0;
+    public long KindId = 0;
+
+    public static readonly List<long> MerchantPackTypes = new();
+}
+
+public class GameTotalCharacterCustoms
+{
+    public long Id = 0;
+    public string Name = string.Empty;
+}
+
 internal static class AaDb
 {
     public static Dictionary<string, GameTranslation> DbTranslations = new();
@@ -1559,104 +1573,109 @@ internal static class AaDb
     public static Dictionary<long, GameItemGradeDistributions> DbItemGradeDistributions = new();
     public static Dictionary<long, GameMerchants> DbMerchants = new();
     public static Dictionary<long, GameMerchantGoods> DbMerchantGoods = new();
+    public static Dictionary<long, GameMerchantPacks> DbMerchantPacks = new();
+    public static Dictionary<long, GameTotalCharacterCustoms> DbTotalCharacterCustoms = new();
 
     public static Dictionary<long, Dictionary<long, Dictionary<long, GameAchievements>>> CompiledGroupedAchievements = new();
 
     public static void Clear()
     {
-        DbTranslations = new();
-        DbItemsCategories = new();
-        DbItems = new();
-        DbItemArmors = new();
-        DbItemWeapons = new();
-        DbEffects = new();
-        DbSkills = new();
-        DbSkillEffects = new();
-        DbNpSkills = new();
-        DbMountSkills = new();
-        DbSlaveMountSkills = new();
-        DbNpCs = new();
-        DbQuestMonsterGroups = new();
-        DbQuestMonsterNpcs = new();
-        DbIcons = new();
-        DbSkillReagents = new();
-        DbSkillProducts = new();
-        DbZones = new();
-        DbZoneGroups = new();
-        DbConflictZones = new();
-        DbWorldGroups = new();
-        DbGameSystemFactions = new();
-        DbGameSystemFactionRelations = new();
-        DbDoodadAlmighties = new();
-        DbDoodadGroups = new();
-        DbDoodadFuncs = new();
-        DbDoodadFuncGroups = new();
-        DbDoodadPhaseFuncs = new();
-        DbQuestCategories = new();
-        DbQuestContexts = new();
-        DbQuestContextTexts = new();
-        DbQuestActs = new();
-        DbQuestActConAcceptNpc = new();
-        DbQuestComponents = new();
-        DbQuestComponentTexts = new();
-        DbTags = new();
-        DbTaggedBuffs = new();
-        DbTaggedItems = new();
-        DbTaggedNpCs = new();
-        DbTaggedSkills = new();
-        DbZoneGroupBannedTags = new();
-        DbBuffs = new();
-        DbBuffTriggers = new();
-        DbBuffModifiers = new();
-        DbPassiveBuffs = new();
-        DbNpPassiveBuffs = new();
-        DbSlavePassiveBuffs = new();
-        DbSlaveInitialBuffs = new();
-        DbTransfers = new();
-        DbTransferPaths = new();
-        PakQuestSignSpheres = new();
-        DbPlots = new();
-        DbPlotEvents = new();
-        DbPlotNextEvents = new();
-        DbPlotEventConditions = new();
-        DbPlotEffects = new();
-        DbPlotConditions = new();
-        DbNpcSpawnerNpcs = new();
-        DbNpcSpawners = new();
-        DbSpecialities = new();
-        DbLoots = new();
-        DbLootGroups = new();
-        DbLootPackDroppingNpc = new();
-        DbLootActAbilityGroups = new();
-        DbSlaves = new();
-        DbSlaveBindings = new();
-        DbSlaveDoodadBindings = new();
-        DbModels = new();
-        DbNpcInitialBuffs = new();
-        DbNpcInteractions = new();
-        DbAiFiles = new();
-        DbAiCommands = new();
-        DbScheduleItems = new();
-        DbGameSchedules = new();
-        DbScheduleQuest = new();
-        DbScheduleDoodads = new();
-        DbScheduleSpawners = new();
-        DbTowerDefs = new();
-        DbTowerDefProgs = new();
-        DbTowerDefProgSpawnTargets = new();
-        DbTowerDefProgKillTargets = new();
-        DbSpheres = new();
-        DbUnitReqs = new();
-        DbUiTexts = new();
-        DbUnitModifiers = new();
-        DbAchievements = new();
-        DbAchievementObjectives = new();
-        DbItemGrades = new();
-        DbItemGradeDistributions = new();
-        DbMerchants = new();
-        DbMerchantGoods = new();
+        DbTranslations.Clear();
+        DbItemsCategories.Clear();
+        DbItems.Clear();
+        DbItemArmors.Clear();
+        DbItemWeapons.Clear();
+        DbEffects.Clear();
+        DbSkills.Clear();
+        DbSkillEffects.Clear();
+        DbNpSkills.Clear();
+        DbMountSkills.Clear();
+        DbSlaveMountSkills.Clear();
+        DbNpCs.Clear();
+        DbQuestMonsterGroups.Clear();
+        DbQuestMonsterNpcs.Clear();
+        DbIcons.Clear();
+        DbSkillReagents.Clear();
+        DbSkillProducts.Clear();
+        DbZones.Clear();
+        DbZoneGroups.Clear();
+        DbConflictZones.Clear();
+        DbWorldGroups.Clear();
+        DbGameSystemFactions.Clear();
+        DbGameSystemFactionRelations.Clear();
+        DbDoodadAlmighties.Clear();
+        DbDoodadGroups.Clear();
+        DbDoodadFuncs.Clear();
+        DbDoodadFuncGroups.Clear();
+        DbDoodadPhaseFuncs.Clear();
+        DbQuestCategories.Clear();
+        DbQuestContexts.Clear();
+        DbQuestContextTexts.Clear();
+        DbQuestActs.Clear();
+        DbQuestActConAcceptNpc.Clear();
+        DbQuestComponents.Clear();
+        DbQuestComponentTexts.Clear();
+        DbTags.Clear();
+        DbTaggedBuffs.Clear();
+        DbTaggedItems.Clear();
+        DbTaggedNpCs.Clear();
+        DbTaggedSkills.Clear();
+        DbZoneGroupBannedTags.Clear();
+        DbBuffs.Clear();
+        DbBuffTriggers.Clear();
+        DbBuffModifiers.Clear();
+        DbPassiveBuffs.Clear();
+        DbNpPassiveBuffs.Clear();
+        DbSlavePassiveBuffs.Clear();
+        DbSlaveInitialBuffs.Clear();
+        DbTransfers.Clear();
+        DbTransferPaths.Clear();
+        PakQuestSignSpheres.Clear();
+        DbPlots.Clear();
+        DbPlotEvents.Clear();
+        DbPlotNextEvents.Clear();
+        DbPlotEventConditions.Clear();
+        DbPlotEffects.Clear();
+        DbPlotConditions.Clear();
+        DbNpcSpawnerNpcs.Clear();
+        DbNpcSpawners.Clear();
+        DbSpecialities.Clear();
+        DbLoots.Clear();
+        DbLootGroups.Clear();
+        DbLootPackDroppingNpc.Clear();
+        DbLootActAbilityGroups.Clear();
+        DbSlaves.Clear();
+        DbSlaveBindings.Clear();
+        DbSlaveDoodadBindings.Clear();
+        DbModels.Clear();
+        DbNpcInitialBuffs.Clear();
+        DbNpcInteractions.Clear();
+        DbAiFiles.Clear();
+        DbAiCommands.Clear();
+        DbScheduleItems.Clear();
+        DbGameSchedules.Clear();
+        DbScheduleQuest.Clear();
+        DbScheduleDoodads.Clear();
+        DbScheduleSpawners.Clear();
+        DbTowerDefs.Clear();
+        DbTowerDefProgs.Clear();
+        DbTowerDefProgSpawnTargets.Clear();
+        DbTowerDefProgKillTargets.Clear();
+        DbSpheres.Clear();
+        DbUnitReqs.Clear();
+        DbUiTexts.Clear();
+        DbUnitModifiers.Clear();
+        DbAchievements.Clear();
+        DbAchievementObjectives.Clear();
+        DbItemGrades.Clear();
+        DbItemGradeDistributions.Clear();
+        DbMerchants.Clear();
+        DbMerchantGoods.Clear();
+        DbMerchantPacks.Clear();
+        GameMerchantPacks.MerchantPackTypes.Clear();
+        DbTotalCharacterCustoms.Clear();
 
-        CompiledGroupedAchievements = new();
+        CompiledGroupedAchievements.Clear();
     }
 
     public static string GetTranslationById(long idx, string table, string field, string defaultValue = "$NODEFAULT")

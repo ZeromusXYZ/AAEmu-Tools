@@ -30,9 +30,9 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("NPC");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Slave");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("NPC");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Slave");
             lbTableNames = new System.Windows.Forms.ListBox();
             tcViewer = new System.Windows.Forms.TabControl();
             tpSettings = new System.Windows.Forms.TabPage();
@@ -520,6 +520,9 @@
             Column37 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             Column38 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            tpVendors = new System.Windows.Forms.TabPage();
+            groupBox16 = new System.Windows.Forms.GroupBox();
+            clbVendorTypes = new System.Windows.Forms.CheckedListBox();
             tpZones = new System.Windows.Forms.TabPage();
             groupBox5 = new System.Windows.Forms.GroupBox();
             label33 = new System.Windows.Forms.Label();
@@ -623,6 +626,7 @@
             MMSystemSpheres = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemTags = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemTrades = new System.Windows.Forms.ToolStripMenuItem();
+            MMSystemVendors = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemZones = new System.Windows.Forms.ToolStripMenuItem();
             TBMain = new System.Windows.Forms.ToolStrip();
             TBFile = new System.Windows.Forms.ToolStripDropDownButton();
@@ -656,6 +660,7 @@
             TBTags = new System.Windows.Forms.ToolStripButton();
             TBTrades = new System.Windows.Forms.ToolStripButton();
             TBSlaves = new System.Windows.Forms.ToolStripButton();
+            TBVendors = new System.Windows.Forms.ToolStripButton();
             TBZones = new System.Windows.Forms.ToolStripButton();
             openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
@@ -740,6 +745,8 @@
             tpSlaves.SuspendLayout();
             groupBox15.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSlaves).BeginInit();
+            tpVendors.SuspendLayout();
+            groupBox16.SuspendLayout();
             tpZones.SuspendLayout();
             groupBox5.SuspendLayout();
             groupBox4.SuspendLayout();
@@ -753,7 +760,6 @@
             // 
             lbTableNames.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lbTableNames.FormattingEnabled = true;
-            lbTableNames.ItemHeight = 15;
             lbTableNames.Location = new System.Drawing.Point(7, 37);
             lbTableNames.Margin = new System.Windows.Forms.Padding(4);
             lbTableNames.Name = "lbTableNames";
@@ -785,6 +791,7 @@
             tcViewer.Controls.Add(tpTags);
             tcViewer.Controls.Add(tpTrade);
             tcViewer.Controls.Add(tpSlaves);
+            tcViewer.Controls.Add(tpVendors);
             tcViewer.Controls.Add(tpZones);
             tcViewer.ItemSize = new System.Drawing.Size(10, 10);
             tcViewer.Location = new System.Drawing.Point(0, 25);
@@ -892,7 +899,6 @@
             // 
             LbProfiles.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             LbProfiles.FormattingEnabled = true;
-            LbProfiles.ItemHeight = 15;
             LbProfiles.Location = new System.Drawing.Point(9, 181);
             LbProfiles.Name = "LbProfiles";
             LbProfiles.Size = new System.Drawing.Size(312, 364);
@@ -1633,7 +1639,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 305);
-            splitContainer2.SplitterDistance = 290;
+            splitContainer2.SplitterDistance = 285;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1641,7 +1647,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(198, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(193, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(88, 19);
@@ -1672,7 +1678,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(282, 276);
+            tvBuffTriggers.Size = new System.Drawing.Size(277, 276);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -4511,9 +4517,9 @@
             tvNPCInfo.Location = new System.Drawing.Point(8, 38);
             tvNPCInfo.Margin = new System.Windows.Forms.Padding(4);
             tvNPCInfo.Name = "tvNPCInfo";
-            treeNode1.Name = "SkillNode";
-            treeNode1.Text = "NPC";
-            tvNPCInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
+            treeNode4.Name = "SkillNode";
+            treeNode4.Text = "NPC";
+            tvNPCInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode4 });
             tvNPCInfo.SelectedImageIndex = 0;
             tvNPCInfo.Size = new System.Drawing.Size(430, 329);
             tvNPCInfo.TabIndex = 31;
@@ -4868,7 +4874,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(456, 482);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(451, 482);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 25);
@@ -4900,7 +4906,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(683, 472);
+            tvQuestWorkflow.Size = new System.Drawing.Size(678, 472);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -4943,7 +4949,6 @@
             // 
             lbSchedulesIRL.Dock = System.Windows.Forms.DockStyle.Fill;
             lbSchedulesIRL.FormattingEnabled = true;
-            lbSchedulesIRL.ItemHeight = 15;
             lbSchedulesIRL.Location = new System.Drawing.Point(3, 3);
             lbSchedulesIRL.Name = "lbSchedulesIRL";
             lbSchedulesIRL.Size = new System.Drawing.Size(337, 511);
@@ -4965,7 +4970,6 @@
             // 
             lbSchedulesGame.Dock = System.Windows.Forms.DockStyle.Fill;
             lbSchedulesGame.FormattingEnabled = true;
-            lbSchedulesGame.ItemHeight = 15;
             lbSchedulesGame.Location = new System.Drawing.Point(3, 3);
             lbSchedulesGame.Name = "lbSchedulesGame";
             lbSchedulesGame.Size = new System.Drawing.Size(337, 511);
@@ -4987,7 +4991,6 @@
             // 
             lbTowerDefs.Dock = System.Windows.Forms.DockStyle.Fill;
             lbTowerDefs.FormattingEnabled = true;
-            lbTowerDefs.ItemHeight = 15;
             lbTowerDefs.Location = new System.Drawing.Point(3, 3);
             lbTowerDefs.Name = "lbTowerDefs";
             lbTowerDefs.Size = new System.Drawing.Size(337, 511);
@@ -5685,9 +5688,9 @@
             tvSkill.Location = new System.Drawing.Point(7, 7);
             tvSkill.Margin = new System.Windows.Forms.Padding(4);
             tvSkill.Name = "tvSkill";
-            treeNode2.Name = "SkillNode";
-            treeNode2.Text = "Skill";
-            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
+            treeNode1.Name = "SkillNode";
+            treeNode1.Text = "Skill";
+            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
             tvSkill.SelectedImageIndex = 0;
             tvSkill.Size = new System.Drawing.Size(575, 306);
             tvSkill.TabIndex = 0;
@@ -5698,20 +5701,20 @@
             // 
             cmPlotBookmarks.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { tsmiPlotBookmarkHeader, tssPlotBookmark1 });
             cmPlotBookmarks.Name = "cmPlotBookmarks";
-            cmPlotBookmarks.Size = new System.Drawing.Size(181, 54);
+            cmPlotBookmarks.Size = new System.Drawing.Size(101, 32);
             cmPlotBookmarks.Opening += cmPlotBookmarks_Opening;
             cmPlotBookmarks.ItemClicked += cmPlotBookmarks_ItemClicked;
             // 
             // tsmiPlotBookmarkHeader
             // 
             tsmiPlotBookmarkHeader.Name = "tsmiPlotBookmarkHeader";
-            tsmiPlotBookmarkHeader.Size = new System.Drawing.Size(180, 22);
+            tsmiPlotBookmarkHeader.Size = new System.Drawing.Size(100, 22);
             tsmiPlotBookmarkHeader.Text = "Goto";
             // 
             // tssPlotBookmark1
             // 
             tssPlotBookmark1.Name = "tssPlotBookmark1";
-            tssPlotBookmark1.Size = new System.Drawing.Size(177, 6);
+            tssPlotBookmark1.Size = new System.Drawing.Size(97, 6);
             // 
             // tpSpheres
             // 
@@ -6040,7 +6043,6 @@
             // 
             lbTradeDestination.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lbTradeDestination.FormattingEnabled = true;
-            lbTradeDestination.ItemHeight = 15;
             lbTradeDestination.Location = new System.Drawing.Point(261, 36);
             lbTradeDestination.Margin = new System.Windows.Forms.Padding(4);
             lbTradeDestination.Name = "lbTradeDestination";
@@ -6052,7 +6054,6 @@
             // 
             lbTradeSource.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lbTradeSource.FormattingEnabled = true;
-            lbTradeSource.ItemHeight = 15;
             lbTradeSource.Location = new System.Drawing.Point(9, 36);
             lbTradeSource.Margin = new System.Windows.Forms.Padding(4);
             lbTradeSource.Name = "lbTradeSource";
@@ -6106,9 +6107,9 @@
             tvSlaveInfo.Location = new System.Drawing.Point(8, 54);
             tvSlaveInfo.Margin = new System.Windows.Forms.Padding(4);
             tvSlaveInfo.Name = "tvSlaveInfo";
-            treeNode3.Name = "SkillNode";
-            treeNode3.Text = "Slave";
-            tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode3 });
+            treeNode2.Name = "SkillNode";
+            treeNode2.Text = "Slave";
+            tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
             tvSlaveInfo.SelectedImageIndex = 0;
             tvSlaveInfo.Size = new System.Drawing.Size(368, 466);
             tvSlaveInfo.TabIndex = 32;
@@ -6252,6 +6253,35 @@
             Column38.Name = "Column38";
             Column38.ReadOnly = true;
             Column38.Width = 104;
+            // 
+            // tpVendors
+            // 
+            tpVendors.Controls.Add(groupBox16);
+            tpVendors.Location = new System.Drawing.Point(4, 14);
+            tpVendors.Name = "tpVendors";
+            tpVendors.Size = new System.Drawing.Size(1082, 546);
+            tpVendors.TabIndex = 21;
+            tpVendors.Text = "Vendors";
+            tpVendors.UseVisualStyleBackColor = true;
+            // 
+            // groupBox16
+            // 
+            groupBox16.Controls.Add(clbVendorTypes);
+            groupBox16.Location = new System.Drawing.Point(8, 3);
+            groupBox16.Name = "groupBox16";
+            groupBox16.Size = new System.Drawing.Size(176, 145);
+            groupBox16.TabIndex = 0;
+            groupBox16.TabStop = false;
+            groupBox16.Text = "Vendor Types";
+            // 
+            // clbVendorTypes
+            // 
+            clbVendorTypes.Dock = System.Windows.Forms.DockStyle.Fill;
+            clbVendorTypes.FormattingEnabled = true;
+            clbVendorTypes.Location = new System.Drawing.Point(3, 19);
+            clbVendorTypes.Name = "clbVendorTypes";
+            clbVendorTypes.Size = new System.Drawing.Size(170, 123);
+            clbVendorTypes.TabIndex = 0;
             // 
             // tpZones
             // 
@@ -7042,7 +7072,7 @@
             MM.Location = new System.Drawing.Point(0, 0);
             MM.Name = "MM";
             MM.ShowItemToolTips = true;
-            MM.Size = new System.Drawing.Size(1090, 22);
+            MM.Size = new System.Drawing.Size(1090, 24);
             MM.TabIndex = 4;
             MM.Text = "Menu";
             MM.Visible = false;
@@ -7051,7 +7081,7 @@
             // 
             MMFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMFileTables, toolStripMenuItem1, MMFileSettings, toolStripSeparator2, MMFileExit });
             MMFile.Name = "MMFile";
-            MMFile.Size = new System.Drawing.Size(37, 18);
+            MMFile.Size = new System.Drawing.Size(37, 20);
             MMFile.Text = "&File";
             // 
             // MMFileTables
@@ -7089,7 +7119,7 @@
             // 
             MMBack.Name = "MMBack";
             MMBack.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Subtract;
-            MMBack.Size = new System.Drawing.Size(35, 18);
+            MMBack.Size = new System.Drawing.Size(35, 20);
             MMBack.Text = "<<";
             MMBack.ToolTipText = "Previous Tab";
             MMBack.Click += MMBack_Click;
@@ -7099,7 +7129,7 @@
             MMForward.Name = "MMForward";
             MMForward.ShortcutKeyDisplayString = "";
             MMForward.ShortcutKeys = System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.Subtract;
-            MMForward.Size = new System.Drawing.Size(35, 18);
+            MMForward.Size = new System.Drawing.Size(35, 20);
             MMForward.Text = ">>";
             MMForward.ToolTipText = "Forward Tab";
             MMForward.Click += MMForward_Click;
@@ -7107,7 +7137,7 @@
             // MMSelectedData
             // 
             MMSelectedData.Name = "MMSelectedData";
-            MMSelectedData.Size = new System.Drawing.Size(90, 18);
+            MMSelectedData.Size = new System.Drawing.Size(90, 20);
             MMSelectedData.Text = "Selected &Data";
             MMSelectedData.Click += MMSelectedData_Click;
             // 
@@ -7115,7 +7145,7 @@
             // 
             MMLocalizer.Name = "MMLocalizer";
             MMLocalizer.ShortcutKeys = System.Windows.Forms.Keys.F8;
-            MMLocalizer.Size = new System.Drawing.Size(65, 18);
+            MMLocalizer.Size = new System.Drawing.Size(65, 20);
             MMLocalizer.Text = "Localizer";
             MMLocalizer.ToolTipText = "Find localized texts (F8)";
             MMLocalizer.Click += MMLocalizer_Click;
@@ -7123,7 +7153,7 @@
             // MMSplitter
             // 
             MMSplitter.Name = "MMSplitter";
-            MMSplitter.Size = new System.Drawing.Size(22, 18);
+            MMSplitter.Size = new System.Drawing.Size(22, 20);
             MMSplitter.Text = "|";
             MMSplitter.Click += MMSplitter_Click;
             // 
@@ -7131,7 +7161,7 @@
             // 
             MMCombat.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMSystemBuffs, MMSystemSkills });
             MMCombat.Name = "MMCombat";
-            MMCombat.Size = new System.Drawing.Size(62, 18);
+            MMCombat.Size = new System.Drawing.Size(62, 20);
             MMCombat.Text = "Combat";
             // 
             // MMSystemBuffs
@@ -7154,7 +7184,7 @@
             // 
             MMGameObjects.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMGameObjectsDoodads, MMGameObjectsNpcs, MMGameObjectsVehicles });
             MMGameObjects.Name = "MMGameObjects";
-            MMGameObjects.Size = new System.Drawing.Size(93, 18);
+            MMGameObjects.Size = new System.Drawing.Size(93, 20);
             MMGameObjects.Text = "Game Objects";
             // 
             // MMGameObjectsDoodads
@@ -7184,14 +7214,14 @@
             // 
             MMVersion.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             MMVersion.Name = "MMVersion";
-            MMVersion.Size = new System.Drawing.Size(57, 18);
+            MMVersion.Size = new System.Drawing.Size(57, 20);
             MMVersion.Text = "Version";
             // 
             // MMSystems
             // 
-            MMSystems.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMAchievements, MMSystemFactions, MMSystemItems, MMSystemLoot, MMSystemMaps, MMSystemQuests, MMSystemSchedule, MMSystemSpheres, MMSystemTags, MMSystemTrades, MMSystemZones });
+            MMSystems.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMAchievements, MMSystemFactions, MMSystemItems, MMSystemLoot, MMSystemMaps, MMSystemQuests, MMSystemSchedule, MMSystemSpheres, MMSystemTags, MMSystemTrades, MMSystemVendors, MMSystemZones });
             MMSystems.Name = "MMSystems";
-            MMSystems.Size = new System.Drawing.Size(62, 18);
+            MMSystems.Size = new System.Drawing.Size(62, 20);
             MMSystems.Text = "Systems";
             // 
             // MMAchievements
@@ -7267,6 +7297,13 @@
             MMSystemTrades.Text = "Trades";
             MMSystemTrades.Click += MMSystemTrades_Click;
             // 
+            // MMSystemVendors
+            // 
+            MMSystemVendors.Name = "MMSystemVendors";
+            MMSystemVendors.Size = new System.Drawing.Size(149, 22);
+            MMSystemVendors.Text = "Vendors";
+            MMSystemVendors.Click += MMSystemVendors_Click;
+            // 
             // MMSystemZones
             // 
             MMSystemZones.Name = "MMSystemZones";
@@ -7278,7 +7315,7 @@
             // 
             TBMain.Font = new System.Drawing.Font("Segoe UI Variable Text", 10F);
             TBMain.ImageScalingSize = new System.Drawing.Size(24, 24);
-            TBMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { TBFile, TBS1, TMBack, TBForward, TBS2, TBSelectedData, TBLocalizer, toolStripSeparator1, TBMap, TBSplit, toolStripButton1, TBBuffs, TBDoodads, TBFactions, TBItems, TBLoot, TBNpc, TBQuests, TBSchedules, TBSkills, TBSpheres, TBTags, TBTrades, TBSlaves, TBZones });
+            TBMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { TBFile, TBS1, TMBack, TBForward, TBS2, TBSelectedData, TBLocalizer, toolStripSeparator1, TBMap, TBSplit, toolStripButton1, TBBuffs, TBDoodads, TBFactions, TBItems, TBLoot, TBNpc, TBQuests, TBSchedules, TBSkills, TBSpheres, TBTags, TBTrades, TBSlaves, TBVendors, TBZones });
             TBMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             TBMain.Location = new System.Drawing.Point(0, 0);
             TBMain.Name = "TBMain";
@@ -7566,6 +7603,16 @@
             TBSlaves.Text = "Vehicles";
             TBSlaves.Click += TBSlaves_Click;
             // 
+            // TBVendors
+            // 
+            TBVendors.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            TBVendors.Image = (System.Drawing.Image)resources.GetObject("TBVendors.Image");
+            TBVendors.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBVendors.Name = "TBVendors";
+            TBVendors.Size = new System.Drawing.Size(63, 23);
+            TBVendors.Text = "Vendors";
+            TBVendors.Click += TBVendors_Click;
+            // 
             // TBZones
             // 
             TBZones.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -7737,6 +7784,8 @@
             groupBox15.ResumeLayout(false);
             groupBox15.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSlaves).EndInit();
+            tpVendors.ResumeLayout(false);
+            groupBox16.ResumeLayout(false);
             tpZones.ResumeLayout(false);
             tpZones.PerformLayout();
             groupBox5.ResumeLayout(false);
@@ -8384,6 +8433,11 @@
         private System.Windows.Forms.ContextMenuStrip cmPlotBookmarks;
         private System.Windows.Forms.ToolStripMenuItem tsmiPlotBookmarkHeader;
         private System.Windows.Forms.ToolStripSeparator tssPlotBookmark1;
+        private System.Windows.Forms.TabPage tpVendors;
+        private System.Windows.Forms.GroupBox groupBox16;
+        private System.Windows.Forms.ToolStripButton TBVendors;
+        private System.Windows.Forms.ToolStripMenuItem MMSystemVendors;
+        private System.Windows.Forms.CheckedListBox clbVendorTypes;
     }
 }
 

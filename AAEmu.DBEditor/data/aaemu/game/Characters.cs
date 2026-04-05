@@ -68,15 +68,15 @@ public partial class Characters
 
     public uint DeadCount { get; set; }
 
-    public DateTime DeadTime { get; set; }
+    public DateTime? DeadTime { get; set; }
 
     public int RezWaitDuration { get; set; }
 
-    public DateTime RezTime { get; set; }
+    public DateTime? RezTime { get; set; }
 
     public int RezPenaltyDuration { get; set; }
 
-    public DateTime LeaveTime { get; set; }
+    public DateTime? LeaveTime { get; set; }
 
     public long Money { get; set; }
 
@@ -96,11 +96,11 @@ public partial class Characters
 
     public int PvpHonor { get; set; }
 
-    public DateTime DeleteRequestTime { get; set; }
+    public DateTime? DeleteRequestTime { get; set; }
 
-    public DateTime TransferRequestTime { get; set; }
+    public DateTime? TransferRequestTime { get; set; }
 
-    public DateTime DeleteTime { get; set; }
+    public DateTime? DeleteTime { get; set; }
 
     public bool AutoUseAapoint { get; set; }
 

@@ -33,9 +33,9 @@ public partial class Items
 
     public uint MadeUnitId { get; set; }
 
-    public DateTime UnsecureTime { get; set; }
+    public DateTime? UnsecureTime { get; set; }
 
-    public DateTime UnpackTime { get; set; }
+    public DateTime? UnpackTime { get; set; }
 
     public uint Owner { get; set; }
 
@@ -43,7 +43,7 @@ public partial class Items
 
     public byte Flags { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
     public uint Ucc { get; set; }
 
