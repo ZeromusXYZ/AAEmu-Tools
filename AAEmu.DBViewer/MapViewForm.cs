@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Xml;
 using AAEmu.DBViewer.utils;
 using AAEmu.DBViewer.DbDefs;
+using System.ComponentModel;
 
 namespace AAEmu.DBViewer
 {
@@ -37,6 +38,7 @@ namespace AAEmu.DBViewer
         private RectangleF FocusBorder = new RectangleF();
         private List<MapViewMap> cursorZoneList = new List<MapViewMap>();
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Point ViewOffset { get => viewOffset; set { viewOffset = value; updateStatusBar(); } }
 
         public MapViewForm()

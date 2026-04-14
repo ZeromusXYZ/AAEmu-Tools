@@ -19,6 +19,7 @@ using AAEmu.DBViewer.DbDefs;
 using System.Globalization;
 using AAEmu.Commons.Utils;
 using Newtonsoft.Json.Linq;
+using System.ComponentModel;
 
 namespace AAEmu.DBViewer
 {
@@ -26,6 +27,7 @@ namespace AAEmu.DBViewer
     {
         public static MainForm ThisForm { get; set; }
         private string DefaultTitle { get; set; } = string.Empty;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public AAPak Pak { get; set; } = new("");
         private List<string> PossibleLanguageIDs { get; set; } = [];
         // TableName, SqliteFileName
