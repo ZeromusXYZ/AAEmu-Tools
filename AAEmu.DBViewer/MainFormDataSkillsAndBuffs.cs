@@ -1483,13 +1483,17 @@ public partial class MainForm
         }
 
         // Effect sources
-        var sourceEffects = AaDb.DbEffects.Values.Where(x => x.ActualType == "BuffEffect" && x.ActualId == buff_id).ToList();
-        if (sourceEffects.Any())
+        var buffSourceEffects = AaDb.DbBuffEffects.Values.Where(x => x.BuffId == buff_id);
+        foreach (var buffSourceEffect in buffSourceEffects)
         {
-            var effectSourceNode = tvBuffTriggers.Nodes.Add("Source Effects");
-            foreach (var effect in sourceEffects)
+            var effectSourceNode = tvBuffTriggers.Nodes.Add($"Source - BuffEffect ({buffSourceEffect.Id})");
+            var sourceEffects = AaDb.DbEffects.Values.Where(x => x.ActualType == "BuffEffect" && x.ActualId == buffSourceEffect.Id).ToList();
+            if (sourceEffects.Any())
             {
-                effectSourceNode.Nodes.Add($"Effect ({effect.Id}) - {effect.ActualType} ({effect.ActualId})");
+                foreach (var effect in sourceEffects)
+                {
+                    effectSourceNode.Nodes.Add($"Effect ({effect.Id})");
+                }
             }
         }
 
