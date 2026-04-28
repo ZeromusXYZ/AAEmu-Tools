@@ -747,6 +747,15 @@ public class GameBuff
     public string SearchString = string.Empty;
 }
 
+public class GameBuffEffects
+{
+    public long Id = 0;
+    public long BuffId = 0;
+    public long Chance = 0;
+    public long Stack = 0;
+    public long AbLevel = 0;
+}
+
 public class GameBuffTrigger
 {
     public long Id = 0;
@@ -1376,6 +1385,16 @@ public class GameUnitModifiers
     public long LinearLevelBonus = 0;
 }
 
+public class GameDynamicUnitModifiers
+{
+    public long Id = 0;
+    public long BuffId = 0;
+    public UnitAttribute UnitAttributeId = 0;
+    public long UnitModifierTypeId = 0;
+    public long FuncId = 0;
+    public string FuncType = string.Empty;
+}
+
 public class GameAchievements
 {
     public long Id = 0;
@@ -1524,6 +1543,7 @@ internal static class AaDb
     public static Dictionary<long, GameTaggedValues> DbTaggedSkills = new();
     public static Dictionary<long, GameZoneGroupBannedTags> DbZoneGroupBannedTags = new();
     public static Dictionary<long, GameBuff> DbBuffs = new();
+    public static Dictionary<long, GameBuffEffects> DbBuffEffects = new();
     public static Dictionary<long, GameBuffTrigger> DbBuffTriggers = new();
     public static Dictionary<long, GameBuffModifier> DbBuffModifiers = new();
     public static Dictionary<long, GamePassiveBuff> DbPassiveBuffs = new();
@@ -1567,6 +1587,7 @@ internal static class AaDb
     public static Dictionary<long, GameUnitReqs> DbUnitReqs = new();
     public static Dictionary<long, GameUiTexts> DbUiTexts = new();
     public static Dictionary<long, GameUnitModifiers> DbUnitModifiers = new();
+    public static Dictionary<long, GameDynamicUnitModifiers> DbDynamicUnitModifiers = new();
     public static Dictionary<long, GameAchievements> DbAchievements = new();
     public static Dictionary<long, GameAchievementObjectives> DbAchievementObjectives = new();
     public static Dictionary<long, GameItemGrades> DbItemGrades = new();
@@ -1622,6 +1643,7 @@ internal static class AaDb
         DbTaggedSkills.Clear();
         DbZoneGroupBannedTags.Clear();
         DbBuffs.Clear();
+        DbBuffEffects.Clear();
         DbBuffTriggers.Clear();
         DbBuffModifiers.Clear();
         DbPassiveBuffs.Clear();
@@ -1665,6 +1687,7 @@ internal static class AaDb
         DbUnitReqs.Clear();
         DbUiTexts.Clear();
         DbUnitModifiers.Clear();
+        DbDynamicUnitModifiers.Clear();
         DbAchievements.Clear();
         DbAchievementObjectives.Clear();
         DbItemGrades.Clear();

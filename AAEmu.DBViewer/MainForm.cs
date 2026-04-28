@@ -935,6 +935,7 @@ namespace AAEmu.DBViewer
                 LoadSkillProducts();
                 LoadUnitReqs();
                 LoadUnitMods();
+                LoadDynamicUnitMods();
 
                 loading.ShowInfo("Loading: Models");
                 LoadModels();

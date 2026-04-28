@@ -357,6 +357,30 @@ public partial class MainForm
                 }
             }
 
+            if (AllTableNames.GetValueOrDefault("buff_effects") == SQLite.SQLiteFileName)
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM buff_effects";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+
+                        while (reader.Read())
+                        {
+                            var t = new GameBuffEffects();
+                            t.Id = GetInt64(reader, "id");
+                            t.BuffId = GetInt64(reader, "buff_id");
+                            t.Chance = GetInt64(reader, "chance");
+                            t.Stack = GetInt64(reader, "stack");
+                            t.AbLevel = GetInt64(reader, "ab_level");
+
+                            AaDb.DbBuffEffects.Add(t.Id, t);
+                        }
+                    }
+                }
+            }
+
             if (AllTableNames.GetValueOrDefault("buff_triggers") == SQLite.SQLiteFileName)
             {
                 using (var command = connection.CreateCommand())
@@ -1375,6 +1399,43 @@ public partial class MainForm
             }
         }
 
+        // Dynamic Stat Modifiers
+        var dynStats = AaDb.DbDynamicUnitModifiers.Values.Where(x => x.BuffId == buff_id).ToList();
+        if (dynStats.Any())
+        {
+            var statsNode = tvBuffTriggers.Nodes.Add("Dynamic stat modifiers");
+            foreach (var unitStat in dynStats)
+            {
+                var statNode = statsNode.Nodes.Add($"{unitStat.UnitAttributeId} {(unitStat.UnitModifierTypeId != 0 ? "%" : "")} - {unitStat.FuncType} ({unitStat.FuncId})");
+
+                var funcTableName = FunctionTypeToTableName(unitStat.FuncType);
+                var funcValuesList = GetCustomTableValues(funcTableName, "id", unitStat.FuncId.ToString());
+                foreach (var effectValues in funcValuesList)
+                foreach (var effectValue in effectValues)
+                {
+                    AddCustomPropertyNode(effectValue.Key, effectValue.Value, false, statNode);
+                }
+
+                if (statNode.Text.Contains("health", StringComparison.InvariantCultureIgnoreCase))
+                    statNode.ForeColor = Color.Red;
+                else
+                if (statNode.Text.Contains("mana", StringComparison.InvariantCultureIgnoreCase))
+                    statNode.ForeColor = Color.DeepSkyBlue;
+                else
+                if (statNode.Text.Contains("armor", StringComparison.InvariantCultureIgnoreCase))
+                    statNode.ForeColor = Color.Yellow;
+                else
+                if (statNode.Text.Contains("resist", StringComparison.InvariantCultureIgnoreCase))
+                    statNode.ForeColor = Color.MediumPurple;
+                else
+                if (statNode.Text.Contains("speed", StringComparison.InvariantCultureIgnoreCase))
+                    statNode.ForeColor = Color.LawnGreen;
+                else
+                if (statNode.Text.Contains("exp", StringComparison.InvariantCultureIgnoreCase))
+                    statNode.ForeColor = Color.WhiteSmoke;
+            }
+        }
+
 
         // Buff Modifiers
         var mods = AaDb.DbBuffModifiers.Values.Where(x => x.OwnerType == "Buff" && x.OwnerId == buff_id).ToList();
@@ -1753,6 +1814,36 @@ public partial class MainForm
             t.LinearLevelBonus = reader.GetInt64("linear_level_bonus");
 
             AaDb.DbUnitModifiers.TryAdd(t.Id, t);
+        }
+    }
+
+    private void LoadDynamicUnitMods()
+    {
+        if (AllTableNames.GetValueOrDefault("dynamic_unit_modifiers") != SQLite.SQLiteFileName)
+            return;
+
+        using var connection = SQLite.CreateConnection();
+        using var command = connection.CreateCommand();
+        command.CommandText = "SELECT * FROM dynamic_unit_modifiers";
+        command.Prepare();
+        using var sqliteReader = command.ExecuteReader();
+        using var reader = new SQLiteWrapperReader(sqliteReader);
+        var columnNames = reader.GetColumnNames();
+        var useDbId = (columnNames.IndexOf("id") >= 0);
+        var i = 0u;
+
+        while (reader.Read())
+        {
+            var t = new GameDynamicUnitModifiers();
+            i++;
+            t.Id = useDbId ? reader.GetInt64("id") : i;
+            t.BuffId = reader.GetInt64("buff_id");
+            t.UnitAttributeId = (UnitAttribute)reader.GetInt64("unit_attribute_id");
+            t.UnitModifierTypeId = reader.GetInt64("unit_modifier_type_id");
+            t.FuncId = reader.GetInt64("func_id");
+            t.FuncType = reader.GetString("func_type");
+
+            AaDb.DbDynamicUnitModifiers.TryAdd(t.Id, t);
         }
     }
 
