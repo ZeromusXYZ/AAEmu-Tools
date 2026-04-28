@@ -804,8 +804,8 @@ namespace AAEmu.DBViewer
                 if (!string.IsNullOrWhiteSpace(titleSqliteFiles))
                     titleSqliteFiles += " + ";
                 else
-                if (directories.Count == 1)
-                    titleSqliteFiles += directories[0] + Path.DirectorySeparatorChar;
+                    if (directories.Count == 1)
+                        titleSqliteFiles += directories[0] + Path.DirectorySeparatorChar;
                 titleSqliteFiles += (directories.Count == 1) ? Path.GetFileName(sqliteFile) : sqliteFile;
             }
 
@@ -3239,6 +3239,11 @@ namespace AAEmu.DBViewer
                 }
                 clbVendorTypes.Items.Add(vendorTypeName, false);
             }
+        }
+
+        private void btnCopyDoodadTree_Click(object sender, EventArgs e)
+        {
+            CopyToClipBoard($"Doodad: " + TreeViewToString(tvDoodadDetails.Nodes, 0));
         }
     }
 }

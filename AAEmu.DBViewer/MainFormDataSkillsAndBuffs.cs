@@ -1461,7 +1461,6 @@ public partial class MainForm
             }
         }
 
-
         // Buff Triggers
         var triggers = AaDb.DbBuffTriggers.Values.Where(bt => bt.BuffId == buff_id)
             .GroupBy(bt => bt.EventId, bt => bt).ToDictionary(bt => bt.Key, bt => bt.ToList());
@@ -1482,6 +1481,18 @@ public partial class MainForm
                 }
             }
         }
+
+        // Effect sources
+        var sourceEffects = AaDb.DbEffects.Values.Where(x => x.ActualType == "BuffEffect" && x.ActualId == buff_id).ToList();
+        if (sourceEffects.Any())
+        {
+            var effectSourceNode = tvBuffTriggers.Nodes.Add("Source Effects");
+            foreach (var effect in sourceEffects)
+            {
+                effectSourceNode.Nodes.Add($"Effect ({effect.Id}) - {effect.ActualType} ({effect.ActualId})");
+            }
+        }
+
 
         tvBuffTriggers.ExpandAll();
         if (tvBuffTriggers.Nodes.Count > 0)

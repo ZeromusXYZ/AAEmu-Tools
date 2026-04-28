@@ -667,6 +667,7 @@
             openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
             openFileDialog4 = new System.Windows.Forms.OpenFileDialog();
             ofdLoadUnitMovementDialog = new System.Windows.Forms.OpenFileDialog();
+            btnCopyDoodadTree = new System.Windows.Forms.Button();
             tcViewer.SuspendLayout();
             tpSettings.SuspendLayout();
             tpTables.SuspendLayout();
@@ -1639,7 +1640,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 305);
-            splitContainer2.SplitterDistance = 284;
+            splitContainer2.SplitterDistance = 283;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1647,7 +1648,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(192, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(191, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(88, 19);
@@ -1678,7 +1679,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(276, 276);
+            tvBuffTriggers.Size = new System.Drawing.Size(275, 276);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -3222,6 +3223,7 @@
             // 
             // tpDoodadWorkflow
             // 
+            tpDoodadWorkflow.Controls.Add(btnCopyDoodadTree);
             tpDoodadWorkflow.Controls.Add(cbDoodadWorkflowHideEmpty);
             tpDoodadWorkflow.Controls.Add(tvDoodadDetails);
             tpDoodadWorkflow.Location = new System.Drawing.Point(4, 4);
@@ -4874,7 +4876,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(450, 482);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(449, 482);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 25);
@@ -4906,7 +4908,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(677, 472);
+            tvQuestWorkflow.Size = new System.Drawing.Size(676, 472);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -7656,6 +7658,18 @@
             ofdLoadUnitMovementDialog.Filter = "JSON Files|*.json|All Files|*.*";
             ofdLoadUnitMovementDialog.Title = "Open Unit Movement File";
             // 
+            // btnCopyDoodadTree
+            // 
+            btnCopyDoodadTree.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            btnCopyDoodadTree.Location = new System.Drawing.Point(294, 476);
+            btnCopyDoodadTree.Margin = new System.Windows.Forms.Padding(4);
+            btnCopyDoodadTree.Name = "btnCopyDoodadTree";
+            btnCopyDoodadTree.Size = new System.Drawing.Size(88, 26);
+            btnCopyDoodadTree.TabIndex = 3;
+            btnCopyDoodadTree.Text = "Copy Tree";
+            btnCopyDoodadTree.UseVisualStyleBackColor = true;
+            btnCopyDoodadTree.Click += btnCopyDoodadTree_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -8439,6 +8453,7 @@
         private System.Windows.Forms.ToolStripButton TBVendors;
         private System.Windows.Forms.ToolStripMenuItem MMSystemVendors;
         private System.Windows.Forms.CheckedListBox clbVendorTypes;
+        private System.Windows.Forms.Button btnCopyDoodadTree;
     }
 }
 
