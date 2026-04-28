@@ -30,9 +30,9 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("NPC");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Slave");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("NPC");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Slave");
             lbTableNames = new System.Windows.Forms.ListBox();
             tcViewer = new System.Windows.Forms.TabControl();
             tpSettings = new System.Windows.Forms.TabPage();
@@ -251,6 +251,7 @@
             lDoodadAddGMCommand = new System.Windows.Forms.Label();
             btnShowDoodadOnMap = new System.Windows.Forms.Button();
             tpDoodadWorkflow = new System.Windows.Forms.TabPage();
+            btnCopyDoodadTree = new System.Windows.Forms.Button();
             cbDoodadWorkflowHideEmpty = new System.Windows.Forms.CheckBox();
             tvDoodadDetails = new System.Windows.Forms.TreeView();
             btnSearchDoodads = new System.Windows.Forms.Button();
@@ -397,6 +398,7 @@
             Column19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             Column20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             Column36 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            btnCopyQuestTree = new System.Windows.Forms.Button();
             lQuestAddGMCommand = new System.Windows.Forms.Label();
             btnQuestFindRelatedOnMap = new System.Windows.Forms.Button();
             cbQuestWorkflowHideEmpty = new System.Windows.Forms.CheckBox();
@@ -667,7 +669,6 @@
             openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
             openFileDialog4 = new System.Windows.Forms.OpenFileDialog();
             ofdLoadUnitMovementDialog = new System.Windows.Forms.OpenFileDialog();
-            btnCopyDoodadTree = new System.Windows.Forms.Button();
             tcViewer.SuspendLayout();
             tpSettings.SuspendLayout();
             tpTables.SuspendLayout();
@@ -1640,7 +1641,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 305);
-            splitContainer2.SplitterDistance = 283;
+            splitContainer2.SplitterDistance = 281;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1648,7 +1649,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(191, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(189, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(88, 19);
@@ -1679,7 +1680,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(275, 276);
+            tvBuffTriggers.Size = new System.Drawing.Size(273, 276);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -3235,6 +3236,18 @@
             tpDoodadWorkflow.Text = "Workflow";
             tpDoodadWorkflow.UseVisualStyleBackColor = true;
             // 
+            // btnCopyDoodadTree
+            // 
+            btnCopyDoodadTree.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            btnCopyDoodadTree.Location = new System.Drawing.Point(294, 476);
+            btnCopyDoodadTree.Margin = new System.Windows.Forms.Padding(4);
+            btnCopyDoodadTree.Name = "btnCopyDoodadTree";
+            btnCopyDoodadTree.Size = new System.Drawing.Size(88, 26);
+            btnCopyDoodadTree.TabIndex = 3;
+            btnCopyDoodadTree.Text = "Copy Tree";
+            btnCopyDoodadTree.UseVisualStyleBackColor = true;
+            btnCopyDoodadTree.Click += btnCopyDoodadTree_Click;
+            // 
             // cbDoodadWorkflowHideEmpty
             // 
             cbDoodadWorkflowHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
@@ -4519,9 +4532,9 @@
             tvNPCInfo.Location = new System.Drawing.Point(8, 38);
             tvNPCInfo.Margin = new System.Windows.Forms.Padding(4);
             tvNPCInfo.Name = "tvNPCInfo";
-            treeNode1.Name = "SkillNode";
-            treeNode1.Text = "NPC";
-            tvNPCInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
+            treeNode4.Name = "SkillNode";
+            treeNode4.Text = "NPC";
+            tvNPCInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode4 });
             tvNPCInfo.SelectedImageIndex = 0;
             tvNPCInfo.Size = new System.Drawing.Size(430, 329);
             tvNPCInfo.TabIndex = 31;
@@ -4773,6 +4786,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(btnCopyQuestTree);
             splitContainer1.Panel2.Controls.Add(lQuestAddGMCommand);
             splitContainer1.Panel2.Controls.Add(btnQuestFindRelatedOnMap);
             splitContainer1.Panel2.Controls.Add(cbQuestWorkflowHideEmpty);
@@ -4861,11 +4875,24 @@
             Column36.ReadOnly = true;
             Column36.Width = 80;
             // 
+            // btnCopyQuestTree
+            // 
+            btnCopyQuestTree.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            btnCopyQuestTree.ForeColor = System.Drawing.Color.Black;
+            btnCopyQuestTree.Location = new System.Drawing.Point(392, 479);
+            btnCopyQuestTree.Margin = new System.Windows.Forms.Padding(4);
+            btnCopyQuestTree.Name = "btnCopyQuestTree";
+            btnCopyQuestTree.Size = new System.Drawing.Size(102, 25);
+            btnCopyQuestTree.TabIndex = 29;
+            btnCopyQuestTree.Text = "Copy Tree";
+            btnCopyQuestTree.UseVisualStyleBackColor = true;
+            btnCopyQuestTree.Click += btnCopyQuestTree_Click;
+            // 
             // lQuestAddGMCommand
             // 
             lQuestAddGMCommand.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             lQuestAddGMCommand.AutoSize = true;
-            lQuestAddGMCommand.Location = new System.Drawing.Point(151, 488);
+            lQuestAddGMCommand.Location = new System.Drawing.Point(155, 484);
             lQuestAddGMCommand.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             lQuestAddGMCommand.Name = "lQuestAddGMCommand";
             lQuestAddGMCommand.Size = new System.Drawing.Size(41, 15);
@@ -4876,7 +4903,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(449, 482);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(502, 479);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 25);
@@ -4891,7 +4918,7 @@
             cbQuestWorkflowHideEmpty.AutoSize = true;
             cbQuestWorkflowHideEmpty.Checked = true;
             cbQuestWorkflowHideEmpty.CheckState = System.Windows.Forms.CheckState.Checked;
-            cbQuestWorkflowHideEmpty.Location = new System.Drawing.Point(2, 487);
+            cbQuestWorkflowHideEmpty.Location = new System.Drawing.Point(4, 483);
             cbQuestWorkflowHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbQuestWorkflowHideEmpty.Name = "cbQuestWorkflowHideEmpty";
             cbQuestWorkflowHideEmpty.Size = new System.Drawing.Size(124, 19);
@@ -4908,7 +4935,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(676, 472);
+            tvQuestWorkflow.Size = new System.Drawing.Size(729, 465);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -5690,9 +5717,9 @@
             tvSkill.Location = new System.Drawing.Point(7, 7);
             tvSkill.Margin = new System.Windows.Forms.Padding(4);
             tvSkill.Name = "tvSkill";
-            treeNode2.Name = "SkillNode";
-            treeNode2.Text = "Skill";
-            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
+            treeNode1.Name = "SkillNode";
+            treeNode1.Text = "Skill";
+            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
             tvSkill.SelectedImageIndex = 0;
             tvSkill.Size = new System.Drawing.Size(575, 306);
             tvSkill.TabIndex = 0;
@@ -6109,9 +6136,9 @@
             tvSlaveInfo.Location = new System.Drawing.Point(8, 54);
             tvSlaveInfo.Margin = new System.Windows.Forms.Padding(4);
             tvSlaveInfo.Name = "tvSlaveInfo";
-            treeNode3.Name = "SkillNode";
-            treeNode3.Text = "Slave";
-            tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode3 });
+            treeNode2.Name = "SkillNode";
+            treeNode2.Text = "Slave";
+            tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
             tvSlaveInfo.SelectedImageIndex = 0;
             tvSlaveInfo.Size = new System.Drawing.Size(368, 466);
             tvSlaveInfo.TabIndex = 32;
@@ -7658,18 +7685,6 @@
             ofdLoadUnitMovementDialog.Filter = "JSON Files|*.json|All Files|*.*";
             ofdLoadUnitMovementDialog.Title = "Open Unit Movement File";
             // 
-            // btnCopyDoodadTree
-            // 
-            btnCopyDoodadTree.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            btnCopyDoodadTree.Location = new System.Drawing.Point(294, 476);
-            btnCopyDoodadTree.Margin = new System.Windows.Forms.Padding(4);
-            btnCopyDoodadTree.Name = "btnCopyDoodadTree";
-            btnCopyDoodadTree.Size = new System.Drawing.Size(88, 26);
-            btnCopyDoodadTree.TabIndex = 3;
-            btnCopyDoodadTree.Text = "Copy Tree";
-            btnCopyDoodadTree.UseVisualStyleBackColor = true;
-            btnCopyDoodadTree.Click += btnCopyDoodadTree_Click;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -8454,6 +8469,7 @@
         private System.Windows.Forms.ToolStripMenuItem MMSystemVendors;
         private System.Windows.Forms.CheckedListBox clbVendorTypes;
         private System.Windows.Forms.Button btnCopyDoodadTree;
+        private System.Windows.Forms.Button btnCopyQuestTree;
     }
 }
 

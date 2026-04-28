@@ -3245,5 +3245,10 @@ namespace AAEmu.DBViewer
         {
             CopyToClipBoard($"Doodad: " + TreeViewToString(tvDoodadDetails.Nodes, 0));
         }
+
+        private void btnCopyQuestTree_Click(object sender, EventArgs e)
+        {
+            CopyToClipBoard($"Quest: " + TreeViewToString(tvQuestWorkflow.Nodes, 0));
+        }
     }
 }
