@@ -1492,7 +1492,12 @@ public partial class MainForm
             {
                 foreach (var effect in sourceEffects)
                 {
-                    effectSourceNode.Nodes.Add($"Effect ({effect.Id})");
+                    var thisEffectNode = effectSourceNode.Nodes.Add($"Effect ({effect.Id})");
+                    var skillEffectsList = AaDb.DbSkillEffects.Values.Where(se => se.EffectId == effect.Id).ToList();
+                    foreach (var skillEffect in skillEffectsList)
+                    {
+                        AddCustomPropertyNode("skill_id", skillEffect.SkillId.ToString(), false, thisEffectNode);
+                    }
                 }
             }
         }

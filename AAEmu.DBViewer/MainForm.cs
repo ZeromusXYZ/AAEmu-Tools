@@ -104,7 +104,7 @@ namespace AAEmu.DBViewer
                             return;
                         }
 
-                        fs.Read(customKey, 0, 16);
+                        fs.ReadExactly(customKey, 0, 16);
                     }
 
                     Pak.SetCustomKey(customKey);
@@ -3241,14 +3241,32 @@ namespace AAEmu.DBViewer
             }
         }
 
-        private void btnCopyDoodadTree_Click(object sender, EventArgs e)
+        private void tvPopup_Opening(object sender, CancelEventArgs e)
         {
-            CopyToClipBoard($"Doodad: " + TreeViewToString(tvDoodadDetails.Nodes, 0));
+            if ((sender is not ContextMenuStrip { SourceControl: TreeView treeView }))
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            tvPopupMenuName.Text = tcViewer.SelectedTab?.Text ?? "???";
+            tvPopupCopyTree.Text = @"Copy TreeView";
+            tvPopupCopyTree.Tag = treeView;
+            tvPopupCopyNode.Text = @"Copy Node";
+            tvPopupCopyNode.Tag = treeView.SelectedNode;
+            tvPopupCopyNode.Enabled = treeView.SelectedNode != null;
         }
 
-        private void btnCopyQuestTree_Click(object sender, EventArgs e)
+        private void tvPopup_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            CopyToClipBoard($"Quest: " + TreeViewToString(tvQuestWorkflow.Nodes, 0));
+            if (e.ClickedItem == tvPopupCopyTree && e.ClickedItem is { Tag: TreeView treeView })
+            {
+                CopyToClipBoard($"{tvPopupMenuName.Text}: " + TreeViewToString(treeView.Nodes));
+            }
+            else if (e.ClickedItem == tvPopupCopyNode && e.ClickedItem is { Tag: TreeNode treeNode })
+            {
+                CopyToClipBoard(treeNode.Text);
+            }
         }
     }
 }

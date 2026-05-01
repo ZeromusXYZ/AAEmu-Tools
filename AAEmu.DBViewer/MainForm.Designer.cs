@@ -30,9 +30,9 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("NPC");
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Skill");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Slave");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("NPC");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Slave");
             lbTableNames = new System.Windows.Forms.ListBox();
             tcViewer = new System.Windows.Forms.TabControl();
             tpSettings = new System.Windows.Forms.TabPage();
@@ -111,6 +111,11 @@
             cbBuffsHideEmpty = new System.Windows.Forms.CheckBox();
             label85 = new System.Windows.Forms.Label();
             tvBuffTriggers = new System.Windows.Forms.TreeView();
+            tvPopup = new System.Windows.Forms.ContextMenuStrip(components);
+            tvPopupMenuName = new System.Windows.Forms.ToolStripMenuItem();
+            toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            tvPopupCopyTree = new System.Windows.Forms.ToolStripMenuItem();
+            tvPopupCopyNode = new System.Windows.Forms.ToolStripMenuItem();
             ilMiniIcons = new System.Windows.Forms.ImageList(components);
             label97 = new System.Windows.Forms.Label();
             flpBuff = new System.Windows.Forms.FlowLayoutPanel();
@@ -251,7 +256,6 @@
             lDoodadAddGMCommand = new System.Windows.Forms.Label();
             btnShowDoodadOnMap = new System.Windows.Forms.Button();
             tpDoodadWorkflow = new System.Windows.Forms.TabPage();
-            btnCopyDoodadTree = new System.Windows.Forms.Button();
             cbDoodadWorkflowHideEmpty = new System.Windows.Forms.CheckBox();
             tvDoodadDetails = new System.Windows.Forms.TreeView();
             btnSearchDoodads = new System.Windows.Forms.Button();
@@ -398,7 +402,6 @@
             Column19 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             Column20 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             Column36 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            btnCopyQuestTree = new System.Windows.Forms.Button();
             lQuestAddGMCommand = new System.Windows.Forms.Label();
             btnQuestFindRelatedOnMap = new System.Windows.Forms.Button();
             cbQuestWorkflowHideEmpty = new System.Windows.Forms.CheckBox();
@@ -669,6 +672,7 @@
             openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
             openFileDialog4 = new System.Windows.Forms.OpenFileDialog();
             ofdLoadUnitMovementDialog = new System.Windows.Forms.OpenFileDialog();
+            label150 = new System.Windows.Forms.Label();
             tcViewer.SuspendLayout();
             tpSettings.SuspendLayout();
             tpTables.SuspendLayout();
@@ -686,6 +690,7 @@
             splitContainer2.Panel1.SuspendLayout();
             splitContainer2.Panel2.SuspendLayout();
             splitContainer2.SuspendLayout();
+            tvPopup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvBuffs).BeginInit();
             tpDoodads.SuspendLayout();
             tcDoodads.SuspendLayout();
@@ -1641,7 +1646,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 305);
-            splitContainer2.SplitterDistance = 281;
+            splitContainer2.SplitterDistance = 345;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1649,7 +1654,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(189, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(253, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(88, 19);
@@ -1672,6 +1677,7 @@
             // 
             tvBuffTriggers.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             tvBuffTriggers.BackColor = System.Drawing.Color.FromArgb(70, 60, 40);
+            tvBuffTriggers.ContextMenuStrip = tvPopup;
             tvBuffTriggers.ForeColor = System.Drawing.Color.FromArgb(208, 192, 171);
             tvBuffTriggers.ImageIndex = 0;
             tvBuffTriggers.ImageList = ilMiniIcons;
@@ -1680,9 +1686,40 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(273, 276);
+            tvBuffTriggers.Size = new System.Drawing.Size(337, 276);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
+            // 
+            // tvPopup
+            // 
+            tvPopup.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { tvPopupMenuName, toolStripSeparator5, tvPopupCopyTree, tvPopupCopyNode });
+            tvPopup.Name = "tvPopup";
+            tvPopup.Size = new System.Drawing.Size(181, 76);
+            tvPopup.Opening += tvPopup_Opening;
+            tvPopup.ItemClicked += tvPopup_ItemClicked;
+            // 
+            // tvPopupMenuName
+            // 
+            tvPopupMenuName.Name = "tvPopupMenuName";
+            tvPopupMenuName.Size = new System.Drawing.Size(180, 22);
+            tvPopupMenuName.Text = "toolStripMenuItem2";
+            // 
+            // toolStripSeparator5
+            // 
+            toolStripSeparator5.Name = "toolStripSeparator5";
+            toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
+            // 
+            // tvPopupCopyTree
+            // 
+            tvPopupCopyTree.Name = "tvPopupCopyTree";
+            tvPopupCopyTree.Size = new System.Drawing.Size(180, 22);
+            tvPopupCopyTree.Text = "toolStripMenuItem2";
+            // 
+            // tvPopupCopyNode
+            // 
+            tvPopupCopyNode.Name = "tvPopupCopyNode";
+            tvPopupCopyNode.Size = new System.Drawing.Size(180, 22);
+            tvPopupCopyNode.Text = "toolStripMenuItem2";
             // 
             // ilMiniIcons
             // 
@@ -1710,10 +1747,10 @@
             flpBuff.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             flpBuff.AutoScroll = true;
             flpBuff.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            flpBuff.Location = new System.Drawing.Point(7, 28);
+            flpBuff.Location = new System.Drawing.Point(4, 28);
             flpBuff.Margin = new System.Windows.Forms.Padding(4);
             flpBuff.Name = "flpBuff";
-            flpBuff.Size = new System.Drawing.Size(340, 272);
+            flpBuff.Size = new System.Drawing.Size(323, 272);
             flpBuff.TabIndex = 2;
             // 
             // lBuffAddGMCommand
@@ -3224,7 +3261,6 @@
             // 
             // tpDoodadWorkflow
             // 
-            tpDoodadWorkflow.Controls.Add(btnCopyDoodadTree);
             tpDoodadWorkflow.Controls.Add(cbDoodadWorkflowHideEmpty);
             tpDoodadWorkflow.Controls.Add(tvDoodadDetails);
             tpDoodadWorkflow.Location = new System.Drawing.Point(4, 4);
@@ -3235,18 +3271,6 @@
             tpDoodadWorkflow.TabIndex = 4;
             tpDoodadWorkflow.Text = "Workflow";
             tpDoodadWorkflow.UseVisualStyleBackColor = true;
-            // 
-            // btnCopyDoodadTree
-            // 
-            btnCopyDoodadTree.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            btnCopyDoodadTree.Location = new System.Drawing.Point(294, 476);
-            btnCopyDoodadTree.Margin = new System.Windows.Forms.Padding(4);
-            btnCopyDoodadTree.Name = "btnCopyDoodadTree";
-            btnCopyDoodadTree.Size = new System.Drawing.Size(88, 26);
-            btnCopyDoodadTree.TabIndex = 3;
-            btnCopyDoodadTree.Text = "Copy Tree";
-            btnCopyDoodadTree.UseVisualStyleBackColor = true;
-            btnCopyDoodadTree.Click += btnCopyDoodadTree_Click;
             // 
             // cbDoodadWorkflowHideEmpty
             // 
@@ -3265,6 +3289,7 @@
             // 
             tvDoodadDetails.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             tvDoodadDetails.BackColor = System.Drawing.Color.FromArgb(70, 60, 40);
+            tvDoodadDetails.ContextMenuStrip = tvPopup;
             tvDoodadDetails.ForeColor = System.Drawing.Color.FromArgb(208, 192, 171);
             tvDoodadDetails.LineColor = System.Drawing.Color.LightGray;
             tvDoodadDetails.Location = new System.Drawing.Point(7, 7);
@@ -4524,6 +4549,7 @@
             // 
             tvNPCInfo.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             tvNPCInfo.BackColor = System.Drawing.Color.FromArgb(70, 60, 40);
+            tvNPCInfo.ContextMenuStrip = tvPopup;
             tvNPCInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             tvNPCInfo.ForeColor = System.Drawing.Color.FromArgb(208, 192, 171);
             tvNPCInfo.ImageIndex = 0;
@@ -4532,9 +4558,9 @@
             tvNPCInfo.Location = new System.Drawing.Point(8, 38);
             tvNPCInfo.Margin = new System.Windows.Forms.Padding(4);
             tvNPCInfo.Name = "tvNPCInfo";
-            treeNode4.Name = "SkillNode";
-            treeNode4.Text = "NPC";
-            tvNPCInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode4 });
+            treeNode1.Name = "SkillNode";
+            treeNode1.Text = "NPC";
+            tvNPCInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
             tvNPCInfo.SelectedImageIndex = 0;
             tvNPCInfo.Size = new System.Drawing.Size(430, 329);
             tvNPCInfo.TabIndex = 31;
@@ -4786,7 +4812,6 @@
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(btnCopyQuestTree);
             splitContainer1.Panel2.Controls.Add(lQuestAddGMCommand);
             splitContainer1.Panel2.Controls.Add(btnQuestFindRelatedOnMap);
             splitContainer1.Panel2.Controls.Add(cbQuestWorkflowHideEmpty);
@@ -4875,19 +4900,6 @@
             Column36.ReadOnly = true;
             Column36.Width = 80;
             // 
-            // btnCopyQuestTree
-            // 
-            btnCopyQuestTree.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            btnCopyQuestTree.ForeColor = System.Drawing.Color.Black;
-            btnCopyQuestTree.Location = new System.Drawing.Point(392, 479);
-            btnCopyQuestTree.Margin = new System.Windows.Forms.Padding(4);
-            btnCopyQuestTree.Name = "btnCopyQuestTree";
-            btnCopyQuestTree.Size = new System.Drawing.Size(102, 25);
-            btnCopyQuestTree.TabIndex = 29;
-            btnCopyQuestTree.Text = "Copy Tree";
-            btnCopyQuestTree.UseVisualStyleBackColor = true;
-            btnCopyQuestTree.Click += btnCopyQuestTree_Click;
-            // 
             // lQuestAddGMCommand
             // 
             lQuestAddGMCommand.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
@@ -4903,7 +4915,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(502, 479);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(496, 479);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 25);
@@ -4931,11 +4943,12 @@
             // 
             tvQuestWorkflow.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             tvQuestWorkflow.BackColor = System.Drawing.Color.FromArgb(70, 60, 40);
+            tvQuestWorkflow.ContextMenuStrip = tvPopup;
             tvQuestWorkflow.ForeColor = System.Drawing.Color.FromArgb(208, 192, 171);
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(729, 465);
+            tvQuestWorkflow.Size = new System.Drawing.Size(723, 465);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -5030,6 +5043,7 @@
             // 
             tvSchedule.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             tvSchedule.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            tvSchedule.ContextMenuStrip = tvPopup;
             tvSchedule.ImageIndex = 0;
             tvSchedule.ImageList = ilMiniIcons;
             tvSchedule.Location = new System.Drawing.Point(365, 32);
@@ -5513,6 +5527,7 @@
             // 
             // tpSkillExecution
             // 
+            tpSkillExecution.Controls.Add(label150);
             tpSkillExecution.Controls.Add(btnSkillTreeCollapse);
             tpSkillExecution.Controls.Add(btnCopySkillExecutionTree);
             tpSkillExecution.Controls.Add(gbSkillPlotEventInfo);
@@ -5717,9 +5732,9 @@
             tvSkill.Location = new System.Drawing.Point(7, 7);
             tvSkill.Margin = new System.Windows.Forms.Padding(4);
             tvSkill.Name = "tvSkill";
-            treeNode1.Name = "SkillNode";
-            treeNode1.Text = "Skill";
-            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
+            treeNode2.Name = "SkillNode";
+            treeNode2.Text = "Skill";
+            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
             tvSkill.SelectedImageIndex = 0;
             tvSkill.Size = new System.Drawing.Size(575, 306);
             tvSkill.TabIndex = 0;
@@ -5763,6 +5778,7 @@
             // 
             TvSpheres.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             TvSpheres.BackColor = System.Drawing.Color.FromArgb(70, 60, 40);
+            TvSpheres.ContextMenuStrip = tvPopup;
             TvSpheres.ForeColor = System.Drawing.Color.FromArgb(208, 192, 171);
             TvSpheres.Location = new System.Drawing.Point(460, 51);
             TvSpheres.Margin = new System.Windows.Forms.Padding(4);
@@ -5891,6 +5907,7 @@
             // 
             tvTagInfo.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             tvTagInfo.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            tvTagInfo.ContextMenuStrip = tvPopup;
             tvTagInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             tvTagInfo.ImageIndex = 0;
             tvTagInfo.ImageList = ilMiniIcons;
@@ -6128,6 +6145,7 @@
             // 
             tvSlaveInfo.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             tvSlaveInfo.BackColor = System.Drawing.Color.FromArgb(70, 60, 40);
+            tvSlaveInfo.ContextMenuStrip = tvPopup;
             tvSlaveInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             tvSlaveInfo.ForeColor = System.Drawing.Color.FromArgb(208, 192, 171);
             tvSlaveInfo.ImageIndex = 0;
@@ -6136,9 +6154,9 @@
             tvSlaveInfo.Location = new System.Drawing.Point(8, 54);
             tvSlaveInfo.Margin = new System.Windows.Forms.Padding(4);
             tvSlaveInfo.Name = "tvSlaveInfo";
-            treeNode2.Name = "SkillNode";
-            treeNode2.Text = "Slave";
-            tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
+            treeNode3.Name = "SkillNode";
+            treeNode3.Text = "Slave";
+            tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode3 });
             tvSlaveInfo.SelectedImageIndex = 0;
             tvSlaveInfo.Size = new System.Drawing.Size(368, 466);
             tvSlaveInfo.TabIndex = 32;
@@ -7685,6 +7703,15 @@
             ofdLoadUnitMovementDialog.Filter = "JSON Files|*.json|All Files|*.*";
             ofdLoadUnitMovementDialog.Title = "Open Unit Movement File";
             // 
+            // label150
+            // 
+            label150.AutoSize = true;
+            label150.Location = new System.Drawing.Point(58, 335);
+            label150.Name = "label150";
+            label150.Size = new System.Drawing.Size(287, 15);
+            label150.TabIndex = 4;
+            label150.Text = "Dbl-Click event to follow, Right-click event for callers";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -7727,6 +7754,7 @@
             splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
             splitContainer2.ResumeLayout(false);
+            tvPopup.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvBuffs).EndInit();
             tpDoodads.ResumeLayout(false);
             tpDoodads.PerformLayout();
@@ -7798,6 +7826,7 @@
             ((System.ComponentModel.ISupportInitialize)dgvSkillProducts).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvSkillReagents).EndInit();
             tpSkillExecution.ResumeLayout(false);
+            tpSkillExecution.PerformLayout();
             gbSkillPlotEventInfo.ResumeLayout(false);
             gbSkillPlotEventInfo.PerformLayout();
             cmPlotBookmarks.ResumeLayout(false);
@@ -8468,8 +8497,12 @@
         private System.Windows.Forms.ToolStripButton TBVendors;
         private System.Windows.Forms.ToolStripMenuItem MMSystemVendors;
         private System.Windows.Forms.CheckedListBox clbVendorTypes;
-        private System.Windows.Forms.Button btnCopyDoodadTree;
-        private System.Windows.Forms.Button btnCopyQuestTree;
+        private System.Windows.Forms.ContextMenuStrip tvPopup;
+        private System.Windows.Forms.ToolStripMenuItem tvPopupCopyTree;
+        private System.Windows.Forms.ToolStripMenuItem tvPopupMenuName;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem tvPopupCopyNode;
+        private System.Windows.Forms.Label label150;
     }
 }
 
