@@ -247,6 +247,7 @@ public class GameSkills
     public bool FirstReagentOnly = false;
     public long PlotId = 0;
     public bool OrUnitReqs = false;
+    public long CrimePoint = 0;
 
     // Helpers
     public string NameLocalized = string.Empty;

@@ -61,6 +61,7 @@ public partial class MainForm
                             t.PlotId = GetInt64(reader, "plot_id");
 
                             t.OrUnitReqs = GetBool(reader, "or_unit_reqs");
+                            t.CrimePoint = GetInt64(reader, "crime_point");
 
                             t.NameLocalized = AaDb.GetTranslationById(t.Id, "skills", "name", t.Name);
                             t.DescriptionLocalized = AaDb.GetTranslationById(t.Id, "skills", "desc", t.Desc);
@@ -1192,7 +1193,10 @@ public partial class MainForm
             }
 
             // lSkillGCD.Text = skill.ignore_global_cooldown ? "Ignore" : "Normal";
-            FormattedTextToRichtEdit(skill.DescriptionLocalized, rtSkillDescription);
+            var desc = skill.DescriptionLocalized;
+            if (skill.CrimePoint > 0)
+                desc += "\n\n|nd;Considered a crime|r";
+            FormattedTextToRichtEdit(desc, rtSkillDescription);
             IconIdToLabel(skill.IconId, skillIcon);
             lSkillTags.Text = TagsAsString(idx, AaDb.DbTaggedSkills);
 
