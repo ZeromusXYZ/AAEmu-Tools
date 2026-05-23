@@ -414,6 +414,9 @@
             lbSchedulesGame = new System.Windows.Forms.ListBox();
             tpTowerDefs = new System.Windows.Forms.TabPage();
             lbTowerDefs = new System.Windows.Forms.ListBox();
+            tpAttendance = new System.Windows.Forms.TabPage();
+            cbAttendanceFilter = new System.Windows.Forms.ComboBox();
+            lbAttendance = new System.Windows.Forms.ListBox();
             tvSchedule = new System.Windows.Forms.TreeView();
             tpSkills = new System.Windows.Forms.TabPage();
             splitContainer3 = new System.Windows.Forms.SplitContainer();
@@ -457,6 +460,7 @@
             label13 = new System.Windows.Forms.Label();
             labelSkillReagents = new System.Windows.Forms.Label();
             tpSkillExecution = new System.Windows.Forms.TabPage();
+            label150 = new System.Windows.Forms.Label();
             btnSkillTreeCollapse = new System.Windows.Forms.Button();
             btnCopySkillExecutionTree = new System.Windows.Forms.Button();
             gbSkillPlotEventInfo = new System.Windows.Forms.GroupBox();
@@ -672,7 +676,6 @@
             openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
             openFileDialog4 = new System.Windows.Forms.OpenFileDialog();
             ofdLoadUnitMovementDialog = new System.Windows.Forms.OpenFileDialog();
-            label150 = new System.Windows.Forms.Label();
             tcViewer.SuspendLayout();
             tpSettings.SuspendLayout();
             tpTables.SuspendLayout();
@@ -729,6 +732,7 @@
             tpScheduleIRL.SuspendLayout();
             tpScheduleGame.SuspendLayout();
             tpTowerDefs.SuspendLayout();
+            tpAttendance.SuspendLayout();
             tpSkills.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer3).BeginInit();
             splitContainer3.Panel1.SuspendLayout();
@@ -1646,7 +1650,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 305);
-            splitContainer2.SplitterDistance = 345;
+            splitContainer2.SplitterDistance = 341;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1654,7 +1658,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(253, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(249, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(88, 19);
@@ -1686,7 +1690,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(337, 276);
+            tvBuffTriggers.Size = new System.Drawing.Size(333, 276);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -4915,7 +4919,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(496, 479);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(492, 479);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 25);
@@ -4948,7 +4952,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(723, 465);
+            tvQuestWorkflow.Size = new System.Drawing.Size(719, 465);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -4970,6 +4974,7 @@
             tcScheduleTypes.Controls.Add(tpScheduleIRL);
             tcScheduleTypes.Controls.Add(tpScheduleGame);
             tcScheduleTypes.Controls.Add(tpTowerDefs);
+            tcScheduleTypes.Controls.Add(tpAttendance);
             tcScheduleTypes.Location = new System.Drawing.Point(8, 6);
             tcScheduleTypes.Name = "tcScheduleTypes";
             tcScheduleTypes.SelectedIndex = 0;
@@ -5038,6 +5043,39 @@
             lbTowerDefs.Size = new System.Drawing.Size(337, 511);
             lbTowerDefs.TabIndex = 2;
             lbTowerDefs.SelectedIndexChanged += LbTowerDefs_SelectedIndexChanged;
+            // 
+            // tpAttendance
+            // 
+            tpAttendance.Controls.Add(cbAttendanceFilter);
+            tpAttendance.Controls.Add(lbAttendance);
+            tpAttendance.Location = new System.Drawing.Point(4, 24);
+            tpAttendance.Name = "tpAttendance";
+            tpAttendance.Padding = new System.Windows.Forms.Padding(3);
+            tpAttendance.Size = new System.Drawing.Size(343, 517);
+            tpAttendance.TabIndex = 3;
+            tpAttendance.Text = "Attendance";
+            tpAttendance.UseVisualStyleBackColor = true;
+            // 
+            // cbAttendanceFilter
+            // 
+            cbAttendanceFilter.Dock = System.Windows.Forms.DockStyle.Top;
+            cbAttendanceFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cbAttendanceFilter.FormattingEnabled = true;
+            cbAttendanceFilter.Location = new System.Drawing.Point(3, 3);
+            cbAttendanceFilter.Name = "cbAttendanceFilter";
+            cbAttendanceFilter.Size = new System.Drawing.Size(337, 23);
+            cbAttendanceFilter.TabIndex = 1;
+            cbAttendanceFilter.SelectedIndexChanged += cbAttendanceFilter_SelectedIndexChanged;
+            // 
+            // lbAttendance
+            // 
+            lbAttendance.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            lbAttendance.FormattingEnabled = true;
+            lbAttendance.Location = new System.Drawing.Point(6, 34);
+            lbAttendance.Name = "lbAttendance";
+            lbAttendance.Size = new System.Drawing.Size(331, 484);
+            lbAttendance.TabIndex = 0;
+            lbAttendance.SelectedIndexChanged += lbAttendance_SelectedIndexChanged;
             // 
             // tvSchedule
             // 
@@ -5540,6 +5578,15 @@
             tpSkillExecution.TabIndex = 2;
             tpSkillExecution.Text = "Execution";
             tpSkillExecution.UseVisualStyleBackColor = true;
+            // 
+            // label150
+            // 
+            label150.AutoSize = true;
+            label150.Location = new System.Drawing.Point(58, 335);
+            label150.Name = "label150";
+            label150.Size = new System.Drawing.Size(287, 15);
+            label150.TabIndex = 4;
+            label150.Text = "Dbl-Click event to follow, Right-click event for callers";
             // 
             // btnSkillTreeCollapse
             // 
@@ -7703,15 +7750,6 @@
             ofdLoadUnitMovementDialog.Filter = "JSON Files|*.json|All Files|*.*";
             ofdLoadUnitMovementDialog.Title = "Open Unit Movement File";
             // 
-            // label150
-            // 
-            label150.AutoSize = true;
-            label150.Location = new System.Drawing.Point(58, 335);
-            label150.Name = "label150";
-            label150.Size = new System.Drawing.Size(287, 15);
-            label150.TabIndex = 4;
-            label150.Text = "Dbl-Click event to follow, Right-click event for callers";
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -7810,6 +7848,7 @@
             tpScheduleIRL.ResumeLayout(false);
             tpScheduleGame.ResumeLayout(false);
             tpTowerDefs.ResumeLayout(false);
+            tpAttendance.ResumeLayout(false);
             tpSkills.ResumeLayout(false);
             splitContainer3.Panel1.ResumeLayout(false);
             splitContainer3.Panel1.PerformLayout();
@@ -8503,6 +8542,9 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem tvPopupCopyNode;
         private System.Windows.Forms.Label label150;
+        private System.Windows.Forms.TabPage tpAttendance;
+        private System.Windows.Forms.ListBox lbAttendance;
+        private System.Windows.Forms.ComboBox cbAttendanceFilter;
     }
 }
 

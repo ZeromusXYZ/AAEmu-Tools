@@ -1225,7 +1225,15 @@ public class GameGameSchedules
 
     public override string ToString()
     {
-        return $"{Id:000} : {AaDb.GetTranslationById(Id, "game_schedules", "name", Name)}";
+        var name = AaDb.GetTranslationById(Id, "game_schedules", "name", Name);
+        if (string.IsNullOrWhiteSpace(name) || name == $"ID{Id}")
+        {
+            var dow = DayOfWeekId.ToString();
+            var start = $"{StartTime:00}:{StartTimeMin:00}";
+            var end = $"{EndTime:00}:{EndTimeMin:00}";
+            name = $"{dow} {start}-{end}";
+        }
+        return $"{Id:000} : {name}";
     }
 }
 
@@ -1307,6 +1315,34 @@ public class GameTowerDefProgKillTargets
     public long KillTargetId = 0;
     public string KillTargetType = string.Empty;
     public long KillCount = 0;
+}
+
+public class GameAccountAttendanceReward
+{
+    public long Id = 0;
+    public bool AdditionalReward = false;
+    public string Comment = string.Empty;
+    public long DayCount = 0;
+    public long ItemCount = 0;
+    public long ItemGradeId = 0;
+    public long ItemId = 0;
+    public long Month = 0;
+    public long Year = 0;
+
+    public override string ToString()
+    {
+        var itemName = AaDb.DbItems.TryGetValue(ItemId, out var item) ? item.NameLocalized : $"Item {ItemId}";
+        //var addMark = AdditionalReward ? " [+]" : "";
+        //return $"{Year:0000}-{Month:00} Day {DayCount:00}{addMark} : {itemName} x{ItemCount}";
+        return AdditionalReward ? $"{DayCount} Days : {itemName} x{ItemCount}" : $"{Year:0000}-{Month:00} Day {DayCount:00} : {itemName} x{ItemCount}";
+    }
+    public string ToItemLessString()
+    {
+        var itemName = AaDb.DbItems.TryGetValue(ItemId, out var item) ? item.NameLocalized : $"Item {ItemId}";
+        //var addMark = AdditionalReward ? " [+]" : "";
+        //return $"{Year:0000}-{Month:00} Day {DayCount:00}{addMark} : {itemName} x{ItemCount}";
+        return AdditionalReward ? $"{DayCount} Days" : $"{Year:0000}-{Month:00} Day {DayCount:00}";
+    }
 }
 
 public class GameConflictZones
@@ -1584,6 +1620,7 @@ internal static class AaDb
     public static Dictionary<long, GameTowerDefProgs> DbTowerDefProgs = new();
     public static Dictionary<long, GameTowerDefProgSpawnTargets> DbTowerDefProgSpawnTargets = new();
     public static Dictionary<long, GameTowerDefProgKillTargets> DbTowerDefProgKillTargets = new();
+    public static Dictionary<long, GameAccountAttendanceReward> DbAccountAttendanceRewards = new();
     public static Dictionary<long, GameSpheres> DbSpheres = new();
     public static Dictionary<long, GameUnitReqs> DbUnitReqs = new();
     public static Dictionary<long, GameUiTexts> DbUiTexts = new();
@@ -1684,6 +1721,7 @@ internal static class AaDb
         DbTowerDefProgs.Clear();
         DbTowerDefProgSpawnTargets.Clear();
         DbTowerDefProgKillTargets.Clear();
+        DbAccountAttendanceRewards.Clear();
         DbSpheres.Clear();
         DbUnitReqs.Clear();
         DbUiTexts.Clear();

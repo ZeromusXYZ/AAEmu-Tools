@@ -3268,5 +3268,72 @@ namespace AAEmu.DBViewer
                 CopyToClipBoard(treeNode.Text);
             }
         }
+
+        private void DoAttendanceSelectedIndexChanged()
+        {
+            if (lbAttendance.SelectedItem is not GameAccountAttendanceReward selectedItem)
+                return;
+
+            tvSchedule.Nodes.Clear();
+
+            var header = selectedItem.AdditionalReward ? 
+                $"{selectedItem.Year:0000}-{selectedItem.Month:00} attended {selectedItem.DayCount} days" : 
+                $"{selectedItem.Year:0000}-{selectedItem.Month:00} Day {selectedItem.DayCount:00}";
+
+            var rootNode = tvSchedule.Nodes.Add(header);
+            rootNode.ImageIndex = selectedItem.AdditionalReward ? 3 : 2;
+            //if (selectedItem.AdditionalReward)
+            //    rootNode.BackColor = System.Drawing.Color.FromArgb(255, 250, 205); // LightGoldenrodYellow
+
+            rootNode.Nodes.Add($"ID: {selectedItem.Id}");
+            var grade = AaDb.DbItemGrades.GetValueOrDefault(selectedItem.ItemGradeId);
+            var gradeText = $"(Grade: {grade?.NameLocalized ?? ""} {selectedItem.ItemGradeId})";
+            AddCustomPropertyNode("item_id", selectedItem.ItemId.ToString(), false, rootNode).Text += $@" x {selectedItem.ItemCount} {gradeText}";
+            if (!string.IsNullOrWhiteSpace(selectedItem.Comment))
+                rootNode.Nodes.Add($"Comment: {selectedItem.Comment}");
+
+            
+
+            rootNode.ExpandAll();
+
+            ShowSelectedData("account_attendance_rewards", "(id = " + selectedItem.Id.ToString() + ")", "id ASC");
+        }
+
+        private void lbAttendance_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DoAttendanceSelectedIndexChanged();
+        }
+
+        private void cbAttendanceFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var cb = sender as ComboBox;
+            if (cb == null) return;
+            var filter = cb.SelectedItem?.ToString() ?? "All";
+
+            lbAttendance.Items.Clear();
+            tvSchedule.Nodes.Clear();
+            if (filter == "All")
+                tvSchedule.Nodes.Add("Filter month to show details").ImageIndex = 2;
+            var rootNode = tvSchedule.Nodes.Add($"{filter} daily attendance rewards");
+            var attendNode = tvSchedule.Nodes.Add($"{filter} number of days attended rewards");
+            foreach (var val in AaDb.DbAccountAttendanceRewards.Values
+                         .OrderBy(x => x.Year)
+                         .ThenBy(x => x.Month)
+                         .ThenBy(x => x.DayCount))
+            {
+                if (filter == "All" || $"{val.Year:0000}-{val.Month:00}" == filter)
+                {
+                    lbAttendance.Items.Add(val);
+                    if (filter != "All")
+                    {
+                        var dayNode = AddCustomPropertyNode("item_id", val.ItemId.ToString(), false, val.AdditionalReward ? attendNode : rootNode);
+                        var grade = AaDb.DbItemGrades.GetValueOrDefault(val.ItemGradeId);
+                        var gradeText = $"{grade?.NameLocalized ?? $"Grade {val.ItemGradeId}"}";
+                        dayNode.Text = $@"{val.ToItemLessString()} - {val.ItemCount} x {dayNode.Text} ({gradeText})";
+                    }
+                }
+            }
+            tvSchedule.ExpandAll();
+        }
     }
 }
