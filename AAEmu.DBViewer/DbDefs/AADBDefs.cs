@@ -1,4 +1,5 @@
 ﻿using AAEmu.DBViewer.enums;
+using AAEmu.Game.Models.Game.Achievement.Enums;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -1536,6 +1537,14 @@ public class GameTotalCharacterCustoms
     public string Name = string.Empty;
 }
 
+public class GameCharRecords
+{
+    public long Id { get; set; }
+    public CharRecordKind KindId { get; set; }
+    public long Value1 { get; set; }
+    public long Value2 { get; set; }
+}
+
 internal static class AaDb
 {
     public static Dictionary<string, GameTranslation> DbTranslations = new();
@@ -1628,6 +1637,7 @@ internal static class AaDb
     public static Dictionary<long, GameDynamicUnitModifiers> DbDynamicUnitModifiers = new();
     public static Dictionary<long, GameAchievements> DbAchievements = new();
     public static Dictionary<long, GameAchievementObjectives> DbAchievementObjectives = new();
+    public static Dictionary<long, GameCharRecords> DbCharRecords = new();
     public static Dictionary<long, GameItemGrades> DbItemGrades = new();
     public static Dictionary<long, GameItemGradeDistributions> DbItemGradeDistributions = new();
     public static Dictionary<long, GameMerchants> DbMerchants = new();
@@ -1729,6 +1739,7 @@ internal static class AaDb
         DbDynamicUnitModifiers.Clear();
         DbAchievements.Clear();
         DbAchievementObjectives.Clear();
+        DbCharRecords.Clear();
         DbItemGrades.Clear();
         DbItemGradeDistributions.Clear();
         DbMerchants.Clear();

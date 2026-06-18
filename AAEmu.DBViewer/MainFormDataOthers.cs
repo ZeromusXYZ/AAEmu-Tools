@@ -11,6 +11,7 @@ using System.Xml;
 using AAEmu.DBViewer.DbDefs;
 using AAEmu.DBViewer.JsonData;
 using AAEmu.DBViewer.utils;
+using AAEmu.Game.Models.Game.Achievement.Enums;
 using AAEmu.Game.Models.Game.World;
 using AAEmu.Game.Utils.DB;
 using Newtonsoft.Json;
@@ -2198,6 +2199,38 @@ public partial class MainForm
 
             }
         }
+
+        if (AllTableNames.GetValueOrDefault("char_records") == SQLite.SQLiteFileName)
+        {
+            using (var connection = SQLite.CreateConnection())
+            {
+                // Achievements
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM char_records ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        Application.UseWaitCursor = true;
+                        Cursor = Cursors.WaitCursor;
+
+                        while (reader.Read())
+                        {
+                            var t = new GameCharRecords();
+                            t.Id = GetInt64(reader, "id");
+                            t.KindId = (CharRecordKind)GetInt64(reader, "kind_id");
+                            t.Value1 = GetInt64(reader, "value1");
+                            t.Value2 = GetInt64(reader, "value2");
+                            AaDb.DbCharRecords.Add(t.Id, t);
+                        }
+
+                        Cursor = Cursors.Default;
+                        Application.UseWaitCursor = false;
+                    }
+                }
+
+            }
+        }
     }
 
     private void UpdateAchievementTree()
@@ -2225,7 +2258,7 @@ public partial class MainForm
                 subGroupNode.SelectedImageIndex = subGroupNode.ImageIndex;
                 foreach (var (key, achievement) in subCategoryGroup.OrderBy(x => x.Key))
                 {
-                    if (!string.IsNullOrWhiteSpace(TSearchAchievements.Text) && !achievement.SearchString.Contains(TSearchAchievements.Text, StringComparison.InvariantCultureIgnoreCase))
+                    if (!string.IsNullOrWhiteSpace(TSearchAchievements.Text) && !achievement.SearchString.Contains(TSearchAchievements.Text, StringComparison.InvariantCultureIgnoreCase) && !catName.Contains(TSearchAchievements.Text, StringComparison.InvariantCultureIgnoreCase) && !subCatName.Contains(TSearchAchievements.Text, StringComparison.InvariantCultureIgnoreCase))
                         continue;
 
                     var entryName = $"{key}: {achievement.NameLocalized}";
@@ -2307,12 +2340,16 @@ public partial class MainForm
             if (objectives.Any())
             {
                 // No idea why CompleteOr == true => ALL of the objectives
-                t += $"{(a.CompleteOr ? "|nd;ALL|r" : "|ni;Any|r")} of objectives{(a.CompleteNum > 1 ? $" x |ni;{a.CompleteNum}|r" : "")}:\r";
+                t += $"{(a.CompleteOr ? "|ni;Any|r" : "|nd;ALL|r")} of objectives{(a.CompleteNum > 1 ? $" x |ni;{a.CompleteNum}|r" : "")}:\r";
 
                 foreach (var objective in objectives)
                 {
-                    t +=
-                        $"Id:{objective.Id}, RecordId: {objective.RecordId} (unit_reqs: {(objective.OrUnitReqs ? "Any" : "ALL")})\r";
+                    t += $"Id:{objective.Id}, RecordId: {objective.RecordId} (unit_reqs: {(objective.OrUnitReqs ? "Any" : "ALL")})\r";
+                    var charRecord = AaDb.DbCharRecords.GetValueOrDefault(objective.RecordId);
+                    if (charRecord != null)
+                    {
+                        t += $"KindId: {charRecord.KindId}, Value1: {charRecord.Value1}, Value2: {charRecord.Value2}\r\r";
+                    }
                 }
 
                 t += "\r";
