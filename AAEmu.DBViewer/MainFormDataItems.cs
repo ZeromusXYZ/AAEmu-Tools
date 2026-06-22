@@ -902,7 +902,7 @@ public partial class MainForm
         int c = 0;
         foreach (var t in packs)
         {
-            if (!AaDb.DbNpCs.TryGetValue(t.Value.NpcId, out var z))
+            if (!AaDb.DbNpcs.TryGetValue(t.Value.NpcId, out var z))
                 continue;
 
             var line = dgvNPCs.Rows.Add();

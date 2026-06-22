@@ -1558,7 +1558,7 @@ internal static class AaDb
     public static Dictionary<long, GameNpSkills> DbNpSkills = new();
     public static Dictionary<long, GameMountSkill> DbMountSkills = new();
     public static Dictionary<long, GameSlaveMountSkill> DbSlaveMountSkills = new();
-    public static Dictionary<long, GameNpc> DbNpCs = new();
+    public static Dictionary<long, GameNpc> DbNpcs = new();
     public static Dictionary<long, GameQuestMonsterGroups> DbQuestMonsterGroups = new();
     public static Dictionary<long, GameQuestMonsterNpcs> DbQuestMonsterNpcs = new();
     public static Dictionary<long, string> DbIcons = new();
@@ -1660,7 +1660,7 @@ internal static class AaDb
         DbNpSkills.Clear();
         DbMountSkills.Clear();
         DbSlaveMountSkills.Clear();
-        DbNpCs.Clear();
+        DbNpcs.Clear();
         DbQuestMonsterGroups.Clear();
         DbQuestMonsterNpcs.Clear();
         DbIcons.Clear();

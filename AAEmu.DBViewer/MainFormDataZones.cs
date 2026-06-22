@@ -698,7 +698,7 @@ namespace AAEmu.DBViewer
                                 int c = 0;
                                 foreach (var npc in npcList)
                                 {
-                                    if (AaDb.DbNpCs.TryGetValue(npc.id, out var z))
+                                    if (AaDb.DbNpcs.TryGetValue(npc.id, out var z))
                                     {
                                         var line = dgvNPCs.Rows.Add();
                                         var row = dgvNPCs.Rows[line];

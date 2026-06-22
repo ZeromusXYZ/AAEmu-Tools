@@ -157,7 +157,7 @@ public partial class MainForm
 
                             t.SearchString = t.Name + " " + t.NameLocalized;
                             t.SearchString = t.SearchString.ToLower();
-                            AaDb.DbNpCs.Add(t.Id, t);
+                            AaDb.DbNpcs.Add(t.Id, t);
                         }
                     }
                 }
@@ -1020,7 +1020,7 @@ public partial class MainForm
         Cursor = Cursors.WaitCursor;
         dgvNPCs.Rows.Clear();
         var c = 0;
-        foreach (var t in AaDb.DbNpCs)
+        foreach (var t in AaDb.DbNpcs)
         {
             var z = t.Value;
             if ((z.Id == searchId) || (z.ModelId == searchId) || z.SearchString.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
@@ -1062,7 +1062,7 @@ public partial class MainForm
 
     private void ShowDbNpcInfo(long id)
     {
-        if (AaDb.DbNpCs.TryGetValue(id, out var npc))
+        if (AaDb.DbNpcs.TryGetValue(id, out var npc))
         {
             lNPCTemplate.Text = npc.Id.ToString();
             lNPCTags.Text = TagsAsString(id, AaDb.DbTaggedNpCs);

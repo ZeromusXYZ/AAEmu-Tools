@@ -437,7 +437,7 @@ namespace AAEmu.DBViewer
                                 rt.AppendText(item.NameLocalized);
                             }
                             else if ((fieldNameStr == "NPC_NAME") &&
-                                     (AaDb.DbNpCs.TryGetValue(itemVal, out GameNpc npc)))
+                                     (AaDb.DbNpcs.TryGetValue(itemVal, out GameNpc npc)))
                             {
                                 rt.AppendText(npc.NameLocalized);
                             }
@@ -607,7 +607,7 @@ namespace AAEmu.DBViewer
                 {
                     rt.SelectionColor = Color.Yellow;
                     var valueText = restText.Substring(10, nextEndBracket - 10);
-                    if (long.TryParse(valueText, out var value) && (AaDb.DbNpCs.TryGetValue(value, out var npc)))
+                    if (long.TryParse(valueText, out var value) && (AaDb.DbNpcs.TryGetValue(value, out var npc)))
                         rt.AppendText(npc.NameLocalized);
                     else
                         rt.AppendText("@NPC_NAME(" + valueText + ")");
@@ -1556,7 +1556,7 @@ namespace AAEmu.DBViewer
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + doodad.NameLocalized;
             }
-            else if (key.EndsWith("npc_id") && (AaDb.DbNpCs.TryGetValue(val, out var npc)))
+            else if (key.EndsWith("npc_id") && (AaDb.DbNpcs.TryGetValue(val, out var npc)))
             {
                 res.targetTabPage = tpNPCs;
                 res.targetSearchBox = cbSearchNPC;

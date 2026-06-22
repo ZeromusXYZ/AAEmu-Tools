@@ -1212,7 +1212,7 @@ public partial class MainForm
                     {
                         //if (!NPCsToShow.Contains(npc.id))
                         //    continue;
-                        if (AaDb.DbNpCs.TryGetValue(npc.id, out var z))
+                        if (AaDb.DbNpcs.TryGetValue(npc.id, out var z))
                         {
                             map.AddPoI(npc.x, npc.y, npc.z, z.NameLocalized + " (" + npc.id.ToString() + ")",
                                 Color.Yellow, 0f, "npc", npc.id, z);

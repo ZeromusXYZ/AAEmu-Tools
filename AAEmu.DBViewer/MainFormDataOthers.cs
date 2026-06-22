@@ -9,6 +9,7 @@ using System.Security.AccessControl;
 using System.Windows.Forms;
 using System.Xml;
 using AAEmu.DBViewer.DbDefs;
+using AAEmu.DBViewer.enums;
 using AAEmu.DBViewer.JsonData;
 using AAEmu.DBViewer.utils;
 using AAEmu.Game.Models.Game.Achievement.Enums;
@@ -426,7 +427,7 @@ public partial class MainForm
                     row.Cells[2].Value = string.Empty;
                 }
 
-                if ((z.OwnerTypeId == 1) && AaDb.DbNpCs.TryGetValue(z.OwnerId, out var ownerNpc))
+                if ((z.OwnerTypeId == 1) && AaDb.DbNpcs.TryGetValue(z.OwnerId, out var ownerNpc))
                 {
                     row.Cells[3].Value = ownerNpc.NameLocalized;
                 }
@@ -480,7 +481,7 @@ public partial class MainForm
                 row.Cells[2].Value = string.Empty;
             }
 
-            if ((z.OwnerTypeId == 1) && AaDb.DbNpCs.TryGetValue(z.OwnerId, out var ownerNpc))
+            if ((z.OwnerTypeId == 1) && AaDb.DbNpcs.TryGetValue(z.OwnerId, out var ownerNpc))
             {
                 row.Cells[3].Value = ownerNpc.NameLocalized;
             }
@@ -590,7 +591,7 @@ public partial class MainForm
                 {
                     if (npc.id != searchId)
                         continue;
-                    if (AaDb.DbNpCs.TryGetValue(npc.id, out var z))
+                    if (AaDb.DbNpcs.TryGetValue(npc.id, out var z))
                     {
                         map.AddPoI(npc.x, npc.y, npc.z, z.NameLocalized + " (" + npc.id.ToString() + ")",
                             Color.Yellow,
@@ -1222,7 +1223,7 @@ public partial class MainForm
         {
             // NPC
             var NPCList = new List<string>();
-            foreach (var npc in AaDb.DbNpCs)
+            foreach (var npc in AaDb.DbNpcs)
                 NPCList.Add(npc.Key.ToString() + ";" + npc.Value.NameLocalized);
             File.WriteAllLines(Path.Combine(LookupExportPath, "npcs.txt"), NPCList);
 
@@ -1309,7 +1310,7 @@ public partial class MainForm
                     newNPC.Id = i;
                     newNPC.Count = 1;
                     newNPC.UnitId = npc.id;
-                    if (AaDb.DbNpCs.TryGetValue(npc.id, out var vNPC))
+                    if (AaDb.DbNpcs.TryGetValue(npc.id, out var vNPC))
                         newNPC.Title = vNPC.NameLocalized;
                     newNPC.Position.X = npc.x;
                     newNPC.Position.Y = npc.y;
@@ -1509,7 +1510,7 @@ public partial class MainForm
                             var ni = new MapViewPoI();
                             ni.Coord = new Vector3(spawner.Position.X, spawner.Position.Y, spawner.Position.Z);
                             ni.PoIColor = Color.LightGray;
-                            if (isNPCs && AaDb.DbNpCs.TryGetValue(spawner.UnitId, out var npc))
+                            if (isNPCs && AaDb.DbNpcs.TryGetValue(spawner.UnitId, out var npc))
                             {
                                 ni.Name = npc.NameLocalized;
                                 ni.PoIColor = Color.Yellow;
@@ -2348,7 +2349,183 @@ public partial class MainForm
                     var charRecord = AaDb.DbCharRecords.GetValueOrDefault(objective.RecordId);
                     if (charRecord != null)
                     {
-                        t += $"KindId: {charRecord.KindId}, Value1: {charRecord.Value1}, Value2: {charRecord.Value2}\r\r";
+                        switch (charRecord.KindId)
+                        {
+                            case CharRecordKind.PvpKillEnemy:
+                            case CharRecordKind.PvpKillHonorWar:
+                            case CharRecordKind.PvpKillSiege:
+                            case CharRecordKind.PvpKillAlly:
+                            case CharRecordKind.PvpDeathEnemy:
+                            case CharRecordKind.PvpDeathHonorWar:
+                            case CharRecordKind.PvpDeathSiege:
+                            case CharRecordKind.PvpDeathAlly:
+                            case CharRecordKind.WinAttackSiege:
+                            case CharRecordKind.WinDefenceSiege:
+                            case CharRecordKind.LoseAttackSiege:
+                            case CharRecordKind.LoseDefenceSiege:
+                                if (charRecord.Value1 > 0)
+                                {
+                                    t += $"|nc;{charRecord.KindId}|r in |ni;{AaDb.DbZoneGroups.GetValueOrDefault(charRecord.Value1)?.DisplayTextLocalized ?? "unknown zone group"}|r, Value2: |nc;{charRecord.Value2}|r\r\r";
+                                }
+                                else
+                                {
+                                    t += $"|nc;{charRecord.KindId}|r, Value2: |nc;{charRecord.Value2}|r\r\r";
+                                }
+                                break;
+                            /*
+                            case CharRecordKind.CompleteAchievement:
+                                break;
+                            case CharRecordKind.CharLevel:
+                                break;
+                            case CharRecordKind.PetLevel:
+                                break;
+                            case CharRecordKind.PlayTime:
+                                break;
+                            case CharRecordKind.WinZoneBattle:
+                                break;
+                            case CharRecordKind.MyGold:
+                                break;
+                            case CharRecordKind.SpendGold:
+                                break;
+                            case CharRecordKind.ChangeLook:
+                                break;
+                            case CharRecordKind.GetLifePoint:
+                                break;
+                            */
+                            case CharRecordKind.GetActability:
+                                t += $"|nc;{charRecord.KindId}|r |ni;{AaDb.GetTranslationById(charRecord.Value1, "actability_groups", "name", charRecord.Value1.ToString())}|r, Value2: |nc;{charRecord.Value2}|r\r\r";
+                                break;
+                            case CharRecordKind.GetHonorPoint:
+                                if (charRecord.Value2 > 0)
+                                {
+                                    t += $"|nc;{charRecord.KindId}|r in |ni;{AaDb.DbZoneGroups.GetValueOrDefault(charRecord.Value2)?.DisplayTextLocalized ?? "unknown zone group"}|r, Value1: |nc;{charRecord.Value1}|r\r\r";
+                                }
+                                else
+                                {
+                                    t += $"|nc;{charRecord.KindId}|r, Value1: |nc;{charRecord.Value1}|r\r\r";
+                                }
+                                break;
+                            case CharRecordKind.GetItemType:
+                            case CharRecordKind.MakeItemType:
+                                // Note: Value2 seems to be -1 for all entries of GetItemType, MakeItemType and GetItemImpl
+                                t += $"|nc;{charRecord.KindId}|r with |ni;{AaDb.DbItems.GetValueOrDefault(charRecord.Value1)?.NameLocalized ?? "unknown item"}|r ({charRecord.Value1}) @ |nc;{(charRecord.Value2 >= 0 ? AaDb.DbItemGrades.GetValueOrDefault(charRecord.Value2)?.NameLocalized ?? "unknown grade" : "any grade")}|r\r\r";
+                                break;
+                            case CharRecordKind.GetItemImpl:
+                            case CharRecordKind.MakeItemImpl:
+                                // Note: Value2 seems to be -1 for all entries of GetItemType, MakeItemType and GetItemImpl
+                                t += $"|nc;{charRecord.KindId}|r of type |ni;{(GameItemImplId)charRecord.Value1}|r ({charRecord.Value1}) @ |nc;{(charRecord.Value2 >= 0 ? AaDb.DbItemGrades.GetValueOrDefault(charRecord.Value2)?.NameLocalized ?? "unknown grade" : "any grade")}|r\r\r";
+                                break;
+                            /*
+                            case CharRecordKind.SpendLabor:
+                                break;
+                            case CharRecordKind.AbilityLevel:
+                                break;
+                            case CharRecordKind.AbilityChange:
+                                break;
+                            case CharRecordKind.DeadByPvp:
+                                break;
+                            case CharRecordKind.DeadByNpc:
+                                break;
+                            */
+                            case CharRecordKind.KillNpc:
+                                t += $"|nc;{charRecord.KindId}|r on |ni;{AaDb.DbNpcs.GetValueOrDefault(charRecord.Value1)?.NameLocalized ?? "unknown npc"}|r ({charRecord.Value1}), Value2: {charRecord.Value2}\r\r";
+                                break;
+                            /*
+                            case CharRecordKind.KillSlave:
+                                break;
+                            case CharRecordKind.CompleteQuestCategory:
+                                break;
+                            case CharRecordKind.CompleteQuestType:
+                                break;
+                            case CharRecordKind.GetLootpack:
+                                break;
+                            */
+                            case CharRecordKind.GetLootitem:
+                            case CharRecordKind.UseItem:
+                            case CharRecordKind.ItemFix:
+                            case CharRecordKind.SellItem:
+                                t += $"|nc;{charRecord.KindId}|r with |ni;{AaDb.DbItems.GetValueOrDefault(charRecord.Value1)?.NameLocalized ?? "unknown item"}|r ({charRecord.Value1}), Value2: {charRecord.Value2}\r\r";
+                                break;
+                            /*
+                            case CharRecordKind.MakeHousing:
+                                break;
+                            case CharRecordKind.AuctionBuy:
+                                break;
+                            case CharRecordKind.AuctionSold:
+                                break;
+                            */
+                            case CharRecordKind.UseSkill:
+                                t += $"|nc;{charRecord.KindId}|r |ni;{AaDb.DbSkills.GetValueOrDefault(charRecord.Value1)?.NameLocalized ?? "unknown skill"}|r ({charRecord.Value1}), Value2: |nc;{charRecord.Value2}|r\r\r";
+                                break;
+                            /*
+                            case CharRecordKind.GetJuryPoint:
+                                break;
+                            case CharRecordKind.ReportCrime:
+                                break;
+                            case CharRecordKind.Judgement:
+                                break;
+                            case CharRecordKind.WinDuel:
+                                break;
+                            case CharRecordKind.KillWanted:
+                                break;
+                            case CharRecordKind.NpcEmotion:
+                                break;
+                            case CharRecordKind.GetFaction:
+                                break;
+                            case CharRecordKind.MyDishonorablePoint:
+                                break;
+                            case CharRecordKind.EnchantItem:
+                                break;
+                            case CharRecordKind.EnchantFailure:
+                                break;
+                            case CharRecordKind.EnrollParty:
+                                break;
+                            case CharRecordKind.EnrollRaidGroup:
+                                break;
+                            case CharRecordKind.EnrollFamily:
+                                break;
+                            case CharRecordKind.EnrollGuild:
+                                break;
+                            case CharRecordKind.EnrollNation:
+                                break;
+                            case CharRecordKind.TopGearScore:
+                                break;
+                            case CharRecordKind.BeHero:
+                                break;
+                            case CharRecordKind.BeHeroGrade:
+                                break;
+                            case CharRecordKind.GetLeadership:
+                                break;
+                            case CharRecordKind.HeroVote:
+                                break;
+                            case CharRecordKind.GetReputation:
+                                break;
+                            case CharRecordKind.SetReputation:
+                                break;
+                            case CharRecordKind.RebuildHousing:
+                                break;
+                            case CharRecordKind.UseMobilizationOrder:
+                                break;
+                            case CharRecordKind.IncreasedFavoritePortalLimit:
+                                break;
+                            case CharRecordKind.BattleFieldWin:
+                                break;
+                            case CharRecordKind.BattleFieldLose:
+                                break;
+                            case CharRecordKind.BattleFieldDraw:
+                                break;
+                            case CharRecordKind.BattleFieldKill:
+                                break;
+                            case CharRecordKind.BattleFieldDeath:
+                                break;
+                            case CharRecordKind.BattleFieldAssist:
+                                break;
+                            */
+                            default:
+                                t += $"KindId: |nc;{charRecord.KindId}|r, Value1: |nc;{charRecord.Value1}|r, Value2: |nc;{charRecord.Value2}|r\r\r";
+                                break;
+                        }
+                        
                     }
                 }
 
