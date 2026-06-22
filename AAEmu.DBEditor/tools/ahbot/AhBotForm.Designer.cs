@@ -35,7 +35,7 @@
             lAhBotAccount = new System.Windows.Forms.Label();
             label2 = new System.Windows.Forms.Label();
             label3 = new System.Windows.Forms.Label();
-            cbServers = new System.Windows.Forms.ComboBox();
+            cbServers = new System.Windows.Forms.TextBox();
             btnConnect = new System.Windows.Forms.Button();
             tcAhBot = new System.Windows.Forms.TabControl();
             tpSettings = new System.Windows.Forms.TabPage();
@@ -74,10 +74,10 @@
             lbAhList = new System.Windows.Forms.ListBox();
             tvAhList = new System.Windows.Forms.TreeView();
             tpLogs = new System.Windows.Forms.TabPage();
-            tLog = new System.Windows.Forms.TextBox();
-            bgwAhCheckLoop = new System.ComponentModel.BackgroundWorker();
             panel1 = new System.Windows.Forms.Panel();
             BtnClearLog = new System.Windows.Forms.Button();
+            tLog = new System.Windows.Forms.TextBox();
+            bgwAhCheckLoop = new System.ComponentModel.BackgroundWorker();
             tcAhBot.SuspendLayout();
             tpSettings.SuspendLayout();
             tpAhList.SuspendLayout();
@@ -137,19 +137,17 @@
             label3.AutoSize = true;
             label3.Location = new System.Drawing.Point(8, 61);
             label3.Name = "label3";
-            label3.Size = new System.Drawing.Size(39, 15);
+            label3.Size = new System.Drawing.Size(129, 15);
             label3.TabIndex = 6;
-            label3.Text = "Server";
+            label3.Text = "AAEmu Game Server IP";
             // 
             // cbServers
             // 
-            cbServers.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            cbServers.FormattingEnabled = true;
             cbServers.Location = new System.Drawing.Point(19, 79);
             cbServers.Name = "cbServers";
             cbServers.Size = new System.Drawing.Size(158, 23);
             cbServers.TabIndex = 7;
-            cbServers.SelectedIndexChanged += cbServers_SelectedIndexChanged;
+            cbServers.TextChanged += cbServers_TextChanged;
             // 
             // btnConnect
             // 
@@ -561,24 +559,6 @@
             tpLogs.Text = "Logs";
             tpLogs.UseVisualStyleBackColor = true;
             // 
-            // tLog
-            // 
-            tLog.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
-            tLog.Font = new System.Drawing.Font("Consolas", 9F);
-            tLog.Location = new System.Drawing.Point(3, 3);
-            tLog.Multiline = true;
-            tLog.Name = "tLog";
-            tLog.Size = new System.Drawing.Size(781, 340);
-            tLog.TabIndex = 0;
-            // 
-            // bgwAhCheckLoop
-            // 
-            bgwAhCheckLoop.WorkerReportsProgress = true;
-            bgwAhCheckLoop.WorkerSupportsCancellation = true;
-            bgwAhCheckLoop.DoWork += bgwAhCheckLoop_DoWork;
-            bgwAhCheckLoop.ProgressChanged += bgwAhCheckLoop_ProgressChanged;
-            bgwAhCheckLoop.RunWorkerCompleted += bgwAhCheckLoop_RunWorkerCompleted;
-            // 
             // panel1
             // 
             panel1.Controls.Add(BtnClearLog);
@@ -598,6 +578,24 @@
             BtnClearLog.Text = "Clear";
             BtnClearLog.UseVisualStyleBackColor = true;
             BtnClearLog.Click += BtnClearLog_Click;
+            // 
+            // tLog
+            // 
+            tLog.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            tLog.Font = new System.Drawing.Font("Consolas", 9F);
+            tLog.Location = new System.Drawing.Point(3, 3);
+            tLog.Multiline = true;
+            tLog.Name = "tLog";
+            tLog.Size = new System.Drawing.Size(781, 340);
+            tLog.TabIndex = 0;
+            // 
+            // bgwAhCheckLoop
+            // 
+            bgwAhCheckLoop.WorkerReportsProgress = true;
+            bgwAhCheckLoop.WorkerSupportsCancellation = true;
+            bgwAhCheckLoop.DoWork += bgwAhCheckLoop_DoWork;
+            bgwAhCheckLoop.ProgressChanged += bgwAhCheckLoop_ProgressChanged;
+            bgwAhCheckLoop.RunWorkerCompleted += bgwAhCheckLoop_RunWorkerCompleted;
             // 
             // AhBotForm
             // 
@@ -631,7 +629,7 @@
         private System.Windows.Forms.Label lAhBotAccount;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox cbServers;
+        private System.Windows.Forms.TextBox cbServers;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.TabControl tcAhBot;
         private System.Windows.Forms.TabPage tpAhList;

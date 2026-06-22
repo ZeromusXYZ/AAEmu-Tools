@@ -84,12 +84,15 @@ namespace AAEmu.DBEditor.tools.ahbot
             {
                 Log("Getting game server list");
                 // Populate Servers
-                cbServers.Items.Clear();
+                // cbServers.Items.Clear();
+                /*
                 var serverList = Data.MySqlDb.Login.GameServers.Where(s => s.Hidden == false);
                 foreach (var server in serverList)
                 {
                     cbServers.Items.Add(server.Name);
                 }
+                */
+
 
                 Log("Generating AH categories");
                 // Populate Items List
@@ -270,6 +273,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                 }
                 */
                 LoadSettings();
+                cbServers.Text = Settings.ServerName;
                 UpdateFromSettings();
             }
             catch (Exception exception)
@@ -354,6 +358,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                         lAhBotName.Text = @"<no character selected>";
                     }
 
+                    /*
                     if (!string.IsNullOrWhiteSpace(Settings.ServerName) &&
                         Data.MySqlDb.Login.GameServers.Any(x => x.Name == Settings.ServerName))
                     {
@@ -364,6 +369,7 @@ namespace AAEmu.DBEditor.tools.ahbot
                         Settings.ServerName = string.Empty;
                         cbServers.SelectedIndex = -1;
                     }
+                    */
                 }
                 else
                 {
@@ -656,14 +662,15 @@ namespace AAEmu.DBEditor.tools.ahbot
         {
             try
             {
+                /*
                 var server = Data.MySqlDb.Login.GameServers.FirstOrDefault(x => x.Name == Settings.ServerName);
                 if (server == null)
                 {
                     Log($"Could not find information for server {Settings.ServerName}");
                     return;
                 }
-
-                var queryUrl = $"http://{server.Host}:{WebApiDefaultPort}{ApiAuctionList}";
+                */
+                var queryUrl = $"http://{Settings.ServerName}:{WebApiDefaultPort}{ApiAuctionList}";
                 UpdateLiveAhCache(queryUrl);
             }
             catch (Exception exception)
@@ -700,6 +707,7 @@ namespace AAEmu.DBEditor.tools.ahbot
             var serverPort = WebApiDefaultPort;
             try
             {
+                /*
                 var server = Data.MySqlDb.Login.GameServers.FirstOrDefault(x => x.Name == Settings.ServerName);
                 if (server == null)
                 {
@@ -708,6 +716,8 @@ namespace AAEmu.DBEditor.tools.ahbot
                 }
 
                 serverHostName = server.Host;
+                */
+                serverHostName = Settings.ServerName;
             }
             catch (Exception exception)
             {
@@ -786,7 +796,7 @@ namespace AAEmu.DBEditor.tools.ahbot
             return true;
         }
 
-        private void cbServers_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbServers_TextChanged(object sender, EventArgs e)
         {
             Settings.ServerName = cbServers.Text;
             SaveSettings();
@@ -918,6 +928,7 @@ namespace AAEmu.DBEditor.tools.ahbot
             var serverPort = WebApiDefaultPort;
             try
             {
+                /*
                 var server = Data.MySqlDb.Login.GameServers.FirstOrDefault(x => x.Name == Settings.ServerName);
                 if (server == null)
                 {
@@ -926,6 +937,8 @@ namespace AAEmu.DBEditor.tools.ahbot
                 }
 
                 serverHostName = server.Host;
+                */
+                serverHostName = Settings.ServerName;
             }
             catch (Exception exception)
             {

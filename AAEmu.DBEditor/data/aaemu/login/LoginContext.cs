@@ -13,7 +13,7 @@ public partial class LoginContext : DbContext
         //
     }
 
-    public virtual DbSet<GameServers> GameServers { get; set; }
+    // public virtual DbSet<GameServers> GameServers { get; set; }
 
     public virtual DbSet<Updates> Updates { get; set; }
 
