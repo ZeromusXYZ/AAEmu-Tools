@@ -375,13 +375,14 @@ public partial class MainForm
                     using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
                     {
                         var columnNames = reader.GetColumnNames();
+                        var readName = (columnNames.IndexOf("name") >= 0);
 
                         while (reader.Read())
                         {
                             var t = new GameTotalCharacterCustoms();
                             // Actual DB entries
                             t.Id = GetInt64(reader, "id");
-                            t.Name = GetString(reader, "name");
+                            t.Name = readName ? GetString(reader, "name") : t.Id.ToString();
                             AaDb.DbTotalCharacterCustoms.Add(t.Id, t);
                         }
                     }
