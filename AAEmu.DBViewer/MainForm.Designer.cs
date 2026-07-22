@@ -74,6 +74,8 @@
             Column50 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tSearchLocalized = new System.Windows.Forms.TextBox();
             tpMap = new System.Windows.Forms.TabPage();
+            BtnLoadNpcSpawnersFromPak = new System.Windows.Forms.Button();
+            BtnLoadDoodadsFromPak = new System.Windows.Forms.Button();
             label148 = new System.Windows.Forms.Label();
             tExportedObjFilter = new System.Windows.Forms.TextBox();
             BtnLoadUntMovement = new System.Windows.Forms.Button();
@@ -598,6 +600,9 @@
             Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             label10 = new System.Windows.Forms.Label();
             tZonesSearch = new System.Windows.Forms.TextBox();
+            tpGameSettings = new System.Windows.Forms.TabPage();
+            label151 = new System.Windows.Forms.Label();
+            dgvContentConfig = new System.Windows.Forms.DataGridView();
             openDBDlg = new System.Windows.Forms.OpenFileDialog();
             openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             mainFormToolTip = new System.Windows.Forms.ToolTip(components);
@@ -637,6 +642,7 @@
             MMSystemTrades = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemVendors = new System.Windows.Forms.ToolStripMenuItem();
             MMSystemZones = new System.Windows.Forms.ToolStripMenuItem();
+            MMSystemConfigs = new System.Windows.Forms.ToolStripMenuItem();
             TBMain = new System.Windows.Forms.ToolStrip();
             TBFile = new System.Windows.Forms.ToolStripDropDownButton();
             TBFileTables = new System.Windows.Forms.ToolStripMenuItem();
@@ -671,11 +677,14 @@
             TBSlaves = new System.Windows.Forms.ToolStripButton();
             TBVendors = new System.Windows.Forms.ToolStripButton();
             TBZones = new System.Windows.Forms.ToolStripButton();
+            TBConfigs = new System.Windows.Forms.ToolStripButton();
             openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
             openFileDialog4 = new System.Windows.Forms.OpenFileDialog();
             ofdLoadUnitMovementDialog = new System.Windows.Forms.OpenFileDialog();
+            dgvCCId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            dgvCCVal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tcViewer.SuspendLayout();
             tpSettings.SuspendLayout();
             tpTables.SuspendLayout();
@@ -763,6 +772,8 @@
             groupBox4.SuspendLayout();
             groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvZones).BeginInit();
+            tpGameSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvContentConfig).BeginInit();
             MM.SuspendLayout();
             TBMain.SuspendLayout();
             SuspendLayout();
@@ -804,6 +815,7 @@
             tcViewer.Controls.Add(tpSlaves);
             tcViewer.Controls.Add(tpVendors);
             tcViewer.Controls.Add(tpZones);
+            tcViewer.Controls.Add(tpGameSettings);
             tcViewer.ItemSize = new System.Drawing.Size(10, 10);
             tcViewer.Location = new System.Drawing.Point(0, 25);
             tcViewer.Margin = new System.Windows.Forms.Padding(4);
@@ -1228,6 +1240,8 @@
             // 
             // tpMap
             // 
+            tpMap.Controls.Add(BtnLoadNpcSpawnersFromPak);
+            tpMap.Controls.Add(BtnLoadDoodadsFromPak);
             tpMap.Controls.Add(label148);
             tpMap.Controls.Add(tExportedObjFilter);
             tpMap.Controls.Add(BtnLoadUntMovement);
@@ -1254,6 +1268,28 @@
             tpMap.TabIndex = 13;
             tpMap.Text = "Map";
             tpMap.UseVisualStyleBackColor = true;
+            // 
+            // BtnLoadNpcSpawnersFromPak
+            // 
+            BtnLoadNpcSpawnersFromPak.Location = new System.Drawing.Point(285, 457);
+            BtnLoadNpcSpawnersFromPak.Margin = new System.Windows.Forms.Padding(4);
+            BtnLoadNpcSpawnersFromPak.Name = "BtnLoadNpcSpawnersFromPak";
+            BtnLoadNpcSpawnersFromPak.Size = new System.Drawing.Size(268, 26);
+            BtnLoadNpcSpawnersFromPak.TabIndex = 56;
+            BtnLoadNpcSpawnersFromPak.Text = "Load NPC Spawners from game_pak";
+            BtnLoadNpcSpawnersFromPak.UseVisualStyleBackColor = true;
+            BtnLoadNpcSpawnersFromPak.Click += BtnLoadNpcSpawnersFromPak_Click;
+            // 
+            // BtnLoadDoodadsFromPak
+            // 
+            BtnLoadDoodadsFromPak.Location = new System.Drawing.Point(9, 457);
+            BtnLoadDoodadsFromPak.Margin = new System.Windows.Forms.Padding(4);
+            BtnLoadDoodadsFromPak.Name = "BtnLoadDoodadsFromPak";
+            BtnLoadDoodadsFromPak.Size = new System.Drawing.Size(268, 26);
+            BtnLoadDoodadsFromPak.TabIndex = 55;
+            BtnLoadDoodadsFromPak.Text = "Load Doodads from game_pak";
+            BtnLoadDoodadsFromPak.UseVisualStyleBackColor = true;
+            BtnLoadDoodadsFromPak.Click += BtnLoadDoodadsFromPak_Click;
             // 
             // label148
             // 
@@ -1650,7 +1686,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 305);
-            splitContainer2.SplitterDistance = 340;
+            splitContainer2.SplitterDistance = 332;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1658,7 +1694,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(248, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(240, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(88, 19);
@@ -1690,7 +1726,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(332, 276);
+            tvBuffTriggers.Size = new System.Drawing.Size(324, 276);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -4919,7 +4955,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(491, 479);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(483, 479);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 25);
@@ -4952,7 +4988,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(718, 465);
+            tvQuestWorkflow.Size = new System.Drawing.Size(710, 465);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -7116,6 +7152,46 @@
             tZonesSearch.TextChanged += TZonesSearch_TextChanged;
             tZonesSearch.KeyDown += TZonesSearch_KeyDown;
             // 
+            // tpGameSettings
+            // 
+            tpGameSettings.Controls.Add(label151);
+            tpGameSettings.Controls.Add(dgvContentConfig);
+            tpGameSettings.Location = new System.Drawing.Point(4, 14);
+            tpGameSettings.Name = "tpGameSettings";
+            tpGameSettings.Padding = new System.Windows.Forms.Padding(3);
+            tpGameSettings.Size = new System.Drawing.Size(1082, 546);
+            tpGameSettings.TabIndex = 22;
+            tpGameSettings.Text = "Game Settings";
+            tpGameSettings.UseVisualStyleBackColor = true;
+            tpGameSettings.Enter += tpGameSettings_Enter;
+            // 
+            // label151
+            // 
+            label151.AutoSize = true;
+            label151.Location = new System.Drawing.Point(8, 3);
+            label151.Name = "label151";
+            label151.Size = new System.Drawing.Size(94, 15);
+            label151.TabIndex = 8;
+            label151.Text = "Content Configs";
+            // 
+            // dgvContentConfig
+            // 
+            dgvContentConfig.AllowUserToAddRows = false;
+            dgvContentConfig.AllowUserToDeleteRows = false;
+            dgvContentConfig.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            dgvContentConfig.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            dgvContentConfig.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            dgvContentConfig.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvContentConfig.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] { dgvCCId, dgvCCVal });
+            dgvContentConfig.Location = new System.Drawing.Point(7, 22);
+            dgvContentConfig.Margin = new System.Windows.Forms.Padding(4);
+            dgvContentConfig.Name = "dgvContentConfig";
+            dgvContentConfig.ReadOnly = true;
+            dgvContentConfig.RowHeadersVisible = false;
+            dgvContentConfig.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            dgvContentConfig.Size = new System.Drawing.Size(1066, 517);
+            dgvContentConfig.TabIndex = 7;
+            // 
             // openDBDlg
             // 
             openDBDlg.DefaultExt = "sqlite3";
@@ -7314,7 +7390,7 @@
             // 
             // MMSystems
             // 
-            MMSystems.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMAchievements, MMSystemFactions, MMSystemItems, MMSystemLoot, MMSystemMaps, MMSystemQuests, MMSystemSchedule, MMSystemSpheres, MMSystemTags, MMSystemTrades, MMSystemVendors, MMSystemZones });
+            MMSystems.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { MMAchievements, MMSystemFactions, MMSystemItems, MMSystemLoot, MMSystemMaps, MMSystemQuests, MMSystemSchedule, MMSystemSpheres, MMSystemTags, MMSystemTrades, MMSystemVendors, MMSystemZones, MMSystemConfigs });
             MMSystems.Name = "MMSystems";
             MMSystems.Size = new System.Drawing.Size(62, 20);
             MMSystems.Text = "Systems";
@@ -7406,11 +7482,17 @@
             MMSystemZones.Text = "Zones";
             MMSystemZones.Click += MMSystemZones_Click;
             // 
+            // MMSystemConfigs
+            // 
+            MMSystemConfigs.Name = "MMSystemConfigs";
+            MMSystemConfigs.Size = new System.Drawing.Size(149, 22);
+            MMSystemConfigs.Text = "Game Configs";
+            // 
             // TBMain
             // 
             TBMain.Font = new System.Drawing.Font("Segoe UI Variable Text", 10F);
             TBMain.ImageScalingSize = new System.Drawing.Size(24, 24);
-            TBMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { TBFile, TBS1, TMBack, TBForward, TBS2, TBSelectedData, TBLocalizer, toolStripSeparator1, TBMap, TBSplit, toolStripButton1, TBBuffs, TBDoodads, TBFactions, TBItems, TBLoot, TBNpc, TBQuests, TBSchedules, TBSkills, TBSpheres, TBTags, TBTrades, TBSlaves, TBVendors, TBZones });
+            TBMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { TBFile, TBS1, TMBack, TBForward, TBS2, TBSelectedData, TBLocalizer, toolStripSeparator1, TBMap, TBSplit, toolStripButton1, TBBuffs, TBDoodads, TBFactions, TBItems, TBLoot, TBNpc, TBQuests, TBSchedules, TBSkills, TBSpheres, TBTags, TBTrades, TBSlaves, TBVendors, TBZones, TBConfigs });
             TBMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             TBMain.Location = new System.Drawing.Point(0, 0);
             TBMain.Name = "TBMain";
@@ -7719,6 +7801,16 @@
             TBZones.Text = "Zones";
             TBZones.Click += TBZones_Click;
             // 
+            // TBConfigs
+            // 
+            TBConfigs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBConfigs.Image = (System.Drawing.Image)resources.GetObject("TBConfigs.Image");
+            TBConfigs.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBConfigs.Name = "TBConfigs";
+            TBConfigs.Size = new System.Drawing.Size(28, 28);
+            TBConfigs.Text = "Game Settings";
+            TBConfigs.Click += TBConfigs_Click;
+            // 
             // openFileDialog1
             // 
             openFileDialog1.DefaultExt = "xml";
@@ -7750,6 +7842,21 @@
             ofdLoadUnitMovementDialog.FileName = "unit_movement.json";
             ofdLoadUnitMovementDialog.Filter = "JSON Files|*.json|All Files|*.*";
             ofdLoadUnitMovementDialog.Title = "Open Unit Movement File";
+            // 
+            // dgvCCId
+            // 
+            dgvCCId.FillWeight = 84.467F;
+            dgvCCId.HeaderText = "ID";
+            dgvCCId.MinimumWidth = 32;
+            dgvCCId.Name = "dgvCCId";
+            dgvCCId.ReadOnly = true;
+            // 
+            // dgvCCVal
+            // 
+            dgvCCVal.FillWeight = 113.042969F;
+            dgvCCVal.HeaderText = "Value";
+            dgvCCVal.Name = "dgvCCVal";
+            dgvCCVal.ReadOnly = true;
             // 
             // MainForm
             // 
@@ -7894,6 +8001,9 @@
             groupBox3.ResumeLayout(false);
             groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvZones).EndInit();
+            tpGameSettings.ResumeLayout(false);
+            tpGameSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvContentConfig).EndInit();
             MM.ResumeLayout(false);
             MM.PerformLayout();
             TBMain.ResumeLayout(false);
@@ -8546,6 +8656,15 @@
         private System.Windows.Forms.TabPage tpAttendance;
         private System.Windows.Forms.ListBox lbAttendance;
         private System.Windows.Forms.ComboBox cbAttendanceFilter;
+        private System.Windows.Forms.Button BtnLoadDoodadsFromPak;
+        private System.Windows.Forms.Button BtnLoadNpcSpawnersFromPak;
+        private System.Windows.Forms.TabPage tpGameSettings;
+        private System.Windows.Forms.DataGridView dgvContentConfig;
+        private System.Windows.Forms.ToolStripButton TBConfigs;
+        private System.Windows.Forms.ToolStripMenuItem MMSystemConfigs;
+        private System.Windows.Forms.Label label151;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvCCId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dgvCCVal;
     }
 }
 

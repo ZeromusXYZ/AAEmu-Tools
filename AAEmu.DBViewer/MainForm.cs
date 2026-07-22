@@ -900,6 +900,9 @@ namespace AAEmu.DBViewer
                 loading.ShowInfo("Loading: Icon info");
                 LoadIcons();
 
+                loading.ShowInfo("Loading: Game Configurations");
+                LoadConfigs();
+
                 loading.ShowInfo("Loading: Factions");
                 LoadFactions();
 
@@ -3276,8 +3279,8 @@ namespace AAEmu.DBViewer
 
             tvSchedule.Nodes.Clear();
 
-            var header = selectedItem.AdditionalReward ? 
-                $"{selectedItem.Year:0000}-{selectedItem.Month:00} attended {selectedItem.DayCount} days" : 
+            var header = selectedItem.AdditionalReward ?
+                $"{selectedItem.Year:0000}-{selectedItem.Month:00} attended {selectedItem.DayCount} days" :
                 $"{selectedItem.Year:0000}-{selectedItem.Month:00} Day {selectedItem.DayCount:00}";
 
             var rootNode = tvSchedule.Nodes.Add(header);
@@ -3292,7 +3295,7 @@ namespace AAEmu.DBViewer
             if (!string.IsNullOrWhiteSpace(selectedItem.Comment))
                 rootNode.Nodes.Add($"Comment: {selectedItem.Comment}");
 
-            
+
 
             rootNode.ExpandAll();
 
@@ -3334,6 +3337,349 @@ namespace AAEmu.DBViewer
                 }
             }
             tvSchedule.ExpandAll();
+        }
+
+        private void BtnLoadDoodadsFromPak_Click(object sender, EventArgs e)
+        {
+            const string cellsFolder = "game/worlds/main_world/level_design/cells/";
+            const string doodadG = "/doodad.g";
+            if (Pak == null || !Pak.IsOpen || Pak.IsVirtual)
+                return;
+            var doodadGFiles = Pak.Files.Where(f => f.Name.EndsWith(doodadG, StringComparison.InvariantCultureIgnoreCase) && f.Name.StartsWith(cellsFolder, StringComparison.InvariantCultureIgnoreCase));
+            if (doodadGFiles.Count() <= 0)
+            {
+                MessageBox.Show($"Pak does not seem to contain DESIGN doodad data");
+                return;
+            }
+            PrepareWorldXml(false);
+            var map = MapViewForm.GetMap();
+            map.Show();
+            map.cbInstanceSelect.Text = "main_world";
+
+            if (map.GetPoICount() > 0 && MessageBox.Show("Keep PoI's ?", "", MessageBoxButtons.YesNo) == DialogResult.No)
+                map.ClearPoI();
+
+            foreach (var doodadGFile in doodadGFiles)
+            {
+                var cellName = doodadGFile.Name.Replace(cellsFolder, "").Replace(doodadG, "");
+                var cellNameSplit = cellName.Split("_");
+                if (cellNameSplit.Length != 2)
+                    continue;
+                if (!uint.TryParse(cellNameSplit[0], out var cellX) || !uint.TryParse(cellNameSplit[1], out var cellY))
+                    continue;
+                var sl = new List<string>();
+                var thisStream = Pak.ExportFileAsStream(doodadGFile);
+                using (var rs = new StreamReader(thisStream))
+                {
+                    sl.Clear();
+                    while (!rs.EndOfStream)
+                    {
+                        sl.Add(rs.ReadLine().Trim().ToLower());
+                    }
+                }
+                var currentDoodadId = 0;
+                var currentDoodadCat = 0;
+                foreach (var line in sl)
+                {
+                    var trimmedLine = line.ToLower().Replace(",", "").TrimStart(' ').TrimStart('\t');
+                    var l = trimmedLine.Split(' ');
+                    if (l.Length == 1 && l[0] == "doodad")
+                    {
+                        currentDoodadId = 0;
+                        currentDoodadCat = 0;
+                        continue;
+                    }
+
+                    if (currentDoodadId == 0 && l.Length == 2 && l[0] == "type")
+                    {
+                        if (!int.TryParse(l[1], out currentDoodadId))
+                            currentDoodadId = 0;
+                        continue;
+                    }
+
+                    if (currentDoodadCat == 0 && l.Length == 2 && l[0] == "category")
+                    {
+                        if (!int.TryParse(l[1], out currentDoodadCat))
+                            currentDoodadCat = 0;
+                        continue;
+                    }
+
+                    if (currentDoodadId != 0 && l.Length == 9 && l[0] == "pos" && l[1] == "(" && l[2] == "x" &&
+                        l[4] == "y" && l[6] == "z" && l[8] == ")")
+                    {
+                        if (
+                            !float.TryParse(l[3], NumberStyles.Any, CultureInfo.InvariantCulture, out var posX) ||
+                             !float.TryParse(l[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var posY) ||
+                              !float.TryParse(l[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var posZ)
+                            )
+                            continue;
+                        posX += (cellX * 1024f);
+                        posY += (cellY * 1024f);
+                        map.AddPoI(posX, posY, posZ, (AaDb.DbDoodadAlmighties.GetValueOrDefault(currentDoodadId)?.NameLocalized ?? "DoodadId: ") + $" ({currentDoodadId})", Color.YellowGreen, 0, "doodad", currentDoodadId, null);
+                    }
+                }
+            }
+
+            map.FocusAll(true, false, false);
+            map.BringToFront();
+        }
+
+        private void BtnLoadNpcSpawnersFromPak_Click(object sender, EventArgs e)
+        {
+            const string zoneFolder = "game/worlds/main_world/level_design/zone/";
+            const string npcSpawnersG = "/zone_server/npc_spawners.g";
+            if (Pak == null || !Pak.IsOpen || Pak.IsVirtual)
+                return;
+            var npcSpawnersGFiles = Pak.Files.Where(f => f.Name.EndsWith(npcSpawnersG, StringComparison.InvariantCultureIgnoreCase) && f.Name.StartsWith(zoneFolder, StringComparison.InvariantCultureIgnoreCase));
+            if (npcSpawnersGFiles.Count() <= 0)
+            {
+                MessageBox.Show($"Pak does not seem to contain DESIGN NpcSpawner data");
+                return;
+            }
+            PrepareWorldXml(false);
+            var map = MapViewForm.GetMap();
+            map.Show();
+            map.cbInstanceSelect.Text = "main_world";
+
+            if ((map.GetPoICount() > 0 || map.GetPathCount() > 0) &&
+                MessageBox.Show("Keep PoI's ?", "", MessageBoxButtons.YesNo) == DialogResult.No)
+            {
+                map.ClearPoI();
+                map.ClearPaths();
+            }
+
+            foreach (var npcSpawnersGFile in npcSpawnersGFiles)
+            {
+                var zoneName = npcSpawnersGFile.Name.Replace(zoneFolder, "").Replace(npcSpawnersG, "");
+                if (!uint.TryParse(zoneName, out var zoneKey))
+                    continue;
+                var sl = new List<string>();
+                var thisStream = Pak.ExportFileAsStream(npcSpawnersGFile);
+                using (var rs = new StreamReader(thisStream))
+                {
+                    sl.Clear();
+                    while (!rs.EndOfStream)
+                    {
+                        sl.Add(rs.ReadLine().Trim().ToLower());
+                    }
+                }
+                var currentSpawnerId = 0;
+                var currentSpawnerType = 0;
+                var currentSpawnerAreaType = "";
+                var currentPoints = new List<Vector3>();
+
+                /*
+                var zone = AaDb.GetZoneByKey(zoneKey);
+                var zoneGroup = AaDb.DbZoneGroups.GetValueOrDefault(zone?.GroupId ?? 0);
+                var zoneOffset = zoneGroup != null ? new Vector3(zoneGroup.PosAndSize.X, zoneGroup.PosAndSize.Y, 0f) : Vector3.Zero;
+                */
+                var xmlZone = MapViewWorldXML.main_world.zones.GetValueOrDefault(zoneKey);
+                var zoneOffset = new Vector3(xmlZone.originCellX * 1024f, xmlZone.originCellY * 1024f, 0f);
+
+                var areaPointsMode = false;
+                var lineNumber = 0;
+                foreach (var line in sl)
+                {
+                    lineNumber++;
+                    var trimmedLine = line.ToLower().Replace(",", "").TrimStart(' ').TrimStart('\t');
+                    var l = trimmedLine.Split(' ');
+                    if (l.Length == 1 && l[0] == "spawner")
+                    {
+                        // Add previous path if still open
+                        if (currentSpawnerId != 0 && currentSpawnerAreaType == "area" && currentPoints.Count > 0)
+                        {
+                            var path = new MapViewPath();
+                            path.PathName = $"NpcSpawner: Id {currentSpawnerId}, Type: {currentSpawnerType}";
+                            path.Color = Color.LightYellow;
+                            path.DrawStyle = 0;
+                            foreach (var currentPoint in currentPoints)
+                            {
+                                path.AddPoint(currentPoint);
+                            }
+                            path.AddPoint(currentPoints.First());
+                            map.AddPath(path);
+                        }
+
+                        currentSpawnerId = 0;
+                        currentSpawnerType = 0;
+                        currentSpawnerAreaType = "";
+                        currentPoints.Clear();
+                        continue;
+                    }
+
+                    if (currentSpawnerId == 0 && l.Length == 2 && l[0] == "spawnerid")
+                    {
+                        if (!int.TryParse(l[1], out currentSpawnerId))
+                            currentSpawnerId = 0;
+                        continue;
+                    }
+
+                    if (currentSpawnerType == 0 && l.Length == 2 && l[0] == "spawnertype")
+                    {
+                        if (!int.TryParse(l[1], out currentSpawnerType))
+                            currentSpawnerType = 0;
+                        continue;
+                    }
+
+                    if (currentSpawnerType == 0 && l.Length == 2 && l[0] == "spawnareatype")
+                    {
+                        currentSpawnerAreaType = l[1];
+                        continue;
+                    }
+
+                    if (currentSpawnerType != 0 && l.Length == 1 && l[0] == "points")
+                    {
+                        currentPoints.Clear();
+                        areaPointsMode = true;
+                        continue;
+                    }
+
+                    if (l.Length == 1 && l[0] == "point")
+                    {
+                        // don't need to do anything here
+                        continue;
+                    }
+
+                    if (l.Length == 2 && l[0] == "zrot")
+                    {
+                        // don't need to do anything here
+                        continue;
+                    }
+
+                    if (l.Length == 1 && l[0] == "paths")
+                    {
+                        areaPointsMode = false;
+                        // don't need to do anything here
+                        continue;
+                    }
+
+                    if (l.Length == 7 && l[0] == "path")
+                    {
+                        // don't need to do anything here
+                        continue;
+                    }
+
+                    if (l.Length == 1 && l[0] == "triinfos")
+                    {
+                        areaPointsMode = false;
+                        // don't need to do anything here
+                        continue;
+                    }
+
+                    if (l.Length == 1 && l[0] == "triinfo")
+                    {
+                        // don't need to do anything here
+                        continue;
+                    }
+
+                    if (l.Length == 2 && l[0] == "roamingarea")
+                    {
+                        areaPointsMode = false;
+                        // don't need to do anything here
+                        continue;
+                    }
+
+                    if (l.Length == 9 && l[0] == "v1")
+                    {
+                        // don't need to do anything here
+                        continue;
+                    }
+
+                    if (l.Length == 9 && l[0] == "v2")
+                    {
+                        // don't need to do anything here
+                        continue;
+                    }
+
+                    if (l.Length == 9 && l[0] == "v3")
+                    {
+                        // don't need to do anything here
+                        continue;
+                    }
+
+                    if (l.Length == 2 && l[0] == "arearate")
+                    {
+                        // don't need to do anything here
+                        continue;
+                    }
+
+                    if (currentSpawnerId != 0 && l.Length == 9 && l[0] == "pos" && l[1] == "(" && l[2] == "x" &&
+                        l[4] == "y" && l[6] == "z" && l[8] == ")")
+                    {
+                        if (areaPointsMode)
+                        {
+                            if (
+                                !float.TryParse(l[3], NumberStyles.Any, CultureInfo.InvariantCulture, out var posX) ||
+                                !float.TryParse(l[5], NumberStyles.Any, CultureInfo.InvariantCulture, out var posY) ||
+                                !float.TryParse(l[7], NumberStyles.Any, CultureInfo.InvariantCulture, out var posZ)
+                            )
+                                continue;
+                            if (currentSpawnerAreaType == "point")
+                            {
+                                map.AddPoI(posX + zoneOffset.X, posY + zoneOffset.Y, posZ + zoneOffset.Z,
+                                    $"NpcSpawner: Id {currentSpawnerId}, Type: {currentSpawnerType}", Color.Yellow, 0,
+                                    "npcspawner", currentSpawnerId, null);
+                            }
+                            else if (currentSpawnerAreaType == "area")
+                            {
+                                currentPoints.Add(new Vector3(posX + zoneOffset.X, posY + zoneOffset.Y,
+                                    posZ + zoneOffset.Z));
+                            }
+                        }
+                        continue;
+                    }
+                    // If we reach here, we have a complete spawner definition
+                    if (currentSpawnerId != 0 && currentSpawnerAreaType == "area" && currentPoints.Count > 0)
+                    {
+                        var path = new MapViewPath();
+                        path.PathName = $"NpcSpawner: Id {currentSpawnerId}, Type: {currentSpawnerType}";
+                        path.Color = Color.LightYellow;
+                        path.DrawStyle = 0;
+                        foreach (var currentPoint in currentPoints)
+                        {
+                            path.AddPoint(currentPoint);
+                        }
+                        path.AddPoint(currentPoints.First());
+                        map.AddPath(path);
+                        currentPoints.Clear();
+                    }
+                }
+
+                // Add last path if still open
+                if (currentSpawnerId != 0 && currentSpawnerAreaType == "area" && currentPoints.Count > 0)
+                {
+                    var path = new MapViewPath();
+                    path.PathName = $"NpcSpawner: Id {currentSpawnerId}, Type: {currentSpawnerType}";
+                    path.Color = Color.LightYellow;
+                    path.DrawStyle = 0;
+                    foreach (var currentPoint in currentPoints)
+                    {
+                        path.AddPoint(currentPoint);
+                    }
+                    map.AddPath(path);
+                }
+            }
+
+            map.FocusAll(true, true, false);
+            map.BringToFront();
+        }
+
+        private void tpGameSettings_Enter(object sender, EventArgs e)
+        {
+            dgvContentConfig.Rows.Clear();
+            foreach (var (ccId, val) in AaDb.DbContentConfigs)
+            {
+                var line = dgvContentConfig.Rows.Add();
+                var row = dgvContentConfig.Rows[line];
+
+                row.Cells[0].Value = ccId.ToString();
+                row.Cells[1].Value = val.ToString();
+            }
+        }
+
+        private void TBConfigs_Click(object sender, EventArgs e)
+        {
+            tcViewer.SelectedTab = tpGameSettings;
         }
     }
 }

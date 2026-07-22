@@ -251,6 +251,32 @@ public partial class MainForm
         }
     }
 
+    private void LoadConfigs()
+    {
+        if (AllTableNames.GetValueOrDefault("content_configs") == SQLite.SQLiteFileName)
+        {
+            AaDb.DbContentConfigs.Clear();
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM content_configs ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        while (reader.Read())
+                        {
+                            // Actual DB entries
+                            var id = (ContentConfig)GetInt64(reader, "id");
+                            var value = GetInt64(reader, "value");
+                            // early versions also have kind_id which is just a category of sorts
+                            AaDb.DbContentConfigs.Add(id, value);
+                        }
+                    }
+                }
+            }
+        }
+    }
     private int IconIdToLabel(long iconId, Label iconImgLabel)
     {
         var cachedImageIndex = -1;
