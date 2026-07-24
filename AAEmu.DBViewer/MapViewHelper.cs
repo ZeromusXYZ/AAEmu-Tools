@@ -652,14 +652,14 @@ namespace AAEmu.DBViewer
         public static List<string> ListPossibleFileNames(string baseFileName, int scale, string locale, string ext = ".dds")
         {
             var res = new List<string>();
-            // List possible files in order of prefered
+            // List possible files in order of preferred
             // Version 1.2
             res.Add("game/ui/map/road/" + locale + "/" + baseFileName + "_road_" + scale.ToString() + ext);
             res.Add("game/ui/map/road/" + baseFileName + "_road_" + scale.ToString() + ext);
             // starting from Version ?.?
             res.Add("game/ui/map/map_resources/" + baseFileName + "/" + locale + "/road_" + scale.ToString() + ext);
             res.Add("game/ui/map/map_resources/" + baseFileName + "/road_" + scale.ToString() + ext);
-            // The following is to capture a error from XLGames on some maps like sanddeep
+            // The following is to capture an error from XLGames on some maps like Sanddeep
             res.Add("game/ui/map/road/" + locale + "/" + baseFileName + "_" + scale.ToString() + ext);
             res.Add("game/ui/map/road/" + baseFileName + "_" + scale.ToString() + ext);
             return res;
@@ -914,6 +914,7 @@ namespace AAEmu.DBViewer
         public int Y = 0;
         public Rectangle bounds = new Rectangle();
         public long zone_key = 0;
+        public List<(int, int)> SectorList = [];
     }
 
     public class MapViewWorldXMLZoneInfo
@@ -929,6 +930,36 @@ namespace AAEmu.DBViewer
                 if (cell.bounds.Contains(coordX, coordY))
                     return cell;
             return null;
+        }
+
+        public bool SectorExists(int cellX, int cellY, int sectorX, int sectorY)
+        {
+            // Calculate corrected cell/sector
+            while (sectorX < 0)
+            {
+                sectorX += 16;
+                cellX -= 1;
+            }
+            while (sectorX >= 16)
+            {
+                sectorX -= 16;
+                cellX += 1;
+            }
+            while (sectorY < 0)
+            {
+                sectorY += 16;
+                cellY -= 1;
+            }
+            while (sectorY >= 16)
+            {
+                sectorY -= 16;
+                cellY += 1;
+            }
+
+            var cellInfo = Cells.FirstOrDefault(c => c.X == cellX && c.Y == cellY);
+            if (cellInfo != null)
+                return cellInfo.SectorList.Contains((sectorX, sectorY));
+            return false;
         }
     }
 }

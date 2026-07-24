@@ -1,15 +1,17 @@
-﻿using System;
+﻿using AAEmu.DBViewer.DbDefs;
+using AAEmu.DBViewer.utils;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Windows.Forms;
 using System.Xml;
-using AAEmu.DBViewer.utils;
-using AAEmu.DBViewer.DbDefs;
-using System.ComponentModel;
 
 namespace AAEmu.DBViewer
 {
@@ -707,7 +709,7 @@ namespace AAEmu.DBViewer
             if (cbZoneBorders.Checked && (map.Name != string.Empty))
             {
                 g.DrawRectangle(pen, zoneBorderRect.X, zoneBorderRect.Y, zoneBorderRect.Width, zoneBorderRect.Height);
-                g.DrawRectangle(roadpen, roadBorderRect.X, roadBorderRect.Y, roadBorderRect.Width, roadBorderRect.Height);
+                // g.DrawRectangle(roadpen, roadBorderRect.X, roadBorderRect.Y, roadBorderRect.Width, roadBorderRect.Height);
 
                 var f = new Font(Font.FontFamily, 100f);
                 var br = new SolidBrush(map.MapBorderColor);
@@ -963,6 +965,122 @@ namespace AAEmu.DBViewer
                 if (tsbShowSubzone.Checked)
                     foreach (var subzoneArea in subzone)
                         DrawPath(g, subzoneArea, tsbNamesSubzone.Checked);
+
+                // Zone sectors
+                var xmlMap = MapViewWorldXML.instances.FirstOrDefault(x => x.WorldName == cbInstanceSelect.Text);
+                if (xmlMap != null && cbZoneBorders.Checked)
+                {
+                    var cf = new Font(Font.FontFamily, 64f);
+                    var br = Brushes.Fuchsia;
+                    var pn = Pens.Fuchsia;
+                    var col = Color.Fuchsia;
+                    var colorSelect = -1;
+                    foreach (var zoneInfo in xmlMap.zones.Values)
+                    {
+                        var markThisZoneGroup = false;
+                        if (topMostMap != null)
+                        {
+                            var zone = AaDb.GetZoneByKey(zoneInfo.zone_key);
+                            if (zone != null && zone.GroupId == topMostMap.ZoneGroup)
+                                markThisZoneGroup = true;
+                        }
+                        colorSelect++;
+                        switch (colorSelect)
+                        {
+                            case 0:
+                                col = Color.DarkRed;
+                                break;
+                            case 1:
+                                col = Color.DarkGreen;
+                                break;
+                            case 2:
+                                col = Color.DarkBlue;
+                                break;
+                            case 3:
+                                col = Color.DarkOrange;
+                                break;
+                            case 4:
+                                col = Color.CadetBlue;
+                                break;
+                            case 5:
+                                col = Color.DarkSeaGreen;
+                                break;
+                            case 6:
+                                col = Color.PaleGoldenrod;
+                                break;
+                            default:
+                                col = Color.Purple;
+                                colorSelect = -1;
+                                break;
+                        }
+
+                        br = new SolidBrush(col);
+                        pn = new Pen(br, 10);
+                        var markBrush = new HatchBrush(HatchStyle.DiagonalCross, col, Color.Transparent);
+
+                        if (zoneInfo.Cells.Count <= 0)
+                            continue;
+
+                        var firstCell = true;
+                        // bounding box
+                        var bx1 = int.MaxValue;
+                        var bx2 = int.MinValue;
+                        var by1 = int.MaxValue;
+                        var by2 = int.MinValue;
+                        foreach (var cellInfo in zoneInfo.Cells)
+                        {
+                            var cellPos = CoordToPixel(cellInfo.X * 1024, cellInfo.Y * 1024);
+
+                            if (firstCell)
+                            {
+                                //g.DrawString(zoneInfo.name, cf, br, ViewOffset.X + cellPos.X, ViewOffset.Y + cellPos.Y);
+                            }
+                            firstCell = false;
+                            if (zoneInfo.Cells.Count <= 0)
+                                continue;
+
+                            foreach (var (sectorX, sectorY) in cellInfo.SectorList)
+                            {
+                                var mapPos = CoordToPixel((cellInfo.X * 1024) + (sectorX * 64), (cellInfo.Y * 1024) + (sectorY * 64));
+                                var mapPos2 = CoordToPixel((cellInfo.X * 1024) + (sectorX * 64) + 64, (cellInfo.Y * 1024) + (sectorY * 64) + 64);
+                                var startX = mapPos.X + ViewOffset.X;
+                                var startY = mapPos.Y + ViewOffset.Y;
+                                var endX = mapPos2.X + ViewOffset.X;
+                                var endY = mapPos2.Y + ViewOffset.Y;
+                                
+                                if (!zoneInfo.SectorExists(cellInfo.X, cellInfo.Y, sectorX, sectorY - 1))
+                                    g.DrawLine(pn, startX, startY, endX, startY); // bottom
+
+                                if (!zoneInfo.SectorExists(cellInfo.X, cellInfo.Y, sectorX, sectorY + 1))
+                                    g.DrawLine(pn, startX, endY, endX, endY);// top
+
+                                if (!zoneInfo.SectorExists(cellInfo.X, cellInfo.Y, sectorX - 1, sectorY))
+                                    g.DrawLine(pn, startX, startY, startX, endY); // left
+
+                                if (!zoneInfo.SectorExists(cellInfo.X, cellInfo.Y, sectorX + 1, sectorY))
+                                    g.DrawLine(pn, endX, startY, endX, endY); // right
+
+                                if (markThisZoneGroup)
+                                    g.FillRectangle(markBrush, startX, startY - 64, 64, 64);
+
+                                if (startX < bx1)
+                                    bx1 = startX;
+                                if (startX > bx2)
+                                    bx2 = startX;
+                                if (startY < by1)
+                                    by1 = startY;
+                                if (startY > by2)
+                                    by2 = startY;
+                            }
+                        }
+                        var cx = ((bx2 - bx1) / 2) + bx1;
+                        var cy = ((by2 - by1) / 2) + by1;
+                        var textSize = g.MeasureString(zoneInfo.name, cf);
+                        g.FillRectangle(Brushes.Black, cx - (textSize.Width / 2), cy - (textSize.Height / 2), textSize.Width, textSize.Height);
+                        g.DrawString(zoneInfo.name, cf, Brushes.Yellow, cx - (textSize.Width / 2), cy - (textSize.Height / 2));
+
+                    }
+                }
 
                 if (cbFocus.Checked)
                     g.DrawRectangle(Pens.OrangeRed, ViewOffset.X + FocusBorder.X, ViewOffset.Y - FocusBorder.Y - FocusBorder.Height, FocusBorder.Width, FocusBorder.Height);
@@ -1575,6 +1693,27 @@ namespace AAEmu.DBViewer
                         zci.X = zcX;
                         zci.Y = zcY;
                         zci.bounds = new Rectangle(zcX * 1024, zcY * 1024, 1024, 1024);
+                        
+                        var sectors = zoneCells[zc].SelectNodes("sectorList/sector");
+                        for (var sc = 0; sc < sectors.Count; sc++)
+                        {
+                            var sectorAttributes = XmlHelper.ReadNodeAttributes(sectors[sc]);
+                            var sectorX = 0;
+                            var sectorY = 0;
+                            foreach (var sectorAttrib in sectorAttributes)
+                            {
+                                switch (sectorAttrib.Key)
+                                {
+                                    case "x":
+                                        sectorX = int.Parse(sectorAttrib.Value);
+                                        break;
+                                    case "y":
+                                        sectorY = int.Parse(sectorAttrib.Value);
+                                        break;
+                                }
+                            }
+                            zci.SectorList.Add((sectorX, sectorY));
+                        }
                         newZI.Cells.Add(zci);
                     }
 
