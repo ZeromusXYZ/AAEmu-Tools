@@ -3681,5 +3681,11 @@ namespace AAEmu.DBViewer
         {
             tcViewer.SelectedTab = tpGameSettings;
         }
+
+        private void tbTradeRate_ValueChanged(object sender, EventArgs e)
+        {
+            lTradeRate.Text = $@"{tbTradeRate.Value} %";
+            DoTradeDestinationSelectedIndexChanged();
+        }
     }
 }

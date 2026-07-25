@@ -1754,18 +1754,21 @@ public partial class MainForm
         if (!(lbTradeDestination.SelectedItem is GameZoneGroups destZone))
             return;
 
-        lTradeRoute.Text = "-";
-        foreach (var z in AaDb.DbSpecialities)
+        lTradeRoute.Text = @"-";
+        foreach (var (id, z) in AaDb.DbSpecialities)
         {
-            if ((z.Value.VendorExist) && (z.Value.RowZoneGroupId == sourceZone.Id) &&
-                (z.Value.ColZoneGroupId == destZone.Id))
+            if ((z.VendorExist) && (z.RowZoneGroupId == sourceZone.Id) &&
+                (z.ColZoneGroupId == destZone.Id))
             {
-                lTradeRoute.Text = sourceZone.ToString() + " => " + destZone.ToString();
-                lTradeProfit.Text = z.Value.Profit.ToString();
-                lTradeRatio.Text = z.Value.Ratio.ToString();
+                lTradeRoute.Text = sourceZone.ToString() + @" => " + destZone.ToString();
+                lTradeProfit.Text = z.Profit.ToString();
+                lTradeRatio.Text = z.Ratio.ToString();
+                var value = (Math.Floor(z.Profit * (z.Ratio / 1000f)) / 10000f * (tbTradeRate.Value / 100f));
+                lTradeMultiplier.Text = value.ToString("F2");
             }
-        }
 
+
+        }
     }
 
     private void DoExportDoodadSpawnData()

@@ -504,6 +504,10 @@
             label137 = new System.Windows.Forms.Label();
             tSearchTags = new System.Windows.Forms.TextBox();
             tpTrade = new System.Windows.Forms.TabPage();
+            lTradeRate = new System.Windows.Forms.Label();
+            tbTradeRate = new System.Windows.Forms.TrackBar();
+            label152 = new System.Windows.Forms.Label();
+            lTradeMultiplier = new System.Windows.Forms.Label();
             label142 = new System.Windows.Forms.Label();
             lTradeRoute = new System.Windows.Forms.Label();
             label133 = new System.Windows.Forms.Label();
@@ -762,6 +766,7 @@
             tpTags.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvTags).BeginInit();
             tpTrade.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)tbTradeRate).BeginInit();
             tpSlaves.SuspendLayout();
             groupBox15.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSlaves).BeginInit();
@@ -1686,7 +1691,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 305);
-            splitContainer2.SplitterDistance = 328;
+            splitContainer2.SplitterDistance = 323;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1694,7 +1699,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(236, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(231, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(88, 19);
@@ -1726,7 +1731,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(320, 276);
+            tvBuffTriggers.Size = new System.Drawing.Size(315, 276);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -4955,7 +4960,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(479, 479);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(474, 479);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 25);
@@ -4988,7 +4993,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(706, 465);
+            tvQuestWorkflow.Size = new System.Drawing.Size(701, 465);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -6071,6 +6076,10 @@
             // 
             // tpTrade
             // 
+            tpTrade.Controls.Add(lTradeRate);
+            tpTrade.Controls.Add(tbTradeRate);
+            tpTrade.Controls.Add(label152);
+            tpTrade.Controls.Add(lTradeMultiplier);
             tpTrade.Controls.Add(label142);
             tpTrade.Controls.Add(lTradeRoute);
             tpTrade.Controls.Add(label133);
@@ -6090,10 +6099,52 @@
             tpTrade.Text = "Trades";
             tpTrade.UseVisualStyleBackColor = true;
             // 
+            // lTradeRate
+            // 
+            lTradeRate.AutoSize = true;
+            lTradeRate.Location = new System.Drawing.Point(817, 92);
+            lTradeRate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lTradeRate.Name = "lTradeRate";
+            lTradeRate.Size = new System.Drawing.Size(38, 15);
+            lTradeRate.TabIndex = 13;
+            lTradeRate.Text = "130 %";
+            // 
+            // tbTradeRate
+            // 
+            tbTradeRate.Location = new System.Drawing.Point(512, 92);
+            tbTradeRate.Maximum = 130;
+            tbTradeRate.Minimum = 70;
+            tbTradeRate.Name = "tbTradeRate";
+            tbTradeRate.Size = new System.Drawing.Size(298, 45);
+            tbTradeRate.TabIndex = 12;
+            tbTradeRate.TickFrequency = 5;
+            tbTradeRate.Value = 130;
+            tbTradeRate.ValueChanged += tbTradeRate_ValueChanged;
+            // 
+            // label152
+            // 
+            label152.AutoSize = true;
+            label152.Location = new System.Drawing.Point(513, 168);
+            label152.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label152.Name = "label152";
+            label152.Size = new System.Drawing.Size(109, 15);
+            label152.TabIndex = 11;
+            label152.Text = "Item refund price +";
+            // 
+            // lTradeMultiplier
+            // 
+            lTradeMultiplier.AutoSize = true;
+            lTradeMultiplier.Location = new System.Drawing.Point(630, 168);
+            lTradeMultiplier.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lTradeMultiplier.Name = "lTradeMultiplier";
+            lTradeMultiplier.Size = new System.Drawing.Size(13, 15);
+            lTradeMultiplier.TabIndex = 10;
+            lTradeMultiplier.Text = "0";
+            // 
             // label142
             // 
             label142.AutoSize = true;
-            label142.Location = new System.Drawing.Point(513, 131);
+            label142.Location = new System.Drawing.Point(513, 140);
             label142.Name = "label142";
             label142.Size = new System.Drawing.Size(297, 15);
             label142.TabIndex = 9;
@@ -7985,6 +8036,7 @@
             ((System.ComponentModel.ISupportInitialize)dgvTags).EndInit();
             tpTrade.ResumeLayout(false);
             tpTrade.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)tbTradeRate).EndInit();
             tpSlaves.ResumeLayout(false);
             tpSlaves.PerformLayout();
             groupBox15.ResumeLayout(false);
@@ -8665,6 +8717,10 @@
         private System.Windows.Forms.Label label151;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCCId;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgvCCVal;
+        private System.Windows.Forms.Label label152;
+        private System.Windows.Forms.Label lTradeMultiplier;
+        private System.Windows.Forms.Label lTradeRate;
+        private System.Windows.Forms.TrackBar tbTradeRate;
     }
 }
 
