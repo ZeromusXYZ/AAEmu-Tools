@@ -961,5 +961,17 @@ namespace AAEmu.DBViewer
                 return cellInfo.SectorList.Contains((sectorX, sectorY));
             return false;
         }
+
+        public bool Contains(Point cursorCoords)
+        {
+            var cellX = cursorCoords.X / 1024;
+            var cellY = cursorCoords.Y / 1024;
+            var inCellX = cursorCoords.X % 1024;
+            var inCellY = cursorCoords.Y % 1024;
+            var sectorX = inCellX / 64;
+            var sectorY = inCellY / 64;
+            var cell = Cells.FirstOrDefault(c => c.X == cellX && c.Y == cellY);
+            return cell?.SectorList.Contains((sectorX, sectorY)) ?? false;
+        }
     }
 }

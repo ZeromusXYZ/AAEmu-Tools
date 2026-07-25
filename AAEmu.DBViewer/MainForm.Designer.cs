@@ -603,6 +603,8 @@
             tpGameSettings = new System.Windows.Forms.TabPage();
             label151 = new System.Windows.Forms.Label();
             dgvContentConfig = new System.Windows.Forms.DataGridView();
+            dgvCCId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            dgvCCVal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             openDBDlg = new System.Windows.Forms.OpenFileDialog();
             openGamePakFileDialog = new System.Windows.Forms.OpenFileDialog();
             mainFormToolTip = new System.Windows.Forms.ToolTip(components);
@@ -659,6 +661,7 @@
             TBSelectedData = new System.Windows.Forms.ToolStripButton();
             TBLocalizer = new System.Windows.Forms.ToolStripButton();
             toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            TBConfigs = new System.Windows.Forms.ToolStripButton();
             TBMap = new System.Windows.Forms.ToolStripButton();
             TBSplit = new System.Windows.Forms.ToolStripButton();
             toolStripButton1 = new System.Windows.Forms.ToolStripButton();
@@ -677,14 +680,11 @@
             TBSlaves = new System.Windows.Forms.ToolStripButton();
             TBVendors = new System.Windows.Forms.ToolStripButton();
             TBZones = new System.Windows.Forms.ToolStripButton();
-            TBConfigs = new System.Windows.Forms.ToolStripButton();
             openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             openFileDialog2 = new System.Windows.Forms.OpenFileDialog();
             openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
             openFileDialog4 = new System.Windows.Forms.OpenFileDialog();
             ofdLoadUnitMovementDialog = new System.Windows.Forms.OpenFileDialog();
-            dgvCCId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            dgvCCVal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tcViewer.SuspendLayout();
             tpSettings.SuspendLayout();
             tpTables.SuspendLayout();
@@ -1686,7 +1686,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 305);
-            splitContainer2.SplitterDistance = 332;
+            splitContainer2.SplitterDistance = 328;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1694,7 +1694,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(240, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(236, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(88, 19);
@@ -1726,7 +1726,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(324, 276);
+            tvBuffTriggers.Size = new System.Drawing.Size(320, 276);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -4955,7 +4955,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(483, 479);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(479, 479);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 25);
@@ -4988,7 +4988,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(710, 465);
+            tvQuestWorkflow.Size = new System.Drawing.Size(706, 465);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -7192,6 +7192,21 @@
             dgvContentConfig.Size = new System.Drawing.Size(1066, 517);
             dgvContentConfig.TabIndex = 7;
             // 
+            // dgvCCId
+            // 
+            dgvCCId.FillWeight = 84.467F;
+            dgvCCId.HeaderText = "ID";
+            dgvCCId.MinimumWidth = 32;
+            dgvCCId.Name = "dgvCCId";
+            dgvCCId.ReadOnly = true;
+            // 
+            // dgvCCVal
+            // 
+            dgvCCVal.FillWeight = 113.042969F;
+            dgvCCVal.HeaderText = "Value";
+            dgvCCVal.Name = "dgvCCVal";
+            dgvCCVal.ReadOnly = true;
+            // 
             // openDBDlg
             // 
             openDBDlg.DefaultExt = "sqlite3";
@@ -7492,7 +7507,7 @@
             // 
             TBMain.Font = new System.Drawing.Font("Segoe UI Variable Text", 10F);
             TBMain.ImageScalingSize = new System.Drawing.Size(24, 24);
-            TBMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { TBFile, TBS1, TMBack, TBForward, TBS2, TBSelectedData, TBLocalizer, toolStripSeparator1, TBMap, TBSplit, toolStripButton1, TBBuffs, TBDoodads, TBFactions, TBItems, TBLoot, TBNpc, TBQuests, TBSchedules, TBSkills, TBSpheres, TBTags, TBTrades, TBSlaves, TBVendors, TBZones, TBConfigs });
+            TBMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { TBFile, TBS1, TMBack, TBForward, TBS2, TBSelectedData, TBLocalizer, toolStripSeparator1, TBConfigs, TBMap, TBSplit, toolStripButton1, TBBuffs, TBDoodads, TBFactions, TBItems, TBLoot, TBNpc, TBQuests, TBSchedules, TBSkills, TBSpheres, TBTags, TBTrades, TBSlaves, TBVendors, TBZones });
             TBMain.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             TBMain.Location = new System.Drawing.Point(0, 0);
             TBMain.Name = "TBMain";
@@ -7612,6 +7627,16 @@
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
             toolStripSeparator1.Size = new System.Drawing.Size(6, 23);
+            // 
+            // TBConfigs
+            // 
+            TBConfigs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            TBConfigs.Image = (System.Drawing.Image)resources.GetObject("TBConfigs.Image");
+            TBConfigs.ImageTransparentColor = System.Drawing.Color.Magenta;
+            TBConfigs.Name = "TBConfigs";
+            TBConfigs.Size = new System.Drawing.Size(28, 28);
+            TBConfigs.Text = "Game Settings";
+            TBConfigs.Click += TBConfigs_Click;
             // 
             // TBMap
             // 
@@ -7801,16 +7826,6 @@
             TBZones.Text = "Zones";
             TBZones.Click += TBZones_Click;
             // 
-            // TBConfigs
-            // 
-            TBConfigs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            TBConfigs.Image = (System.Drawing.Image)resources.GetObject("TBConfigs.Image");
-            TBConfigs.ImageTransparentColor = System.Drawing.Color.Magenta;
-            TBConfigs.Name = "TBConfigs";
-            TBConfigs.Size = new System.Drawing.Size(28, 28);
-            TBConfigs.Text = "Game Settings";
-            TBConfigs.Click += TBConfigs_Click;
-            // 
             // openFileDialog1
             // 
             openFileDialog1.DefaultExt = "xml";
@@ -7842,21 +7857,6 @@
             ofdLoadUnitMovementDialog.FileName = "unit_movement.json";
             ofdLoadUnitMovementDialog.Filter = "JSON Files|*.json|All Files|*.*";
             ofdLoadUnitMovementDialog.Title = "Open Unit Movement File";
-            // 
-            // dgvCCId
-            // 
-            dgvCCId.FillWeight = 84.467F;
-            dgvCCId.HeaderText = "ID";
-            dgvCCId.MinimumWidth = 32;
-            dgvCCId.Name = "dgvCCId";
-            dgvCCId.ReadOnly = true;
-            // 
-            // dgvCCVal
-            // 
-            dgvCCVal.FillWeight = 113.042969F;
-            dgvCCVal.HeaderText = "Value";
-            dgvCCVal.Name = "dgvCCVal";
-            dgvCCVal.ReadOnly = true;
             // 
             // MainForm
             // 

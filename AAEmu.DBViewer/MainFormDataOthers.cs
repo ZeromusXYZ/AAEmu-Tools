@@ -369,7 +369,7 @@ public partial class MainForm
 
     private void LoadTrades()
     {
-        if (AllTableNames.GetValueOrDefault("specialities") != SQLite.SQLiteFileName)
+        if (AllTableNames.GetValueOrDefault("specialties") != SQLite.SQLiteFileName)
             return;
 
         var sourceZones = new List<long>();

@@ -130,6 +130,9 @@
   <data name="icon_flag" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon_flag.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="icon_gears" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_gears.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="icon_hourglass" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon_hourglass.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -165,6 +168,9 @@
   </data>
   <data name="icon_map_quest" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon_map_quest.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icon_map_scroll" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icon_map_scroll.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="icon_map_zone" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon_map_zone.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

@@ -22,7 +22,7 @@ namespace AAEmu.DBViewer
         private Point viewOffset = new Point(0, 0);
         private Point cursorCoords = new Point(0, 0);
         private Point rulerCoords = new Point(0, 0);
-        private string cursorZones = string.Empty;
+        private long cursorZoneKey = 0;
         private Point startDragPos = new Point();
         private Point startDragOffset = new Point();
         private bool isDragging = false;
@@ -141,7 +141,7 @@ namespace AAEmu.DBViewer
                         m.MapBorderColor = Color.DarkGreen;
                     if (zg.FactionChatRegionId == 4)
                         m.MapBorderColor = Color.DarkRed;
-                    // If it has the Rough Sea (Turbulance) buff, it's the ocean, use a blue border
+                    // If it has the Rough Sea (Turbulence) buff, it's the ocean, use a blue border
                     if (zg.BuffId == 7743)
                     {
                         m.MapBorderColor = Color.Navy;
@@ -178,13 +178,46 @@ namespace AAEmu.DBViewer
                     cursorZoneList.Add(map);
             }
 
-            // Check if cursor is still inside the current zone
-            if (cursorZoneList.Contains(topMostMap) && (topMostMap != null))
+            var currentInstance = MapViewWorldXML.instances.FirstOrDefault(x => x.WorldName == cbInstanceSelect.Text);
+            if (currentInstance != null)
             {
-                // Leave everthing as is
+                cursorZoneKey = 0;
+                foreach (var (zoneKey, zoneInfo)in currentInstance.zones)
+                {
+                    if (zoneInfo.Contains(cursorCoords))
+                    {
+                        cursorZoneKey = zoneKey;
+                        break;
+                    }
+                }
+                // Try to find zone data in DB
+                if (cursorZoneKey > 0)
+                {
+                    var zone = AaDb.GetZoneByKey(cursorZoneKey);
+                    if (zone != null)
+                    {
+                        // Use the result from the detailed zone borders above to force the topmost map to the same zone.
+                        topMostMap = null;
+                        foreach (var map in allmaps)
+                        {
+                            if (map.ZoneGroup == zone.GroupId)
+                            {
+                                topMostMap = map;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            /*
+            // Check if cursor is still inside the current zone
+            if ((topMostMap != null) && cursorZoneList.Contains(topMostMap))
+            {
+                // Leave everything as is
             }
             else
             {
+                // Fallback if there wasn't any sector info
                 foreach (var z in cursorZoneList)
                 {
                     if (newTopMap == null)
@@ -193,7 +226,7 @@ namespace AAEmu.DBViewer
                     }
                     else
                     {
-                        if ((newTopMap.ZoneCoords.Width * newTopMap.ZoneCoords.Height) >= (z.ZoneCoords.Width * z.ZoneCoords.Height))
+                        if ((newTopMap.ZoneCoords.Width * newTopMap.ZoneCoords.Height) <= (z.ZoneCoords.Width * z.ZoneCoords.Height))
                         {
                             newTopMap = z;
                         }
@@ -202,6 +235,7 @@ namespace AAEmu.DBViewer
                 }
                 topMostMap = newTopMap;
             }
+            */
 
             foreach (var z in cursorZoneList)
             {
@@ -434,6 +468,7 @@ namespace AAEmu.DBViewer
 
         private void updateStatusBar()
         {
+            var lastCursorZoneKey = cursorZoneKey;
             tsslZoom.Text = "Zoom: " + (viewScale * 100).ToString() + "%";
             /*
             if (isDragging)
@@ -556,6 +591,10 @@ namespace AAEmu.DBViewer
                 tsmPoI.Enabled = true;
             }
 
+            if (lastCursorZoneKey != cursorZoneKey)
+            {
+                pView.Invalidate();
+            }
         }
 
         private void MapViewOnMouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
@@ -894,8 +933,6 @@ namespace AAEmu.DBViewer
                 Graphics g = e.Graphics;
 
                 g.ScaleTransform(viewScale, viewScale);
-
-                cursorZones = string.Empty;
                 foreach (var level in Enum.GetValues(typeof(MapLevel)))
                 {
                     foreach (var map in allmaps)
@@ -981,9 +1018,12 @@ namespace AAEmu.DBViewer
                         if (topMostMap != null)
                         {
                             var zone = AaDb.GetZoneByKey(zoneInfo.zone_key);
-                            if (zone != null && zone.GroupId == topMostMap.ZoneGroup)
+                            if (zone != null && zone.GroupId > 0 && zone.GroupId == topMostMap.ZoneGroup)
                                 markThisZoneGroup = true;
                         }
+
+                        if (zoneInfo.zone_key == cursorZoneKey)
+                            markThisZoneGroup = true;
                         colorSelect++;
                         switch (colorSelect)
                         {
@@ -1016,26 +1056,18 @@ namespace AAEmu.DBViewer
 
                         br = new SolidBrush(col);
                         pn = new Pen(br, 10);
-                        var markBrush = new HatchBrush(HatchStyle.DiagonalCross, col, Color.Transparent);
+                        var markBrush = new HatchBrush(HatchStyle.DottedGrid,  markThisZoneGroup && zoneInfo.zone_key == cursorZoneKey ? Color.Yellow : col, Color.Transparent);
 
                         if (zoneInfo.Cells.Count <= 0)
                             continue;
 
-                        var firstCell = true;
-                        // bounding box
+                        // bounding box calculation init
                         var bx1 = int.MaxValue;
                         var bx2 = int.MinValue;
                         var by1 = int.MaxValue;
                         var by2 = int.MinValue;
                         foreach (var cellInfo in zoneInfo.Cells)
                         {
-                            var cellPos = CoordToPixel(cellInfo.X * 1024, cellInfo.Y * 1024);
-
-                            if (firstCell)
-                            {
-                                //g.DrawString(zoneInfo.name, cf, br, ViewOffset.X + cellPos.X, ViewOffset.Y + cellPos.Y);
-                            }
-                            firstCell = false;
                             if (zoneInfo.Cells.Count <= 0)
                                 continue;
 
@@ -1073,12 +1105,19 @@ namespace AAEmu.DBViewer
                                     by2 = startY;
                             }
                         }
+                        // place zoneKey name in the middle of the bounding box
                         var cx = ((bx2 - bx1) / 2) + bx1;
                         var cy = ((by2 - by1) / 2) + by1;
                         var textSize = g.MeasureString(zoneInfo.name, cf);
-                        g.FillRectangle(Brushes.Black, cx - (textSize.Width / 2), cy - (textSize.Height / 2), textSize.Width, textSize.Height);
-                        g.DrawString(zoneInfo.name, cf, Brushes.Yellow, cx - (textSize.Width / 2), cy - (textSize.Height / 2));
-
+                        if (zoneInfo.zone_key == cursorZoneKey)
+                        {
+                            g.FillRectangle(Brushes.Black, cx - (textSize.Width / 2), cy - (textSize.Height / 2), textSize.Width, textSize.Height);
+                            g.DrawString(zoneInfo.name, cf, Brushes.Yellow, cx - (textSize.Width / 2), cy - (textSize.Height / 2));
+                        }
+                        else
+                        {
+                            g.DrawString(zoneInfo.name, cf, Brushes.Black, cx - (textSize.Width / 2), cy - (textSize.Height / 2));
+                        }
                     }
                 }
 
