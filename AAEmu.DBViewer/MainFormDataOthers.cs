@@ -385,6 +385,8 @@ public partial class MainForm
                 {
                     Application.UseWaitCursor = true;
                     Cursor = Cursors.WaitCursor;
+                    var columnNames = reader.GetColumnNames();
+                    var hasRatioProfitVendor = columnNames.Contains("ratio") && columnNames.Contains("profit") && columnNames.Contains("vendor_exist");
 
                     while (reader.Read())
                     {
@@ -392,9 +394,12 @@ public partial class MainForm
                         t.Id = GetInt64(reader, "id");
                         t.RowZoneGroupId = GetInt64(reader, "row_zone_group_id");
                         t.ColZoneGroupId = GetInt64(reader, "col_zone_group_id");
-                        t.Ratio = GetInt64(reader, "ratio");
-                        t.Profit = GetInt64(reader, "profit");
-                        t.VendorExist = GetBool(reader, "vendor_exist");
+                        if (hasRatioProfitVendor)
+                        {
+                            t.Ratio = GetInt64(reader, "ratio");
+                            t.Profit = GetInt64(reader, "profit");
+                            t.VendorExist = GetBool(reader, "vendor_exist");
+                        }
 
                         AaDb.DbSpecialities.Add(t.Id, t);
 
