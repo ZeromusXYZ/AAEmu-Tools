@@ -253,6 +253,28 @@ public partial class MainForm
 
     private void LoadConfigs()
     {
+        if (AllTableNames.GetValueOrDefault("enum_content_configs") == SQLite.SQLiteFileName)
+        {
+            AaDb.DbEnumContentConfigs.Clear();
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM enum_content_configs ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        while (reader.Read())
+                        {
+                            // Actual DB entries
+                            var id = GetInt64(reader, "id");
+                            var value = GetString(reader, "name");
+                            AaDb.DbEnumContentConfigs.Add(id, value);
+                        }
+                    }
+                }
+            }
+        }
         if (AllTableNames.GetValueOrDefault("content_configs") == SQLite.SQLiteFileName)
         {
             AaDb.DbContentConfigs.Clear();

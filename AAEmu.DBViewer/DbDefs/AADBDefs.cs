@@ -1644,6 +1644,7 @@ internal static class AaDb
     public static Dictionary<long, GameMerchantGoods> DbMerchantGoods = new();
     public static Dictionary<long, GameMerchantPacks> DbMerchantPacks = new();
     public static Dictionary<long, GameTotalCharacterCustoms> DbTotalCharacterCustoms = new();
+    public static Dictionary<long, string> DbEnumContentConfigs = new();
     public static Dictionary<ContentConfig, long> DbContentConfigs = new();
 
     public static Dictionary<long, Dictionary<long, Dictionary<long, GameAchievements>>> CompiledGroupedAchievements = new();
@@ -1748,6 +1749,7 @@ internal static class AaDb
         DbMerchantPacks.Clear();
         GameMerchantPacks.MerchantPackTypes.Clear();
         DbTotalCharacterCustoms.Clear();
+        DbEnumContentConfigs.Clear();
         DbContentConfigs.Clear();
 
         CompiledGroupedAchievements.Clear();
