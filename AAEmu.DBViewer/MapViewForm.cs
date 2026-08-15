@@ -701,7 +701,6 @@ namespace AAEmu.DBViewer
                 return;
 
             var pen = new Pen(map.MapBorderColor);
-            var roadpen = Pens.Black;
 
             var mappos = CoordToPixel(map.ZoneCoords.X, map.ZoneCoords.Y);
 
@@ -714,50 +713,6 @@ namespace AAEmu.DBViewer
                 g.DrawImage(mapImage, zoneBorderRect);
             }
 
-            var roadBorderRect = new RectangleF();
-            // Road Map Overlay (we need to read image dimensions of the mainmap, so it also requires that one loaded)
-            if ((map.MapBitmapImage != null) && (map.RoadBitmapImage != null) &&
-                (map.RoadBitmapImage.Width == map.MapBitmapImage.Width) &&
-                (map.RoadBitmapImage.Height == map.MapBitmapImage.Height))
-            {
-                // Newer clients (10.x map_resources layout) paint the road overlay on the same
-                // full canvas as the main map, so it stretches over the exact same zone rectangle;
-                // the legacy minimap offsets no longer apply there
-                roadBorderRect = zoneBorderRect;
-
-                if (cbDrawMiniMap.Checked)
-                    g.DrawImage(map.RoadBitmapImage, roadBorderRect);
-            }
-            else if ((map.MapBitmapImage != null) && (map.RoadBitmapImage != null))
-            {
-                var roadsize = new SizeF(
-                    map.ZoneCoords.Width * map.RoadMapCoords.Width / map.ImgCoords.Width,
-                    map.ZoneCoords.Height * map.RoadMapCoords.Height / map.ImgCoords.Height
-                    );
-                var roadCoordsOffset = new PointF(
-                    map.RoadMapOffset.X / map.ImgCoords.Width * map.ZoneCoords.Width,
-                    map.RoadMapOffset.Y / map.ImgCoords.Height * map.ZoneCoords.Height
-                    );
-                /*
-                var roadsize = new SizeF(
-                    map.ZoneCoords.Width * map.RoadBitmapImage.Width / (float)map.MapBitmapImage.Width,
-                    map.ZoneCoords.Height * map.RoadBitmapImage.Height / (float)map.MapBitmapImage.Height
-                    );
-                var roadCoordsOffset = new PointF(
-                    map.RoadMapOffset.X / (float)map.MapBitmapImage.Width * map.ZoneCoords.Width,
-                    map.RoadMapOffset.Y / (float)map.MapBitmapImage.Height * map.ZoneCoords.Height
-                    );
-                */
-
-                roadBorderRect = new RectangleF(
-                    ViewOffset.X + mappos.X + roadCoordsOffset.X,
-                    ViewOffset.Y + mappos.Y + roadCoordsOffset.Y - map.ZoneCoords.Height,
-                    roadsize.Width, roadsize.Height);
-
-                if (cbDrawMiniMap.Checked)
-                    g.DrawImage(map.RoadBitmapImage, roadBorderRect);
-            }
-
             if (cbZoneBorders.Checked && (map.Name != string.Empty))
             {
                 g.DrawRectangle(pen, zoneBorderRect.X, zoneBorderRect.Y, zoneBorderRect.Width, zoneBorderRect.Height);
@@ -767,6 +722,69 @@ namespace AAEmu.DBViewer
                 var br = new SolidBrush(map.MapBorderColor);
                 g.DrawString(map.Name, f, br, ViewOffset.X + mappos.X, ViewOffset.Y + mappos.Y);
             }
+        }
+
+        // Road overlays are drawn in a separate pass after every map image, so a neighboring
+        // map painted later can no longer cover the roads of an earlier one
+        private void DrawRoadOverlay(Graphics g, MapViewMap map)
+        {
+            if (!cbDrawMiniMap.Checked)
+                return;
+
+            var showMap = true;
+            switch (map.MapLevel)
+            {
+                case MapLevel.WorldMap:
+                    showMap = tsbDrawWorld.Checked;
+                    break;
+                case MapLevel.Continent:
+                    showMap = tsbDrawContinent.Checked;
+                    break;
+                case MapLevel.Zone:
+                    showMap = tsbDrawZone.Checked;
+                    break;
+                case MapLevel.City:
+                    showMap = tsbDrawCity.Checked;
+                    break;
+            }
+            if (!showMap)
+                return;
+
+            // We need to read image dimensions of the mainmap, so it also requires that one loaded
+            if ((map.MapBitmapImage == null) || (map.RoadBitmapImage == null))
+                return;
+
+            var mappos = CoordToPixel(map.ZoneCoords.X, map.ZoneCoords.Y);
+            var zoneBorderRect = new RectangleF(ViewOffset.X + mappos.X, ViewOffset.Y + mappos.Y - map.ZoneCoords.Height, map.ZoneCoords.Width, map.ZoneCoords.Height);
+
+            RectangleF roadBorderRect;
+            if ((map.RoadBitmapImage.Width == map.MapBitmapImage.Width) &&
+                (map.RoadBitmapImage.Height == map.MapBitmapImage.Height))
+            {
+                // Newer clients (10.x map_resources layout) paint the road overlay on the same
+                // full canvas as the main map, so it stretches over the exact same zone rectangle;
+                // the legacy minimap offsets no longer apply there
+                roadBorderRect = zoneBorderRect;
+            }
+            else
+            {
+                var roadsize = new SizeF(
+                    map.ZoneCoords.Width * map.RoadMapCoords.Width / map.ImgCoords.Width,
+                    map.ZoneCoords.Height * map.RoadMapCoords.Height / map.ImgCoords.Height
+                    );
+                var roadCoordsOffset = new PointF(
+                    map.RoadMapOffset.X / map.ImgCoords.Width * map.ZoneCoords.Width,
+                    map.RoadMapOffset.Y / map.ImgCoords.Height * map.ZoneCoords.Height
+                    );
+
+                roadBorderRect = new RectangleF(
+                    ViewOffset.X + mappos.X + roadCoordsOffset.X,
+                    ViewOffset.Y + mappos.Y + roadCoordsOffset.Y - map.ZoneCoords.Height,
+                    roadsize.Width, roadsize.Height);
+            }
+
+            var roadImage = cbClipTerritory.Checked ? MapViewTerritoryClip.GetRoadImageForDraw(map) : map.RoadBitmapImage;
+            g.DrawImage(roadImage, roadBorderRect);
         }
 
         private void DrawGrid(Graphics g)
@@ -953,8 +971,19 @@ namespace AAEmu.DBViewer
                             DrawMap(g, map);
                 }
 
+                // Second pass: road overlays always end up on top of every map image
+                foreach (var level in Enum.GetValues(typeof(MapLevel)))
+                {
+                    foreach (var map in allmaps)
+                        if ((map.MapLevel == (MapLevel)level) && (map.InstanceName == cbInstanceSelect.Text))
+                            DrawRoadOverlay(g, map);
+                }
+
                 if (topMostMap != null)
+                {
                     DrawMap(g, topMostMap);
+                    DrawRoadOverlay(g, topMostMap);
+                }
 
                 // Draw Grid
                 if (rbGridUnits.Checked || rbGridCells.Checked || rbGridGeo.Checked || rbGridPaths.Checked)
