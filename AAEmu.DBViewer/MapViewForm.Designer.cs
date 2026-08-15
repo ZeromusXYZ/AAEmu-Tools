@@ -48,6 +48,7 @@
             rbGridUnits = new System.Windows.Forms.RadioButton();
             cbDrawMiniMap = new System.Windows.Forms.CheckBox();
             cbDrawMainMap = new System.Windows.Forms.CheckBox();
+            cbClipTerritory = new System.Windows.Forms.CheckBox();
             cbFocus = new System.Windows.Forms.CheckBox();
             cbZoneBorders = new System.Windows.Forms.CheckBox();
             toolBar = new System.Windows.Forms.ToolStrip();
@@ -161,6 +162,7 @@
             gbTools.Controls.Add(gbGrid);
             gbTools.Controls.Add(cbDrawMiniMap);
             gbTools.Controls.Add(cbDrawMainMap);
+            gbTools.Controls.Add(cbClipTerritory);
             gbTools.Controls.Add(cbFocus);
             gbTools.Controls.Add(cbZoneBorders);
             gbTools.Dock = System.Windows.Forms.DockStyle.Right;
@@ -307,9 +309,23 @@
             cbDrawMainMap.Text = "Full map";
             cbDrawMainMap.UseVisualStyleBackColor = true;
             cbDrawMainMap.CheckedChanged += cbOptionsChanged;
-            // 
+            //
+            // cbClipTerritory
+            //
+            cbClipTerritory.AutoSize = true;
+            cbClipTerritory.Checked = true;
+            cbClipTerritory.CheckState = System.Windows.Forms.CheckState.Checked;
+            cbClipTerritory.Location = new System.Drawing.Point(7, 75);
+            cbClipTerritory.Margin = new System.Windows.Forms.Padding(4);
+            cbClipTerritory.Name = "cbClipTerritory";
+            cbClipTerritory.Size = new System.Drawing.Size(107, 19);
+            cbClipTerritory.TabIndex = 13;
+            cbClipTerritory.Text = "Clip to territory";
+            cbClipTerritory.UseVisualStyleBackColor = true;
+            cbClipTerritory.CheckedChanged += cbOptionsChanged;
+            //
             // cbFocus
-            // 
+            //
             cbFocus.AutoSize = true;
             cbFocus.Checked = true;
             cbFocus.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -669,6 +685,7 @@
         private System.Windows.Forms.ToolStripStatusLabel tsslSelectionInfo;
         private System.Windows.Forms.CheckBox cbDrawMiniMap;
         private System.Windows.Forms.CheckBox cbDrawMainMap;
+        private System.Windows.Forms.CheckBox cbClipTerritory;
         private System.Windows.Forms.GroupBox gbGrid;
         private System.Windows.Forms.RadioButton rbGridGeo;
         private System.Windows.Forms.RadioButton rbGridCells;

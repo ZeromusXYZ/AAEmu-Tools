@@ -3,10 +3,12 @@ using AAPacker;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Xml;
 
 namespace AAEmu.DBViewer
@@ -774,6 +776,7 @@ namespace AAEmu.DBViewer
         public string Name = string.Empty;
         public string InstanceName = string.Empty;
         public string MapImageFile = string.Empty;
+        public string BaseFileName = string.Empty;
         public Bitmap MapBitmapImage = null;
 
         public string RoadImageFile = string.Empty;
@@ -782,6 +785,138 @@ namespace AAEmu.DBViewer
         public Bitmap RoadBitmapImage = null;
 
         public long ZoneGroup = 0;
+
+        // Lazily built copy of MapBitmapImage with everything outside the owned zone
+        // sectors made transparent; null when no territory data applies to this map
+        public Bitmap TerritoryClippedImage = null;
+        public bool TerritoryClipResolved = false;
+    }
+
+    /// <summary>
+    /// Clips map images to the world-surface territory they own. Every map texture fills its
+    /// whole camera rectangle with decorative padding, so overlaid zone maps normally cover
+    /// (and sometimes completely hide) their neighbors; masking the pixels whose 64m world
+    /// sector belongs to another zone group makes the maps tile exactly along zone borders.
+    /// </summary>
+    public static class MapViewTerritoryClip
+    {
+        // Continent map base file name => zone name prefix inside main_world's world.xml
+        private static readonly Dictionary<string, string> ContinentZonePrefixes = new Dictionary<string, string>()
+        {
+            { "land_west", "w_" },
+            { "land_east", "e_" },
+            { "land_origin", "o_" },
+            { "land_garden", "g_" },
+        };
+
+        public static Bitmap GetImageForDraw(MapViewMap map)
+        {
+            if (map.MapBitmapImage == null)
+                return null;
+
+            if (!map.TerritoryClipResolved)
+            {
+                // The worlds XML data may not be loaded yet; retry on a later paint
+                if (MapViewWorldXML.instances.Count <= 0)
+                    return map.MapBitmapImage;
+
+                map.TerritoryClipResolved = true;
+                try
+                {
+                    var sectors = CollectOwnedSectors(map);
+                    if ((sectors != null) && (sectors.Count > 0))
+                        map.TerritoryClippedImage = BuildClippedBitmap(map.MapBitmapImage, map.ZoneCoords, sectors);
+                }
+                catch
+                {
+                    map.TerritoryClippedImage = null;
+                }
+            }
+
+            return map.TerritoryClippedImage ?? map.MapBitmapImage;
+        }
+
+        private static HashSet<(int x, int y)> CollectOwnedSectors(MapViewMap map)
+        {
+            if (map.MapLevel == MapLevel.Continent)
+            {
+                if (!ContinentZonePrefixes.TryGetValue(map.BaseFileName, out var prefix))
+                    return null;
+                return CollectSectors(
+                    MapViewWorldXML.main_world,
+                    zoneInfo => zoneInfo.name.StartsWith(prefix, StringComparison.Ordinal));
+            }
+
+            if ((map.MapLevel < MapLevel.Zone) || (map.ZoneGroup <= 0))
+                return null;
+
+            // Only maps whose zones live on the main world surface can be clipped; instanced
+            // dungeon maps use their own coordinate space and keep the full image
+            var inst = MapViewWorldXML.FindInstanceByZoneGroup(map.ZoneGroup);
+            if ((inst == null) || (inst != MapViewWorldXML.main_world))
+                return null;
+
+            return CollectSectors(
+                inst,
+                zoneInfo => AaDb.GetZoneByKey(zoneInfo.zone_key)?.GroupId == map.ZoneGroup);
+        }
+
+        private static HashSet<(int x, int y)> CollectSectors(
+            MapViewWorldXML world,
+            Func<MapViewWorldXMLZoneInfo, bool> ownsZone)
+        {
+            if (world == null)
+                return null;
+
+            var sectors = new HashSet<(int x, int y)>();
+            foreach (var zoneInfo in world.zones.Values)
+            {
+                if (!ownsZone(zoneInfo))
+                    continue;
+
+                foreach (var cellInfo in zoneInfo.Cells)
+                    foreach (var (sectorX, sectorY) in cellInfo.SectorList)
+                        sectors.Add(((cellInfo.X * 16) + sectorX, (cellInfo.Y * 16) + sectorY));
+            }
+
+            return sectors;
+        }
+
+        private static Bitmap BuildClippedBitmap(Bitmap source, RectangleF zoneCoords, HashSet<(int x, int y)> sectors)
+        {
+            const float sectorSize = 64f;
+            var clipped = new Bitmap(source.Width, source.Height, PixelFormat.Format32bppArgb);
+            using (var g = Graphics.FromImage(clipped))
+                g.DrawImage(source, new Rectangle(0, 0, clipped.Width, clipped.Height));
+
+            var data = clipped.LockBits(
+                new Rectangle(0, 0, clipped.Width, clipped.Height),
+                ImageLockMode.ReadWrite,
+                PixelFormat.Format32bppArgb);
+            var bytes = new byte[Math.Abs(data.Stride) * clipped.Height];
+            Marshal.Copy(data.Scan0, bytes, 0, bytes.Length);
+
+            // The image stretches exactly onto the zone group's world rectangle, so pixels
+            // map linearly onto world sectors; world Y points north while rows go top-down
+            var sectorXByColumn = new int[clipped.Width];
+            for (var x = 0; x < clipped.Width; x++)
+                sectorXByColumn[x] = (int)Math.Floor((zoneCoords.X + ((x + 0.5f) / clipped.Width * zoneCoords.Width)) / sectorSize);
+
+            for (var y = 0; y < clipped.Height; y++)
+            {
+                var sectorY = (int)Math.Floor((zoneCoords.Y + zoneCoords.Height - ((y + 0.5f) / clipped.Height * zoneCoords.Height)) / sectorSize);
+                var rowOffset = y * data.Stride;
+                for (var x = 0; x < clipped.Width; x++)
+                {
+                    if (!sectors.Contains((sectorXByColumn[x], sectorY)))
+                        bytes[rowOffset + (x * 4) + 3] = 0;
+                }
+            }
+
+            Marshal.Copy(bytes, 0, data.Scan0, bytes.Length);
+            clipped.UnlockBits(data);
+            return clipped;
+        }
     }
 
     public class MapViewPath
