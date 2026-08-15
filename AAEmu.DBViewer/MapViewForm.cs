@@ -710,7 +710,8 @@ namespace AAEmu.DBViewer
             // Main Map
             if ((map.MapBitmapImage != null) && ((map.MapLevel <= MapLevel.WorldMap) || cbDrawMainMap.Checked))
             {
-                g.DrawImage(map.MapBitmapImage, zoneBorderRect);
+                var mapImage = cbClipTerritory.Checked ? MapViewTerritoryClip.GetImageForDraw(map) : map.MapBitmapImage;
+                g.DrawImage(mapImage, zoneBorderRect);
             }
 
             var roadBorderRect = new RectangleF();
@@ -1267,6 +1268,7 @@ namespace AAEmu.DBViewer
             newMap.Name = displayName;
             newMap.MapLevel = level;
             newMap.MapImageFile = fileName;
+            newMap.BaseFileName = fileName;
             newMap.ZoneGroup = zone_group_id;
 
             if (zone_group_id > 0)
