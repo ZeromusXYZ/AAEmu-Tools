@@ -716,7 +716,19 @@ namespace AAEmu.DBViewer
 
             var roadBorderRect = new RectangleF();
             // Road Map Overlay (we need to read image dimensions of the mainmap, so it also requires that one loaded)
-            if ((map.MapBitmapImage != null) && (map.RoadBitmapImage != null))
+            if ((map.MapBitmapImage != null) && (map.RoadBitmapImage != null) &&
+                (map.RoadBitmapImage.Width == map.MapBitmapImage.Width) &&
+                (map.RoadBitmapImage.Height == map.MapBitmapImage.Height))
+            {
+                // Newer clients (10.x map_resources layout) paint the road overlay on the same
+                // full canvas as the main map, so it stretches over the exact same zone rectangle;
+                // the legacy minimap offsets no longer apply there
+                roadBorderRect = zoneBorderRect;
+
+                if (cbDrawMiniMap.Checked)
+                    g.DrawImage(map.RoadBitmapImage, roadBorderRect);
+            }
+            else if ((map.MapBitmapImage != null) && (map.RoadBitmapImage != null))
             {
                 var roadsize = new SizeF(
                     map.ZoneCoords.Width * map.RoadMapCoords.Width / map.ImgCoords.Width,
@@ -1328,9 +1340,23 @@ namespace AAEmu.DBViewer
                 }
             }
             if (fn != string.Empty)
+            {
                 newMap.RoadBitmapImage = PackedImageToBitmap(fn);
-            else
-                newMap.RoadBitmapImage = PackedImageToBitmap("game/ui/map/world/", fileName + "_road_100.dds");
+            }
+            else if (MainForm.ThisForm.Pak.IsOpen)
+            {
+                // No minimap reference matched (newer clients ship no road .g data);
+                // probe every known road file layout directly
+                foreach (var fName in MapViewMiniMapRef.ListPossibleFileNames(fileName, 100, Properties.Settings.Default.DefaultGameLanguage))
+                {
+                    if (MainForm.ThisForm.Pak.FileExists(fName))
+                    {
+                        newMap.RoadImageFile = fName;
+                        newMap.RoadBitmapImage = PackedImageToBitmap(fName);
+                        break;
+                    }
+                }
+            }
 
 
             allmaps.Add(newMap);
