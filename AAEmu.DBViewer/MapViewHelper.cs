@@ -790,6 +790,8 @@ namespace AAEmu.DBViewer
         // sectors made transparent; null when no territory data applies to this map
         public Bitmap TerritoryClippedImage = null;
         public bool TerritoryClipResolved = false;
+        public Bitmap TerritoryClippedRoadImage = null;
+        public bool TerritoryRoadClipResolved = false;
     }
 
     /// <summary>
@@ -834,6 +836,39 @@ namespace AAEmu.DBViewer
             }
 
             return map.TerritoryClippedImage ?? map.MapBitmapImage;
+        }
+
+        public static Bitmap GetRoadImageForDraw(MapViewMap map)
+        {
+            if (map.RoadBitmapImage == null)
+                return null;
+
+            // Only the newer full-canvas road overlays share the zone rectangle mapping;
+            // legacy sub-rect overlays keep their original image
+            if ((map.MapBitmapImage == null) ||
+                (map.RoadBitmapImage.Width != map.MapBitmapImage.Width) ||
+                (map.RoadBitmapImage.Height != map.MapBitmapImage.Height))
+                return map.RoadBitmapImage;
+
+            if (!map.TerritoryRoadClipResolved)
+            {
+                if (MapViewWorldXML.instances.Count <= 0)
+                    return map.RoadBitmapImage;
+
+                map.TerritoryRoadClipResolved = true;
+                try
+                {
+                    var sectors = CollectOwnedSectors(map);
+                    if ((sectors != null) && (sectors.Count > 0))
+                        map.TerritoryClippedRoadImage = BuildClippedBitmap(map.RoadBitmapImage, map.ZoneCoords, sectors);
+                }
+                catch
+                {
+                    map.TerritoryClippedRoadImage = null;
+                }
+            }
+
+            return map.TerritoryClippedRoadImage ?? map.RoadBitmapImage;
         }
 
         private static HashSet<(int x, int y)> CollectOwnedSectors(MapViewMap map)
