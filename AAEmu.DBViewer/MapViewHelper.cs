@@ -909,9 +909,7 @@ namespace AAEmu.DBViewer
                 if (!ownsZone(zoneInfo))
                     continue;
 
-                foreach (var cellInfo in zoneInfo.Cells)
-                    foreach (var (sectorX, sectorY) in cellInfo.SectorList)
-                        sectors.Add(((cellInfo.X * 16) + sectorX, (cellInfo.Y * 16) + sectorY));
+                sectors.UnionWith(zoneInfo.GetAbsoluteSectors());
             }
 
             return sectors;
@@ -1094,6 +1092,13 @@ namespace AAEmu.DBViewer
         public int originCellX = 0;
         public int originCellY = 0;
         public List<MapViewWorldXMLZoneCellInfo> Cells = new List<MapViewWorldXMLZoneCellInfo>();
+
+        // Lazily built lookup caches: the absolute 64m sector set gives O(1) membership tests,
+        // the outline loops replace per-frame edge scans, and the world bounds enable culling
+        private HashSet<(int x, int y)> absoluteSectors = null;
+        public Rectangle WorldBounds { get; private set; } = Rectangle.Empty;
+        public List<Point[]> OutlineLoops { get; private set; } = new List<Point[]>();
+
         public MapViewWorldXMLZoneCellInfo FindCell(int coordX, int coordY)
         {
             foreach (var cell in Cells)
@@ -1102,46 +1107,132 @@ namespace AAEmu.DBViewer
             return null;
         }
 
-        public bool SectorExists(int cellX, int cellY, int sectorX, int sectorY)
+        public HashSet<(int x, int y)> GetAbsoluteSectors()
         {
-            // Calculate corrected cell/sector
-            while (sectorX < 0)
+            EnsureSectorCache();
+            return absoluteSectors;
+        }
+
+        public void EnsureSectorCache()
+        {
+            if (absoluteSectors != null)
+                return;
+
+            var sectors = new HashSet<(int x, int y)>();
+            var minX = int.MaxValue;
+            var minY = int.MaxValue;
+            var maxX = int.MinValue;
+            var maxY = int.MinValue;
+            foreach (var cell in Cells)
             {
-                sectorX += 16;
-                cellX -= 1;
-            }
-            while (sectorX >= 16)
-            {
-                sectorX -= 16;
-                cellX += 1;
-            }
-            while (sectorY < 0)
-            {
-                sectorY += 16;
-                cellY -= 1;
-            }
-            while (sectorY >= 16)
-            {
-                sectorY -= 16;
-                cellY += 1;
+                foreach (var (sectorX, sectorY) in cell.SectorList)
+                {
+                    var absX = (cell.X * 16) + sectorX;
+                    var absY = (cell.Y * 16) + sectorY;
+                    sectors.Add((absX, absY));
+                    if (absX < minX) minX = absX;
+                    if (absY < minY) minY = absY;
+                    if (absX > maxX) maxX = absX;
+                    if (absY > maxY) maxY = absY;
+                }
             }
 
-            var cellInfo = Cells.FirstOrDefault(c => c.X == cellX && c.Y == cellY);
-            if (cellInfo != null)
-                return cellInfo.SectorList.Contains((sectorX, sectorY));
-            return false;
+            absoluteSectors = sectors;
+            WorldBounds = sectors.Count <= 0
+                ? Rectangle.Empty
+                : Rectangle.FromLTRB(minX * 64, minY * 64, (maxX + 1) * 64, (maxY + 1) * 64);
+            OutlineLoops = ZoneOutlineTracer.BuildLoops(sectors, 64);
+        }
+
+        public bool SectorExists(int cellX, int cellY, int sectorX, int sectorY)
+        {
+            EnsureSectorCache();
+            return absoluteSectors.Contains(((cellX * 16) + sectorX, (cellY * 16) + sectorY));
         }
 
         public bool Contains(Point cursorCoords)
         {
-            var cellX = cursorCoords.X / 1024;
-            var cellY = cursorCoords.Y / 1024;
-            var inCellX = cursorCoords.X % 1024;
-            var inCellY = cursorCoords.Y % 1024;
-            var sectorX = inCellX / 64;
-            var sectorY = inCellY / 64;
-            var cell = Cells.FirstOrDefault(c => c.X == cellX && c.Y == cellY);
-            return cell?.SectorList.Contains((sectorX, sectorY)) ?? false;
+            EnsureSectorCache();
+            if (!WorldBounds.Contains(cursorCoords))
+                return false;
+            return absoluteSectors.Contains((cursorCoords.X / 64, cursorCoords.Y / 64));
+        }
+    }
+
+    /// <summary>
+    /// Traces the boundary of a sector set into closed polygons: edges are emitted only where the
+    /// neighboring sector is missing, chained into loops and merged while collinear. The result is
+    /// cached per zone so painting no longer rescans every sector on every frame.
+    /// </summary>
+    public static class ZoneOutlineTracer
+    {
+        public static List<Point[]> BuildLoops(HashSet<(int x, int y)> sectors, int scale)
+        {
+            var outgoing = new Dictionary<(int x, int y), Stack<(int x, int y)>>();
+            void AddEdge((int x, int y) from, (int x, int y) to)
+            {
+                if (!outgoing.TryGetValue(from, out var targets))
+                    outgoing[from] = targets = new Stack<(int x, int y)>();
+                targets.Push(to);
+            }
+
+            foreach (var s in sectors)
+            {
+                if (!sectors.Contains((s.x, s.y - 1)))
+                    AddEdge((s.x, s.y), (s.x + 1, s.y));
+                if (!sectors.Contains((s.x + 1, s.y)))
+                    AddEdge((s.x + 1, s.y), (s.x + 1, s.y + 1));
+                if (!sectors.Contains((s.x, s.y + 1)))
+                    AddEdge((s.x + 1, s.y + 1), (s.x, s.y + 1));
+                if (!sectors.Contains((s.x - 1, s.y)))
+                    AddEdge((s.x, s.y + 1), (s.x, s.y));
+            }
+
+            var loops = new List<Point[]>();
+            while (outgoing.Count > 0)
+            {
+                var start = outgoing.Keys.First();
+                var loop = new List<(int x, int y)> { start };
+                var current = start;
+                while (true)
+                {
+                    var targets = outgoing[current];
+                    var next = targets.Pop();
+                    if (targets.Count <= 0)
+                        outgoing.Remove(current);
+                    if (next == start)
+                        break;
+                    loop.Add(next);
+                    current = next;
+                }
+
+                loops.Add(MergeCollinear(loop, scale));
+            }
+
+            return loops;
+        }
+
+        private static Point[] MergeCollinear(List<(int x, int y)> loop, int scale)
+        {
+            var merged = new List<Point>(loop.Count);
+            for (var i = 0; i < loop.Count; i++)
+            {
+                var prev = loop[(i + loop.Count - 1) % loop.Count];
+                var cur = loop[i];
+                var next = loop[(i + 1) % loop.Count];
+                var inDir = (Math.Sign(cur.x - prev.x), Math.Sign(cur.y - prev.y));
+                var outDir = (Math.Sign(next.x - cur.x), Math.Sign(next.y - cur.y));
+                if (inDir != outDir)
+                    merged.Add(new Point(cur.x * scale, cur.y * scale));
+            }
+
+            if (merged.Count >= 3)
+                return merged.ToArray();
+
+            var full = new Point[loop.Count];
+            for (var i = 0; i < loop.Count; i++)
+                full[i] = new Point(loop[i].x * scale, loop[i].y * scale);
+            return full;
         }
     }
 }
