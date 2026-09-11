@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using AAEmu.DBViewer.DbDefs;
+using AAEmu.DBViewer.utils.io;
 using AAEmu.Game.Utils.DB;
 
 namespace AAEmu.DBViewer
@@ -303,8 +304,8 @@ namespace AAEmu.DBViewer
                 {
                     lZoneGroupsDisplayName.Text = zg.DisplayTextLocalized;
                     lZoneGroupsName.Text = zg.Name;
-                    string zoneNPCFile = zg.GamePakZoneNpCsDat();
-                    if ((Pak.IsOpen) && (Pak.FileExists(zoneNPCFile)))
+                    var zoneNPCFile = zg.GamePakZoneNpCsDat();
+                    if (ClientFileManager.FileExists(zoneNPCFile))
                     {
                         btnFindNPCsInZone.Tag = zg.Id;
                         btnFindNPCsInZone.Enabled = true;
@@ -315,8 +316,8 @@ namespace AAEmu.DBViewer
                         btnFindNPCsInZone.Enabled = false;
                     }
 
-                    string zoneDoodadFile = zg.GamePakZoneDoodadsDat();
-                    if ((Pak.IsOpen) && (Pak.FileExists(zoneDoodadFile)))
+                    var zoneDoodadFile = zg.GamePakZoneDoodadsDat();
+                    if (ClientFileManager.FileExists(zoneDoodadFile))
                     {
                         btnFindDoodadsInZone.Tag = zg.Id;
                         btnFindDoodadsInZone.Enabled = true;
@@ -610,10 +611,10 @@ namespace AAEmu.DBViewer
         {
             List<MapSpawnLocation> res = new List<MapSpawnLocation>();
             var zg = GetZoneGroupById(zoneGroupId);
-            if ((zg != null) && (Pak.IsOpen) && (Pak.FileExists(zg.GamePakZoneNpCsDat(instanceName))))
+            if ((zg != null) && (ClientFileManager.FileExists(zg.GamePakZoneNpCsDat(instanceName))))
             {
                 // Open .dat file and read it's contents
-                using (var fs = Pak.ExportFileAsStream(zg.GamePakZoneNpCsDat(instanceName)))
+                using (var fs = ClientFileManager.GetFileStream(zg.GamePakZoneNpCsDat(instanceName)))
                 {
                     int indexCount = ((int)fs.Length / 16);
                     using (var reader = new BinaryReader(fs))
@@ -854,10 +855,10 @@ namespace AAEmu.DBViewer
         {
             List<MapSpawnLocation> res = new List<MapSpawnLocation>();
             var zg = GetZoneGroupById(zoneGroupId);
-            if ((zg != null) && (Pak.IsOpen) && (Pak.FileExists(zg.GamePakZoneDoodadsDat(instanceName))))
+            if ((zg != null) && (ClientFileManager.FileExists(zg.GamePakZoneDoodadsDat(instanceName))))
             {
                 // Open .dat file and read it's contents
-                using (var fs = Pak.ExportFileAsStream(zg.GamePakZoneDoodadsDat(instanceName)))
+                using (var fs = ClientFileManager.GetFileStream(zg.GamePakZoneDoodadsDat(instanceName)))
                 {
                     int indexCount = ((int)fs.Length / 16);
                     using (var reader = new BinaryReader(fs))

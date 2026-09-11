@@ -12,6 +12,7 @@ using AAEmu.DBViewer.DbDefs;
 using AAEmu.DBViewer.enums;
 using AAEmu.DBViewer.JsonData;
 using AAEmu.DBViewer.utils;
+using AAEmu.DBViewer.utils.io;
 using AAEmu.Game.Models.Game.Achievement.Enums;
 using AAEmu.Game.Models.Game.World;
 using AAEmu.Game.Utils.DB;
@@ -302,13 +303,13 @@ public partial class MainForm
     private int IconIdToLabel(long iconId, Label iconImgLabel)
     {
         var cachedImageIndex = -1;
-        if (Pak.IsOpen)
+        if (ClientFileManager.HasValidSources())
         {
             if (AaDb.DbIcons.TryGetValue(iconId, out var iconname))
             {
                 var fn = "game/ui/icon/" + iconname;
 
-                if (Pak.FileExists(fn))
+                if (ClientFileManager.FileExists(fn))
                 {
                     try
                     {
@@ -325,7 +326,7 @@ public partial class MainForm
                         else
                         {
                             // Load from Pak if not cached
-                            var fStream = Pak.ExportFileAsStream(fn);
+                            var fStream = ClientFileManager.GetFileStream(fn);
                             var bmp = Tools.BitmapUtil.ReadDDSFromStream(fStream);
 
                             if (iconImgLabel != null)
@@ -760,7 +761,7 @@ public partial class MainForm
             if (worldOff == null)
                 return;
 
-            if (!Pak.IsOpen || !Pak.FileExists(zone.GamePakZoneTransferPathXml))
+            if (!ClientFileManager.FileExists(zone.GamePakZoneTransferPathXml))
             {
                 // MessageBox.Show("No path file found for this zone");
                 return;
@@ -770,7 +771,7 @@ public partial class MainForm
             int pathsFound = 0;
             try
             {
-                var fs = Pak.ExportFileAsStream(zone.GamePakZoneTransferPathXml);
+                var fs = ClientFileManager.GetFileStream(zone.GamePakZoneTransferPathXml);
 
                 var _doc = new XmlDocument();
                 _doc.Load(fs);
@@ -909,7 +910,7 @@ public partial class MainForm
             if (worldOff == null)
                 return;
 
-            if (!Pak.IsOpen || !Pak.FileExists(zone.GamePakSubZoneXml))
+            if (!ClientFileManager.FileExists(zone.GamePakSubZoneXml))
             {
                 // MessageBox.Show("No path file found for this zone");
                 return;
@@ -919,7 +920,7 @@ public partial class MainForm
             int areasFound = 0;
             try
             {
-                var fs = Pak.ExportFileAsStream(zone.GamePakSubZoneXml);
+                var fs = ClientFileManager.GetFileStream(zone.GamePakSubZoneXml);
 
                 var _doc = new XmlDocument();
                 _doc.Load(fs);
@@ -1074,7 +1075,7 @@ public partial class MainForm
             if (worldOff == null)
                 return;
 
-            if (!Pak.IsOpen || !Pak.FileExists(zone.GamePakZoneHousingXml))
+            if (!ClientFileManager.FileExists(zone.GamePakZoneHousingXml))
             {
                 // MessageBox.Show("No path file found for this zone");
                 return;
@@ -1084,7 +1085,7 @@ public partial class MainForm
             int areasFound = 0;
             try
             {
-                var fs = Pak.ExportFileAsStream(zone.GamePakZoneHousingXml);
+                var fs = ClientFileManager.GetFileStream(zone.GamePakZoneHousingXml);
 
                 var _doc = new XmlDocument();
                 _doc.Load(fs);
@@ -1420,7 +1421,7 @@ public partial class MainForm
     {
         if (overwrite || (MapViewWorldXML.instances == null) || (MapViewWorldXML.instances.Count < 0))
         {
-            if (!Pak.IsOpen)
+            if (!ClientFileManager.HasValidSources())
             {
                 MessageBox.Show(@"Game Pak file was not loaded !");
                 return;
@@ -1428,18 +1429,18 @@ public partial class MainForm
 
             MapViewWorldXML.instances = new List<MapViewWorldXML>();
 
-            foreach (var pfi in Pak.Files)
+            foreach (var pfi in ClientFileManager.GetFilesInDirectory("","world.xml", true))
             {
-                if (pfi.Name.EndsWith("/world.xml") && pfi.Name.StartsWith("game/worlds/"))
+                if (pfi.EndsWith("/world.xml") && pfi.StartsWith("game/worlds/"))
                 {
-                    var splitName = pfi.Name.ToLower().Split('/');
+                    var splitName = pfi.ToLower().Split('/');
                     if (splitName.Count() != 4)
                         continue;
                     var thisInstanceName = splitName[2];
 
                     var inst = new MapViewWorldXML();
                     if (inst.LoadFromStream(
-                            Pak.ExportFileAsStream("game/worlds/" + thisInstanceName + "/world.xml")))
+                            ClientFileManager.GetFileStream("game/worlds/" + thisInstanceName + "/world.xml")))
                     {
                         MapViewWorldXML.instances.Add(inst);
                         if (thisInstanceName == "main_world")
@@ -1649,7 +1650,7 @@ public partial class MainForm
 
     private void AddAreaShapes(string fileName, int cellX, int cellY, ref List<MapViewPath> allAreaShapes)
     {
-        var fs = Pak.ExportFileAsStream(fileName);
+        var fs = ClientFileManager.GetFileStream(fileName);
 
         var _doc = new XmlDocument();
         _doc.Load(fs);
@@ -1712,7 +1713,7 @@ public partial class MainForm
 
     private void DoShowEntityAreaShape()
     {
-        if (!Pak.IsOpen)
+        if (!ClientFileManager.HasValidSources())
             return;
 
         var entityFiles = new List<string>();
@@ -1732,7 +1733,7 @@ public partial class MainForm
             {
                 var cellName = x.ToString().PadLeft(3, '0') + "_" + y.ToString().PadLeft(3, '0');
                 var fn = "game/worlds/" + worldName + "/cells/" + cellName + "/client/entities.xml";
-                if (Pak.FileExists(fn))
+                if (ClientFileManager.FileExists(fn))
                 {
                     AddAreaShapes(fn, x, y, ref allAreaShapes);
                 }

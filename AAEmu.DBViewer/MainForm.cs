@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -13,13 +12,12 @@ using AAEmu.ClipboardHelper;
 using AAEmu.DBViewer.utils;
 using System.Runtime;
 using AAEmu.DBViewer.enums;
-using System.Security.Cryptography;
 using Newtonsoft.Json;
 using AAEmu.DBViewer.DbDefs;
 using System.Globalization;
 using AAEmu.Commons.Utils;
-using Newtonsoft.Json.Linq;
 using System.ComponentModel;
+using AAEmu.DBViewer.utils.io;
 
 namespace AAEmu.DBViewer
 {
@@ -28,7 +26,7 @@ namespace AAEmu.DBViewer
         public static MainForm ThisForm { get; set; }
         private string DefaultTitle { get; set; } = string.Empty;
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public AAPak Pak { get; set; } = new("");
+        // public AAPak Pak { get; set; } = new("");
         private List<string> PossibleLanguageIDs { get; set; } = [];
         // TableName, SqliteFileName
         private Dictionary<string, string> AllTableNames { get; set; } = new();
@@ -85,37 +83,6 @@ namespace AAEmu.DBViewer
                 {
                     // Ignore
                 }
-            }
-        }
-
-        private void TryLoadPakKeys(string fileName)
-        {
-            try
-            {
-                var keyFile = fileName + ".key";
-                if (File.Exists(keyFile))
-                {
-                    var customKey = new byte[16];
-                    using (var fs = new FileStream(keyFile, FileMode.Open, FileAccess.Read))
-                    {
-                        if (fs.Length != 16)
-                        {
-                            fs.Dispose();
-                            return;
-                        }
-
-                        fs.ReadExactly(customKey, 0, 16);
-                    }
-
-                    Pak.SetCustomKey(customKey);
-                }
-                else
-                    Pak.SetDefaultKey();
-            }
-            catch
-            {
-                // Reset key
-                Pak.SetDefaultKey();
             }
         }
 
@@ -177,7 +144,9 @@ namespace AAEmu.DBViewer
 
                 // TryLoadPakKeys(gamePakFileName);
 
-                if (Pak.OpenPak(gamePakFileName, true))
+                ClientFileManager.Initialize([gamePakFileName]);
+                // TODO: Need to adjust this to a better game pak validation system
+                if (ClientFileManager.HasValidSources())
                 {
                     Properties.Settings.Default.GamePakFileName = gamePakFileName;
                     lCurrentPakFile.Text = Properties.Settings.Default.GamePakFileName;
@@ -218,8 +187,7 @@ namespace AAEmu.DBViewer
             if (MapViewForm.ThisForm != null)
                 MapViewForm.ThisForm.Close();
 
-            if (Pak != null)
-                Pak.ClosePak();
+            ClientFileManager.ClearSources();
         }
 
         public IEnumerable<Control> GetAll(Control control, Type type)
@@ -1003,22 +971,11 @@ namespace AAEmu.DBViewer
 
             using var loading = new LoadingForm();
             loading.Show();
-            if (Pak.IsOpen)
-            {
-                loading.ShowInfo("Closing: " + Pak.GpFilePath);
-                Pak.ClosePak();
-                // LoadCustomReaders();
-
-                // TODO: HACK to try and free up as many memory as possible - https://stackoverflow.com/questions/30622145/free-memory-of-byte
-                GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                GC.Collect();
-            }
-
             loading.ShowInfo("Opening: " + Path.GetFileName(openFileName));
 
-            // TryLoadPakKeys(openFileName);
+            ClientFileManager.Initialize([openFileName]);
 
-            if (Pak.OpenPak(openFileName, true))
+            if (ClientFileManager.HasValidSources())
             {
                 Properties.Settings.Default.GamePakFileName = openFileName;
                 lCurrentPakFile.Text = Properties.Settings.Default.GamePakFileName;
@@ -1032,7 +989,8 @@ namespace AAEmu.DBViewer
             }
             else
             {
-                MessageBox.Show($"Failed to load: {openFileName}\n{Pak.LastError}");
+                MessageBox.Show($@"Failed to load: {openFileName}");
+                ClientFileManager.ClearSources();
                 return false;
             }
 
@@ -3354,32 +3312,32 @@ namespace AAEmu.DBViewer
         {
             const string cellsFolder = "game/worlds/main_world/level_design/cells/";
             const string doodadG = "/doodad.g";
-            if (Pak == null || !Pak.IsOpen || Pak.IsVirtual)
+            if (!ClientFileManager.HasValidSources())
                 return;
-            var doodadGFiles = Pak.Files.Where(f => f.Name.EndsWith(doodadG, StringComparison.InvariantCultureIgnoreCase) && f.Name.StartsWith(cellsFolder, StringComparison.InvariantCultureIgnoreCase));
-            if (doodadGFiles.Count() <= 0)
+            var doodadGFiles = ClientFileManager.GetFilesInDirectory("","doodad.g", true).Where(f => f.EndsWith(doodadG, StringComparison.InvariantCultureIgnoreCase) && f.StartsWith(cellsFolder, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            if (!doodadGFiles.Any())
             {
-                MessageBox.Show($"Pak does not seem to contain DESIGN doodad data");
+                MessageBox.Show(@"Pak does not seem to contain DESIGN doodad data");
                 return;
             }
             PrepareWorldXml(false);
             var map = MapViewForm.GetMap();
             map.Show();
-            map.cbInstanceSelect.Text = "main_world";
+            map.cbInstanceSelect.Text = @"main_world";
 
-            if (map.GetPoICount() > 0 && MessageBox.Show("Keep PoI's ?", "", MessageBoxButtons.YesNo) == DialogResult.No)
+            if (map.GetPoICount() > 0 && MessageBox.Show(@"Keep PoI's ?", "", MessageBoxButtons.YesNo) == DialogResult.No)
                 map.ClearPoI();
 
             foreach (var doodadGFile in doodadGFiles)
             {
-                var cellName = doodadGFile.Name.Replace(cellsFolder, "").Replace(doodadG, "");
+                var cellName = doodadGFile.Replace(cellsFolder, "").Replace(doodadG, "");
                 var cellNameSplit = cellName.Split("_");
                 if (cellNameSplit.Length != 2)
                     continue;
                 if (!uint.TryParse(cellNameSplit[0], out var cellX) || !uint.TryParse(cellNameSplit[1], out var cellY))
                     continue;
                 var sl = new List<string>();
-                var thisStream = Pak.ExportFileAsStream(doodadGFile);
+                var thisStream = ClientFileManager.GetFileStream(doodadGFile);
                 using (var rs = new StreamReader(thisStream))
                 {
                     sl.Clear();
@@ -3440,21 +3398,22 @@ namespace AAEmu.DBViewer
             const string zoneFolder = "game/worlds/main_world/level_design/zone/";
             // TODO: If zone_server doesn't exist, you can also try to load from editor instead
             const string npcSpawnersG = "/zone_server/npc_spawners.g";
-            if (Pak == null || !Pak.IsOpen || Pak.IsVirtual)
+            if (!ClientFileManager.HasValidSources())
                 return;
-            var npcSpawnersGFiles = Pak.Files.Where(f => f.Name.EndsWith(npcSpawnersG, StringComparison.InvariantCultureIgnoreCase) && f.Name.StartsWith(zoneFolder, StringComparison.InvariantCultureIgnoreCase));
-            if (npcSpawnersGFiles.Count() <= 0)
+
+            var npcSpawnersGFiles = ClientFileManager.GetFilesInDirectory("game", "npc_spawners.g", true).Where(f => f.EndsWith(npcSpawnersG, StringComparison.InvariantCultureIgnoreCase) && f.StartsWith(zoneFolder, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            if (!npcSpawnersGFiles.Any())
             {
-                MessageBox.Show($"Pak does not seem to contain DESIGN NpcSpawner data");
+                MessageBox.Show(@"Pak does not seem to contain DESIGN NpcSpawner data");
                 return;
             }
             PrepareWorldXml(false);
             var map = MapViewForm.GetMap();
             map.Show();
-            map.cbInstanceSelect.Text = "main_world";
+            map.cbInstanceSelect.Text = @"main_world";
 
             if ((map.GetPoICount() > 0 || map.GetPathCount() > 0) &&
-                MessageBox.Show("Keep PoI's ?", "", MessageBoxButtons.YesNo) == DialogResult.No)
+                MessageBox.Show(@"Keep PoI's ?", "", MessageBoxButtons.YesNo) == DialogResult.No)
             {
                 map.ClearPoI();
                 map.ClearPaths();
@@ -3462,11 +3421,11 @@ namespace AAEmu.DBViewer
 
             foreach (var npcSpawnersGFile in npcSpawnersGFiles)
             {
-                var zoneName = npcSpawnersGFile.Name.Replace(zoneFolder, "").Replace(npcSpawnersG, "");
+                var zoneName = npcSpawnersGFile.Replace(zoneFolder, "").Replace(npcSpawnersG, "");
                 if (!uint.TryParse(zoneName, out var zoneKey))
                     continue;
                 var sl = new List<string>();
-                var thisStream = Pak.ExportFileAsStream(npcSpawnersGFile);
+                var thisStream = ClientFileManager.GetFileStream(npcSpawnersGFile);
                 using (var rs = new StreamReader(thisStream))
                 {
                     sl.Clear();

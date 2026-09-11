@@ -12,6 +12,7 @@ using System.Linq;
 using System.Numerics;
 using System.Windows.Forms;
 using System.Xml;
+using AAEmu.DBViewer.utils.io;
 
 namespace AAEmu.DBViewer
 {
@@ -156,14 +157,14 @@ namespace AAEmu.DBViewer
                     if (iref != null)
                     {
                         level = iref.Level;
-                        if (MainForm.ThisForm.Pak.IsOpen)
+                        if (ClientFileManager.HasValidSources())
                         {
                             var fList = iref.GetPossibleFileNames(locale);
                             // Here we only check if the name has a valid filename in the Pak
                             // When actually loading, this will be repeated again to get the correct file
                             foreach (var fName in fList)
                             {
-                                if (MainForm.ThisForm.Pak.FileExists(fName))
+                                if (ClientFileManager.FileExists(fName))
                                 {
                                     mapFileName = iref.BaseFileName;
                                     break;
@@ -1209,11 +1210,11 @@ namespace AAEmu.DBViewer
 
         private Bitmap PackedImageToBitmap(string packedFileFolder, string packedFileName)
         {
-            if (MainForm.ThisForm.Pak.IsOpen)
+            if (ClientFileManager.HasValidSources())
             {
                 var fn = packedFileFolder + packedFileName;
 
-                if (MainForm.ThisForm.Pak.FileExists(packedFileFolder + Properties.Settings.Default.DefaultGameLanguage + "/" + packedFileName))
+                if (ClientFileManager.FileExists(packedFileFolder + Properties.Settings.Default.DefaultGameLanguage + "/" + packedFileName))
                 {
                     fn = packedFileFolder + Properties.Settings.Default.DefaultGameLanguage + "/" + packedFileName;
                 }
@@ -1224,17 +1225,18 @@ namespace AAEmu.DBViewer
 
         private Bitmap PackedImageToBitmap(string fn)
         {
-            if (MainForm.ThisForm.Pak.IsOpen)
+            if (ClientFileManager.HasValidSources())
             {
-                if (MainForm.ThisForm.Pak.FileExists(fn))
+                if (ClientFileManager.FileExists(fn))
                 {
                     try
                     {
-                        var fStream = MainForm.ThisForm.Pak.ExportFileAsStream(fn);
+                        var fStream = ClientFileManager.GetFileStream(fn);
                         return AAEmu.Tools.BitmapUtil.ReadDDSFromStream(fStream);
                     }
                     catch
                     {
+                        // Ignore errors, return null
                     }
                 }
             }
@@ -1345,12 +1347,12 @@ namespace AAEmu.DBViewer
 
             // MainMap
             var fn = string.Empty;
-            if (MainForm.ThisForm.Pak.IsOpen)
+            if (ClientFileManager.HasValidSources())
             {
                 var fList = MapViewImageRef.ListPossibleFileNames(fileName, Properties.Settings.Default.DefaultGameLanguage);
                 foreach (var fName in fList)
                 {
-                    if (MainForm.ThisForm.Pak.FileExists(fName))
+                    if (ClientFileManager.FileExists(fName))
                     {
                         fn = fName;
                         newMap.MapImageFile = fn;
@@ -1378,12 +1380,12 @@ namespace AAEmu.DBViewer
             {
                 newMap.RoadMapOffset = roadRef.Offset;
                 newMap.RoadMapCoords = roadRef.Rect;
-                if (MainForm.ThisForm.Pak.IsOpen)
+                if (ClientFileManager.HasValidSources())
                 {
                     var fList = roadRef.GetPossibleFileNames(Properties.Settings.Default.DefaultGameLanguage);
                     foreach (var fName in fList)
                     {
-                        if (MainForm.ThisForm.Pak.FileExists(fName))
+                        if (ClientFileManager.FileExists(fName))
                         {
                             fn = fName;
                             newMap.RoadImageFile = fn;
@@ -1396,13 +1398,13 @@ namespace AAEmu.DBViewer
             {
                 newMap.RoadBitmapImage = PackedImageToBitmap(fn);
             }
-            else if (MainForm.ThisForm.Pak.IsOpen)
+            else if (ClientFileManager.HasValidSources())
             {
                 // No minimap reference matched (newer clients ship no road .g data);
                 // probe every known road file layout directly
                 foreach (var fName in MapViewMiniMapRef.ListPossibleFileNames(fileName, 100, Properties.Settings.Default.DefaultGameLanguage))
                 {
-                    if (MainForm.ThisForm.Pak.FileExists(fName))
+                    if (ClientFileManager.FileExists(fName))
                     {
                         newMap.RoadImageFile = fName;
                         newMap.RoadBitmapImage = PackedImageToBitmap(fName);

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Xml;
+using AAEmu.DBViewer.utils.io;
 
 namespace AAEmu.DBViewer
 {
@@ -469,14 +470,14 @@ namespace AAEmu.DBViewer
             AddMiniMapRef(MapLevel.City, 252, 100, "w_lilyut_meadow_west_ronbann_mine", 112, 52, 0, 0, 680, 436);
 
             // Read .g file data for roads
-            if ((MainForm.ThisForm.Pak != null) && MainForm.ThisForm.Pak.IsOpen)
+            if (ClientFileManager.HasValidSources())
             {
                 foreach (var zg in AaDb.DbZoneGroups)
                 {
                     var refs = MapViewMiniMapRef.ListPossibleFileNames(zg.Value.Name, 100, Properties.Settings.Default.DefaultGameLanguage, ".g");
                     foreach (var r in refs)
-                        if (MainForm.ThisForm.Pak.FileExists(r))
-                            LoadGFileFromPak(MainForm.ThisForm.Pak, r);
+                        if (ClientFileManager.HasValidSources())
+                            LoadGFileFromPak(r);
                 }
             }
             // Override refs if needed
@@ -517,13 +518,13 @@ namespace AAEmu.DBViewer
             return 0;
         }
 
-        public static void LoadGFileFromPak(AAPak pak, string fileName)
+        public static void LoadGFileFromPak(string fileName)
         {
-            if ((pak == null) || (!pak.IsOpen) || !pak.FileExists(fileName))
+            if (!ClientFileManager.FileExists(fileName))
                 return;
 
             var lines = new List<string>();
-            using (var fs = pak.ExportFileAsStream(fileName))
+            using (var fs = ClientFileManager.GetFileStream(fileName))
             {
                 using (var sr = new StreamReader(fs))
                 {

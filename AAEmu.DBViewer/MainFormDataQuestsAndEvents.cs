@@ -10,6 +10,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using AAEmu.DBViewer.utils.io;
 
 namespace AAEmu.DBViewer;
 
@@ -965,21 +966,20 @@ public partial class MainForm
 
     public void LoadQuestSpheresFromPak()
     {
-        if ((Pak == null) || (!Pak.IsOpen))
+        if (!ClientFileManager.HasValidSources())
             return;
-
 
         AaDb.PakQuestSignSpheres = new List<QuestSphereEntry>();
         var sl = new List<string>();
 
-        // Find all related files and concat them into a giant stringlist
-        foreach (var pfi in Pak.Files)
+        // Find all related files and concat them into a giant string list
+        foreach (var pfi in ClientFileManager.GetFilesInDirectory("", "quest_sign_sphere.g", true))
         {
-            var lowerName = pfi.Name.ToLower();
+            var lowerName = pfi.ToLower();
             if (lowerName.EndsWith("quest_sign_sphere.g"))
             {
                 var nameSplit = lowerName.Split('/');
-                var thisStream = Pak.ExportFileAsStream(pfi);
+                var thisStream = ClientFileManager.GetFileStream(pfi);
                 using (var rs = new StreamReader(thisStream))
                 {
                     sl.Clear();
@@ -1085,7 +1085,7 @@ public partial class MainForm
                     }
                     else
                     {
-                        Debug.WriteLine($"Invalid data at line {i} in {pfi.Name}");
+                        Debug.WriteLine($"Invalid data at line {i} in {pfi}");
                     }
                 }
                 // System.Threading.Thread.Sleep(5);
