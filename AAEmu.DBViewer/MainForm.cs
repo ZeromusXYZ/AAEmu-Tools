@@ -135,7 +135,7 @@ namespace AAEmu.DBViewer
 
 
             var gamePakFileName = Properties.Settings.Default.GamePakFileName;
-            if (File.Exists(gamePakFileName))
+            if (File.Exists(gamePakFileName) || Directory.Exists(gamePakFileName))
             {
                 using var loading = new LoadingForm();
                 loading.Text = $@"Loading: {Path.GetFileName(gamePakFileName)}";
@@ -950,23 +950,33 @@ namespace AAEmu.DBViewer
 
         private void BtnFindGameClient_Click(object sender, EventArgs e)
         {
-            _ = DoFindGameClient(true);
+            _ = DoFindGameClient(true, false);
         }
 
-        private bool DoFindGameClient(bool forceDialog)
+        private bool DoFindGameClient(bool forceDialog, bool openFolderDialog)
         {
             var openFileName = Properties.Settings.Default.GamePakFileName;
             if (forceDialog)
             {
-                if (openGamePakFileDialog.ShowDialog() != DialogResult.OK)
+                if (openFolderDialog)
                 {
-                    return false;
+                    if (openFolderDlg.ShowDialog() != DialogResult.OK)
+                    {
+                        return false;
+                    }
+                    openFileName = openFolderDlg.SelectedPath;
                 }
-
-                openFileName = openGamePakFileDialog.FileName;
+                else
+                {
+                    if (openGamePakFileDialog.ShowDialog() != DialogResult.OK)
+                    {
+                        return false;
+                    }
+                    openFileName = openGamePakFileDialog.FileName;
+                }
             }
 
-            if (!File.Exists(openFileName))
+            if (!File.Exists(openFileName) && !Directory.Exists(openFileName))
                 return false;
 
             using var loading = new LoadingForm();
@@ -3026,7 +3036,7 @@ namespace AAEmu.DBViewer
 
             bool failed = !LoadServerDB(false);
 
-            if (!failed && !DoFindGameClient(false))
+            if (!failed && !DoFindGameClient(false, false))
                 failed = true;
 
             if (failed)
@@ -3036,7 +3046,7 @@ namespace AAEmu.DBViewer
                 Properties.Settings.Default.GamePakFileName = oldGamePakFile;
                 Properties.Settings.Default.DefaultGameLanguage = oldLocale;
                 LoadServerDB(false);
-                DoFindGameClient(false);
+                DoFindGameClient(false, false);
                 MessageBox.Show($"Failed to load profile {profile.Name}");
                 return false;
             }
@@ -3314,7 +3324,7 @@ namespace AAEmu.DBViewer
             const string doodadG = "/doodad.g";
             if (!ClientFileManager.HasValidSources())
                 return;
-            var doodadGFiles = ClientFileManager.GetFilesInDirectory("","doodad.g", true).Where(f => f.EndsWith(doodadG, StringComparison.InvariantCultureIgnoreCase) && f.StartsWith(cellsFolder, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            var doodadGFiles = ClientFileManager.GetFilesInDirectory("game", "doodad.g", true).Where(f => f.EndsWith(doodadG, StringComparison.InvariantCultureIgnoreCase) && f.StartsWith(cellsFolder, StringComparison.InvariantCultureIgnoreCase)).ToList();
             if (!doodadGFiles.Any())
             {
                 MessageBox.Show(@"Pak does not seem to contain DESIGN doodad data");
@@ -3434,7 +3444,7 @@ namespace AAEmu.DBViewer
                         sl.Add(rs.ReadLine().Trim().ToLower());
                     }
                 }
-                
+
                 var spawnerList = AAXmlDefs.LoadNpcSpawnerData(zoneKey, sl.ToArray());
 
                 foreach (var npcSpawnerGFileData in spawnerList)
@@ -3442,7 +3452,7 @@ namespace AAEmu.DBViewer
                     if (npcSpawnerGFileData.AreaType == "point")
                     {
                         var pos = npcSpawnerGFileData.Points.FirstOrDefault();
-                        map.AddPoI(pos.X,pos.Y, pos.Z,
+                        map.AddPoI(pos.X, pos.Y, pos.Z,
                             $"NpcSpawner: Id {npcSpawnerGFileData.Id}, Type: {npcSpawnerGFileData.Type}", Color.Yellow, 0,
                             "npcspawner", npcSpawnerGFileData.Id, null);
 
@@ -3484,7 +3494,7 @@ namespace AAEmu.DBViewer
                 if (enumName != ((long)ccId).ToString())
                     enumName += $" ({(long)ccId})";
 
-                row.Cells[0].Value = enumName ;
+                row.Cells[0].Value = enumName;
                 row.Cells[1].Value = val.ToString();
             }
         }
@@ -3498,6 +3508,11 @@ namespace AAEmu.DBViewer
         {
             lTradeRate.Text = $@"{tbTradeRate.Value} %";
             DoTradeDestinationSelectedIndexChanged();
+        }
+
+        private void btnFindClientDataDirectory_Click(object sender, EventArgs e)
+        {
+            _ = DoFindGameClient(true, true);
         }
     }
 }

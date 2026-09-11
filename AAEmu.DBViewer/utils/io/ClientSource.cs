@@ -82,7 +82,21 @@ public class ClientSource
                     {
                         var files = Directory.GetFiles(Path.Combine(PathName, rootDir), searchPattern,
                             includeSubDirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
-                        list.AddRange(files);
+
+                        foreach (var fn in files)
+                        {
+                            var fixedFileName = fn;
+                            if (fixedFileName.StartsWith(PathName))
+                            {
+                                fixedFileName = fixedFileName.Replace(PathName, "");
+                            }
+                            fixedFileName = fixedFileName.Replace(Path.DirectorySeparatorChar, '/');
+                            if (fixedFileName.StartsWith("/"))
+                            {
+                                fixedFileName = fixedFileName.Substring(1);
+                            }
+                            list.Add(fixedFileName);
+                        }
                     }
                     break;
                 }

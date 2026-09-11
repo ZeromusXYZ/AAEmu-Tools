@@ -1429,7 +1429,7 @@ public partial class MainForm
 
             MapViewWorldXML.instances = new List<MapViewWorldXML>();
 
-            foreach (var pfi in ClientFileManager.GetFilesInDirectory("","world.xml", true))
+            foreach (var pfi in ClientFileManager.GetFilesInDirectory("game","world.xml", true))
             {
                 if (pfi.EndsWith("/world.xml") && pfi.StartsWith("game/worlds/"))
                 {

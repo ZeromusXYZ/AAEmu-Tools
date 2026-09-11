@@ -36,6 +36,8 @@
             lbTableNames = new System.Windows.Forms.ListBox();
             tcViewer = new System.Windows.Forms.TabControl();
             tpSettings = new System.Windows.Forms.TabPage();
+            label153 = new System.Windows.Forms.Label();
+            btnFindClientDataDirectory = new System.Windows.Forms.Button();
             BtnAdditionalServerDb = new System.Windows.Forms.Button();
             lAppVersion = new System.Windows.Forms.Label();
             BtnDeleteProfile = new System.Windows.Forms.Button();
@@ -689,6 +691,7 @@
             openFileDialog3 = new System.Windows.Forms.OpenFileDialog();
             openFileDialog4 = new System.Windows.Forms.OpenFileDialog();
             ofdLoadUnitMovementDialog = new System.Windows.Forms.OpenFileDialog();
+            openFolderDlg = new System.Windows.Forms.FolderBrowserDialog();
             tcViewer.SuspendLayout();
             tpSettings.SuspendLayout();
             tpTables.SuspendLayout();
@@ -833,6 +836,8 @@
             // 
             // tpSettings
             // 
+            tpSettings.Controls.Add(label153);
+            tpSettings.Controls.Add(btnFindClientDataDirectory);
             tpSettings.Controls.Add(BtnAdditionalServerDb);
             tpSettings.Controls.Add(lAppVersion);
             tpSettings.Controls.Add(BtnDeleteProfile);
@@ -853,6 +858,27 @@
             tpSettings.TabIndex = 19;
             tpSettings.Text = "Settings";
             tpSettings.UseVisualStyleBackColor = true;
+            // 
+            // label153
+            // 
+            label153.AutoSize = true;
+            label153.Location = new System.Drawing.Point(234, 44);
+            label153.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label153.Name = "label153";
+            label153.Size = new System.Drawing.Size(18, 15);
+            label153.TabIndex = 34;
+            label153.Text = "or";
+            // 
+            // btnFindClientDataDirectory
+            // 
+            btnFindClientDataDirectory.Location = new System.Drawing.Point(260, 38);
+            btnFindClientDataDirectory.Margin = new System.Windows.Forms.Padding(4);
+            btnFindClientDataDirectory.Name = "btnFindClientDataDirectory";
+            btnFindClientDataDirectory.Size = new System.Drawing.Size(217, 26);
+            btnFindClientDataDirectory.TabIndex = 33;
+            btnFindClientDataDirectory.Text = "Locate Client Game Folder";
+            btnFindClientDataDirectory.UseVisualStyleBackColor = true;
+            btnFindClientDataDirectory.Click += btnFindClientDataDirectory_Click;
             // 
             // BtnAdditionalServerDb
             // 
@@ -881,7 +907,7 @@
             // 
             BtnDeleteProfile.Location = new System.Drawing.Point(327, 244);
             BtnDeleteProfile.Name = "BtnDeleteProfile";
-            BtnDeleteProfile.Size = new System.Drawing.Size(136, 22);
+            BtnDeleteProfile.Size = new System.Drawing.Size(150, 22);
             BtnDeleteProfile.TabIndex = 30;
             BtnDeleteProfile.Text = "Delete profile";
             BtnDeleteProfile.UseVisualStyleBackColor = true;
@@ -889,7 +915,7 @@
             // 
             // TSaveProfileName
             // 
-            TSaveProfileName.Location = new System.Drawing.Point(469, 208);
+            TSaveProfileName.Location = new System.Drawing.Point(485, 207);
             TSaveProfileName.Name = "TSaveProfileName";
             TSaveProfileName.Size = new System.Drawing.Size(209, 23);
             TSaveProfileName.TabIndex = 29;
@@ -898,7 +924,7 @@
             // 
             BtnSaveProfileAs.Location = new System.Drawing.Point(327, 208);
             BtnSaveProfileAs.Name = "BtnSaveProfileAs";
-            BtnSaveProfileAs.Size = new System.Drawing.Size(136, 22);
+            BtnSaveProfileAs.Size = new System.Drawing.Size(150, 22);
             BtnSaveProfileAs.TabIndex = 28;
             BtnSaveProfileAs.Text = "Save profile as";
             BtnSaveProfileAs.UseVisualStyleBackColor = true;
@@ -908,7 +934,7 @@
             // 
             BtnLoadProfile.Location = new System.Drawing.Point(327, 181);
             BtnLoadProfile.Name = "BtnLoadProfile";
-            BtnLoadProfile.Size = new System.Drawing.Size(136, 22);
+            BtnLoadProfile.Size = new System.Drawing.Size(150, 22);
             BtnLoadProfile.TabIndex = 27;
             BtnLoadProfile.Text = "Load profile";
             BtnLoadProfile.UseVisualStyleBackColor = true;
@@ -945,7 +971,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new System.Drawing.Point(233, 43);
+            label8.Location = new System.Drawing.Point(485, 44);
             label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label8.Name = "label8";
             label8.Size = new System.Drawing.Size(231, 15);
@@ -977,7 +1003,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new System.Drawing.Point(309, 9);
+            label2.Location = new System.Drawing.Point(323, 10);
             label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(59, 15);
@@ -991,7 +1017,7 @@
             cbItemSearchLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             cbItemSearchLanguage.FormattingEnabled = true;
             cbItemSearchLanguage.Items.AddRange(new object[] { "en_us", "ru", "ko", "zh_cn", "zh_tw", "de", "fr", "ja" });
-            cbItemSearchLanguage.Location = new System.Drawing.Point(376, 7);
+            cbItemSearchLanguage.Location = new System.Drawing.Point(390, 7);
             cbItemSearchLanguage.Margin = new System.Windows.Forms.Padding(4);
             cbItemSearchLanguage.Name = "cbItemSearchLanguage";
             cbItemSearchLanguage.Size = new System.Drawing.Size(87, 23);
@@ -1691,7 +1717,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 305);
-            splitContainer2.SplitterDistance = 323;
+            splitContainer2.SplitterDistance = 320;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1699,7 +1725,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(231, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(228, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(88, 19);
@@ -1731,7 +1757,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(315, 276);
+            tvBuffTriggers.Size = new System.Drawing.Size(312, 276);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -4960,7 +4986,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(474, 479);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(471, 479);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 25);
@@ -4993,7 +5019,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(701, 465);
+            tvQuestWorkflow.Size = new System.Drawing.Size(698, 465);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -7909,6 +7935,11 @@
             ofdLoadUnitMovementDialog.Filter = "JSON Files|*.json|All Files|*.*";
             ofdLoadUnitMovementDialog.Title = "Open Unit Movement File";
             // 
+            // openFolderDlg
+            // 
+            openFolderDlg.RootFolder = System.Environment.SpecialFolder.MyComputer;
+            openFolderDlg.ShowNewFolderButton = false;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -8721,6 +8752,9 @@
         private System.Windows.Forms.Label lTradeMultiplier;
         private System.Windows.Forms.Label lTradeRate;
         private System.Windows.Forms.TrackBar tbTradeRate;
+        private System.Windows.Forms.Button btnFindClientDataDirectory;
+        private System.Windows.Forms.Label label153;
+        private System.Windows.Forms.FolderBrowserDialog openFolderDlg;
     }
 }
 

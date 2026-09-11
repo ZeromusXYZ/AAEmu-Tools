@@ -973,7 +973,7 @@ public partial class MainForm
         var sl = new List<string>();
 
         // Find all related files and concat them into a giant string list
-        foreach (var pfi in ClientFileManager.GetFilesInDirectory("", "quest_sign_sphere.g", true))
+        foreach (var pfi in ClientFileManager.GetFilesInDirectory("game", "quest_sign_sphere.g", true))
         {
             var lowerName = pfi.ToLower();
             if (lowerName.EndsWith("quest_sign_sphere.g"))
