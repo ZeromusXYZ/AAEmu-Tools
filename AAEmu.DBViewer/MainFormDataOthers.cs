@@ -5,7 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Security.AccessControl;
 using System.Windows.Forms;
 using System.Xml;
 using AAEmu.DBViewer.DbDefs;

@@ -66,14 +66,14 @@ public static class ClientFileManager
 
     public static void ClearSources()
     {
+        _initialized = false;
+        _hasValidSources = false;
         for (var i = Sources.Count - 1; i >= 0; i--)
         {
             var source = Sources[i];
             source.Close();
             Sources.Remove(source);
         }
-
-        _initialized = false;
     }
 
     /// <summary>

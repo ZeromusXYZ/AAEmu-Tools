@@ -965,6 +965,15 @@ namespace AAEmu.DBViewer
                         return false;
                     }
                     openFileName = openFolderDlg.SelectedPath;
+                    if (File.Exists(Path.Combine(openFileName, "game_pak")))
+                    {
+                        if (MessageBox.Show(
+                                $"The folder contains a game_pak file.\nDo you want to use the game_pak directly instead of the folder?\nFolder: {openFileName}",
+                                "Use found game_pak?", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        {
+                            openFileName = Path.Combine(openFileName, "game_pak");
+                        }
+                    }
                 }
                 else
                 {
