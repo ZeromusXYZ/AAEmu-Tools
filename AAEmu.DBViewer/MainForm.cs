@@ -1513,6 +1513,20 @@ namespace AAEmu.DBViewer
                 res.targetSearchButton = btnSkillSearch;
                 res.ForeColor = Color.WhiteSmoke;
                 nodeText += " - " + skill.NameLocalized;
+                if (skill.AbilityLevel > 1 || skill.AbilityId > 0)
+                {
+                    nodeText += " ( ";
+                    if (skill.AbilityId > 0)
+                    {
+                        nodeText += AaDb.GetTranslationById(skill.AbilityId, "abilities", "name", "Abi" + skill.AbilityId.ToString()) + " ";
+                    }
+                    if (skill.AbilityLevel > 0)
+                    {
+                        nodeText += "Lv " + skill.AbilityLevel + " ";
+                    }
+                    nodeText += ")";
+                }
+
                 setCustomIcon = IconIdToLabel(skill.IconId, null);
             }
             else if (key.EndsWith("item_id") && (AaDb.DbItems.TryGetValue(val, out var item)))

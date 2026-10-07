@@ -51,6 +51,7 @@ public partial class MainForm
                             t.IgnoreGlobalCooldown = GetBool(reader, "ignore_global_cooldown");
                             t.EffectDelay = GetInt64(reader, "effect_delay");
                             t.AbilityId = GetInt64(reader, "ability_id");
+                            t.AbilityLevel = GetInt64(reader, "ability_level");
                             t.ManaCost = GetInt64(reader, "mana_cost");
                             t.TimingId = GetInt64(reader, "timing_id");
                             t.ConsumeLp = GetInt64(reader, "consume_lp");
@@ -168,6 +169,27 @@ public partial class MainForm
                                 t.Name = GetString(reader, "name");
                             t.SkillId = GetInt64(reader, "skill_id");
                             AaDb.DbMountSkills.Add(t.Id, t);
+                        }
+                    }
+                }
+            }
+
+            // Npc Mount Skills
+            if (AllTableNames.GetValueOrDefault("npc_mount_skills") == SQLite.SQLiteFileName)
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM npc_mount_skills ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        while (reader.Read())
+                        {
+                            var t = new GameNpcMountSkills();
+                            t.Id = GetInt64(reader, "id");
+                            t.NpcId = GetInt64(reader, "npc_id");
+                            t.MountSkillId = GetInt64(reader, "mount_skill_id");
+                            AaDb.DbNpcMountSkills.Add(t.Id, t);
                         }
                     }
                 }

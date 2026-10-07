@@ -242,6 +242,7 @@ public class GameSkills
     public long CustomGcd = 0;
     public long EffectDelay = 0;
     public long AbilityId = 0;
+    public long AbilityLevel = 0;
     public long ManaCost = 0;
     public long TimingId = 0;
     public long ConsumeLp = 0;
@@ -1545,6 +1546,28 @@ public class GameCharRecords
     public long Value2 { get; set; }
 }
 
+public class GameNpcMountSkills
+{
+    public long Id { get; set; }
+    public long NpcId { get; set; }
+    public long MountSkillId { get; set; }
+}
+
+public class GameItemSummonMate
+{
+    public long Id { get; set; }
+    public long ItemId { get; set; }
+    public long NpcId { get; set; }
+
+}
+
+public class GameItemSummonSlave
+{
+    public long Id { get; set; }
+    public long ItemId { get; set; }
+    public long SlaveId { get; set; }
+}
+
 internal static class AaDb
 {
     public static Dictionary<string, GameTranslation> DbTranslations = new();
@@ -1646,7 +1669,9 @@ internal static class AaDb
     public static Dictionary<long, GameTotalCharacterCustoms> DbTotalCharacterCustoms = new();
     public static Dictionary<long, string> DbEnumContentConfigs = new();
     public static Dictionary<ContentConfig, long> DbContentConfigs = new();
-
+    public static Dictionary<long, GameNpcMountSkills> DbNpcMountSkills = new();
+    public static Dictionary<long, GameItemSummonMate> DbItemSummonMates = new();
+    public static Dictionary<long, GameItemSummonSlave> DbItemSummonSlaves = new();
     public static Dictionary<long, Dictionary<long, Dictionary<long, GameAchievements>>> CompiledGroupedAchievements = new();
 
     public static void Clear()
@@ -1751,6 +1776,9 @@ internal static class AaDb
         DbTotalCharacterCustoms.Clear();
         DbEnumContentConfigs.Clear();
         DbContentConfigs.Clear();
+        DbNpcMountSkills.Clear();
+        DbItemSummonMates.Clear();
+        DbItemSummonSlaves.Clear();
 
         CompiledGroupedAchievements.Clear();
     }

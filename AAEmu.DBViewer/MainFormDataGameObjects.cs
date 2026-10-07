@@ -1282,6 +1282,35 @@ public partial class MainForm
                 tvNPCInfo.Nodes.Remove(passiveBuffsNode);
             #endregion
 
+            #region mounts
+            TreeNode mountInfoNode = null;
+
+            var npcMountSkillIds = AaDb.DbNpcMountSkills.Values.Where(x => x.NpcId == npc.Id).ToList();
+
+            var mountedSkillList = new HashSet<long>();
+            foreach (var npcMountSkillId in npcMountSkillIds)
+            {
+                var mountSkill = AaDb.DbMountSkills.GetValueOrDefault(npcMountSkillId.MountSkillId);
+                if (mountSkill != null)
+                {
+                    mountedSkillList.Add(mountSkill.SkillId);
+                }
+            }
+            foreach (var l in mountedSkillList)
+            {
+                if (mountInfoNode == null)
+                {
+                    mountInfoNode = tvNPCInfo.Nodes.Add("Mount Skills");
+                    mountInfoNode.ImageIndex = 2;
+                    mountInfoNode.SelectedImageIndex = 2;
+                }
+                AddCustomPropertyNode("skill_id", l.ToString(), false, mountInfoNode);
+            }
+
+            if (mountInfoNode?.Nodes.Count > 0)
+                mountInfoNode.Expand();
+            #endregion
+
             #region npc_quests
             var allQuestsStartersActsForNpcs = AaDb.DbQuestActConAcceptNpc.Values.Where(x => x.NpcId == npc.Id).ToList();
             if (allQuestsStartersActsForNpcs.Any())

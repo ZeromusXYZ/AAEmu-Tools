@@ -168,6 +168,52 @@ public partial class MainForm
                 }
             }
         }
+
+        if (AllTableNames.GetValueOrDefault("item_summon_mates") == SQLite.SQLiteFileName)
+        {
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM item_summon_mates ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        while (reader.Read())
+                        {
+                            var t = new GameItemSummonMate();
+                            t.Id = GetInt64(reader, "id");
+                            t.ItemId = GetInt64(reader, "item_id");
+                            t.NpcId = GetInt64(reader, "npc_id");
+                            AaDb.DbItemSummonMates.Add(t.Id, t);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (AllTableNames.GetValueOrDefault("item_summon_slaves") == SQLite.SQLiteFileName)
+        {
+            using (var connection = SQLite.CreateConnection())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM item_summon_slaves ORDER BY id ASC";
+                    command.Prepare();
+                    using (var reader = new SQLiteWrapperReader(command.ExecuteReader()))
+                    {
+                        while (reader.Read())
+                        {
+                            var t = new GameItemSummonSlave();
+                            t.Id = GetInt64(reader, "id");
+                            t.ItemId = GetInt64(reader, "item_id");
+                            t.SlaveId = GetInt64(reader, "slave_id");
+                            AaDb.DbItemSummonSlaves.Add(t.Id, t);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void LoadItemArmors()
@@ -465,6 +511,26 @@ public partial class MainForm
                 foreach (var req in requiresWeapon)
                 {
                     fullDescription += $"\n{req.KindId} - Value1: {req.Value1}, Value2: {req.Value2}";
+                }
+            }
+            
+            var mateEntry = AaDb.DbItemSummonMates.Values.FirstOrDefault(x => x.ItemId == item.Id);
+            if (mateEntry != null)
+            {
+                fullDescription += $"\n\n|nc;Using this item summons a\n@NPC_NAME({mateEntry.NpcId})|r (NpcId {mateEntry.NpcId})";
+            }
+
+            var slaveEntry = AaDb.DbItemSummonSlaves.Values.FirstOrDefault(x => x.ItemId == item.Id);
+            if (slaveEntry != null)
+            {
+                var callSlave = AaDb.DbSlaves.GetValueOrDefault(slaveEntry.SlaveId);
+                if (callSlave != null)
+                {
+                    fullDescription += $"\n\n|nc;Using this item calls a\n{callSlave.NameLocalized}|r (SlaveId {slaveEntry.SlaveId})";
+                }
+                else
+                {
+                    fullDescription += $"\n\n|nr;Invalid summon SlaveId {slaveEntry.SlaveId}\r";
                 }
             }
 
