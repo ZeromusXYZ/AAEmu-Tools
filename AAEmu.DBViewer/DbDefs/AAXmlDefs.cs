@@ -29,7 +29,7 @@ public static class AAXmlDefs
         return true;
     }
 
-    public static List<NpcSpawnerGFileData> LoadNpcSpawnerData(uint zoneKey, string[] lines)
+    public static List<NpcSpawnerGFileData> LoadNpcSpawnerData(uint zoneKey, string[] lines, string worldName)
     {
         NpcSpawnersByZoneKey.Remove(zoneKey); // Always remote old zone data on reading new one
         var currentSpawnerId = 0;
@@ -37,7 +37,7 @@ public static class AAXmlDefs
         var currentSpawnerAreaType = "";
         var currentPoints = new List<Vector3>();
 
-        var xmlZone = MapViewWorldXML.main_world.zones.GetValueOrDefault(zoneKey);
+        var xmlZone = MapViewWorldXML.GetInstanceByName(worldName).zones.GetValueOrDefault(zoneKey);
         var zoneOffset = new Vector3(xmlZone.originCellX * 1024f, xmlZone.originCellY * 1024f, 0f);
 
         var areaPointsMode = false;

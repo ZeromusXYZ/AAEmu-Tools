@@ -30,9 +30,9 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("NPC");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Skill");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Slave");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("NPC");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Skill");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Slave");
             lbTableNames = new System.Windows.Forms.ListBox();
             tcViewer = new System.Windows.Forms.TabControl();
             tpSettings = new System.Windows.Forms.TabPage();
@@ -76,6 +76,7 @@
             Column50 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             tSearchLocalized = new System.Windows.Forms.TextBox();
             tpMap = new System.Windows.Forms.TabPage();
+            cbLoadFromInstanceSelect = new System.Windows.Forms.ComboBox();
             BtnLoadNpcSpawnersFromPak = new System.Windows.Forms.Button();
             BtnLoadDoodadsFromPak = new System.Windows.Forms.Button();
             label148 = new System.Windows.Forms.Label();
@@ -692,6 +693,10 @@
             openFileDialog4 = new System.Windows.Forms.OpenFileDialog();
             ofdLoadUnitMovementDialog = new System.Windows.Forms.OpenFileDialog();
             openFolderDlg = new System.Windows.Forms.FolderBrowserDialog();
+            groupBox17 = new System.Windows.Forms.GroupBox();
+            groupBox18 = new System.Windows.Forms.GroupBox();
+            groupBox19 = new System.Windows.Forms.GroupBox();
+            groupBox20 = new System.Windows.Forms.GroupBox();
             tcViewer.SuspendLayout();
             tpSettings.SuspendLayout();
             tpTables.SuspendLayout();
@@ -784,6 +789,10 @@
             ((System.ComponentModel.ISupportInitialize)dgvContentConfig).BeginInit();
             MM.SuspendLayout();
             TBMain.SuspendLayout();
+            groupBox17.SuspendLayout();
+            groupBox18.SuspendLayout();
+            groupBox19.SuspendLayout();
+            groupBox20.SuspendLayout();
             SuspendLayout();
             // 
             // lbTableNames
@@ -1271,25 +1280,10 @@
             // 
             // tpMap
             // 
-            tpMap.Controls.Add(BtnLoadNpcSpawnersFromPak);
-            tpMap.Controls.Add(BtnLoadDoodadsFromPak);
-            tpMap.Controls.Add(label148);
-            tpMap.Controls.Add(tExportedObjFilter);
-            tpMap.Controls.Add(BtnLoadUntMovement);
-            tpMap.Controls.Add(btnLoadAAEmuWater);
-            tpMap.Controls.Add(btnShowEntityAreaShape);
-            tpMap.Controls.Add(btnLoadCustomAAEmuJson);
-            tpMap.Controls.Add(btnLoadCustomPaths);
-            tpMap.Controls.Add(label130);
-            tpMap.Controls.Add(cbQuestSignSphereSearchShowAll);
-            tpMap.Controls.Add(eQuestSignSphereSearch);
-            tpMap.Controls.Add(label129);
-            tpMap.Controls.Add(label131);
-            tpMap.Controls.Add(btnFindAllHousing);
-            tpMap.Controls.Add(btnFindAllSubzone);
-            tpMap.Controls.Add(label128);
-            tpMap.Controls.Add(btnFindAllQuestSpheres);
-            tpMap.Controls.Add(btnFindAllTransferPaths);
+            tpMap.Controls.Add(groupBox20);
+            tpMap.Controls.Add(groupBox19);
+            tpMap.Controls.Add(groupBox18);
+            tpMap.Controls.Add(groupBox17);
             tpMap.Controls.Add(btnMap);
             tpMap.Location = new System.Drawing.Point(4, 14);
             tpMap.Margin = new System.Windows.Forms.Padding(4);
@@ -1300,32 +1294,46 @@
             tpMap.Text = "Map";
             tpMap.UseVisualStyleBackColor = true;
             // 
+            // cbLoadFromInstanceSelect
+            // 
+            cbLoadFromInstanceSelect.DropDownHeight = 240;
+            cbLoadFromInstanceSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cbLoadFromInstanceSelect.DropDownWidth = 200;
+            cbLoadFromInstanceSelect.Enabled = false;
+            cbLoadFromInstanceSelect.FormattingEnabled = true;
+            cbLoadFromInstanceSelect.IntegralHeight = false;
+            cbLoadFromInstanceSelect.Location = new System.Drawing.Point(7, 23);
+            cbLoadFromInstanceSelect.Margin = new System.Windows.Forms.Padding(4);
+            cbLoadFromInstanceSelect.Name = "cbLoadFromInstanceSelect";
+            cbLoadFromInstanceSelect.Size = new System.Drawing.Size(199, 23);
+            cbLoadFromInstanceSelect.TabIndex = 57;
+            // 
             // BtnLoadNpcSpawnersFromPak
             // 
-            BtnLoadNpcSpawnersFromPak.Location = new System.Drawing.Point(285, 457);
+            BtnLoadNpcSpawnersFromPak.Location = new System.Drawing.Point(355, 20);
             BtnLoadNpcSpawnersFromPak.Margin = new System.Windows.Forms.Padding(4);
             BtnLoadNpcSpawnersFromPak.Name = "BtnLoadNpcSpawnersFromPak";
-            BtnLoadNpcSpawnersFromPak.Size = new System.Drawing.Size(268, 26);
+            BtnLoadNpcSpawnersFromPak.Size = new System.Drawing.Size(148, 26);
             BtnLoadNpcSpawnersFromPak.TabIndex = 56;
-            BtnLoadNpcSpawnersFromPak.Text = "Load NPC Spawners from game_pak";
+            BtnLoadNpcSpawnersFromPak.Text = "Load NPC Spawners";
             BtnLoadNpcSpawnersFromPak.UseVisualStyleBackColor = true;
             BtnLoadNpcSpawnersFromPak.Click += BtnLoadNpcSpawnersFromPak_Click;
             // 
             // BtnLoadDoodadsFromPak
             // 
-            BtnLoadDoodadsFromPak.Location = new System.Drawing.Point(9, 457);
+            BtnLoadDoodadsFromPak.Location = new System.Drawing.Point(210, 20);
             BtnLoadDoodadsFromPak.Margin = new System.Windows.Forms.Padding(4);
             BtnLoadDoodadsFromPak.Name = "BtnLoadDoodadsFromPak";
-            BtnLoadDoodadsFromPak.Size = new System.Drawing.Size(268, 26);
+            BtnLoadDoodadsFromPak.Size = new System.Drawing.Size(137, 26);
             BtnLoadDoodadsFromPak.TabIndex = 55;
-            BtnLoadDoodadsFromPak.Text = "Load Doodads from game_pak";
+            BtnLoadDoodadsFromPak.Text = "Load Doodads";
             BtnLoadDoodadsFromPak.UseVisualStyleBackColor = true;
             BtnLoadDoodadsFromPak.Click += BtnLoadDoodadsFromPak_Click;
             // 
             // label148
             // 
             label148.AutoSize = true;
-            label148.Location = new System.Drawing.Point(561, 254);
+            label148.Location = new System.Drawing.Point(414, 63);
             label148.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label148.Name = "label148";
             label148.Size = new System.Drawing.Size(52, 15);
@@ -1334,18 +1342,18 @@
             // 
             // tExportedObjFilter
             // 
-            tExportedObjFilter.Location = new System.Drawing.Point(561, 273);
+            tExportedObjFilter.Location = new System.Drawing.Point(468, 60);
             tExportedObjFilter.Margin = new System.Windows.Forms.Padding(4);
             tExportedObjFilter.Name = "tExportedObjFilter";
-            tExportedObjFilter.Size = new System.Drawing.Size(199, 23);
+            tExportedObjFilter.Size = new System.Drawing.Size(180, 23);
             tExportedObjFilter.TabIndex = 53;
             // 
             // BtnLoadUntMovement
             // 
-            BtnLoadUntMovement.Location = new System.Drawing.Point(285, 270);
+            BtnLoadUntMovement.Location = new System.Drawing.Point(188, 57);
             BtnLoadUntMovement.Margin = new System.Windows.Forms.Padding(4);
             BtnLoadUntMovement.Name = "BtnLoadUntMovement";
-            BtnLoadUntMovement.Size = new System.Drawing.Size(268, 26);
+            BtnLoadUntMovement.Size = new System.Drawing.Size(218, 26);
             BtnLoadUntMovement.TabIndex = 52;
             BtnLoadUntMovement.Text = "Load exported unit movement";
             BtnLoadUntMovement.UseVisualStyleBackColor = true;
@@ -1353,7 +1361,7 @@
             // 
             // btnLoadAAEmuWater
             // 
-            btnLoadAAEmuWater.Location = new System.Drawing.Point(285, 343);
+            btnLoadAAEmuWater.Location = new System.Drawing.Point(283, 23);
             btnLoadAAEmuWater.Margin = new System.Windows.Forms.Padding(4);
             btnLoadAAEmuWater.Name = "btnLoadAAEmuWater";
             btnLoadAAEmuWater.Size = new System.Drawing.Size(268, 26);
@@ -1364,10 +1372,10 @@
             // 
             // btnShowEntityAreaShape
             // 
-            btnShowEntityAreaShape.Location = new System.Drawing.Point(9, 398);
+            btnShowEntityAreaShape.Location = new System.Drawing.Point(7, 118);
             btnShowEntityAreaShape.Margin = new System.Windows.Forms.Padding(4);
             btnShowEntityAreaShape.Name = "btnShowEntityAreaShape";
-            btnShowEntityAreaShape.Size = new System.Drawing.Size(268, 26);
+            btnShowEntityAreaShape.Size = new System.Drawing.Size(196, 26);
             btnShowEntityAreaShape.TabIndex = 50;
             btnShowEntityAreaShape.Text = "Show All Entity AreaShape";
             btnShowEntityAreaShape.UseVisualStyleBackColor = true;
@@ -1375,7 +1383,7 @@
             // 
             // btnLoadCustomAAEmuJson
             // 
-            btnLoadCustomAAEmuJson.Location = new System.Drawing.Point(9, 343);
+            btnLoadCustomAAEmuJson.Location = new System.Drawing.Point(7, 23);
             btnLoadCustomAAEmuJson.Margin = new System.Windows.Forms.Padding(4);
             btnLoadCustomAAEmuJson.Name = "btnLoadCustomAAEmuJson";
             btnLoadCustomAAEmuJson.Size = new System.Drawing.Size(268, 26);
@@ -1386,10 +1394,10 @@
             // 
             // btnLoadCustomPaths
             // 
-            btnLoadCustomPaths.Location = new System.Drawing.Point(9, 270);
+            btnLoadCustomPaths.Location = new System.Drawing.Point(7, 57);
             btnLoadCustomPaths.Margin = new System.Windows.Forms.Padding(4);
             btnLoadCustomPaths.Name = "btnLoadCustomPaths";
-            btnLoadCustomPaths.Size = new System.Drawing.Size(268, 26);
+            btnLoadCustomPaths.Size = new System.Drawing.Size(173, 26);
             btnLoadCustomPaths.TabIndex = 48;
             btnLoadCustomPaths.Text = "Load custom entity path";
             btnLoadCustomPaths.UseVisualStyleBackColor = true;
@@ -1398,7 +1406,7 @@
             // label130
             // 
             label130.AutoSize = true;
-            label130.Location = new System.Drawing.Point(282, 121);
+            label130.Location = new System.Drawing.Point(211, 29);
             label130.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label130.Name = "label130";
             label130.Size = new System.Drawing.Size(52, 15);
@@ -1408,7 +1416,7 @@
             // cbQuestSignSphereSearchShowAll
             // 
             cbQuestSignSphereSearchShowAll.AutoSize = true;
-            cbQuestSignSphereSearchShowAll.Location = new System.Drawing.Point(550, 120);
+            cbQuestSignSphereSearchShowAll.Location = new System.Drawing.Point(479, 28);
             cbQuestSignSphereSearchShowAll.Margin = new System.Windows.Forms.Padding(4);
             cbQuestSignSphereSearchShowAll.Name = "cbQuestSignSphereSearchShowAll";
             cbQuestSignSphereSearchShowAll.Size = new System.Drawing.Size(116, 19);
@@ -1418,7 +1426,7 @@
             // 
             // eQuestSignSphereSearch
             // 
-            eQuestSignSphereSearch.Location = new System.Drawing.Point(343, 118);
+            eQuestSignSphereSearch.Location = new System.Drawing.Point(272, 26);
             eQuestSignSphereSearch.Margin = new System.Windows.Forms.Padding(4);
             eQuestSignSphereSearch.Name = "eQuestSignSphereSearch";
             eQuestSignSphereSearch.Size = new System.Drawing.Size(199, 23);
@@ -1427,7 +1435,7 @@
             // label129
             // 
             label129.AutoSize = true;
-            label129.Location = new System.Drawing.Point(282, 196);
+            label129.Location = new System.Drawing.Point(211, 63);
             label129.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label129.Name = "label129";
             label129.Size = new System.Drawing.Size(117, 15);
@@ -1437,7 +1445,7 @@
             // label131
             // 
             label131.AutoSize = true;
-            label131.Location = new System.Drawing.Point(282, 196);
+            label131.Location = new System.Drawing.Point(211, 87);
             label131.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label131.Name = "label131";
             label131.Size = new System.Drawing.Size(118, 15);
@@ -1446,10 +1454,10 @@
             // 
             // btnFindAllHousing
             // 
-            btnFindAllHousing.Location = new System.Drawing.Point(7, 190);
+            btnFindAllHousing.Location = new System.Drawing.Point(7, 57);
             btnFindAllHousing.Margin = new System.Windows.Forms.Padding(4);
             btnFindAllHousing.Name = "btnFindAllHousing";
-            btnFindAllHousing.Size = new System.Drawing.Size(268, 26);
+            btnFindAllHousing.Size = new System.Drawing.Size(196, 26);
             btnFindAllHousing.TabIndex = 43;
             btnFindAllHousing.Text = "Show All Housing";
             btnFindAllHousing.UseVisualStyleBackColor = true;
@@ -1457,10 +1465,10 @@
             // 
             // btnFindAllSubzone
             // 
-            btnFindAllSubzone.Location = new System.Drawing.Point(7, 214);
+            btnFindAllSubzone.Location = new System.Drawing.Point(7, 81);
             btnFindAllSubzone.Margin = new System.Windows.Forms.Padding(4);
             btnFindAllSubzone.Name = "btnFindAllSubzone";
-            btnFindAllSubzone.Size = new System.Drawing.Size(268, 26);
+            btnFindAllSubzone.Size = new System.Drawing.Size(196, 26);
             btnFindAllSubzone.TabIndex = 50;
             btnFindAllSubzone.Text = "Show All Subzone";
             btnFindAllSubzone.UseVisualStyleBackColor = true;
@@ -1469,7 +1477,7 @@
             // label128
             // 
             label128.AutoSize = true;
-            label128.Location = new System.Drawing.Point(285, 58);
+            label128.Location = new System.Drawing.Point(188, 29);
             label128.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             label128.Name = "label128";
             label128.Size = new System.Drawing.Size(283, 15);
@@ -1478,10 +1486,10 @@
             // 
             // btnFindAllQuestSpheres
             // 
-            btnFindAllQuestSpheres.Location = new System.Drawing.Point(7, 115);
+            btnFindAllQuestSpheres.Location = new System.Drawing.Point(7, 23);
             btnFindAllQuestSpheres.Margin = new System.Windows.Forms.Padding(4);
             btnFindAllQuestSpheres.Name = "btnFindAllQuestSpheres";
-            btnFindAllQuestSpheres.Size = new System.Drawing.Size(268, 26);
+            btnFindAllQuestSpheres.Size = new System.Drawing.Size(196, 26);
             btnFindAllQuestSpheres.TabIndex = 40;
             btnFindAllQuestSpheres.Text = "Show All Quest Spheres";
             btnFindAllQuestSpheres.UseVisualStyleBackColor = true;
@@ -1489,10 +1497,10 @@
             // 
             // btnFindAllTransferPaths
             // 
-            btnFindAllTransferPaths.Location = new System.Drawing.Point(9, 52);
+            btnFindAllTransferPaths.Location = new System.Drawing.Point(7, 23);
             btnFindAllTransferPaths.Margin = new System.Windows.Forms.Padding(4);
             btnFindAllTransferPaths.Name = "btnFindAllTransferPaths";
-            btnFindAllTransferPaths.Size = new System.Drawing.Size(268, 26);
+            btnFindAllTransferPaths.Size = new System.Drawing.Size(173, 26);
             btnFindAllTransferPaths.TabIndex = 39;
             btnFindAllTransferPaths.Text = "Show All Transfer Paths";
             btnFindAllTransferPaths.UseVisualStyleBackColor = true;
@@ -1500,7 +1508,7 @@
             // 
             // btnMap
             // 
-            btnMap.Location = new System.Drawing.Point(9, 7);
+            btnMap.Location = new System.Drawing.Point(16, 8);
             btnMap.Margin = new System.Windows.Forms.Padding(4);
             btnMap.Name = "btnMap";
             btnMap.Size = new System.Drawing.Size(127, 26);
@@ -1717,7 +1725,7 @@
             splitContainer2.Panel2.Controls.Add(label97);
             splitContainer2.Panel2.Controls.Add(flpBuff);
             splitContainer2.Size = new System.Drawing.Size(686, 305);
-            splitContainer2.SplitterDistance = 320;
+            splitContainer2.SplitterDistance = 318;
             splitContainer2.SplitterWidth = 5;
             splitContainer2.TabIndex = 21;
             // 
@@ -1725,7 +1733,7 @@
             // 
             cbBuffsHideEmpty.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             cbBuffsHideEmpty.AutoSize = true;
-            cbBuffsHideEmpty.Location = new System.Drawing.Point(228, 5);
+            cbBuffsHideEmpty.Location = new System.Drawing.Point(226, 5);
             cbBuffsHideEmpty.Margin = new System.Windows.Forms.Padding(4);
             cbBuffsHideEmpty.Name = "cbBuffsHideEmpty";
             cbBuffsHideEmpty.Size = new System.Drawing.Size(88, 19);
@@ -1757,7 +1765,7 @@
             tvBuffTriggers.Margin = new System.Windows.Forms.Padding(4);
             tvBuffTriggers.Name = "tvBuffTriggers";
             tvBuffTriggers.SelectedImageIndex = 0;
-            tvBuffTriggers.Size = new System.Drawing.Size(312, 276);
+            tvBuffTriggers.Size = new System.Drawing.Size(310, 276);
             tvBuffTriggers.TabIndex = 20;
             tvBuffTriggers.DoubleClick += TvBuffTriggers_DoubleClick;
             // 
@@ -4629,9 +4637,9 @@
             tvNPCInfo.Location = new System.Drawing.Point(8, 38);
             tvNPCInfo.Margin = new System.Windows.Forms.Padding(4);
             tvNPCInfo.Name = "tvNPCInfo";
-            treeNode1.Name = "SkillNode";
-            treeNode1.Text = "NPC";
-            tvNPCInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode1 });
+            treeNode2.Name = "SkillNode";
+            treeNode2.Text = "NPC";
+            tvNPCInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
             tvNPCInfo.SelectedImageIndex = 0;
             tvNPCInfo.Size = new System.Drawing.Size(430, 329);
             tvNPCInfo.TabIndex = 31;
@@ -4986,7 +4994,7 @@
             // 
             btnQuestFindRelatedOnMap.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             btnQuestFindRelatedOnMap.ForeColor = System.Drawing.Color.Black;
-            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(471, 479);
+            btnQuestFindRelatedOnMap.Location = new System.Drawing.Point(469, 479);
             btnQuestFindRelatedOnMap.Margin = new System.Windows.Forms.Padding(4);
             btnQuestFindRelatedOnMap.Name = "btnQuestFindRelatedOnMap";
             btnQuestFindRelatedOnMap.Size = new System.Drawing.Size(231, 25);
@@ -5019,7 +5027,7 @@
             tvQuestWorkflow.Location = new System.Drawing.Point(4, 6);
             tvQuestWorkflow.Margin = new System.Windows.Forms.Padding(4);
             tvQuestWorkflow.Name = "tvQuestWorkflow";
-            tvQuestWorkflow.Size = new System.Drawing.Size(698, 465);
+            tvQuestWorkflow.Size = new System.Drawing.Size(696, 465);
             tvQuestWorkflow.TabIndex = 0;
             tvQuestWorkflow.DoubleClick += TvQuestWorkflow_DoubleClick;
             // 
@@ -5847,9 +5855,9 @@
             tvSkill.Location = new System.Drawing.Point(7, 7);
             tvSkill.Margin = new System.Windows.Forms.Padding(4);
             tvSkill.Name = "tvSkill";
-            treeNode2.Name = "SkillNode";
-            treeNode2.Text = "Skill";
-            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode2 });
+            treeNode3.Name = "SkillNode";
+            treeNode3.Text = "Skill";
+            tvSkill.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode3 });
             tvSkill.SelectedImageIndex = 0;
             tvSkill.Size = new System.Drawing.Size(575, 306);
             tvSkill.TabIndex = 0;
@@ -6315,9 +6323,9 @@
             tvSlaveInfo.Location = new System.Drawing.Point(8, 54);
             tvSlaveInfo.Margin = new System.Windows.Forms.Padding(4);
             tvSlaveInfo.Name = "tvSlaveInfo";
-            treeNode3.Name = "SkillNode";
-            treeNode3.Text = "Slave";
-            tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode3 });
+            treeNode4.Name = "SkillNode";
+            treeNode4.Text = "Slave";
+            tvSlaveInfo.Nodes.AddRange(new System.Windows.Forms.TreeNode[] { treeNode4 });
             tvSlaveInfo.SelectedImageIndex = 0;
             tvSlaveInfo.Size = new System.Drawing.Size(368, 466);
             tvSlaveInfo.TabIndex = 32;
@@ -7940,6 +7948,62 @@
             openFolderDlg.RootFolder = System.Environment.SpecialFolder.MyComputer;
             openFolderDlg.ShowNewFolderButton = false;
             // 
+            // groupBox17
+            // 
+            groupBox17.Controls.Add(BtnLoadDoodadsFromPak);
+            groupBox17.Controls.Add(cbLoadFromInstanceSelect);
+            groupBox17.Controls.Add(BtnLoadNpcSpawnersFromPak);
+            groupBox17.Location = new System.Drawing.Point(9, 141);
+            groupBox17.Name = "groupBox17";
+            groupBox17.Size = new System.Drawing.Size(655, 57);
+            groupBox17.TabIndex = 58;
+            groupBox17.TabStop = false;
+            groupBox17.Text = "Load from game_pak design data";
+            // 
+            // groupBox18
+            // 
+            groupBox18.Controls.Add(btnLoadCustomAAEmuJson);
+            groupBox18.Controls.Add(btnLoadAAEmuWater);
+            groupBox18.Location = new System.Drawing.Point(12, 369);
+            groupBox18.Name = "groupBox18";
+            groupBox18.Size = new System.Drawing.Size(652, 64);
+            groupBox18.TabIndex = 59;
+            groupBox18.TabStop = false;
+            groupBox18.Text = "Load AAEmu data";
+            // 
+            // groupBox19
+            // 
+            groupBox19.Controls.Add(btnFindAllTransferPaths);
+            groupBox19.Controls.Add(label128);
+            groupBox19.Controls.Add(btnLoadCustomPaths);
+            groupBox19.Controls.Add(label148);
+            groupBox19.Controls.Add(BtnLoadUntMovement);
+            groupBox19.Controls.Add(tExportedObjFilter);
+            groupBox19.Location = new System.Drawing.Point(9, 40);
+            groupBox19.Name = "groupBox19";
+            groupBox19.Size = new System.Drawing.Size(655, 95);
+            groupBox19.TabIndex = 60;
+            groupBox19.TabStop = false;
+            groupBox19.Text = "Paths";
+            // 
+            // groupBox20
+            // 
+            groupBox20.Controls.Add(btnFindAllQuestSpheres);
+            groupBox20.Controls.Add(eQuestSignSphereSearch);
+            groupBox20.Controls.Add(cbQuestSignSphereSearchShowAll);
+            groupBox20.Controls.Add(label130);
+            groupBox20.Controls.Add(btnShowEntityAreaShape);
+            groupBox20.Controls.Add(btnFindAllHousing);
+            groupBox20.Controls.Add(label129);
+            groupBox20.Controls.Add(btnFindAllSubzone);
+            groupBox20.Controls.Add(label131);
+            groupBox20.Location = new System.Drawing.Point(12, 206);
+            groupBox20.Name = "groupBox20";
+            groupBox20.Size = new System.Drawing.Size(652, 157);
+            groupBox20.TabIndex = 61;
+            groupBox20.TabStop = false;
+            groupBox20.Text = "Areas";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -7967,7 +8031,6 @@
             tpLocalizer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvLocalized).EndInit();
             tpMap.ResumeLayout(false);
-            tpMap.PerformLayout();
             tpV1.ResumeLayout(false);
             tpV1.PerformLayout();
             tpAchievements.ResumeLayout(false);
@@ -8091,6 +8154,12 @@
             MM.PerformLayout();
             TBMain.ResumeLayout(false);
             TBMain.PerformLayout();
+            groupBox17.ResumeLayout(false);
+            groupBox18.ResumeLayout(false);
+            groupBox19.ResumeLayout(false);
+            groupBox19.PerformLayout();
+            groupBox20.ResumeLayout(false);
+            groupBox20.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -8755,6 +8824,11 @@
         private System.Windows.Forms.Button btnFindClientDataDirectory;
         private System.Windows.Forms.Label label153;
         private System.Windows.Forms.FolderBrowserDialog openFolderDlg;
+        public System.Windows.Forms.ComboBox cbLoadFromInstanceSelect;
+        private System.Windows.Forms.GroupBox groupBox17;
+        private System.Windows.Forms.GroupBox groupBox19;
+        private System.Windows.Forms.GroupBox groupBox18;
+        private System.Windows.Forms.GroupBox groupBox20;
     }
 }
 

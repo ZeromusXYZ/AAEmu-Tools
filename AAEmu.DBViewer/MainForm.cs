@@ -3343,20 +3343,22 @@ namespace AAEmu.DBViewer
 
         private void BtnLoadDoodadsFromPak_Click(object sender, EventArgs e)
         {
-            const string cellsFolder = "game/worlds/main_world/level_design/cells/";
+            var instanceName = cbLoadFromInstanceSelect.Text;
+            var cellsFolder = $"game/worlds/{instanceName}/level_design/cells/";
             const string doodadG = "/doodad.g";
             if (!ClientFileManager.HasValidSources())
                 return;
             var doodadGFiles = ClientFileManager.GetFilesInDirectory("game", "doodad.g", true).Where(f => f.EndsWith(doodadG, StringComparison.InvariantCultureIgnoreCase) && f.StartsWith(cellsFolder, StringComparison.InvariantCultureIgnoreCase)).ToList();
             if (!doodadGFiles.Any())
             {
-                MessageBox.Show(@"Pak does not seem to contain DESIGN doodad data");
+                MessageBox.Show(@$"Pak does not seem to contain DESIGN doodad data {instanceName}");
                 return;
             }
             PrepareWorldXml(false);
+            cbLoadFromInstanceSelect.Text = instanceName;
             var map = MapViewForm.GetMap();
             map.Show();
-            map.cbInstanceSelect.Text = @"main_world";
+            map.cbInstanceSelect.Text = instanceName;
 
             if (map.GetPoICount() > 0 && MessageBox.Show(@"Keep PoI's ?", "", MessageBoxButtons.YesNo) == DialogResult.No)
                 map.ClearPoI();
@@ -3428,7 +3430,8 @@ namespace AAEmu.DBViewer
 
         private void BtnLoadNpcSpawnersFromPak_Click(object sender, EventArgs e)
         {
-            const string zoneFolder = "game/worlds/main_world/level_design/zone/";
+            var instanceName = cbLoadFromInstanceSelect.Text;
+            var zoneFolder = $"game/worlds/{instanceName}/level_design/zone/";
             // TODO: If zone_server doesn't exist, you can also try to load from editor instead
             const string npcSpawnersG = "/zone_server/npc_spawners.g";
             if (!ClientFileManager.HasValidSources())
@@ -3437,13 +3440,14 @@ namespace AAEmu.DBViewer
             var npcSpawnersGFiles = ClientFileManager.GetFilesInDirectory("game", "npc_spawners.g", true).Where(f => f.EndsWith(npcSpawnersG, StringComparison.InvariantCultureIgnoreCase) && f.StartsWith(zoneFolder, StringComparison.InvariantCultureIgnoreCase)).ToList();
             if (!npcSpawnersGFiles.Any())
             {
-                MessageBox.Show(@"Pak does not seem to contain DESIGN NpcSpawner data");
+                MessageBox.Show(@$"Pak does not seem to contain DESIGN NpcSpawner data for {instanceName}");
                 return;
             }
             PrepareWorldXml(false);
+            cbLoadFromInstanceSelect.Text = instanceName;
             var map = MapViewForm.GetMap();
             map.Show();
-            map.cbInstanceSelect.Text = @"main_world";
+            map.cbInstanceSelect.Text = instanceName;
 
             if ((map.GetPoICount() > 0 || map.GetPathCount() > 0) &&
                 MessageBox.Show(@"Keep PoI's ?", "", MessageBoxButtons.YesNo) == DialogResult.No)
@@ -3468,7 +3472,7 @@ namespace AAEmu.DBViewer
                     }
                 }
 
-                var spawnerList = AAXmlDefs.LoadNpcSpawnerData(zoneKey, sl.ToArray());
+                var spawnerList = AAXmlDefs.LoadNpcSpawnerData(zoneKey, sl.ToArray(), instanceName);
 
                 foreach (var npcSpawnerGFileData in spawnerList)
                 {

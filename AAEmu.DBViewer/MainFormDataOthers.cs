@@ -1453,6 +1453,18 @@ public partial class MainForm
             }
 
         }
+        
+        cbLoadFromInstanceSelect.Items.Clear();
+        foreach (var instance in MapViewWorldXML.instances)
+        {
+            cbLoadFromInstanceSelect.Items.Add(instance.WorldName);
+            if (instance.WorldName == "main_world")
+            {
+                cbLoadFromInstanceSelect.SelectedIndex = cbLoadFromInstanceSelect.Items.Count - 1;
+            }
+        }
+
+        cbLoadFromInstanceSelect.Enabled = true;
     }
 
     private void DoFindAllHousing()
