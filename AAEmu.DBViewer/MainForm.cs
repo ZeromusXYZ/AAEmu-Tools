@@ -3383,6 +3383,7 @@ namespace AAEmu.DBViewer
                 }
                 var currentDoodadId = 0;
                 var currentDoodadCat = 0;
+                var resultList = new List<Tuple<long, Vector3>>();
                 foreach (var line in sl)
                 {
                     var trimmedLine = line.ToLower().Replace(",", "").TrimStart(' ').TrimStart('\t');
@@ -3420,6 +3421,49 @@ namespace AAEmu.DBViewer
                         posX += (cellX * 1024f);
                         posY += (cellY * 1024f);
                         map.AddPoI(posX, posY, posZ, (AaDb.DbDoodadAlmighties.GetValueOrDefault(currentDoodadId)?.NameLocalized ?? "DoodadId: ") + $" ({currentDoodadId})", Color.YellowGreen, 0, "doodad", currentDoodadId, null);
+                        resultList.Add(new Tuple<long, Vector3>(currentDoodadId, new Vector3(posX, posY, posZ)));
+                    }
+                }
+
+                if (resultList.Count > 0 &&
+                    MessageBox.Show($"Do you want to add {resultList.Count} doodads to the doodads search page?",
+                        "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    using (var loading = new LoadingForm())
+                    {
+                        loading.ShowInfo($"Adding {resultList.Count} Doodads");
+                        loading.Show();
+                        dgvDoodads.Hide();
+                        dgvDoodads.Rows.Clear();
+                        var c = 0;
+                        foreach (var tuple in resultList)
+                        {
+
+                            if (AaDb.DbDoodadAlmighties.TryGetValue(tuple.Item1, out var z))
+                            {
+                                var line = dgvDoodads.Rows.Add();
+                                var row = dgvDoodads.Rows[line];
+
+                                row.Cells[0].Value = z.Id.ToString();
+                                row.Cells[1].Value = z.NameLocalized;
+                                row.Cells[2].Value = z.MgmtSpawn.ToString();
+                                row.Cells[3].Value = z.GroupId.ToString();
+                                row.Cells[4].Value = z.Percent.ToString();
+                                row.Cells[5].Value = AaDb.GetFactionName(z.FactionId, true);
+                                row.Cells[6].Value = z.ModelKindId.ToString();
+                                row.Cells[7].Value = z.Model.ToString();
+                                row.Cells[8].Value = $"{tuple.Item2.X} , {tuple.Item2.Y} = ({tuple.Item2.Z})";
+
+                                c++;
+                                if ((c % 25) == 0)
+                                {
+                                    loading.ShowInfo($"Loading {c}/{resultList.Count} Doodads");
+                                }
+                            }
+                        }
+
+                        tcViewer.SelectedTab = tpDoodads;
+                        dgvDoodads.Show();
                     }
                 }
             }
